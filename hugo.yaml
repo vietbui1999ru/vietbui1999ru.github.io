@@ -262,7 +262,6 @@ params:
           name: "University of Dayton, Dayton, OH"
           url: "https://udayton.edu"
         date: "2023 - 2025"
-        GPA: "3.55 out of 4.0"
         content: |-
           I developed a novel Research Framework on Formal Verification using Rocq Proof Assistant for Softwares and Systems.
           I Published a paper in Reinforcement Learning and reducing model bias even with impostor data injections.
@@ -274,7 +273,6 @@ params:
           name: "Augustana College"
           url: "https://augustana.edu"
         date: "2019 - 2023"
-        GPA: "3.5 out of 4.0"
         content: |-
          I actively participated in Applied Mathematics Conferences.
          - Part of Computer Science & Mathematics Honor Societies.
@@ -309,8 +307,8 @@ params:
     enable: true
     title: "What I've been working on recently"
     items:
-      - title: Proxmox Multi-VM Infrastructure with Monitoring
-        content: Architected multi-VM infrastructure managing 15+ devices with 99.5% uptime through automated health monitoring, Prometheus metrics, and systematic capacity planning. Deployed Grafana dashboards for real-time monitoring, reducing MTTR by 50% through automated alerting on system CPU/memory/network anomalies.
+      - title: Multi-VM Homelab with Monitoring
+        content: I Architected multi-VM infrastructure managing 15+ devices with 99.5% uptime through automated health monitoring, Prometheus metrics, and systematic capacity planning. Deployed Grafana dashboards for real-time monitoring, reducing MTTR by 50% through automated alerting on system hardware and software anomalies.
         badges:
           - "Proxmox"
           - "Prometheus"
