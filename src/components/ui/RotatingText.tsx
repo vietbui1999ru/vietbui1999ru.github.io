@@ -1,0 +1,73 @@
+"use client";
+
+import {
+  AnimatePresence,
+  type HTMLMotionProps,
+  motion,
+  type Transition,
+} from "framer-motion";
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+type RotatingTextProps = {
+  text: string | string[];
+  duration?: number;
+  transition?: Transition;
+  y?: number;
+  containerClassName?: string;
+  /** Optional component to wrap each rotating item (e.g. HighlightText). Receives { text: string } + itemComponentProps. */
+  ItemComponent?: React.ComponentType<{ text: string }>;
+  /** Props spread onto ItemComponent when rendering the current text. */
+  itemComponentProps?: Record<string, unknown>;
+} & HTMLMotionProps<"div">;
+
+function RotatingText({
+  text,
+  y = -50,
+  duration = 2000,
+  transition = { duration: 0.3, ease: "easeOut" },
+  containerClassName,
+  ItemComponent,
+  itemComponentProps,
+  ...props
+}: RotatingTextProps) {
+  const [index, setIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!Array.isArray(text)) {
+      return;
+    }
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % text.length);
+    }, duration);
+    return () => clearInterval(interval);
+  }, [text, duration]);
+
+  const currentText = Array.isArray(text) ? text[index] : text;
+
+  const content = ItemComponent ? (
+    <ItemComponent text={currentText} {...itemComponentProps} />
+  ) : (
+    currentText
+  );
+
+  return (
+    <div className={cn("overflow-hidden py-1", containerClassName)}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y }}
+          initial={{ opacity: 0, y: -y }}
+          key={currentText}
+          transition={transition}
+          {...(props as any)}
+        >
+          {content}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export { RotatingText, type RotatingTextProps };
+export default RotatingText;
