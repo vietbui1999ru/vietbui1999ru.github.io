@@ -60,7 +60,7 @@ function RotatingText({
           initial={{ opacity: 0, y: -y }}
           key={currentText}
           transition={transition}
-          {...(props as any)}
+          {...(props as object)}
         >
           {content}
         </motion.div>

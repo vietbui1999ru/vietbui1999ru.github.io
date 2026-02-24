@@ -35,8 +35,8 @@ function ColourfulText({
 }: ColourfulTextProps) {
   const localRef = React.useRef<HTMLSpanElement>(null);
   React.useImperativeHandle(
-    ref as any,
-    () => localRef.current as HTMLSpanElement,
+    ref as React.Ref<HTMLSpanElement>,
+    () => localRef.current as HTMLSpanElement
   );
 
   const [currentColors, setCurrentColors] = React.useState(colors);
@@ -55,7 +55,7 @@ function ColourfulText({
   const characters = React.useMemo(() => text.split(""), [text]);
 
   return (
-    <span data-slot="colourful-text" ref={localRef} {...(props as any)}>
+    <span data-slot="colourful-text" ref={localRef} {...(props as object)}>
       {characters.map((char, index) => (
         <motion.span
           animate={{

@@ -1,0 +1,39 @@
+---
+import "@/styles/global.css";
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import NavBarDock from "@/components/layout/NavBarDock";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viet Bui | Portfolio</title>
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          const dark = stored ? stored === "dark" : prefersDark;
+          document.documentElement.classList.toggle("dark", dark);
+        } catch {}
+      })();
+    </script>
+  </head>
+  <body
+    class={cn(
+      "group/body overscroll-none antialiased bg-background text-foreground",
+    )}
+  >
+    <ThemeProvider client:load>
+      <NavBarDock client:load />
+      <main class="flex flex-1 flex-col pt-24">
+        <slot />
+      </main>
+    </ThemeProvider>
+  </body>
+</html>

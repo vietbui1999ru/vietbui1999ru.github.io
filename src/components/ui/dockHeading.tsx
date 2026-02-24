@@ -48,7 +48,7 @@ interface DockIconProps {
 }
 
 interface DocContextType {
-  mouseX: MotionValue;
+  mouseX: MotionValue<number>;
   spring: SpringOptions;
   magnification: number;
   distance: number;
@@ -84,7 +84,7 @@ function Dock({
   const isHovered = useMotionValue(0);
 
   const maxHeight = useMemo(() => {
-    return Math.max(DOCK_HEIGHT, magnification + magnification / 2 );
+    return Math.max(DOCK_HEIGHT, magnification + magnification / 2);
   }, [magnification]);
 
   const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
@@ -101,8 +101,8 @@ function Dock({
       <motion.div
         aria-label="Application dock"
         className={cn(
-          "mx-auto flex w-fit gap-4 rounded-2xl bg-backround px-4",
-          className,
+          "mx-auto flex w-fit gap-4 rounded-2xl bg-background px-4",
+          className
         )}
         onMouseLeave={() => {
           isHovered.set(0);
@@ -138,7 +138,7 @@ function DockItem({ children, className }: DockItemProps) {
   const widthTransform = useTransform(
     mouseDistance,
     [-distance, 0, distance],
-    [40, magnification, 40],
+    [40, magnification, 40]
   );
 
   const width = useSpring(widthTransform, spring);
@@ -148,7 +148,7 @@ function DockItem({ children, className }: DockItemProps) {
       aria-haspopup="true"
       className={cn(
         "relative inline-flex items-center justify-center",
-        className,
+        className
       )}
       onBlur={() => isHovered.set(0)}
       onFocus={() => isHovered.set(1)}
@@ -160,7 +160,7 @@ function DockItem({ children, className }: DockItemProps) {
       tabIndex={0}
     >
       {Children.map(children, (child) =>
-        cloneElement(child as React.ReactElement<any>, { width, isHovered }),
+        cloneElement(child as React.ReactElement<{ width: MotionValue<number>; isHovered: MotionValue<number> }>, { width, isHovered })
       )}
     </motion.div>
   );
@@ -186,7 +186,7 @@ function DockLabel({ children, className, ...rest }: DockLabelProps) {
           animate={{ opacity: 1, y: -10 }}
           className={cn(
             "absolute -top-5 left-1/2 w-fit whitespace-pre rounded-md border border-border bg-popover px-2 py-0.5 text-xs text-popover-foreground",
-            className,
+            className
           )}
           exit={{ opacity: 0, y: 0 }}
           initial={{ opacity: 0, y: 0 }}
@@ -218,45 +218,3 @@ function DockIcon({ children, className, ...rest }: DockIconProps) {
 }
 
 export { Dock, DockIcon, DockItem, DockLabel };
-
-// Demo
-// import { Home, MessageSquare, Settings, User, Bell } from "lucide-react"
-//
-// export function Demo() {
-//   return (
-//     <div className="fixed inset-0 flex items-end justify-center pb-8">
-//       <Dock>
-//         <DockItem>
-//           <DockLabel>Home</DockLabel>
-//           <DockIcon>
-//             <Home className="size-full text-neutral-600 dark:text-neutral-300" />
-//           </DockIcon>
-//         </DockItem>
-//         <DockItem>
-//           <DockLabel>Messages</DockLabel>
-//           <DockIcon>
-//             <MessageSquare className="size-full text-neutral-600 dark:text-neutral-300" />
-//           </DockIcon>
-//         </DockItem>
-//         <DockItem>
-//           <DockLabel>Profile</DockLabel>
-//           <DockIcon>
-//             <User className="size-full text-neutral-600 dark:text-neutral-300" />
-//           </DockIcon>
-//         </DockItem>
-//         <DockItem>
-//           <DockLabel>Notifications</DockLabel>
-//           <DockIcon>
-//             <Bell className="size-full text-neutral-600 dark:text-neutral-300" />
-//           </DockIcon>
-//         </DockItem>
-//         <DockItem>
-//           <DockLabel>Settings</DockLabel>
-//           <DockIcon>
-//             <Settings className="size-full text-neutral-600 dark:text-neutral-300" />
-//           </DockIcon>
-//         </DockItem>
-//       </Dock>
-//     </div>
-//   )
-// }

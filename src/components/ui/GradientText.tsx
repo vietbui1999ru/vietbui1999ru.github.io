@@ -42,7 +42,7 @@ function GradientText({
     <span
       className={cn("relative inline-block", className)}
       data-slot="gradient-text"
-      {...(props as any)}
+      {...(props as object)}
     >
       <motion.span
         animate={{ backgroundPositionX: ["0%", "200%"] }}

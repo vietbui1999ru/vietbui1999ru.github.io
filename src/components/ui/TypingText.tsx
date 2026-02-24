@@ -37,12 +37,11 @@ interface TypingTextProps {
   highlightWords?: string[];
   /**
    * Props passed to ColourfulText for highlighted words (ignored if HighlightComponent is set).
-   * @see ColourfulTextProps: interval, colors, animationDuration, staggerDelay, + any span props (className, etc.)
    */
   highlightProps?: Omit<ColourfulTextProps, "text">;
   /** Optional custom component for highlighted words (e.g. HighlightText). Receives { text: string } + highlightComponentProps. */
   HighlightComponent?: React.ComponentType<{ text: string }>;
-  /** Props spread onto HighlightComponent when rendering highlighted words (e.g. className, transition, inView for HighlightText). */
+  /** Props spread onto HighlightComponent when rendering highlighted words. */
   highlightComponentProps?: Record<string, unknown>;
   /** Optional component for non-highlighted segments (e.g. GradientText for neon line). Receives { text: string } + defaultSegmentProps. */
   DefaultSegmentComponent?: React.ComponentType<{ text: string }>;
@@ -87,7 +86,7 @@ const TypingText = ({
 
   const textArray = useMemo(
     () => (Array.isArray(text) ? text : [text]),
-    [text],
+    [text]
   );
 
   const getRandomSpeed = useCallback(() => {
@@ -118,7 +117,7 @@ const TypingText = ({
           }
         });
       },
-      { threshold: 0.1 },
+      { threshold: 0.1 }
     );
 
     observer.observe(containerRef.current);
@@ -164,9 +163,7 @@ const TypingText = ({
 
           setCurrentTextIndex((prev) => (prev + 1) % textArray.length);
           setCurrentCharIndex(0);
-          timeout = setTimeout(() => {
-            /* intentional pause between sentences */
-          }, pauseDuration);
+          timeout = setTimeout(() => {}, pauseDuration);
         } else {
           timeout = setTimeout(() => {
             setDisplayedText((prev) => prev.slice(0, -1));
@@ -178,7 +175,7 @@ const TypingText = ({
             setDisplayedText((prev) => prev + processedText[currentCharIndex]);
             setCurrentCharIndex((prev) => prev + 1);
           },
-          variableSpeed ? getRandomSpeed() : typingSpeed,
+          variableSpeed ? getRandomSpeed() : typingSpeed
         );
       } else if (textArray.length > 1) {
         timeout = setTimeout(() => {
@@ -262,7 +259,7 @@ const TypingText = ({
             />
           ) : (
             <span key={`${i}-${segment}`}>{segment}</span>
-          ),
+          )
         )}
       </span>
     );
@@ -289,14 +286,14 @@ const TypingText = ({
     showCursor && (
       <span
         className={`inline-block opacity-100 ${shouldHideCursor ? "hidden" : ""} ${cursorCharacter === "|"
-            ? `h-5 w-[1px] translate-y-1 bg-foreground ${cursorClassName}`
-            : `ml-1 ${cursorClassName}`
+          ? `h-5 w-[1px] translate-y-1 bg-foreground ${cursorClassName}`
+          : `ml-1 ${cursorClassName}`
           }`}
         ref={cursorRef}
       >
         {cursorCharacter === "|" ? "" : cursorCharacter}
       </span>
-    ),
+    )
   );
 };
 

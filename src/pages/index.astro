@@ -1,0 +1,37 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Home from "@/components/sections/Home";
+import About from "@/components/sections/About";
+import Projects from "@/components/sections/Projects";
+import Experience from "@/components/sections/Experience";
+import Education from "@/components/sections/Education";
+import Blog from "@/components/sections/Blog";
+import Gallery from "@/components/sections/Gallery";
+import Achievements from "@/components/sections/Achievements";
+import Contact from "@/components/sections/Contact";
+import { getCollection } from "astro:content";
+
+const blogPosts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 6)
+  .map((p) => ({
+    slug: p.id,
+    title: p.data.title,
+    description: p.data.description,
+    date: p.data.date,
+    draft: p.data.draft,
+  }));
+---
+
+<BaseLayout>
+  <Home client:load />
+  <About client:load />
+  <Projects client:load />
+  <Experience client:load />
+  <Education client:load />
+  <Blog client:load posts={blogPosts} />
+  <Gallery client:load />
+  <Achievements client:load />
+  <Contact client:load />
+</BaseLayout>

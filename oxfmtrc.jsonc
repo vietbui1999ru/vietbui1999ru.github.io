@@ -1,0 +1,34 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [
+    "*.min.*",
+    "*.map",
+    "**/public",
+    "**/build",
+    "**/dist",
+    "**/out",
+    "**/.github",
+    "**/.next",
+    "**/.astro",
+    "**/.netlify",
+  ],
+  "experimentalSortPackageJson": {
+    "sortScripts": true,
+  },
+  "experimentalSortImports": {
+    "groups": [
+      ["side-effect"],
+      ["builtin"],
+      ["external", "external-type"],
+      ["internal", "internal-type"],
+      ["parent", "parent-type"],
+      ["sibling", "sibling-type"],
+      ["index", "index-type"],
+    ],
+  },
+  "experimentalTailwindcss": {
+    "stylesheet": "./src/styles/global.css",
+    "attributes": ["class", "className"],
+    "functions": ["clsx", "cn", "cva", "tv"],
+  },
+}
