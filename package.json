@@ -49,5 +49,12 @@
     "oxfmt": "^0.34.0",
     "oxlint": "^1.49.0",
     "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "msw"
+    ]
   }
 }
