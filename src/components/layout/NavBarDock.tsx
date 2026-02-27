@@ -6,7 +6,6 @@ import {
   DockItem,
   DockLabel,
 } from "@/components/ui/dockHeading";
-import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import { cn } from "@/lib/utils";
 import {
   User,
@@ -72,10 +71,6 @@ const NavBarDock = () => {
 
   return (
     <div className="fixed top-0 left-0 right-0 w-full z-[9999999] bg-background">
-      <div className="absolute top-5 right-0 pr-4 sm:pr-6 pt-0.5">
-        <ThemeSwitch />
-      </div>
-
       <div className="flex items-end justify-between gap-4 px-4 sm:px-6 w-full">
         <div className="flex-1 min-w-0" aria-hidden />
         <div className="flex-none flex items-end justify-center pb-3">

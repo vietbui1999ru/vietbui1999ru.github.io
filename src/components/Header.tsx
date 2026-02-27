@@ -3,7 +3,6 @@ import { HomeIcon } from "lucide-react";
 import { Icons } from "@/components/Icons";
 import { MobileNav } from "@/components/MobileNav";
 import { MainNav } from "@/components/MainNav";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -58,8 +57,6 @@ export function Header() {
             </a>
 
             <Separator orientation="vertical" className="my-auto" />
-
-            <ThemeToggle />
           </div>
         </div>
       </div>

@@ -1,9 +1,12 @@
 /**
  * Gallery section content
+ * Data loaded from gallery.json for easy editing
  */
 
-export const GALLERY_SECTION_TITLE = "Gallery";
-export const GALLERY_SECTION_SUBTITLE = "Photos and visual projects.";
+import galleryJson from "./gallery.json";
+
+export const GALLERY_SECTION_TITLE = galleryJson.title;
+export const GALLERY_SECTION_SUBTITLE = galleryJson.subtitle;
 
 export type GalleryItem = {
   id: string;
@@ -13,23 +16,4 @@ export type GalleryItem = {
   href?: string;
 };
 
-export const GALLERY_ITEMS: GalleryItem[] = [
-  {
-    id: "1",
-    title: "Placeholder 1",
-    description: "Add images and metadata via YAML later.",
-    image: undefined,
-  },
-  {
-    id: "2",
-    title: "Placeholder 2",
-    description: "Gallery grid ready for content.",
-    image: undefined,
-  },
-  {
-    id: "3",
-    title: "Placeholder 3",
-    description: "Parse from config or CMS.",
-    image: undefined,
-  },
-];
+export const GALLERY_ITEMS: GalleryItem[] = galleryJson.items as GalleryItem[];

@@ -3,7 +3,7 @@
 import { Carousel, Card as CarouselCard } from "@/components/ui/CardsCarousel";
 import type { Card } from "@/components/ui/CardsCarousel";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Badge } from "@/components/ui/badge";
+import { SkillBadge } from "@/components/ui/SkillBadge";
 import { buttonVariants } from "@/components/ui/button";
 import { Github, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -25,9 +25,7 @@ function projectToCarouselCard(project: (typeof PROJECTS_ITEMS)[number]): Card {
         {project.badges && project.badges.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {project.badges.map((badge) => (
-              <Badge key={badge} variant="secondary" className="text-xs">
-                {badge}
-              </Badge>
+              <SkillBadge key={badge} skill={badge} size="sm" />
             ))}
           </div>
         )}

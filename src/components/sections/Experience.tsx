@@ -1,19 +1,32 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { BriefcaseBusiness } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { Building2, Calendar, ExternalLink } from "lucide-react";
+import {
+  TimelineLayout,
+  type TimelineItem,
+} from "@/components/ui/TimelineLayout";
 import { EXPERIENCE_ITEMS } from "@/data/experienceData";
 
-const Experience = () => {
+const ExperienceTimeline = () => {
+  const items: TimelineItem[] = [];
+
+  EXPERIENCE_ITEMS.forEach((employer) => {
+    employer.jobs.forEach((job, idx) => {
+      items.push({
+        id: `${employer.company}-${idx}`,
+        date: job.date,
+        title: job.name,
+        subtitle: employer.company,
+        description: job.content,
+        icon: <BriefcaseBusiness className="h-3 w-3" />,
+        status: job.date.toLowerCase().includes("present")
+          ? "in-progress"
+          : "completed",
+      });
+    });
+  });
+
   return (
     <section id="experience" className="relative min-h-screen w-full">
       <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24">
@@ -23,83 +36,17 @@ const Experience = () => {
           className="mb-12"
         />
 
-        <div className="space-y-8">
-          {EXPERIENCE_ITEMS.map((employer) => (
-            <Card key={employer.company} className="overflow-hidden">
-              <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Building2 className="size-5" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-xl">
-                      <a
-                        href={employer.companyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-foreground hover:text-primary transition-colors"
-                      >
-                        {employer.company}
-                        <ExternalLink className="size-3.5" />
-                      </a>
-                    </CardTitle>
-                    <CardDescription>{employer.companyUrl}</CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {employer.jobs.map((job) => (
-                  <div key={job.name}>
-                    <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground mb-2">
-                      <span className="font-medium text-foreground">
-                        {job.name}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="size-3.5" />
-                        {job.date}
-                      </span>
-                    </div>
-                    {job.info?.content && (
-                      <Badge variant="secondary" className="mb-2">
-                        {job.info.content}
-                      </Badge>
-                    )}
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {job.content}
-                    </p>
-                    {job.featuredItems?.fontAwesomeIcons?.length ? (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {job.featuredItems.fontAwesomeIcons.map((item, i) => (
-                          <a
-                            key={i}
-                            href={item.url ?? "#"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title={item.tooltip}
-                            className="inline-flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
-                          >
-                            <span className="sr-only">
-                              {item.tooltip ?? item.icon}
-                            </span>
-                            <span className="text-xs font-medium">
-                              {item.tooltip ?? "Tech"}
-                            </span>
-                          </a>
-                        ))}
-                      </div>
-                    ) : null}
-                    {employer.jobs.indexOf(job) < employer.jobs.length - 1 && (
-                      <Separator className="mt-4" />
-                    )}
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <TimelineLayout
+          animate
+          size="md"
+          connectorColor="primary"
+          iconColor="primary"
+          items={items}
+          className="min-h-[600px] w-full max-w-2xl mx-auto flex items-center justify-center"
+        />
       </div>
     </section>
   );
 };
 
-export default Experience;
+export default ExperienceTimeline;

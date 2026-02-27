@@ -1,0 +1,18 @@
+{
+  "title": "Gallery",
+  "subtitle": "Photos and visual projects.",
+  "items": [
+    { "id": "1", "title": "Placeholder 1", "description": "Add images and metadata via YAML later.", "image": "https://picsum.photos/seed/gallery1/400/400" },
+    { "id": "2", "title": "Placeholder 2", "description": "Gallery grid ready for content.", "image": "https://picsum.photos/seed/gallery2/400/400" },
+    { "id": "3", "title": "Placeholder 3", "description": "Parse from config or CMS.", "image": "https://picsum.photos/seed/gallery3/400/400" },
+    { "id": "4", "title": "Placeholder 4", "image": "https://picsum.photos/seed/gallery4/400/400" },
+    { "id": "5", "title": "Placeholder 5", "image": "https://picsum.photos/seed/gallery5/400/400" },
+    { "id": "6", "title": "Placeholder 6", "image": "https://picsum.photos/seed/gallery6/400/400" },
+    { "id": "7", "title": "Placeholder 7", "image": "https://picsum.photos/seed/gallery7/400/400" },
+    { "id": "8", "title": "Placeholder 8", "image": "https://picsum.photos/seed/gallery8/400/400" },
+    { "id": "9", "title": "Placeholder 9", "image": "https://picsum.photos/seed/gallery9/400/400" },
+    { "id": "10", "title": "Placeholder 10", "image": "https://picsum.photos/seed/gallery10/400/400" },
+    { "id": "11", "title": "Placeholder 11", "image": "https://picsum.photos/seed/gallery11/400/400" },
+    { "id": "12", "title": "Placeholder 12", "image": "https://picsum.photos/seed/gallery12/400/400" }
+  ]
+}

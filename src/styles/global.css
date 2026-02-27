@@ -161,6 +161,12 @@
   button:active {
     @apply opacity-60 md:opacity-100;
   }
+
+  /* Hide default cursor when custom animated cursor is active */
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none !important;
+  }
 }
 
 @utility section-soft {

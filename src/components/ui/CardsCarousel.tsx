@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
+import { Card3D } from "@/components/ui/Card3D";
 import { AnimatePresence, motion } from "framer-motion";
 import React, {
   createContext,
@@ -126,7 +127,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
             ))}
           </div>
         </div>
-        <div className="mr-10 flex justify-end gap-2">
+        <div className="mt-4 flex w-full justify-center gap-2">
           <button
             type="button"
             className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
@@ -194,15 +195,22 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
               className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
               exit={{ opacity: 0 }}
               initial={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
             />
-            <motion.div
-              animate={{ opacity: 1 }}
-              className="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-neutral-900"
-              exit={{ opacity: 0 }}
-              initial={{ opacity: 0 }}
-              layoutId={layout ? `card-${card.title}` : undefined}
-              ref={containerRef}
-            >
+            <Card3D active={open} maxTilt={8} className="relative z-[60] mx-auto my-10 h-fit max-w-5xl">
+              <motion.div
+                animate={{ opacity: 1, scale: 1 }}
+                className="rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-neutral-900"
+                exit={{
+                  opacity: 0,
+                  scale: 0.95,
+                  transition: { duration: 0.2 },
+                }}
+                initial={{ opacity: 0, scale: 0.98 }}
+                layoutId={layout ? `card-${card.title}` : undefined}
+                ref={containerRef}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+              >
               <button
                 type="button"
                 className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white"
@@ -224,6 +232,7 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
               </motion.p>
               <div className="py-10">{card.content}</div>
             </motion.div>
+            </Card3D>
           </div>
         )}
       </AnimatePresence>
