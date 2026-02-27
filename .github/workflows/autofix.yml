@@ -19,7 +19,7 @@ jobs:
           cache: npm
 
       # TODO: add all code-fixing here.
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npx prettier --write .
 
       # Optimize all PNGs with https://pngquant.org/
