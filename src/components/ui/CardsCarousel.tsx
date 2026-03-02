@@ -81,7 +81,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
     <CarouselContext.Provider value={{ onCardClose: handleCardClose, currentIndex }}>
       <div className="relative w-full">
         <div
-          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-6 [scrollbar-width:none] md:py-10"
+          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-6 [scrollbar-width:none] md:py-10 snap-x snap-mandatory"
           onScroll={checkScrollability}
           ref={carouselRef}
         >
@@ -108,7 +108,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                     ease: "easeOut",
                   },
                 }}
-                className="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
+                className="rounded-3xl last:pr-[5%] md:last:pr-[33%] snap-start"
                 initial={{
                   opacity: 0,
                   y: 20,
@@ -123,7 +123,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
         <div className="mt-4 flex w-full justify-center gap-2">
           <button
             type="button"
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
             disabled={!canScrollLeft}
             onClick={scrollLeft}
           >
@@ -131,7 +131,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
           </button>
           <button
             type="button"
-            className="relative z-40 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
             disabled={!canScrollRight}
             onClick={scrollRight}
           >
@@ -210,7 +210,7 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
               >
                 <button
                   type="button"
-                  className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white"
+                  className="sticky top-4 right-0 ml-auto flex h-11 w-11 items-center justify-center rounded-full bg-black dark:bg-white"
                   onClick={handleClose}
                 >
                   <X className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
@@ -234,7 +234,7 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
         )}
       </AnimatePresence>
       <motion.button
-        className="relative z-10 flex h-48 w-40 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-64 md:w-56 dark:bg-neutral-900"
+        className="relative z-10 flex h-52 w-44 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-64 md:w-56 dark:bg-neutral-900"
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={() => setOpen(true)}
       >
