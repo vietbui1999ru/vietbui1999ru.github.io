@@ -12,6 +12,17 @@ import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 const Gallery = () => {
   const [activeImage, setActiveImage] = useState<Marquee3DImage | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const [columns, setColumns] = useState(4);
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      setColumns(w < 640 ? 2 : w < 1024 ? 3 : 4);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () => setActiveImage(null));
 
@@ -55,7 +66,7 @@ const Gallery = () => {
         {marqueeImages.length > 0 ? (
           <Marquee3D
             images={marqueeImages}
-            columns={4}
+            columns={columns}
             tilt={55}
             className="min-h-[400px]"
             onImageClick={setActiveImage}
@@ -95,7 +106,7 @@ const Gallery = () => {
                 >
                   <button
                     type="button"
-                    className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4"
+                    className="sticky top-4 right-0 ml-auto flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4"
                     onClick={() => setActiveImage(null)}
                   >
                     <X className="h-5 w-5" />
@@ -104,7 +115,7 @@ const Gallery = () => {
                     <img
                       src={activeImage.src}
                       alt={activeImage.alt ?? activeImage.id}
-                      className="w-full h-full max-h-[400px] object-cover"
+                      className="w-full h-full max-h-[60vh] md:max-h-[400px] object-cover"
                     />
                   </div>
                   {activeImage.title && (
