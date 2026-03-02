@@ -21,6 +21,7 @@ export function AnimatedCursor({
   const [isVisible, setIsVisible] = useState(false);
   const [isPointer, setIsPointer] = useState(false);
   const rafRef = useRef<number>(0);
+  const hasShownRef = useRef(false);
 
   useEffect(() => {
     if (desktopOnly && typeof window !== "undefined") {
@@ -41,14 +42,18 @@ export function AnimatedCursor({
     const handleMouseMove = (e: MouseEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
-      if (!isVisible) {
+      if (!hasShownRef.current) {
+        hasShownRef.current = true;
         currentX = targetX;
         currentY = targetY;
         setIsVisible(true);
       }
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseLeave = () => {
+      hasShownRef.current = false;
+      setIsVisible(false);
+    };
 
     const updateCursor = () => {
       currentX += (targetX - currentX) * 0.2;
@@ -65,8 +70,7 @@ export function AnimatedCursor({
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const interactive =
-        target.closest("a, button, [role='button'], input, select, textarea");
+      const interactive = target.closest("a, button, [role='button'], input, select, textarea");
       setIsPointer(!!interactive);
     };
 
@@ -82,20 +86,17 @@ export function AnimatedCursor({
       window.removeEventListener("mouseover", handleMouseOver);
       cancelAnimationFrame(rafRef.current);
     };
-  }, [desktopOnly, isVisible]);
+  }, [desktopOnly]);
 
   if (!isVisible) return null;
 
   return (
-    <div
-      className="pointer-events-none fixed left-0 top-0 z-[9999]"
-      aria-hidden
-    >
+    <div className="pointer-events-none fixed left-0 top-0 z-[100000000]" aria-hidden>
       <div
         ref={dotRef}
         className={cn(
           "absolute rounded-full bg-primary will-change-[left,top]",
-          isPointer && "scale-150 opacity-80"
+          isPointer && "scale-150 opacity-80",
         )}
         style={{
           width: size,

@@ -21,10 +21,10 @@ import {
 } from "react";
 import { cn } from "@/lib/utils";
 
-const DOCK_HEIGHT = 64;
-const DEFAULT_MAGNIFICATION = 70;
-const DEFAULT_DISTANCE = 70;
-const DEFAULT_PANEL_HEIGHT = 48;
+const DOCK_HEIGHT = 96;
+const DEFAULT_MAGNIFICATION = 84;
+const DEFAULT_DISTANCE = 80;
+const DEFAULT_PANEL_HEIGHT = 84;
 
 interface DockProps {
   children: React.ReactNode;
@@ -100,10 +100,7 @@ function Dock({
     >
       <motion.div
         aria-label="Application dock"
-        className={cn(
-          "mx-auto flex w-fit gap-4 rounded-2xl bg-background px-4",
-          className
-        )}
+        className={cn("mx-auto flex w-fit gap-5 rounded-2xl bg-background px-5", className)}
         onMouseLeave={() => {
           isHovered.set(0);
           mouseX.set(Number.POSITIVE_INFINITY);
@@ -115,9 +112,7 @@ function Dock({
         role="toolbar"
         style={{ height: panelHeight }}
       >
-        <DockProvider value={{ mouseX, spring, distance, magnification }}>
-          {children}
-        </DockProvider>
+        <DockProvider value={{ mouseX, spring, distance, magnification }}>{children}</DockProvider>
       </motion.div>
     </motion.div>
   );
@@ -138,7 +133,7 @@ function DockItem({ children, className }: DockItemProps) {
   const widthTransform = useTransform(
     mouseDistance,
     [-distance, 0, distance],
-    [40, magnification, 40]
+    [48, magnification, 48],
   );
 
   const width = useSpring(widthTransform, spring);
@@ -146,10 +141,7 @@ function DockItem({ children, className }: DockItemProps) {
   return (
     <motion.div
       aria-haspopup="true"
-      className={cn(
-        "relative inline-flex items-center justify-center",
-        className
-      )}
+      className={cn("relative inline-flex items-center justify-center", className)}
       onBlur={() => isHovered.set(0)}
       onFocus={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
@@ -160,7 +152,13 @@ function DockItem({ children, className }: DockItemProps) {
       tabIndex={0}
     >
       {Children.map(children, (child) =>
-        cloneElement(child as React.ReactElement<{ width: MotionValue<number>; isHovered: MotionValue<number> }>, { width, isHovered })
+        cloneElement(
+          child as React.ReactElement<{
+            width: MotionValue<number>;
+            isHovered: MotionValue<number>;
+          }>,
+          { width, isHovered },
+        ),
       )}
     </motion.div>
   );
@@ -186,7 +184,7 @@ function DockLabel({ children, className, ...rest }: DockLabelProps) {
           animate={{ opacity: 1, y: -10 }}
           className={cn(
             "absolute -top-5 left-1/2 w-fit whitespace-pre rounded-md border border-border bg-popover px-2 py-0.5 text-xs text-popover-foreground",
-            className
+            className,
           )}
           exit={{ opacity: 0, y: 0 }}
           initial={{ opacity: 0, y: 0 }}

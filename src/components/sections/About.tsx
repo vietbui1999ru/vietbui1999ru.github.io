@@ -1,18 +1,10 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
+import { AppleHelloAboutMeEffect } from "@/components/ui/apple-hello-effect";
 import { Separator } from "@/components/ui/separator";
-import {
-  ABOUT_CURRENT_ROLE,
-  ABOUT_HOBBIES,
-  ABOUT_INTERESTS,
-  ABOUT_PARAGRAPHS,
-  ABOUT_TAGLINE,
-} from "@/data/aboutData";
-import { Briefcase, Gamepad2, Sparkles } from "lucide-react";
-import { AboutCard } from "./AboutCard";
+import { ABOUT_PARAGRAPHS, ABOUT_TAGLINE } from "@/data/aboutData";
 import { AboutParagraphReveal } from "./AboutParagraphReveal";
-import { AboutSectionHeading } from "./AboutSectionHeading";
+import { SkillsSection } from "./SkillsSection";
 
 const ABOUT_REVEAL_CONFIG = {
   scrollOffsetStart: 0,
@@ -26,12 +18,14 @@ const ABOUT_REVEAL_CONFIG = {
 const About = () => {
   return (
     <section id="about" className="relative min-h-screen w-full">
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24">
-        <AboutSectionHeading
-          title="About Me"
-          subtitle={ABOUT_TAGLINE}
-          className="mb-12"
-        />
+      <div className="section-content">
+        <header className="mb-12 space-y-4 text-center">
+          <AppleHelloAboutMeEffect
+            className="mx-auto"
+            svgClassName="mx-auto h-24 w-auto text-foreground"
+          />
+          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">{ABOUT_TAGLINE}</p>
+        </header>
 
         <div className="space-y-10 mb-12">
           {ABOUT_PARAGRAPHS.map((text, i) => (
@@ -50,40 +44,7 @@ const About = () => {
         </div>
 
         <Separator className="my-10" />
-
-        <AboutCard
-          title={ABOUT_CURRENT_ROLE.title}
-          description={`${ABOUT_CURRENT_ROLE.org} · ${ABOUT_CURRENT_ROLE.location}`}
-          icon={<Briefcase className="size-5" />}
-          className="mb-8"
-        />
-
-        <AboutCard
-          title="Interests & focus"
-          icon={<Sparkles className="size-5" />}
-          className="mb-8"
-        >
-          <div className="flex flex-wrap gap-2">
-            {ABOUT_INTERESTS.map((label) => (
-              <Badge key={label} variant="secondary">
-                {label}
-              </Badge>
-            ))}
-          </div>
-        </AboutCard>
-
-        <AboutCard
-          title="When I'm not coding"
-          icon={<Gamepad2 className="size-5" />}
-        >
-          <div className="flex flex-wrap gap-2">
-            {ABOUT_HOBBIES.map((hobby) => (
-              <Badge key={hobby} variant="outline">
-                {hobby}
-              </Badge>
-            ))}
-          </div>
-        </AboutCard>
+        <SkillsSection />
       </div>
     </section>
   );

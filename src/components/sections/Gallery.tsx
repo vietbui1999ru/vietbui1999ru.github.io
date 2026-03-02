@@ -2,13 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AppleHelloGalleryEffect } from "@/components/ui/apple-hello-effect";
 import { Marquee3D, type Marquee3DImage } from "@/components/ui/Marquee3D";
-import {
-  GALLERY_SECTION_TITLE,
-  GALLERY_SECTION_SUBTITLE,
-  GALLERY_ITEMS,
-} from "@/data/galleryData";
+import { GALLERY_SECTION_TITLE, GALLERY_SECTION_SUBTITLE, GALLERY_ITEMS } from "@/data/galleryData";
 import { Card3D } from "@/components/ui/Card3D";
 import { X, ExternalLink } from "lucide-react";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
@@ -17,9 +13,7 @@ const Gallery = () => {
   const [activeImage, setActiveImage] = useState<Marquee3DImage | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () =>
-    setActiveImage(null),
-  );
+  useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () => setActiveImage(null));
 
   useEffect(() => {
     if (!activeImage) return;
@@ -34,25 +28,29 @@ const Gallery = () => {
     };
   }, [activeImage]);
 
-  const marqueeImages: Marquee3DImage[] = GALLERY_ITEMS.filter(
-    (item) => item.image,
-  ).map((item) => ({
-    id: item.id,
-    src: item.image!,
-    alt: item.title ?? item.id,
-    title: item.title,
-    description: item.description,
-    href: item.href,
-  }));
+  const marqueeImages: Marquee3DImage[] = GALLERY_ITEMS.filter((item) => item.image).map(
+    (item) => ({
+      id: item.id,
+      src: item.image!,
+      alt: item.title ?? item.id,
+      title: item.title,
+      description: item.description,
+      href: item.href,
+    }),
+  );
 
   return (
     <section id="gallery" className="relative min-h-screen w-full">
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24">
-        <SectionHeading
-          title={GALLERY_SECTION_TITLE}
-          subtitle={GALLERY_SECTION_SUBTITLE}
-          className="mb-12"
-        />
+      <div className="section-content">
+        <header className="mb-12 space-y-4 text-center">
+          <AppleHelloGalleryEffect
+            className="mx-auto"
+            svgClassName="mx-auto h-24 w-auto text-foreground"
+          />
+          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
+            {GALLERY_SECTION_SUBTITLE}
+          </p>
+        </header>
 
         {marqueeImages.length > 0 ? (
           <Marquee3D
@@ -70,7 +68,7 @@ const Gallery = () => {
 
         <AnimatePresence>
           {activeImage && (
-            <div className="fixed inset-0 z-50 h-screen overflow-auto">
+            <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto p-4">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -81,7 +79,7 @@ const Gallery = () => {
               <Card3D
                 active={true}
                 maxTilt={8}
-                className="relative z-[60] mx-auto my-10 h-fit max-w-3xl px-4"
+                className="relative z-[60] my-auto h-fit w-full max-w-[var(--content-max)] flex-shrink-0 px-4"
               >
                 <motion.div
                   ref={modalRef}
@@ -110,14 +108,10 @@ const Gallery = () => {
                     />
                   </div>
                   {activeImage.title && (
-                    <h3 className="text-xl font-semibold mb-1">
-                      {activeImage.title}
-                    </h3>
+                    <h3 className="text-xl font-semibold mb-1">{activeImage.title}</h3>
                   )}
                   {activeImage.description && (
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {activeImage.description}
-                    </p>
+                    <p className="text-sm text-muted-foreground mb-3">{activeImage.description}</p>
                   )}
                   {activeImage.href && (
                     <a

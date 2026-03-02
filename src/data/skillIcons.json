@@ -22,5 +22,8 @@
   "NVIDIA": "nvidia",
   "YAML": "yaml",
   "CI": "githubactions",
-  "CI/CD": "githubactions"
+  "CI/CD": "githubactions",
+  "Rust": "rust",
+  "Astro": "astro",
+  "Node.js": "nodedotjs"
 }

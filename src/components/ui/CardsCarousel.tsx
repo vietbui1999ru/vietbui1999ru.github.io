@@ -3,14 +3,7 @@
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { Card3D } from "@/components/ui/Card3D";
 import { AnimatePresence, motion } from "framer-motion";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
@@ -94,14 +87,14 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
         >
           <div
             className={cn(
-              "absolute right-0 z-[1000] h-auto w-[5%] overflow-hidden bg-gradient-to-l"
+              "absolute right-0 z-[1000] h-auto w-[5%] overflow-hidden bg-gradient-to-l",
             )}
           />
 
           <div
             className={cn(
               "flex flex-row justify-start gap-4 pl-4",
-              "mx-auto max-w-7xl"
+              "mx-auto w-full max-w-[var(--content-max)]",
             )}
           >
             {items.map((item, index) => (
@@ -189,7 +182,7 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
     <>
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 z-50 h-screen overflow-auto">
+          <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto p-4">
             <motion.div
               animate={{ opacity: 1 }}
               className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
@@ -197,7 +190,11 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
               initial={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             />
-            <Card3D active={open} maxTilt={8} className="relative z-[60] mx-auto my-10 h-fit max-w-5xl">
+            <Card3D
+              active={open}
+              maxTilt={8}
+              className="relative z-[60] my-auto h-fit w-full max-w-[var(--content-max)] flex-shrink-0"
+            >
               <motion.div
                 animate={{ opacity: 1, scale: 1 }}
                 className="rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-neutral-900"
@@ -211,27 +208,27 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
                 ref={containerRef}
                 transition={{ duration: 0.25, ease: "easeOut" }}
               >
-              <button
-                type="button"
-                className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white"
-                onClick={handleClose}
-              >
-                <X className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
-              </button>
-              <motion.p
-                className="text-base font-medium text-black dark:text-white"
-                layoutId={layout ? `category-${card.title}` : undefined}
-              >
-                {card.category}
-              </motion.p>
-              <motion.p
-                className="mt-4 text-2xl font-semibold text-neutral-700 md:text-5xl dark:text-white"
-                layoutId={layout ? `title-${card.title}` : undefined}
-              >
-                {card.title}
-              </motion.p>
-              <div className="py-10">{card.content}</div>
-            </motion.div>
+                <button
+                  type="button"
+                  className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white"
+                  onClick={handleClose}
+                >
+                  <X className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
+                </button>
+                <motion.p
+                  className="text-base font-medium text-black dark:text-white"
+                  layoutId={layout ? `category-${card.title}` : undefined}
+                >
+                  {card.category}
+                </motion.p>
+                <motion.p
+                  className="mt-4 text-2xl font-semibold text-neutral-700 md:text-5xl dark:text-white"
+                  layoutId={layout ? `title-${card.title}` : undefined}
+                >
+                  {card.title}
+                </motion.p>
+                <div className="py-10">{card.content}</div>
+              </motion.div>
             </Card3D>
           </div>
         )}
@@ -292,7 +289,7 @@ export const BlurImage = ({
       className={cn(
         "h-full w-full transition duration-300",
         isLoading ? "blur-sm" : "blur-0",
-        className
+        className,
       )}
       decoding="async"
       height={height}

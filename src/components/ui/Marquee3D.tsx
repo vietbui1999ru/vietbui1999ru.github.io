@@ -25,7 +25,7 @@ export interface Marquee3DProps {
 
 export function Marquee3D({
   images,
-  columns = 4,
+  columns = 6,
   tilt = 55,
   className,
   onImageClick,
@@ -60,16 +60,11 @@ export function Marquee3D({
         }}
       >
         {columnGroups.map((colImages, colIndex) => (
-          <div
-            key={colIndex}
-            className="h-64 md:h-80 overflow-hidden shrink-0"
-          >
+          <div key={colIndex} className="h-[40vh] min-h-64 max-h-[40vh] overflow-hidden shrink-0">
             <div
               className="flex flex-col gap-4 shrink-0"
               style={{
-                animation: `marquee3d-${
-                  colIndex % 2 === 0 ? "down" : "up"
-                } 20s linear infinite`,
+                animation: `marquee3d-${colIndex % 2 === 0 ? "down" : "up"} 20s linear infinite`,
               }}
             >
               {[...colImages, ...colImages].map((img, i) => (

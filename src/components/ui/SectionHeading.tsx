@@ -25,18 +25,13 @@ export function SectionHeading({
       <h2
         className={cn(
           "text-3xl font-semibold tracking-tight text-foreground md:text-4xl",
-          titleClassName
+          titleClassName,
         )}
       >
         {title}
       </h2>
       {subtitle ? (
-        <p
-          className={cn(
-            "text-muted-foreground text-lg max-w-2xl mx-auto",
-            subtitleClassName
-          )}
-        >
+        <p className={cn("text-muted-foreground text-lg max-w-3xl mx-auto", subtitleClassName)}>
           {subtitle}
         </p>
       ) : null}

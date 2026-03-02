@@ -48,10 +48,7 @@ export function AboutParagraphReveal({
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: [
-      `${scrollOffsetStart * 100}% end`,
-      `${scrollOffsetEnd * 100}% start`,
-    ],
+    offset: [`${scrollOffsetStart * 100}% end`, `${scrollOffsetEnd * 100}% start`],
   });
 
   const tokens = React.useMemo(() => {
@@ -64,10 +61,7 @@ export function AboutParagraphReveal({
   return (
     <p
       ref={ref}
-      className={cn(
-        "text-xl sm:text-2xl leading-relaxed font-medium",
-        className
-      )}
+      className={cn("text-xl sm:text-2xl leading-relaxed font-medium", className)}
       style={{
         backgroundImage: gradient,
         backgroundClip: "text",

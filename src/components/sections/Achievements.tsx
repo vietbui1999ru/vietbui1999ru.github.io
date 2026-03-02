@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { buttonVariants } from "@/components/ui/button";
 import { Trophy, ExternalLink } from "lucide-react";
@@ -16,7 +10,7 @@ import { ACHIEVEMENTS_ITEMS } from "@/data/achievementsData";
 const Achievements = () => {
   return (
     <section id="achievements" className="relative min-h-screen w-full">
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24">
+      <div className="section-content">
         <SectionHeading
           title="Achievements"
           subtitle="Milestones and recognitions."
@@ -29,15 +23,9 @@ const Achievements = () => {
               <div className="aspect-video w-full overflow-hidden bg-muted">
                 <div
                   className="h-full w-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center bg-cover bg-center"
-                  style={
-                    item.image
-                      ? { backgroundImage: `url(${item.image})` }
-                      : undefined
-                  }
+                  style={item.image ? { backgroundImage: `url(${item.image})` } : undefined}
                 >
-                  {!item.image && (
-                    <Trophy className="size-12 text-muted-foreground/50" />
-                  )}
+                  {!item.image && <Trophy className="size-12 text-muted-foreground/50" />}
                 </div>
               </div>
               <CardHeader>
@@ -57,7 +45,7 @@ const Achievements = () => {
                     rel="noopener noreferrer"
                     className={cn(
                       buttonVariants({ variant: "outline", size: "sm" }),
-                      "inline-flex items-center gap-1.5"
+                      "inline-flex items-center gap-1.5",
                     )}
                   >
                     View

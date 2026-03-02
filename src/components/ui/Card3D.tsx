@@ -1,12 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  useCallback,
-  type ReactNode,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, type ReactNode, useRef, useState } from "react";
 
 export interface Card3DProps {
   children: ReactNode;
@@ -17,12 +12,7 @@ export interface Card3DProps {
   active?: boolean;
 }
 
-export function Card3D({
-  children,
-  className,
-  maxTilt = 12,
-  active = true,
-}: Card3DProps) {
+export function Card3D({ children, className, maxTilt = 12, active = true }: Card3DProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0 });
 
@@ -39,7 +29,7 @@ export function Card3D({
         rotateX: -y * maxTilt,
       });
     },
-    [active, maxTilt]
+    [active, maxTilt],
   );
 
   const handleMouseLeave = useCallback(() => {
@@ -52,7 +42,7 @@ export function Card3D({
       className={cn(
         "transition-transform duration-150 ease-out",
         !active && "transition-none",
-        className
+        className,
       )}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}

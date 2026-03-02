@@ -42,12 +42,7 @@ export function TimelineLayout({
   if (!items.length) return null;
 
   return (
-    <div
-      className={cn(
-        "relative w-full max-w-2xl mx-auto flex flex-col gap-8",
-        className,
-      )}
-    >
+    <div className={cn("relative w-full max-w-4xl mx-auto flex flex-col gap-8", className)}>
       {/* Center spine */}
       <div
         className={cn(
@@ -69,8 +64,8 @@ export function TimelineLayout({
             item.status === "completed"
               ? "bg-primary"
               : item.status === "in-progress"
-              ? "bg-yellow-400"
-              : "bg-muted-foreground/30";
+                ? "bg-yellow-400"
+                : "bg-muted-foreground/30";
 
           // Heuristic: split description into bullets
           let bullets: string[] | null = null;
@@ -98,45 +93,41 @@ export function TimelineLayout({
                   animate && "animate-in slide-in-from-bottom-2 duration-300",
                 )}
               >
-              <div className="mb-2 space-y-1">
-                <h3 className="font-semibold leading-tight text-sm md:text-base">
-                  {item.title}
-                </h3>
-                {item.subtitle && (
-                  <p className="text-[11px] md:text-xs text-muted-foreground">
-                    {item.subtitle}
-                  </p>
-                )}
-                {item.date && (
-                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground/80">
-                    {item.date}
-                  </p>
-                )}
-              </div>
+                <div className="mb-2 space-y-1">
+                  <h3 className="font-semibold leading-tight text-sm md:text-base">{item.title}</h3>
+                  {item.subtitle && (
+                    <p className="text-[11px] md:text-xs text-muted-foreground">{item.subtitle}</p>
+                  )}
+                  {item.date && (
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground/80">
+                      {item.date}
+                    </p>
+                  )}
+                </div>
 
-              {bullets ? (
-                <ul className="mt-2 space-y-1 text-[11px] md:text-xs text-muted-foreground list-disc list-inside">
-                  {bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
-              ) : item.description ? (
-                <p className="text-[11px] md:text-xs text-muted-foreground leading-relaxed">
-                  {item.description}
-                </p>
-              ) : null}
+                {bullets ? (
+                  <ul className="mt-2 space-y-1 text-[11px] md:text-xs text-muted-foreground list-disc list-inside">
+                    {bullets.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </ul>
+                ) : item.description ? (
+                  <p className="text-[11px] md:text-xs text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
+                ) : null}
 
-              {item.ctaHref && (
-                <a
-                  href={item.ctaHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center justify-center gap-1 text-[11px] text-primary hover:underline"
-                >
-                  {item.ctaLabel ?? "View details"}
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-              )}
+                {item.ctaHref && (
+                  <a
+                    href={item.ctaHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center justify-center gap-1 text-[11px] text-primary hover:underline"
+                  >
+                    {item.ctaLabel ?? "View details"}
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                )}
               </div>
             </Card3D>
           );
@@ -198,20 +189,8 @@ export function TimelineLayout({
                 <div className="w-full md:hidden mt-3 px-6">{content}</div>
 
                 {/* desktop: two-column zig-zag */}
-                <div
-                  className={cn(
-                    "hidden md:flex w-full",
-                    isRight && "md:flex-row-reverse",
-                  )}
-                >
-                  <div
-                    className={cn(
-                      "w-1/2",
-                      isRight ? "pl-10" : "pr-10",
-                    )}
-                  >
-                    {content}
-                  </div>
+                <div className={cn("hidden md:flex w-full", isRight && "md:flex-row-reverse")}>
+                  <div className={cn("w-1/2", isRight ? "pl-10" : "pr-10")}>{content}</div>
                   <div className="w-1/2" />
                 </div>
               </div>

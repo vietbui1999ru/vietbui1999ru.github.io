@@ -5,6 +5,7 @@ import { getSkillIconSlug } from "@/data/skillIcons";
 import { cn } from "@/lib/utils";
 import {
   SiAnsible,
+  SiAstro,
   SiDocker,
   SiExpress,
   SiGithub,
@@ -17,11 +18,13 @@ import {
   SiMongodb,
   SiNextdotjs,
   SiNginx,
+  SiNodedotjs,
   SiNvidia,
   SiPrometheus,
   SiProxmox,
   SiPython,
   SiReact,
+  SiRust,
   SiTerraform,
   SiTypescript,
   SiWireguard,
@@ -31,6 +34,7 @@ import type { ComponentType, SVGProps } from "react";
 
 const SLUG_TO_ICON: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
   ansible: SiAnsible,
+  astro: SiAstro,
   docker: SiDocker,
   express: SiExpress,
   github: SiGithub,
@@ -43,11 +47,13 @@ const SLUG_TO_ICON: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
   mongodb: SiMongodb,
   nextdotjs: SiNextdotjs,
   nginx: SiNginx,
+  nodedotjs: SiNodedotjs,
   nvidia: SiNvidia,
   prometheus: SiPrometheus,
   proxmox: SiProxmox,
   python: SiPython,
   react: SiReact,
+  rust: SiRust,
   terraform: SiTerraform,
   typescript: SiTypescript,
   wireguard: SiWireguard,
@@ -62,13 +68,7 @@ export interface SkillBadgeProps {
   size?: "sm" | "md";
 }
 
-export function SkillBadge({
-  skill,
-  url,
-  tooltip,
-  className,
-  size = "sm",
-}: SkillBadgeProps) {
+export function SkillBadge({ skill, url, tooltip, className, size = "sm" }: SkillBadgeProps) {
   const slug = getSkillIconSlug(skill);
   const IconComponent = slug ? SLUG_TO_ICON[slug] : null;
 
@@ -79,12 +79,10 @@ export function SkillBadge({
         "inline-flex items-center gap-1.5 font-normal",
         size === "sm" && "text-xs py-0.5",
         size === "md" && "text-sm py-1",
-        className
+        className,
       )}
     >
-      {IconComponent && (
-        <IconComponent className={size === "sm" ? "size-3" : "size-4"} />
-      )}
+      {IconComponent && <IconComponent className={size === "sm" ? "size-3" : "size-4"} />}
       {skill}
     </Badge>
   );
@@ -93,13 +91,7 @@ export function SkillBadge({
 
   if (url) {
     return (
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        title={label}
-        className="inline-flex"
-      >
+      <a href={url} target="_blank" rel="noopener noreferrer" title={label} className="inline-flex">
         {content}
       </a>
     );

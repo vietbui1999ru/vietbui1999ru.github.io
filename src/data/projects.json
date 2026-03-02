@@ -4,7 +4,17 @@
     {
       "title": "Multi-VM Homelab with Monitoring",
       "content": "I Architected multi-VM infrastructure managing 15+ devices with 99.5% uptime through automated health monitoring, Prometheus metrics, and systematic capacity planning. Deployed Grafana dashboards for real-time monitoring, reducing MTTR by 50% through automated alerting on system hardware and software anomalies.",
-      "badges": ["Proxmox", "Prometheus", "Grafana", "Terraform", "Ansible", "WireGuard", "Docker", "Nginx", "Bash"],
+      "badges": [
+        "Proxmox",
+        "Prometheus",
+        "Grafana",
+        "Terraform",
+        "Ansible",
+        "WireGuard",
+        "Docker",
+        "Nginx",
+        "Bash"
+      ],
       "links": [
         {
           "icon": "fab fa-github",
@@ -26,7 +36,16 @@
     {
       "title": "Scalable Spotify Web Application",
       "content": "Architected RESTful API on AWS handling 1000+ daily requests with 99.5% uptime, reducing response time by 73% through database optimization and connection pooling. Deployed containerized application with Docker and CI/CD pipelines, implementing Nginx load balancing to support 50+ concurrent users.",
-      "badges": ["TypeScript", "Next.js", "Express", "React", "MongoDB", "Docker", "Nginx", "CI/CD"],
+      "badges": [
+        "TypeScript",
+        "Next.js",
+        "Express",
+        "React",
+        "MongoDB",
+        "Docker",
+        "Nginx",
+        "CI/CD"
+      ],
       "links": [
         {
           "icon": "fab fa-github",

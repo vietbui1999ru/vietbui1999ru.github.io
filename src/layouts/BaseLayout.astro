@@ -3,6 +3,7 @@ import "@/styles/global.css";
 import { cn } from "@/lib/utils";
 import NavBarDock from "@/components/layout/NavBarDock";
 import AnimatedCursor from "@/components/ui/AnimatedCursor";
+import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
 ---
 
 <!doctype html>
@@ -17,9 +18,10 @@ import AnimatedCursor from "@/components/ui/AnimatedCursor";
       "group/body overscroll-none antialiased bg-background text-foreground",
     )}
   >
+    <VectorFieldBackground client:load />
     <AnimatedCursor client:load />
     <NavBarDock client:load />
-    <main class="flex flex-1 flex-col pt-24">
+    <main class="relative z-10 flex flex-1 flex-col pt-24">
       <slot />
     </main>
   </body>

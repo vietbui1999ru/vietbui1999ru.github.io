@@ -1,0 +1,18 @@
+[
+  {
+    "type": "Programming Languages",
+    "skills": [
+      { "name": "TypeScript", "icon": "typescript" },
+      { "name": "Python", "icon": "python" },
+      { "name": "Rust", "icon": "rust" }
+    ]
+  },
+  {
+    "type": "Tools & Frameworks",
+    "skills": [
+      { "name": "React", "icon": "react" },
+      { "name": "Astro", "icon": "astro" },
+      { "name": "Node.js", "icon": "nodejs" }
+    ]
+  }
+]

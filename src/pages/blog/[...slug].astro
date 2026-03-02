@@ -15,7 +15,7 @@ const { Content } = await render(entry);
 ---
 
 <BaseLayout>
-  <article class="mx-auto max-w-4xl px-4 py-24 sm:px-6">
+  <article class="mx-auto w-full max-w-[var(--content-max)] px-4 py-24 sm:px-6">
     <h1 class="text-4xl font-bold mb-4">{entry.data.title}</h1>
     <p class="text-muted-foreground mb-8">
       {entry.data.date.toLocaleDateString("en-US")}

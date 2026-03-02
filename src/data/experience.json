@@ -10,7 +10,11 @@
           "content": "I am currently working as a Research Engineer at Carboncopies Remote, USA. Currently working on a project that will be used to emulate single biophysical brain neuron and networks of neurons using BrainGenix.",
           "info": { "content": "Working as a Research Engineer" },
           "tags": [
-            { "name": "Python", "url": "https://python.org/", "tooltip": "Engine built with Python" },
+            {
+              "name": "Python",
+              "url": "https://python.org/",
+              "tooltip": "Engine built with Python"
+            },
             { "name": "GitLab", "url": "https://gitlab.com/", "tooltip": "GitLab" }
           ]
         }

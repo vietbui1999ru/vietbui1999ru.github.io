@@ -36,7 +36,7 @@ function ColourfulText({
   const localRef = React.useRef<HTMLSpanElement>(null);
   React.useImperativeHandle(
     ref as React.Ref<HTMLSpanElement>,
-    () => localRef.current as HTMLSpanElement
+    () => localRef.current as HTMLSpanElement,
   );
 
   const [currentColors, setCurrentColors] = React.useState(colors);
