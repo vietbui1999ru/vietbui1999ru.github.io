@@ -23,12 +23,12 @@ draft: false
 ---
 ```
 
-| Field       | Type    | Required | Notes                                      |
-|-------------|---------|----------|--------------------------------------------|
-| `title`     | string  | Yes      | Shown in listings and post header          |
-| `description` | string | Yes    | Used for meta description and card previews |
-| `date`      | date    | Yes      | Format: `YYYY-MM-DD`                       |
-| `draft`     | boolean | No       | Default `false`; set `true` to hide from site |
+| Field         | Type    | Required | Notes                                         |
+| ------------- | ------- | -------- | --------------------------------------------- |
+| `title`       | string  | Yes      | Shown in listings and post header             |
+| `description` | string  | Yes      | Used for meta description and card previews   |
+| `date`        | date    | Yes      | Format: `YYYY-MM-DD`                          |
+| `draft`       | boolean | No       | Default `false`; set `true` to hide from site |
 
 ---
 
@@ -45,7 +45,7 @@ draft: false
    ```
 
 2. **Open the project folder as an Obsidian vault**  
-   Use *Open folder as vault* in Obsidian and select the Vault CMS directory.
+   Use _Open folder as vault_ in Obsidian and select the Vault CMS directory.
 
 3. **Configure the output path**  
    Point Vault CMS to this portfolio’s `src/content/blog/` (or a path that gets copied there during build).
@@ -58,14 +58,14 @@ draft: false
 
 ### Pros
 
-- Live preview in Obsidian  
-- Automatic frontmatter handling  
-- Image management  
+- Live preview in Obsidian
+- Automatic frontmatter handling
+- Image management
 - Designed for Astro
 
 ### Cons
 
-- Extra setup and tooling  
+- Extra setup and tooling
 - Separate vault or project structure
 
 ---
@@ -107,13 +107,13 @@ Link your Obsidian blog folder directly to the Astro content folder so changes a
 
 ### Pros
 
-- No extra tools  
+- No extra tools
 - Instant updates when you edit in Obsidian
 
 ### Cons
 
-- May conflict with Obsidian Sync or cloud storage  
-- Symlinks can be tricky on Windows  
+- May conflict with Obsidian Sync or cloud storage
+- Symlinks can be tricky on Windows
 - Need to keep frontmatter correct manually
 
 ---
@@ -133,10 +133,9 @@ Copy notes from your vault into the blog folder when you want to publish.
    ---
    title: "{{title}}"
    description: ""
-   date: {{date:YYYY-MM-DD}}
+   date: { { date:YYYY-MM-DD } }
    draft: false
    ---
-
    ## Content
    ```
 
@@ -154,12 +153,12 @@ Copy notes from your vault into the blog folder when you want to publish.
 
 ### Pros
 
-- Full control over what gets published  
+- Full control over what gets published
 - No sync or link complexity
 
 ### Cons
 
-- Manual step for each post  
+- Manual step for each post
 - Easy to forget to copy updates
 
 ---
@@ -226,16 +225,15 @@ Create an Obsidian template (e.g. `Templates/Blog Post`) with:
 ---
 title: "{{title}}"
 description: "{{description}}"
-date: {{date:YYYY-MM-DD}}
+date: { { date:YYYY-MM-DD } }
 draft: false
 ---
-
 # {{title}}
 
 Write your content here...
 ```
 
-Use the *Templater* or *Templates* plugin to insert it for new posts.
+Use the _Templater_ or _Templates_ plugin to insert it for new posts.
 
 ### Images
 
@@ -277,23 +275,23 @@ Obsidian uses `[[wikilinks]]` and `![[embed]]`. Astro’s default Markdown parse
 
 ## Troubleshooting
 
-| Issue | Possible fix |
-|-------|---------------|
-| Post not appearing | Check frontmatter (title, description, date) and file extension `.md` |
-| Wrong slug/URL | Astro derives slug from filename; use `my-post-name.md` for `/blog/my-post-name` |
-| Images not loading | Ensure paths are relative to the post or use `/` for `public/` assets |
-| Drafts showing | Set `draft: true` and filter drafts in your collection query |
-| Symlink not working | Use absolute path; on Windows, enable Developer Mode for symlinks |
+| Issue               | Possible fix                                                                     |
+| ------------------- | -------------------------------------------------------------------------------- |
+| Post not appearing  | Check frontmatter (title, description, date) and file extension `.md`            |
+| Wrong slug/URL      | Astro derives slug from filename; use `my-post-name.md` for `/blog/my-post-name` |
+| Images not loading  | Ensure paths are relative to the post or use `/` for `public/` assets            |
+| Drafts showing      | Set `draft: true` and filter drafts in your collection query                     |
+| Symlink not working | Use absolute path; on Windows, enable Developer Mode for symlinks                |
 
 ---
 
 ## Summary
 
-| Method | Best for |
-|--------|----------|
-| **Vault CMS** | Full Obsidian-as-CMS workflow |
+| Method            | Best for                           |
+| ----------------- | ---------------------------------- |
+| **Vault CMS**     | Full Obsidian-as-CMS workflow      |
 | **Symbolic link** | Simple, direct sync from one vault |
-| **Manual copy** | Occasional posts, full control |
-| **Sync script** | Automated copy without extra CMS |
+| **Manual copy**   | Occasional posts, full control     |
+| **Sync script**   | Automated copy without extra CMS   |
 
 Choose based on how often you publish and how much automation you want. For most users, **Vault CMS** or a **sync script** offers a good balance.

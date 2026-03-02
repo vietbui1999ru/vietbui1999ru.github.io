@@ -12,11 +12,11 @@
 
 ## Reference Template Analysis
 
-| Template | Pros | Cons | Verdict |
-|----------|------|------|---------|
-| **astro-shadcn-ui-template** | Minimal, shadcn v3, Astro 5, React 19, Tailwind 4 | No portfolio structure | **Base choice** |
-| **astro-erudite** | Blog-first, MDX, authors, tags, content collections | Uses radix-ui not shadcn; blog-focused | **Reference for blog** |
-| **Astro-Shadcn-portfolio** | Portfolio structure, data files | Low activity, 2 commits | **Reference for data layout** |
+| Template                     | Pros                                                | Cons                                   | Verdict                       |
+| ---------------------------- | --------------------------------------------------- | -------------------------------------- | ----------------------------- |
+| **astro-shadcn-ui-template** | Minimal, shadcn v3, Astro 5, React 19, Tailwind 4   | No portfolio structure                 | **Base choice**               |
+| **astro-erudite**            | Blog-first, MDX, authors, tags, content collections | Uses radix-ui not shadcn; blog-focused | **Reference for blog**        |
+| **Astro-Shadcn-portfolio**   | Portfolio structure, data files                     | Low activity, 2 commits                | **Reference for data layout** |
 
 **Decision:** Use **astro-shadcn-ui-template** as base. Add portfolio structure and migrate custom components. Use Astro Content Collections for blog; integrate Vault CMS for Obsidian.
 
@@ -34,19 +34,19 @@
 
 ## Components to Retain (Priority Order)
 
-| Priority | Component | Dependencies | Notes |
-|----------|-----------|--------------|-------|
-| P0 | NavBarDock | dockHeading, ThemeSwitch, lucide | Core nav; use client:load |
-| P0 | Singularity | react-shaders | WebGL shader; client:load |
-| P0 | RotatingText | framer-motion | Hero animation |
-| P0 | TypingText | gsap, ColorfulText | Hero animation |
-| P0 | SectionHeading | — | Simple, no deps |
-| P1 | AnimatedModal | framer-motion, useOnClickOutside | Modal with 3D effect |
-| P1 | CardsCarousel | framer-motion, useOnClickOutside | Gallery/Projects |
-| P1 | dockHeading | framer-motion | Dock magnify effect |
-| P2 | ColorfulText, GradientText | framer-motion | Used by TypingText/RotatingText |
-| P2 | HighLightText, SplittingText | — | If used |
-| P3 | AboutCard, AboutParagraph, AboutParagraphReveal | — | Migrate if used |
+| Priority | Component                                       | Dependencies                     | Notes                           |
+| -------- | ----------------------------------------------- | -------------------------------- | ------------------------------- |
+| P0       | NavBarDock                                      | dockHeading, ThemeSwitch, lucide | Core nav; use client:load       |
+| P0       | Singularity                                     | react-shaders                    | WebGL shader; client:load       |
+| P0       | RotatingText                                    | framer-motion                    | Hero animation                  |
+| P0       | TypingText                                      | gsap, ColorfulText               | Hero animation                  |
+| P0       | SectionHeading                                  | —                                | Simple, no deps                 |
+| P1       | AnimatedModal                                   | framer-motion, useOnClickOutside | Modal with 3D effect            |
+| P1       | CardsCarousel                                   | framer-motion, useOnClickOutside | Gallery/Projects                |
+| P1       | dockHeading                                     | framer-motion                    | Dock magnify effect             |
+| P2       | ColorfulText, GradientText                      | framer-motion                    | Used by TypingText/RotatingText |
+| P2       | HighLightText, SplittingText                    | —                                | If used                         |
+| P3       | AboutCard, AboutParagraph, AboutParagraphReveal | —                                | Migrate if used                 |
 
 ---
 

@@ -35,20 +35,20 @@ SOURCE:   /Users/vietquocbui/repos/VsCode/vietbui1999ru/Portfolio/vietbui1999ru.
 
 ### Execution Order
 
-| Task | Description |
-|------|-------------|
-| 1 | Branch exists; ensure `.worktrees/` in .gitignore; skip to Task 2 |
-| 2 | Scaffold Astro from astro-shadcn-ui-template; replace Next.js; `pnpm dev` |
-| 3–4 | Astro config (React, aliases); migrate `utils.ts`, `useOnClickOutside.ts` |
-| 5–9 | SectionHeading, ColorfulText, GradientText, RotatingText, TypingText, dockHeading |
-| 10–11 | NavBarDock (anchor links, no usePathname); Singularity shader |
-| 12–14 | AnimatedModal, CardsCarousel, ThemeSwitch, ThemeProvider |
-| 15–16 | BaseLayout.astro, global.css, index.astro; Home section |
-| 17 | Migrate data files to `src/data/` |
-| 18–20 | About, Projects, Experience, Education, Achievements, Contact, Gallery |
-| 21–22 | Blog Content Collections, blog index/[slug], Blog section |
-| 23 | Full build, preview, smoke test |
-| 24 | (Optional) `docs/OBSIDIAN_INTEGRATION.md` |
+| Task  | Description                                                                       |
+| ----- | --------------------------------------------------------------------------------- |
+| 1     | Branch exists; ensure `.worktrees/` in .gitignore; skip to Task 2                 |
+| 2     | Scaffold Astro from astro-shadcn-ui-template; replace Next.js; `pnpm dev`         |
+| 3–4   | Astro config (React, aliases); migrate `utils.ts`, `useOnClickOutside.ts`         |
+| 5–9   | SectionHeading, ColorfulText, GradientText, RotatingText, TypingText, dockHeading |
+| 10–11 | NavBarDock (anchor links, no usePathname); Singularity shader                     |
+| 12–14 | AnimatedModal, CardsCarousel, ThemeSwitch, ThemeProvider                          |
+| 15–16 | BaseLayout.astro, global.css, index.astro; Home section                           |
+| 17    | Migrate data files to `src/data/`                                                 |
+| 18–20 | About, Projects, Experience, Education, Achievements, Contact, Gallery            |
+| 21–22 | Blog Content Collections, blog index/[slug], Blog section                         |
+| 23    | Full build, preview, smoke test                                                   |
+| 24    | (Optional) `docs/OBSIDIAN_INTEGRATION.md`                                         |
 
 ### Astro Adaptations
 

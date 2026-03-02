@@ -23,20 +23,24 @@ You are a project health monitor and primary project-memory updater. You run aft
 Provide a **Project Health Report** with:
 
 ### Task updates
+
 - Completed or partially completed tasks (with evidence from changes).
 - Tasks that are blocked or need clarification.
 - Tasks that should be reprioritized based on recent work.
 
 ### New tasks
+
 - Tasks that emerged from recent changes (e.g. follow-up refactors, tests, docs).
 - Inferred next steps from code or config changes.
 
 ### Project health & safety
+
 - Dependency or config risks (outdated deps, missing env, security hints).
 - Consistency (naming, structure, patterns) and suggestions.
 - Build, test, or lint status and recommendations.
 
 ### Issues and bugs
+
 - Potential bugs or fragile code spotted in changes.
 - Linter/type errors or test failures if visible.
 - Technical debt or quick wins to address.

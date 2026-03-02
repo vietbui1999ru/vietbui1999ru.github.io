@@ -13,6 +13,7 @@
 ## Task 1: Create Git Branch and Worktree
 
 **Files:**
+
 - Modify: `.gitignore` (add `.worktrees/` if not ignored)
 - Create: worktree at `.worktrees/astro-migration` or `feature/astro-migration` branch
 
@@ -45,11 +46,13 @@ git status
 ## Task 2: Scaffold Astro Project from astro-shadcn-ui-template
 
 **Files:**
+
 - Create: New Astro project structure (or clone template into worktree)
 
 **Step 1: Clone template or create from scratch**
 
 Option A - Use degit to copy template:
+
 ```bash
 cd .worktrees/astro-migration
 npx degit area44/astro-shadcn-ui-template temp-astro
@@ -58,6 +61,7 @@ npx degit area44/astro-shadcn-ui-template temp-astro
 ```
 
 Option B - Manual scaffold (recommended for controlled migration):
+
 - Create `astro.config.mjs`, `package.json` with Astro + React + shadcn deps
 - Copy `components.json`, Tailwind config from template
 - Set up `src/` structure
@@ -82,25 +86,27 @@ pnpm dev
 ## Task 3: Configure Astro for React and Path Aliases
 
 **Files:**
+
 - Modify: `astro.config.mjs`
 - Modify: `tsconfig.json`
 
 **Step 1: Add React integration**
 
 In `astro.config.mjs`:
+
 ```js
-import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
-import tailwind from '@tailwindcss/vite';
+import { defineConfig } from "astro/config";
+import react from "@astrojs/react";
+import tailwind from "@tailwindcss/vite";
 
 export default defineConfig({
   integrations: [react()],
   vite: {
     plugins: [tailwind()],
     resolve: {
-      alias: { '@': '/src' }
-    }
-  }
+      alias: { "@": "/src" },
+    },
+  },
 });
 ```
 
@@ -130,6 +136,7 @@ pnpm build
 ## Task 4: Migrate Core UI Utilities and Hooks
 
 **Files:**
+
 - Create: `src/lib/utils.ts`
 - Create: `src/hooks/useOnClickOutside.ts`
 
@@ -152,6 +159,7 @@ pnpm build
 ## Task 5: Migrate SectionHeading Component
 
 **Files:**
+
 - Create: `src/components/ui/SectionHeading.tsx`
 
 **Step 1: Copy component**
@@ -167,6 +175,7 @@ Import in a test Astro page; build.
 ## Task 6: Migrate ColorfulText and GradientText
 
 **Files:**
+
 - Create: `src/components/ui/ColorfulText.tsx`
 - Create: `src/components/ui/GradientText.tsx`
 
@@ -187,6 +196,7 @@ pnpm add framer-motion
 ## Task 7: Migrate RotatingText Component
 
 **Files:**
+
 - Create: `src/components/ui/RotatingText.tsx`
 
 **Step 1: Copy component**
@@ -200,6 +210,7 @@ Uses framer-motion AnimatePresence, motion. Add `"use client"`.
 ## Task 8: Migrate TypingText Component
 
 **Files:**
+
 - Create: `src/components/ui/TypingText.tsx`
 
 **Step 1: Copy component**
@@ -219,6 +230,7 @@ pnpm add gsap
 ## Task 9: Migrate dockHeading (Dock Components)
 
 **Files:**
+
 - Create: `src/components/ui/dockHeading.tsx`
 
 **Step 1: Copy Dock, DockItem, DockIcon, DockLabel**
@@ -232,6 +244,7 @@ Uses framer-motion (useMotionValue, useSpring, useTransform). Add `"use client"`
 ## Task 10: Migrate NavBarDock
 
 **Files:**
+
 - Create: `src/components/layout/NavBarDock.tsx`
 
 **Step 1: Copy NavBarDock**
@@ -251,6 +264,7 @@ Replace `usePathname` from Next.js with Astro's `Astro.url.pathname` or a client
 ## Task 11: Migrate Singularity Shader
 
 **Files:**
+
 - Create: `src/components/shaders/Singularity.tsx`
 
 **Step 1: Copy Singularity component**
@@ -270,6 +284,7 @@ pnpm add react-shaders
 ## Task 12: Migrate AnimatedModal
 
 **Files:**
+
 - Create: `src/components/ui/AnimatedModal.tsx`
 
 **Step 1: Copy Modal, ModalProvider, ModalTrigger, ModalBody, ModalContent, ModalFooter**
@@ -283,6 +298,7 @@ Uses framer-motion, useOnClickOutside. Add `"use client"`.
 ## Task 13: Migrate CardsCarousel
 
 **Files:**
+
 - Create: `src/components/ui/CardsCarousel.tsx`
 
 **Step 1: Copy Carousel, Card, BlurImage**
@@ -296,6 +312,7 @@ Uses framer-motion, useOnClickOutside. Add `"use client"`.
 ## Task 14: Migrate ThemeSwitch and ThemeProvider
 
 **Files:**
+
 - Create: `src/components/ui/ThemeSwitch.tsx`
 - Create: `src/components/ThemeProvider.tsx`
 
@@ -312,6 +329,7 @@ Astro often uses `astro-theme-provider` or custom. Check current ThemeProvider i
 ## Task 15: Create Base Layout and Global Styles
 
 **Files:**
+
 - Create: `src/layouts/BaseLayout.astro`
 - Create: `src/styles/global.css`
 - Create: `src/pages/index.astro`
@@ -336,6 +354,7 @@ Single page with sections: Home, About, Projects, Experience, Education, Blog, G
 ## Task 16: Migrate Home Section with Singularity and TypingText
 
 **Files:**
+
 - Create: `src/components/sections/Home.astro` (or Home.tsx as island)
 - Create: `src/data/homeData.ts`
 
@@ -352,6 +371,7 @@ Use Singularity (client:load), TypingText (client:load), RotatingText (client:lo
 ## Task 17: Migrate Data Files
 
 **Files:**
+
 - Create: `src/data/projectsData.ts`
 - Create: `src/data/experienceData.ts`
 - Create: `src/data/educationData.ts`
@@ -369,6 +389,7 @@ Adjust import paths if needed.
 ## Task 18: Migrate About Section
 
 **Files:**
+
 - Create: `src/components/sections/About.tsx` or `.astro`
 - Copy: AboutCard, AboutParagraph, AboutParagraphReveal if used
 
@@ -381,6 +402,7 @@ Use SectionHeading, aboutData.
 ## Task 19: Migrate Projects Section
 
 **Files:**
+
 - Create: `src/components/sections/Projects.tsx` or `.astro`
 
 **Step 1: Migrate Projects**
@@ -392,6 +414,7 @@ Use SectionHeading, projectsData. If using CardsCarousel for projects, integrate
 ## Task 20: Migrate Experience, Education, Achievements, Contact, Gallery
 
 **Files:**
+
 - Create section components for each
 
 **Step 1: Migrate each section**
@@ -403,6 +426,7 @@ Copy structure from current Experience.tsx, Education.tsx, Achievements.tsx, Con
 ## Task 21: Set Up Blog with Content Collections
 
 **Files:**
+
 - Create: `src/content/config.ts`
 - Create: `src/content/blog/` schema
 - Create: `src/pages/blog/index.astro`
@@ -412,10 +436,10 @@ Copy structure from current Experience.tsx, Education.tsx, Achievements.tsx, Con
 
 ```ts
 // src/content/config.ts
-import { defineCollection } from 'astro:content';
+import { defineCollection } from "astro:content";
 
 const blog = defineCollection({
-  type: 'content',
+  type: "content",
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -438,6 +462,7 @@ List posts; link to individual posts.
 ## Task 22: Add Blog Section to Index Page
 
 **Files:**
+
 - Modify: `src/components/sections/Blog.tsx` or create
 
 **Step 1: Create Blog section**
@@ -473,6 +498,7 @@ pnpm preview
 ## Task 24: Document Obsidian/Vault CMS Next Steps
 
 **Files:**
+
 - Create: `docs/OBSIDIAN_INTEGRATION.md`
 
 **Step 1: Write short guide**
