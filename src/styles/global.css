@@ -161,8 +161,18 @@
   }
 
   a:active,
-  button:active {
+  button:active,
+  [role="button"]:active {
     @apply opacity-60 md:opacity-100;
+  }
+
+  @media (pointer: coarse) {
+    a:active,
+    button:active,
+    [role="button"]:active {
+      @apply scale-[0.97] opacity-80;
+      transition: transform 0.1s ease, opacity 0.1s ease;
+    }
   }
 
   /* Hide default cursor when custom animated cursor is active */
