@@ -64,14 +64,10 @@ export function VectorFieldBackground({
   const cursorEnabled = cursorAttraction > 0;
 
   const [isMobile, setIsMobile] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     setIsMobile(
       window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768
-    );
-    setReducedMotion(
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
     );
   }, []);
 
@@ -245,10 +241,6 @@ export function VectorFieldBackground({
     draw();
     return () => cancelAnimationFrame(rafRef.current);
   }, [draw]);
-
-  if (reducedMotion) {
-    return null;
-  }
 
   return (
     <div className={cn("pointer-events-none fixed inset-0 z-0 contain-[paint]", className)}>
