@@ -62,7 +62,8 @@ const Home = () => {
             text={[INTRO_LINE1]}
             loop={false}
             as="span"
-            className="text-7xl font-medium text-center text-foreground drop-shadow-md md:text-7xl"
+            className="font-medium text-center text-foreground drop-shadow-md"
+            style={{ fontSize: "clamp(2.25rem, 8vw, 4.5rem)" }}
             typingSpeed={INTRO_TYPING_SPEED}
             pauseDuration={0}
             initialDelay={INTRO_INITIAL_DELAY}
