@@ -9,7 +9,10 @@ type TShapedEngineerTooltipProps = {
   className?: string;
 };
 
-export function TShapedEngineerTooltip({ children, className }: TShapedEngineerTooltipProps) {
+export function TShapedEngineerTooltip({
+  children,
+  className,
+}: TShapedEngineerTooltipProps) {
   const ref = React.useRef<HTMLSpanElement>(null);
   const [open, setOpen] = React.useState(false);
 
@@ -59,9 +62,12 @@ export function TShapedEngineerTooltip({ children, className }: TShapedEngineerT
                 decoding="async"
               />
               <div className="space-y-1">
-                <p className="text-sm font-semibold leading-tight">T-shaped engineer</p>
+                <p className="text-sm font-semibold leading-tight">
+                  T-shaped engineer
+                </p>
                 <p className="text-xs text-muted-foreground leading-snug max-w-[22rem] mx-auto">
-                  Broad curiosity across disciplines, with deep expertise in one core craft.
+                  Broad curiosity across disciplines, with deep expertise in one
+                  core craft.
                 </p>
               </div>
             </div>
@@ -71,4 +77,3 @@ export function TShapedEngineerTooltip({ children, className }: TShapedEngineerT
     </span>
   );
 }
-

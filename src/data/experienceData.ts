@@ -25,4 +25,5 @@ export type ExperienceCompany = {
   jobs: ExperienceJob[];
 };
 
-export const EXPERIENCE_ITEMS: ExperienceCompany[] = experienceJson.items as ExperienceCompany[];
+export const EXPERIENCE_ITEMS: ExperienceCompany[] =
+  experienceJson.items as ExperienceCompany[];

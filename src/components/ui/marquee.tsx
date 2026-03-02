@@ -18,7 +18,9 @@ export function Marquee({
   reverse = false,
   duration = 15,
 }: MarqueeProps) {
-  const animationName = reverse ? "marquee-horizontal-right" : "marquee-horizontal-left";
+  const animationName = reverse
+    ? "marquee-horizontal-right"
+    : "marquee-horizontal-left";
 
   return (
     <div className={cn("relative flex overflow-hidden", className)}>
@@ -50,4 +52,3 @@ export function Marquee({
     </div>
   );
 }
-

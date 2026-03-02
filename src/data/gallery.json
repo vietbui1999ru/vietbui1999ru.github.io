@@ -20,12 +20,36 @@
       "description": "Parse from config or CMS.",
       "image": "https://picsum.photos/seed/gallery3/400/400"
     },
-    { "id": "4", "title": "Placeholder 4", "image": "https://picsum.photos/seed/gallery4/400/400" },
-    { "id": "5", "title": "Placeholder 5", "image": "https://picsum.photos/seed/gallery5/400/400" },
-    { "id": "6", "title": "Placeholder 6", "image": "https://picsum.photos/seed/gallery6/400/400" },
-    { "id": "7", "title": "Placeholder 7", "image": "https://picsum.photos/seed/gallery7/400/400" },
-    { "id": "8", "title": "Placeholder 8", "image": "https://picsum.photos/seed/gallery8/400/400" },
-    { "id": "9", "title": "Placeholder 9", "image": "https://picsum.photos/seed/gallery9/400/400" },
+    {
+      "id": "4",
+      "title": "Placeholder 4",
+      "image": "https://picsum.photos/seed/gallery4/400/400"
+    },
+    {
+      "id": "5",
+      "title": "Placeholder 5",
+      "image": "https://picsum.photos/seed/gallery5/400/400"
+    },
+    {
+      "id": "6",
+      "title": "Placeholder 6",
+      "image": "https://picsum.photos/seed/gallery6/400/400"
+    },
+    {
+      "id": "7",
+      "title": "Placeholder 7",
+      "image": "https://picsum.photos/seed/gallery7/400/400"
+    },
+    {
+      "id": "8",
+      "title": "Placeholder 8",
+      "image": "https://picsum.photos/seed/gallery8/400/400"
+    },
+    {
+      "id": "9",
+      "title": "Placeholder 9",
+      "image": "https://picsum.photos/seed/gallery9/400/400"
+    },
     {
       "id": "10",
       "title": "Placeholder 10",
@@ -47,6 +71,5 @@
       "description": "Ranked 14th in Hacktoberfest 2025 Goose/Block's repo.",
       "image": "/images/achievement.jpg"
     }
-  
   ]
 }

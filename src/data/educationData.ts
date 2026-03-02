@@ -24,7 +24,8 @@ I Published a paper in Reinforcement Learning and reducing model bias even with 
 Extracurricular Activities: GDSC, ACM.`,
   },
   {
-    title: "Bachelor of Science in Computer Science & Applied Mathematics (Dual Degree)",
+    title:
+      "Bachelor of Science in Computer Science & Applied Mathematics (Dual Degree)",
     school: { name: "Augustana College", url: "https://augustana.edu" },
     date: "2019 - 2023",
     content: `I actively participated in Applied Mathematics Conferences.

@@ -1,7 +1,11 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export function MobileNav({ className }: { className?: string }) {
   const [open, setOpen] = React.useState(false);
@@ -33,7 +37,9 @@ export function MobileNav({ className }: { className?: string }) {
             </div>
             <span className="sr-only">Toggle Menu</span>
           </div>
-          <span className="flex h-8 items-center text-lg leading-none font-medium">Menu</span>
+          <span className="flex h-8 items-center text-lg leading-none font-medium">
+            Menu
+          </span>
         </Button>
       </PopoverTrigger>
 
@@ -46,10 +52,16 @@ export function MobileNav({ className }: { className?: string }) {
       >
         <div className="flex flex-col gap-12 overflow-auto px-6 py-6">
           <div className="flex flex-col gap-4">
-            <div className="text-muted-foreground text-sm font-medium">Menu</div>
+            <div className="text-muted-foreground text-sm font-medium">
+              Menu
+            </div>
 
             <div className="flex flex-col gap-3">
-              <a href="#" className="text-2xl font-medium" onClick={() => setOpen(false)}>
+              <a
+                href="#"
+                className="text-2xl font-medium"
+                onClick={() => setOpen(false)}
+              >
                 Home
               </a>
 

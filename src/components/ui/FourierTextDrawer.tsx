@@ -23,7 +23,8 @@ function getCssVarColor(name: string): string {
 function resolveThemeStroke(strokeColor?: string): string {
   if (!strokeColor) return getCssVarColor("--foreground");
   const v = strokeColor.trim();
-  if (v.startsWith("#") || v.startsWith("rgb") || v.startsWith("hsl(")) return v;
+  if (v.startsWith("#") || v.startsWith("rgb") || v.startsWith("hsl("))
+    return v;
   if (v.startsWith("--")) return getCssVarColor(v);
   if (v.startsWith("stroke-")) {
     const token = v.slice("stroke-".length) || "foreground";
@@ -100,8 +101,10 @@ export function textToDrawingPoints(
     return fallback.map((p) => ({ x: p.re, y: p.im }));
   }
 
-  const midX = (Math.min(...pts.map((p) => p.x)) + Math.max(...pts.map((p) => p.x))) / 2;
-  const midY = (Math.min(...pts.map((p) => p.y)) + Math.max(...pts.map((p) => p.y))) / 2;
+  const midX =
+    (Math.min(...pts.map((p) => p.x)) + Math.max(...pts.map((p) => p.x))) / 2;
+  const midY =
+    (Math.min(...pts.map((p) => p.y)) + Math.max(...pts.map((p) => p.y))) / 2;
   const sorted = [...pts]
     .map((p) => {
       const dx = p.x - midX;
@@ -179,7 +182,8 @@ export function FourierTextDrawer({
   }, [text, fontSize, samples]);
 
   const { fx, fy } = useMemo(() => {
-    if (drawing.length < 2) return { fx: [] as FourierCoeff[], fy: [] as FourierCoeff[] };
+    if (drawing.length < 2)
+      return { fx: [] as FourierCoeff[], fy: [] as FourierCoeff[] };
     const scale = Math.min(width, height) * 0.38;
     const cx = width / 2;
     const cy = height / 2;
@@ -209,7 +213,10 @@ export function FourierTextDrawer({
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
     if (prefersReduced) return;
 
-    const dpr = Math.min(2, typeof window !== "undefined" ? window.devicePixelRatio : 1);
+    const dpr = Math.min(
+      2,
+      typeof window !== "undefined" ? window.devicePixelRatio : 1,
+    );
     canvas.width = Math.floor(width * dpr);
     canvas.height = Math.floor(height * dpr);
     canvas.style.width = `${width}px`;
@@ -294,7 +301,8 @@ export function FourierTextDrawer({
       if (trail.length >= 2) {
         ctx.beginPath();
         ctx.moveTo(trail[0].x, trail[0].y);
-        for (let i = 1; i < trail.length; i++) ctx.lineTo(trail[i].x, trail[i].y);
+        for (let i = 1; i < trail.length; i++)
+          ctx.lineTo(trail[i].x, trail[i].y);
         ctx.strokeStyle = stroke;
         ctx.lineWidth = 2.25;
         ctx.lineCap = "round";
@@ -305,10 +313,23 @@ export function FourierTextDrawer({
 
     rafId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(rafId);
-  }, [fx, fy, width, height, speed, trailLength, showCircles, transparent, stroke]);
+  }, [
+    fx,
+    fy,
+    width,
+    height,
+    speed,
+    trailLength,
+    showCircles,
+    transparent,
+    stroke,
+  ]);
 
   return (
-    <div className={cn("relative overflow-hidden", className)} style={{ width, height }}>
+    <div
+      className={cn("relative overflow-hidden", className)}
+      style={{ width, height }}
+    >
       <canvas
         ref={canvasRef}
         className="block h-full w-full"

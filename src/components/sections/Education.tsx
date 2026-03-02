@@ -2,7 +2,10 @@
 
 import { GraduationCap } from "lucide-react";
 import { AppleHelloEducationEffect } from "@/components/ui/apple-hello-effect";
-import { TimelineLayout, type TimelineItem } from "@/components/ui/TimelineLayout";
+import {
+  TimelineLayout,
+  type TimelineItem,
+} from "@/components/ui/TimelineLayout";
 import { EDUCATION_ITEMS } from "@/data/educationData";
 
 const EducationTimeline = () => {
@@ -13,9 +16,13 @@ const EducationTimeline = () => {
     subtitle: item.school.name,
     description: item.content + (item.GPA ? `\nGPA: ${item.GPA}` : ""),
     icon: <GraduationCap className="h-3 w-3" />,
-    status: item.date.toLowerCase().includes("present") ? "in-progress" : "completed",
+    status: item.date.toLowerCase().includes("present")
+      ? "in-progress"
+      : "completed",
     ctaHref:
-      item.featuredLink?.enable && item.featuredLink.url ? item.featuredLink.url : item.school.url,
+      item.featuredLink?.enable && item.featuredLink.url
+        ? item.featuredLink.url
+        : item.school.url,
     ctaLabel: item.featuredLink?.name ?? "View program",
   }));
 

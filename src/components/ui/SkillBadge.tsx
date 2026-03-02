@@ -68,7 +68,13 @@ export interface SkillBadgeProps {
   size?: "sm" | "md";
 }
 
-export function SkillBadge({ skill, url, tooltip, className, size = "sm" }: SkillBadgeProps) {
+export function SkillBadge({
+  skill,
+  url,
+  tooltip,
+  className,
+  size = "sm",
+}: SkillBadgeProps) {
   const slug = getSkillIconSlug(skill);
   const IconComponent = slug ? SLUG_TO_ICON[slug] : null;
 
@@ -82,7 +88,9 @@ export function SkillBadge({ skill, url, tooltip, className, size = "sm" }: Skil
         className,
       )}
     >
-      {IconComponent && <IconComponent className={size === "sm" ? "size-3" : "size-4"} />}
+      {IconComponent && (
+        <IconComponent className={size === "sm" ? "size-3" : "size-4"} />
+      )}
       {skill}
     </Badge>
   );
@@ -91,7 +99,13 @@ export function SkillBadge({ skill, url, tooltip, className, size = "sm" }: Skil
 
   if (url) {
     return (
-      <a href={url} target="_blank" rel="noopener noreferrer" title={label} className="inline-flex">
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={label}
+        className="inline-flex"
+      >
         {content}
       </a>
     );

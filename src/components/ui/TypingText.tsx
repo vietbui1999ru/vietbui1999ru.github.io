@@ -10,7 +10,9 @@ import {
   useRef,
   useState,
 } from "react";
-import ColourfulText, { type ColourfulTextProps } from "@/components/ui/ColorfulText";
+import ColourfulText, {
+  type ColourfulTextProps,
+} from "@/components/ui/ColorfulText";
 
 interface TypingTextProps {
   className?: string;
@@ -82,7 +84,10 @@ const TypingText = ({
   const cursorRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLElement>(null);
 
-  const textArray = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
+  const textArray = useMemo(
+    () => (Array.isArray(text) ? text : [text]),
+    [text],
+  );
 
   const getRandomSpeed = useCallback(() => {
     if (!variableSpeed) {
@@ -140,7 +145,9 @@ const TypingText = ({
     let timeout: NodeJS.Timeout;
 
     const currentText = textArray[currentTextIndex];
-    const processedText = reverseMode ? currentText.split("").reverse().join("") : currentText;
+    const processedText = reverseMode
+      ? currentText.split("").reverse().join("")
+      : currentText;
 
     const executeTypingAnimation = () => {
       if (isDeleting) {
@@ -203,7 +210,8 @@ const TypingText = ({
   ]);
 
   const shouldHideCursor =
-    hideCursorWhileTyping && (currentCharIndex < textArray[currentTextIndex].length || isDeleting);
+    hideCursorWhileTyping &&
+    (currentCharIndex < textArray[currentTextIndex].length || isDeleting);
 
   const textContent = useMemo(() => {
     const baseColor = getCurrentTextColor();
@@ -212,7 +220,12 @@ const TypingText = ({
 
     if (highlightWords.length === 0) {
       if (DefaultSegmentComponent) {
-        return <DefaultSegmentComponent text={displayedText} {...defaultSegmentProps} />;
+        return (
+          <DefaultSegmentComponent
+            text={displayedText}
+            {...defaultSegmentProps}
+          />
+        );
       }
       return (
         <span className="inline" style={{ color: baseColor }}>
@@ -232,7 +245,11 @@ const TypingText = ({
                 {...highlightComponentProps}
               />
             ) : (
-              <ColourfulText key={`${i}-${segment}`} text={segment} {...highlightProps} />
+              <ColourfulText
+                key={`${i}-${segment}`}
+                text={segment}
+                {...highlightProps}
+              />
             )
           ) : DefaultSegmentComponent ? (
             <DefaultSegmentComponent

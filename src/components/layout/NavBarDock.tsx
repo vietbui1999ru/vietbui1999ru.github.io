@@ -1,6 +1,11 @@
 "use client";
 
-import { Dock, DockIcon, DockItem, DockLabel } from "@/components/ui/dockHeading";
+import {
+  Dock,
+  DockIcon,
+  DockItem,
+  DockLabel,
+} from "@/components/ui/dockHeading";
 import { cn } from "@/lib/utils";
 import {
   User,
@@ -19,7 +24,8 @@ const NavBarDock = () => {
   const [activeHash, setActiveHash] = useState("#home");
 
   useEffect(() => {
-    const handleHashChange = () => setActiveHash(window.location.hash || "#home");
+    const handleHashChange = () =>
+      setActiveHash(window.location.hash || "#home");
     const handleScroll = () => {
       const sections = [
         "home",
@@ -52,18 +58,46 @@ const NavBarDock = () => {
   }, []);
 
   const data = [
-    { title: "Home", icon: <HomeIcon className="h-full w-full" />, href: "#home" },
-    { title: "About Me", icon: <User className="h-full w-full" />, href: "#about" },
-    { title: "Projects", icon: <ServerCog className="h-full w-full" />, href: "#projects" },
+    {
+      title: "Home",
+      icon: <HomeIcon className="h-full w-full" />,
+      href: "#home",
+    },
+    {
+      title: "About Me",
+      icon: <User className="h-full w-full" />,
+      href: "#about",
+    },
+    {
+      title: "Projects",
+      icon: <ServerCog className="h-full w-full" />,
+      href: "#projects",
+    },
     {
       title: "Professional Experience",
       icon: <BriefcaseBusiness className="h-full w-full" />,
       href: "#experience",
     },
-    { title: "Education", icon: <GraduationCap className="h-full w-full" />, href: "#education" },
-    { title: "Blog", icon: <NotebookPen className="h-full w-full" />, href: "#blog" },
-    { title: "Gallery", icon: <GalleryHorizontal className="h-full w-full" />, href: "#gallery" },
-    { title: "Contact", icon: <UserPen className="h-full w-full" />, href: "#contact" },
+    {
+      title: "Education",
+      icon: <GraduationCap className="h-full w-full" />,
+      href: "#education",
+    },
+    {
+      title: "Blog",
+      icon: <NotebookPen className="h-full w-full" />,
+      href: "#blog",
+    },
+    {
+      title: "Gallery",
+      icon: <GalleryHorizontal className="h-full w-full" />,
+      href: "#gallery",
+    },
+    {
+      title: "Contact",
+      icon: <UserPen className="h-full w-full" />,
+      href: "#contact",
+    },
   ];
 
   return (

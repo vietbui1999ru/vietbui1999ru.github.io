@@ -2,7 +2,14 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
-import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
@@ -16,7 +23,11 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
 
-  return <ModalContext.Provider value={{ open, setOpen }}>{children}</ModalContext.Provider>;
+  return (
+    <ModalContext.Provider value={{ open, setOpen }}>
+      {children}
+    </ModalContext.Provider>
+  );
 };
 
 export const useModal = () => {
@@ -53,7 +64,13 @@ export const ModalTrigger = ({
   );
 };
 
-export const ModalBody = ({ children, className }: { children: ReactNode; className?: string }) => {
+export const ModalBody = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
   const { open } = useModal();
 
   useEffect(() => {
@@ -132,7 +149,11 @@ export const ModalContent = ({
   children: ReactNode;
   className?: string;
 }) => {
-  return <div className={cn("flex flex-col flex-1 p-8 md:p-10", className)}>{children}</div>;
+  return (
+    <div className={cn("flex flex-col flex-1 p-8 md:p-10", className)}>
+      {children}
+    </div>
+  );
 };
 
 export const ModalFooter = ({
@@ -143,7 +164,12 @@ export const ModalFooter = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("flex justify-end p-4 bg-gray-100 dark:bg-neutral-900", className)}>
+    <div
+      className={cn(
+        "flex justify-end p-4 bg-gray-100 dark:bg-neutral-900",
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -171,7 +197,11 @@ const Overlay = ({ className }: { className?: string }) => {
 const CloseIcon = () => {
   const { setOpen } = useModal();
   return (
-    <button type="button" className="absolute top-4 right-4 group" onClick={() => setOpen(false)}>
+    <button
+      type="button"
+      className="absolute top-4 right-4 group"
+      onClick={() => setOpen(false)}
+    >
       <svg
         aria-label="Close"
         className="text-black dark:text-white h-4 w-4 group-hover:scale-125 group-hover:rotate-3 transition duration-200"

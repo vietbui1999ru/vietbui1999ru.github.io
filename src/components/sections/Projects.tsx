@@ -19,7 +19,9 @@ function projectToCarouselCard(project: (typeof PROJECTS_ITEMS)[number]): Card {
     category: project.badges?.[0] ?? "Project",
     content: (
       <>
-        <p className="text-muted-foreground text-sm leading-relaxed">{project.content}</p>
+        <p className="text-muted-foreground text-sm leading-relaxed">
+          {project.content}
+        </p>
         {project.badges && project.badges.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {project.badges.map((badge) => (
@@ -58,12 +60,14 @@ const Projects = () => {
   return (
     <section id="projects" className="relative min-h-screen w-full">
       <div className="section-content">
-        <header className="mb-12 space-y-4 text-center" >
+        <header className="mb-12 space-y-4 text-center">
           <AppleHelloMyWorkEffect
             className="mx-auto"
             svgClassName="mx-auto h-24 w-auto text-foreground"
           />
-          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">{PROJECTS_TITLE}</p>
+          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
+            {PROJECTS_TITLE}
+          </p>
         </header>
 
         <Carousel

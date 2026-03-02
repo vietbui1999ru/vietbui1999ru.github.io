@@ -24,7 +24,9 @@ const About = () => {
             className="mx-auto"
             svgClassName="mx-auto h-24 w-auto text-foreground"
           />
-          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">{ABOUT_TAGLINE}</p>
+          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
+            {ABOUT_TAGLINE}
+          </p>
         </header>
 
         <div className="space-y-10 mb-12">

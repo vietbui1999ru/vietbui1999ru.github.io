@@ -100,7 +100,10 @@ function Dock({
     >
       <motion.div
         aria-label="Application dock"
-        className={cn("mx-auto flex w-fit gap-5 rounded-2xl bg-background px-5", className)}
+        className={cn(
+          "mx-auto flex w-fit gap-5 rounded-2xl bg-background px-5",
+          className,
+        )}
         onMouseLeave={() => {
           isHovered.set(0);
           mouseX.set(Number.POSITIVE_INFINITY);
@@ -112,7 +115,9 @@ function Dock({
         role="toolbar"
         style={{ height: panelHeight }}
       >
-        <DockProvider value={{ mouseX, spring, distance, magnification }}>{children}</DockProvider>
+        <DockProvider value={{ mouseX, spring, distance, magnification }}>
+          {children}
+        </DockProvider>
       </motion.div>
     </motion.div>
   );
@@ -141,7 +146,10 @@ function DockItem({ children, className }: DockItemProps) {
   return (
     <motion.div
       aria-haspopup="true"
-      className={cn("relative inline-flex items-center justify-center", className)}
+      className={cn(
+        "relative inline-flex items-center justify-center",
+        className,
+      )}
       onBlur={() => isHovered.set(0)}
       onFocus={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
