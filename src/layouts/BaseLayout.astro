@@ -2,6 +2,7 @@
 import "@/styles/global.css";
 import { cn } from "@/lib/utils";
 import NavBarDock from "@/components/layout/NavBarDock";
+import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import AnimatedCursor from "@/components/ui/AnimatedCursor";
 import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
 ---
@@ -10,7 +11,7 @@ import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Viet Bui | Portfolio</title>
   </head>
   <body
@@ -21,7 +22,8 @@ import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
     <VectorFieldBackground client:load />
     <AnimatedCursor client:load />
     <NavBarDock client:load />
-    <main class="relative z-10 flex flex-1 flex-col pt-24">
+    <MobileBottomNav client:load />
+    <main class="relative z-10 flex flex-1 flex-col pt-4 pb-20 md:pt-24 md:pb-0">
       <slot />
     </main>
   </body>
