@@ -102,7 +102,9 @@ export const ModalBody = ({ children, className }: { children: ReactNode; classN
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={0.2}
             onDragEnd={(_e, info) => {
-              if (info.offset.y > 100 || info.velocity.y > 500) {
+              const DISMISS_OFFSET = 100;
+              const DISMISS_VELOCITY = 500;
+              if (info.offset.y > DISMISS_OFFSET || info.velocity.y > DISMISS_VELOCITY) {
                 setOpen(false);
               }
             }}
