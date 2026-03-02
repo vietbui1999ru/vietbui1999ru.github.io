@@ -63,6 +63,21 @@ export function VectorFieldBackground({
   const effectiveFadeEndRef = useRef(800);
   const cursorEnabled = cursorAttraction > 0;
 
+  const [isMobile, setIsMobile] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(
+      window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768
+    );
+    setReducedMotion(
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }, []);
+
+  const effectiveGrid = isMobile ? Math.min(grid, 20) : grid;
+  const effectiveCursorEnabled = cursorEnabled && !isMobile;
+
   useEffect(() => {
     const h = typeof window !== "undefined" ? window.innerHeight * 0.85 : 800;
     setFadeEnd(h);
@@ -83,7 +98,7 @@ export function VectorFieldBackground({
   }, []);
 
   useEffect(() => {
-    if (!cursorEnabled) return;
+    if (!effectiveCursorEnabled) return;
     const onMouseMove = (e: MouseEvent) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -97,7 +112,7 @@ export function VectorFieldBackground({
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
     };
-  }, [cursorEnabled]);
+  }, [effectiveCursorEnabled]);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -153,7 +168,7 @@ export function VectorFieldBackground({
 
     let cursorWX: number | null = null;
     let cursorWY: number | null = null;
-    const hasActiveCursor = cursorEnabled && mouseRef.current;
+    const hasActiveCursor = effectiveCursorEnabled && mouseRef.current;
     if (hasActiveCursor && mouseRef.current) {
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
@@ -182,13 +197,13 @@ export function VectorFieldBackground({
       { length: HUE_BUCKETS },
       () => [],
     );
-    const gridM1 = grid - 1;
+    const gridM1 = effectiveGrid - 1;
     const stepX = width / gridM1;
     const stepY = height / gridM1;
 
-    for (let i = 0; i < grid; i++) {
+    for (let i = 0; i < effectiveGrid; i++) {
       const sx = i * stepX;
-      for (let j = 0; j < grid; j++) {
+      for (let j = 0; j < effectiveGrid; j++) {
         const sy = j * stepY;
         const x = toWorldX(sx);
         const y = toWorldY(sy);
@@ -224,12 +239,16 @@ export function VectorFieldBackground({
 
     ctx.restore();
     rafRef.current = requestAnimationFrame(draw);
-  }, [field, grid, arrowScale, cursorEnabled, cursorAttraction]);
+  }, [field, effectiveGrid, arrowScale, effectiveCursorEnabled, cursorAttraction]);
 
   useEffect(() => {
     draw();
     return () => cancelAnimationFrame(rafRef.current);
   }, [draw]);
+
+  if (reducedMotion) {
+    return null;
+  }
 
   return (
     <div className={cn("pointer-events-none fixed inset-0 z-0 contain-[paint]", className)}>
