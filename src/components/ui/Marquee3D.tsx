@@ -60,7 +60,10 @@ export function Marquee3D({
         }}
       >
         {columnGroups.map((colImages, colIndex) => (
-          <div key={colIndex} className="h-[40vh] min-h-64 max-h-[40vh] overflow-hidden shrink-0">
+          <div
+            key={colIndex}
+            className="h-[40vh] min-h-64 max-h-[40vh] overflow-hidden shrink-0"
+          >
             <div
               className="marquee3d-column flex flex-col gap-4 shrink-0"
               style={{

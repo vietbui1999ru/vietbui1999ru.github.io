@@ -1,6 +1,11 @@
 "use client";
 
-import { Dock, DockIcon, DockItem, DockLabel } from "@/components/ui/dockHeading";
+import {
+  Dock,
+  DockIcon,
+  DockItem,
+  DockLabel,
+} from "@/components/ui/dockHeading";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, NAV_ACTIVE_CLASS, NAV_INACTIVE_CLASS } from "@/data/navigationData";
 import { useScrollSpy } from "@/hooks/useScrollSpy";

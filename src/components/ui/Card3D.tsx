@@ -12,7 +12,12 @@ export interface Card3DProps {
   active?: boolean;
 }
 
-export function Card3D({ children, className, maxTilt = 12, active = true }: Card3DProps) {
+export function Card3D({
+  children,
+  className,
+  maxTilt = 12,
+  active = true,
+}: Card3DProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0 });
 

@@ -6,7 +6,8 @@
 
 import skillIconsJson from "./skillIcons.json";
 
-export const SKILL_ICON_SLUGS: Record<string, string> = skillIconsJson as Record<string, string>;
+export const SKILL_ICON_SLUGS: Record<string, string> =
+  skillIconsJson as Record<string, string>;
 
 export function getSkillIconSlug(skill: string): string | null {
   const normalized = skill.trim();

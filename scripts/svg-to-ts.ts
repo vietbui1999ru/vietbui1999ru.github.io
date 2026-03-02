@@ -92,13 +92,16 @@ function processSVGFiles(files: SVGFile[]): ProcessedFile[] {
 
 function formatSummary(processed: ProcessedFile[]): string {
   const lines = processed.map(
-    (f) => `- ${f.fileName} → ${f.tsFileName} (${f.pathCount} paths, viewBox="${f.viewBox}")`,
+    (f) =>
+      `- ${f.fileName} → ${f.tsFileName} (${f.pathCount} paths, viewBox="${f.viewBox}")`,
   );
   return [`Processed ${processed.length} SVG file(s):`, ...lines].join("\n");
 }
 
 async function readSVGFilesFromPublic(): Promise<SVGFile[]> {
-  const entries = await fs.promises.readdir(PUBLIC_DIR, { withFileTypes: true });
+  const entries = await fs.promises.readdir(PUBLIC_DIR, {
+    withFileTypes: true,
+  });
 
   const svgFiles: SVGFile[] = [];
 

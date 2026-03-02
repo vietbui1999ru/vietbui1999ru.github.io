@@ -31,7 +31,9 @@ function GradientText({
   ...props
 }: GradientTextProps) {
   const gradientValue =
-    color != null ? `linear-gradient(90deg, ${color} 0%, ${color} 100%)` : gradient;
+    color != null
+      ? `linear-gradient(90deg, ${color} 0%, ${color} 100%)`
+      : gradient;
   const baseStyle: React.CSSProperties = {
     backgroundImage: gradientValue,
   };

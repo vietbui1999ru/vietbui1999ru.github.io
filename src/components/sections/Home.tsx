@@ -26,9 +26,11 @@ const Home = () => {
     const handleScroll = () => {
       const t = Math.min(1, window.scrollY / (window.innerHeight / 2));
       const v =
-        SINGULARITY_SCROLL_MIN + (SINGULARITY_SCROLL_MAX - SINGULARITY_SCROLL_MIN) * (1 - t);
+        SINGULARITY_SCROLL_MIN +
+        (SINGULARITY_SCROLL_MAX - SINGULARITY_SCROLL_MIN) * (1 - t);
       const sizeMax = SINGULARITY_SCROLL_MAX * SINGULARITY_SIZE_RESIZE_FACTOR;
-      const sizeV = SINGULARITY_SCROLL_MIN + (sizeMax - SINGULARITY_SCROLL_MIN) * (1 - t);
+      const sizeV =
+        SINGULARITY_SCROLL_MIN + (sizeMax - SINGULARITY_SCROLL_MIN) * (1 - t);
       setSingularitySpeed(v);
       setSingularityIntensity(v);
       setSingularitySize(sizeV);

@@ -59,10 +59,17 @@ function InViewHandwritingAnimation({
   const entries = React.useMemo(() => Object.entries(paths).reverse(), [paths]);
 
   return (
-    <div ref={ref} className={cn("relative w-full max-w-2xl mx-auto", className)} data-name={label}>
+    <div
+      ref={ref}
+      className={cn("relative w-full max-w-2xl mx-auto", className)}
+      data-name={label}
+    >
       <svg
         key={cycle}
-        className={cn("mx-auto block h-24 w-auto text-foreground", svgClassName)}
+        className={cn(
+          "mx-auto block h-24 w-auto text-foreground",
+          svgClassName,
+        )}
         fill="none"
         viewBox={viewBox}
         style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}
@@ -108,7 +115,9 @@ function InViewHandwritingAnimation({
                 }
                 transition={transition}
                 onAnimationComplete={
-                  index === entries.length - 1 && inView ? onAnimationComplete : undefined
+                  index === entries.length - 1 && inView
+                    ? onAnimationComplete
+                    : undefined
                 }
               />
             );
@@ -154,7 +163,12 @@ function AppleHelloContactEffect(props: HandwritingProps) {
 
 function AppleHelloBlogEffect(props: HandwritingProps) {
   return (
-    <InViewHandwritingAnimation {...props} paths={myBlogPaths} label="Blog" viewBox="0 0 108 35" />
+    <InViewHandwritingAnimation
+      {...props}
+      paths={myBlogPaths}
+      label="Blog"
+      viewBox="0 0 108 35"
+    />
   );
 }
 

@@ -15,7 +15,11 @@
               "url": "https://python.org/",
               "tooltip": "Engine built with Python"
             },
-            { "name": "GitLab", "url": "https://gitlab.com/", "tooltip": "GitLab" }
+            {
+              "name": "GitLab",
+              "url": "https://gitlab.com/",
+              "tooltip": "GitLab"
+            }
           ]
         }
       ]
@@ -30,9 +34,21 @@
           "content": "I studied and was funded as a Research Assistant for The Department of Computer Science's Reliable Autonomous Lab in developing Formal Verification Frameworks in Rocq Proof Assistant for verifying simulated theoretical Softwares and Networking. I was a co-author in a Research Paper published to KSE2024 focused on reducing model bias with Reinforcement Learning with white-noise injections. I also helped undergraduate students as a Lab Assistant for Intro to Computer Science, and I was a Project Mentor for an infrastructure collision detection research project using Jetson Nano with CUDA and Python.",
           "info": { "content": "Worked as a Research Assistant" },
           "tags": [
-            { "name": "Python", "url": "https://python.org/", "tooltip": "Python" },
-            { "name": "GitHub", "url": "https://github.com/", "tooltip": "GitHub" },
-            { "name": "NVIDIA", "url": "https://nvidia.com/", "tooltip": "NVIDIA" }
+            {
+              "name": "Python",
+              "url": "https://python.org/",
+              "tooltip": "Python"
+            },
+            {
+              "name": "GitHub",
+              "url": "https://github.com/",
+              "tooltip": "GitHub"
+            },
+            {
+              "name": "NVIDIA",
+              "url": "https://nvidia.com/",
+              "tooltip": "NVIDIA"
+            }
           ]
         }
       ]

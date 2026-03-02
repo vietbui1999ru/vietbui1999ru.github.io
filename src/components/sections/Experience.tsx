@@ -2,7 +2,10 @@
 
 import { BriefcaseBusiness } from "lucide-react";
 import { AppleHelloExperienceEffect } from "@/components/ui/apple-hello-effect";
-import { TimelineLayout, type TimelineItem } from "@/components/ui/TimelineLayout";
+import {
+  TimelineLayout,
+  type TimelineItem,
+} from "@/components/ui/TimelineLayout";
 import { EXPERIENCE_ITEMS } from "@/data/experienceData";
 
 const ExperienceTimeline = () => {
@@ -17,7 +20,9 @@ const ExperienceTimeline = () => {
         subtitle: employer.company,
         description: job.content,
         icon: <BriefcaseBusiness className="h-3 w-3" />,
-        status: job.date.toLowerCase().includes("present") ? "in-progress" : "completed",
+        status: job.date.toLowerCase().includes("present")
+          ? "in-progress"
+          : "completed",
       });
     });
   });

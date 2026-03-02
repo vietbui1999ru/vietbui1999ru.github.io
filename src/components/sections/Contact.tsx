@@ -3,7 +3,11 @@
 import { AppleHelloContactEffect } from "@/components/ui/apple-hello-effect";
 import { Mail, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CONTACT_CONTENT, CONTACT_BTN_NAME, CONTACT_BTN_LINK } from "@/data/contactData";
+import {
+  CONTACT_CONTENT,
+  CONTACT_BTN_NAME,
+  CONTACT_BTN_LINK,
+} from "@/data/contactData";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Modal,
@@ -24,7 +28,9 @@ const Contact = () => {
             className="mx-auto"
             svgClassName="mx-auto h-24 w-auto text-foreground"
           />
-          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">{CONTACT_CONTENT}</p>
+          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
+            {CONTACT_CONTENT}
+          </p>
         </header>
 
         <Modal>

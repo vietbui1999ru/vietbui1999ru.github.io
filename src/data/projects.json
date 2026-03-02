@@ -25,7 +25,13 @@
     {
       "title": "Software-Defined Ethernet Switch",
       "content": "Engineered Layer 2 Ethernet switch in Go implementing IEEE 802.3 with zero-deadlock concurrent design, achieving 99%+ packet reliability through systematic edge case testing. Optimized packet forwarding via load testing and profiling, reducing broadcast traffic by 80% through intelligent MAC learning.",
-      "badges": ["Go", "IEEE 802.3", "L2 Networking", "Concurrency", "Performance Testing"],
+      "badges": [
+        "Go",
+        "IEEE 802.3",
+        "L2 Networking",
+        "Concurrency",
+        "Performance Testing"
+      ],
       "links": [
         {
           "icon": "fab fa-github",
