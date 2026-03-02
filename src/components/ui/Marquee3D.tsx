@@ -62,7 +62,7 @@ export function Marquee3D({
         {columnGroups.map((colImages, colIndex) => (
           <div key={colIndex} className="h-[40vh] min-h-64 max-h-[40vh] overflow-hidden shrink-0">
             <div
-              className="flex flex-col gap-4 shrink-0"
+              className="marquee3d-column flex flex-col gap-4 shrink-0"
               style={{
                 animation: `marquee3d-${colIndex % 2 === 0 ? "down" : "up"} 20s linear infinite`,
               }}
@@ -95,6 +95,9 @@ export function Marquee3D({
       </div>
 
       <style>{`
+        .marquee3d-column:hover {
+          animation-play-state: paused;
+        }
         @keyframes marquee3d-down {
           0% { transform: translateY(0); }
           100% { transform: translateY(-50%); }

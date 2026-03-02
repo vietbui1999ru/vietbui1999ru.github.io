@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { TShapedEngineerTooltip } from "@/components/ui/t-shaped-engineer-tooltip";
 
 const WORD_TOKEN_PATTERN = /\S+\s*/g;
 
@@ -119,6 +120,8 @@ function AboutParagraphRevealWord({
   const xStart = direction === "rtl" ? slideOffset : -slideOffset;
   const x = useTransform(scrollYProgress, [start, end], [xStart, 0]);
 
+  const isTShapedWord = type === "words" && token.trim() === "T-shaped";
+
   return (
     <motion.span
       style={{
@@ -128,7 +131,11 @@ function AboutParagraphRevealWord({
         x,
       }}
     >
-      {token}
+      {isTShapedWord ? (
+        <TShapedEngineerTooltip>{token.trim()}</TShapedEngineerTooltip>
+      ) : (
+        token
+      )}
       {type === "words" ? "\u00A0" : null}
     </motion.span>
   );

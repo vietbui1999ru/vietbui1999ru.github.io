@@ -29,7 +29,6 @@ const NavBarDock = () => {
         "education",
         "blog",
         "gallery",
-        "achievements",
         "contact",
       ];
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -64,7 +63,6 @@ const NavBarDock = () => {
     { title: "Education", icon: <GraduationCap className="h-full w-full" />, href: "#education" },
     { title: "Blog", icon: <NotebookPen className="h-full w-full" />, href: "#blog" },
     { title: "Gallery", icon: <GalleryHorizontal className="h-full w-full" />, href: "#gallery" },
-    { title: "Achievements", icon: <Trophy className="h-full w-full" />, href: "#achievements" },
     { title: "Contact", icon: <UserPen className="h-full w-full" />, href: "#contact" },
   ];
 
