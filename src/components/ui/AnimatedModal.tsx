@@ -112,9 +112,19 @@ export const ModalBody = ({
               y: 0,
             }}
             className={cn(
-              "min-h-[50%] max-h-[90%] md:max-w-[40%] bg-white dark:bg-neutral-950 border border-transparent dark:border-neutral-800 md:rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
+              "min-h-[50%] max-h-[90%] max-w-[95%] md:max-w-[40%] bg-white dark:bg-neutral-950 border border-transparent dark:border-neutral-800 rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
               className,
             )}
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(_e, info) => {
+              const DISMISS_OFFSET = 100;
+              const DISMISS_VELOCITY = 500;
+              if (info.offset.y > DISMISS_OFFSET || info.velocity.y > DISMISS_VELOCITY) {
+                setOpen(false);
+              }
+            }}
             exit={{
               opacity: 0,
               scale: 0.8,
@@ -199,7 +209,7 @@ const CloseIcon = () => {
   return (
     <button
       type="button"
-      className="absolute top-4 right-4 group"
+      className="absolute top-4 right-4 group min-h-[44px] min-w-[44px] flex items-center justify-center"
       onClick={() => setOpen(false)}
     >
       <svg

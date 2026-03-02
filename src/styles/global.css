@@ -161,14 +161,37 @@
   }
 
   a:active,
-  button:active {
+  button:active,
+  [role="button"]:active {
     @apply opacity-60 md:opacity-100;
+  }
+
+  @media (pointer: coarse) {
+    a:active,
+    button:active,
+    [role="button"]:active {
+      @apply scale-[0.97] opacity-80;
+      transition: transform 0.1s ease, opacity 0.1s ease;
+    }
   }
 
   /* Hide default cursor when custom animated cursor is active */
   html.custom-cursor-active,
   html.custom-cursor-active * {
     cursor: none !important;
+  }
+
+  /* Safe area for notched phones */
+  body {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Respect reduced motion — only suppress scroll smoothing globally.
+     Individual components handle their own animation reduction via JS. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto !important;
+    }
   }
 }
 

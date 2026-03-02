@@ -48,10 +48,11 @@ export function TimelineLayout({
         className,
       )}
     >
-      {/* Center spine */}
+      {/* Spine: left on mobile, center on md+ */}
       <div
         className={cn(
-          "pointer-events-none absolute left-1/2 top-0 bottom-0 -translate-x-1/2",
+          "pointer-events-none absolute top-0 bottom-0",
+          "left-4 md:left-1/2 md:-translate-x-1/2",
           connectorColor === "primary" && "bg-primary/20",
           connectorColor === "muted" && "bg-muted/40",
           connectorColor === "accent" && "bg-accent/40",
@@ -115,7 +116,7 @@ export function TimelineLayout({
                 </div>
 
                 {bullets ? (
-                  <ul className="mt-2 space-y-1 text-[11px] md:text-xs text-muted-foreground list-disc list-inside">
+                  <ul className="mt-2 space-y-1 text-[11px] md:text-xs text-muted-foreground list-disc list-inside text-left">
                     {bullets.map((b, i) => (
                       <li key={i}>{b}</li>
                     ))}
@@ -131,7 +132,7 @@ export function TimelineLayout({
                     href={item.ctaHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center justify-center gap-1 text-[11px] text-primary hover:underline"
+                    className="mt-3 inline-flex items-center justify-center gap-1 text-[11px] text-primary hover:underline min-h-[44px] min-w-[44px]"
                   >
                     {item.ctaLabel ?? "View details"}
                     <ExternalLink className="h-3 w-3" />
@@ -144,7 +145,7 @@ export function TimelineLayout({
           return (
             <li key={item.id} className="relative">
               {/* icon + connector at center */}
-              <div className="pointer-events-none absolute left-1/2 top-0 flex flex-col items-center -translate-x-1/2">
+              <div className="pointer-events-none absolute top-0 flex flex-col items-center left-4 -translate-x-1/2 md:left-1/2">
                 <div
                   className={cn(
                     "flex items-center justify-center rounded-full border-2 bg-background shadow-sm",
@@ -192,23 +193,20 @@ export function TimelineLayout({
                 )}
               </div>
 
-              {/* content: zig-zag on md+, centered stack on mobile */}
-              <div className="md:flex md:w-full">
-                {/* mobile: full width centered */}
-                <div className="w-full md:hidden mt-3 px-6">{content}</div>
+              {/* Mobile: left-rail, card to the right */}
+              <div className="md:hidden pl-12 pr-2">{content}</div>
 
-                {/* desktop: two-column zig-zag */}
-                <div
-                  className={cn(
-                    "hidden md:flex w-full",
-                    isRight && "md:flex-row-reverse",
-                  )}
-                >
-                  <div className={cn("w-1/2", isRight ? "pl-10" : "pr-10")}>
-                    {content}
-                  </div>
-                  <div className="w-1/2" />
+              {/* Desktop: two-column zig-zag */}
+              <div
+                className={cn(
+                  "hidden md:flex w-full",
+                  isRight && "md:flex-row-reverse",
+                )}
+              >
+                <div className={cn("w-1/2", isRight ? "pl-10" : "pr-10")}>
+                  {content}
                 </div>
+                <div className="w-1/2" />
               </div>
             </li>
           );
