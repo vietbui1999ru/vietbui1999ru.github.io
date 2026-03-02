@@ -9,7 +9,7 @@ import { SkillsSection } from "./SkillsSection";
 const ABOUT_REVEAL_CONFIG = {
   scrollOffsetStart: 0,
   scrollOffsetEnd: 1,
-  slideOffset: 40,
+  slideOffset: 20,
   staggerPerWord: 0.03,
   revealSpan: 0.12,
   gradient: "linear-gradient(90deg, #ffffff, #ffffff)",
