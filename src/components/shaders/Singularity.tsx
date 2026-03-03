@@ -14,6 +14,16 @@ export interface SingularityShadersProps extends React.HTMLAttributes<HTMLDivEle
 }
 
 const fragmentShader = `
+vec3 blackholeColorRamp(float t) {
+    // t in [0,1], returns black -> deep orange gradient with white/yellow in middle.
+    if (t < 0.1)   return vec3(0.0, 0.0, 0.0); // black
+    if (t < 0.25)  return mix(vec3(0.0), vec3(1.0), (t-0.1)/0.15); // black to white
+    if (t < 0.55)  return mix(vec3(1.0), vec3(1.0,0.95,0.36), (t-0.25)/0.3); // white to yellow
+    if (t < 0.8)   return mix(vec3(1.0,0.95,0.36), vec3(1.0,0.6,0.18), (t-0.55)/0.25); // yellow to strong orange
+    if (t < 0.95)  return mix(vec3(1.0,0.6,0.18), vec3(0.9,0.33,0.05), (t-0.8)/0.15); // orange to deep burnt orange
+    return vec3(0.1, 0.07, 0.07); // faint reddish-black at the edge
+}
+
 void mainImage(out vec4 O, vec2 F)
 {
     float i = .2 * u_speed, a;
@@ -33,15 +43,21 @@ void mainImage(out vec4 O, vec2 F)
 
     i = length( sin(v/.3)*.4 + c*(3.+d) );
 
-    vec4 colorGrad = vec4(.2, .2, .2, 0) * u_colorShift;
+    // Use length of position, and a time-based shift, for color ramp along radius and time
+    float color_t = clamp((length(p) - 0.4) * 1.4 + 0.25 * sin(iTime * 0.2 + length(c)*4.0) + u_colorShift*0.2, 0.0, 1.0);
+    vec3 colorRamp = blackholeColorRamp(color_t);
 
-    O = 1. - exp( -exp( c.x * colorGrad )
-                   / w.xyyx
-                   / ( 2. + i*i/4. - i )
-                   / ( .5 + 1. / a )
-                   / ( .03 + abs( length(p)-.7 ) )
-                   * u_intensity
-             );
+    // Increase dynamic range near the "event horizon"
+    float brightness = 1.0 - exp(
+       -exp( c.x * 0.7 )
+            / w.xyyx.x
+            / ( 2. + i*i/4. - i )
+            / ( .5 + 1. / a )
+            / ( .03 + abs( length(p)-.7 ) )
+            * u_intensity
+     );
+
+    O = vec4(colorRamp * brightness, 1.0);
 }
 `;
 
@@ -56,7 +72,7 @@ export const SingularityShaders = forwardRef<
       intensity = 0.5,
       size = 1.0,
       waveStrength = 0.5,
-      colorShift = 1.0,
+      colorShift = 0.1,
       ...props
     },
     ref,

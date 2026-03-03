@@ -1,18 +1,249 @@
 [
   {
-    "type": "Programming Languages",
+    "type": "Programming Languages & Frameworks",
     "skills": [
-      { "name": "TypeScript", "icon": "typescript" },
-      { "name": "Python", "icon": "python" },
-      { "name": "Rust", "icon": "rust" }
+      {
+        "name": "TypeScript",
+        "icon": "typescript"
+      },
+      {
+        "name": "Python",
+        "icon": "python"
+      },
+      {
+        "name": "Go",
+        "icon": "go"
+      },
+      {
+        "name": "C#",
+        "icon": "dotnet"
+      },
+      {
+        "name": "Rocq",
+        "icon": "rocq"
+      },
+      {
+        "name": "Lua",
+        "icon": "lua"
+      },
+      {
+        "name": "Markdown",
+        "icon": "markdown"
+      },
+      {
+        "name": "Ruby",
+        "icon": "ruby"
+      },
+      {
+        "name": "Bash",
+        "icon": "bash"
+      },
+      {
+        "name": "LaTeX",
+        "icon": "latex"
+      },
+      {
+        "name": "Ocaml",
+        "icon": "ocaml"
+      },
+      {
+        "name": "R",
+        "icon": "r"
+      },
+      {
+        "name": "Kotlin",
+        "icon": "kotlin"
+      },
+      {
+        "name": "React",
+        "icon": "react"
+      },
+      {
+        "name": "Astro",
+        "icon": "astro"
+      },
+      {
+        "name": "Express",
+        "icon": "express"
+      },
+      {
+        "name": "Next.js",
+        "icon": "nextdotjs"
+      },
+      {
+        "name": "Bun.js",
+        "icon": "bun"
+      },
+      {
+        "name": "Vite",
+        "icon": "vite"
+      },
+      {
+        "name": "Django",
+        "icon": "django"
+      },
+      {
+        "name": "Flask",
+        "icon": "flask"
+      },
+      {
+        "name": "FastAPI",
+        "icon": "fastapi"
+      }
     ]
   },
   {
-    "type": "Tools & Frameworks",
+    "type": "Machine Learning & Databases",
     "skills": [
-      { "name": "React", "icon": "react" },
-      { "name": "Astro", "icon": "astro" },
-      { "name": "Node.js", "icon": "nodejs" }
+      {
+        "name": "Postgres",
+        "icon": "postgresql"
+      },
+      {
+        "name": "MySQL",
+        "icon": "mysql"
+      },
+      {
+        "name": "SQLite",
+        "icon": "sqlite"
+      },
+      {
+        "name": "Redis",
+        "icon": "redis"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "mongodb"
+      },
+      {
+        "name": "AWS S3",
+        "icon": "aws-s3"
+      },
+      {
+        "name": "TensorFlow",
+        "icon": "tensorflow"
+      },
+      {
+        "name": "PyTorch",
+        "icon": "pytorch"
+      },
+      {
+        "name": "Jupyter",
+        "icon": "jupyter"
+      },
+      {
+        "name": "PySpark",
+        "icon": "apachespark"
+      },
+      {
+        "name": "NumPy",
+        "icon": "numpy"
+      },
+      {
+        "name": "Pandas",
+        "icon": "pandas"
+      },
+      {
+        "name": "scikit-learn",
+        "icon": "scikitlearn"
+      },
+      {
+        "name": "Keras",
+        "icon": "keras"
+      },
+      {
+        "name": "Hugging Face",
+        "icon": "huggingface"
+      },
+      {
+        "name": "OpenCV",
+        "icon": "opencv"
+      }
+    ]
+  },
+  {
+    "type": "Infrastructure & Dev Tools",
+    "skills": [
+      {
+        "name": "Git",
+        "icon": "git"
+      },
+      {
+        "name": "GitHub",
+        "icon": "github"
+      },
+      {
+        "name": "Gitlab",
+        "icon": "gitlab"
+      },
+      {
+        "name": "Ansible",
+        "icon": "ansible"
+      },
+      {
+        "name": "Terraform",
+        "icon": "terraform"
+      },
+      {
+        "name": "Grafana",
+        "icon": "grafana"
+      },
+      {
+        "name": "Prometheus",
+        "icon": "prometheus"
+      },
+      {
+        "name": "WireGuard",
+        "icon": "wireguard"
+      },
+      {
+        "name": "Nginx",
+        "icon": "nginx"
+      },
+      {
+        "name": "Proxmox",
+        "icon": "proxmox"
+      },
+      {
+        "name": "Docker",
+        "icon": "docker"
+      },
+      {
+        "name": "GitHub Actions",
+        "icon": "githubactions"
+      },
+      {
+        "name": "AWS",
+        "icon": "aws"
+      },
+      {
+        "name": "Google Cloud Platform",
+        "icon": "googlecloud"
+      },
+      {
+        "name": "curl",
+        "icon": "curl"
+      },
+      {
+        "name": "Neovim",
+        "icon": "neovim"
+      },
+      {
+        "name": "Obsidian",
+        "icon": "obsidian"
+      },
+      {
+        "name": "Claude",
+        "icon": "claude"
+      },
+      {
+        "name": "Cursor",
+        "icon": "cursor"
+      },
+      {
+        "name": "Copilot",
+        "icon": "githubcopilot"
+      }
     ]
   }
 ]

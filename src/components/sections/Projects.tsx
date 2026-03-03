@@ -60,11 +60,8 @@ const Projects = () => {
   return (
     <section id="projects" className="relative min-h-screen w-full">
       <div className="section-content">
-        <header className="mb-12 space-y-4 text-center">
-          <AppleHelloMyWorkEffect
-            className="mx-auto"
-            svgClassName="mx-auto h-24 w-auto text-foreground"
-          />
+        <header className="mb-12 flex flex-col items-center gap-4 text-center">
+          <AppleHelloMyWorkEffect className="w-full" />
           <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
             {PROJECTS_TITLE}
           </p>

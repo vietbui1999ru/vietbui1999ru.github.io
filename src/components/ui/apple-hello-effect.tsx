@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 
 import aboutMePaths from "@/imports/aboutme";
 import contactMePaths from "@/imports/contactme";
-import myBlogPaths from "@/imports/myblogs";
-import myEducationPaths from "@/imports/myeducation";
+import myBlogPaths from "@/imports/myblog";
+import myEducationPaths from "@/imports/education";
 import myGalleryPaths from "@/imports/mygallery";
 import myWorkExperiencesPaths from "@/imports/workexperience";
 import whatIveBeenWorkingOnPaths from "@/imports/myprojects";
@@ -61,13 +61,16 @@ function InViewHandwritingAnimation({
   return (
     <div
       ref={ref}
-      className={cn("relative w-full max-w-2xl mx-auto", className)}
+      className={cn(
+        "relative w-full max-w-2xl mx-auto flex justify-center",
+        className,
+      )}
       data-name={label}
     >
       <svg
         key={cycle}
         className={cn(
-          "mx-auto block h-24 w-auto text-foreground",
+          "h-24 w-auto shrink-0 text-foreground",
           svgClassName,
         )}
         fill="none"
@@ -134,7 +137,7 @@ function AppleHelloMyWorkEffect(props: HandwritingProps) {
       {...props}
       paths={whatIveBeenWorkingOnPaths}
       label="What I've been working on"
-      viewBox="0 0 163 35"
+      viewBox="0 0 259 38"
     />
   );
 }
@@ -145,7 +148,7 @@ function AppleHelloAboutMeEffect(props: HandwritingProps) {
       {...props}
       paths={aboutMePaths}
       label="About me"
-      viewBox="0 0 132 30"
+      viewBox="0 0 188 31"
     />
   );
 }
@@ -156,7 +159,7 @@ function AppleHelloContactEffect(props: HandwritingProps) {
       {...props}
       paths={contactMePaths}
       label="Contact"
-      viewBox="0 0 158 30"
+      viewBox="0 0 235 29"
     />
   );
 }
@@ -167,7 +170,7 @@ function AppleHelloBlogEffect(props: HandwritingProps) {
       {...props}
       paths={myBlogPaths}
       label="Blog"
-      viewBox="0 0 108 35"
+      viewBox="0 0 164 39"
     />
   );
 }
@@ -178,7 +181,7 @@ function AppleHelloEducationEffect(props: HandwritingProps) {
       {...props}
       paths={myEducationPaths}
       label="Education"
-      viewBox="0 0 186 35"
+      viewBox="0 0 283 38"
     />
   );
 }
@@ -189,7 +192,7 @@ function AppleHelloGalleryEffect(props: HandwritingProps) {
       {...props}
       paths={myGalleryPaths}
       label="Gallery"
-      viewBox="0 0 145 38"
+      viewBox="0 0 236 38"
     />
   );
 }
@@ -200,7 +203,7 @@ function AppleHelloExperienceEffect(props: HandwritingProps) {
       {...props}
       paths={myWorkExperiencesPaths}
       label="Experience"
-      viewBox="0 0 292 35"
+      viewBox="0 0 427 38"
     />
   );
 }

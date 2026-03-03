@@ -6,5 +6,4 @@
 import contactJson from "./contact.json";
 
 export const CONTACT_CONTENT = contactJson.content;
-export const CONTACT_BTN_NAME = contactJson.btnName;
 export const CONTACT_BTN_LINK = contactJson.btnLink;
