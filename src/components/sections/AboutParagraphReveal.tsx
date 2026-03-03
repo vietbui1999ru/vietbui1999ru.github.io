@@ -5,6 +5,18 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { TShapedEngineerTooltip } from "@/components/ui/t-shaped-engineer-tooltip";
 
+function useViewportSlideScale(basePx: number): number {
+  const [slidePx, setSlidePx] = React.useState(basePx);
+  React.useEffect(() => {
+    const update = () =>
+      setSlidePx(Math.round((basePx / 800) * Math.min(window.innerWidth, 1920)));
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [basePx]);
+  return slidePx;
+}
+
 const WORD_TOKEN_PATTERN = /\S+\s*/g;
 
 export type RevealDirection = "ltr" | "rtl";
@@ -12,14 +24,19 @@ export type RevealDirection = "ltr" | "rtl";
 export type AboutParagraphRevealConfig = {
   scrollOffsetStart?: number;
   scrollOffsetEnd?: number;
+  /** Viewport fraction (0–1) where progress = 1. E.g. 0.1 = reveal complete when element start is 10% from top. Overrides scrollOffsetEnd for container position when set. */
+  containerEnd?: number;
   slideOffset?: number;
   staggerPerWord?: number;
   revealSpan?: number;
 };
 
-const defaultConfig: Required<AboutParagraphRevealConfig> = {
+// To make all words/paragraphs reveal at ~30-40% of scroll, set scrollOffsetEnd to 0.6 (i.e., 60% down is already fully revealed)
+const defaultConfig: Required<Omit<AboutParagraphRevealConfig, "containerEnd">> & {
+  containerEnd?: number;
+} = {
   scrollOffsetStart: 0,
-  scrollOffsetEnd: 1,
+  scrollOffsetEnd: 0.2,
   slideOffset: 40,
   staggerPerWord: 0.03,
   revealSpan: 0.12,
@@ -41,18 +58,23 @@ export function AboutParagraphReveal({
   type = "words",
   scrollOffsetStart = defaultConfig.scrollOffsetStart,
   scrollOffsetEnd = defaultConfig.scrollOffsetEnd,
+  containerEnd,
   slideOffset = defaultConfig.slideOffset,
   staggerPerWord = defaultConfig.staggerPerWord,
   revealSpan = defaultConfig.revealSpan,
 }: AboutParagraphRevealProps) {
   const ref = React.useRef<HTMLParagraphElement>(null);
+  const slidePx = useViewportSlideScale(slideOffset);
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: [
-      `${scrollOffsetStart * 100}% end`,
-      `${scrollOffsetEnd * 100}% start`,
-    ],
+    offset:
+      containerEnd != null
+        ? (["start end", `start ${containerEnd}`] as const)
+        : ([
+            `${scrollOffsetStart * 100}% end`,
+            `${scrollOffsetEnd * 100}% start`,
+          ] as const),
   });
 
   const tokens = React.useMemo(() => {
@@ -65,10 +87,7 @@ export function AboutParagraphReveal({
   return (
     <p
       ref={ref}
-      className={cn(
-        "text-xl sm:text-2xl leading-relaxed font-medium",
-        className,
-      )}
+      className={cn("text-xl sm:text-2xl leading-relaxed font-mono", className)}
       style={{
         backgroundImage: gradient,
         backgroundClip: "text",
@@ -85,7 +104,7 @@ export function AboutParagraphReveal({
           token={token}
           scrollYProgress={scrollYProgress}
           direction={direction}
-          slideOffset={slideOffset}
+          slideOffset={slidePx}
           staggerPerWord={staggerPerWord}
           revealSpan={revealSpan}
           type={type}
@@ -124,6 +143,9 @@ function AboutParagraphRevealWord({
 
   const opacity = useTransform(scrollYProgress, [start, end], [0, 1]);
   const xStart = direction === "rtl" ? slideOffset : -slideOffset;
+  // This line creates a spring/animated value 'x' that animates the horizontal offset of the word/chunk
+  // as the user scrolls. It transitions from xStart (either left or right by slideOffset px, depending on direction) to 0.
+  // The animation progress is controlled by scrollYProgress, from 'start' to 'end' (the reveal window for this token).
   const x = useTransform(scrollYProgress, [start, end], [xStart, 0]);
 
   const isTShapedWord = type === "words" && token.trim() === "T-shaped";

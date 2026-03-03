@@ -2,7 +2,9 @@
  * Home section content — edit this file to customize intro text, gradients, and hero copy.
  */
 
-export const INTRO_LINE1 = "Hello, my name is Viet";
+import { ABOUT_TAGLINE } from "./aboutData";
+
+export const INTRO_LINE1 = "Hi, I'm Viet";
 // export const INTRO_LINE2 = "I'm a ";
 export const INTRO_TYPING_SPEED = 100;
 export const INTRO_INITIAL_DELAY = 10;
@@ -16,3 +18,5 @@ export const SINGULARITY_SCROLL_MIN = 0.1;
 export const SINGULARITY_SCROLL_MAX = 1.0;
 export const SINGULARITY_SIZE_RESIZE_FACTOR = 2.0;
 export const INTRO_ROTATING_DELAY_AFTER_TYPING = 800;
+
+export const HOME_TAGLINE = ABOUT_TAGLINE;

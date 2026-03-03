@@ -7,34 +7,30 @@ import { AboutParagraphReveal } from "./AboutParagraphReveal";
 import { SkillsSection } from "./SkillsSection";
 
 const ABOUT_REVEAL_CONFIG = {
-  scrollOffsetStart: 0,
-  scrollOffsetEnd: 1,
+  // Reveal completes when paragraph top is 10% into the viewport (containerEnd: 0.1).
+  containerEnd: 0.1,
   slideOffset: 20,
-  staggerPerWord: 0.03,
-  revealSpan: 0.12,
+  staggerPerWord: 0.04,
+  revealSpan: 0.14,
   gradient: "linear-gradient(90deg, #ffffff, #ffffff)",
 } as const;
 
 const About = () => {
   return (
-    <section id="about" className="relative min-h-screen w-full">
+    <section id="about" className="relative min-h-[50vh] w-full">
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloAboutMeEffect className="w-full" />
-          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-            {ABOUT_TAGLINE}
-          </p>
         </header>
 
-        <div className="space-y-10 mb-12">
+        <div className="space-y-10 mb-12 mx-auto">
           {ABOUT_PARAGRAPHS.map((text, i) => (
             <AboutParagraphReveal
               key={i}
               text={text}
               direction={i % 2 === 0 ? "ltr" : "rtl"}
               gradient={ABOUT_REVEAL_CONFIG.gradient}
-              scrollOffsetStart={ABOUT_REVEAL_CONFIG.scrollOffsetStart}
-              scrollOffsetEnd={ABOUT_REVEAL_CONFIG.scrollOffsetEnd}
+              containerEnd={ABOUT_REVEAL_CONFIG.containerEnd}
               slideOffset={ABOUT_REVEAL_CONFIG.slideOffset}
               staggerPerWord={ABOUT_REVEAL_CONFIG.staggerPerWord}
               revealSpan={ABOUT_REVEAL_CONFIG.revealSpan}

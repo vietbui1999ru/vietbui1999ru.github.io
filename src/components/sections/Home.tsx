@@ -8,6 +8,7 @@ import {
   INTRO_GRADIENT,
   INTRO_INITIAL_DELAY,
   INTRO_LINE1,
+  HOME_TAGLINE,
   INTRO_TYPING_SPEED,
   SINGULARITY_SCROLL_MAX,
   SINGULARITY_SCROLL_MIN,
@@ -59,7 +60,7 @@ const Home = () => {
       </div>
 
       <div className="relative z-10 flex min-h-screen w-full items-center justify-center px-4">
-        <p className="text-center">
+        <div className="text-center space-y-4 max-w-3xl">
           <TypingText
             text={[INTRO_LINE1]}
             loop={false}
@@ -82,7 +83,10 @@ const Home = () => {
               neon: true,
             }}
           />
-        </p>
+          <p className="text-2xl md:text-3xl text-muted-foreground">
+            {HOME_TAGLINE}
+          </p>
+        </div>
       </div>
     </div>
   );
