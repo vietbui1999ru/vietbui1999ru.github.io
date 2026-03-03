@@ -5,6 +5,7 @@ import NavBarDock from "@/components/layout/NavBarDock";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import AnimatedCursor from "@/components/ui/AnimatedCursor";
 import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
+import { MobileBlocker } from "@/components/layout/MobileBlocker";
 ---
 
 <!doctype html>
@@ -13,12 +14,14 @@ import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Viet Bui | Portfolio</title>
+    <link rel="icon" type="image/png" href="../../public/signature.png" />
   </head>
   <body
     class={cn(
       "group/body overscroll-none antialiased bg-background text-foreground",
     )}
   >
+    <MobileBlocker client:load />
     <VectorFieldBackground client:load />
     <AnimatedCursor client:load />
     <NavBarDock client:load />

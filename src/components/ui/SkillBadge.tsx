@@ -138,6 +138,67 @@ const SLUG_TO_ICON: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
   yaml: SiYaml,
 };
 
+const SLUG_TO_ICON_COLOR_CLASS: Record<string, string> = {
+  astro: "text-orange-400",
+  bun: "text-yellow-400",
+  claude: "text-amber-400",
+  cursor: "text-cyan-400",
+  django: "text-emerald-500",
+  docker: "text-sky-500",
+  dotnet: "text-purple-500",
+  express: "text-zinc-200",
+  fastapi: "text-emerald-400",
+  flask: "text-zinc-200",
+  git: "text-orange-500",
+  github: "text-zinc-200",
+  githubactions: "text-sky-400",
+  githubcopilot: "text-emerald-400",
+  gitlab: "text-orange-500",
+  gnubash: "text-green-500",
+  go: "text-cyan-400",
+  googlecloud: "text-sky-400",
+  grafana: "text-orange-500",
+  huggingface: "text-amber-400",
+  javascript: "text-yellow-300",
+  jupyter: "text-orange-400",
+  keras: "text-red-400",
+  kotlin: "text-indigo-400",
+  latex: "text-emerald-400",
+  lua: "text-sky-400",
+  markdown: "text-zinc-200",
+  mongodb: "text-emerald-500",
+  mysql: "text-sky-500",
+  neovim: "text-emerald-500",
+  nextdotjs: "text-zinc-100",
+  nginx: "text-emerald-500",
+  nodedotjs: "text-emerald-500",
+  numpy: "text-sky-400",
+  nvidia: "text-lime-400",
+  obsidian: "text-violet-500",
+  ocaml: "text-orange-500",
+  opencv: "text-sky-400",
+  pandas: "text-sky-400",
+  postgresql: "text-sky-500",
+  prometheus: "text-orange-500",
+  proxmox: "text-orange-500",
+  python: "text-yellow-300",
+  pytorch: "text-orange-500",
+  r: "text-sky-400",
+  react: "text-sky-400",
+  redis: "text-red-500",
+  rocq: "text-amber-500",
+  ruby: "text-red-500",
+  rust: "text-orange-500",
+  scikitlearn: "text-amber-400",
+  sqlite: "text-emerald-400",
+  tensorflow: "text-orange-400",
+  terraform: "text-purple-500",
+  typescript: "text-sky-400",
+  vite: "text-purple-400",
+  wireguard: "text-red-500",
+  yaml: "text-amber-300",
+};
+
 export interface SkillBadgeProps {
   skill: string;
   url?: string;
@@ -167,7 +228,12 @@ export function SkillBadge({
       )}
     >
       {IconComponent && (
-        <IconComponent className={size === "sm" ? "size-3" : "size-4"} />
+        <IconComponent
+          className={cn(
+            size === "sm" ? "size-3" : "size-4",
+            slug && SLUG_TO_ICON_COLOR_CLASS[slug],
+          )}
+        />
       )}
       {skill}
     </Badge>

@@ -38,7 +38,7 @@ const defaultConfig: Required<Omit<AboutParagraphRevealConfig, "containerEnd">> 
   scrollOffsetStart: 0,
   scrollOffsetEnd: 0.2,
   slideOffset: 40,
-  staggerPerWord: 0.03,
+  staggerPerWord: 0.1,
   revealSpan: 0.12,
 };
 

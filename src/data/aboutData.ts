@@ -11,7 +11,7 @@ export const ABOUT_PARAGRAPHS = [
   "I graduated with B.A & M.S degrees in Computer Science & Applied Mathematics in 2025",
   "I have a strong passion in building projects that intersect programming with Math & Science",
   "I love to build, tinker, & break stuff in my free time (In addition to self-hosting)",
-  "I aim to be a T-shaped engineer by diversifying my skills & learn from engineering experts",
+  "I aim to be a T-shaped engineer by diversifying my skills & learn from industry experts",
 ] as const;
 
 // Skills data now abstracted, see skillsData.json

@@ -1,8 +1,88 @@
 {
   "title": "What I've been working on recently",
   "items": [
+    
+    { 
+      "images": [
+        "https://raw.githubusercontent.com/vietbui1999ru/omega-sigma-alpha-4983/main/docs/dashboard-screenshot.png",
+        "https://raw.githubusercontent.com/vietbui1999ru/omega-sigma-alpha-4983/main/docs/mrr_accuracy_comparison.png"
+      ],
+      "title" : "Python Full-Stack Stripe MRR Dashboard",
+      "content": "I built a Stripe MRR Dashboard using React and Recharts. I designed a customer simulation and a custom SQL ETL pipeline to analyze customer data.",
+      "badges": ["Python", "React", "Recharts", "TypeScript", "FastAPI", "Stripe API", "Google Cloud Platform", "Google BigQuery", "MySQL"],
+      "links": [
+        {
+          "icon": "fab fa-github",
+          "url": "https://github.com/vietbui1999ru/omega-sigma-alpha-4983"
+        }
+      ]
+    },
     {
-      "title": "Multi-VM Homelab with Monitoring",
+      "images": [
+        "https://raw.githubusercontent.com/vietbui1999ru/Heat-Wave-PDE-Simulation/main/demo/Screenshot%202026-02-16%20at%2021-20-24%20PDE%20Simulation%20Platform.png",
+        "https://raw.githubusercontent.com/vietbui1999ru/Heat-Wave-PDE-Simulation/main/demo/Screenshot%202026-02-16%20at%2021-19-43%20PDE%20Simulation%20Platform.png"
+      ],
+      "title": "Python Full-Stack PDE Heat & Wave Physics Simulation Platform",
+      "content": "I constructed a PDE Heat & Wave Physics Simulation Platform using React and Recharts. I proved and implemented Forward/Backward Finite Difference methods for solving the Heat and Wave PDEs. I created a custom simulation engine that allows userse to set the configurations and boundaries for their simulations. I constructed different visualization methods and animation widgets for comparisons and performance analysis.",
+      "badges": ["Python", "React", "Plotly", "Tailwind CSS", "TypeScript", "FastAPI", "Axios", "Numpy", "Scipy", "Matplotlib", "Pandas", "Nginx", "Docker", "Makefile"],
+      "links": [
+        {
+          "icon": "fab fa-github",
+          "url": "https://github.com/vietbui1999ru/Heat-Wave-PDE-Simulation"
+        }
+      ]
+    },
+    {
+      "title": "C# TanStack Home Assistant & Media Dashboard",
+      "content": "I made a real-time home dashboard to track household schedules, weather, movies, shopping lists, and AI Voice Assistant Integrations with ASP.NET backend, React with deep API integrations. System is fully containerized and thoroughly tested across backend, frontend, and E2E.",
+      "badges": [
+        ".NET",
+        "Redis",
+        "REST API",
+        "React",
+        "TypeScript",
+        "Vite",
+        "Radix UI",
+        "Tailwind CSS",
+        "TanStack Query",
+        "PostgreSQL",
+        "Docker",
+        "Playwright"
+      ],
+      "links": [
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/hosted-dashboard" }
+      ]
+    },
+    { "images": [
+      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-14-17%20Discover%20Music%20App.png",
+      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-15-05%20Discover%20Music%20App.png",
+      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-15-46%20Discover%20Music%20App.png",
+      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-16-18%20Discover%20Music%20App.png",
+      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-24-24%20Discover%20Music%20App.png"
+    ],
+      "title": "TypeScript Full-Stack Spotify Web Application",
+      "content": "I built a Spotify Web Application using Next.js, React, and Neon. The platform lets users discover new music from Spotify or LastFm, It allows users to save playlists to the platform and their own providers. The users also can share their playlists and like, comment, and add other people's playlists. There is also an admin mode for monitoring and analyzing traffic data and user interactions. ",
+      "badges": [
+        "TypeScript",
+        "Neon",
+        "Prisma",
+        "PostgreSQL",
+        "Next.js",
+        "Express",
+        "React",
+        "Docker",
+        "Nginx",
+        "CI/CD"
+      ],
+      "links": [
+        {
+          "icon": "fab fa-github",
+          "url": "https://github.com/vietbui1999ru/spotifyswipe"
+        }
+      ]
+    },
+    {
+      "title": "Proxmox Multi-VM Homelab with DevOps Monitoring-Stack",
       "content": "I Architected multi-VM infrastructure managing 15+ devices with 99.5% uptime through automated health monitoring, Prometheus metrics, and systematic capacity planning. Deployed Grafana dashboards for real-time monitoring, reducing MTTR by 50% through automated alerting on system hardware and software anomalies.",
       "badges": [
         "Proxmox",
@@ -18,12 +98,34 @@
       "links": [
         {
           "icon": "fab fa-github",
-          "url": "https://github.com/vietbui1999ru/codecrafters-shell-go"
+          "url": ""
+        }
+      ]
+    },
+    { "title" : "LangChain AI-assisted College Student Course Scheduler and Planner",
+      "content": "",
+      "badges": [
+        "LangChain",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Shadcn UI",
+        "Next.js",
+        "Express",
+        "Docker",
+        "Google Cloud Platform",
+        "Gemini API"
+      ]
+      ,
+      "links": [
+        {
+          "icon": "fab fa-github",
+          "url": "https://github.com/vietbui1999ru/perpetuallylearningscheduler"
         }
       ]
     },
     {
-      "title": "Software-Defined Ethernet Switch",
+      "title": "Golang Software-Defined Ethernet Switch",
       "content": "Engineered Layer 2 Ethernet switch in Go implementing IEEE 802.3 with zero-deadlock concurrent design, achieving 99%+ packet reliability through systematic edge case testing. Optimized packet forwarding via load testing and profiling, reducing broadcast traffic by 80% through intelligent MAC learning.",
       "badges": [
         "Go",
@@ -35,32 +137,12 @@
       "links": [
         {
           "icon": "fab fa-github",
-          "url": "https://github.com/vietbui1999ru/codecrafters-shell-go"
+          "url": "https://github.com/vietbui1999ru/ethswitch-vietbui1999ru"
         }
       ]
     },
     {
-      "title": "Scalable Spotify Web Application",
-      "content": "Architected RESTful API on AWS handling 1000+ daily requests with 99.5% uptime, reducing response time by 73% through database optimization and connection pooling. Deployed containerized application with Docker and CI/CD pipelines, implementing Nginx load balancing to support 50+ concurrent users.",
-      "badges": [
-        "TypeScript",
-        "Next.js",
-        "Express",
-        "React",
-        "MongoDB",
-        "Docker",
-        "Nginx",
-        "CI/CD"
-      ],
-      "links": [
-        {
-          "icon": "fab fa-github",
-          "url": "https://github.com/vietbui1999ru/codecrafters-shell-go"
-        }
-      ]
-    },
-    {
-      "title": "Go Shell with Automated Testing",
+      "title": "Golang Shell with Automated Testing",
       "content": "Developed Unix-like shell in Go emphasizing safety and performance, optimizing file I/O by 15% through profiling and implementing comprehensive unit tests. Automated continuous testing using GitHub Actions CI/CD with syntax linting and coverage reporting.",
       "badges": ["Go", "Testing", "GitHub Actions", "YAML", "CI/CD"],
       "links": [
@@ -69,6 +151,18 @@
           "url": "https://github.com/vietbui1999ru/codecrafters-shell-go"
         }
       ]
+    },
+    {
+      "title": "Ray Tracing In Go in 1 Weekend (Not really 1 weekend)",
+      "content": "I built a Ray Tracing in Go using the Ray Tracing in One Weekend book. I used the following technologies: Go, OpenGL, and GLFW.",
+      "badges": ["Go", "OpenGL", "GLFW", "Ray Tracing"],
+      "links": [
+        {
+          "icon": "fab fa-github",
+          "url": "https://github.com/vietbui1999ru/RayTracingInGo"
+        }
+      ]
     }
+
   ]
 }

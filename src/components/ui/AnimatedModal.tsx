@@ -58,6 +58,7 @@ export const ModalTrigger = ({
         className,
       )}
       onClick={() => setOpen(true)}
+      onMouseEnter={() => setOpen(true)}
     >
       {children}
     </button>
@@ -137,6 +138,7 @@ export const ModalBody = ({
               y: 40,
             }}
             ref={modalRef}
+            onMouseLeave={() => setOpen(false)}
             transition={{
               type: "spring",
               stiffness: 260,

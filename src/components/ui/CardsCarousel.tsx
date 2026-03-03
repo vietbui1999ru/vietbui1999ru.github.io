@@ -20,10 +20,19 @@ export interface CarouselProps {
 }
 
 export interface Card {
-  src: string;
+  /**
+   * Optional background image URL. If omitted and `background` is provided,
+   * the custom background will be rendered instead.
+   */
+  src?: string;
   title: string;
   category: string;
   content: React.ReactNode;
+  /**
+   * Optional custom background element (e.g. animated canvas or SVG).
+   * When provided, this takes precedence over `src`.
+   */
+  background?: React.ReactNode;
 }
 
 export const CarouselContext = createContext<{
@@ -200,11 +209,11 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
             <Card3D
               active={open}
               maxTilt={8}
-              className="relative z-[60] my-auto h-fit w-full max-w-[var(--content-max)] flex-shrink-0"
+              className="relative z-[60] my-auto h-[90vh] w-full max-w-5xl flex-shrink-0 px-2 md:px-4"
             >
               <motion.div
                 animate={{ opacity: 1, scale: 1 }}
-                className="rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-neutral-900"
+                className="flex h-full flex-col overflow-hidden rounded-3xl bg-white p-4 font-sans md:p-8 dark:bg-neutral-900"
                 exit={{
                   opacity: 0,
                   scale: 0.95,
@@ -234,7 +243,9 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
                 >
                   {card.title}
                 </motion.p>
-                <div className="py-10">{card.content}</div>
+                <div className="mt-6 flex-1 overflow-y-auto">
+                  <div className="pb-10">{card.content}</div>
+                </div>
               </motion.div>
             </Card3D>
           </div>
@@ -260,12 +271,18 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
             {card.title}
           </motion.p>
         </div>
-        <BlurImage
-          alt={card.title}
-          className="absolute inset-0 z-10 object-cover"
-          fill
-          src={card.src}
-        />
+        <div className="pointer-events-none absolute inset-0 z-10">
+          {card.background ? (
+            card.background
+          ) : (
+            <BlurImage
+              alt={card.title}
+              className="h-full w-full object-cover"
+              fill={false}
+              src={card.src ?? ""}
+            />
+          )}
+        </div>
       </motion.button>
     </>
   );

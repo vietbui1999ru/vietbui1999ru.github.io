@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AppleHelloContactEffect } from "@/components/ui/apple-hello-effect";
-import { Check, Copy, Linkedin, Mail } from "lucide-react";
+import { Check, Copy, Linkedin, Mail} from "lucide-react";
+import { SiDiscord } from "@icons-pack/react-simple-icons";
 import { cn } from "@/lib/utils";
 import { CONTACT_CONTENT, CONTACT_BTN_LINK } from "@/data/contactData";
 import { buttonVariants } from "@/components/ui/button";
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/AnimatedModal";
 
 const LINKEDIN_URL = "https://linkedin.com/in/vietbui99";
+const DISCORD_URL = "https://discord.com/users/463366284940410910";
 
 const Contact = () => {
   const email = CONTACT_BTN_LINK.replace(/^mailto:/i, "");
@@ -130,6 +132,18 @@ const Contact = () => {
                 >
                   <Linkedin className="size-5" />
                   LinkedIn
+                </a>
+                <a
+                  href={DISCORD_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "lg" }),
+                    "w-full inline-flex items-center justify-center gap-2",
+                  )}
+                >
+                  <SiDiscord className="size-5" />
+                  Discord
                 </a>
               </div>
             </ModalContent>
