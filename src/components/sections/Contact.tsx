@@ -81,9 +81,9 @@ const Contact = () => {
             </ModalTrigger>
           </div>
           <ModalBody>
-            <ModalContent className="flex flex-col items-center gap-6">
-              <h3 className="text-xl font-semibold">Get in touch</h3>
-              <p className="text-sm text-muted-foreground text-center max-w-md">
+            <ModalContent className="flex flex-col items-center gap-4 sm:gap-6">
+              <h3 className="text-lg sm:text-xl font-semibold">Get in touch</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground text-center max-w-md">
                 {CONTACT_CONTENT}
               </p>
               <div className="w-full max-w-md space-y-3">

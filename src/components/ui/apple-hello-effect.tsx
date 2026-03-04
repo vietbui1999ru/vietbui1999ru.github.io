@@ -62,7 +62,7 @@ function InViewHandwritingAnimation({
     <div
       ref={ref}
       className={cn(
-        "relative w-full max-w-2xl mx-auto flex justify-center",
+        "relative w-full max-w-xs sm:max-w-md md:max-w-2xl mx-auto flex justify-center",
         className,
       )}
       data-name={label}
@@ -70,7 +70,7 @@ function InViewHandwritingAnimation({
       <svg
         key={cycle}
         className={cn(
-          "h-24 w-auto shrink-0 text-foreground",
+          "h-12 w-auto shrink-0 text-foreground sm:h-16 md:h-24",
           svgClassName,
         )}
         fill="none"

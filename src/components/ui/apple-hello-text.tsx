@@ -57,7 +57,12 @@ export default function HandwritingText({
   );
 
   return (
-    <div className={cn("relative", className)}>
+    <div
+      className={cn(
+        "relative w-full max-w-xs sm:max-w-sm md:max-w-md",
+        className,
+      )}
+    >
       <svg
         className="w-full h-auto"
         fill="none"

@@ -26,7 +26,39 @@ const Home = () => {
   const [singularityColorShift, setSingularityColorShift] = useState(1.0);
   const [githubGradientAngle, setGithubGradientAngle] = useState(220);
 
+  const [isTouchOrMobile, setIsTouchOrMobile] = useState(false);
+
   useEffect(() => {
+    const checkIsTouchOrMobile = () => {
+      if (typeof window === "undefined") return;
+      const isCoarsePointer =
+        typeof window.matchMedia !== "undefined"
+          ? window.matchMedia("(pointer: coarse)").matches
+          : false;
+      const isSmallViewport = window.innerWidth < 768;
+      setIsTouchOrMobile(isCoarsePointer || isSmallViewport);
+    };
+
+    checkIsTouchOrMobile();
+    window.addEventListener("resize", checkIsTouchOrMobile);
+    window.addEventListener("orientationchange", checkIsTouchOrMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIsTouchOrMobile);
+      window.removeEventListener("orientationchange", checkIsTouchOrMobile);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isTouchOrMobile) {
+      setSingularitySpeed(0);
+      setSingularityIntensity(0);
+      setSingularitySize(0);
+      setSingularityWaveStrength(0);
+      setSingularityColorShift(0);
+      return;
+    }
+
     const handleScroll = () => {
       const t = Math.min(1, window.scrollY / (window.innerHeight / 2));
       const v =
@@ -44,23 +76,28 @@ const Home = () => {
     handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isTouchOrMobile]);
   return (
-    <div id="home" className="relative min-h-screen w-full">
-      <div
-        className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-        style={{ opacity: singularitySize > 0.25 ? 1 : 0 }}
-        aria-hidden={singularitySize <= 0.25}
-      >
-        <SingularityShaders
-          className="singularity-shader h-full w-full"
-          speed={singularitySpeed}
-          intensity={singularityIntensity}
-          size={singularitySize}
-          waveStrength={singularityWaveStrength}
-          colorShift={singularityColorShift}
-        />
-      </div>
+    <div
+      id="home"
+      className="relative min-h-screen w-full bg-gradient-to-b from-background to-surface/40"
+    >
+      {!isTouchOrMobile && (
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+          style={{ opacity: singularitySize > 0.25 ? 1 : 0 }}
+          aria-hidden={singularitySize <= 0.25}
+        >
+          <SingularityShaders
+            className="singularity-shader h-full w-full"
+            speed={singularitySpeed}
+            intensity={singularityIntensity}
+            size={singularitySize}
+            waveStrength={singularityWaveStrength}
+            colorShift={singularityColorShift}
+          />
+        </div>
+      )}
 
       <div className="relative z-10 flex min-h-screen w-full items-center justify-center px-4">
         <div className="text-center space-y-4 max-w-3xl">

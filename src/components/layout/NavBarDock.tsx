@@ -14,8 +14,8 @@ const NavBarDock = () => {
   const activeHash = useScrollSpy();
 
   return (
-    <div className="hidden md:block fixed top-0 left-0 right-0 w-full z-[9999999] bg-background">
-      <div className="flex items-end justify-between gap-4 px-4 sm:px-6 w-full">
+    <div className="hidden md:block fixed top-0 left-0 right-0 z-40 bg-background">
+      <div className="mx-auto flex w-full max-w-[var(--content-max)] items-end justify-between gap-4 px-4 sm:px-6">
         <div className="flex-1 min-w-0" aria-hidden />
         <div className="flex-none flex items-end justify-center pb-3">
           <Dock

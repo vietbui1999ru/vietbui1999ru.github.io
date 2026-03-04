@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import type React from "react";
+import React from "react";
+import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
 
 export interface Marquee3DImage {
   id: string;
@@ -30,7 +31,32 @@ export function Marquee3D({
   className,
   onImageClick,
 }: Marquee3DProps) {
+  const isTouchOrMobile = useIsMobileOrTouch();
+
   if (images.length === 0) return null;
+
+  if (isTouchOrMobile) {
+    return (
+      <div className={cn("w-full py-8", className)}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {images.map((img) => (
+            <button
+              key={img.id}
+              type="button"
+              className="group relative aspect-square w-full overflow-hidden rounded-xl border border-border/60 bg-card/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              onClick={() => onImageClick?.(img)}
+            >
+              <img
+                src={img.src}
+                alt={img.alt ?? img.id}
+                className="h-full w-full object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const imagesPerColumn = Math.ceil(images.length / columns);
   const columnGroups: Marquee3DImage[][] = [];

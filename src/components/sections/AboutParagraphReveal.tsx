@@ -64,6 +64,7 @@ export function AboutParagraphReveal({
   revealSpan = defaultConfig.revealSpan,
 }: AboutParagraphRevealProps) {
   const ref = React.useRef<HTMLParagraphElement>(null);
+
   const slidePx = useViewportSlideScale(slideOffset);
 
   const { scrollYProgress } = useScroll({

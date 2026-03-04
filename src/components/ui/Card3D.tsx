@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useCallback, type ReactNode, useRef, useState } from "react";
+import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
 
 export interface Card3DProps {
   children: ReactNode;
@@ -20,10 +21,13 @@ export function Card3D({
 }: Card3DProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0 });
+  const isMobileOrTouch = useIsMobileOrTouch();
+
+  const resolvedActive = active && !isMobileOrTouch;
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!active) return;
+      if (!resolvedActive) return;
       const el = ref.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
@@ -34,25 +38,25 @@ export function Card3D({
         rotateX: -y * maxTilt,
       });
     },
-    [active, maxTilt],
+    [resolvedActive, maxTilt],
   );
 
   const handleMouseLeave = useCallback(() => {
-    if (active) setTransform({ rotateX: 0, rotateY: 0 });
-  }, [active]);
+    if (resolvedActive) setTransform({ rotateX: 0, rotateY: 0 });
+  }, [resolvedActive]);
 
   return (
     <div
       ref={ref}
       className={cn(
         "transition-transform duration-150 ease-out",
-        !active && "transition-none",
+        !resolvedActive && "transition-none",
         className,
       )}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={
-        active
+        resolvedActive
           ? {
               transform: `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg)`,
               transformStyle: "preserve-3d",

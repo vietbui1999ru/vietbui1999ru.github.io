@@ -58,7 +58,6 @@ export const ModalTrigger = ({
         className,
       )}
       onClick={() => setOpen(true)}
-      onMouseEnter={() => setOpen(true)}
     >
       {children}
     </button>
@@ -113,7 +112,7 @@ export const ModalBody = ({
               y: 0,
             }}
             className={cn(
-              "min-h-[50%] max-h-[90%] max-w-[95%] md:max-w-[40%] bg-white dark:bg-neutral-950 border border-transparent dark:border-neutral-800 rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
+              "w-full max-w-[95%] md:max-w-[40rem] max-h-[90vh] sm:min-h-[50%] bg-white dark:bg-neutral-950 border border-transparent dark:border-neutral-800 rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
               className,
             )}
             drag="y"
@@ -162,7 +161,12 @@ export const ModalContent = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("flex flex-col flex-1 p-8 md:p-10", className)}>
+    <div
+      className={cn(
+        "flex flex-col flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto",
+        className,
+      )}
+    >
       {children}
     </div>
   );

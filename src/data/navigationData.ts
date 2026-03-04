@@ -25,8 +25,8 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Projects", shortLabel: "Projects", icon: ServerCog, href: "#projects" },
   { label: "Professional Experience", shortLabel: "Work", icon: BriefcaseBusiness, href: "#experience" },
   { label: "Education", shortLabel: "Edu", icon: GraduationCap, href: "#education" },
-  { label: "Blog", shortLabel: "Blog", icon: NotebookPen, href: "#blog" },
   { label: "Gallery", shortLabel: "Gallery", icon: GalleryHorizontal, href: "#gallery" },
+  { label: "Blog", shortLabel: "Blog", icon: NotebookPen, href: "#blog" },
   { label: "Contact", shortLabel: "Contact", icon: UserPen, href: "#contact" },
 ];
 

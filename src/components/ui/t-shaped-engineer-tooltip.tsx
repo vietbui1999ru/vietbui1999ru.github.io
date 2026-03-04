@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
 
 type TShapedEngineerTooltipProps = {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ export function TShapedEngineerTooltip({
 }: TShapedEngineerTooltipProps) {
   const ref = React.useRef<HTMLSpanElement>(null);
   const [open, setOpen] = React.useState(false);
+  const isTouchDevice = useIsMobileOrTouch();
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -46,6 +48,47 @@ export function TShapedEngineerTooltip({
     y.set(relativeY);
   }
 
+  // On touch devices, use a simple click-to-toggle tooltip without 3D motion.
+  if (isTouchDevice) {
+    return (
+      <span
+        ref={ref}
+        className={cn(
+          "relative inline-flex align-baseline underline decoration-orange-400/80 underline-offset-4 bg-gradient-to-r from-orange-500 via-orange-400 to-orange-200 bg-clip-text text-transparent",
+          className,
+        )}
+      >
+        <button
+          type="button"
+          className="inline-flex items-baseline gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          onClick={() => setOpen((prev) => !prev)}
+        >
+          {children}
+        </button>
+        {open && (
+          <div className="absolute left-1/2 top-full z-20 mt-3 -translate-x-1/2 w-72 max-w-[90vw] rounded-xl bg-background/95 p-4 text-left text-xs text-muted-foreground shadow-xl ring-1 ring-border backdrop-blur">
+            <div className="mb-3 flex justify-center">
+              <img
+                src="/t-shaped.png"
+                alt="T-shaped engineer diagram"
+                className="w-full max-w-[14rem] h-auto rounded-lg object-contain ring-1 ring-border/60"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <p className="mb-1 text-sm font-semibold text-foreground">
+              T-shaped engineer
+            </p>
+            <p>
+              Broad curiosity across disciplines with deep expertise in one core
+              craft.
+            </p>
+          </div>
+        )}
+      </span>
+    );
+  }
+
   return (
     <span
       ref={ref}
@@ -65,16 +108,16 @@ export function TShapedEngineerTooltip({
           style={{ rotateX, rotateY }}
           className="pointer-events-none absolute left-1/2 top-full z-20 mt-4 -translate-x-1/2"
         >
-          <div className="overflow-hidden rounded-2xl bg-background/95 shadow-xl ring-1 ring-border backdrop-blur w-96 sm:w-108">
-            <div className="flex flex-col items-center gap-4 p-5 text-center">
+          <div className="overflow-hidden rounded-2xl bg-background/95 shadow-xl ring-1 ring-border backdrop-blur w-full max-w-xs sm:max-w-sm md:max-w-md">
+            <div className="flex flex-col items-center gap-4 p-4 sm:p-5 text-center">
               <img
                 src="/t-shaped.png"
                 alt="T-shaped engineer diagram"
-                className="h-60 w-auto max-w-full rounded-xl object-contain ring-1 ring-border/60"
+                className="w-full h-auto max-h-52 sm:max-h-60 rounded-xl object-contain ring-1 ring-border/60"
                 loading="lazy"
                 decoding="async"
               />
-              <div className="space-y-1">
+              <div className="space-y-1 px-2">
                 <p className="text-sm font-semibold leading-tight">
                   T-shaped engineer
                 </p>
