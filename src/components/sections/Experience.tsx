@@ -43,7 +43,7 @@ const ExperienceTimeline = () => {
           connectorColor="primary"
           iconColor="primary"
           items={items}
-          className="min-h-[600px] w-full max-w-4xl mx-auto flex items-center justify-center"
+          className="min-h-[600px] w-full max-w-8xl mx-auto flex items-center justify-center"
         />
       </div>
     </section>

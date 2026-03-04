@@ -9,22 +9,45 @@ import {
 import { EDUCATION_ITEMS } from "@/data/educationData";
 
 const EducationTimeline = () => {
-  const items: TimelineItem[] = EDUCATION_ITEMS.map((item, idx) => ({
-    id: idx,
-    date: item.date,
-    title: item.title,
-    subtitle: item.school.name,
-    description: item.content + (item.GPA ? `\nGPA: ${item.GPA}` : ""),
-    icon: <GraduationCap className="h-3 w-3" />,
-    status: item.date.toLowerCase().includes("present")
-      ? "in-progress"
-      : "completed",
-    ctaHref:
-      item.featuredLink?.enable && item.featuredLink.url
-        ? item.featuredLink.url
-        : item.school.url,
-    ctaLabel: item.featuredLink?.name ?? "View program",
-  }));
+  const items: TimelineItem[] = EDUCATION_ITEMS.map((item, idx) => {
+    const descriptionBase =
+      item.content ??
+      (item.columns ? item.columns.flat().join(". ") : "") ??
+      "";
+
+    const descriptionWithGpa =
+      descriptionBase + (item.GPA ? `\nGPA: ${item.GPA}` : "");
+
+    const columns =
+      item.columns && item.columns.length > 0
+        ? item.columns
+        : item.content
+          ? [
+              item.content
+                .split(/[.\n]+/)
+                .map((s) => s.trim())
+                .filter(Boolean),
+            ]
+          : undefined;
+
+    return {
+      id: idx,
+      date: item.date,
+      title: item.title,
+      subtitle: item.school.name,
+      description: descriptionWithGpa,
+      contentColumns: columns,
+      icon: <GraduationCap className="h-3 w-3" />,
+      status: item.date.toLowerCase().includes("present")
+        ? "in-progress"
+        : "completed",
+      ctaHref:
+        item.featuredLink?.enable && item.featuredLink.url
+          ? item.featuredLink.url
+          : item.school.url,
+      ctaLabel: item.featuredLink?.name ?? "View program",
+    };
+  });
 
   return (
     <section id="education" className="relative min-h-screen w-full">
@@ -42,7 +65,7 @@ const EducationTimeline = () => {
           connectorColor="accent"
           iconColor="accent"
           items={items}
-          className="min-h-[500px] w-full max-w-4xl mx-auto flex items-center justify-center"
+          className="min-h-[500px] space-y-5 w-full max-w-7xl mx-auto flex items-center justify-center"
         />
       </div>
     </section>

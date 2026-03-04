@@ -14,6 +14,8 @@ export interface TimelineItem {
   /** Secondary line, e.g. company or school/location */
   subtitle?: string;
   description?: string;
+  /** Optional two-column bullet layout (e.g. for education) */
+  contentColumns?: string[][];
   icon?: ReactNode;
   status?: TimelineStatus;
   color?: "primary" | "muted" | "accent";
@@ -44,7 +46,7 @@ export function TimelineLayout({
   return (
     <div
       className={cn(
-        "relative w-full max-w-4xl mx-auto flex flex-col gap-8",
+        "relative w-full max-w-6xl mx-auto flex flex-col gap-8",
         className,
       )}
     >
@@ -73,9 +75,9 @@ export function TimelineLayout({
                 ? "bg-yellow-400"
                 : "bg-muted-foreground/30";
 
-          // Heuristic: split description into bullets
+          // Heuristic: split description into bullets (for single-column layouts)
           let bullets: string[] | null = null;
-          if (item.description) {
+          if (!item.contentColumns && item.description) {
             const byNewline = item.description
               .split(/\n+/)
               .map((s) => s.trim())
@@ -95,34 +97,47 @@ export function TimelineLayout({
             <Card3D active maxTilt={8} className="h-full">
               <div
                 className={cn(
-                  "rounded-xl border bg-card/60 p-4 shadow-sm transition-transform text-center h-full",
+                  "rounded-2xl border bg-card/60 p-5 shadow-sm transition-transform text-center h-full",
                   animate && "animate-in slide-in-from-bottom-2 duration-300",
                 )}
               >
                 <div className="mb-2 space-y-1">
-                  <h3 className="font-semibold leading-tight text-sm md:text-base">
+                  <h3 className="font-semibold leading-tight text-base md:text-lg">
                     {item.title}
                   </h3>
                   {item.subtitle && (
-                    <p className="text-[11px] md:text-xs text-muted-foreground">
+                    <p className="text-xs md:text-sm text-muted-foreground">
                       {item.subtitle}
                     </p>
                   )}
                   {item.date && (
-                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground/80">
+                    <p className="text-xs md:text-sm uppercase tracking-wide text-muted-foreground/80">
                       {item.date}
                     </p>
                   )}
                 </div>
 
-                {bullets ? (
-                  <ul className="mt-2 space-y-1 text-[11px] md:text-xs text-muted-foreground list-disc list-inside text-left">
+                {item.contentColumns && item.contentColumns.length > 0 ? (
+                  <div className="mt-2 grid grid-cols-1 gap-4 text-xs md:text-sm text-muted-foreground text-left md:grid-cols-2">
+                    {item.contentColumns.map((col, colIdx) => (
+                      <ul
+                        key={colIdx}
+                        className="space-y-5 list-disc list-inside"
+                      >
+                        {col.map((b, i) => (
+                          <li key={i}>{b}</li>
+                        ))}
+                      </ul>
+                    ))}
+                  </div>
+                ) : bullets ? (
+                  <ul className="mt-2 space-y-5 text-xs md:text-sm text-muted-foreground list-disc list-inside text-left">
                     {bullets.map((b, i) => (
                       <li key={i}>{b}</li>
                     ))}
                   </ul>
                 ) : item.description ? (
-                  <p className="text-[11px] md:text-xs text-muted-foreground leading-relaxed">
+                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
                     {item.description}
                   </p>
                 ) : null}
@@ -132,7 +147,7 @@ export function TimelineLayout({
                     href={item.ctaHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center justify-center gap-1 text-[11px] text-primary hover:underline min-h-[44px] min-w-[44px]"
+                    className="mt-4 inline-flex items-center justify-center gap-1 text-xs md:text-sm text-primary hover:underline min-h-[44px] min-w-[44px]"
                   >
                     {item.ctaLabel ?? "View details"}
                     <ExternalLink className="h-3 w-3" />

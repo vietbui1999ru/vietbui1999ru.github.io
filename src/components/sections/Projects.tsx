@@ -16,6 +16,7 @@ import {
   type LavaLampBackgroundProps,
 } from "@/components/ui/LavaLampBackground";
 import { PROJECTS_ITEMS, PROJECTS_TITLE } from "@/data/projectsData";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const cleaned = hex.replace("#", "");
@@ -64,6 +65,102 @@ function gradientForIndex(
   return { fromColor, toColor };
 }
 
+function ProjectImageGallery({
+  images,
+  title,
+}: {
+  images: string[];
+  title: string;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateScrollState = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+  }, []);
+
+  useEffect(() => {
+    updateScrollState();
+  }, [images.length, updateScrollState]);
+
+  const scroll = (direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const step = el.clientWidth;
+    el.scrollBy({ left: direction === "left" ? -step : step, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateScrollState);
+    const ro = new ResizeObserver(updateScrollState);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", updateScrollState);
+      ro.disconnect();
+    };
+  }, [updateScrollState]);
+
+  return (
+    <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-black/90">
+      <button
+        type="button"
+        aria-label="Previous image"
+        onClick={() => scroll("left")}
+        className={cn(
+          "absolute inset-y-0 left-0 z-10 flex items-center pl-3 transition-[filter,opacity]",
+          canScrollLeft
+            ? "cursor-pointer opacity-100"
+            : "cursor-default opacity-50 blur-[2px]",
+        )}
+      >
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white">
+          <ChevronLeft className="h-6 w-6" />
+        </div>
+      </button>
+      <button
+        type="button"
+        aria-label="Next image"
+        onClick={() => scroll("right")}
+        className={cn(
+          "absolute inset-y-0 right-0 z-10 flex items-center pr-3 transition-[filter,opacity]",
+          canScrollRight
+            ? "cursor-pointer opacity-100"
+            : "cursor-default opacity-50 blur-[2px]",
+        )}
+      >
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white">
+          <ChevronRight className="h-6 w-6" />
+        </div>
+      </button>
+      <div
+        ref={scrollRef}
+        className="no-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto px-8 py-4"
+        onScroll={updateScrollState}
+      >
+        {images.map((src, i) => (
+          <div
+            key={i}
+            className="relative h-[18rem] w-full flex-shrink-0 snap-center overflow-hidden rounded-xl bg-black"
+          >
+            <BlurImage
+              src={src}
+              alt={`${title} preview ${i + 1}`}
+              className="h-full w-full object-contain"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function projectToCarouselCard(
   project: (typeof PROJECTS_ITEMS)[number],
   index: number,
@@ -93,33 +190,7 @@ function projectToCarouselCard(
           </div>
         )}
         {normalizedImages.length > 1 && (
-          <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-black/90">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white">
-                <ChevronLeft className="h-18 w-18" />
-              </div>
-            </div>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white">
-                <ChevronRight className="h-18 w-18" />
-              </div>
-            </div>
-            <div className="no-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto px-8 py-4">
-              {normalizedImages.map((src, i) => (
-                <div
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={i}
-                  className="relative h-[18rem] w-full flex-shrink-0 snap-center overflow-hidden rounded-xl bg-black"
-                >
-                  <BlurImage
-                    src={src}
-                    alt={`${project.title} preview ${i + 1}`}
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+          <ProjectImageGallery images={normalizedImages} title={project.title} />
         )}
         <p className="text-muted-foreground text-sm leading-relaxed">
           {project.content}

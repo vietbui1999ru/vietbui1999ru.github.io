@@ -30,7 +30,7 @@ const blogPosts = (await getCollection("blog"))
   <Projects client:load />
   <Experience client:load />
   <Education client:load />
-  <Blog client:load posts={blogPosts} />
   <Gallery client:load />
+  <Blog client:load posts={blogPosts} />
   <Contact client:load />
 </BaseLayout>
