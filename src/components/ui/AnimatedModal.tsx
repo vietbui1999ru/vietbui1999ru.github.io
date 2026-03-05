@@ -58,6 +58,7 @@ export const ModalTrigger = ({
         className,
       )}
       onClick={() => setOpen(true)}
+      onMouseEnter={() => setOpen(true)}
     >
       {children}
     </button>
