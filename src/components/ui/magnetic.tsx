@@ -10,7 +10,11 @@ type MagneticProps = {
   strength?: number;
 };
 
-export function Magnetic({ children, className, strength = 20 }: MagneticProps) {
+export function Magnetic({
+  children,
+  className,
+  strength = 20,
+}: MagneticProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -48,4 +52,3 @@ export function Magnetic({ children, className, strength = 20 }: MagneticProps) 
     </motion.div>
   );
 }
-

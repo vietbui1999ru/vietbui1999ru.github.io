@@ -122,7 +122,10 @@ export const ModalBody = ({
             onDragEnd={(_e, info) => {
               const DISMISS_OFFSET = 100;
               const DISMISS_VELOCITY = 500;
-              if (info.offset.y > DISMISS_OFFSET || info.velocity.y > DISMISS_VELOCITY) {
+              if (
+                info.offset.y > DISMISS_OFFSET ||
+                info.velocity.y > DISMISS_VELOCITY
+              ) {
                 setOpen(false);
               }
             }}

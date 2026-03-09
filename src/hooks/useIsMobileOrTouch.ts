@@ -34,4 +34,3 @@ export function useIsMobileOrTouch(breakpoint = 768): boolean {
 
   return isMobile;
 }
-

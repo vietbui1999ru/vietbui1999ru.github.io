@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AppleHelloContactEffect } from "@/components/ui/apple-hello-effect";
-import { Check, Copy, Linkedin, Mail} from "lucide-react";
+import { Check, Copy, Linkedin, Mail } from "lucide-react";
 import { SiDiscord } from "@icons-pack/react-simple-icons";
 import { cn } from "@/lib/utils";
 import { CONTACT_CONTENT, CONTACT_BTN_LINK } from "@/data/contactData";

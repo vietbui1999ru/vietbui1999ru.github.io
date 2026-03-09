@@ -26,7 +26,9 @@ const createBlobConfigs = (): BlobConfig[] =>
     const size = Math.max(24, sizeBase + sizeJitter);
 
     const isLeftSide = i % 2 === 0;
-    const horizontalBase = isLeftSide ? randomInRange(15, 40) : randomInRange(55, 85);
+    const horizontalBase = isLeftSide
+      ? randomInRange(15, 40)
+      : randomInRange(55, 85);
 
     return {
       width: size,
@@ -95,11 +97,7 @@ export const LavaLampBackground: React.FC<LavaLampBackgroundProps> = ({
       >
         <defs>
           <filter id="lava-card-goo">
-            <feGaussianBlur
-              in="SourceGraphic"
-              stdDeviation="8"
-              result="blur"
-            />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
             <feColorMatrix
               in="blur"
               mode="matrix"
@@ -113,4 +111,3 @@ export const LavaLampBackground: React.FC<LavaLampBackgroundProps> = ({
     </div>
   );
 };
-

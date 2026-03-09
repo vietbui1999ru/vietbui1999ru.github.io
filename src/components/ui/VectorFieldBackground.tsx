@@ -249,7 +249,13 @@ export function VectorFieldBackground({
 
     ctx.restore();
     rafRef.current = requestAnimationFrame(draw);
-  }, [field, effectiveGrid, arrowScale, effectiveCursorEnabled, cursorAttraction]);
+  }, [
+    field,
+    effectiveGrid,
+    arrowScale,
+    effectiveCursorEnabled,
+    cursorAttraction,
+  ]);
 
   useEffect(() => {
     if (isMobile) {

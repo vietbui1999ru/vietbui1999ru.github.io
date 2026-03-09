@@ -67,18 +67,18 @@
 
 ## Files to Modify
 
-| File | Changes |
-|------|---------|
-| `BaseLayout.astro` | Import MobileBottomNav, adjust main padding |
-| `NavBarDock.tsx` | Add `hidden md:block` wrapper |
-| `MobileBottomNav.tsx` | **NEW** — bottom tab bar component |
-| `Home.tsx` | Fluid text sizing |
-| `TimelineLayout.tsx` | Left-rail mobile layout |
-| `Gallery.tsx` | Responsive column count |
-| `Marquee3D.tsx` | Accept dynamic columns |
-| `CardsCarousel.tsx` | Scroll snap, mobile card size |
-| `AnimatedModal.tsx` | Mobile max-width, swipe dismiss |
-| `Contact.tsx` | Modal touch targets |
-| `VectorFieldBackground.tsx` | Mobile grid reduction, reduced-motion |
-| `AboutParagraphReveal.tsx` | Mobile slide offset |
-| `global.css` | Reduced-motion media query, safe-area |
+| File                        | Changes                                     |
+| --------------------------- | ------------------------------------------- |
+| `BaseLayout.astro`          | Import MobileBottomNav, adjust main padding |
+| `NavBarDock.tsx`            | Add `hidden md:block` wrapper               |
+| `MobileBottomNav.tsx`       | **NEW** — bottom tab bar component          |
+| `Home.tsx`                  | Fluid text sizing                           |
+| `TimelineLayout.tsx`        | Left-rail mobile layout                     |
+| `Gallery.tsx`               | Responsive column count                     |
+| `Marquee3D.tsx`             | Accept dynamic columns                      |
+| `CardsCarousel.tsx`         | Scroll snap, mobile card size               |
+| `AnimatedModal.tsx`         | Mobile max-width, swipe dismiss             |
+| `Contact.tsx`               | Modal touch targets                         |
+| `VectorFieldBackground.tsx` | Mobile grid reduction, reduced-motion       |
+| `AboutParagraphReveal.tsx`  | Mobile slide offset                         |
+| `global.css`                | Reduced-motion media query, safe-area       |

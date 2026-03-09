@@ -92,7 +92,10 @@ function ProjectImageGallery({
     const el = scrollRef.current;
     if (!el) return;
     const step = el.clientWidth;
-    el.scrollBy({ left: direction === "left" ? -step : step, behavior: "smooth" });
+    el.scrollBy({
+      left: direction === "left" ? -step : step,
+      behavior: "smooth",
+    });
   };
 
   useEffect(() => {
@@ -190,7 +193,10 @@ function projectToCarouselCard(
           </div>
         )}
         {normalizedImages.length > 1 && (
-          <ProjectImageGallery images={normalizedImages} title={project.title} />
+          <ProjectImageGallery
+            images={normalizedImages}
+            title={project.title}
+          />
         )}
         <p className="text-muted-foreground text-sm leading-relaxed">
           {project.content}

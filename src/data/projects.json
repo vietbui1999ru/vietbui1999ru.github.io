@@ -1,15 +1,24 @@
 {
   "title": "What I've been working on recently",
   "items": [
-    
-    { 
+    {
       "images": [
         "https://raw.githubusercontent.com/vietbui1999ru/omega-sigma-alpha-4983/main/docs/dashboard-screenshot.png",
         "https://raw.githubusercontent.com/vietbui1999ru/omega-sigma-alpha-4983/main/docs/mrr_accuracy_comparison.png"
       ],
-      "title" : "Python Full-Stack Stripe MRR Dashboard",
+      "title": "Python Full-Stack Stripe MRR Dashboard",
       "content": "I built a Stripe MRR Dashboard using React and Recharts. I designed a customer simulation and a custom SQL ETL pipeline to analyze customer data.",
-      "badges": ["Python", "React", "Recharts", "TypeScript", "FastAPI", "Stripe API", "Google Cloud Platform", "Google BigQuery", "MySQL"],
+      "badges": [
+        "Python",
+        "React",
+        "Recharts",
+        "TypeScript",
+        "FastAPI",
+        "Stripe API",
+        "Google Cloud Platform",
+        "Google BigQuery",
+        "MySQL"
+      ],
       "links": [
         {
           "icon": "fab fa-github",
@@ -24,7 +33,22 @@
       ],
       "title": "Python Full-Stack PDE Heat & Wave Physics Simulation Platform",
       "content": "I constructed a PDE Heat & Wave Physics Simulation Platform using React and Recharts. I proved and implemented Forward/Backward Finite Difference methods for solving the Heat and Wave PDEs. I created a custom simulation engine that allows userse to set the configurations and boundaries for their simulations. I constructed different visualization methods and animation widgets for comparisons and performance analysis.",
-      "badges": ["Python", "React", "Plotly", "Tailwind CSS", "TypeScript", "FastAPI", "Axios", "Numpy", "Scipy", "Matplotlib", "Pandas", "Nginx", "Docker", "Makefile"],
+      "badges": [
+        "Python",
+        "React",
+        "Plotly",
+        "Tailwind CSS",
+        "TypeScript",
+        "FastAPI",
+        "Axios",
+        "Numpy",
+        "Scipy",
+        "Matplotlib",
+        "Pandas",
+        "Nginx",
+        "Docker",
+        "Makefile"
+      ],
       "links": [
         {
           "icon": "fab fa-github",
@@ -50,16 +74,20 @@
         "Playwright"
       ],
       "links": [
-        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/hosted-dashboard" }
+        {
+          "icon": "fab fa-github",
+          "url": "https://github.com/vietbui1999ru/hosted-dashboard"
+        }
       ]
     },
-    { "images": [
-      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-14-17%20Discover%20Music%20App.png",
-      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-15-05%20Discover%20Music%20App.png",
-      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-15-46%20Discover%20Music%20App.png",
-      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-16-18%20Discover%20Music%20App.png",
-      "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-24-24%20Discover%20Music%20App.png"
-    ],
+    {
+      "images": [
+        "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-14-17%20Discover%20Music%20App.png",
+        "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-15-05%20Discover%20Music%20App.png",
+        "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-15-46%20Discover%20Music%20App.png",
+        "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-16-18%20Discover%20Music%20App.png",
+        "https://raw.githubusercontent.com/vietbui1999ru/spotifyswipe/main/demo/Screenshot%202026-03-03%20at%2017-24-24%20Discover%20Music%20App.png"
+      ],
       "title": "TypeScript Full-Stack Spotify Web Application",
       "content": "I built a Spotify Web Application using Next.js, React, and Neon. The platform lets users discover new music from Spotify or LastFm, It allows users to save playlists to the platform and their own providers. The users also can share their playlists and like, comment, and add other people's playlists. There is also an admin mode for monitoring and analyzing traffic data and user interactions. ",
       "badges": [
@@ -102,7 +130,8 @@
         }
       ]
     },
-    { "title" : "LangChain AI-assisted College Student Course Scheduler and Planner",
+    {
+      "title": "LangChain AI-assisted College Student Course Scheduler and Planner",
       "content": "",
       "badges": [
         "LangChain",
@@ -115,8 +144,7 @@
         "Docker",
         "Google Cloud Platform",
         "Gemini API"
-      ]
-      ,
+      ],
       "links": [
         {
           "icon": "fab fa-github",
@@ -163,6 +191,5 @@
         }
       ]
     }
-
   ]
 }

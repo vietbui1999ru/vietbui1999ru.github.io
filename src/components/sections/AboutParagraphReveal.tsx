@@ -9,7 +9,9 @@ function useViewportSlideScale(basePx: number): number {
   const [slidePx, setSlidePx] = React.useState(basePx);
   React.useEffect(() => {
     const update = () =>
-      setSlidePx(Math.round((basePx / 800) * Math.min(window.innerWidth, 1920)));
+      setSlidePx(
+        Math.round((basePx / 800) * Math.min(window.innerWidth, 1920)),
+      );
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -32,7 +34,9 @@ export type AboutParagraphRevealConfig = {
 };
 
 // To make all words/paragraphs reveal at ~30-40% of scroll, set scrollOffsetEnd to 0.6 (i.e., 60% down is already fully revealed)
-const defaultConfig: Required<Omit<AboutParagraphRevealConfig, "containerEnd">> & {
+const defaultConfig: Required<
+  Omit<AboutParagraphRevealConfig, "containerEnd">
+> & {
   containerEnd?: number;
 } = {
   scrollOffsetStart: 0,
