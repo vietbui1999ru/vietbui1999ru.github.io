@@ -108,17 +108,17 @@ export function TShapedEngineerTooltip({
           style={{ rotateX, rotateY }}
           className="pointer-events-none absolute left-1/2 top-full z-20 mt-4 -translate-x-1/2"
         >
-          <div className="overflow-hidden rounded-2xl bg-background/95 shadow-xl ring-1 ring-border backdrop-blur w-full max-w-xs sm:max-w-sm md:max-w-md">
-            <div className="flex flex-col items-center gap-4 p-4 sm:p-5 text-center">
+          <div className="overflow-hidden rounded-2xl bg-background/95 shadow-xl ring-1 ring-border backdrop-blur w-140 sm:w-96">
+            <div className="flex flex-col items-center gap-4 p-5 text-center">
               <img
                 src="/t-shaped.png"
                 alt="T-shaped engineer diagram"
-                className="w-full h-auto max-h-52 sm:max-h-60 rounded-xl object-contain ring-1 ring-border/60"
+                className="h-65 w-auto max-w-full rounded-xl object-contain ring-1 ring-border/60"
                 loading="lazy"
                 decoding="async"
               />
-              <div className="space-y-1 px-2">
-                <p className="text-sm font-semibold leading-tight">
+              <div className="space-y-1">
+                <p className="text-xs font-semibold leading-tight">
                   T-shaped engineer
                 </p>
                 <p className="text-sm text-muted-foreground leading-snug max-w-[22rem] mx-auto">
