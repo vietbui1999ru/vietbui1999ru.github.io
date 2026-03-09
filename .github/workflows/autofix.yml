@@ -27,7 +27,7 @@ jobs:
       - name: Run pngquant
         run: |
           shopt -s globstar
-          pngquant -f --ext .png --skip-if-larger -- **/*.png
+          pngquant -f --ext .png -- **/*.png
 
       # Limiting the runner's permissions and pinning the autofix action to a specific commit hash instead of a tag is not required,
       # but makes our workflow more resilient against supply chain attacks
