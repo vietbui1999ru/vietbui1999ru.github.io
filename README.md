@@ -1,8 +1,9 @@
-## My Personal Website
+## <p style="text-align: center;">My Personal Website</p>
+
 
 ---
 
-# What are you waiting for? Just click on this [link](https://vietbui1999ru.github.io)
+# <p style="text-align: center;">What are you waiting for? Just click on this [link](https://vietbui1999ru.github.io)</p>
 
 ---
 
