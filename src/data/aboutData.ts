@@ -5,7 +5,7 @@
 export const ABOUT_TITLE = "About Me";
 
 export const ABOUT_TAGLINE =
-  "I'm a New Graduate Software Engineer with a passion for Simulations and Automation.";
+  "I'm a Software Engineer with a passion for all things Simulations and Automation.";
 
 export const ABOUT_PARAGRAPHS = [
   "I graduated with B.A & M.S degrees in Computer Science & Applied Mathematics in 2025",
