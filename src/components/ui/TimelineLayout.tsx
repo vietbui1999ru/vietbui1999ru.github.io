@@ -7,6 +7,13 @@ import { Card3D } from "@/components/ui/Card3D";
 
 export type TimelineStatus = "completed" | "in-progress" | "pending";
 
+export interface TimelineItemTag {
+  label: string;
+  href?: string;
+  /** Native tooltip (e.g. from experience.json `tooltip`) */
+  title?: string;
+}
+
 export interface TimelineItem {
   id: string | number;
   date?: string;
@@ -16,6 +23,8 @@ export interface TimelineItem {
   description?: string;
   /** Optional two-column bullet layout (e.g. for education) */
   contentColumns?: string[][];
+  /** Optional skill/topic pills (e.g. experience job tags) */
+  tags?: TimelineItemTag[];
   icon?: ReactNode;
   status?: TimelineStatus;
   color?: "primary" | "muted" | "accent";
@@ -140,6 +149,39 @@ export function TimelineLayout({
                   <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
                     {item.description}
                   </p>
+                ) : null}
+
+                {item.tags && item.tags.length > 0 ? (
+                  <div className="mt-4 flex flex-wrap justify-center gap-2">
+                    {item.tags.map((tag, i) => {
+                      const pillClass =
+                        "inline-flex items-center rounded-full border border-white/15 bg-white/[0.06] px-3 py-1 text-[11px] md:text-xs font-medium text-neutral-100";
+                      const tip = tag.title ?? tag.label;
+                      return tag.href ? (
+                        <a
+                          key={`${tag.label}-${i}`}
+                          href={tag.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={cn(
+                            pillClass,
+                            "transition-colors hover:border-white/25 hover:bg-white/[0.1]",
+                          )}
+                          title={tip}
+                        >
+                          {tag.label}
+                        </a>
+                      ) : (
+                        <span
+                          key={`${tag.label}-${i}`}
+                          className={pillClass}
+                          title={tip}
+                        >
+                          {tag.label}
+                        </span>
+                      );
+                    })}
+                  </div>
                 ) : null}
 
                 {item.ctaHref && (

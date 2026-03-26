@@ -6,12 +6,16 @@ import {
   TimelineLayout,
   type TimelineItem,
 } from "@/components/ui/TimelineLayout";
-import { EXPERIENCE_ITEMS } from "@/data/experienceData";
+import {
+  EXPERIENCE_ITEMS,
+  type ExperienceTag,
+} from "@/data/experienceData";
 
 type ExperienceJobLike = {
   name?: string;
   date?: string;
   content?: string;
+  tags?: ExperienceTag[];
 };
 
 type ExperienceCompanyLike = {
@@ -43,12 +47,22 @@ function collectTimelineItems(
     if (!title) return;
 
     const date = entry.date ?? "";
+    const tags =
+      Array.isArray(entry.tags) && entry.tags.length > 0
+        ? entry.tags.map((t) => ({
+            label: t.name,
+            href: t.url,
+            title: t.tooltip,
+          }))
+        : undefined;
+
     output.push({
       id: `${companyName}-${idx}-${title}`,
       date,
       title,
       subtitle: companyName,
       description: entry.content ?? "",
+      tags,
       icon: <BriefcaseBusiness className="h-3 w-3" />,
       status: date.toLowerCase().includes("present") ? "in-progress" : "completed",
     });
