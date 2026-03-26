@@ -6,10 +6,7 @@ import {
   TimelineLayout,
   type TimelineItem,
 } from "@/components/ui/TimelineLayout";
-import {
-  EXPERIENCE_ITEMS,
-  type ExperienceTag,
-} from "@/data/experienceData";
+import { EXPERIENCE_ITEMS, type ExperienceTag } from "@/data/experienceData";
 
 type ExperienceJobLike = {
   name?: string;
@@ -64,7 +61,9 @@ function collectTimelineItems(
       description: entry.content ?? "",
       tags,
       icon: <BriefcaseBusiness className="h-3 w-3" />,
-      status: date.toLowerCase().includes("present") ? "in-progress" : "completed",
+      status: date.toLowerCase().includes("present")
+        ? "in-progress"
+        : "completed",
     });
   });
 }
