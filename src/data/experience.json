@@ -1,75 +1,184 @@
 {
   "items": [
     {
-      "company": "Carboncopies",
-      "companyUrl": "https://carboncopies.org",
+      "company": "Gitlab - CodePath",
+      "companyUrl": "https://gitlab.com",
       "jobs": [
         {
-          "name": "Complex Systems Research Engineer",
-          "date": "July 2025 - present",
-          "content": "Working as a Research Engineer at Carboncopies Foundation, San Francisco, CA. Jumping around Departments to help with simulation, data, software, and platform development & support. Researching on current Computational Neuroscience work and papers. Emulating biophysical brain neurons and networks of neurons and building Pipelines for analyzing the simulation data. Presenting and discussing research findings with the teams in weekly stand-ups.",
-          "info": { "content": "Working as a Research Engineer" },
+          "name": "Gitlab Community-Edition Open-Source Contributor",
+          "date": "February 2026 - present",
+          "content": "Currently volunteering and being mentored by Gitlab and CodePath experienced Developers to help contribute to the open-source codebase of Gitlab Community-Edition. Working on the Gitlab Community-Edition's documentation, and contributing to the Gitlab Community-Edition's codebase.",
+          "info": {
+            "content": "Currently volunteering and being mentored by Gitlab and CodePath experienced Developers"
+          },
           "tags": [
-            {
-              "name": "Python",
-              "url": "https://python.org/",
-              "tooltip": "Engine built with Python"
-            },
             {
               "name": "GitLab",
               "url": "https://gitlab.com/",
               "tooltip": "GitLab"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "company": "University of Dayton",
-      "companyUrl": "https://udayton.edu",
-      "jobs": [
-        {
-          "name": "Research Assistant & Teaching Assistant",
-          "date": "Aug 2023 - Aug 2025",
-          "content": "Acquired funding for research and received full tuition-assistantship for my Masters as a Graduate Research Assistant for Reliable Autonomous Lab at the University of Dayton. Developed Formal Verification Frameworks in Rocq Proof Assistant for verifying simulated Softwares. Co-authored a Research Paper published to KSE2024 on reducing model bias with Reinforcement Learning with white-noise injections. Instructed and guided graduate & undergraduate students for Intro to Computer Science, Safety & Security, Formal Verification as a Teaching Assistant. Project Mentor for an infrastructure collision detection research project leveraging Nivida's Jetson Nano with CUDA and Python.",
-
-          "info": { "content": "Worked as a Research Assistant" },
-          "tags": [
-            {
-              "name": "Python",
-              "url": "https://python.org/",
-              "tooltip": "Python"
             },
             {
-              "name": "GitHub",
-              "url": "https://github.com/",
-              "tooltip": "GitHub"
+              "name": "CodePath",
+              "url": "https://codepath.com/",
+              "tooltip": "CodePath"
             },
             {
-              "name": "NVIDIA",
-              "url": "https://nvidia.com/",
-              "tooltip": "NVIDIA"
+              "name": "Ruby",
+              "url": "https://ruby-lang.org/",
+              "tooltip": "Ruby"
+            },
+            {
+              "name": "Git",
+              "url": "https://git-scm.com/",
+              "tooltip": "Git"
+            },
+            {
+              "name": "Ansible",
+              "url": "https://www.ansible.com/",
+              "tooltip": "Ansible"
+            },
+            {
+              "name": "Terraform",
+              "url": "https://www.terraform.io/",
+              "tooltip": "Terraform"
+            },
+            {
+              "name": "CI/CD & Production Testing Pipelines",
+              "tooltip": "CI/CD & Production Testing Pipelines"
+            },
+            {
+              "name": "LLMs",
+              "tooltip": "Large Language Models"
             }
           ]
-        }
-      ]
-    },
-    {
-      "company": "Augustana College",
-      "companyUrl": "https://augustana.edu",
-      "jobs": [
+        },
         {
-          "name": "Research Assistant & Peer Tutor",
-          "date": "Aug 2020 - May 2023",
-          "content": "Participated in the college's funded Independent Research (Beling Scholar) during the Summer. Presented research at Illinois' Chapter of Mathematics Association of America (MAA) on the derivation and estimation of the elliptic integral of a swinging pendulum. Worked part-time as a Peer Tutor for the department of Computer Science & Mathematics. Provided 1-on-1 study sessions for students in Data Structures & Algorithms, Intro to Statistics, Math Modelling, Differential Equations, Discrete Math, & Calculus 1-3. Drop-in tutor for Computer Science & Mathematics for over 300+ students over 3 years. Worked as an IT Help Desk Technician for the college's IT Department.",
-          "info": {
-            "content": "Worked, Researched, and Tutored students during my Bachelors."
-          },
-          "tags": [
-            { "name": "Research", "tooltip": "Research" },
-            { "name": "Tutoring", "tooltip": "Tutoring" },
-            { "name": "Students", "tooltip": "Students" },
-            { "name": "Presentation", "tooltip": "Presentation" }
+          "company": "Carboncopies",
+          "companyUrl": "https://carboncopies.org",
+          "jobs": [
+            {
+              "name": "Complex Systems Research Engineer",
+              "date": "July 2025 - present",
+              "content": "Working as a Research Engineer at Carboncopies Foundation, San Francisco, CA. Jumping around Departments to help with simulation, data, software, and platform development & support. Researching on current Computational Neuroscience work and papers. Emulating biophysical brain neurons and networks of neurons and building Pipelines for analyzing the simulation data. Presenting and discussing research findings with the teams in weekly stand-ups.",
+              "info": {
+                "content": "Working as a Research Engineer"
+              },
+              "tags": [
+                {
+                  "name": "Python",
+                  "url": "https://python.org/",
+                  "tooltip": "Engine built with Python"
+                },
+                {
+                  "name": "GitLab",
+                  "url": "https://gitlab.com/",
+                  "tooltip": "GitLab"
+                },
+                {
+                  "name": "Proxmox",
+                  "url": "https://www.proxmox.com/",
+                  "tooltip": "Proxmox"
+                },
+                {
+                  "name": "Neuromatch",
+                  "url": "https://neuromatch.io/",
+                  "tooltip": "Neuromatch"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "company": "University of Dayton",
+          "companyUrl": "https://udayton.edu",
+          "jobs": [
+            {
+              "name": "Research Assistant & Teaching Assistant",
+              "date": "Aug 2023 - Aug 2025",
+              "content": "Acquired funding for research and received full tuition-assistantship for my Masters as a Graduate Research Assistant for Reliable Autonomous Lab at the University of Dayton. Developed Formal Verification Frameworks in Rocq Proof Assistant for verifying simulated Softwares. Co-authored a Research Paper published to KSE2024 on reducing model bias with Reinforcement Learning with white-noise injections. Instructed and guided graduate & undergraduate students for Intro to Computer Science, Safety & Security, Formal Verification as a Teaching Assistant. Project Mentor for an infrastructure collision detection research project leveraging Nivida's Jetson Nano with CUDA and Python.",
+              "info": {
+                "content": "Worked as a Research Assistant"
+              },
+              "tags": [
+                {
+                  "name": "Rocq Proof Assistant",
+                  "url": "https://rocq.org/",
+                  "tooltip": "Rocq Proof Assistant"
+                },
+                {
+                  "name": "NVIDIA & CUDA",
+                  "url": "https://nvidia.com/",
+                  "tooltip": "NVIDIA"
+                },
+                {
+                  "name": "TypeScript & Web Assembly",
+                  "url": "https://typescriptlang.org/",
+                  "tooltip": "TypeScript & Web Assembly"
+                },
+                {
+                  "name": "NuSMV",
+                  "url": "https://nusmv.eecs.berkeley.edu/",
+                  "tooltip": "NuSMV"
+                },
+                {
+                  "name": "MatLab - SimuLink",
+                  "url": "https://www.mathworks.com/",
+                  "tooltip": "MatLab"
+                },
+                {
+                  "name": "Golang",
+                  "url": "https://golang.org/",
+                  "tooltip": "Golang"
+                },
+                {
+                  "name": "Python",
+                  "url": "https://python.org/",
+                  "tooltip": "Python"
+                },
+                {
+                  "name": "PyTorch",
+                  "url": "https://pytorch.org/",
+                  "tooltip": "PyTorch"
+                },
+                {
+                  "name": "GitHub",
+                  "url": "https://github.com/",
+                  "tooltip": "GitHub"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "company": "Augustana College",
+          "companyUrl": "https://augustana.edu",
+          "jobs": [
+            {
+              "name": "Research Assistant & Peer Tutor",
+              "date": "Aug 2020 - May 2023",
+              "content": "Participated in the college's funded Independent Research (Beling Scholar) during the Summer. Presented research at Illinois' Chapter of Mathematics Association of America (MAA) on the derivation and estimation of the elliptic integral of a swinging pendulum. Worked part-time as a Peer Tutor for the department of Computer Science & Mathematics. Provided 1-on-1 study sessions for students in Data Structures & Algorithms, Intro to Statistics, Math Modelling, Differential Equations, Discrete Math, & Calculus 1-3. Drop-in tutor for Computer Science & Mathematics for over 300+ students over 3 years. Worked as an IT Help Desk Technician for the college's IT Department.",
+              "info": {
+                "content": "Worked, Researched, and Tutored students during my Bachelors."
+              },
+              "tags": [
+                {
+                  "name": "Research",
+                  "tooltip": "Research"
+                },
+                {
+                  "name": "Tutoring",
+                  "tooltip": "Tutoring"
+                },
+                {
+                  "name": "Students",
+                  "tooltip": "Students"
+                },
+                {
+                  "name": "Presentation",
+                  "tooltip": "Presentation"
+                }
+              ]
+            }
           ]
         }
       ]
