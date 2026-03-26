@@ -8,23 +8,58 @@ import {
 } from "@/components/ui/TimelineLayout";
 import { EXPERIENCE_ITEMS } from "@/data/experienceData";
 
+type ExperienceJobLike = {
+  name?: string;
+  date?: string;
+  content?: string;
+};
+
+type ExperienceCompanyLike = {
+  company?: string;
+  jobs?: Array<ExperienceJobLike | ExperienceCompanyLike>;
+};
+
+function collectTimelineItems(
+  companyLike: ExperienceCompanyLike,
+  output: TimelineItem[],
+) {
+  const companyName = companyLike.company ?? "Unknown";
+  const jobs = Array.isArray(companyLike.jobs) ? companyLike.jobs : [];
+
+  jobs.forEach((entry, idx) => {
+    // Support legacy/mixed JSON where nested companies can appear inside jobs.
+    if ("jobs" in entry && Array.isArray(entry.jobs)) {
+      collectTimelineItems(
+        {
+          company: entry.company ?? companyName,
+          jobs: entry.jobs,
+        },
+        output,
+      );
+      return;
+    }
+
+    const title = entry.name?.trim();
+    if (!title) return;
+
+    const date = entry.date ?? "";
+    output.push({
+      id: `${companyName}-${idx}-${title}`,
+      date,
+      title,
+      subtitle: companyName,
+      description: entry.content ?? "",
+      icon: <BriefcaseBusiness className="h-3 w-3" />,
+      status: date.toLowerCase().includes("present") ? "in-progress" : "completed",
+    });
+  });
+}
+
 const ExperienceTimeline = () => {
   const items: TimelineItem[] = [];
 
   EXPERIENCE_ITEMS.forEach((employer) => {
-    employer.jobs.forEach((job, idx) => {
-      items.push({
-        id: `${employer.company}-${idx}`,
-        date: job.date,
-        title: job.name,
-        subtitle: employer.company,
-        description: job.content,
-        icon: <BriefcaseBusiness className="h-3 w-3" />,
-        status: job.date.toLowerCase().includes("present")
-          ? "in-progress"
-          : "completed",
-      });
-    });
+    collectTimelineItems(employer, items);
   });
 
   return (
