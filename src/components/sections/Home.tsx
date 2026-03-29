@@ -5,7 +5,7 @@ import GradientText from "@/components/ui/GradientText";
 import TypingText from "@/components/ui/TypingText";
 import { Magnetic } from "@/components/ui/magnetic";
 import { useEffect, useState } from "react";
-import { SiGithub } from "@icons-pack/react-simple-icons";
+import { SiGithub, SiGitlab } from "@icons-pack/react-simple-icons";
 import {
   INTRO_GRADIENT,
   INTRO_INITIAL_DELAY,
@@ -18,6 +18,8 @@ import {
   VIET_GRADIENT,
 } from "@/data/homeData";
 
+const GITLAB_PROFILE_URL = "https://gitlab.com/vietbui1999ru";
+
 const Home = () => {
   const [singularitySpeed, setSingularitySpeed] = useState(1.0);
   const [singularityIntensity, setSingularityIntensity] = useState(1.0);
@@ -25,6 +27,7 @@ const Home = () => {
   const [singularityWaveStrength, setSingularityWaveStrength] = useState(1.0);
   const [singularityColorShift, setSingularityColorShift] = useState(1.0);
   const [githubGradientAngle, setGithubGradientAngle] = useState(220);
+  const [gitlabGradientAngle, setGitlabGradientAngle] = useState(220);
 
   const [isTouchOrMobile, setIsTouchOrMobile] = useState(false);
 
@@ -128,34 +131,68 @@ const Home = () => {
           </p>
           <div className="mt-4 flex justify-center">
             <div className="flex flex-col items-center gap-3">
-              <Magnetic strength={18}>
-                <a
-                  href="https://github.com/vietbui1999ru"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-medium shadow-md backdrop-blur transition hover:border-white/30 hover:bg-white/5"
-                  aria-label="View Viet Bui's GitHub profile"
-                  onMouseMove={(event) => {
-                    const bounds = event.currentTarget.getBoundingClientRect();
-                    const relativeX =
-                      (event.clientX - bounds.left) / Math.max(bounds.width, 1);
-                    const clampedX = Math.min(Math.max(relativeX, 0), 1);
-                    const angle = 180 + clampedX * 180;
-                    setGithubGradientAngle(angle);
-                  }}
-                  onMouseLeave={() => setGithubGradientAngle(220)}
-                >
-                  <SiGithub className="h-5 w-5 text-slate-100" />
-                  <span
-                    className="bg-clip-text text-transparent"
-                    style={{
-                      backgroundImage: `linear-gradient(${githubGradientAngle}deg, #f5f5f5, #d4d4d8, #a1a1aa)`,
+              <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Magnetic strength={18}>
+                  <a
+                    href="https://github.com/vietbui1999ru"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-medium shadow-md backdrop-blur transition hover:border-white/30 hover:bg-white/5"
+                    aria-label="View Viet Bui's GitHub profile"
+                    onMouseMove={(event) => {
+                      const bounds =
+                        event.currentTarget.getBoundingClientRect();
+                      const relativeX =
+                        (event.clientX - bounds.left) /
+                        Math.max(bounds.width, 1);
+                      const clampedX = Math.min(Math.max(relativeX, 0), 1);
+                      const angle = 180 + clampedX * 180;
+                      setGithubGradientAngle(angle);
                     }}
+                    onMouseLeave={() => setGithubGradientAngle(220)}
                   >
-                    My GitHub profile
-                  </span>
-                </a>
-              </Magnetic>
+                    <SiGithub className="h-5 w-5 text-slate-100" />
+                    <span
+                      className="bg-clip-text text-transparent"
+                      style={{
+                        backgroundImage: `linear-gradient(${githubGradientAngle}deg, #f5f5f5, #d4d4d8, #a1a1aa)`,
+                      }}
+                    >
+                      My GitHub profile
+                    </span>
+                  </a>
+                </Magnetic>
+                <Magnetic strength={18}>
+                  <a
+                    href={GITLAB_PROFILE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-medium shadow-md backdrop-blur transition hover:border-white/30 hover:bg-white/5"
+                    aria-label="View Viet Bui's GitLab profile"
+                    onMouseMove={(event) => {
+                      const bounds =
+                        event.currentTarget.getBoundingClientRect();
+                      const relativeX =
+                        (event.clientX - bounds.left) /
+                        Math.max(bounds.width, 1);
+                      const clampedX = Math.min(Math.max(relativeX, 0), 1);
+                      const angle = 180 + clampedX * 180;
+                      setGitlabGradientAngle(angle);
+                    }}
+                    onMouseLeave={() => setGitlabGradientAngle(220)}
+                  >
+                    <SiGitlab className="h-5 w-5 text-[#FC6D26]" />
+                    <span
+                      className="bg-clip-text text-transparent"
+                      style={{
+                        backgroundImage: `linear-gradient(${gitlabGradientAngle}deg, #fff7ed, #fdba74, #fb923c)`,
+                      }}
+                    >
+                      My GitLab profile
+                    </span>
+                  </a>
+                </Magnetic>
+              </div>
               <button
                 type="button"
                 className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-1.5 text-xs font-medium text-emerald-100 shadow-sm backdrop-blur-sm"
