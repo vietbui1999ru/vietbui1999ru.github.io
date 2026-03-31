@@ -61,7 +61,7 @@ const Contact = () => {
   return (
     <section id="contact" className="relative min-h-screen w-full">
       <div className="section-content">
-        <header className="mb-12 flex flex-col items-center gap-4 text-center">
+        <header className="mb-12 flex flex-col justify-center items-center gap-4 text-center">
           <AppleHelloContactEffect className="w-full" />
           <p className="mx-auto p-4 max-w-3xl text-lg text-muted-foreground">
             {CONTACT_CONTENT}
