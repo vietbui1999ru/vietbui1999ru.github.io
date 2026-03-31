@@ -63,7 +63,7 @@ const Contact = () => {
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloContactEffect className="w-full" />
-          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
+          <p className="mx-auto p-4 max-w-3xl text-lg text-muted-foreground">
             {CONTACT_CONTENT}
           </p>
         </header>
