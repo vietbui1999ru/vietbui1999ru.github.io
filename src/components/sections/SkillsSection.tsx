@@ -6,6 +6,7 @@ import { SkillBadge } from "@/components/ui/SkillBadge";
 import { Marquee } from "@/components/ui/marquee";
 import skillsData from "@/data/skillsData.json";
 import { cn } from "@/lib/utils";
+import resumeUrl from "@/assets/files/resume.pdf?url";
 
 type SkillGroup = {
   type: string;
@@ -16,7 +17,7 @@ type ViewMode = "skills" | "resume";
 
 const groups = skillsData as SkillGroup[];
 
-const RESUME_PATH = "/resume.pdf";
+const RESUME_PATH = resumeUrl;
 
 function SkillsMarquee() {
   return (

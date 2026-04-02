@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
+import tShapedDiagram from "@/assets/images/t-shaped.png";
 import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
 
 type TShapedEngineerTooltipProps = {
@@ -69,7 +70,7 @@ export function TShapedEngineerTooltip({
           <div className="absolute left-1/2 top-full z-20 mt-3 -translate-x-1/2 w-72 max-w-[90vw] rounded-xl bg-background/95 p-4 text-left text-xs text-muted-foreground shadow-xl ring-1 ring-border backdrop-blur">
             <div className="mb-3 flex justify-center">
               <img
-                src="/t-shaped.png"
+                src={tShapedDiagram.src}
                 alt="T-shaped engineer diagram"
                 className="w-full max-w-[14rem] h-auto rounded-lg object-contain ring-1 ring-border/60"
                 loading="lazy"
@@ -111,7 +112,7 @@ export function TShapedEngineerTooltip({
           <div className="overflow-hidden rounded-2xl bg-background/95 shadow-xl ring-1 ring-border backdrop-blur w-140 sm:w-96">
             <div className="flex flex-col items-center gap-4 p-5 text-center">
               <img
-                src="/t-shaped.png"
+                src={tShapedDiagram.src}
                 alt="T-shaped engineer diagram"
                 className="h-65 w-auto max-w-full rounded-xl object-contain ring-1 ring-border/60"
                 loading="lazy"

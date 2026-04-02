@@ -21,7 +21,7 @@ const THIS_FILE = fileURLToPath(import.meta.url);
 const THIS_DIR = path.dirname(THIS_FILE);
 
 const ROOT_DIR = path.resolve(THIS_DIR, "..");
-const PUBLIC_DIR = path.join(ROOT_DIR, "public");
+const ICONS_DIR = path.join(ROOT_DIR, "src", "assets", "icons");
 const IMPORTS_DIR = path.join(ROOT_DIR, "src", "imports");
 
 function slugifyFileName(fileName: string): string {
@@ -98,8 +98,8 @@ function formatSummary(processed: ProcessedFile[]): string {
   return [`Processed ${processed.length} SVG file(s):`, ...lines].join("\n");
 }
 
-async function readSVGFilesFromPublic(): Promise<SVGFile[]> {
-  const entries = await fs.promises.readdir(PUBLIC_DIR, {
+async function readSVGFilesFromIconsDir(): Promise<SVGFile[]> {
+  const entries = await fs.promises.readdir(ICONS_DIR, {
     withFileTypes: true,
   });
 
@@ -109,7 +109,7 @@ async function readSVGFilesFromPublic(): Promise<SVGFile[]> {
     if (!entry.isFile()) continue;
     if (!entry.name.toLowerCase().endsWith(".svg")) continue;
 
-    const fullPath = path.join(PUBLIC_DIR, entry.name);
+    const fullPath = path.join(ICONS_DIR, entry.name);
     const content = await fs.promises.readFile(fullPath, "utf8");
     svgFiles.push({ name: entry.name, content });
   }
@@ -131,11 +131,11 @@ async function writeTSFiles(processed: ProcessedFile[]) {
 }
 
 async function main() {
-  console.log(`Reading SVG files from: ${PUBLIC_DIR}`);
-  const svgFiles = await readSVGFilesFromPublic();
+  console.log(`Reading SVG files from: ${ICONS_DIR}`);
+  const svgFiles = await readSVGFilesFromIconsDir();
 
   if (svgFiles.length === 0) {
-    console.log("No .svg files found in public/.");
+    console.log("No .svg files found in src/assets/icons/.");
     return;
   }
 

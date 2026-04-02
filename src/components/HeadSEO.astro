@@ -1,5 +1,8 @@
 ---
 import "@/styles/global.css";
+import faviconSvgUrl from "@/assets/icons/favicon.svg?url";
+import ogImageAsset from "@/assets/images/og-image.png";
+import signaturePng from "@/assets/images/pcmasterrace.png";
 
 interface Props {
   title?: string;
@@ -18,8 +21,9 @@ const {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageURL = ogImage
   ? new URL(ogImage, Astro.site).toString()
-  : new URL("og-image.png", canonicalURL).toString();
-const faviconURL = new URL("favicon.svg", canonicalURL).toString();
+  : new URL(ogImageAsset.src, Astro.site).href;
+const faviconURL = new URL(faviconSvgUrl, Astro.site).href;
+const signatureIconURL = new URL(signaturePng.src, Astro.site).href;
 ---
 
 <!-- Basic -->
@@ -31,7 +35,7 @@ const faviconURL = new URL("favicon.svg", canonicalURL).toString();
 <!-- Canonical -->
 <link rel="canonical" href={canonicalURL} />
 <link rel="icon" href={faviconURL} type="image/svg+xml" />
-<link rel="icon" type="image/png" href="../../public/signature.png" />
+<link rel="icon" type="image/png" href={signatureIconURL} />
 
 
 <!-- Title -->

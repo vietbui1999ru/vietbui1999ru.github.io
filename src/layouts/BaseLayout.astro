@@ -1,5 +1,6 @@
 ---
 import "@/styles/global.css";
+import pcmasterracePng from "@/assets/images/pcmasterrace.png";
 import { cn } from "@/lib/utils";
 import NavBarDock from "@/components/layout/NavBarDock";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
@@ -14,7 +15,7 @@ import { MobileBlocker } from "@/components/layout/MobileBlocker";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Viet Bui | Portfolio</title>
-    <link rel="icon" type="image/png" href="/pcmasterrace.png" />
+    <link rel="icon" type="image/png" href={pcmasterracePng.src} />
   </head>
   <body
     class={cn(
