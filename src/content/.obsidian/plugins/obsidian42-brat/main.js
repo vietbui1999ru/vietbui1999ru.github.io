@@ -749,13 +749,11 @@ var Kt = x((v) => {
             /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
             (r, d, b, w, p, T) => {
               let C = n(),
-                N = s
-                  .clone()
-                  .set({
-                    hour: C.get("hour"),
-                    minute: C.get("minute"),
-                    second: C.get("second"),
-                  });
+                N = s.clone().set({
+                  hour: C.get("hour"),
+                  minute: C.get("minute"),
+                  second: C.get("second"),
+                });
               return (
                 b && N.add(parseInt(w, 10), p),
                 T ? N.format(T.substring(1).trim()) : N.format(o)
@@ -830,13 +828,11 @@ var Kt = x((v) => {
             /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
             (m, l, r, d, b, w) => {
               let p = window.moment(),
-                T = s
-                  .clone()
-                  .set({
-                    hour: p.get("hour"),
-                    minute: p.get("minute"),
-                    second: p.get("second"),
-                  });
+                T = s.clone().set({
+                  hour: p.get("hour"),
+                  minute: p.get("minute"),
+                  second: p.get("second"),
+                });
               return (
                 r && T.add(parseInt(d, 10), b),
                 w ? T.format(w.substring(1).trim()) : T.format(n)
@@ -898,13 +894,11 @@ var Kt = x((v) => {
             /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
             (m, l, r, d, b, w) => {
               let p = window.moment(),
-                T = s
-                  .clone()
-                  .set({
-                    hour: p.get("hour"),
-                    minute: p.get("minute"),
-                    second: p.get("second"),
-                  });
+                T = s.clone().set({
+                  hour: p.get("hour"),
+                  minute: p.get("minute"),
+                  second: p.get("second"),
+                });
               return (
                 r && T.add(parseInt(d, 10), b),
                 w ? T.format(w.substring(1).trim()) : T.format(n)
@@ -960,13 +954,11 @@ var Kt = x((v) => {
             /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
             (m, l, r, d, b, w) => {
               let p = window.moment(),
-                T = s
-                  .clone()
-                  .set({
-                    hour: p.get("hour"),
-                    minute: p.get("minute"),
-                    second: p.get("second"),
-                  });
+                T = s.clone().set({
+                  hour: p.get("hour"),
+                  minute: p.get("minute"),
+                  second: p.get("second"),
+                });
               return (
                 r && T.add(parseInt(d, 10), b),
                 w ? T.format(w.substring(1).trim()) : T.format(n)
@@ -1022,13 +1014,11 @@ var Kt = x((v) => {
             /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
             (m, l, r, d, b, w) => {
               let p = window.moment(),
-                T = s
-                  .clone()
-                  .set({
-                    hour: p.get("hour"),
-                    minute: p.get("minute"),
-                    second: p.get("second"),
-                  });
+                T = s.clone().set({
+                  hour: p.get("hour"),
+                  minute: p.get("minute"),
+                  second: p.get("second"),
+                });
               return (
                 r && T.add(parseInt(d, 10), b),
                 w ? T.format(w.substring(1).trim()) : T.format(n)
@@ -3706,18 +3696,16 @@ var Le = class extends A.PluginSettingTab {
     let g = new A.SettingGroup(t).setHeading("GitHub Personal Access Token"),
       m = "";
     g.addSetting((l) => {
-      (l
-        .setName("Personal access token")
-        .setDesc(
-          Lt({
-            prependText:
-              "Set a personal access token to increase rate limits for public repositories on GitHub. You can create one in ",
-            url: "https://github.com/settings/tokens/new?scopes=public_repo",
-            text: "your GitHub account settings",
-            appendText:
-              " and then add it here. Please consult the documentation for more details.",
-          }),
-        ),
+      (l.setName("Personal access token").setDesc(
+        Lt({
+          prependText:
+            "Set a personal access token to increase rate limits for public repositories on GitHub. You can create one in ",
+          url: "https://github.com/settings/tokens/new?scopes=public_repo",
+          text: "your GitHub account settings",
+          appendText:
+            " and then add it here. Please consult the documentation for more details.",
+        }),
+      ),
         (this.accessTokenSetting = new A.SecretComponent(
           this.plugin.app,
           l.controlEl,
