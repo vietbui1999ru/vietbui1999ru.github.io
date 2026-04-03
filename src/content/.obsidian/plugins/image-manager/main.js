@@ -9,38 +9,54 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
+var __esm = (fn, res) =>
+  function __init() {
+    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res);
+  };
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toESM = (mod, isNodeMode, target) => (
+  (target = mod != null ? __create(__getProtoOf(mod)) : {}),
+  __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule
+      ? __defProp(target, "default", { value: mod, enumerable: true })
+      : target,
+    mod,
+  )
+);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/modals/ConfirmModal.ts
 var ConfirmModal_exports = {};
 __export(ConfirmModal_exports, {
   ConfirmModal: () => ConfirmModal,
-  openConfirmModal: () => openConfirmModal
+  openConfirmModal: () => openConfirmModal,
 });
-function openConfirmModal(app, title, message, confirmText = "Confirm", cancelText = "Cancel") {
+function openConfirmModal(
+  app,
+  title,
+  message,
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+) {
   const modal = new ConfirmModal(app, title, message, confirmText, cancelText);
   return modal.openAndAwaitResult();
 }
@@ -49,7 +65,13 @@ var init_ConfirmModal = __esm({
   "src/modals/ConfirmModal.ts"() {
     import_obsidian14 = require("obsidian");
     ConfirmModal = class extends import_obsidian14.Modal {
-      constructor(app, title, message, confirmText = "Confirm", cancelText = "Cancel") {
+      constructor(
+        app,
+        title,
+        message,
+        confirmText = "Confirm",
+        cancelText = "Cancel",
+      ) {
         super(app);
         this.title = title;
         this.message = message;
@@ -59,22 +81,30 @@ var init_ConfirmModal = __esm({
       onOpen() {
         const { contentEl, titleEl } = this;
         titleEl.setText(this.title);
-        const messageEl = contentEl.createDiv({ cls: "image-manager-confirm-message" });
+        const messageEl = contentEl.createDiv({
+          cls: "image-manager-confirm-message",
+        });
         messageEl.createEl("p", { text: this.message });
-        const buttonContainer = contentEl.createDiv({ cls: "image-manager-confirm-buttons" });
-        buttonContainer.createEl("button", {
-          text: this.confirmText,
-          cls: "mod-cta"
-        }).addEventListener("click", () => {
-          this.resolve({ confirmed: true });
-          this.close();
+        const buttonContainer = contentEl.createDiv({
+          cls: "image-manager-confirm-buttons",
         });
-        buttonContainer.createEl("button", {
-          text: this.cancelText
-        }).addEventListener("click", () => {
-          this.resolve({ confirmed: false });
-          this.close();
-        });
+        buttonContainer
+          .createEl("button", {
+            text: this.confirmText,
+            cls: "mod-cta",
+          })
+          .addEventListener("click", () => {
+            this.resolve({ confirmed: true });
+            this.close();
+          });
+        buttonContainer
+          .createEl("button", {
+            text: this.cancelText,
+          })
+          .addEventListener("click", () => {
+            this.resolve({ confirmed: false });
+            this.close();
+          });
         setTimeout(() => {
           const confirmButton = buttonContainer.querySelector(".mod-cta");
           confirmButton == null ? void 0 : confirmButton.focus();
@@ -91,13 +121,13 @@ var init_ConfirmModal = __esm({
         });
       }
     };
-  }
+  },
 });
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => ImageManagerPlugin
+  default: () => ImageManagerPlugin,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian15 = require("obsidian");
@@ -126,7 +156,7 @@ var DEFAULT_BANNER_DEVICE_SETTINGS = {
     iconAlignmentH: "flex-start",
     iconAlignmentV: "flex-end",
     iconOffsetX: 0,
-    iconOffsetY: -24
+    iconOffsetY: -24,
   },
   ["tablet" /* Tablet */]: {
     enabled: true,
@@ -147,7 +177,7 @@ var DEFAULT_BANNER_DEVICE_SETTINGS = {
     iconAlignmentH: "flex-start",
     iconAlignmentV: "flex-end",
     iconOffsetX: 0,
-    iconOffsetY: -24
+    iconOffsetY: -24,
   },
   ["phone" /* Phone */]: {
     enabled: true,
@@ -168,19 +198,19 @@ var DEFAULT_BANNER_DEVICE_SETTINGS = {
     iconAlignmentH: "flex-start",
     iconAlignmentV: "flex-end",
     iconOffsetX: 0,
-    iconOffsetY: -24
-  }
+    iconOffsetY: -24,
+  },
 };
 var DEFAULT_BANNER_SETTINGS = {
   properties: {
     imageProperty: "banner",
     iconProperty: "icon",
     hidePropertyEnabled: false,
-    hideProperty: ""
+    hideProperty: "",
   },
   desktop: { ...DEFAULT_BANNER_DEVICE_SETTINGS["desktop" /* Desktop */] },
   tablet: { ...DEFAULT_BANNER_DEVICE_SETTINGS["tablet" /* Tablet */] },
-  phone: { ...DEFAULT_BANNER_DEVICE_SETTINGS["phone" /* Phone */] }
+  phone: { ...DEFAULT_BANNER_DEVICE_SETTINGS["phone" /* Phone */] },
 };
 var DEFAULT_SETTINGS = {
   // General Settings
@@ -230,7 +260,7 @@ var DEFAULT_SETTINGS = {
   banner: { ...DEFAULT_BANNER_SETTINGS },
   // Advanced
   supportedExtensions: ["md", "mdx"],
-  debugMode: false
+  debugMode: false,
 };
 
 // src/settings.ts
@@ -254,323 +284,583 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
   renderGeneralSettings(containerEl) {
     const group = new import_obsidian.SettingGroup(containerEl);
     group.addSetting((setting) => {
-      setting.setName("Image name template").setDesc("Template for generated image names. Variables: {{fileName}}, {{dirName}}, {{DATE:YYYY-MM-DD}}, {{TIME:HH-mm-ss}}").addText((text) => {
-        text.setPlaceholder("{{fileName}}").setValue(this.plugin.settings.imageNameTemplate).onChange(async (value) => {
-          this.plugin.settings.imageNameTemplate = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Image name template")
+        .setDesc(
+          "Template for generated image names. Variables: {{fileName}}, {{dirName}}, {{DATE:YYYY-MM-DD}}, {{TIME:HH-mm-ss}}",
+        )
+        .addText((text) => {
+          text
+            .setPlaceholder("{{fileName}}")
+            .setValue(this.plugin.settings.imageNameTemplate)
+            .onChange(async (value) => {
+              this.plugin.settings.imageNameTemplate = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Attachment location").setDesc("Where to save inserted images").addDropdown((dropdown) => {
-        dropdown.addOption("obsidian" /* ObsidianDefault */, "Use Obsidian's settings").addOption("same" /* SameFolder */, "Same folder as note").addOption("subfolder" /* Subfolder */, "Subfolder (configure below)").addOption("vault" /* VaultFolder */, "Vault folder (configure below)").setValue(this.plugin.settings.attachmentLocation).onChange(async (value) => {
-          this.plugin.settings.attachmentLocation = value;
-          await this.plugin.saveSettings();
-          const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-          const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-          this.display();
-          requestAnimationFrame(() => {
-            if (scrollContainer) {
-              scrollContainer.scrollTop = scrollTop;
-            }
-          });
+      setting
+        .setName("Attachment location")
+        .setDesc("Where to save inserted images")
+        .addDropdown((dropdown) => {
+          dropdown
+            .addOption(
+              "obsidian" /* ObsidianDefault */,
+              "Use Obsidian's settings",
+            )
+            .addOption("same" /* SameFolder */, "Same folder as note")
+            .addOption(
+              "subfolder" /* Subfolder */,
+              "Subfolder (configure below)",
+            )
+            .addOption(
+              "vault" /* VaultFolder */,
+              "Vault folder (configure below)",
+            )
+            .setValue(this.plugin.settings.attachmentLocation)
+            .onChange(async (value) => {
+              this.plugin.settings.attachmentLocation = value;
+              await this.plugin.saveSettings();
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop =
+                (scrollContainer == null
+                  ? void 0
+                  : scrollContainer.scrollTop) || 0;
+              this.display();
+              requestAnimationFrame(() => {
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollTop;
+                }
+              });
+            });
         });
-      });
     });
-    if (this.plugin.settings.attachmentLocation !== "obsidian" /* ObsidianDefault */ && this.plugin.settings.attachmentLocation !== "same" /* SameFolder */) {
+    if (
+      this.plugin.settings.attachmentLocation !==
+        "obsidian" /* ObsidianDefault */ &&
+      this.plugin.settings.attachmentLocation !== "same" /* SameFolder */
+    ) {
       group.addSetting((setting) => {
-        setting.setName("Custom attachment path").setDesc('Path for attachments. Use "./" for relative to note, or "/" for vault root.').addText((text) => {
-          text.setPlaceholder("./assets").setValue(this.plugin.settings.customAttachmentPath).onChange(async (value) => {
-            this.plugin.settings.customAttachmentPath = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Custom attachment path")
+          .setDesc(
+            'Path for attachments. Use "./" for relative to note, or "/" for vault root.',
+          )
+          .addText((text) => {
+            text
+              .setPlaceholder("./assets")
+              .setValue(this.plugin.settings.customAttachmentPath)
+              .onChange(async (value) => {
+                this.plugin.settings.customAttachmentPath = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
     }
   }
   renderImageServicesSettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Image services");
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
+      "Image services",
+    );
     group.addSetting((setting) => {
-      setting.setName("Default provider").setDesc("Default image provider for search").addDropdown((dropdown) => {
-        dropdown.addOption("unsplash" /* Unsplash */, "Unsplash").addOption("pexels" /* Pexels */, "Pexels").addOption("pixabay" /* Pixabay */, "Pixabay").addOption("local" /* Local */, "Local files").setValue(this.plugin.settings.defaultProvider).onChange(async (value) => {
-          this.plugin.settings.defaultProvider = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Default provider")
+        .setDesc("Default image provider for search")
+        .addDropdown((dropdown) => {
+          dropdown
+            .addOption("unsplash" /* Unsplash */, "Unsplash")
+            .addOption("pexels" /* Pexels */, "Pexels")
+            .addOption("pixabay" /* Pixabay */, "Pixabay")
+            .addOption("local" /* Local */, "Local files")
+            .setValue(this.plugin.settings.defaultProvider)
+            .onChange(async (value) => {
+              this.plugin.settings.defaultProvider = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Default orientation").setDesc("Filter images by orientation").addDropdown((dropdown) => {
-        dropdown.addOption("any" /* Any */, "Any").addOption("landscape" /* Landscape */, "Landscape").addOption("portrait" /* Portrait */, "Portrait").addOption("square" /* Square */, "Square").setValue(this.plugin.settings.defaultOrientation).onChange(async (value) => {
-          this.plugin.settings.defaultOrientation = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Default orientation")
+        .setDesc("Filter images by orientation")
+        .addDropdown((dropdown) => {
+          dropdown
+            .addOption("any" /* Any */, "Any")
+            .addOption("landscape" /* Landscape */, "Landscape")
+            .addOption("portrait" /* Portrait */, "Portrait")
+            .addOption("square" /* Square */, "Square")
+            .setValue(this.plugin.settings.defaultOrientation)
+            .onChange(async (value) => {
+              this.plugin.settings.defaultOrientation = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Default image size").setDesc("Preferred size when downloading images").addDropdown((dropdown) => {
-        dropdown.addOption("original" /* Original */, "Original").addOption("large" /* Large */, "Large").addOption("medium" /* Medium */, "Medium").addOption("small" /* Small */, "Small").setValue(this.plugin.settings.defaultImageSize).onChange(async (value) => {
-          this.plugin.settings.defaultImageSize = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Default image size")
+        .setDesc("Preferred size when downloading images")
+        .addDropdown((dropdown) => {
+          dropdown
+            .addOption("original" /* Original */, "Original")
+            .addOption("large" /* Large */, "Large")
+            .addOption("medium" /* Medium */, "Medium")
+            .addOption("small" /* Small */, "Small")
+            .setValue(this.plugin.settings.defaultImageSize)
+            .onChange(async (value) => {
+              this.plugin.settings.defaultImageSize = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Unsplash proxy server").setDesc("Optional proxy server (leave empty to use built-in)").addText((text) => {
-        text.setPlaceholder("https://your-proxy.com/").setValue(this.plugin.settings.unsplashProxyServer).onChange(async (value) => {
-          this.plugin.settings.unsplashProxyServer = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Unsplash proxy server")
+        .setDesc("Optional proxy server (leave empty to use built-in)")
+        .addText((text) => {
+          text
+            .setPlaceholder("https://your-proxy.com/")
+            .setValue(this.plugin.settings.unsplashProxyServer)
+            .onChange(async (value) => {
+              this.plugin.settings.unsplashProxyServer = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
       setting.setName("Pexels API key");
       if ((0, import_obsidian.requireApiVersion)("1.11.4")) {
-        setting.setDesc("Choose a secret that contains your Pexels API key.").addComponent((el) => {
-          const obsidian = require("obsidian");
-          const SecretComponent = obsidian.SecretComponent;
-          const component = new SecretComponent(this.app, el);
-          component.setValue(this.plugin.settings.pexelsApiKeySecretId);
-          component.onChange((value) => {
-            void (async () => {
-              this.plugin.settings.pexelsApiKeySecretId = value;
-              await this.plugin.saveSettings();
-            })();
+        setting
+          .setDesc("Choose a secret that contains your Pexels API key.")
+          .addComponent((el) => {
+            const obsidian = require("obsidian");
+            const SecretComponent = obsidian.SecretComponent;
+            const component = new SecretComponent(this.app, el);
+            component.setValue(this.plugin.settings.pexelsApiKeySecretId);
+            component.onChange((value) => {
+              void (async () => {
+                this.plugin.settings.pexelsApiKeySecretId = value;
+                await this.plugin.saveSettings();
+              })();
+            });
+            return component;
           });
-          return component;
-        });
       } else {
-        setting.setDesc("Get your API key from https://www.pexels.com/api/new/").addText((text) => {
-          text.setPlaceholder("Pexels API key").setValue(this.plugin.settings.pexelsApiKey).onChange(async (value) => {
-            this.plugin.settings.pexelsApiKey = value;
-            await this.plugin.saveSettings();
+        setting
+          .setDesc("Get your API key from https://www.pexels.com/api/new/")
+          .addText((text) => {
+            text
+              .setPlaceholder("Pexels API key")
+              .setValue(this.plugin.settings.pexelsApiKey)
+              .onChange(async (value) => {
+                this.plugin.settings.pexelsApiKey = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       }
     });
     group.addSetting((setting) => {
       setting.setName("Pixabay API key");
       if ((0, import_obsidian.requireApiVersion)("1.11.4")) {
-        setting.setDesc("Choose a secret that contains your Pixabay API key.").addComponent((el) => {
-          const obsidian = require("obsidian");
-          const SecretComponent = obsidian.SecretComponent;
-          const component = new SecretComponent(this.app, el);
-          component.setValue(this.plugin.settings.pixabayApiKeySecretId);
-          component.onChange((value) => {
-            void (async () => {
-              this.plugin.settings.pixabayApiKeySecretId = value;
-              await this.plugin.saveSettings();
-            })();
+        setting
+          .setDesc("Choose a secret that contains your Pixabay API key.")
+          .addComponent((el) => {
+            const obsidian = require("obsidian");
+            const SecretComponent = obsidian.SecretComponent;
+            const component = new SecretComponent(this.app, el);
+            component.setValue(this.plugin.settings.pixabayApiKeySecretId);
+            component.onChange((value) => {
+              void (async () => {
+                this.plugin.settings.pixabayApiKeySecretId = value;
+                await this.plugin.saveSettings();
+              })();
+            });
+            return component;
           });
-          return component;
-        });
       } else {
-        setting.setDesc("Get your API key from https://pixabay.com/api/docs/").addText((text) => {
-          text.setPlaceholder("Pixabay API key").setValue(this.plugin.settings.pixabayApiKey).onChange(async (value) => {
-            this.plugin.settings.pixabayApiKey = value;
-            await this.plugin.saveSettings();
+        setting
+          .setDesc("Get your API key from https://pixabay.com/api/docs/")
+          .addText((text) => {
+            text
+              .setPlaceholder("Pixabay API key")
+              .setValue(this.plugin.settings.pixabayApiKey)
+              .onChange(async (value) => {
+                this.plugin.settings.pixabayApiKey = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       }
     });
     group.addSetting((setting) => {
-      setting.setName("Insert size").setDesc('Set the size of the image when inserting. Format could be only the width "200" or the width and height "200x100". Leave empty for no size.').addText((text) => {
-        text.setPlaceholder("200 or 200x100").setValue(this.plugin.settings.insertSize).onChange(async (value) => {
-          this.plugin.settings.insertSize = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Insert size")
+        .setDesc(
+          'Set the size of the image when inserting. Format could be only the width "200" or the width and height "200x100". Leave empty for no size.',
+        )
+        .addText((text) => {
+          text
+            .setPlaceholder("200 or 200x100")
+            .setValue(this.plugin.settings.insertSize)
+            .onChange(async (value) => {
+              this.plugin.settings.insertSize = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Insert referral").setDesc("Insert the reference text").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.insertReferral).onChange(async (value) => {
-          this.plugin.settings.insertReferral = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Insert referral")
+        .setDesc("Insert the reference text")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.insertReferral)
+            .onChange(async (value) => {
+              this.plugin.settings.insertReferral = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Insert backlink").setDesc("Insert a backlink in front of the reference text").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.insertBackLink).onChange(async (value) => {
-          this.plugin.settings.insertBackLink = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Insert backlink")
+        .setDesc("Insert a backlink in front of the reference text")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.insertBackLink)
+            .onChange(async (value) => {
+              this.plugin.settings.insertBackLink = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
   }
   renderPropertySettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Property insertion");
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
+      "Property insertion",
+    );
     group.addSetting((setting) => {
-      setting.setName("Enable paste into properties").setDesc("Allow pasting images directly into properties").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.enablePropertyPaste).onChange(async (value) => {
-          this.plugin.settings.enablePropertyPaste = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Enable paste into properties")
+        .setDesc("Allow pasting images directly into properties")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.enablePropertyPaste)
+            .onChange(async (value) => {
+              this.plugin.settings.enablePropertyPaste = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Property link format").setDesc("How to format the image link in properties").addDropdown((dropdown) => {
-        dropdown.addOption("obsidian" /* ObsidianDefault */, "Use Obsidian's settings").addOption("path" /* Path */, "Plain path (path/to/image.jpg)").addOption("relative" /* RelativePath */, "Relative path (./image.jpg)").addOption("wikilink" /* Wikilink */, "Wikilink ([[path/to/image.jpg]])").addOption("markdown" /* Markdown */, "Markdown (![](path/to/image.jpg))").addOption("custom" /* Custom */, "Custom format").setValue(this.plugin.settings.propertyLinkFormat).onChange(async (value) => {
-          this.plugin.settings.propertyLinkFormat = value;
-          await this.plugin.saveSettings();
-          const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-          const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-          this.display();
-          requestAnimationFrame(() => {
-            if (scrollContainer) {
-              scrollContainer.scrollTop = scrollTop;
-            }
-          });
+      setting
+        .setName("Property link format")
+        .setDesc("How to format the image link in properties")
+        .addDropdown((dropdown) => {
+          dropdown
+            .addOption(
+              "obsidian" /* ObsidianDefault */,
+              "Use Obsidian's settings",
+            )
+            .addOption("path" /* Path */, "Plain path (path/to/image.jpg)")
+            .addOption(
+              "relative" /* RelativePath */,
+              "Relative path (./image.jpg)",
+            )
+            .addOption(
+              "wikilink" /* Wikilink */,
+              "Wikilink ([[path/to/image.jpg]])",
+            )
+            .addOption(
+              "markdown" /* Markdown */,
+              "Markdown (![](path/to/image.jpg))",
+            )
+            .addOption("custom" /* Custom */, "Custom format")
+            .setValue(this.plugin.settings.propertyLinkFormat)
+            .onChange(async (value) => {
+              this.plugin.settings.propertyLinkFormat = value;
+              await this.plugin.saveSettings();
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop =
+                (scrollContainer == null
+                  ? void 0
+                  : scrollContainer.scrollTop) || 0;
+              this.display();
+              requestAnimationFrame(() => {
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollTop;
+                }
+              });
+            });
         });
-      });
     });
     if (this.plugin.settings.propertyLinkFormat === "custom" /* Custom */) {
       group.addSetting((setting) => {
-        setting.setName("Custom format template").setDesc("Use {image-url} as placeholder for the image path").addText((text) => {
-          text.setPlaceholder("{image-url}").setValue(this.plugin.settings.customPropertyLinkFormat).onChange(async (value) => {
-            this.plugin.settings.customPropertyLinkFormat = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Custom format template")
+          .setDesc("Use {image-url} as placeholder for the image path")
+          .addText((text) => {
+            text
+              .setPlaceholder("{image-url}")
+              .setValue(this.plugin.settings.customPropertyLinkFormat)
+              .onChange(async (value) => {
+                this.plugin.settings.customPropertyLinkFormat = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
     }
     group.addSetting((setting) => {
-      setting.setName("Default property name").setDesc("Default property name when inserting to properties via command").addText((text) => {
-        text.setPlaceholder("Banner").setValue(this.plugin.settings.defaultPropertyName).onChange(async (value) => {
-          this.plugin.settings.defaultPropertyName = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Default property name")
+        .setDesc(
+          "Default property name when inserting to properties via command",
+        )
+        .addText((text) => {
+          text
+            .setPlaceholder("Banner")
+            .setValue(this.plugin.settings.defaultPropertyName)
+            .onChange(async (value) => {
+              this.plugin.settings.defaultPropertyName = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Default icon property name").setDesc("Default property name when inserting to icon property via command").addText((text) => {
-        text.setPlaceholder("Icon").setValue(this.plugin.settings.defaultIconPropertyName).onChange(async (value) => {
-          this.plugin.settings.defaultIconPropertyName = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Default icon property name")
+        .setDesc(
+          "Default property name when inserting to icon property via command",
+        )
+        .addText((text) => {
+          text
+            .setPlaceholder("Icon")
+            .setValue(this.plugin.settings.defaultIconPropertyName)
+            .onChange(async (value) => {
+              this.plugin.settings.defaultIconPropertyName = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Alt text property name").setDesc('Property name to use for image alt text (description) when inserting to properties. If "Descriptive images" is enabled, this will be filled with the description you provide. If disabled, it will be filled with the search term for external images.').addText((text) => {
-        text.setPlaceholder("alt").setValue(this.plugin.settings.altTextProperty).onChange(async (value) => {
-          this.plugin.settings.altTextProperty = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Alt text property name")
+        .setDesc(
+          'Property name to use for image alt text (description) when inserting to properties. If "Descriptive images" is enabled, this will be filled with the description you provide. If disabled, it will be filled with the search term for external images.',
+        )
+        .addText((text) => {
+          text
+            .setPlaceholder("alt")
+            .setValue(this.plugin.settings.altTextProperty)
+            .onChange(async (value) => {
+              this.plugin.settings.altTextProperty = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
   }
   renderConversionSettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Remote image conversion");
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
+      "Remote image conversion",
+    );
     group.addSetting((setting) => {
-      setting.setName("Auto-convert remote images").setDesc("Automatically download and replace remote image urls with local files").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.autoConvertRemoteImages).onChange(async (value) => {
-          this.plugin.settings.autoConvertRemoteImages = value;
-          await this.plugin.saveSettings();
-          const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-          const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-          this.display();
-          requestAnimationFrame(() => {
-            if (scrollContainer) {
-              scrollContainer.scrollTop = scrollTop;
-            }
-          });
+      setting
+        .setName("Auto-convert remote images")
+        .setDesc(
+          "Automatically download and replace remote image urls with local files",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.autoConvertRemoteImages)
+            .onChange(async (value) => {
+              this.plugin.settings.autoConvertRemoteImages = value;
+              await this.plugin.saveSettings();
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop =
+                (scrollContainer == null
+                  ? void 0
+                  : scrollContainer.scrollTop) || 0;
+              this.display();
+              requestAnimationFrame(() => {
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollTop;
+                }
+              });
+            });
         });
-      });
     });
     if (this.plugin.settings.autoConvertRemoteImages) {
       group.addSetting((setting) => {
-        setting.setName("Convert on note open").setDesc("Process remote images when opening a note").addToggle((toggle) => {
-          toggle.setValue(this.plugin.settings.convertOnNoteOpen).onChange(async (value) => {
-            this.plugin.settings.convertOnNoteOpen = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Convert on note open")
+          .setDesc("Process remote images when opening a note")
+          .addToggle((toggle) => {
+            toggle
+              .setValue(this.plugin.settings.convertOnNoteOpen)
+              .onChange(async (value) => {
+                this.plugin.settings.convertOnNoteOpen = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
       group.addSetting((setting) => {
-        setting.setName("Convert on note save").setDesc("Process remote images when saving a note").addToggle((toggle) => {
-          toggle.setValue(this.plugin.settings.convertOnNoteSave).onChange(async (value) => {
-            this.plugin.settings.convertOnNoteSave = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Convert on note save")
+          .setDesc("Process remote images when saving a note")
+          .addToggle((toggle) => {
+            toggle
+              .setValue(this.plugin.settings.convertOnNoteSave)
+              .onChange(async (value) => {
+                this.plugin.settings.convertOnNoteSave = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
     }
   }
   renderRenameSettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Rename options");
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
+      "Rename options",
+    );
     group.addSetting((setting) => {
-      setting.setName("Show image rename dialog automatically").setDesc("Handle and rename images when they are added to the vault via paste or drag and drop").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showRenameDialog).onChange(async (value) => {
-          this.plugin.settings.showRenameDialog = value;
-          await this.plugin.saveSettings();
-          this.refreshWithScrollPreserve(containerEl);
+      setting
+        .setName("Show image rename dialog automatically")
+        .setDesc(
+          "Handle and rename images when they are added to the vault via paste or drag and drop",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.showRenameDialog)
+            .onChange(async (value) => {
+              this.plugin.settings.showRenameDialog = value;
+              await this.plugin.saveSettings();
+              this.refreshWithScrollPreserve(containerEl);
+            });
         });
-      });
     });
     if (this.plugin.settings.showRenameDialog) {
       group.addSetting((setting) => {
-        setting.setName("Rename on paste").setDesc("Handle and rename images when pasting into the editor").addToggle((toggle) => {
-          toggle.setValue(this.plugin.settings.enableRenameOnPaste).onChange(async (value) => {
-            this.plugin.settings.enableRenameOnPaste = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Rename on paste")
+          .setDesc("Handle and rename images when pasting into the editor")
+          .addToggle((toggle) => {
+            toggle
+              .setValue(this.plugin.settings.enableRenameOnPaste)
+              .onChange(async (value) => {
+                this.plugin.settings.enableRenameOnPaste = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
       group.addSetting((setting) => {
-        setting.setName("Rename on drag and drop").setDesc("Handle and rename images when dropping into the editor").addToggle((toggle) => {
-          toggle.setValue(this.plugin.settings.enableRenameOnDrop).onChange(async (value) => {
-            this.plugin.settings.enableRenameOnDrop = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Rename on drag and drop")
+          .setDesc("Handle and rename images when dropping into the editor")
+          .addToggle((toggle) => {
+            toggle
+              .setValue(this.plugin.settings.enableRenameOnDrop)
+              .onChange(async (value) => {
+                this.plugin.settings.enableRenameOnDrop = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
     }
     group.addSetting((setting) => {
-      setting.setName("Process background file changes").setDesc("Automatically convert and rename remote images when files are changed in the background (by Git or other plugins). Warning: Turning this on may cause the rename modal to appear for images you've already processed on other devices during a sync.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.processBackgroundChanges).onChange(async (value) => {
-          this.plugin.settings.processBackgroundChanges = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Process background file changes")
+        .setDesc(
+          "Automatically convert and rename remote images when files are changed in the background (by Git or other plugins). Warning: Turning this on may cause the rename modal to appear for images you've already processed on other devices during a sync.",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.processBackgroundChanges)
+            .onChange(async (value) => {
+              this.plugin.settings.processBackgroundChanges = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Descriptive images").setDesc("Ask for image description, use as display text and kebab-case for file name (applies to note body insertions only, not properties)").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.enableDescriptiveImages).onChange(async (value) => {
-          this.plugin.settings.enableDescriptiveImages = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Descriptive images")
+        .setDesc(
+          "Ask for image description, use as display text and kebab-case for file name (applies to note body insertions only, not properties)",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.enableDescriptiveImages)
+            .onChange(async (value) => {
+              this.plugin.settings.enableDescriptiveImages = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Auto rename").setDesc("Automatically rename without showing dialog (uses template)").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.autoRename).onChange(async (value) => {
-          this.plugin.settings.autoRename = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Auto rename")
+        .setDesc("Automatically rename without showing dialog (uses template)")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.autoRename)
+            .onChange(async (value) => {
+              this.plugin.settings.autoRename = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Duplicate number delimiter").setDesc('Character(s) between name and number for duplicates (e.g., "-" gives "image-1")').addText((text) => {
-        text.setPlaceholder("-").setValue(this.plugin.settings.dupNumberDelimiter).onChange(async (value) => {
-          this.plugin.settings.dupNumberDelimiter = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Duplicate number delimiter")
+        .setDesc(
+          'Character(s) between name and number for duplicates (e.g., "-" gives "image-1")',
+        )
+        .addText((text) => {
+          text
+            .setPlaceholder("-")
+            .setValue(this.plugin.settings.dupNumberDelimiter)
+            .onChange(async (value) => {
+              this.plugin.settings.dupNumberDelimiter = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Duplicate number at start").setDesc('Put the duplicate number at the start ("1-image" instead of "image-1")').addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.dupNumberAtStart).onChange(async (value) => {
-          this.plugin.settings.dupNumberAtStart = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Duplicate number at start")
+        .setDesc(
+          'Put the duplicate number at the start ("1-image" instead of "image-1")',
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.dupNumberAtStart)
+            .onChange(async (value) => {
+              this.plugin.settings.dupNumberAtStart = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Disable rename notice").setDesc("Do not show a notice after renaming an image").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.disableRenameNotice).onChange(async (value) => {
-          this.plugin.settings.disableRenameNotice = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Disable rename notice")
+        .setDesc("Do not show a notice after renaming an image")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.disableRenameNotice)
+            .onChange(async (value) => {
+              this.plugin.settings.disableRenameNotice = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
   }
   /**
@@ -589,8 +879,12 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
    * Helper to preserve scroll position when re-rendering settings
    */
   refreshWithScrollPreserve(containerEl) {
-    const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-    const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
+    const scrollContainer =
+      containerEl.closest(".vertical-tab-content") ||
+      containerEl.closest(".settings-content") ||
+      containerEl.parentElement;
+    const scrollTop =
+      (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
     this.display();
     requestAnimationFrame(() => {
       if (scrollContainer) {
@@ -599,222 +893,374 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     });
   }
   renderBannerSettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Banner images");
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
+      "Banner images",
+    );
     const currentDevice = this.getCurrentDevice();
     const deviceSettings = this.plugin.settings.banner[currentDevice];
     const defaultDeviceSettings = DEFAULT_BANNER_DEVICE_SETTINGS[currentDevice];
     const propertySettings = this.plugin.settings.banner.properties;
     group.addSetting((setting) => {
-      setting.setName("Show banner").setDesc(`Enable or disable banners on your ${currentDevice} device`).addToggle((toggle) => {
-        toggle.setValue(deviceSettings.enabled).onChange(async (value) => {
-          this.plugin.settings.banner[currentDevice].enabled = value;
-          await this.plugin.saveSettings();
-          this.refreshWithScrollPreserve(containerEl);
+      setting
+        .setName("Show banner")
+        .setDesc(`Enable or disable banners on your ${currentDevice} device`)
+        .addToggle((toggle) => {
+          toggle.setValue(deviceSettings.enabled).onChange(async (value) => {
+            this.plugin.settings.banner[currentDevice].enabled = value;
+            await this.plugin.saveSettings();
+            this.refreshWithScrollPreserve(containerEl);
+          });
         });
-      });
     });
     if (!deviceSettings.enabled) {
       return;
     }
     group.addSetting((setting) => {
-      setting.setName("Height").setDesc(`Height of the banner on your ${currentDevice} device (in pixels)`).addText((text) => {
-        text.setPlaceholder(String(defaultDeviceSettings.height)).setValue(String(deviceSettings.height)).onChange(async (value) => {
-          const num = parseInt(value, 10);
-          if (!isNaN(num) && num > 0) {
-            this.plugin.settings.banner[currentDevice].height = num;
+      setting
+        .setName("Height")
+        .setDesc(
+          `Height of the banner on your ${currentDevice} device (in pixels)`,
+        )
+        .addText((text) => {
+          text
+            .setPlaceholder(String(defaultDeviceSettings.height))
+            .setValue(String(deviceSettings.height))
+            .onChange(async (value) => {
+              const num = parseInt(value, 10);
+              if (!isNaN(num) && num > 0) {
+                this.plugin.settings.banner[currentDevice].height = num;
+                await this.plugin.saveSettings();
+              }
+            });
+        });
+    });
+    group.addSetting((setting) => {
+      setting
+        .setName("Padding")
+        .setDesc("Padding of the banner from the edges of the note (in pixels)")
+        .addText((text) => {
+          text
+            .setPlaceholder(String(defaultDeviceSettings.padding))
+            .setValue(String(deviceSettings.padding))
+            .onChange(async (value) => {
+              const num = parseInt(value, 10);
+              if (!isNaN(num) && num >= 0) {
+                this.plugin.settings.banner[currentDevice].padding = num;
+                await this.plugin.saveSettings();
+              }
+            });
+        });
+    });
+    group.addSetting((setting) => {
+      setting
+        .setName("Note offset")
+        .setDesc("Move the position of the note content (in pixels)")
+        .addText((text) => {
+          text
+            .setPlaceholder(String(defaultDeviceSettings.noteOffset))
+            .setValue(String(deviceSettings.noteOffset))
+            .onChange(async (value) => {
+              const num = parseInt(value, 10);
+              if (!isNaN(num)) {
+                this.plugin.settings.banner[currentDevice].noteOffset = num;
+                await this.plugin.saveSettings();
+              }
+            });
+        });
+    });
+    group.addSetting((setting) => {
+      setting
+        .setName("View offset")
+        .setDesc("Move the position of the view content (in pixels)")
+        .addText((text) => {
+          text
+            .setPlaceholder(String(defaultDeviceSettings.viewOffset))
+            .setValue(String(deviceSettings.viewOffset))
+            .onChange(async (value) => {
+              const num = parseInt(value, 10);
+              if (!isNaN(num)) {
+                this.plugin.settings.banner[currentDevice].viewOffset = num;
+                await this.plugin.saveSettings();
+              }
+            });
+        });
+    });
+    group.addSetting((setting) => {
+      setting
+        .setName("Fade")
+        .setDesc("Fade the image out towards the content")
+        .addToggle((toggle) => {
+          toggle.setValue(deviceSettings.fade).onChange(async (value) => {
+            this.plugin.settings.banner[currentDevice].fade = value;
             await this.plugin.saveSettings();
-          }
+          });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Padding").setDesc("Padding of the banner from the edges of the note (in pixels)").addText((text) => {
-        text.setPlaceholder(String(defaultDeviceSettings.padding)).setValue(String(deviceSettings.padding)).onChange(async (value) => {
-          const num = parseInt(value, 10);
-          if (!isNaN(num) && num >= 0) {
-            this.plugin.settings.banner[currentDevice].padding = num;
+      setting
+        .setName("Rounded corners")
+        .setDesc("Enable rounded corners for the banner")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(deviceSettings.bannerRadiusEnabled)
+            .onChange(async (value) => {
+              this.plugin.settings.banner[currentDevice].bannerRadiusEnabled =
+                value;
+              await this.plugin.saveSettings();
+            });
+        });
+    });
+    group.addSetting((setting) => {
+      setting
+        .setName("Animation")
+        .setDesc("Enable banner animation when opening files")
+        .addToggle((toggle) => {
+          toggle.setValue(deviceSettings.animation).onChange(async (value) => {
+            this.plugin.settings.banner[currentDevice].animation = value;
             await this.plugin.saveSettings();
-          }
+          });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Note offset").setDesc("Move the position of the note content (in pixels)").addText((text) => {
-        text.setPlaceholder(String(defaultDeviceSettings.noteOffset)).setValue(String(deviceSettings.noteOffset)).onChange(async (value) => {
-          const num = parseInt(value, 10);
-          if (!isNaN(num)) {
-            this.plugin.settings.banner[currentDevice].noteOffset = num;
-            await this.plugin.saveSettings();
-          }
+      setting
+        .setName("Banner property")
+        .setDesc(
+          "Name of the banner property this plugin will look for in the properties",
+        )
+        .addText((text) => {
+          text
+            .setPlaceholder("Banner")
+            .setValue(propertySettings.imageProperty)
+            .onChange(async (value) => {
+              this.plugin.settings.banner.properties.imageProperty =
+                value || "banner";
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("View offset").setDesc("Move the position of the view content (in pixels)").addText((text) => {
-        text.setPlaceholder(String(defaultDeviceSettings.viewOffset)).setValue(String(deviceSettings.viewOffset)).onChange(async (value) => {
-          const num = parseInt(value, 10);
-          if (!isNaN(num)) {
-            this.plugin.settings.banner[currentDevice].viewOffset = num;
-            await this.plugin.saveSettings();
-          }
+      setting
+        .setName("Icon property")
+        .setDesc(
+          "Name of the icon property this plugin will look for in the properties",
+        )
+        .addText((text) => {
+          text
+            .setPlaceholder("Icon")
+            .setValue(propertySettings.iconProperty)
+            .onChange(async (value) => {
+              this.plugin.settings.banner.properties.iconProperty =
+                value || "icon";
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Fade").setDesc("Fade the image out towards the content").addToggle((toggle) => {
-        toggle.setValue(deviceSettings.fade).onChange(async (value) => {
-          this.plugin.settings.banner[currentDevice].fade = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Enable per-note banner hiding")
+        .setDesc(
+          "Allow disabling banners on a per-note basis using a properties field",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(propertySettings.hidePropertyEnabled)
+            .onChange(async (value) => {
+              this.plugin.settings.banner.properties.hidePropertyEnabled =
+                value;
+              await this.plugin.saveSettings();
+              this.refreshWithScrollPreserve(containerEl);
+            });
         });
-      });
-    });
-    group.addSetting((setting) => {
-      setting.setName("Rounded corners").setDesc("Enable rounded corners for the banner").addToggle((toggle) => {
-        toggle.setValue(deviceSettings.bannerRadiusEnabled).onChange(async (value) => {
-          this.plugin.settings.banner[currentDevice].bannerRadiusEnabled = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    group.addSetting((setting) => {
-      setting.setName("Animation").setDesc("Enable banner animation when opening files").addToggle((toggle) => {
-        toggle.setValue(deviceSettings.animation).onChange(async (value) => {
-          this.plugin.settings.banner[currentDevice].animation = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    group.addSetting((setting) => {
-      setting.setName("Banner property").setDesc("Name of the banner property this plugin will look for in the properties").addText((text) => {
-        text.setPlaceholder("Banner").setValue(propertySettings.imageProperty).onChange(async (value) => {
-          this.plugin.settings.banner.properties.imageProperty = value || "banner";
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    group.addSetting((setting) => {
-      setting.setName("Icon property").setDesc("Name of the icon property this plugin will look for in the properties").addText((text) => {
-        text.setPlaceholder("Icon").setValue(propertySettings.iconProperty).onChange(async (value) => {
-          this.plugin.settings.banner.properties.iconProperty = value || "icon";
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    group.addSetting((setting) => {
-      setting.setName("Enable per-note banner hiding").setDesc("Allow disabling banners on a per-note basis using a properties field").addToggle((toggle) => {
-        toggle.setValue(propertySettings.hidePropertyEnabled).onChange(async (value) => {
-          this.plugin.settings.banner.properties.hidePropertyEnabled = value;
-          await this.plugin.saveSettings();
-          this.refreshWithScrollPreserve(containerEl);
-        });
-      });
     });
     if (propertySettings.hidePropertyEnabled) {
       group.addSetting((setting) => {
-        setting.setName("Hide banner property").setDesc("Name of the property that, when set to true, will hide the banner for that note").addText((text) => {
-          text.setPlaceholder("hideBanner").setValue(propertySettings.hideProperty).onChange(async (value) => {
-            this.plugin.settings.banner.properties.hideProperty = value || "";
-            await this.plugin.saveSettings();
+        setting
+          .setName("Hide banner property")
+          .setDesc(
+            "Name of the property that, when set to true, will hide the banner for that note",
+          )
+          .addText((text) => {
+            text
+              .setPlaceholder("hideBanner")
+              .setValue(propertySettings.hideProperty)
+              .onChange(async (value) => {
+                this.plugin.settings.banner.properties.hideProperty =
+                  value || "";
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
     }
     group.addSetting((setting) => {
-      setting.setName("Show icon").setDesc("Enable or disable the icon").addToggle((toggle) => {
-        toggle.setValue(deviceSettings.iconEnabled).onChange(async (value) => {
-          this.plugin.settings.banner[currentDevice].iconEnabled = value;
-          await this.plugin.saveSettings();
-          this.refreshWithScrollPreserve(containerEl);
+      setting
+        .setName("Show icon")
+        .setDesc("Enable or disable the icon")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(deviceSettings.iconEnabled)
+            .onChange(async (value) => {
+              this.plugin.settings.banner[currentDevice].iconEnabled = value;
+              await this.plugin.saveSettings();
+              this.refreshWithScrollPreserve(containerEl);
+            });
         });
-      });
     });
     if (deviceSettings.iconEnabled) {
       group.addSetting((setting) => {
-        setting.setName("Icon size").setDesc("Size of the icon (in pixels)").addText((text) => {
-          text.setPlaceholder(String(defaultDeviceSettings.iconSize)).setValue(String(deviceSettings.iconSize)).onChange(async (value) => {
-            const num = parseInt(value, 10);
-            if (!isNaN(num) && num > 0) {
-              this.plugin.settings.banner[currentDevice].iconSize = num;
-              await this.plugin.saveSettings();
-            }
+        setting
+          .setName("Icon size")
+          .setDesc("Size of the icon (in pixels)")
+          .addText((text) => {
+            text
+              .setPlaceholder(String(defaultDeviceSettings.iconSize))
+              .setValue(String(deviceSettings.iconSize))
+              .onChange(async (value) => {
+                const num = parseInt(value, 10);
+                if (!isNaN(num) && num > 0) {
+                  this.plugin.settings.banner[currentDevice].iconSize = num;
+                  await this.plugin.saveSettings();
+                }
+              });
           });
-        });
       });
       group.addSetting((setting) => {
-        setting.setName("Icon background").setDesc("Enable or disable the icon background").addToggle((toggle) => {
-          toggle.setValue(deviceSettings.iconBackground).onChange(async (value) => {
-            this.plugin.settings.banner[currentDevice].iconBackground = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Icon background")
+          .setDesc("Enable or disable the icon background")
+          .addToggle((toggle) => {
+            toggle
+              .setValue(deviceSettings.iconBackground)
+              .onChange(async (value) => {
+                this.plugin.settings.banner[currentDevice].iconBackground =
+                  value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
       group.addSetting((setting) => {
-        setting.setName("Icon frame").setDesc("Show the border/background frame around the icon (disable to display just the icon graphic)").addToggle((toggle) => {
-          toggle.setValue(deviceSettings.iconFrame).onChange(async (value) => {
-            this.plugin.settings.banner[currentDevice].iconFrame = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Icon frame")
+          .setDesc(
+            "Show the border/background frame around the icon (disable to display just the icon graphic)",
+          )
+          .addToggle((toggle) => {
+            toggle
+              .setValue(deviceSettings.iconFrame)
+              .onChange(async (value) => {
+                this.plugin.settings.banner[currentDevice].iconFrame = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
       group.addSetting((setting) => {
-        setting.setName("Icon border size").setDesc("Size of the icon border (in pixels)").addText((text) => {
-          text.setPlaceholder(String(defaultDeviceSettings.iconBorder)).setValue(String(deviceSettings.iconBorder)).onChange(async (value) => {
-            const num = parseInt(value, 10);
-            if (!isNaN(num) && num >= 0) {
-              this.plugin.settings.banner[currentDevice].iconBorder = num;
-              await this.plugin.saveSettings();
-            }
+        setting
+          .setName("Icon border size")
+          .setDesc("Size of the icon border (in pixels)")
+          .addText((text) => {
+            text
+              .setPlaceholder(String(defaultDeviceSettings.iconBorder))
+              .setValue(String(deviceSettings.iconBorder))
+              .onChange(async (value) => {
+                const num = parseInt(value, 10);
+                if (!isNaN(num) && num >= 0) {
+                  this.plugin.settings.banner[currentDevice].iconBorder = num;
+                  await this.plugin.saveSettings();
+                }
+              });
           });
-        });
       });
       group.addSetting((setting) => {
-        setting.setName("Icon border radius").setDesc("Size of the icon border radius (in pixels)").addText((text) => {
-          text.setPlaceholder(String(defaultDeviceSettings.iconRadius)).setValue(String(deviceSettings.iconRadius)).onChange(async (value) => {
-            const num = parseInt(value, 10);
-            if (!isNaN(num) && num >= 0) {
-              this.plugin.settings.banner[currentDevice].iconRadius = num;
-              await this.plugin.saveSettings();
-            }
+        setting
+          .setName("Icon border radius")
+          .setDesc("Size of the icon border radius (in pixels)")
+          .addText((text) => {
+            text
+              .setPlaceholder(String(defaultDeviceSettings.iconRadius))
+              .setValue(String(deviceSettings.iconRadius))
+              .onChange(async (value) => {
+                const num = parseInt(value, 10);
+                if (!isNaN(num) && num >= 0) {
+                  this.plugin.settings.banner[currentDevice].iconRadius = num;
+                  await this.plugin.saveSettings();
+                }
+              });
           });
-        });
       });
       group.addSetting((setting) => {
-        setting.setName("Icon alignment - horizontal").setDesc("Horizontal alignment of the icon").addDropdown((dropdown) => {
-          dropdown.addOption("flex-start", "Left").addOption("center", "Center").addOption("flex-end", "Right").setValue(deviceSettings.iconAlignmentH).onChange(async (value) => {
-            this.plugin.settings.banner[currentDevice].iconAlignmentH = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Icon alignment - horizontal")
+          .setDesc("Horizontal alignment of the icon")
+          .addDropdown((dropdown) => {
+            dropdown
+              .addOption("flex-start", "Left")
+              .addOption("center", "Center")
+              .addOption("flex-end", "Right")
+              .setValue(deviceSettings.iconAlignmentH)
+              .onChange(async (value) => {
+                this.plugin.settings.banner[currentDevice].iconAlignmentH =
+                  value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
       group.addSetting((setting) => {
-        setting.setName("Icon alignment - vertical").setDesc("Vertical alignment of the icon").addDropdown((dropdown) => {
-          dropdown.addOption("flex-start", "Top").addOption("center", "Center").addOption("flex-end", "Bottom").setValue(deviceSettings.iconAlignmentV).onChange(async (value) => {
-            this.plugin.settings.banner[currentDevice].iconAlignmentV = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Icon alignment - vertical")
+          .setDesc("Vertical alignment of the icon")
+          .addDropdown((dropdown) => {
+            dropdown
+              .addOption("flex-start", "Top")
+              .addOption("center", "Center")
+              .addOption("flex-end", "Bottom")
+              .setValue(deviceSettings.iconAlignmentV)
+              .onChange(async (value) => {
+                this.plugin.settings.banner[currentDevice].iconAlignmentV =
+                  value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
     }
   }
   renderAdvancedSettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Advanced");
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
+      "Advanced",
+    );
     group.addSetting((setting) => {
-      setting.setName("Supported file extensions").setDesc("File extensions to process (comma-separated)").addText((text) => {
-        const currentValue = this.plugin.settings.supportedExtensions.length > 0 ? this.plugin.settings.supportedExtensions.join(", ") : "";
-        text.setPlaceholder("File extensions").setValue(currentValue).onChange(async (value) => {
-          const extensions = value.split(",").map((ext) => ext.trim().toLowerCase()).filter((ext) => ext.length > 0);
-          this.plugin.settings.supportedExtensions = extensions.length > 0 ? extensions : ["md"];
-          await this.plugin.saveSettings();
+      setting
+        .setName("Supported file extensions")
+        .setDesc("File extensions to process (comma-separated)")
+        .addText((text) => {
+          const currentValue =
+            this.plugin.settings.supportedExtensions.length > 0
+              ? this.plugin.settings.supportedExtensions.join(", ")
+              : "";
+          text
+            .setPlaceholder("File extensions")
+            .setValue(currentValue)
+            .onChange(async (value) => {
+              const extensions = value
+                .split(",")
+                .map((ext) => ext.trim().toLowerCase())
+                .filter((ext) => ext.length > 0);
+              this.plugin.settings.supportedExtensions =
+                extensions.length > 0 ? extensions : ["md"];
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     group.addSetting((setting) => {
-      setting.setName("Debug mode").setDesc("Enable debug logging to console").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.debugMode).onChange(async (value) => {
-          this.plugin.settings.debugMode = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Debug mode")
+        .setDesc("Enable debug logging to console")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.debugMode)
+            .onChange(async (value) => {
+              this.plugin.settings.debugMode = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
   }
 };
@@ -825,9 +1271,11 @@ var StorageManager = class {
   constructor(app, settings, observable) {
     this.app = app;
     this.settings = settings;
-    observable == null ? void 0 : observable.subscribe((newSettings) => {
-      this.updateSettings(newSettings);
-    });
+    observable == null
+      ? void 0
+      : observable.subscribe((newSettings) => {
+          this.updateSettings(newSettings);
+        });
   }
   /**
    * Update settings reference
@@ -840,14 +1288,21 @@ var StorageManager = class {
    */
   getAttachmentFolder(noteFile) {
     var _a, _b;
-    const notePath = (_b = (_a = noteFile.parent) == null ? void 0 : _a.path) != null ? _b : "";
+    const notePath =
+      (_b = (_a = noteFile.parent) == null ? void 0 : _a.path) != null
+        ? _b
+        : "";
     switch (this.settings.attachmentLocation) {
       case "same" /* SameFolder */:
         return notePath;
       case "subfolder" /* Subfolder */:
-        return (0, import_obsidian2.normalizePath)(this.joinPaths(notePath, this.settings.customAttachmentPath));
+        return (0, import_obsidian2.normalizePath)(
+          this.joinPaths(notePath, this.settings.customAttachmentPath),
+        );
       case "vault" /* VaultFolder */:
-        return (0, import_obsidian2.normalizePath)(this.settings.customAttachmentPath);
+        return (0, import_obsidian2.normalizePath)(
+          this.settings.customAttachmentPath,
+        );
       case "obsidian" /* ObsidianDefault */:
       default:
         return this.getObsidianAttachmentFolder(noteFile);
@@ -859,15 +1314,24 @@ var StorageManager = class {
   getObsidianAttachmentFolder(noteFile) {
     var _a, _b, _c;
     const vaultConfig = this.app.vault.config;
-    const attachmentFolderPath = (_a = vaultConfig == null ? void 0 : vaultConfig.attachmentFolderPath) != null ? _a : "/";
-    const notePath = (_c = (_b = noteFile.parent) == null ? void 0 : _b.path) != null ? _c : "";
+    const attachmentFolderPath =
+      (_a = vaultConfig == null ? void 0 : vaultConfig.attachmentFolderPath) !=
+      null
+        ? _a
+        : "/";
+    const notePath =
+      (_c = (_b = noteFile.parent) == null ? void 0 : _b.path) != null
+        ? _c
+        : "";
     if (attachmentFolderPath === "/") {
       return "";
     } else if (attachmentFolderPath === "./") {
       return notePath;
     } else if (attachmentFolderPath.startsWith("./")) {
       const relativePath = attachmentFolderPath.slice(2);
-      return (0, import_obsidian2.normalizePath)(this.joinPaths(notePath, relativePath));
+      return (0, import_obsidian2.normalizePath)(
+        this.joinPaths(notePath, relativePath),
+      );
     } else {
       return (0, import_obsidian2.normalizePath)(attachmentFolderPath);
     }
@@ -899,7 +1363,9 @@ var StorageManager = class {
     await this.ensureFolderExists(folder);
     const sanitizedName = this.sanitizeFileName(baseName);
     let fileName = `${sanitizedName}.${extension}`;
-    let filePath = folder ? (0, import_obsidian2.normalizePath)(this.joinPaths(folder, fileName)) : (0, import_obsidian2.normalizePath)(fileName);
+    let filePath = folder
+      ? (0, import_obsidian2.normalizePath)(this.joinPaths(folder, fileName))
+      : (0, import_obsidian2.normalizePath)(fileName);
     let counter = 1;
     while (this.app.vault.getAbstractFileByPath(filePath)) {
       if (this.settings.dupNumberAtStart) {
@@ -907,7 +1373,9 @@ var StorageManager = class {
       } else {
         fileName = `${sanitizedName}${this.settings.dupNumberDelimiter}${counter}.${extension}`;
       }
-      filePath = folder ? (0, import_obsidian2.normalizePath)(this.joinPaths(folder, fileName)) : (0, import_obsidian2.normalizePath)(fileName);
+      filePath = folder
+        ? (0, import_obsidian2.normalizePath)(this.joinPaths(folder, fileName))
+        : (0, import_obsidian2.normalizePath)(fileName);
       counter++;
     }
     return filePath;
@@ -942,19 +1410,25 @@ var StorageManager = class {
         imageLink,
         insertSize,
         displayText,
-        hasSize: !!(insertSize && insertSize.trim())
+        hasSize: !!(insertSize && insertSize.trim()),
       });
     }
     if (imageLink.startsWith("![") && imageLink.includes("](")) {
       if (insertSize && insertSize.trim()) {
         const sizePart = `|${insertSize}`;
         if (displayText && displayText.trim()) {
-          imageLink = imageLink.replace(/^!\[([^\]]*)\]/, `![${displayText}${sizePart}]`);
+          imageLink = imageLink.replace(
+            /^!\[([^\]]*)\]/,
+            `![${displayText}${sizePart}]`,
+          );
         } else {
           const altMatch = imageLink.match(/^!\[([^\]]*)\]/);
           if (altMatch) {
             const alt = altMatch[1] || "";
-            imageLink = imageLink.replace(/^!\[([^\]]*)\]/, `![${alt}${sizePart}]`);
+            imageLink = imageLink.replace(
+              /^!\[([^\]]*)\]/,
+              `![${alt}${sizePart}]`,
+            );
           }
         }
       } else if (displayText && displayText.trim()) {
@@ -974,7 +1448,7 @@ var StorageManager = class {
     }
     if (this.settings.debugMode) {
       console.debug("[Image Manager] generateMarkdownLink result", {
-        finalLink: imageLink
+        finalLink: imageLink,
       });
     }
     return imageLink;
@@ -984,12 +1458,14 @@ var StorageManager = class {
    */
   getRelativePath(from, to) {
     var _a, _b, _c, _d;
-    const fromDir = (_b = (_a = from.parent) == null ? void 0 : _a.path) != null ? _b : "";
+    const fromDir =
+      (_b = (_a = from.parent) == null ? void 0 : _a.path) != null ? _b : "";
     const toPath = to.path;
     if (!fromDir) {
       return toPath;
     }
-    const toDir = (_d = (_c = to.parent) == null ? void 0 : _c.path) != null ? _d : "";
+    const toDir =
+      (_d = (_c = to.parent) == null ? void 0 : _c.path) != null ? _d : "";
     if (fromDir === toDir) {
       return to.name;
     }
@@ -999,7 +1475,12 @@ var StorageManager = class {
    * Sanitize a file name
    */
   sanitizeFileName(name) {
-    return name.replace(/[\\/:*?"<>|]/g, "-").replace(/\s+/g, " ").replace(/^\.+/, "").replace(/\.+$/, "").trim();
+    return name
+      .replace(/[\\/:*?"<>|]/g, "-")
+      .replace(/\s+/g, " ")
+      .replace(/^\.+/, "")
+      .replace(/\.+$/, "")
+      .trim();
   }
   /**
    * Get file extension from MIME type
@@ -1015,7 +1496,7 @@ var StorageManager = class {
       "image/svg+xml": "svg",
       "image/bmp": "bmp",
       "image/tiff": "tiff",
-      "image/avif": "avif"
+      "image/avif": "avif",
     };
     return (_a = mimeToExt[mimeType]) != null ? _a : "png";
   }
@@ -1023,7 +1504,17 @@ var StorageManager = class {
    * Check if a file is an image based on extension
    */
   isImageFile(file) {
-    const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "tiff", "avif"];
+    const imageExtensions = [
+      "jpg",
+      "jpeg",
+      "png",
+      "gif",
+      "webp",
+      "svg",
+      "bmp",
+      "tiff",
+      "avif",
+    ];
     return imageExtensions.includes(file.extension.toLowerCase());
   }
   /**
@@ -1036,7 +1527,17 @@ var StorageManager = class {
         return false;
       }
       const pathname = parsed.pathname.toLowerCase();
-      const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp", ".tiff", ".avif"];
+      const imageExtensions = [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".webp",
+        ".svg",
+        ".bmp",
+        ".tiff",
+        ".avif",
+      ];
       if (imageExtensions.some((ext) => pathname.endsWith(ext))) {
         return true;
       }
@@ -1045,7 +1546,7 @@ var StorageManager = class {
         "images.pexels.com",
         "pixabay.com",
         "i.imgur.com",
-        "cdn.discordapp.com"
+        "cdn.discordapp.com",
       ];
       return imageHosts.some((host) => parsed.hostname.includes(host));
     } catch (e) {
@@ -1063,8 +1564,14 @@ function renderTemplate(template, variables, frontmatter) {
   let result = template;
   result = result.replace(/\{\{fileName\}\}/g, variables.fileName);
   result = result.replace(/\{\{dirName\}\}/g, variables.dirName);
-  result = result.replace(/\{\{imageNameKey\}\}/g, (_a = variables.imageNameKey) != null ? _a : "");
-  result = result.replace(/\{\{firstHeading\}\}/g, (_b = variables.firstHeading) != null ? _b : "");
+  result = result.replace(
+    /\{\{imageNameKey\}\}/g,
+    (_a = variables.imageNameKey) != null ? _a : "",
+  );
+  result = result.replace(
+    /\{\{firstHeading\}\}/g,
+    (_b = variables.firstHeading) != null ? _b : "",
+  );
   result = result.replace(/\{\{DATE:([^}]+)\}\}/g, (_, format) => {
     return formatDate(/* @__PURE__ */ new Date(), format);
   });
@@ -1076,7 +1583,8 @@ function renderTemplate(template, variables, frontmatter) {
       const value = frontmatter[key.trim()];
       if (value == null) return "";
       if (typeof value === "string") return value;
-      if (typeof value === "number" || typeof value === "boolean") return String(value);
+      if (typeof value === "number" || typeof value === "boolean")
+        return String(value);
       return "";
     });
   }
@@ -1086,13 +1594,25 @@ function formatDate(date, format) {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  return format.replace("YYYY", String(year)).replace("YY", String(year).slice(-2)).replace("MM", String(month).padStart(2, "0")).replace("DD", String(day).padStart(2, "0")).replace("M", String(month)).replace("D", String(day));
+  return format
+    .replace("YYYY", String(year))
+    .replace("YY", String(year).slice(-2))
+    .replace("MM", String(month).padStart(2, "0"))
+    .replace("DD", String(day).padStart(2, "0"))
+    .replace("M", String(month))
+    .replace("D", String(day));
 }
 function formatTime(date, format) {
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
-  return format.replace("HH", String(hours).padStart(2, "0")).replace("mm", String(minutes).padStart(2, "0")).replace("ss", String(seconds).padStart(2, "0")).replace("H", String(hours)).replace("m", String(minutes)).replace("s", String(seconds));
+  return format
+    .replace("HH", String(hours).padStart(2, "0"))
+    .replace("mm", String(minutes).padStart(2, "0"))
+    .replace("ss", String(seconds).padStart(2, "0"))
+    .replace("H", String(hours))
+    .replace("m", String(minutes))
+    .replace("s", String(seconds));
 }
 function buildTemplateVariables(app, activeFile) {
   var _a, _b;
@@ -1109,11 +1629,14 @@ function buildTemplateVariables(app, activeFile) {
   }
   return {
     fileName: activeFile.basename,
-    dirName: (_b = (_a = activeFile.parent) == null ? void 0 : _a.name) != null ? _b : "",
+    dirName:
+      (_b = (_a = activeFile.parent) == null ? void 0 : _a.name) != null
+        ? _b
+        : "",
     imageNameKey: frontmatter == null ? void 0 : frontmatter.imageNameKey,
     firstHeading,
     date: formatDate(/* @__PURE__ */ new Date(), "YYYY-MM-DD"),
-    time: formatTime(/* @__PURE__ */ new Date(), "HH-mm-ss")
+    time: formatTime(/* @__PURE__ */ new Date(), "HH-mm-ss"),
   };
 }
 function isTemplateMeaningful(result, delimiter) {
@@ -1144,7 +1667,9 @@ var RenameModal = class extends import_obsidian3.Modal {
     this.renderImagePreview(contentEl);
     this.renderFileInfo(contentEl);
     this.renderNameInput(contentEl);
-    this.errorEl = contentEl.createDiv({ cls: "image-manager-error image-manager-error-hidden" });
+    this.errorEl = contentEl.createDiv({
+      cls: "image-manager-error image-manager-error-hidden",
+    });
     this.renderButtons(contentEl);
     setTimeout(() => {
       if (this.nameInput) {
@@ -1154,12 +1679,14 @@ var RenameModal = class extends import_obsidian3.Modal {
     }, 50);
   }
   renderImagePreview(containerEl) {
-    const previewContainer = containerEl.createDiv({ cls: "image-manager-preview" });
+    const previewContainer = containerEl.createDiv({
+      cls: "image-manager-preview",
+    });
     const img = previewContainer.createEl("img", {
       attr: {
         src: this.app.vault.getResourcePath(this.imageFile),
-        alt: this.imageFile.name
-      }
+        alt: this.imageFile.name,
+      },
     });
     img.addClass("image-manager-preview-img");
   }
@@ -1171,33 +1698,49 @@ var RenameModal = class extends import_obsidian3.Modal {
     originalItem.createEl("span", { text: this.imageFile.path });
     const newItem = infoList.createEl("li");
     newItem.createEl("strong", { text: "New path: " });
-    this.previewEl = newItem.createEl("span", { text: this.getNewPath(this.currentName) });
+    this.previewEl = newItem.createEl("span", {
+      text: this.getNewPath(this.currentName),
+    });
   }
   renderNameInput(containerEl) {
-    new import_obsidian3.Setting(containerEl).setName("New name").setDesc("Enter a new name for the image (without extension)").addText((text) => {
-      this.nameInput = text.inputEl;
-      text.setPlaceholder("Enter name").setValue(this.currentName).onChange((value) => {
-        this.currentName = this.sanitizeName(value);
-        this.updatePreview();
+    new import_obsidian3.Setting(containerEl)
+      .setName("New name")
+      .setDesc("Enter a new name for the image (without extension)")
+      .addText((text) => {
+        this.nameInput = text.inputEl;
+        text
+          .setPlaceholder("Enter name")
+          .setValue(this.currentName)
+          .onChange((value) => {
+            this.currentName = this.sanitizeName(value);
+            this.updatePreview();
+          });
+        text.inputEl.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && !e.isComposing) {
+            e.preventDefault();
+            this.submit();
+          }
+        });
       });
-      text.inputEl.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !e.isComposing) {
-          e.preventDefault();
-          this.submit();
-        }
-      });
-    });
   }
   renderButtons(containerEl) {
-    new import_obsidian3.Setting(containerEl).addButton((btn) => {
-      btn.setButtonText("Rename").setCta().onClick(() => this.submit());
-    }).addButton((btn) => {
-      btn.setButtonText("Skip").onClick(() => this.cancel());
-    });
+    new import_obsidian3.Setting(containerEl)
+      .addButton((btn) => {
+        btn
+          .setButtonText("Rename")
+          .setCta()
+          .onClick(() => this.submit());
+      })
+      .addButton((btn) => {
+        btn.setButtonText("Skip").onClick(() => this.cancel());
+      });
   }
   getNewPath(name) {
     var _a, _b;
-    const folder = (_b = (_a = this.imageFile.parent) == null ? void 0 : _a.path) != null ? _b : "";
+    const folder =
+      (_b = (_a = this.imageFile.parent) == null ? void 0 : _a.path) != null
+        ? _b
+        : "";
     const extension = this.imageFile.extension;
     const fileName = `${name}.${extension}`;
     return folder ? `${folder}/${fileName}` : fileName;
@@ -1208,7 +1751,10 @@ var RenameModal = class extends import_obsidian3.Modal {
     }
   }
   sanitizeName(name) {
-    return name.replace(/[\\/:*?"<>|]/g, "-").replace(/\s+/g, " ").trim();
+    return name
+      .replace(/[\\/:*?"<>|]/g, "-")
+      .replace(/\s+/g, " ")
+      .trim();
   }
   showError(message) {
     if (this.errorEl) {
@@ -1231,14 +1777,14 @@ var RenameModal = class extends import_obsidian3.Modal {
     }
     this.onSubmit({
       newName: this.currentName,
-      cancelled: false
+      cancelled: false,
     });
     this.close();
   }
   cancel() {
     this.onSubmit({
       newName: "",
-      cancelled: true
+      cancelled: true,
     });
     this.close();
   }
@@ -1259,7 +1805,15 @@ var import_obsidian4 = require("obsidian");
 
 // src/utils/kebab-case.ts
 function toKebabCase(str) {
-  return str.toLowerCase().replace(/[<>:"/\\|?*]/g, "").replace(/['"]/g, "").replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+  return str
+    .toLowerCase()
+    .replace(/[<>:"/\\|?*]/g, "")
+    .replace(/['"]/g, "")
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 // src/modals/DescriptiveImageModal.ts
@@ -1280,19 +1834,27 @@ var DescriptiveImageModal = class extends import_obsidian4.Modal {
     this.containerEl.addClass("image-manager-rename-modal");
     titleEl.setText("Describe image");
     this.renderImagePreview(contentEl);
-    new import_obsidian4.Setting(contentEl).setName("Image description").setDesc("Describe this image. This will be used as display text and for the file name.").addText((text) => {
-      this.descriptionInput = text.inputEl;
-      text.setPlaceholder("A beautiful sunset over mountains").setValue(this.description).onChange((value) => {
-        this.description = value;
-        this.updatePreview();
+    new import_obsidian4.Setting(contentEl)
+      .setName("Image description")
+      .setDesc(
+        "Describe this image. This will be used as display text and for the file name.",
+      )
+      .addText((text) => {
+        this.descriptionInput = text.inputEl;
+        text
+          .setPlaceholder("A beautiful sunset over mountains")
+          .setValue(this.description)
+          .onChange((value) => {
+            this.description = value;
+            this.updatePreview();
+          });
+        text.inputEl.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && !e.isComposing) {
+            e.preventDefault();
+            this.submit();
+          }
+        });
       });
-      text.inputEl.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !e.isComposing) {
-          e.preventDefault();
-          this.submit();
-        }
-      });
-    });
     const previewContainer = contentEl.createDiv({ cls: "image-manager-info" });
     previewContainer.createEl("p", { text: "Preview:" });
     const fileNamePreview = previewContainer.createEl("p");
@@ -1301,12 +1863,19 @@ var DescriptiveImageModal = class extends import_obsidian4.Modal {
     const linkPreview = previewContainer.createEl("p");
     linkPreview.createEl("strong", { text: "Link: " });
     this.previewEl = linkPreview.createEl("span", { cls: "code" });
-    this.errorEl = contentEl.createDiv({ cls: "image-manager-error image-manager-error-hidden" });
-    new import_obsidian4.Setting(contentEl).addButton((btn) => {
-      btn.setButtonText("Insert").setCta().onClick(() => this.submit());
-    }).addButton((btn) => {
-      btn.setButtonText("Cancel").onClick(() => this.cancel());
+    this.errorEl = contentEl.createDiv({
+      cls: "image-manager-error image-manager-error-hidden",
     });
+    new import_obsidian4.Setting(contentEl)
+      .addButton((btn) => {
+        btn
+          .setButtonText("Insert")
+          .setCta()
+          .onClick(() => this.submit());
+      })
+      .addButton((btn) => {
+        btn.setButtonText("Cancel").onClick(() => this.cancel());
+      });
     if (this.description) {
       this.updatePreview();
     }
@@ -1317,12 +1886,14 @@ var DescriptiveImageModal = class extends import_obsidian4.Modal {
     }, 50);
   }
   renderImagePreview(containerEl) {
-    const previewContainer = containerEl.createDiv({ cls: "image-manager-preview" });
+    const previewContainer = containerEl.createDiv({
+      cls: "image-manager-preview",
+    });
     const img = previewContainer.createEl("img", {
       attr: {
         src: this.app.vault.getResourcePath(this.imageFile),
-        alt: this.imageFile.name
-      }
+        alt: this.imageFile.name,
+      },
     });
     img.addClass("image-manager-preview-img");
   }
@@ -1374,7 +1945,7 @@ var DescriptiveImageModal = class extends import_obsidian4.Modal {
     this.onSubmit({
       description: this.description.trim(),
       fileName: kebabName,
-      cancelled: false
+      cancelled: false,
     });
     this.close();
   }
@@ -1382,7 +1953,7 @@ var DescriptiveImageModal = class extends import_obsidian4.Modal {
     this.onSubmit({
       description: "",
       fileName: "",
-      cancelled: true
+      cancelled: true,
     });
     this.close();
   }
@@ -1393,7 +1964,12 @@ var DescriptiveImageModal = class extends import_obsidian4.Modal {
 };
 function openDescriptiveImageModal(app, imageFile, suggestedDescription) {
   return new Promise((resolve) => {
-    const modal = new DescriptiveImageModal(app, imageFile, resolve, suggestedDescription);
+    const modal = new DescriptiveImageModal(
+      app,
+      imageFile,
+      resolve,
+      suggestedDescription,
+    );
     modal.open();
   });
 }
@@ -1404,9 +1980,11 @@ var ImageProcessor = class {
     this.app = app;
     this.settings = settings;
     this.storageManager = storageManager;
-    observable == null ? void 0 : observable.subscribe((newSettings) => {
-      this.updateSettings(newSettings);
-    });
+    observable == null
+      ? void 0
+      : observable.subscribe((newSettings) => {
+          this.updateSettings(newSettings);
+        });
   }
   /**
    * Update settings reference
@@ -1420,7 +1998,12 @@ var ImageProcessor = class {
    * This is called from our event handlers (user-initiated action)
    * @param isPropertyInsertion - If true, skip descriptive images (only applies to note body)
    */
-  async processImageFile(file, activeFile, showRenameModal = true, isPropertyInsertion = false) {
+  async processImageFile(
+    file,
+    activeFile,
+    showRenameModal = true,
+    isPropertyInsertion = false,
+  ) {
     try {
       const arrayBuffer = await file.arrayBuffer();
       const extension = this.getExtension(file);
@@ -1430,13 +2013,20 @@ var ImageProcessor = class {
         const tempPath = await this.storageManager.getAvailablePath(
           `temp-${Date.now()}`,
           extension,
-          activeFile
+          activeFile,
         );
-        const tempFile = await this.storageManager.saveFile(arrayBuffer, tempPath);
+        const tempFile = await this.storageManager.saveFile(
+          arrayBuffer,
+          tempPath,
+        );
         let finalName2;
         let displayText;
         if (this.settings.enableDescriptiveImages) {
-          const descResult = await openDescriptiveImageModal(this.app, tempFile, suggestedName);
+          const descResult = await openDescriptiveImageModal(
+            this.app,
+            tempFile,
+            suggestedName,
+          );
           if (descResult.cancelled) {
             await this.app.fileManager.trashFile(tempFile);
             return {
@@ -1444,13 +2034,17 @@ var ImageProcessor = class {
               path: "",
               linkText: "",
               success: false,
-              error: "Cancelled by user"
+              error: "Cancelled by user",
             };
           }
           finalName2 = descResult.fileName;
           displayText = descResult.description;
         } else {
-          const result = await openRenameModal(this.app, tempFile, suggestedName);
+          const result = await openRenameModal(
+            this.app,
+            tempFile,
+            suggestedName,
+          );
           if (result.cancelled) {
             await this.app.fileManager.trashFile(tempFile);
             return {
@@ -1458,12 +2052,16 @@ var ImageProcessor = class {
               path: "",
               linkText: "",
               success: false,
-              error: "Cancelled by user"
+              error: "Cancelled by user",
             };
           }
           finalName2 = result.newName;
         }
-        const finalPath = await this.getDeduplicatedPath(finalName2, extension, activeFile);
+        const finalPath = await this.getDeduplicatedPath(
+          finalName2,
+          extension,
+          activeFile,
+        );
         await this.app.fileManager.renameFile(tempFile, finalPath);
         const abstractFile = this.app.vault.getAbstractFileByPath(finalPath);
         if (!(abstractFile instanceof import_obsidian5.TFile)) {
@@ -1474,7 +2072,7 @@ var ImageProcessor = class {
           renamedFile,
           activeFile.path,
           displayText,
-          this.settings.insertSize
+          this.settings.insertSize,
         );
         if (!this.settings.disableRenameNotice) {
           new import_obsidian5.Notice(`Image saved as: ${renamedFile.name}`);
@@ -1484,16 +2082,23 @@ var ImageProcessor = class {
           path: finalPath,
           linkText,
           description: displayText,
-          success: true
+          success: true,
         };
       } else {
-        const finalPath = await this.getDeduplicatedPath(finalName, extension, activeFile);
-        const savedFile = await this.storageManager.saveFile(arrayBuffer, finalPath);
+        const finalPath = await this.getDeduplicatedPath(
+          finalName,
+          extension,
+          activeFile,
+        );
+        const savedFile = await this.storageManager.saveFile(
+          arrayBuffer,
+          finalPath,
+        );
         const linkText = this.storageManager.generateMarkdownLink(
           savedFile,
           activeFile.path,
           void 0,
-          this.settings.insertSize
+          this.settings.insertSize,
         );
         if (!this.settings.disableRenameNotice) {
           new import_obsidian5.Notice(`Image saved as: ${savedFile.name}`);
@@ -1503,7 +2108,7 @@ var ImageProcessor = class {
           path: finalPath,
           linkText,
           description: void 0,
-          success: true
+          success: true,
         };
       }
     } catch (error) {
@@ -1513,7 +2118,7 @@ var ImageProcessor = class {
         path: "",
         linkText: "",
         success: false,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       };
     }
   }
@@ -1522,7 +2127,13 @@ var ImageProcessor = class {
    * @param isPropertyInsertion - If true, skip descriptive images (only applies to note body)
    * @param suggestedNameOverride - Optional override for suggested name (e.g., from search term)
    */
-  async processImageUrl(url, activeFile, showRenameModal = true, isPropertyInsertion = false, suggestedNameOverride) {
+  async processImageUrl(
+    url,
+    activeFile,
+    showRenameModal = true,
+    isPropertyInsertion = false,
+    suggestedNameOverride,
+  ) {
     var _a;
     try {
       const response = await (0, import_obsidian5.requestUrl)({ url });
@@ -1530,22 +2141,36 @@ var ImageProcessor = class {
         throw new Error(`Failed to download image: ${response.status}`);
       }
       const arrayBuffer = response.arrayBuffer;
-      const contentType = (_a = response.headers["content-type"]) != null ? _a : "image/png";
-      const extension = this.storageManager.getExtensionFromMimeType(contentType);
-      const suggestedName = this.generateNameWithSuffix(activeFile, suggestedNameOverride);
+      const contentType =
+        (_a = response.headers["content-type"]) != null ? _a : "image/png";
+      const extension =
+        this.storageManager.getExtensionFromMimeType(contentType);
+      const suggestedName = this.generateNameWithSuffix(
+        activeFile,
+        suggestedNameOverride,
+      );
       let finalName = suggestedName;
       if (showRenameModal && !this.settings.autoRename) {
         const tempPath = await this.storageManager.getAvailablePath(
           `temp-${Date.now()}`,
           extension,
-          activeFile
+          activeFile,
         );
-        const tempFile = await this.storageManager.saveFile(arrayBuffer, tempPath);
+        const tempFile = await this.storageManager.saveFile(
+          arrayBuffer,
+          tempPath,
+        );
         let finalName2;
         let displayText;
-        const shouldShowDescriptive = this.settings.enableDescriptiveImages && (!isPropertyInsertion || this.settings.altTextProperty !== "");
+        const shouldShowDescriptive =
+          this.settings.enableDescriptiveImages &&
+          (!isPropertyInsertion || this.settings.altTextProperty !== "");
         if (shouldShowDescriptive) {
-          const descResult = await openDescriptiveImageModal(this.app, tempFile, suggestedName);
+          const descResult = await openDescriptiveImageModal(
+            this.app,
+            tempFile,
+            suggestedName,
+          );
           if (descResult.cancelled) {
             await this.app.fileManager.trashFile(tempFile);
             return {
@@ -1553,13 +2178,17 @@ var ImageProcessor = class {
               path: "",
               linkText: "",
               success: false,
-              error: "Cancelled by user"
+              error: "Cancelled by user",
             };
           }
           finalName2 = descResult.fileName;
           displayText = descResult.description;
         } else {
-          const result = await openRenameModal(this.app, tempFile, suggestedName);
+          const result = await openRenameModal(
+            this.app,
+            tempFile,
+            suggestedName,
+          );
           if (result.cancelled) {
             await this.app.fileManager.trashFile(tempFile);
             return {
@@ -1567,12 +2196,16 @@ var ImageProcessor = class {
               path: "",
               linkText: "",
               success: false,
-              error: "Cancelled by user"
+              error: "Cancelled by user",
             };
           }
           finalName2 = result.newName;
         }
-        const finalPath = await this.getDeduplicatedPath(finalName2, extension, activeFile);
+        const finalPath = await this.getDeduplicatedPath(
+          finalName2,
+          extension,
+          activeFile,
+        );
         await this.app.fileManager.renameFile(tempFile, finalPath);
         const abstractFile = this.app.vault.getAbstractFileByPath(finalPath);
         if (!(abstractFile instanceof import_obsidian5.TFile)) {
@@ -1583,36 +2216,47 @@ var ImageProcessor = class {
           renamedFile,
           activeFile.path,
           displayText,
-          this.settings.insertSize
+          this.settings.insertSize,
         );
         if (!this.settings.disableRenameNotice) {
-          new import_obsidian5.Notice(`Image downloaded and saved as: ${renamedFile.name}`);
+          new import_obsidian5.Notice(
+            `Image downloaded and saved as: ${renamedFile.name}`,
+          );
         }
         return {
           file: renamedFile,
           path: finalPath,
           linkText,
           description: displayText,
-          success: true
+          success: true,
         };
       } else {
-        const finalPath = await this.getDeduplicatedPath(finalName, extension, activeFile);
-        const savedFile = await this.storageManager.saveFile(arrayBuffer, finalPath);
+        const finalPath = await this.getDeduplicatedPath(
+          finalName,
+          extension,
+          activeFile,
+        );
+        const savedFile = await this.storageManager.saveFile(
+          arrayBuffer,
+          finalPath,
+        );
         const linkText = this.storageManager.generateMarkdownLink(
           savedFile,
           activeFile.path,
           void 0,
-          this.settings.insertSize
+          this.settings.insertSize,
         );
         if (!this.settings.disableRenameNotice) {
-          new import_obsidian5.Notice(`Image downloaded and saved as: ${savedFile.name}`);
+          new import_obsidian5.Notice(
+            `Image downloaded and saved as: ${savedFile.name}`,
+          );
         }
         return {
           file: savedFile,
           path: finalPath,
           linkText,
           description: isPropertyInsertion ? suggestedNameOverride : void 0,
-          success: true
+          success: true,
         };
       }
     } catch (error) {
@@ -1622,7 +2266,7 @@ var ImageProcessor = class {
         path: "",
         linkText: "",
         success: false,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       };
     }
   }
@@ -1632,7 +2276,10 @@ var ImageProcessor = class {
   generateNameWithSuffix(activeFile, suffix) {
     const variables = buildTemplateVariables(this.app, activeFile);
     const rendered = renderTemplate(this.settings.imageNameTemplate, variables);
-    const isMeaningful = isTemplateMeaningful(rendered, this.settings.dupNumberDelimiter);
+    const isMeaningful = isTemplateMeaningful(
+      rendered,
+      this.settings.dupNumberDelimiter,
+    );
     const base = isMeaningful ? rendered : "";
     if (base && suffix) {
       return `${base} - ${suffix}`;
@@ -1653,7 +2300,11 @@ var ImageProcessor = class {
    * Get a deduplicated file path
    */
   async getDeduplicatedPath(baseName, extension, activeFile) {
-    return await this.storageManager.getAvailablePath(baseName, extension, activeFile);
+    return await this.storageManager.getAvailablePath(
+      baseName,
+      extension,
+      activeFile,
+    );
   }
   /**
    * Get file extension from File object
@@ -1662,7 +2313,10 @@ var ImageProcessor = class {
     var _a;
     const nameParts = file.name.split(".");
     if (nameParts.length > 1) {
-      const nameExt = (_a = nameParts[nameParts.length - 1]) == null ? void 0 : _a.toLowerCase();
+      const nameExt =
+        (_a = nameParts[nameParts.length - 1]) == null
+          ? void 0
+          : _a.toLowerCase();
       if (nameExt) {
         return nameExt;
       }
@@ -1673,7 +2327,9 @@ var ImageProcessor = class {
    * Insert link text at cursor position
    */
   insertLinkAtCursor(linkText) {
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian5.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(
+      import_obsidian5.MarkdownView,
+    );
     if (view == null ? void 0 : view.editor) {
       view.editor.replaceSelection(linkText);
     }
@@ -1683,7 +2339,9 @@ var ImageProcessor = class {
    */
   getActiveFile() {
     var _a;
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian5.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(
+      import_obsidian5.MarkdownView,
+    );
     return (_a = view == null ? void 0 : view.file) != null ? _a : null;
   }
   /**
@@ -1696,24 +2354,28 @@ var ImageProcessor = class {
       let finalName = suggestedName;
       let displayText = "";
       if (this.settings.enableDescriptiveImages) {
-        const descResult = await openDescriptiveImageModal(this.app, imageFile, suggestedName);
+        const descResult = await openDescriptiveImageModal(
+          this.app,
+          imageFile,
+          suggestedName,
+        );
         if (descResult.cancelled) {
           return null;
         }
         displayText = descResult.description;
         finalName = descResult.fileName;
       } else if (!this.settings.autoRename) {
-        const result = await openRenameModal(
-          this.app,
-          imageFile,
-          finalName
-        );
+        const result = await openRenameModal(this.app, imageFile, finalName);
         if (result.cancelled) {
           return null;
         }
         finalName = result.newName;
       }
-      const finalPath = await this.getDeduplicatedPath(finalName, extension, activeFile);
+      const finalPath = await this.getDeduplicatedPath(
+        finalName,
+        extension,
+        activeFile,
+      );
       await this.app.fileManager.renameFile(imageFile, finalPath);
       const abstractFile = this.app.vault.getAbstractFileByPath(finalPath);
       if (!(abstractFile instanceof import_obsidian5.TFile)) {
@@ -1724,13 +2386,13 @@ var ImageProcessor = class {
         renamedFile,
         activeFile.path,
         displayText,
-        this.settings.insertSize
+        this.settings.insertSize,
       );
       return {
         file: renamedFile,
         path: finalPath,
         linkText,
-        success: true
+        success: true,
       };
     } catch (error) {
       console.error("Error renaming image file:", error);
@@ -1739,7 +2401,7 @@ var ImageProcessor = class {
         path: "",
         linkText: "",
         success: false,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       };
     }
   }
@@ -1771,7 +2433,7 @@ function parseMdxFrontmatter(content) {
   if (!match) {
     return {
       frontmatter: {},
-      body: content
+      body: content,
     };
   }
   const frontmatterText = (_a = match[1]) != null ? _a : "";
@@ -1781,13 +2443,13 @@ function parseMdxFrontmatter(content) {
     const frontmatter = parsed && typeof parsed === "object" ? parsed : {};
     return {
       frontmatter,
-      body: bodyContent
+      body: bodyContent,
     };
   } catch (e) {
     console.error("Error parsing MDX properties:", e);
     return {
       frontmatter: {},
-      body: bodyContent
+      body: bodyContent,
     };
   }
 }
@@ -1816,7 +2478,9 @@ async function processMdxFrontMatter(app, file, callback) {
     }
     const frontmatter = { ...parsed.frontmatter };
     callback(frontmatter);
-    const newFrontmatterText = (0, import_obsidian6.stringifyYaml)(frontmatter).trim();
+    const newFrontmatterText = (0, import_obsidian6.stringifyYaml)(
+      frontmatter,
+    ).trim();
     const newContent = `---
 ${newFrontmatterText}
 ---
@@ -1838,15 +2502,24 @@ async function getFrontmatter(app, file) {
 
 // src/services/PropertyHandler.ts
 var PropertyHandler = class {
-  constructor(app, settings, storageManager, imageProcessor, remoteService, observable) {
+  constructor(
+    app,
+    settings,
+    storageManager,
+    imageProcessor,
+    remoteService,
+    observable,
+  ) {
     this.app = app;
     this.settings = settings;
     this.storageManager = storageManager;
     this.imageProcessor = imageProcessor;
     this.remoteService = remoteService;
-    observable == null ? void 0 : observable.subscribe((newSettings) => {
-      this.updateSettings(newSettings);
-    });
+    observable == null
+      ? void 0
+      : observable.subscribe((newSettings) => {
+          this.updateSettings(newSettings);
+        });
   }
   /**
    * Update settings reference
@@ -1870,7 +2543,9 @@ var PropertyHandler = class {
       new import_obsidian7.Notice(`Image added to property: ${propertyName}`);
     } catch (error) {
       console.error("Failed to update property:", error);
-      new import_obsidian7.Notice(`Failed to update property: ${error instanceof Error ? error.message : String(error)}`);
+      new import_obsidian7.Notice(
+        `Failed to update property: ${error instanceof Error ? error.message : String(error)}`,
+      );
       throw error;
     }
   }
@@ -1902,13 +2577,22 @@ var PropertyHandler = class {
    */
   formatPropertyLink(imageFile, noteFile) {
     if (this.settings.propertyLinkFormat === "obsidian" /* ObsidianDefault */) {
-      const generatedLink = this.app.fileManager.generateMarkdownLink(imageFile, noteFile.path);
+      const generatedLink = this.app.fileManager.generateMarkdownLink(
+        imageFile,
+        noteFile.path,
+      );
       if (generatedLink.startsWith("![") && generatedLink.includes("]]")) {
         return generatedLink.substring(1);
-      } else if (generatedLink.startsWith("![") && generatedLink.includes("](")) {
+      } else if (
+        generatedLink.startsWith("![") &&
+        generatedLink.includes("](")
+      ) {
         const match = generatedLink.match(/!\[.*?\]\((.*?)\)/);
         return match && match[1] ? match[1] : generatedLink;
-      } else if (generatedLink.startsWith("[[") && generatedLink.endsWith("]]")) {
+      } else if (
+        generatedLink.startsWith("[[") &&
+        generatedLink.endsWith("]]")
+      ) {
         return generatedLink;
       } else if (generatedLink.includes("](")) {
         const match = generatedLink.match(/\[.*?\]\((.*?)\)/);
@@ -1937,7 +2621,7 @@ var PropertyHandler = class {
       case "custom" /* Custom */:
         return this.settings.customPropertyLinkFormat.replace(
           /\{image-url\}/gi,
-          pathToUse
+          pathToUse,
         );
       case "relative" /* RelativePath */:
       case "path" /* Path */:
@@ -1951,9 +2635,15 @@ var PropertyHandler = class {
   getRelativePath(fromFile, toFile) {
     var _a;
     const vaultConfig = this.app.vault.config;
-    const useMarkdownLinks = (_a = vaultConfig == null ? void 0 : vaultConfig.useMarkdownLinks) != null ? _a : false;
+    const useMarkdownLinks =
+      (_a = vaultConfig == null ? void 0 : vaultConfig.useMarkdownLinks) != null
+        ? _a
+        : false;
     const useWikilinks = !useMarkdownLinks;
-    if (useWikilinks && this.settings.propertyLinkFormat === "wikilink" /* Wikilink */) {
+    if (
+      useWikilinks &&
+      this.settings.propertyLinkFormat === "wikilink" /* Wikilink */
+    ) {
       return toFile.name;
     }
     return this.storageManager.getRelativePath(fromFile, toFile);
@@ -1964,7 +2654,9 @@ var PropertyHandler = class {
   getPropertyValue(file, propertyName) {
     var _a;
     const cache = this.app.metadataCache.getFileCache(file);
-    return (_a = cache == null ? void 0 : cache.frontmatter) == null ? void 0 : _a[propertyName];
+    return (_a = cache == null ? void 0 : cache.frontmatter) == null
+      ? void 0
+      : _a[propertyName];
   }
   /**
    * Check if a property exists in frontmatter
@@ -1972,7 +2664,11 @@ var PropertyHandler = class {
   hasProperty(file, propertyName) {
     var _a;
     const cache = this.app.metadataCache.getFileCache(file);
-    return ((_a = cache == null ? void 0 : cache.frontmatter) == null ? void 0 : _a[propertyName]) !== void 0;
+    return (
+      ((_a = cache == null ? void 0 : cache.frontmatter) == null
+        ? void 0
+        : _a[propertyName]) !== void 0
+    );
   }
   /**
    * Insert an image from a URL into a property
@@ -1980,7 +2676,13 @@ var PropertyHandler = class {
    * @param remoteImage Optional RemoteImage object for generating referral text
    * @param suggestedNameOverride Optional override for suggested name (e.g., from search term)
    */
-  async insertImageFromUrl(imageUrl, noteFile, propertyName, remoteImage, suggestedNameOverride) {
+  async insertImageFromUrl(
+    imageUrl,
+    noteFile,
+    propertyName,
+    remoteImage,
+    suggestedNameOverride,
+  ) {
     const result = await this.imageProcessor.processImageUrl(
       imageUrl,
       noteFile,
@@ -1988,13 +2690,18 @@ var PropertyHandler = class {
       // Show rename modal if enabled
       true,
       // isPropertyInsertion - skip descriptive images
-      suggestedNameOverride
+      suggestedNameOverride,
       // Pass search term as suggested name
     );
     if (!result.success || !result.file) {
       throw new Error(result.error || "Failed to process image");
     }
-    await this.setPropertyValue(noteFile, propertyName, result.file, result.description);
+    await this.setPropertyValue(
+      noteFile,
+      propertyName,
+      result.file,
+      result.description,
+    );
     if (this.settings.appendReferral && remoteImage && this.remoteService) {
       const referralText = this.remoteService.generateReferralText(remoteImage);
       if (referralText) {
@@ -2014,9 +2721,11 @@ var PasteHandler = class {
     this.settings = settings;
     this.imageProcessor = imageProcessor;
     this.propertyHandler = propertyHandler;
-    observable == null ? void 0 : observable.subscribe((newSettings) => {
-      this.updateSettings(newSettings);
-    });
+    observable == null
+      ? void 0
+      : observable.subscribe((newSettings) => {
+          this.updateSettings(newSettings);
+        });
   }
   /**
    * Update settings reference
@@ -2063,7 +2772,7 @@ var PasteHandler = class {
       const result = await this.imageProcessor.processImageFile(
         imageFile,
         activeFile,
-        true
+        true,
         // Show rename modal
       );
       if (result.success && result.linkText) {
@@ -2092,7 +2801,7 @@ var PasteHandler = class {
       console.debug("[Image Manager] Property paste detected", {
         activeElement: activeEl.tagName,
         classes: activeEl.className,
-        propertyName: this.getPropertyName(activeEl)
+        propertyName: this.getPropertyName(activeEl),
       });
     }
     const files = (_a = evt.clipboardData) == null ? void 0 : _a.files;
@@ -2131,49 +2840,71 @@ var PasteHandler = class {
       activeFile,
       true,
       // Show rename modal for property paste
-      true
+      true,
       // isPropertyInsertion - skip descriptive images
     );
     if (result.success && result.file) {
-      const linkValue = this.propertyHandler.formatPropertyLink(result.file, activeFile);
+      const linkValue = this.propertyHandler.formatPropertyLink(
+        result.file,
+        activeFile,
+      );
       await this.propertyHandler.setPropertyValue(
         activeFile,
         propertyName,
         result.file,
-        result.description
+        result.description,
       );
       await new Promise((resolve) => setTimeout(resolve, 300));
       const propertyEl = document.querySelector(
-        `.metadata-property[data-property-key="${propertyName}"]`
+        `.metadata-property[data-property-key="${propertyName}"]`,
       );
       if (this.settings.debugMode) {
         console.debug("[Image Manager] Updating property UI", {
           propertyName,
           linkValue,
-          propertyElFound: !!propertyEl
+          propertyElFound: !!propertyEl,
         });
       }
-      const inputEl = propertyEl == null ? void 0 : propertyEl.querySelector(
-        ".metadata-input-longtext, .metadata-input-text, input.metadata-input, textarea.metadata-input"
-      );
+      const inputEl =
+        propertyEl == null
+          ? void 0
+          : propertyEl.querySelector(
+              ".metadata-input-longtext, .metadata-input-text, input.metadata-input, textarea.metadata-input",
+            );
       if (inputEl) {
         if (this.settings.debugMode) {
-          const currentValue = inputEl instanceof HTMLInputElement || inputEl instanceof HTMLTextAreaElement ? inputEl.value : inputEl.textContent || inputEl.innerText;
+          const currentValue =
+            inputEl instanceof HTMLInputElement ||
+            inputEl instanceof HTMLTextAreaElement
+              ? inputEl.value
+              : inputEl.textContent || inputEl.innerText;
           console.debug("[Image Manager] Found input field, updating value", {
             elementType: inputEl.tagName,
             currentValue,
-            newValue: linkValue
+            newValue: linkValue,
           });
         }
-        if (inputEl instanceof HTMLInputElement || inputEl instanceof HTMLTextAreaElement) {
+        if (
+          inputEl instanceof HTMLInputElement ||
+          inputEl instanceof HTMLTextAreaElement
+        ) {
           inputEl.value = linkValue;
         } else {
           inputEl.textContent = linkValue;
           inputEl.innerText = linkValue;
         }
-        const inputEvent = new Event("input", { bubbles: true, cancelable: true });
-        const changeEvent = new Event("change", { bubbles: true, cancelable: true });
-        const blurEvent = new Event("blur", { bubbles: true, cancelable: true });
+        const inputEvent = new Event("input", {
+          bubbles: true,
+          cancelable: true,
+        });
+        const changeEvent = new Event("change", {
+          bubbles: true,
+          cancelable: true,
+        });
+        const blurEvent = new Event("blur", {
+          bubbles: true,
+          cancelable: true,
+        });
         inputEl.dispatchEvent(inputEvent);
         setTimeout(() => {
           inputEl.dispatchEvent(changeEvent);
@@ -2183,7 +2914,9 @@ var PasteHandler = class {
               inputEl.blur();
               inputEl.dispatchEvent(blurEvent);
               setTimeout(() => {
-                const view = this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
+                const view = this.app.workspace.getActiveViewOfType(
+                  import_obsidian8.MarkdownView,
+                );
                 if (view == null ? void 0 : view.editor) {
                   view.editor.focus();
                 }
@@ -2192,7 +2925,9 @@ var PasteHandler = class {
           }
         }, 50);
       } else {
-        const view = this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
+        const view = this.app.workspace.getActiveViewOfType(
+          import_obsidian8.MarkdownView,
+        );
         if (view == null ? void 0 : view.editor) {
           view.editor.focus();
         }
@@ -2209,8 +2944,17 @@ var PasteHandler = class {
     if (!propertyEl) {
       return false;
     }
-    return element.matches(".metadata-input-longtext") || element.matches(".metadata-input-text") || element.matches("input.metadata-input") || element.matches("textarea.metadata-input") || // Also check if the element itself is an input/textarea/div inside a property
-    (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement || element instanceof HTMLDivElement && element.classList.contains("metadata-input-longtext")) && propertyEl !== null;
+    return (
+      element.matches(".metadata-input-longtext") ||
+      element.matches(".metadata-input-text") ||
+      element.matches("input.metadata-input") ||
+      element.matches("textarea.metadata-input") || // Also check if the element itself is an input/textarea/div inside a property
+      ((element instanceof HTMLInputElement ||
+        element instanceof HTMLTextAreaElement ||
+        (element instanceof HTMLDivElement &&
+          element.classList.contains("metadata-input-longtext"))) &&
+        propertyEl !== null)
+    );
   }
   /**
    * Get the property name from a frontmatter field element
@@ -2218,7 +2962,12 @@ var PasteHandler = class {
   getPropertyName(element) {
     var _a;
     const propertyEl = element.closest(".metadata-property");
-    return (_a = propertyEl == null ? void 0 : propertyEl.getAttribute("data-property-key")) != null ? _a : null;
+    return (_a =
+      propertyEl == null
+        ? void 0
+        : propertyEl.getAttribute("data-property-key")) != null
+      ? _a
+      : null;
   }
 };
 var DropHandler = class {
@@ -2226,9 +2975,11 @@ var DropHandler = class {
     this.app = app;
     this.settings = settings;
     this.imageProcessor = imageProcessor;
-    observable == null ? void 0 : observable.subscribe((newSettings) => {
-      this.updateSettings(newSettings);
-    });
+    observable == null
+      ? void 0
+      : observable.subscribe((newSettings) => {
+          this.updateSettings(newSettings);
+        });
   }
   /**
    * Update settings reference
@@ -2270,7 +3021,7 @@ var DropHandler = class {
       const result = await this.imageProcessor.processImageFile(
         imageFile,
         activeFile,
-        true
+        true,
       );
       if (result.success && result.linkText) {
         editor.replaceSelection(result.linkText);
@@ -2287,9 +3038,11 @@ var RemoteImageService = class {
   constructor(app, settings, observable) {
     this.app = app;
     this.settings = settings;
-    observable == null ? void 0 : observable.subscribe((newSettings) => {
-      this.updateSettings(newSettings);
-    });
+    observable == null
+      ? void 0
+      : observable.subscribe((newSettings) => {
+          this.updateSettings(newSettings);
+        });
   }
   /**
    * Update settings reference
@@ -2301,7 +3054,8 @@ var RemoteImageService = class {
    * Search for images from the specified provider
    */
   async search(query, provider, page = 1) {
-    const targetProvider = provider != null ? provider : this.settings.defaultProvider;
+    const targetProvider =
+      provider != null ? provider : this.settings.defaultProvider;
     switch (targetProvider) {
       case "unsplash" /* Unsplash */:
         return await this.searchUnsplash(query, page);
@@ -2330,10 +3084,14 @@ var RemoteImageService = class {
     if (orientation) {
       url.searchParams.set("orientation", orientation);
     }
-    const response = await (0, import_obsidian9.requestUrl)({ url: url.toString() });
+    const response = await (0, import_obsidian9.requestUrl)({
+      url: url.toString(),
+    });
     if (response.status >= 400) {
       console.error("Unsplash API error:", response.status, response.text);
-      throw new Error(`Unsplash search failed: ${response.status} - ${response.text}`);
+      throw new Error(
+        `Unsplash search failed: ${response.status} - ${response.text}`,
+      );
     }
     const data = response.json;
     if (!data || !data.results) {
@@ -2347,10 +3105,15 @@ var RemoteImageService = class {
    * Get Pexels API key from SecretStorage or fall back to plaintext
    */
   getPexelsApiKey() {
-    if ((0, import_obsidian9.requireApiVersion)("1.11.4") && this.settings.pexelsApiKeySecretId) {
+    if (
+      (0, import_obsidian9.requireApiVersion)("1.11.4") &&
+      this.settings.pexelsApiKeySecretId
+    ) {
       const secretStorage = this.app.secretStorage;
       if (secretStorage) {
-        const secret = secretStorage.getSecret(this.settings.pexelsApiKeySecretId);
+        const secret = secretStorage.getSecret(
+          this.settings.pexelsApiKeySecretId,
+        );
         if (secret) {
           return secret;
         }
@@ -2362,10 +3125,15 @@ var RemoteImageService = class {
    * Get Pixabay API key from SecretStorage or fall back to plaintext
    */
   getPixabayApiKey() {
-    if ((0, import_obsidian9.requireApiVersion)("1.11.4") && this.settings.pixabayApiKeySecretId) {
+    if (
+      (0, import_obsidian9.requireApiVersion)("1.11.4") &&
+      this.settings.pixabayApiKeySecretId
+    ) {
       const secretStorage = this.app.secretStorage;
       if (secretStorage) {
-        const secret = secretStorage.getSecret(this.settings.pixabayApiKeySecretId);
+        const secret = secretStorage.getSecret(
+          this.settings.pixabayApiKeySecretId,
+        );
         if (secret) {
           return secret;
         }
@@ -2380,14 +3148,16 @@ var RemoteImageService = class {
     var _a;
     const apiKey = this.getPexelsApiKey();
     if (!apiKey) {
-      const errorMsg = (0, import_obsidian9.requireApiVersion)("1.11.4") ? "Pexels API key is required. Please configure it in settings (use SecretStorage on Obsidian 1.11.4+ or enter plaintext on older versions)." : "Pexels API key is required. Please configure it in settings.";
+      const errorMsg = (0, import_obsidian9.requireApiVersion)("1.11.4")
+        ? "Pexels API key is required. Please configure it in settings (use SecretStorage on Obsidian 1.11.4+ or enter plaintext on older versions)."
+        : "Pexels API key is required. Please configure it in settings.";
       throw new Error(errorMsg);
     }
     const orientation = this.mapOrientation(this.settings.defaultOrientation);
     const params = new URLSearchParams({
       query,
       page: String(page),
-      per_page: "20"
+      per_page: "20",
     });
     if (orientation) {
       params.set("orientation", orientation);
@@ -2396,8 +3166,8 @@ var RemoteImageService = class {
     const response = await (0, import_obsidian9.requestUrl)({
       url,
       headers: {
-        Authorization: apiKey
-      }
+        Authorization: apiKey,
+      },
     });
     if (response.status >= 400) {
       throw new Error(`Pexels search failed: ${response.status}`);
@@ -2413,16 +3183,20 @@ var RemoteImageService = class {
     var _a;
     const apiKey = this.getPixabayApiKey();
     if (!apiKey) {
-      const errorMsg = (0, import_obsidian9.requireApiVersion)("1.11.4") ? "Pixabay API key is required. Please configure it in settings (use SecretStorage on Obsidian 1.11.4+ or enter plaintext on older versions)." : "Pixabay API key is required. Please configure it in settings.";
+      const errorMsg = (0, import_obsidian9.requireApiVersion)("1.11.4")
+        ? "Pixabay API key is required. Please configure it in settings (use SecretStorage on Obsidian 1.11.4+ or enter plaintext on older versions)."
+        : "Pixabay API key is required. Please configure it in settings.";
       throw new Error(errorMsg);
     }
-    const orientation = this.mapPixabayOrientation(this.settings.defaultOrientation);
+    const orientation = this.mapPixabayOrientation(
+      this.settings.defaultOrientation,
+    );
     const params = new URLSearchParams({
       key: apiKey,
       q: query,
       page: String(page),
       per_page: "20",
-      image_type: "photo"
+      image_type: "photo",
     });
     if (orientation) {
       params.set("orientation", orientation);
@@ -2472,12 +3246,16 @@ var RemoteImageService = class {
     if (!this.settings.insertReferral) {
       return "";
     }
-    const backlink = this.settings.insertBackLink && image.pageUrl ? `[Backlink](${image.pageUrl}) | ` : "";
+    const backlink =
+      this.settings.insertBackLink && image.pageUrl
+        ? `[Backlink](${image.pageUrl}) | `
+        : "";
     let referral = "";
     switch (image.provider) {
       case "unsplash" /* Unsplash */:
         if (image.author && image.authorUrl) {
-          const utm = "utm_source=Obsidian%20Image%20Manager&utm_medium=referral";
+          const utm =
+            "utm_source=Obsidian%20Image%20Manager&utm_medium=referral";
           referral = `
 *${backlink}Photo by [${image.author}](${image.authorUrl}) on [Unsplash](https://unsplash.com/?${utm})*
 `;
@@ -2542,10 +3320,14 @@ var RemoteImageService = class {
       downloadUrl: photo.links.download_location || photo.links.download,
       width: photo.width,
       height: photo.height,
-      description: (_b = (_a = photo.description) != null ? _a : photo.alt_description) != null ? _b : "",
+      description:
+        (_b = (_a = photo.description) != null ? _a : photo.alt_description) !=
+        null
+          ? _b
+          : "",
       author: photo.user.name,
       authorUrl: photo.user.links.html,
-      pageUrl: photo.links.html
+      pageUrl: photo.links.html,
     };
   }
   /**
@@ -2565,7 +3347,7 @@ var RemoteImageService = class {
       description: (_a = photo.alt) != null ? _a : "",
       author: photo.photographer,
       authorUrl: photo.photographer_url,
-      pageUrl: photo.url
+      pageUrl: photo.url,
     };
   }
   /**
@@ -2584,7 +3366,7 @@ var RemoteImageService = class {
       description: hit.tags,
       author: hit.user,
       authorUrl: `https://pixabay.com/users/${hit.user}-${hit.user_id}/`,
-      pageUrl: hit.pageURL
+      pageUrl: hit.pageURL,
     };
   }
 };
@@ -2599,9 +3381,11 @@ var LocalConversionService = class {
     this.settings = settings;
     this.storageManager = storageManager;
     this.imageProcessor = imageProcessor;
-    observable == null ? void 0 : observable.subscribe((newSettings) => {
-      this.updateSettings(newSettings);
-    });
+    observable == null
+      ? void 0
+      : observable.subscribe((newSettings) => {
+          this.updateSettings(newSettings);
+        });
   }
   /**
    * Update settings reference
@@ -2621,7 +3405,11 @@ var LocalConversionService = class {
       return 0;
     }
     const content = await this.app.vault.read(file);
-    const { newContent, count } = await this.processContent(content, file, isBackground);
+    const { newContent, count } = await this.processContent(
+      content,
+      file,
+      isBackground,
+    );
     if (count > 0) {
       await this.app.vault.modify(file, newContent);
     }
@@ -2648,11 +3436,13 @@ var LocalConversionService = class {
           continue;
         }
         let finalFile = tempFile;
-        const suggestedName = image.alt ? this.storageManager.sanitizeFileName(image.alt) : tempFile.basename;
+        const suggestedName = image.alt
+          ? this.storageManager.sanitizeFileName(image.alt)
+          : tempFile.basename;
         const result = await this.imageProcessor.renameImageFile(
           tempFile,
           suggestedName,
-          sourceFile
+          sourceFile,
         );
         if (result && result.file) {
           finalFile = result.file;
@@ -2660,7 +3450,10 @@ var LocalConversionService = class {
           await this.app.fileManager.trashFile(tempFile);
           continue;
         }
-        newContent = newContent.replace(image.fullMatch, image.replacement(finalFile.path));
+        newContent = newContent.replace(
+          image.fullMatch,
+          image.replacement(finalFile.path),
+        );
         count++;
       } catch (error) {
         console.error(`Failed to convert image: ${image.url}`, error);
@@ -2727,7 +3520,10 @@ var LocalConversionService = class {
           replacement: (localPath) => {
             const savedFile = this.app.vault.getAbstractFileByPath(localPath);
             if (savedFile instanceof import_obsidian10.TFile) {
-              const link = this.storageManager.generateMarkdownLink(savedFile, sourceFileRef.path);
+              const link = this.storageManager.generateMarkdownLink(
+                savedFile,
+                sourceFileRef.path,
+              );
               if (alt && link.startsWith("![") && link.includes("]]")) {
                 return link.replace("]]", `|${alt}]]`);
               }
@@ -2742,11 +3538,14 @@ var LocalConversionService = class {
             }
             const localFile = this.app.vault.getAbstractFileByPath(localPath);
             if (localFile instanceof import_obsidian10.TFile) {
-              const relativePath = this.storageManager.getRelativePath(sourceFileRef, localFile);
+              const relativePath = this.storageManager.getRelativePath(
+                sourceFileRef,
+                localFile,
+              );
               return `![${alt}](${encodeURI(relativePath)})`;
             }
             return `![${alt}](${encodeURI(localPath)})`;
-          }
+          },
         });
       }
     }
@@ -2762,7 +3561,7 @@ var LocalConversionService = class {
         candidateMatches.push({
           fullMatch,
           url,
-          replacement: (localPath) => `![](${encodeURI(localPath)})`
+          replacement: (localPath) => `![](${encodeURI(localPath)})`,
         });
       }
     }
@@ -2807,9 +3606,13 @@ var LocalConversionService = class {
         "spotify.com",
         "open.spotify.com",
         "soundcloud.com",
-        "www.soundcloud.com"
+        "www.soundcloud.com",
       ];
-      if (nonImageDomains.some((domain) => hostname === domain || hostname.endsWith("." + domain))) {
+      if (
+        nonImageDomains.some(
+          (domain) => hostname === domain || hostname.endsWith("." + domain),
+        )
+      ) {
         return false;
       }
       return true;
@@ -2824,8 +3627,17 @@ var LocalConversionService = class {
   async verifyImageUrl(url) {
     var _a, _b;
     try {
-      const response = await (0, import_obsidian10.requestUrl)({ url, method: "HEAD" });
-      const contentType = (_b = (_a = response.headers["content-type"]) == null ? void 0 : _a.toLowerCase()) != null ? _b : "";
+      const response = await (0, import_obsidian10.requestUrl)({
+        url,
+        method: "HEAD",
+      });
+      const contentType =
+        (_b =
+          (_a = response.headers["content-type"]) == null
+            ? void 0
+            : _a.toLowerCase()) != null
+          ? _b
+          : "";
       return contentType.startsWith("image/");
     } catch (e) {
       return false;
@@ -2842,17 +3654,31 @@ var LocalConversionService = class {
       if (response.status >= 400) {
         throw new Error(`HTTP ${response.status}`);
       }
-      const contentType = (_a = response.headers["content-type"]) != null ? _a : "";
+      const contentType =
+        (_a = response.headers["content-type"]) != null ? _a : "";
       if (!contentType.toLowerCase().startsWith("image/")) {
-        console.warn(`Skipping ${url}: Content-Type is ${contentType}, not an image`);
+        console.warn(
+          `Skipping ${url}: Content-Type is ${contentType}, not an image`,
+        );
         return null;
       }
-      const extension = this.storageManager.getExtensionFromMimeType(contentType);
+      const extension =
+        this.storageManager.getExtensionFromMimeType(contentType);
       const arrayBuffer = response.arrayBuffer;
       const urlPath = new URL(url).pathname;
-      const urlFileName = (_c = (_b = urlPath.split("/").pop()) == null ? void 0 : _b.split(".")[0]) != null ? _c : "image";
+      const urlFileName =
+        (_c =
+          (_b = urlPath.split("/").pop()) == null
+            ? void 0
+            : _b.split(".")[0]) != null
+          ? _c
+          : "image";
       const baseName = this.storageManager.sanitizeFileName(urlFileName);
-      const filePath = await this.storageManager.getAvailablePath(baseName, extension, sourceFile);
+      const filePath = await this.storageManager.getAvailablePath(
+        baseName,
+        extension,
+        sourceFile,
+      );
       await this.storageManager.saveFile(arrayBuffer, filePath);
       return filePath;
     } catch (error) {
@@ -2877,8 +3703,7 @@ var LocalConversionService = class {
   /**
    * Register event handlers for automatic conversion
    */
-  registerEventHandlers(onNoteOpen, onNoteSave) {
-  }
+  registerEventHandlers(onNoteOpen, onNoteSave) {}
 };
 
 // src/services/BannerService.ts
@@ -2898,23 +3723,25 @@ var CSS_CLASSES = {
   Main: "image-manager-banner",
   Content: "banner-content",
   Icon: "banner-icon",
-  Static: "static"
+  Static: "static",
 };
 var PATTERNS = {
   Wikilink: /^!?\[\[([^\]]+?)(\|([^\]]+?))?\]\]$/,
   Markdown: /^!?\[([^\]]*)\]\(([^)]+?)\)$/,
   MarkdownBare: /^!?<([^>]+)>$/,
-  Weblink: /^https?:\/\//i
+  Weblink: /^https?:\/\//i,
 };
 var bannerDataStore = /* @__PURE__ */ new Map();
 var BannerService = class {
   constructor(app, settings, observable) {
     this.app = app;
     this.settings = settings;
-    observable == null ? void 0 : observable.subscribe((newSettings) => {
-      this.updateSettings(newSettings);
-      this.applySettings();
-    });
+    observable == null
+      ? void 0
+      : observable.subscribe((newSettings) => {
+          this.updateSettings(newSettings);
+          this.applySettings();
+        });
   }
   /**
    * Update settings reference
@@ -2994,14 +3821,19 @@ var BannerService = class {
     if (!deviceSettings.enabled) {
       return null;
     }
-    if (!this.settings.supportedExtensions.includes(file.extension) && file.extension !== "md") {
+    if (
+      !this.settings.supportedExtensions.includes(file.extension) &&
+      file.extension !== "md"
+    ) {
       return null;
     }
-    const leafId = (_a = view == null ? void 0 : view.leaf) == null ? void 0 : _a.id;
+    const leafId =
+      (_a = view == null ? void 0 : view.leaf) == null ? void 0 : _a.id;
     if (!leafId) {
       return null;
     }
-    const oldData = bannerDataStore.get(leafId) || this.createDefaultBannerData();
+    const oldData =
+      bannerDataStore.get(leafId) || this.createDefaultBannerData();
     const newData = this.createDefaultBannerData(view, oldData.viewMode);
     if (file.extension === "md") {
       const cache = this.app.metadataCache.getFileCache(file);
@@ -3009,15 +3841,24 @@ var BannerService = class {
         const propertySettings2 = this.settings.banner.properties;
         const imageProp2 = propertySettings2.imageProperty;
         const iconProp2 = propertySettings2.iconProperty;
-        if (propertySettings2.hidePropertyEnabled && propertySettings2.hideProperty) {
+        if (
+          propertySettings2.hidePropertyEnabled &&
+          propertySettings2.hideProperty
+        ) {
           const hideProp = propertySettings2.hideProperty;
           const hideValue = cache.frontmatter[hideProp];
-          if (hideValue === true || hideValue === "true" || hideValue === 1 || hideValue === "1") {
+          if (
+            hideValue === true ||
+            hideValue === "true" ||
+            hideValue === 1 ||
+            hideValue === "1"
+          ) {
             return newData;
           }
         }
         const hasBannerProperty = cache.frontmatter[imageProp2] != null;
-        const hasIconProperty = deviceSettings.iconEnabled && cache.frontmatter[iconProp2] != null;
+        const hasIconProperty =
+          deviceSettings.iconEnabled && cache.frontmatter[iconProp2] != null;
         if (!hasBannerProperty && !hasIconProperty) {
           return newData;
         }
@@ -3031,7 +3872,12 @@ var BannerService = class {
     if (propertySettings.hidePropertyEnabled && propertySettings.hideProperty) {
       const hideProp = propertySettings.hideProperty;
       const hideValue = frontmatter[hideProp];
-      if (hideValue === true || hideValue === "true" || hideValue === 1 || hideValue === "1") {
+      if (
+        hideValue === true ||
+        hideValue === "true" ||
+        hideValue === 1 ||
+        hideValue === "1"
+      ) {
         return newData;
       }
     }
@@ -3047,7 +3893,9 @@ var BannerService = class {
       } else if (oldData.image !== newData.image) {
         newData.needsUpdate = true;
         newData.isImageChange = true;
-        if (await this.isImagePropertiesUpdate(oldData.image, newData.image, view)) {
+        if (
+          await this.isImagePropertiesUpdate(oldData.image, newData.image, view)
+        ) {
           newData.isImagePropsUpdate = true;
           newData.isImageChange = false;
         }
@@ -3082,14 +3930,24 @@ var BannerService = class {
       return;
     }
     const containers = container.querySelectorAll(
-      ".cm-scroller, .markdown-reading-view > .markdown-preview-view"
+      ".cm-scroller, .markdown-reading-view > .markdown-preview-view",
     );
-    const bannerMissing = !!image && containers.length > 0 && Array.from(containers).some((c) => !c.querySelector(`.${CSS_CLASSES.Main}`));
+    const bannerMissing =
+      !!image &&
+      containers.length > 0 &&
+      Array.from(containers).some(
+        (c) => !c.querySelector(`.${CSS_CLASSES.Main}`),
+      );
     if (bannerMissing) {
       data.needsUpdate = true;
       data.isImageChange = true;
     }
-    if (!force && !data.needsUpdate && lastViewMode === viewMode && !bannerMissing) {
+    if (
+      !force &&
+      !data.needsUpdate &&
+      lastViewMode === viewMode &&
+      !bannerMissing
+    ) {
       return;
     }
     if (containers.length === 0) {
@@ -3105,7 +3963,8 @@ var BannerService = class {
     }
     data.lastViewMode = viewMode;
     container.dataset.imBanner = "";
-    const leafId = (_a = view == null ? void 0 : view.leaf) == null ? void 0 : _a.id;
+    const leafId =
+      (_a = view == null ? void 0 : view.leaf) == null ? void 0 : _a.id;
     if (leafId) {
       bannerDataStore.set(leafId, data);
     }
@@ -3140,7 +3999,7 @@ var BannerService = class {
           "--im-banner-img-y": `${imgOptions.y}px`,
           "--im-banner-size": imgOptions.repeatable ? "auto" : "cover",
           "--im-banner-repeat": imgOptions.repeatable ? "repeat" : "no-repeat",
-          "--im-banner-url": "none"
+          "--im-banner-url": "none",
         };
         if (imgOptions.type === "video" /* Video */) {
           const video = document.createElement("video");
@@ -3170,7 +4029,9 @@ var BannerService = class {
       let iconContainer = banner.querySelector(`.${CSS_CLASSES.Icon}`);
       const hasContainer = iconContainer !== null;
       if (hasContainer) {
-        iconContainer == null ? void 0 : iconContainer.classList.add(CSS_CLASSES.Static);
+        iconContainer == null
+          ? void 0
+          : iconContainer.classList.add(CSS_CLASSES.Static);
       }
       if (deviceSettings.iconEnabled && icon) {
         if (!hasContainer) {
@@ -3180,20 +4041,27 @@ var BannerService = class {
           iconContainer.appendChild(innerDiv);
           banner.prepend(iconContainer);
         }
-        const iconElement = iconContainer == null ? void 0 : iconContainer.querySelector("div");
+        const iconElement =
+          iconContainer == null ? void 0 : iconContainer.querySelector("div");
         if (!iconElement) continue;
         const iconData = await this.parseIcon(icon, view);
-        let value = ((_a = iconData.value) == null ? void 0 : _a.replace(/([#.:[\\]"])/g, "\\$1")) || "";
+        let value =
+          ((_a = iconData.value) == null
+            ? void 0
+            : _a.replace(/([#.:[\\]"])/g, "\\$1")) || "";
         iconElement.dataset.type = iconData.type;
         if (iconData.type === "link" /* Link */) {
           setCssProperties(iconElement, {
-            "--im-banner-icon-value": `url(${value})`
+            "--im-banner-icon-value": `url(${value})`,
           });
         } else {
-          calculatedFontSize = calculatedFontSize != null ? calculatedFontSize : this.calculateFontSize(value, deviceSettings.iconSize);
+          calculatedFontSize =
+            calculatedFontSize != null
+              ? calculatedFontSize
+              : this.calculateFontSize(value, deviceSettings.iconSize);
           setCssProperties(iconElement, {
             "--im-banner-icon-value": `"${value}"`,
-            "--im-banner-icon-fontsize": calculatedFontSize
+            "--im-banner-icon-fontsize": calculatedFontSize,
           });
         }
       } else if (hasContainer && iconContainer) {
@@ -3239,7 +4107,10 @@ var BannerService = class {
    */
   remove(view, data) {
     var _a;
-    const targetView = view || (data == null ? void 0 : data.filepath) ? this.getActiveView() : null;
+    const targetView =
+      view || (data == null ? void 0 : data.filepath)
+        ? this.getActiveView()
+        : null;
     if (!(targetView instanceof import_obsidian11.MarkdownView)) {
       return;
     }
@@ -3249,7 +4120,10 @@ var BannerService = class {
     }
     const targets = container.querySelectorAll(`.${CSS_CLASSES.Main}`);
     targets.forEach((t) => t.remove());
-    const leafId = (_a = targetView == null ? void 0 : targetView.leaf) == null ? void 0 : _a.id;
+    const leafId =
+      (_a = targetView == null ? void 0 : targetView.leaf) == null
+        ? void 0
+        : _a.id;
     if (leafId) {
       bannerDataStore.delete(leafId);
     }
@@ -3264,7 +4138,9 @@ var BannerService = class {
     const height = deviceSettings.height;
     const noteOffset = deviceSettings.noteOffset;
     const viewOffset = deviceSettings.viewOffset;
-    const radius = deviceSettings.bannerRadiusEnabled ? deviceSettings.borderRadius : [0, 0, 0, 0];
+    const radius = deviceSettings.bannerRadiusEnabled
+      ? deviceSettings.borderRadius
+      : [0, 0, 0, 0];
     const padding = deviceSettings.padding;
     const fade = deviceSettings.fade;
     const cssVars = {
@@ -3274,7 +4150,7 @@ var BannerService = class {
       "--im-banner-radius": `${radius[0]}px ${radius[1]}px ${radius[2]}px ${radius[3]}px`,
       "--im-banner-padding": `${padding}px`,
       "--im-banner-mask": fade ? "revert-layer" : "initial",
-      "--im-banner-mask-webkit": fade ? "revert-layer" : "initial"
+      "--im-banner-mask-webkit": fade ? "revert-layer" : "initial",
     };
     if (deviceSettings.iconEnabled) {
       const iconFrame = (_a = deviceSettings.iconFrame) != null ? _a : true;
@@ -3285,8 +4161,13 @@ var BannerService = class {
       cssVars["--im-banner-icon-align-v"] = deviceSettings.iconAlignmentV;
       cssVars["--im-banner-icon-offset-x"] = `${deviceSettings.iconOffsetX}px`;
       cssVars["--im-banner-icon-offset-y"] = `${deviceSettings.iconOffsetY}px`;
-      cssVars["--im-banner-icon-border"] = iconFrame ? `${deviceSettings.iconBorder}px` : "0px";
-      cssVars["--im-banner-icon-background"] = iconFrame && deviceSettings.iconBackground ? "revert-layer" : "transparent";
+      cssVars["--im-banner-icon-border"] = iconFrame
+        ? `${deviceSettings.iconBorder}px`
+        : "0px";
+      cssVars["--im-banner-icon-background"] =
+        iconFrame && deviceSettings.iconBackground
+          ? "revert-layer"
+          : "transparent";
     }
     setCssProperties(document.body, cssVars);
     this.processAll(true);
@@ -3303,16 +4184,31 @@ var BannerService = class {
     let options = { x: 0, y: 0, repeatable: false };
     const wikilinkMatch = str.match(PATTERNS.Wikilink);
     if (wikilinkMatch) {
-      url = (_b = (_a = wikilinkMatch[1]) == null ? void 0 : _a.trim()) != null ? _b : null;
-      displayText = (_d = (_c = wikilinkMatch[3]) == null ? void 0 : _c.trim()) != null ? _d : null;
+      url =
+        (_b = (_a = wikilinkMatch[1]) == null ? void 0 : _a.trim()) != null
+          ? _b
+          : null;
+      displayText =
+        (_d = (_c = wikilinkMatch[3]) == null ? void 0 : _c.trim()) != null
+          ? _d
+          : null;
     }
     const markdownMatch = str.match(PATTERNS.Markdown);
     const markdownBareMatch = str.match(PATTERNS.MarkdownBare);
     if (markdownMatch) {
-      displayText = (_f = (_e = markdownMatch[1]) == null ? void 0 : _e.trim()) != null ? _f : null;
-      url = (_h = (_g = markdownMatch[2]) == null ? void 0 : _g.trim()) != null ? _h : null;
+      displayText =
+        (_f = (_e = markdownMatch[1]) == null ? void 0 : _e.trim()) != null
+          ? _f
+          : null;
+      url =
+        (_h = (_g = markdownMatch[2]) == null ? void 0 : _g.trim()) != null
+          ? _h
+          : null;
     } else if (markdownBareMatch) {
-      url = (_j = (_i = markdownBareMatch[1]) == null ? void 0 : _i.trim()) != null ? _j : null;
+      url =
+        (_j = (_i = markdownBareMatch[1]) == null ? void 0 : _i.trim()) != null
+          ? _j
+          : null;
       displayText = null;
     }
     if (!url) {
@@ -3332,7 +4228,10 @@ var BannerService = class {
       }
     }
     if (url.startsWith("file:")) {
-      url = url.replace(/^file:\/{1,}/, import_obsidian11.Platform.resourcePathPrefix);
+      url = url.replace(
+        /^file:\/{1,}/,
+        import_obsidian11.Platform.resourcePathPrefix,
+      );
       external = true;
     }
     const hashIndex = url.indexOf("#");
@@ -3347,8 +4246,14 @@ var BannerService = class {
       const vault = this.app.vault;
       let file = null;
       if (url.startsWith("/") && !url.startsWith("//")) {
-        const vaultCms = (_l = (_k = this.app.plugins) == null ? void 0 : _k.plugins) == null ? void 0 : _l["vault-cms"];
-        const resolved = (_m = vaultCms == null ? void 0 : vaultCms.resolvePublicPath) == null ? void 0 : _m.call(vaultCms, url);
+        const vaultCms =
+          (_l = (_k = this.app.plugins) == null ? void 0 : _k.plugins) == null
+            ? void 0
+            : _l["vault-cms"];
+        const resolved =
+          (_m = vaultCms == null ? void 0 : vaultCms.resolvePublicPath) == null
+            ? void 0
+            : _m.call(vaultCms, url);
         if (resolved) {
           url = resolved;
           external = true;
@@ -3356,14 +4261,22 @@ var BannerService = class {
       }
       if (!external) {
         if (view == null ? void 0 : view.file) {
-          const resolvedPath = this.app.metadataCache.getFirstLinkpathDest(url, view.file.path);
+          const resolvedPath = this.app.metadataCache.getFirstLinkpathDest(
+            url,
+            view.file.path,
+          );
           if (resolvedPath) {
             file = resolvedPath;
           }
         }
         if (!file) {
-          const files = vault.getFiles().filter((f) => f.path === url || f.name === url);
-          file = files.find((f) => f.path === url) || files.find((f) => f.name === url) || null;
+          const files = vault
+            .getFiles()
+            .filter((f) => f.path === url || f.name === url);
+          file =
+            files.find((f) => f.path === url) ||
+            files.find((f) => f.name === url) ||
+            null;
         }
         if (file) {
           url = vault.getResourcePath(file);
@@ -3373,7 +4286,10 @@ var BannerService = class {
     let type = null;
     try {
       const urlObj = new URL(url);
-      const extension = (_n = urlObj.pathname.split(".").pop()) == null ? void 0 : _n.toLowerCase();
+      const extension =
+        (_n = urlObj.pathname.split(".").pop()) == null
+          ? void 0
+          : _n.toLowerCase();
       const imageExtensions = ["jpg", "jpeg", "png", "gif", "svg", "webp"];
       const videoExtensions = ["mp4", "webm", "ogg", "ogv", "mov"];
       if (extension && imageExtensions.includes(extension)) {
@@ -3383,8 +4299,13 @@ var BannerService = class {
       }
       if (!type) {
         try {
-          const response = await (0, import_obsidian11.requestUrl)({ url, method: "HEAD" });
-          const contentType = (response == null ? void 0 : response.headers["content-type"]) || null;
+          const response = await (0, import_obsidian11.requestUrl)({
+            url,
+            method: "HEAD",
+          });
+          const contentType =
+            (response == null ? void 0 : response.headers["content-type"]) ||
+            null;
           if (contentType) {
             if (contentType.includes("image")) {
               type = "image" /* Image */;
@@ -3392,16 +4313,14 @@ var BannerService = class {
               type = "video" /* Video */;
             }
           }
-        } catch (e) {
-        }
+        } catch (e) {}
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     return {
       url: `"${url.trim().replace(/(["\\])/g, "\\$1")}"`,
       external,
       type,
-      ...options
+      ...options,
     };
   }
   /**
@@ -3430,7 +4349,12 @@ var BannerService = class {
   async parseIcon(icon, view) {
     const str = icon || "";
     const result = { value: null, type: "text" /* Text */ };
-    const isExplicitLink = PATTERNS.Wikilink.test(str) || PATTERNS.Markdown.test(str) || PATTERNS.MarkdownBare.test(str) || PATTERNS.Weblink.test(str) || this.isObsidianUrl(str);
+    const isExplicitLink =
+      PATTERNS.Wikilink.test(str) ||
+      PATTERNS.Markdown.test(str) ||
+      PATTERNS.MarkdownBare.test(str) ||
+      PATTERNS.Weblink.test(str) ||
+      this.isObsidianUrl(str);
     const imageExtensions = /\.(jpg|jpeg|png|gif|svg|webp|bmp|ico|avif)$/i;
     const isFilePath = imageExtensions.test(str);
     if (isExplicitLink || isFilePath) {
@@ -3477,7 +4401,7 @@ var BannerService = class {
       "white-space": "nowrap",
       padding: "0",
       margin: "0",
-      left: "-9999px"
+      left: "-9999px",
     });
     temp.textContent = textContent.toUpperCase();
     document.body.appendChild(temp);
@@ -3495,7 +4419,9 @@ var BannerService = class {
    * Get active markdown view
    */
   getActiveView() {
-    return this.app.workspace.getActiveViewOfType(import_obsidian11.MarkdownView);
+    return this.app.workspace.getActiveViewOfType(
+      import_obsidian11.MarkdownView,
+    );
   }
   /**
    * Create default banner data object
@@ -3514,14 +4440,16 @@ var BannerService = class {
       lastViewMode: lastViewMode || null,
       isImagePropsUpdate: false,
       isImageChange: false,
-      needsUpdate: false
+      needsUpdate: false,
     };
   }
   /**
    * Cleanup when plugin unloads
    */
   destroy() {
-    document.querySelectorAll(`.${CSS_CLASSES.Main}`).forEach((el) => el.remove());
+    document
+      .querySelectorAll(`.${CSS_CLASSES.Main}`)
+      .forEach((el) => el.remove());
     bannerDataStore.clear();
   }
 };
@@ -3529,7 +4457,13 @@ var BannerService = class {
 // src/modals/FilePickerModal.ts
 var import_obsidian12 = require("obsidian");
 var FilePickerModal = class extends import_obsidian12.Modal {
-  constructor(app, imageProcessor, propertyHandler, insertToProperty = false, propertyName) {
+  constructor(
+    app,
+    imageProcessor,
+    propertyHandler,
+    insertToProperty = false,
+    propertyName,
+  ) {
     super(app);
     this.imageProcessor = imageProcessor;
     this.propertyHandler = propertyHandler;
@@ -3543,8 +4477,8 @@ var FilePickerModal = class extends import_obsidian12.Modal {
       attr: {
         accept: "image/*",
         multiple: "true",
-        style: "display: none;"
-      }
+        style: "display: none;",
+      },
     });
     input.addEventListener("change", () => {
       void this.handleFileSelection(input);
@@ -3566,7 +4500,9 @@ var FilePickerModal = class extends import_obsidian12.Modal {
       new import_obsidian12.Notice("No active file");
       return;
     }
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian12.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(
+      import_obsidian12.MarkdownView,
+    );
     const editor = view == null ? void 0 : view.editor;
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i);
@@ -3575,7 +4511,9 @@ var FilePickerModal = class extends import_obsidian12.Modal {
       }
       if (this.insertToProperty) {
         if (!this.propertyName || this.propertyName.trim() === "") {
-          new import_obsidian12.Notice("Please specify a property name in settings");
+          new import_obsidian12.Notice(
+            "Please specify a property name in settings",
+          );
           return;
         }
         const result = await this.imageProcessor.processImageFile(
@@ -3583,21 +4521,21 @@ var FilePickerModal = class extends import_obsidian12.Modal {
           activeFile,
           true,
           // Show rename modal
-          true
+          true,
           // isPropertyInsertion - skip descriptive images
         );
         if (result.success && result.file) {
           await this.propertyHandler.setPropertyValue(
             activeFile,
             this.propertyName,
-            result.file
+            result.file,
           );
         }
       } else {
         const result = await this.imageProcessor.processImageFile(
           file,
           activeFile,
-          true
+          true,
           // Show rename modal
         );
         if (result.success && result.linkText && editor) {
@@ -3609,7 +4547,9 @@ var FilePickerModal = class extends import_obsidian12.Modal {
   }
   getActiveFile() {
     var _a;
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian12.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(
+      import_obsidian12.MarkdownView,
+    );
     return (_a = view == null ? void 0 : view.file) != null ? _a : null;
   }
   onClose() {
@@ -3617,14 +4557,33 @@ var FilePickerModal = class extends import_obsidian12.Modal {
     contentEl.empty();
   }
 };
-function openFilePicker(app, imageProcessor, propertyHandler, insertToProperty = false, propertyName) {
-  new FilePickerModal(app, imageProcessor, propertyHandler, insertToProperty, propertyName).open();
+function openFilePicker(
+  app,
+  imageProcessor,
+  propertyHandler,
+  insertToProperty = false,
+  propertyName,
+) {
+  new FilePickerModal(
+    app,
+    imageProcessor,
+    propertyHandler,
+    insertToProperty,
+    propertyName,
+  ).open();
 }
 
 // src/modals/RemoteSearchModal.ts
 var import_obsidian13 = require("obsidian");
 var RemoteSearchModal = class extends import_obsidian13.Modal {
-  constructor(app, settings, remoteService, imageProcessor, propertyHandler, options = {}) {
+  constructor(
+    app,
+    settings,
+    remoteService,
+    imageProcessor,
+    propertyHandler,
+    options = {},
+  ) {
     super(app);
     this.container = null;
     this.queryInput = null;
@@ -3653,20 +4612,43 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
     this.queryInput = inputGroup.createEl("input", {
       type: "text",
       cls: "query-input",
-      attr: { placeholder: "Search images...", autofocus: "true" }
+      attr: { placeholder: "Search images...", autofocus: "true" },
     });
     this.providerSelect = inputGroup.createEl("select", { cls: "selector" });
-    this.providerSelect.createEl("option", { text: "Unsplash", value: "unsplash" /* Unsplash */ });
-    this.providerSelect.createEl("option", { text: "Pexels", value: "pexels" /* Pexels */ });
-    this.providerSelect.createEl("option", { text: "Pixabay", value: "pixabay" /* Pixabay */ });
+    this.providerSelect.createEl("option", {
+      text: "Unsplash",
+      value: "unsplash" /* Unsplash */,
+    });
+    this.providerSelect.createEl("option", {
+      text: "Pexels",
+      value: "pexels" /* Pexels */,
+    });
+    this.providerSelect.createEl("option", {
+      text: "Pixabay",
+      value: "pixabay" /* Pixabay */,
+    });
     this.providerSelect.value = this.currentProvider;
     this.sizeSelect = inputGroup.createEl("select", { cls: "selector" });
-    this.sizeSelect.createEl("option", { text: "Original", value: "original" /* Original */ });
-    this.sizeSelect.createEl("option", { text: "Large", value: "large" /* Large */ });
-    this.sizeSelect.createEl("option", { text: "Medium", value: "medium" /* Medium */ });
-    this.sizeSelect.createEl("option", { text: "Small", value: "small" /* Small */ });
+    this.sizeSelect.createEl("option", {
+      text: "Original",
+      value: "original" /* Original */,
+    });
+    this.sizeSelect.createEl("option", {
+      text: "Large",
+      value: "large" /* Large */,
+    });
+    this.sizeSelect.createEl("option", {
+      text: "Medium",
+      value: "medium" /* Medium */,
+    });
+    this.sizeSelect.createEl("option", {
+      text: "Small",
+      value: "small" /* Small */,
+    });
     this.sizeSelect.value = this.settings.defaultImageSize;
-    this.loadingContainer = this.container.createDiv({ cls: "loading-container" });
+    this.loadingContainer = this.container.createDiv({
+      cls: "loading-container",
+    });
     const loaderIcon = this.loadingContainer.createDiv({ cls: "loader-icon" });
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("width", "24");
@@ -3693,61 +4675,81 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
   }
   setupEventListeners() {
     var _a, _b, _c, _d;
-    const debouncedSearch = (0, import_obsidian13.debounce)((query) => {
-      if (query.trim()) {
-        void this.performSearch(query, true);
-      } else {
-        this.clearResults();
-      }
-    }, 1e3, true);
-    (_a = this.queryInput) == null ? void 0 : _a.addEventListener("input", (e) => {
-      const query = e.target.value;
-      this.currentQuery = query;
-      this.showLoading(true);
-      debouncedSearch(query);
-    });
-    (_b = this.queryInput) == null ? void 0 : _b.addEventListener("keydown", (e) => {
-      var _a2;
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const query = ((_a2 = this.queryInput) == null ? void 0 : _a2.value.trim()) || "";
-        if (query) {
+    const debouncedSearch = (0, import_obsidian13.debounce)(
+      (query) => {
+        if (query.trim()) {
           void this.performSearch(query, true);
-        } else if (this.currentResults.length > 0 && this.selectedImage < this.currentResults.length) {
-          const image = this.currentResults[this.selectedImage];
-          if (image) {
-            void this.insertImage(image);
+        } else {
+          this.clearResults();
+        }
+      },
+      1e3,
+      true,
+    );
+    (_a = this.queryInput) == null
+      ? void 0
+      : _a.addEventListener("input", (e) => {
+          const query = e.target.value;
+          this.currentQuery = query;
+          this.showLoading(true);
+          debouncedSearch(query);
+        });
+    (_b = this.queryInput) == null
+      ? void 0
+      : _b.addEventListener("keydown", (e) => {
+          var _a2;
+          if (e.key === "Enter") {
+            e.preventDefault();
+            const query =
+              ((_a2 = this.queryInput) == null ? void 0 : _a2.value.trim()) ||
+              "";
+            if (query) {
+              void this.performSearch(query, true);
+            } else if (
+              this.currentResults.length > 0 &&
+              this.selectedImage < this.currentResults.length
+            ) {
+              const image = this.currentResults[this.selectedImage];
+              if (image) {
+                void this.insertImage(image);
+              }
+            }
+          } else if (e.ctrlKey && e.key === "n") {
+            e.preventDefault();
+            if (this.currentResults.length > 0) {
+              this.selectedImage =
+                (this.selectedImage + 1) % this.currentResults.length;
+              this.renderResults();
+            }
+          } else if (e.ctrlKey && e.key === "p") {
+            e.preventDefault();
+            if (this.currentResults.length > 0) {
+              this.selectedImage =
+                (this.selectedImage - 1 + this.currentResults.length) %
+                this.currentResults.length;
+              this.renderResults();
+            }
           }
-        }
-      } else if (e.ctrlKey && e.key === "n") {
-        e.preventDefault();
-        if (this.currentResults.length > 0) {
-          this.selectedImage = (this.selectedImage + 1) % this.currentResults.length;
-          this.renderResults();
-        }
-      } else if (e.ctrlKey && e.key === "p") {
-        e.preventDefault();
-        if (this.currentResults.length > 0) {
-          this.selectedImage = (this.selectedImage - 1 + this.currentResults.length) % this.currentResults.length;
-          this.renderResults();
-        }
-      }
-    });
-    (_c = this.providerSelect) == null ? void 0 : _c.addEventListener("change", (e) => {
-      this.currentProvider = e.target.value;
-      if (this.currentQuery) {
-        this.showLoading(true);
-        void this.performSearch(this.currentQuery, true);
-      }
-    });
-    (_d = this.sizeSelect) == null ? void 0 : _d.addEventListener("change", (e) => {
-      const size = e.target.value;
-      this.settings.defaultImageSize = size;
-      if (this.currentQuery) {
-        this.showLoading(true);
-        void this.performSearch(this.currentQuery, true);
-      }
-    });
+        });
+    (_c = this.providerSelect) == null
+      ? void 0
+      : _c.addEventListener("change", (e) => {
+          this.currentProvider = e.target.value;
+          if (this.currentQuery) {
+            this.showLoading(true);
+            void this.performSearch(this.currentQuery, true);
+          }
+        });
+    (_d = this.sizeSelect) == null
+      ? void 0
+      : _d.addEventListener("change", (e) => {
+          const size = e.target.value;
+          this.settings.defaultImageSize = size;
+          if (this.currentQuery) {
+            this.showLoading(true);
+            void this.performSearch(this.currentQuery, true);
+          }
+        });
   }
   async performSearch(query, resetPage = false) {
     if (this.isLoading) return;
@@ -3761,7 +4763,7 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
       this.currentResults = await this.remoteService.search(
         query,
         this.currentProvider,
-        this.currentPage
+        this.currentPage,
       );
       this.selectedImage = 0;
       this.renderResults();
@@ -3779,7 +4781,9 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
     if (!this.imagesList) return;
     this.imagesList.empty();
     if (this.currentResults.length === 0) {
-      const noResult = this.imagesList.createDiv({ cls: "no-result-container" });
+      const noResult = this.imagesList.createDiv({
+        cls: "no-result-container",
+      });
       noResult.setText("No results found");
       return;
     }
@@ -3787,13 +4791,13 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
       const image = this.currentResults[i];
       if (!image) continue;
       const result = this.imagesList.createDiv({
-        cls: `query-result${i === this.selectedImage ? " is-selected" : ""}`
+        cls: `query-result${i === this.selectedImage ? " is-selected" : ""}`,
       });
       result.createEl("img", {
         attr: {
           src: image.thumbnailUrl,
-          alt: image.description || "Image"
-        }
+          alt: image.description || "Image",
+        },
       });
       result.addEventListener("click", () => {
         void this.insertImage(image);
@@ -3815,7 +4819,10 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
     if (hasMore || this.currentPage > 1) {
       const pagination = this.scrollArea.createDiv({ cls: "pagination" });
       if (this.currentPage > 1) {
-        const prevBtn = pagination.createEl("button", { cls: "btn", text: "Previous" });
+        const prevBtn = pagination.createEl("button", {
+          cls: "btn",
+          text: "Previous",
+        });
         prevBtn.addEventListener("click", () => {
           this.currentPage--;
           this.showLoading(true);
@@ -3823,7 +4830,10 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
         });
       }
       if (hasMore) {
-        const nextBtn = pagination.createEl("button", { cls: "btn", text: "Next" });
+        const nextBtn = pagination.createEl("button", {
+          cls: "btn",
+          text: "Next",
+        });
         nextBtn.addEventListener("click", () => {
           this.currentPage++;
           this.showLoading(true);
@@ -3835,7 +4845,9 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
   renderError(message) {
     if (!this.imagesList) return;
     this.imagesList.empty();
-    const errorDiv = this.imagesList.createDiv({ cls: "no-result-container error-text" });
+    const errorDiv = this.imagesList.createDiv({
+      cls: "no-result-container error-text",
+    });
     errorDiv.setText(`Error: ${message}`);
   }
   clearResults() {
@@ -3864,10 +4876,18 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
       return;
     }
     try {
-      const downloadUrl = this.remoteService.getDownloadUrl(image, this.settings.defaultImageSize);
+      const downloadUrl = this.remoteService.getDownloadUrl(
+        image,
+        this.settings.defaultImageSize,
+      );
       if (this.options.insertToProperty) {
-        if (!this.options.propertyName || this.options.propertyName.trim() === "") {
-          new import_obsidian13.Notice("Please specify a property name in settings");
+        if (
+          !this.options.propertyName ||
+          this.options.propertyName.trim() === ""
+        ) {
+          new import_obsidian13.Notice(
+            "Please specify a property name in settings",
+          );
           return;
         }
         await this.propertyHandler.insertImageFromUrl(
@@ -3876,7 +4896,7 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
           this.options.propertyName,
           image,
           // Pass RemoteImage for referral text generation
-          this.currentQuery
+          this.currentQuery,
           // Pass search term as suggested name
         );
       } else {
@@ -3887,13 +4907,15 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
           // Show rename modal
           false,
           // Not property insertion
-          this.currentQuery
+          this.currentQuery,
           // Pass search term as suggested name
         );
         if (result.success && result.linkText) {
           const referralText = this.remoteService.generateReferralText(image);
           const fullText = result.linkText + referralText;
-          const view = this.app.workspace.getActiveViewOfType(import_obsidian13.MarkdownView);
+          const view = this.app.workspace.getActiveViewOfType(
+            import_obsidian13.MarkdownView,
+          );
           if (view == null ? void 0 : view.editor) {
             view.editor.replaceSelection(fullText);
           }
@@ -3901,12 +4923,16 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
       }
     } catch (error) {
       console.error("Failed to insert image:", error);
-      new import_obsidian13.Notice(`Failed to insert image: ${error instanceof Error ? error.message : String(error)}`);
+      new import_obsidian13.Notice(
+        `Failed to insert image: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
   getActiveFile() {
     var _a;
-    const view = this.app.workspace.getActiveViewOfType(import_obsidian13.MarkdownView);
+    const view = this.app.workspace.getActiveViewOfType(
+      import_obsidian13.MarkdownView,
+    );
     return (_a = view == null ? void 0 : view.file) != null ? _a : null;
   }
   onClose() {
@@ -3914,8 +4940,22 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
     contentEl.empty();
   }
 };
-function openRemoteSearch(app, settings, remoteService, imageProcessor, propertyHandler, options = {}) {
-  new RemoteSearchModal(app, settings, remoteService, imageProcessor, propertyHandler, options).open();
+function openRemoteSearch(
+  app,
+  settings,
+  remoteService,
+  imageProcessor,
+  propertyHandler,
+  options = {},
+) {
+  new RemoteSearchModal(
+    app,
+    settings,
+    remoteService,
+    imageProcessor,
+    propertyHandler,
+    options,
+  ).open();
 }
 
 // src/main.ts
@@ -3970,9 +5010,14 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         secretStorage.setSecret(secretId, this.settings.pexelsApiKey);
         this.settings.pexelsApiKeySecretId = secretId;
         migrated = true;
-        console.info("[Image Manager] Successfully migrated Pexels API key to SecretStorage");
+        console.info(
+          "[Image Manager] Successfully migrated Pexels API key to SecretStorage",
+        );
       } catch (error) {
-        console.error("[Image Manager] Failed to migrate Pexels API key to SecretStorage:", error);
+        console.error(
+          "[Image Manager] Failed to migrate Pexels API key to SecretStorage:",
+          error,
+        );
         failures.push("Pexels");
       }
     }
@@ -3982,9 +5027,14 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         secretStorage.setSecret(secretId, this.settings.pixabayApiKey);
         this.settings.pixabayApiKeySecretId = secretId;
         migrated = true;
-        console.info("[Image Manager] Successfully migrated Pixabay API key to SecretStorage");
+        console.info(
+          "[Image Manager] Successfully migrated Pixabay API key to SecretStorage",
+        );
       } catch (error) {
-        console.error("[Image Manager] Failed to migrate Pixabay API key to SecretStorage:", error);
+        console.error(
+          "[Image Manager] Failed to migrate Pixabay API key to SecretStorage:",
+          error,
+        );
         failures.push("Pixabay");
       }
     }
@@ -3995,7 +5045,7 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
     if (failures.length > 0) {
       new import_obsidian15.Notice(
         `Image Manager: Failed to migrate ${failures.join(" and ")} API key(s) to secure storage. Please re-enter your API key(s) in settings.`,
-        1e4
+        1e4,
       );
     }
   }
@@ -4003,20 +5053,55 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
    * Initialize all services
    */
   initializeServices() {
-    this.storageManager = new StorageManager(this.app, this.settings, this.settingsObservable);
-    this.remoteService = new RemoteImageService(this.app, this.settings, this.settingsObservable);
-    this.imageProcessor = new ImageProcessor(this.app, this.settings, this.storageManager, this.settingsObservable);
-    this.propertyHandler = new PropertyHandler(this.app, this.settings, this.storageManager, this.imageProcessor, this.remoteService, this.settingsObservable);
+    this.storageManager = new StorageManager(
+      this.app,
+      this.settings,
+      this.settingsObservable,
+    );
+    this.remoteService = new RemoteImageService(
+      this.app,
+      this.settings,
+      this.settingsObservable,
+    );
+    this.imageProcessor = new ImageProcessor(
+      this.app,
+      this.settings,
+      this.storageManager,
+      this.settingsObservable,
+    );
+    this.propertyHandler = new PropertyHandler(
+      this.app,
+      this.settings,
+      this.storageManager,
+      this.imageProcessor,
+      this.remoteService,
+      this.settingsObservable,
+    );
     this.pasteHandler = new PasteHandler(
       this.app,
       this.settings,
       this.imageProcessor,
       this.propertyHandler,
-      this.settingsObservable
+      this.settingsObservable,
     );
-    this.dropHandler = new DropHandler(this.app, this.settings, this.imageProcessor, this.settingsObservable);
-    this.conversionService = new LocalConversionService(this.app, this.settings, this.storageManager, this.imageProcessor, this.settingsObservable);
-    this.bannerService = new BannerService(this.app, this.settings, this.settingsObservable);
+    this.dropHandler = new DropHandler(
+      this.app,
+      this.settings,
+      this.imageProcessor,
+      this.settingsObservable,
+    );
+    this.conversionService = new LocalConversionService(
+      this.app,
+      this.settings,
+      this.storageManager,
+      this.imageProcessor,
+      this.settingsObservable,
+    );
+    this.bannerService = new BannerService(
+      this.app,
+      this.settings,
+      this.settingsObservable,
+    );
   }
   /**
    * Register event handlers
@@ -4025,48 +5110,67 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
     this.registerEvent(
       this.app.workspace.on("editor-paste", (evt, editor, view) => {
         void this.pasteHandler.handleEditorPaste(evt, editor, view);
-      })
+      }),
     );
     this.registerEvent(
       this.app.workspace.on("editor-drop", (evt, editor, view) => {
         void this.dropHandler.handleEditorDrop(evt, editor, view);
-      })
+      }),
     );
-    this.registerDomEvent(document, "paste", (evt) => {
-      const target = evt.target;
-      if (!target || !target.closest(".workspace")) {
-        return;
-      }
-      void this.pasteHandler.handlePropertyPaste(evt);
-    }, { capture: true });
+    this.registerDomEvent(
+      document,
+      "paste",
+      (evt) => {
+        const target = evt.target;
+        if (!target || !target.closest(".workspace")) {
+          return;
+        }
+        void this.pasteHandler.handlePropertyPaste(evt);
+      },
+      { capture: true },
+    );
     this.registerEvent(
       this.app.workspace.on("file-open", (file) => {
         if (!file) {
           return;
         }
-        if (this.settings.autoConvertRemoteImages && this.settings.convertOnNoteOpen) {
+        if (
+          this.settings.autoConvertRemoteImages &&
+          this.settings.convertOnNoteOpen
+        ) {
           if (this.settings.supportedExtensions.includes(file.extension)) {
             void (async () => {
               await new Promise((resolve) => setTimeout(resolve, 500));
               const activeFile = this.app.workspace.getActiveFile();
               const isActiveFile = activeFile && activeFile.path === file.path;
               if (isActiveFile || this.settings.processBackgroundChanges) {
-                const count = await this.conversionService.processFile(file, !isActiveFile);
+                const count = await this.conversionService.processFile(
+                  file,
+                  !isActiveFile,
+                );
                 if (count > 0) {
-                  new import_obsidian15.Notice(`Converted ${count} remote image(s) to local`);
+                  new import_obsidian15.Notice(
+                    `Converted ${count} remote image(s) to local`,
+                  );
                 }
               }
             })();
           }
         }
         const deviceSettings = this.bannerService.getDeviceSettings();
-        if (deviceSettings.enabled && (this.settings.supportedExtensions.includes(file.extension) || file.extension === "md")) {
-          const view = this.app.workspace.getActiveViewOfType(import_obsidian15.MarkdownView);
+        if (
+          deviceSettings.enabled &&
+          (this.settings.supportedExtensions.includes(file.extension) ||
+            file.extension === "md")
+        ) {
+          const view = this.app.workspace.getActiveViewOfType(
+            import_obsidian15.MarkdownView,
+          );
           if (view instanceof import_obsidian15.MarkdownView) {
             void this.bannerService.process(file, view);
           }
         }
-      })
+      }),
     );
     this.registerEvent(
       this.app.workspace.on("layout-change", () => {
@@ -4074,39 +5178,61 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         if (!deviceSettings.enabled) {
           return;
         }
-        const view = this.app.workspace.getActiveViewOfType(import_obsidian15.MarkdownView);
-        if (view && view.file && (this.settings.supportedExtensions.includes(view.file.extension) || view.file.extension === "md")) {
+        const view = this.app.workspace.getActiveViewOfType(
+          import_obsidian15.MarkdownView,
+        );
+        if (
+          view &&
+          view.file &&
+          (this.settings.supportedExtensions.includes(view.file.extension) ||
+            view.file.extension === "md")
+        ) {
           void this.bannerService.process(view.file, view);
         }
-      })
+      }),
     );
     this.registerEvent(
       this.app.metadataCache.on("changed", (file) => {
-        if (this.settings.autoConvertRemoteImages && this.settings.convertOnNoteSave) {
+        if (
+          this.settings.autoConvertRemoteImages &&
+          this.settings.convertOnNoteSave
+        ) {
           if (this.settings.supportedExtensions.includes(file.extension)) {
             void (async () => {
               const activeFile = this.app.workspace.getActiveFile();
               const isActiveFile = activeFile && activeFile.path === file.path;
               if (isActiveFile || this.settings.processBackgroundChanges) {
-                const count = await this.conversionService.processFile(file, !isActiveFile);
+                const count = await this.conversionService.processFile(
+                  file,
+                  !isActiveFile,
+                );
                 if (count > 0) {
-                  new import_obsidian15.Notice(`Converted ${count} remote image(s) to local`);
+                  new import_obsidian15.Notice(
+                    `Converted ${count} remote image(s) to local`,
+                  );
                 }
               }
             })();
           }
         }
         const deviceSettings = this.bannerService.getDeviceSettings();
-        if (!deviceSettings.enabled || !this.settings.supportedExtensions.includes(file.extension) && file.extension !== "md") {
+        if (
+          !deviceSettings.enabled ||
+          (!this.settings.supportedExtensions.includes(file.extension) &&
+            file.extension !== "md")
+        ) {
           return;
         }
         this.app.workspace.iterateRootLeaves((leaf) => {
           const view = leaf.view;
-          if (view instanceof import_obsidian15.MarkdownView && view.file === file) {
+          if (
+            view instanceof import_obsidian15.MarkdownView &&
+            view.file === file
+          ) {
             void this.bannerService.process(file, view);
           }
         });
-      })
+      }),
     );
     this.app.workspace.onLayoutReady(() => {
       this.bannerService.applySettings();
@@ -4121,7 +5247,7 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
       name: "Insert local image",
       editorCallback: (editor, view) => {
         openFilePicker(this.app, this.imageProcessor, this.propertyHandler);
-      }
+      },
     });
     this.addCommand({
       id: "search-image",
@@ -4132,9 +5258,9 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
           this.settings,
           this.remoteService,
           this.imageProcessor,
-          this.propertyHandler
+          this.propertyHandler,
         );
-      }
+      },
     });
     this.addCommand({
       id: "insert-remote-image-to-property",
@@ -4146,9 +5272,12 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
           this.remoteService,
           this.imageProcessor,
           this.propertyHandler,
-          { insertToProperty: true, propertyName: this.settings.defaultPropertyName }
+          {
+            insertToProperty: true,
+            propertyName: this.settings.defaultPropertyName,
+          },
         );
-      }
+      },
     });
     this.addCommand({
       id: "insert-local-image-to-property",
@@ -4160,9 +5289,9 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
           this.propertyHandler,
           true,
           // insertToProperty
-          this.settings.defaultPropertyName
+          this.settings.defaultPropertyName,
         );
-      }
+      },
     });
     this.addCommand({
       id: "insert-remote-image-to-icon-property",
@@ -4174,9 +5303,12 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
           this.remoteService,
           this.imageProcessor,
           this.propertyHandler,
-          { insertToProperty: true, propertyName: this.settings.defaultIconPropertyName }
+          {
+            insertToProperty: true,
+            propertyName: this.settings.defaultIconPropertyName,
+          },
         );
-      }
+      },
     });
     this.addCommand({
       id: "insert-local-image-to-icon-property",
@@ -4188,9 +5320,9 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
           this.propertyHandler,
           true,
           // insertToProperty
-          this.settings.defaultIconPropertyName
+          this.settings.defaultIconPropertyName,
         );
-      }
+      },
     });
     this.addCommand({
       id: "convert-remote-images",
@@ -4203,31 +5335,40 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         }
         const count = await this.conversionService.processFile(file);
         if (count > 0) {
-          new import_obsidian15.Notice(`Converted ${count} remote image(s) to local`);
+          new import_obsidian15.Notice(
+            `Converted ${count} remote image(s) to local`,
+          );
         } else {
           new import_obsidian15.Notice("No remote images found");
         }
-      }
+      },
     });
     this.addCommand({
       id: "convert-all-remote-images",
       name: "Convert all remote images",
       callback: async () => {
-        const { openConfirmModal: openConfirmModal2 } = await Promise.resolve().then(() => (init_ConfirmModal(), ConfirmModal_exports));
+        const { openConfirmModal: openConfirmModal2 } =
+          await Promise.resolve().then(
+            () => (init_ConfirmModal(), ConfirmModal_exports),
+          );
         const result = await openConfirmModal2(
           this.app,
           "Convert All Remote Images",
           "This will scan all files in your vault and convert every remote image URL to a local file. This action cannot be undone.\n\nEach image will be downloaded and you'll be prompted to rename them. This may take a while if you have many images.\n\nAre you sure you want to proceed?",
           "Yes, convert all images",
-          "Cancel"
+          "Cancel",
         );
         if (!result.confirmed) {
           return;
         }
-        new import_obsidian15.Notice("Processing all files... This may take a while.");
+        new import_obsidian15.Notice(
+          "Processing all files... This may take a while.",
+        );
         const count = await this.conversionService.processAllFiles();
-        new import_obsidian15.Notice(`Converted ${count} remote image(s) to local`);
-      }
+        new import_obsidian15.Notice(
+          `Converted ${count} remote image(s) to local`,
+        );
+      },
     });
   }
   /**
@@ -4235,7 +5376,11 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
    */
   async loadSettings() {
     const data = await this.loadData();
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, data != null ? data : {});
+    this.settings = Object.assign(
+      {},
+      DEFAULT_SETTINGS,
+      data != null ? data : {},
+    );
   }
   /**
    * Save settings to storage

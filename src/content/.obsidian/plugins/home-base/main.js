@@ -9,34 +9,50 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
+var __commonJS = (cb, mod) =>
+  function __require() {
+    return (
+      mod ||
+        (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod),
+      mod.exports
+    );
+  };
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toESM = (mod, isNodeMode, target) => (
+  (target = mod != null ? __create(__getProtoOf(mod)) : {}),
+  __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule
+      ? __defProp(target, "default", { value: mod, enumerable: true })
+      : target,
+    mod,
+  )
+);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/.pnpm/obsidian-daily-notes-interf_8d9fc24b0fc622d94fd11fa5e9b185b3/node_modules/obsidian-daily-notes-interface/dist/main.js
 var require_main = __commonJS({
-  "node_modules/.pnpm/obsidian-daily-notes-interf_8d9fc24b0fc622d94fd11fa5e9b185b3/node_modules/obsidian-daily-notes-interface/dist/main.js"(exports) {
+  "node_modules/.pnpm/obsidian-daily-notes-interf_8d9fc24b0fc622d94fd11fa5e9b185b3/node_modules/obsidian-daily-notes-interface/dist/main.js"(
+    exports,
+  ) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var obsidian = require("obsidian");
@@ -48,25 +64,47 @@ var require_main = __commonJS({
     function shouldUsePeriodicNotesSettings(periodicity) {
       var _a, _b;
       const periodicNotes = window.app.plugins.getPlugin("periodic-notes");
-      return periodicNotes && ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a[periodicity]) == null ? void 0 : _b.enabled);
+      return (
+        periodicNotes &&
+        ((_b =
+          (_a = periodicNotes.settings) == null ? void 0 : _a[periodicity]) ==
+        null
+          ? void 0
+          : _b.enabled)
+      );
     }
     function getDailyNoteSettings() {
       var _a, _b, _c, _d;
       try {
         const { internalPlugins, plugins } = window.app;
         if (shouldUsePeriodicNotesSettings("daily")) {
-          const { format: format2, folder: folder2, template: template2 } = ((_b = (_a = plugins.getPlugin("periodic-notes")) == null ? void 0 : _a.settings) == null ? void 0 : _b.daily) || {};
+          const {
+            format: format2,
+            folder: folder2,
+            template: template2,
+          } = ((_b =
+            (_a = plugins.getPlugin("periodic-notes")) == null
+              ? void 0
+              : _a.settings) == null
+            ? void 0
+            : _b.daily) || {};
           return {
             format: format2 || DEFAULT_DAILY_NOTE_FORMAT,
             folder: (folder2 == null ? void 0 : folder2.trim()) || "",
-            template: (template2 == null ? void 0 : template2.trim()) || ""
+            template: (template2 == null ? void 0 : template2.trim()) || "",
           };
         }
-        const { folder, format, template } = ((_d = (_c = internalPlugins.getPluginById("daily-notes")) == null ? void 0 : _c.instance) == null ? void 0 : _d.options) || {};
+        const { folder, format, template } =
+          ((_d =
+            (_c = internalPlugins.getPluginById("daily-notes")) == null
+              ? void 0
+              : _c.instance) == null
+            ? void 0
+            : _d.options) || {};
         return {
           format: format || DEFAULT_DAILY_NOTE_FORMAT,
           folder: (folder == null ? void 0 : folder.trim()) || "",
-          template: (template == null ? void 0 : template.trim()) || ""
+          template: (template == null ? void 0 : template.trim()) || "",
         };
       } catch (err) {
         console.info("No custom daily note settings found!", err);
@@ -76,20 +114,39 @@ var require_main = __commonJS({
       var _a, _b, _c, _d, _e, _f, _g;
       try {
         const pluginManager = window.app.plugins;
-        const calendarSettings = (_a = pluginManager.getPlugin("calendar")) == null ? void 0 : _a.options;
-        const periodicNotesSettings = (_c = (_b = pluginManager.getPlugin("periodic-notes")) == null ? void 0 : _b.settings) == null ? void 0 : _c.weekly;
+        const calendarSettings =
+          (_a = pluginManager.getPlugin("calendar")) == null
+            ? void 0
+            : _a.options;
+        const periodicNotesSettings =
+          (_c =
+            (_b = pluginManager.getPlugin("periodic-notes")) == null
+              ? void 0
+              : _b.settings) == null
+            ? void 0
+            : _c.weekly;
         if (shouldUsePeriodicNotesSettings("weekly")) {
           return {
             format: periodicNotesSettings.format || DEFAULT_WEEKLY_NOTE_FORMAT,
-            folder: ((_d = periodicNotesSettings.folder) == null ? void 0 : _d.trim()) || "",
-            template: ((_e = periodicNotesSettings.template) == null ? void 0 : _e.trim()) || ""
+            folder:
+              ((_d = periodicNotesSettings.folder) == null
+                ? void 0
+                : _d.trim()) || "",
+            template:
+              ((_e = periodicNotesSettings.template) == null
+                ? void 0
+                : _e.trim()) || "",
           };
         }
         const settings = calendarSettings || {};
         return {
           format: settings.weeklyNoteFormat || DEFAULT_WEEKLY_NOTE_FORMAT,
-          folder: ((_f = settings.weeklyNoteFolder) == null ? void 0 : _f.trim()) || "",
-          template: ((_g = settings.weeklyNoteTemplate) == null ? void 0 : _g.trim()) || ""
+          folder:
+            ((_f = settings.weeklyNoteFolder) == null ? void 0 : _f.trim()) ||
+            "",
+          template:
+            ((_g = settings.weeklyNoteTemplate) == null ? void 0 : _g.trim()) ||
+            "",
         };
       } catch (err) {
         console.info("No custom weekly note settings found!", err);
@@ -99,11 +156,20 @@ var require_main = __commonJS({
       var _a, _b, _c, _d;
       const pluginManager = window.app.plugins;
       try {
-        const settings = shouldUsePeriodicNotesSettings("monthly") && ((_b = (_a = pluginManager.getPlugin("periodic-notes")) == null ? void 0 : _a.settings) == null ? void 0 : _b.monthly) || {};
+        const settings =
+          (shouldUsePeriodicNotesSettings("monthly") &&
+            ((_b =
+              (_a = pluginManager.getPlugin("periodic-notes")) == null
+                ? void 0
+                : _a.settings) == null
+              ? void 0
+              : _b.monthly)) ||
+          {};
         return {
           format: settings.format || DEFAULT_MONTHLY_NOTE_FORMAT,
           folder: ((_c = settings.folder) == null ? void 0 : _c.trim()) || "",
-          template: ((_d = settings.template) == null ? void 0 : _d.trim()) || ""
+          template:
+            ((_d = settings.template) == null ? void 0 : _d.trim()) || "",
         };
       } catch (err) {
         console.info("No custom monthly note settings found!", err);
@@ -113,11 +179,20 @@ var require_main = __commonJS({
       var _a, _b, _c, _d;
       const pluginManager = window.app.plugins;
       try {
-        const settings = shouldUsePeriodicNotesSettings("quarterly") && ((_b = (_a = pluginManager.getPlugin("periodic-notes")) == null ? void 0 : _a.settings) == null ? void 0 : _b.quarterly) || {};
+        const settings =
+          (shouldUsePeriodicNotesSettings("quarterly") &&
+            ((_b =
+              (_a = pluginManager.getPlugin("periodic-notes")) == null
+                ? void 0
+                : _a.settings) == null
+              ? void 0
+              : _b.quarterly)) ||
+          {};
         return {
           format: settings.format || DEFAULT_QUARTERLY_NOTE_FORMAT,
           folder: ((_c = settings.folder) == null ? void 0 : _c.trim()) || "",
-          template: ((_d = settings.template) == null ? void 0 : _d.trim()) || ""
+          template:
+            ((_d = settings.template) == null ? void 0 : _d.trim()) || "",
         };
       } catch (err) {
         console.info("No custom quarterly note settings found!", err);
@@ -127,11 +202,20 @@ var require_main = __commonJS({
       var _a, _b, _c, _d;
       const pluginManager = window.app.plugins;
       try {
-        const settings = shouldUsePeriodicNotesSettings("yearly") && ((_b = (_a = pluginManager.getPlugin("periodic-notes")) == null ? void 0 : _a.settings) == null ? void 0 : _b.yearly) || {};
+        const settings =
+          (shouldUsePeriodicNotesSettings("yearly") &&
+            ((_b =
+              (_a = pluginManager.getPlugin("periodic-notes")) == null
+                ? void 0
+                : _a.settings) == null
+              ? void 0
+              : _b.yearly)) ||
+          {};
         return {
           format: settings.format || DEFAULT_YEARLY_NOTE_FORMAT,
           folder: ((_c = settings.folder) == null ? void 0 : _c.trim()) || "",
-          template: ((_d = settings.template) == null ? void 0 : _d.trim()) || ""
+          template:
+            ((_d = settings.template) == null ? void 0 : _d.trim()) || "",
         };
       } catch (err) {
         console.info("No custom yearly note settings found!", err);
@@ -145,13 +229,10 @@ var require_main = __commonJS({
       const newParts = [];
       for (let i = 0, l = parts.length; i < l; i++) {
         const part = parts[i];
-        if (!part || part === ".")
-          continue;
-        else
-          newParts.push(part);
+        if (!part || part === ".") continue;
+        else newParts.push(part);
       }
-      if (parts[0] === "")
-        newParts.unshift("");
+      if (parts[0] === "") newParts.unshift("");
       return newParts.join("/");
     }
     function basename(fullPath) {
@@ -185,12 +266,18 @@ var require_main = __commonJS({
         return Promise.resolve(["", null]);
       }
       try {
-        const templateFile = metadataCache.getFirstLinkpathDest(templatePath, "");
+        const templateFile = metadataCache.getFirstLinkpathDest(
+          templatePath,
+          "",
+        );
         const contents = await vault.cachedRead(templateFile);
         const IFoldInfo = window.app.foldManager.load(templateFile);
         return [contents, IFoldInfo];
       } catch (err) {
-        console.error(`Failed to read the daily note template '${templatePath}'`, err);
+        console.error(
+          `Failed to read the daily note template '${templatePath}'`,
+          err,
+        );
         new obsidian.Notice("Failed to read the daily note template");
         return ["", null];
       }
@@ -205,7 +292,10 @@ var require_main = __commonJS({
     function isFormatAmbiguous(format, granularity) {
       if (granularity === "week") {
         const cleanFormat = removeEscapedCharacters(format);
-        return /w{1,2}/i.test(cleanFormat) && (/M{1,4}/.test(cleanFormat) || /D{1,4}/.test(cleanFormat));
+        return (
+          /w{1,2}/i.test(cleanFormat) &&
+          (/M{1,4}/.test(cleanFormat) || /D{1,4}/.test(cleanFormat))
+        );
       }
       return false;
     }
@@ -221,7 +311,7 @@ var require_main = __commonJS({
         week: getWeeklyNoteSettings,
         month: getMonthlyNoteSettings,
         quarter: getQuarterlyNoteSettings,
-        year: getYearlyNoteSettings
+        year: getYearlyNoteSettings,
       };
       const format = getSettings[granularity]().format.split("/").pop();
       const noteDate = window.moment(filename, format, true);
@@ -236,15 +326,14 @@ var require_main = __commonJS({
               filename,
               // If format contains week, remove day & month formatting
               format.replace(/M{1,4}/g, "").replace(/D{1,4}/g, ""),
-              false
+              false,
             );
           }
         }
       }
       return noteDate;
     }
-    var DailyNotesFolderMissingError = class extends Error {
-    };
+    var DailyNotesFolderMissingError = class extends Error {};
     async function createDailyNote2(date) {
       const app = window.app;
       const { vault } = app;
@@ -254,21 +343,39 @@ var require_main = __commonJS({
       const filename = date.format(format);
       const normalizedPath = await getNotePath(folder, filename);
       try {
-        const createdFile = await vault.create(normalizedPath, templateContents.replace(/{{\s*date\s*}}/gi, filename).replace(/{{\s*time\s*}}/gi, moment2().format("HH:mm")).replace(/{{\s*title\s*}}/gi, filename).replace(/{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi, (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
-          const now = moment2();
-          const currentDate = date.clone().set({
-            hour: now.get("hour"),
-            minute: now.get("minute"),
-            second: now.get("second")
-          });
-          if (calc) {
-            currentDate.add(parseInt(timeDelta, 10), unit);
-          }
-          if (momentFormat) {
-            return currentDate.format(momentFormat.substring(1).trim());
-          }
-          return currentDate.format(format);
-        }).replace(/{{\s*yesterday\s*}}/gi, date.clone().subtract(1, "day").format(format)).replace(/{{\s*tomorrow\s*}}/gi, date.clone().add(1, "d").format(format)));
+        const createdFile = await vault.create(
+          normalizedPath,
+          templateContents
+            .replace(/{{\s*date\s*}}/gi, filename)
+            .replace(/{{\s*time\s*}}/gi, moment2().format("HH:mm"))
+            .replace(/{{\s*title\s*}}/gi, filename)
+            .replace(
+              /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
+              (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
+                const now = moment2();
+                const currentDate = date.clone().set({
+                  hour: now.get("hour"),
+                  minute: now.get("minute"),
+                  second: now.get("second"),
+                });
+                if (calc) {
+                  currentDate.add(parseInt(timeDelta, 10), unit);
+                }
+                if (momentFormat) {
+                  return currentDate.format(momentFormat.substring(1).trim());
+                }
+                return currentDate.format(format);
+              },
+            )
+            .replace(
+              /{{\s*yesterday\s*}}/gi,
+              date.clone().subtract(1, "day").format(format),
+            )
+            .replace(
+              /{{\s*tomorrow\s*}}/gi,
+              date.clone().add(1, "d").format(format),
+            ),
+        );
         app.foldManager.save(createdFile, IFoldInfo);
         return createdFile;
       } catch (err) {
@@ -283,9 +390,13 @@ var require_main = __commonJS({
     function getAllDailyNotes2() {
       const { vault } = window.app;
       const { folder } = getDailyNoteSettings();
-      const dailyNotesFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
+      const dailyNotesFolder = vault.getAbstractFileByPath(
+        obsidian.normalizePath(folder),
+      );
       if (!dailyNotesFolder) {
-        throw new DailyNotesFolderMissingError("Failed to find daily notes folder");
+        throw new DailyNotesFolderMissingError(
+          "Failed to find daily notes folder",
+        );
       }
       const dailyNotes = {};
       obsidian.Vault.recurseChildren(dailyNotesFolder, (note) => {
@@ -299,8 +410,7 @@ var require_main = __commonJS({
       });
       return dailyNotes;
     }
-    var WeeklyNotesFolderMissingError = class extends Error {
-    };
+    var WeeklyNotesFolderMissingError = class extends Error {};
     function getDaysOfWeek() {
       const { moment: moment2 } = window;
       let weekStart = moment2.localeData()._week.dow;
@@ -311,7 +421,7 @@ var require_main = __commonJS({
         "wednesday",
         "thursday",
         "friday",
-        "saturday"
+        "saturday",
       ];
       while (weekStart) {
         daysOfWeek.push(daysOfWeek.shift());
@@ -329,24 +439,37 @@ var require_main = __commonJS({
       const filename = date.format(format);
       const normalizedPath = await getNotePath(folder, filename);
       try {
-        const createdFile = await vault.create(normalizedPath, templateContents.replace(/{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi, (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
-          const now = window.moment();
-          const currentDate = date.clone().set({
-            hour: now.get("hour"),
-            minute: now.get("minute"),
-            second: now.get("second")
-          });
-          if (calc) {
-            currentDate.add(parseInt(timeDelta, 10), unit);
-          }
-          if (momentFormat) {
-            return currentDate.format(momentFormat.substring(1).trim());
-          }
-          return currentDate.format(format);
-        }).replace(/{{\s*title\s*}}/gi, filename).replace(/{{\s*time\s*}}/gi, window.moment().format("HH:mm")).replace(/{{\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\s*:(.*?)}}/gi, (_, dayOfWeek, momentFormat) => {
-          const day = getDayOfWeekNumericalValue(dayOfWeek);
-          return date.weekday(day).format(momentFormat.trim());
-        }));
+        const createdFile = await vault.create(
+          normalizedPath,
+          templateContents
+            .replace(
+              /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
+              (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
+                const now = window.moment();
+                const currentDate = date.clone().set({
+                  hour: now.get("hour"),
+                  minute: now.get("minute"),
+                  second: now.get("second"),
+                });
+                if (calc) {
+                  currentDate.add(parseInt(timeDelta, 10), unit);
+                }
+                if (momentFormat) {
+                  return currentDate.format(momentFormat.substring(1).trim());
+                }
+                return currentDate.format(format);
+              },
+            )
+            .replace(/{{\s*title\s*}}/gi, filename)
+            .replace(/{{\s*time\s*}}/gi, window.moment().format("HH:mm"))
+            .replace(
+              /{{\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\s*:(.*?)}}/gi,
+              (_, dayOfWeek, momentFormat) => {
+                const day = getDayOfWeekNumericalValue(dayOfWeek);
+                return date.weekday(day).format(momentFormat.trim());
+              },
+            ),
+        );
         window.app.foldManager.save(createdFile, IFoldInfo);
         return createdFile;
       } catch (err) {
@@ -365,9 +488,13 @@ var require_main = __commonJS({
       }
       const { vault } = window.app;
       const { folder } = getWeeklyNoteSettings();
-      const weeklyNotesFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
+      const weeklyNotesFolder = vault.getAbstractFileByPath(
+        obsidian.normalizePath(folder),
+      );
       if (!weeklyNotesFolder) {
-        throw new WeeklyNotesFolderMissingError("Failed to find weekly notes folder");
+        throw new WeeklyNotesFolderMissingError(
+          "Failed to find weekly notes folder",
+        );
       }
       obsidian.Vault.recurseChildren(weeklyNotesFolder, (note) => {
         if (note instanceof obsidian.TFile) {
@@ -380,8 +507,7 @@ var require_main = __commonJS({
       });
       return weeklyNotes;
     }
-    var MonthlyNotesFolderMissingError = class extends Error {
-    };
+    var MonthlyNotesFolderMissingError = class extends Error {};
     async function createMonthlyNote2(date) {
       const { vault } = window.app;
       const { template, format, folder } = getMonthlyNoteSettings();
@@ -389,21 +515,31 @@ var require_main = __commonJS({
       const filename = date.format(format);
       const normalizedPath = await getNotePath(folder, filename);
       try {
-        const createdFile = await vault.create(normalizedPath, templateContents.replace(/{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi, (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
-          const now = window.moment();
-          const currentDate = date.clone().set({
-            hour: now.get("hour"),
-            minute: now.get("minute"),
-            second: now.get("second")
-          });
-          if (calc) {
-            currentDate.add(parseInt(timeDelta, 10), unit);
-          }
-          if (momentFormat) {
-            return currentDate.format(momentFormat.substring(1).trim());
-          }
-          return currentDate.format(format);
-        }).replace(/{{\s*date\s*}}/gi, filename).replace(/{{\s*time\s*}}/gi, window.moment().format("HH:mm")).replace(/{{\s*title\s*}}/gi, filename));
+        const createdFile = await vault.create(
+          normalizedPath,
+          templateContents
+            .replace(
+              /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
+              (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
+                const now = window.moment();
+                const currentDate = date.clone().set({
+                  hour: now.get("hour"),
+                  minute: now.get("minute"),
+                  second: now.get("second"),
+                });
+                if (calc) {
+                  currentDate.add(parseInt(timeDelta, 10), unit);
+                }
+                if (momentFormat) {
+                  return currentDate.format(momentFormat.substring(1).trim());
+                }
+                return currentDate.format(format);
+              },
+            )
+            .replace(/{{\s*date\s*}}/gi, filename)
+            .replace(/{{\s*time\s*}}/gi, window.moment().format("HH:mm"))
+            .replace(/{{\s*title\s*}}/gi, filename),
+        );
         window.app.foldManager.save(createdFile, IFoldInfo);
         return createdFile;
       } catch (err) {
@@ -422,9 +558,13 @@ var require_main = __commonJS({
       }
       const { vault } = window.app;
       const { folder } = getMonthlyNoteSettings();
-      const monthlyNotesFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
+      const monthlyNotesFolder = vault.getAbstractFileByPath(
+        obsidian.normalizePath(folder),
+      );
       if (!monthlyNotesFolder) {
-        throw new MonthlyNotesFolderMissingError("Failed to find monthly notes folder");
+        throw new MonthlyNotesFolderMissingError(
+          "Failed to find monthly notes folder",
+        );
       }
       obsidian.Vault.recurseChildren(monthlyNotesFolder, (note) => {
         if (note instanceof obsidian.TFile) {
@@ -437,8 +577,7 @@ var require_main = __commonJS({
       });
       return monthlyNotes;
     }
-    var QuarterlyNotesFolderMissingError = class extends Error {
-    };
+    var QuarterlyNotesFolderMissingError = class extends Error {};
     async function createQuarterlyNote2(date) {
       const { vault } = window.app;
       const { template, format, folder } = getQuarterlyNoteSettings();
@@ -446,21 +585,31 @@ var require_main = __commonJS({
       const filename = date.format(format);
       const normalizedPath = await getNotePath(folder, filename);
       try {
-        const createdFile = await vault.create(normalizedPath, templateContents.replace(/{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi, (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
-          const now = window.moment();
-          const currentDate = date.clone().set({
-            hour: now.get("hour"),
-            minute: now.get("minute"),
-            second: now.get("second")
-          });
-          if (calc) {
-            currentDate.add(parseInt(timeDelta, 10), unit);
-          }
-          if (momentFormat) {
-            return currentDate.format(momentFormat.substring(1).trim());
-          }
-          return currentDate.format(format);
-        }).replace(/{{\s*date\s*}}/gi, filename).replace(/{{\s*time\s*}}/gi, window.moment().format("HH:mm")).replace(/{{\s*title\s*}}/gi, filename));
+        const createdFile = await vault.create(
+          normalizedPath,
+          templateContents
+            .replace(
+              /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
+              (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
+                const now = window.moment();
+                const currentDate = date.clone().set({
+                  hour: now.get("hour"),
+                  minute: now.get("minute"),
+                  second: now.get("second"),
+                });
+                if (calc) {
+                  currentDate.add(parseInt(timeDelta, 10), unit);
+                }
+                if (momentFormat) {
+                  return currentDate.format(momentFormat.substring(1).trim());
+                }
+                return currentDate.format(format);
+              },
+            )
+            .replace(/{{\s*date\s*}}/gi, filename)
+            .replace(/{{\s*time\s*}}/gi, window.moment().format("HH:mm"))
+            .replace(/{{\s*title\s*}}/gi, filename),
+        );
         window.app.foldManager.save(createdFile, IFoldInfo);
         return createdFile;
       } catch (err) {
@@ -479,9 +628,13 @@ var require_main = __commonJS({
       }
       const { vault } = window.app;
       const { folder } = getQuarterlyNoteSettings();
-      const quarterlyFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
+      const quarterlyFolder = vault.getAbstractFileByPath(
+        obsidian.normalizePath(folder),
+      );
       if (!quarterlyFolder) {
-        throw new QuarterlyNotesFolderMissingError("Failed to find quarterly notes folder");
+        throw new QuarterlyNotesFolderMissingError(
+          "Failed to find quarterly notes folder",
+        );
       }
       obsidian.Vault.recurseChildren(quarterlyFolder, (note) => {
         if (note instanceof obsidian.TFile) {
@@ -494,8 +647,7 @@ var require_main = __commonJS({
       });
       return quarterly;
     }
-    var YearlyNotesFolderMissingError = class extends Error {
-    };
+    var YearlyNotesFolderMissingError = class extends Error {};
     async function createYearlyNote2(date) {
       const { vault } = window.app;
       const { template, format, folder } = getYearlyNoteSettings();
@@ -503,21 +655,31 @@ var require_main = __commonJS({
       const filename = date.format(format);
       const normalizedPath = await getNotePath(folder, filename);
       try {
-        const createdFile = await vault.create(normalizedPath, templateContents.replace(/{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi, (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
-          const now = window.moment();
-          const currentDate = date.clone().set({
-            hour: now.get("hour"),
-            minute: now.get("minute"),
-            second: now.get("second")
-          });
-          if (calc) {
-            currentDate.add(parseInt(timeDelta, 10), unit);
-          }
-          if (momentFormat) {
-            return currentDate.format(momentFormat.substring(1).trim());
-          }
-          return currentDate.format(format);
-        }).replace(/{{\s*date\s*}}/gi, filename).replace(/{{\s*time\s*}}/gi, window.moment().format("HH:mm")).replace(/{{\s*title\s*}}/gi, filename));
+        const createdFile = await vault.create(
+          normalizedPath,
+          templateContents
+            .replace(
+              /{{\s*(date|time)\s*(([+-]\d+)([yqmwdhs]))?\s*(:.+?)?}}/gi,
+              (_, _timeOrDate, calc, timeDelta, unit, momentFormat) => {
+                const now = window.moment();
+                const currentDate = date.clone().set({
+                  hour: now.get("hour"),
+                  minute: now.get("minute"),
+                  second: now.get("second"),
+                });
+                if (calc) {
+                  currentDate.add(parseInt(timeDelta, 10), unit);
+                }
+                if (momentFormat) {
+                  return currentDate.format(momentFormat.substring(1).trim());
+                }
+                return currentDate.format(format);
+              },
+            )
+            .replace(/{{\s*date\s*}}/gi, filename)
+            .replace(/{{\s*time\s*}}/gi, window.moment().format("HH:mm"))
+            .replace(/{{\s*title\s*}}/gi, filename),
+        );
         window.app.foldManager.save(createdFile, IFoldInfo);
         return createdFile;
       } catch (err) {
@@ -536,9 +698,13 @@ var require_main = __commonJS({
       }
       const { vault } = window.app;
       const { folder } = getYearlyNoteSettings();
-      const yearlyNotesFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
+      const yearlyNotesFolder = vault.getAbstractFileByPath(
+        obsidian.normalizePath(folder),
+      );
       if (!yearlyNotesFolder) {
-        throw new YearlyNotesFolderMissingError("Failed to find yearly notes folder");
+        throw new YearlyNotesFolderMissingError(
+          "Failed to find yearly notes folder",
+        );
       }
       obsidian.Vault.recurseChildren(yearlyNotesFolder, (note) => {
         if (note instanceof obsidian.TFile) {
@@ -559,7 +725,13 @@ var require_main = __commonJS({
         return true;
       }
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
-      return periodicNotes && ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.daily) == null ? void 0 : _b.enabled);
+      return (
+        periodicNotes &&
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.daily) ==
+        null
+          ? void 0
+          : _b.enabled)
+      );
     }
     function appHasWeeklyNotesPluginLoaded() {
       var _a, _b;
@@ -568,25 +740,49 @@ var require_main = __commonJS({
         return true;
       }
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
-      return periodicNotes && ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.weekly) == null ? void 0 : _b.enabled);
+      return (
+        periodicNotes &&
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.weekly) ==
+        null
+          ? void 0
+          : _b.enabled)
+      );
     }
     function appHasMonthlyNotesPluginLoaded() {
       var _a, _b;
       const { app } = window;
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
-      return periodicNotes && ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.monthly) == null ? void 0 : _b.enabled);
+      return (
+        periodicNotes &&
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.monthly) ==
+        null
+          ? void 0
+          : _b.enabled)
+      );
     }
     function appHasQuarterlyNotesPluginLoaded() {
       var _a, _b;
       const { app } = window;
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
-      return periodicNotes && ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.quarterly) == null ? void 0 : _b.enabled);
+      return (
+        periodicNotes &&
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.quarterly) ==
+        null
+          ? void 0
+          : _b.enabled)
+      );
     }
     function appHasYearlyNotesPluginLoaded() {
       var _a, _b;
       const { app } = window;
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
-      return periodicNotes && ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.yearly) == null ? void 0 : _b.enabled);
+      return (
+        periodicNotes &&
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.yearly) ==
+        null
+          ? void 0
+          : _b.enabled)
+      );
     }
     function getPeriodicNoteSettings(granularity) {
       const getSettings = {
@@ -594,7 +790,7 @@ var require_main = __commonJS({
         week: getWeeklyNoteSettings,
         month: getMonthlyNoteSettings,
         quarter: getQuarterlyNoteSettings,
-        year: getYearlyNoteSettings
+        year: getYearlyNoteSettings,
       }[granularity];
       return getSettings();
     }
@@ -602,7 +798,7 @@ var require_main = __commonJS({
       const createFn = {
         day: createDailyNote2,
         month: createMonthlyNote2,
-        week: createWeeklyNote2
+        week: createWeeklyNote2,
       };
       return createFn[granularity](date);
     }
@@ -642,13 +838,13 @@ var require_main = __commonJS({
     exports.getWeeklyNoteSettings = getWeeklyNoteSettings;
     exports.getYearlyNote = getYearlyNote2;
     exports.getYearlyNoteSettings = getYearlyNoteSettings;
-  }
+  },
 });
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => HomeBasePlugin
+  default: () => HomeBasePlugin,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian11 = require("obsidian");
@@ -707,23 +903,23 @@ var DEFAULT_SETTINGS = {
   // View behavior
   revertView: false,
   autoScroll: false,
-  hideReleaseNotes: false
+  hideReleaseNotes: false,
   // OFF by default
 };
 var VIEW_MODE_OPTIONS = {
-  "default": "Default",
-  "preview": "Reading view",
-  "source": "Source mode",
-  "live": "Live Preview"
+  default: "Default",
+  preview: "Reading view",
+  source: "Source mode",
+  live: "Live Preview",
 };
 var NEW_TAB_MODE_OPTIONS = {
   "only-when-empty": "Only when no tabs are open",
-  "always": "Always replace new tabs"
+  always: "Always replace new tabs",
 };
 var OPENING_MODE_OPTIONS = {
   "replace-all": "Replace all open notes",
   "replace-last": "Replace last note",
-  "retain": "Keep open notes"
+  retain: "Keep open notes",
 };
 var UNCHANGEABLE_TYPES = [
   "Random file" /* Random */,
@@ -733,7 +929,7 @@ var UNCHANGEABLE_TYPES = [
   "Weekly Note" /* WeeklyNote */,
   "Monthly Note" /* MonthlyNote */,
   "Quarterly Note" /* QuarterlyNote */,
-  "Yearly Note" /* YearlyNote */
+  "Yearly Note" /* YearlyNote */,
 ];
 
 // src/ui/settings-tab.ts
@@ -753,7 +949,10 @@ var FilePathSuggest = class extends import_obsidian.AbstractInputSuggest {
     this.app.vault.getAllLoadedFiles().forEach((file) => {
       if (file instanceof import_obsidian.TFile) {
         if (SUPPORTED_EXTENSIONS.includes(file.extension)) {
-          if (file.path.toLowerCase().includes(lowerQuery) || file.basename.toLowerCase().includes(lowerQuery)) {
+          if (
+            file.path.toLowerCase().includes(lowerQuery) ||
+            file.basename.toLowerCase().includes(lowerQuery)
+          ) {
             files.push(file);
           }
         }
@@ -771,19 +970,19 @@ var FilePathSuggest = class extends import_obsidian.AbstractInputSuggest {
   renderSuggestion(file, el) {
     el.addClass("home-base-suggestion-item");
     const titleEl = el.createEl("div", {
-      cls: "suggestion-title"
+      cls: "suggestion-title",
     });
     titleEl.createEl("span", { text: file.basename });
     if (file.extension !== "md") {
       titleEl.createEl("span", {
         text: file.extension.toUpperCase(),
-        cls: "suggestion-flair"
+        cls: "suggestion-flair",
       });
     }
     if (file.parent && file.parent.path !== "/") {
       el.createEl("div", {
         text: file.parent.path,
-        cls: "suggestion-note"
+        cls: "suggestion-note",
       });
     }
   }
@@ -827,14 +1026,21 @@ var WorkspaceSuggest = class extends import_obsidian.AbstractInputSuggest {
   }
   getSuggestions(query) {
     var _a, _b, _c;
-    const workspacesPlugin = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b.workspaces;
-    if (!(workspacesPlugin == null ? void 0 : workspacesPlugin.enabled) || !((_c = workspacesPlugin.instance) == null ? void 0 : _c.workspaces)) {
+    const workspacesPlugin =
+      (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
+      null
+        ? void 0
+        : _b.workspaces;
+    if (
+      !(workspacesPlugin == null ? void 0 : workspacesPlugin.enabled) ||
+      !((_c = workspacesPlugin.instance) == null ? void 0 : _c.workspaces)
+    ) {
       return [];
     }
     const workspaces = Object.keys(workspacesPlugin.instance.workspaces);
     const lowerQuery = query.toLowerCase();
-    return workspaces.filter(
-      (workspace) => workspace.toLowerCase().includes(lowerQuery)
+    return workspaces.filter((workspace) =>
+      workspace.toLowerCase().includes(lowerQuery),
     );
   }
   renderSuggestion(workspace, el) {
@@ -859,10 +1065,14 @@ var CommandSuggest = class extends import_obsidian2.AbstractInputSuggest {
     const lowerQuery = query.toLowerCase();
     const commands = [];
     const appWithCommands = this.app;
-    const allCommands = (_a = appWithCommands.commands) == null ? void 0 : _a.commands;
+    const allCommands =
+      (_a = appWithCommands.commands) == null ? void 0 : _a.commands;
     if (allCommands) {
       for (const command of Object.values(allCommands)) {
-        if (command.name.toLowerCase().includes(lowerQuery) || command.id.toLowerCase().includes(lowerQuery)) {
+        if (
+          command.name.toLowerCase().includes(lowerQuery) ||
+          command.id.toLowerCase().includes(lowerQuery)
+        ) {
           commands.push(command);
         }
       }
@@ -873,11 +1083,11 @@ var CommandSuggest = class extends import_obsidian2.AbstractInputSuggest {
   renderSuggestion(command, el) {
     el.createEl("div", {
       text: command.name,
-      cls: "suggestion-title"
+      cls: "suggestion-title",
     });
     el.createEl("small", {
       text: command.id,
-      cls: "suggestion-note"
+      cls: "suggestion-note",
     });
   }
   selectSuggestion(command) {
@@ -889,14 +1099,21 @@ var CommandSuggest = class extends import_obsidian2.AbstractInputSuggest {
 function getCommandById(app, commandId) {
   var _a;
   const appWithCommands = app;
-  const commands = (_a = appWithCommands.commands) == null ? void 0 : _a.commands;
+  const commands =
+    (_a = appWithCommands.commands) == null ? void 0 : _a.commands;
   return commands == null ? void 0 : commands[commandId];
 }
 function executeCommand(app, commandId) {
   var _a, _b;
   if (!commandId) return false;
   const appWithCommands = app;
-  const result = (_b = (_a = appWithCommands.commands) == null ? void 0 : _a.executeCommandById) == null ? void 0 : _b.call(_a, commandId);
+  const result =
+    (_b =
+      (_a = appWithCommands.commands) == null
+        ? void 0
+        : _a.executeCommandById) == null
+      ? void 0
+      : _b.call(_a, commandId);
   return result !== false;
 }
 
@@ -918,7 +1135,9 @@ var IconPicker = class extends import_obsidian3.Modal {
       searchSetting.setName("Search");
     }
     searchSetting.addSearch((searchField) => {
-      searchField.setPlaceholder("Search icons...").onChange(() => this.updateSearchResults());
+      searchField
+        .setPlaceholder("Search icons...")
+        .onChange(() => this.updateSearchResults());
       searchField.inputEl.enterKeyHint = "go";
       this.searchField = searchField;
     });
@@ -928,19 +1147,31 @@ var IconPicker = class extends import_obsidian3.Modal {
     this.searchResultsSetting = new import_obsidian3.Setting(this.contentEl);
     this.searchResultsSetting.settingEl.addClass("iconic-search-results");
     this.searchResultsSetting.settingEl.tabIndex = 0;
-    this.searchResultsSetting.settingEl.addEventListener("wheel", (event) => {
-      if (document.body.hasClass("mod-rtl")) {
-        this.searchResultsSetting.settingEl.scrollLeft -= event.deltaY;
-      } else {
-        this.searchResultsSetting.settingEl.scrollLeft += event.deltaY;
-      }
-    }, { passive: true });
-    const buttonContainer = this.modalEl.createDiv({ cls: "modal-button-container" });
-    new import_obsidian3.ButtonComponent(buttonContainer).setButtonText("Cancel").onClick(() => this.close()).buttonEl.addClass("mod-cancel");
-    new import_obsidian3.ButtonComponent(buttonContainer).setButtonText("Save").setCta().onClick(() => {
-      this.callback(this.selectedIcon);
-      this.close();
+    this.searchResultsSetting.settingEl.addEventListener(
+      "wheel",
+      (event) => {
+        if (document.body.hasClass("mod-rtl")) {
+          this.searchResultsSetting.settingEl.scrollLeft -= event.deltaY;
+        } else {
+          this.searchResultsSetting.settingEl.scrollLeft += event.deltaY;
+        }
+      },
+      { passive: true },
+    );
+    const buttonContainer = this.modalEl.createDiv({
+      cls: "modal-button-container",
     });
+    new import_obsidian3.ButtonComponent(buttonContainer)
+      .setButtonText("Cancel")
+      .onClick(() => this.close())
+      .buttonEl.addClass("mod-cancel");
+    new import_obsidian3.ButtonComponent(buttonContainer)
+      .setButtonText("Save")
+      .setCta()
+      .onClick(() => {
+        this.callback(this.selectedIcon);
+        this.close();
+      });
     requestAnimationFrame(() => {
       this.searchField.inputEl.select();
       this.updateSearchResults();
@@ -972,7 +1203,7 @@ var IconPicker = class extends import_obsidian3.Modal {
         matches.push([0, [iconId, iconName]]);
       }
     }
-    matches.sort(([scoreA], [scoreB]) => scoreA > scoreB ? -1 : 1);
+    matches.sort(([scoreA], [scoreB]) => (scoreA > scoreB ? -1 : 1));
     this.searchResults.length = 0;
     const maxResults = 100;
     for (const [, iconEntry] of matches) {
@@ -984,7 +1215,7 @@ var IconPicker = class extends import_obsidian3.Modal {
       this.searchResultsSetting.addExtraButton((iconButton) => {
         iconButton.setTooltip(iconName, {
           delay: 300,
-          placement: import_obsidian3.Platform.isPhone ? "top" : "bottom"
+          placement: import_obsidian3.Platform.isPhone ? "top" : "bottom",
         });
         const iconEl = iconButton.extraSettingsEl;
         iconEl.addClass("iconic-search-result");
@@ -1008,7 +1239,10 @@ var IconPicker = class extends import_obsidian3.Modal {
     }
     if (this.searchResults.length === 0) {
       this.searchResultsSetting.addExtraButton((button) => {
-        button.extraSettingsEl.addClasses(["iconic-invisible", "iconic-search-result"]);
+        button.extraSettingsEl.addClasses([
+          "iconic-invisible",
+          "iconic-search-result",
+        ]);
       });
     }
   }
@@ -1018,9 +1252,10 @@ var IconPicker = class extends import_obsidian3.Modal {
   formatIconName(iconId) {
     let name = iconId.replace(/^lucide-/, "");
     name = name.replace(/-/g, " ");
-    return name.split(" ").map(
-      (word) => word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(" ");
+    return name
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   }
   onClose() {
     this.contentEl.empty();
@@ -1038,242 +1273,52 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     const isMobile = this.plugin.settings.separateMobile;
-    const activeType = isMobile ? this.plugin.settings.mobileHomeBaseType : this.plugin.settings.homeBaseType;
-    const activeValue = isMobile ? this.plugin.settings.mobileHomeBaseValue : this.plugin.settings.homeBaseValue;
+    const activeType = isMobile
+      ? this.plugin.settings.mobileHomeBaseType
+      : this.plugin.settings.homeBaseType;
+    const activeValue = isMobile
+      ? this.plugin.settings.mobileHomeBaseValue
+      : this.plugin.settings.homeBaseValue;
     const generalGroup = new import_obsidian4.SettingGroup(containerEl);
     generalGroup.addSetting((setting) => {
-      setting.setName("Type").setDesc("What to open as your home base").addDropdown((dropdown) => {
-        let pluginDisabled = false;
-        for (const type of Object.values(HomeBaseType)) {
-          if (!this.plugin.hasRequiredPlugin(type)) {
-            if (type === activeType) {
-              pluginDisabled = true;
-              dropdown.addOption(type, type);
-            } else {
-              dropdown.selectEl.createEl("option", {
-                text: type,
-                attr: { disabled: "true" }
-              });
-              continue;
-            }
-          } else {
-            dropdown.addOption(type, type);
-          }
-        }
-        dropdown.setValue(activeType || "File" /* File */).onChange(async (value) => {
-          if (isMobile) {
-            this.plugin.settings.mobileHomeBaseType = value;
-          } else {
-            this.plugin.settings.homeBaseType = value;
-          }
-          await this.plugin.saveSettings();
-          const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-          const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-          this.display();
-          requestAnimationFrame(() => {
-            if (scrollContainer) {
-              scrollContainer.scrollTop = scrollTop;
-            }
-          });
-        });
-        if (pluginDisabled) {
-          setting.descEl.createDiv({
-            text: "The required plugin has not been enabled or configured for this type.",
-            cls: "mod-warning"
-          });
-        }
-      });
-    });
-    if (!UNCHANGEABLE_TYPES.includes(activeType)) {
-      generalGroup.addSetting((setting) => {
-        let desc = "";
-        let placeholder = "";
-        if (activeType === "File" /* File */) {
-          desc = "The file to open as your home base (supports .md, .mdx, .canvas, .base)";
-          placeholder = "Path to home base file";
-        } else if (activeType === "Workspace" /* Workspace */) {
-          desc = "The workspace to load as your home base";
-          placeholder = "Workspace name";
-        } else if (activeType === "Random in folder" /* RandomFolder */ || activeType === "New note" /* NewNote */) {
-          desc = activeType === "Random in folder" /* RandomFolder */ ? "The folder to pick a random file from" : "The folder to create new notes in";
-          placeholder = "Folder path";
-        } else if (activeType === "Journal" /* Journal */) {
-          desc = "The journal name";
-          placeholder = "Journal name";
-        }
-        setting.setName(activeType === "File" /* File */ ? "File" : activeType === "Workspace" /* Workspace */ ? "Workspace" : activeType === "Random in folder" /* RandomFolder */ || activeType === "New note" /* NewNote */ ? "Folder" : activeType === "Journal" /* Journal */ ? "Journal" : "Value").setDesc(desc).addText((text) => {
-          if (activeType === "File" /* File */) {
-            new FilePathSuggest(this.app, text.inputEl);
-          } else if (activeType === "Workspace" /* Workspace */) {
-            new WorkspaceSuggest(this.app, text.inputEl);
-          } else if (activeType === "Random in folder" /* RandomFolder */ || activeType === "New note" /* NewNote */) {
-            new FolderSuggest(this.app, text.inputEl);
-          }
-          text.setPlaceholder(placeholder).setValue(activeValue || "").onChange(async (value) => {
-            if (isMobile) {
-              this.plugin.settings.mobileHomeBaseValue = value;
-            } else {
-              this.plugin.settings.homeBaseValue = value;
-            }
-            await this.plugin.saveSettings();
-          });
-        });
-      });
-    }
-    generalGroup.addSetting((setting) => {
-      setting.setName("Open on startup").setDesc("Open the home base when launching Obsidian").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.openOnStartup).onChange(async (value) => {
-          this.plugin.settings.openOnStartup = value;
-          await this.plugin.saveSettings();
-        });
-      });
-      if ((0, import_obsidian4.requireApiVersion)("1.11.0")) {
-        const nativeOpenBehavior = this.plugin.homeService.getNativeOpenBehavior();
-        if (nativeOpenBehavior) {
-          setting.descEl.createDiv({
-            text: `Note: This will override Obsidian's native "Default file to open" setting (currently set to "${nativeOpenBehavior}").`,
-            cls: "mod-warning"
-          });
-        }
-      }
-    });
-    generalGroup.addSetting((setting) => {
-      setting.setName("Opening mode (startup)").setDesc("How to handle existing tabs when opening on startup").addDropdown((dropdown) => {
-        for (const [value, label] of Object.entries(OPENING_MODE_OPTIONS)) {
-          dropdown.addOption(value, label);
-        }
-        dropdown.setValue(this.plugin.settings.openMode).onChange(async (value) => {
-          this.plugin.settings.openMode = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    generalGroup.addSetting((setting) => {
-      setting.setName("Opening mode (manual)").setDesc("How to handle existing tabs when opening manually").addDropdown((dropdown) => {
-        for (const [value, label] of Object.entries(OPENING_MODE_OPTIONS)) {
-          dropdown.addOption(value, label);
-        }
-        dropdown.setValue(this.plugin.settings.manualOpenMode).onChange(async (value) => {
-          this.plugin.settings.manualOpenMode = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    generalGroup.addSetting((setting) => {
-      setting.setName("View mode").setDesc("How to open Markdown files").addDropdown((dropdown) => {
-        for (const [value, label] of Object.entries(VIEW_MODE_OPTIONS)) {
-          dropdown.addOption(value, label);
-        }
-        dropdown.setValue(this.plugin.settings.openViewMode).onChange(async (value) => {
-          this.plugin.settings.openViewMode = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    generalGroup.addSetting((setting) => {
-      setting.setName("Revert view on close").setDesc("When navigating away from the home base, restore the default view").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.revertView).onChange(async (value) => {
-          this.plugin.settings.revertView = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    generalGroup.addSetting((setting) => {
-      setting.setName("Auto-scroll").setDesc("When opening the home base, scroll to the bottom and focus on the last line").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.autoScroll).onChange(async (value) => {
-          this.plugin.settings.autoScroll = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    generalGroup.addSetting((setting) => {
-      setting.setName("Hide release notes").setDesc("Never display release notes when Obsidian updates").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.hideReleaseNotes).onChange(async (value) => {
-          this.plugin.settings.hideReleaseNotes = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    const tabGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("Tab Behavior");
-    tabGroup.addSetting((setting) => {
-      setting.setName("Open home base when all tabs are closed").setDesc("When you close all tabs, automatically open the home base").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.openWhenAllTabsClosed).onChange(async (value) => {
-          this.plugin.settings.openWhenAllTabsClosed = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    tabGroup.addSetting((setting) => {
-      setting.setName("Replace new tabs").setDesc('Open home base instead of new empty tabs (works independently of "open home base when all tabs are closed")').addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.replaceNewTab).onChange(async (value) => {
-          this.plugin.settings.replaceNewTab = value;
-          await this.plugin.saveSettings();
-          const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-          const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-          this.display();
-          requestAnimationFrame(() => {
-            if (scrollContainer) {
-              scrollContainer.scrollTop = scrollTop;
-            }
-          });
-        });
-      });
-    });
-    if (this.plugin.settings.replaceNewTab) {
-      tabGroup.addSetting((setting) => {
-        setting.setName("New tab replacement mode").setDesc("When to replace new tabs (only when no tabs are open, or always)").addDropdown((dropdown) => {
-          for (const [value, label] of Object.entries(NEW_TAB_MODE_OPTIONS)) {
-            dropdown.addOption(value, label);
-          }
-          dropdown.setValue(this.plugin.settings.newTabMode).onChange(async (value) => {
-            this.plugin.settings.newTabMode = value;
-            await this.plugin.saveSettings();
-          });
-        });
-      });
-      tabGroup.addSetting((setting) => {
-        setting.setName("Use different home base for new tabs").setDesc("Configure a different home base to open for new tabs (instead of the main home base)").addToggle((toggle) => {
-          toggle.setValue(this.plugin.settings.useDifferentFileForNewTab).onChange(async (value) => {
-            this.plugin.settings.useDifferentFileForNewTab = value;
-            await this.plugin.saveSettings();
-            const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-            const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-            this.display();
-            requestAnimationFrame(() => {
-              if (scrollContainer) {
-                scrollContainer.scrollTop = scrollTop;
-              }
-            });
-          });
-        });
-      });
-      if (this.plugin.settings.useDifferentFileForNewTab) {
-        const desktopType = this.plugin.settings.newTabType || "File" /* File */;
-        const desktopValue = this.plugin.settings.newTabValue || "";
-        tabGroup.addSetting((setting) => {
-          setting.setName("New tab type").setDesc("What to open for new tabs").addDropdown((dropdown) => {
-            let pluginDisabled = false;
-            for (const type of Object.values(HomeBaseType)) {
-              if (!this.plugin.hasRequiredPlugin(type)) {
-                if (type === desktopType) {
-                  pluginDisabled = true;
-                  dropdown.addOption(type, type);
-                } else {
-                  dropdown.selectEl.createEl("option", {
-                    text: type,
-                    attr: { disabled: "true" }
-                  });
-                  continue;
-                }
-              } else {
+      setting
+        .setName("Type")
+        .setDesc("What to open as your home base")
+        .addDropdown((dropdown) => {
+          let pluginDisabled = false;
+          for (const type of Object.values(HomeBaseType)) {
+            if (!this.plugin.hasRequiredPlugin(type)) {
+              if (type === activeType) {
+                pluginDisabled = true;
                 dropdown.addOption(type, type);
+              } else {
+                dropdown.selectEl.createEl("option", {
+                  text: type,
+                  attr: { disabled: "true" },
+                });
+                continue;
               }
+            } else {
+              dropdown.addOption(type, type);
             }
-            dropdown.setValue(desktopType).onChange(async (value) => {
-              this.plugin.settings.newTabType = value;
+          }
+          dropdown
+            .setValue(activeType || "File" /* File */)
+            .onChange(async (value) => {
+              if (isMobile) {
+                this.plugin.settings.mobileHomeBaseType = value;
+              } else {
+                this.plugin.settings.homeBaseType = value;
+              }
               await this.plugin.saveSettings();
-              const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-              const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop =
+                (scrollContainer == null
+                  ? void 0
+                  : scrollContainer.scrollTop) || 0;
               this.display();
               requestAnimationFrame(() => {
                 if (scrollContainer) {
@@ -1281,20 +1326,343 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
                 }
               });
             });
-            if (pluginDisabled) {
-              setting.descEl.createDiv({
-                text: "The required plugin has not been enabled or configured for this type.",
-                cls: "mod-warning"
-              });
+          if (pluginDisabled) {
+            setting.descEl.createDiv({
+              text: "The required plugin has not been enabled or configured for this type.",
+              cls: "mod-warning",
+            });
+          }
+        });
+    });
+    if (!UNCHANGEABLE_TYPES.includes(activeType)) {
+      generalGroup.addSetting((setting) => {
+        let desc = "";
+        let placeholder = "";
+        if (activeType === "File" /* File */) {
+          desc =
+            "The file to open as your home base (supports .md, .mdx, .canvas, .base)";
+          placeholder = "Path to home base file";
+        } else if (activeType === "Workspace" /* Workspace */) {
+          desc = "The workspace to load as your home base";
+          placeholder = "Workspace name";
+        } else if (
+          activeType === "Random in folder" /* RandomFolder */ ||
+          activeType === "New note" /* NewNote */
+        ) {
+          desc =
+            activeType === "Random in folder" /* RandomFolder */
+              ? "The folder to pick a random file from"
+              : "The folder to create new notes in";
+          placeholder = "Folder path";
+        } else if (activeType === "Journal" /* Journal */) {
+          desc = "The journal name";
+          placeholder = "Journal name";
+        }
+        setting
+          .setName(
+            activeType === "File" /* File */
+              ? "File"
+              : activeType === "Workspace" /* Workspace */
+                ? "Workspace"
+                : activeType === "Random in folder" /* RandomFolder */ ||
+                    activeType === "New note" /* NewNote */
+                  ? "Folder"
+                  : activeType === "Journal" /* Journal */
+                    ? "Journal"
+                    : "Value",
+          )
+          .setDesc(desc)
+          .addText((text) => {
+            if (activeType === "File" /* File */) {
+              new FilePathSuggest(this.app, text.inputEl);
+            } else if (activeType === "Workspace" /* Workspace */) {
+              new WorkspaceSuggest(this.app, text.inputEl);
+            } else if (
+              activeType === "Random in folder" /* RandomFolder */ ||
+              activeType === "New note" /* NewNote */
+            ) {
+              new FolderSuggest(this.app, text.inputEl);
             }
+            text
+              .setPlaceholder(placeholder)
+              .setValue(activeValue || "")
+              .onChange(async (value) => {
+                if (isMobile) {
+                  this.plugin.settings.mobileHomeBaseValue = value;
+                } else {
+                  this.plugin.settings.homeBaseValue = value;
+                }
+                await this.plugin.saveSettings();
+              });
           });
+      });
+    }
+    generalGroup.addSetting((setting) => {
+      setting
+        .setName("Open on startup")
+        .setDesc("Open the home base when launching Obsidian")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.openOnStartup)
+            .onChange(async (value) => {
+              this.plugin.settings.openOnStartup = value;
+              await this.plugin.saveSettings();
+            });
+        });
+      if ((0, import_obsidian4.requireApiVersion)("1.11.0")) {
+        const nativeOpenBehavior =
+          this.plugin.homeService.getNativeOpenBehavior();
+        if (nativeOpenBehavior) {
+          setting.descEl.createDiv({
+            text: `Note: This will override Obsidian's native "Default file to open" setting (currently set to "${nativeOpenBehavior}").`,
+            cls: "mod-warning",
+          });
+        }
+      }
+    });
+    generalGroup.addSetting((setting) => {
+      setting
+        .setName("Opening mode (startup)")
+        .setDesc("How to handle existing tabs when opening on startup")
+        .addDropdown((dropdown) => {
+          for (const [value, label] of Object.entries(OPENING_MODE_OPTIONS)) {
+            dropdown.addOption(value, label);
+          }
+          dropdown
+            .setValue(this.plugin.settings.openMode)
+            .onChange(async (value) => {
+              this.plugin.settings.openMode = value;
+              await this.plugin.saveSettings();
+            });
+        });
+    });
+    generalGroup.addSetting((setting) => {
+      setting
+        .setName("Opening mode (manual)")
+        .setDesc("How to handle existing tabs when opening manually")
+        .addDropdown((dropdown) => {
+          for (const [value, label] of Object.entries(OPENING_MODE_OPTIONS)) {
+            dropdown.addOption(value, label);
+          }
+          dropdown
+            .setValue(this.plugin.settings.manualOpenMode)
+            .onChange(async (value) => {
+              this.plugin.settings.manualOpenMode = value;
+              await this.plugin.saveSettings();
+            });
+        });
+    });
+    generalGroup.addSetting((setting) => {
+      setting
+        .setName("View mode")
+        .setDesc("How to open Markdown files")
+        .addDropdown((dropdown) => {
+          for (const [value, label] of Object.entries(VIEW_MODE_OPTIONS)) {
+            dropdown.addOption(value, label);
+          }
+          dropdown
+            .setValue(this.plugin.settings.openViewMode)
+            .onChange(async (value) => {
+              this.plugin.settings.openViewMode = value;
+              await this.plugin.saveSettings();
+            });
+        });
+    });
+    generalGroup.addSetting((setting) => {
+      setting
+        .setName("Revert view on close")
+        .setDesc(
+          "When navigating away from the home base, restore the default view",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.revertView)
+            .onChange(async (value) => {
+              this.plugin.settings.revertView = value;
+              await this.plugin.saveSettings();
+            });
+        });
+    });
+    generalGroup.addSetting((setting) => {
+      setting
+        .setName("Auto-scroll")
+        .setDesc(
+          "When opening the home base, scroll to the bottom and focus on the last line",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.autoScroll)
+            .onChange(async (value) => {
+              this.plugin.settings.autoScroll = value;
+              await this.plugin.saveSettings();
+            });
+        });
+    });
+    generalGroup.addSetting((setting) => {
+      setting
+        .setName("Hide release notes")
+        .setDesc("Never display release notes when Obsidian updates")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.hideReleaseNotes)
+            .onChange(async (value) => {
+              this.plugin.settings.hideReleaseNotes = value;
+              await this.plugin.saveSettings();
+            });
+        });
+    });
+    const tabGroup = new import_obsidian4.SettingGroup(containerEl).setHeading(
+      "Tab Behavior",
+    );
+    tabGroup.addSetting((setting) => {
+      setting
+        .setName("Open home base when all tabs are closed")
+        .setDesc("When you close all tabs, automatically open the home base")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.openWhenAllTabsClosed)
+            .onChange(async (value) => {
+              this.plugin.settings.openWhenAllTabsClosed = value;
+              await this.plugin.saveSettings();
+            });
+        });
+    });
+    tabGroup.addSetting((setting) => {
+      setting
+        .setName("Replace new tabs")
+        .setDesc(
+          'Open home base instead of new empty tabs (works independently of "open home base when all tabs are closed")',
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.replaceNewTab)
+            .onChange(async (value) => {
+              this.plugin.settings.replaceNewTab = value;
+              await this.plugin.saveSettings();
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop =
+                (scrollContainer == null
+                  ? void 0
+                  : scrollContainer.scrollTop) || 0;
+              this.display();
+              requestAnimationFrame(() => {
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollTop;
+                }
+              });
+            });
+        });
+    });
+    if (this.plugin.settings.replaceNewTab) {
+      tabGroup.addSetting((setting) => {
+        setting
+          .setName("New tab replacement mode")
+          .setDesc(
+            "When to replace new tabs (only when no tabs are open, or always)",
+          )
+          .addDropdown((dropdown) => {
+            for (const [value, label] of Object.entries(NEW_TAB_MODE_OPTIONS)) {
+              dropdown.addOption(value, label);
+            }
+            dropdown
+              .setValue(this.plugin.settings.newTabMode)
+              .onChange(async (value) => {
+                this.plugin.settings.newTabMode = value;
+                await this.plugin.saveSettings();
+              });
+          });
+      });
+      tabGroup.addSetting((setting) => {
+        setting
+          .setName("Use different home base for new tabs")
+          .setDesc(
+            "Configure a different home base to open for new tabs (instead of the main home base)",
+          )
+          .addToggle((toggle) => {
+            toggle
+              .setValue(this.plugin.settings.useDifferentFileForNewTab)
+              .onChange(async (value) => {
+                this.plugin.settings.useDifferentFileForNewTab = value;
+                await this.plugin.saveSettings();
+                const scrollContainer =
+                  containerEl.closest(".vertical-tab-content") ||
+                  containerEl.closest(".settings-content") ||
+                  containerEl.parentElement;
+                const scrollTop =
+                  (scrollContainer == null
+                    ? void 0
+                    : scrollContainer.scrollTop) || 0;
+                this.display();
+                requestAnimationFrame(() => {
+                  if (scrollContainer) {
+                    scrollContainer.scrollTop = scrollTop;
+                  }
+                });
+              });
+          });
+      });
+      if (this.plugin.settings.useDifferentFileForNewTab) {
+        const desktopType =
+          this.plugin.settings.newTabType || "File"; /* File */
+        const desktopValue = this.plugin.settings.newTabValue || "";
+        tabGroup.addSetting((setting) => {
+          setting
+            .setName("New tab type")
+            .setDesc("What to open for new tabs")
+            .addDropdown((dropdown) => {
+              let pluginDisabled = false;
+              for (const type of Object.values(HomeBaseType)) {
+                if (!this.plugin.hasRequiredPlugin(type)) {
+                  if (type === desktopType) {
+                    pluginDisabled = true;
+                    dropdown.addOption(type, type);
+                  } else {
+                    dropdown.selectEl.createEl("option", {
+                      text: type,
+                      attr: { disabled: "true" },
+                    });
+                    continue;
+                  }
+                } else {
+                  dropdown.addOption(type, type);
+                }
+              }
+              dropdown.setValue(desktopType).onChange(async (value) => {
+                this.plugin.settings.newTabType = value;
+                await this.plugin.saveSettings();
+                const scrollContainer =
+                  containerEl.closest(".vertical-tab-content") ||
+                  containerEl.closest(".settings-content") ||
+                  containerEl.parentElement;
+                const scrollTop =
+                  (scrollContainer == null
+                    ? void 0
+                    : scrollContainer.scrollTop) || 0;
+                this.display();
+                requestAnimationFrame(() => {
+                  if (scrollContainer) {
+                    scrollContainer.scrollTop = scrollTop;
+                  }
+                });
+              });
+              if (pluginDisabled) {
+                setting.descEl.createDiv({
+                  text: "The required plugin has not been enabled or configured for this type.",
+                  cls: "mod-warning",
+                });
+              }
+            });
         });
         if (!UNCHANGEABLE_TYPES.includes(desktopType)) {
           tabGroup.addSetting((setting) => {
             let desc = "";
             let placeholder = "";
             if (desktopType === "File" /* File */) {
-              desc = "The file to open for new tabs (supports .md, .mdx, .canvas, .base)";
+              desc =
+                "The file to open for new tabs (supports .md, .mdx, .canvas, .base)";
               placeholder = "Path to new tab file";
             } else if (desktopType === "Workspace" /* Workspace */) {
               desc = "The workspace to load for new tabs";
@@ -1306,131 +1674,202 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
               desc = "The journal name for new tabs";
               placeholder = "Journal name";
             }
-            setting.setName(desktopType === "File" /* File */ ? "New tab file" : desktopType === "Workspace" /* Workspace */ ? "New tab workspace" : desktopType === "Random in folder" /* RandomFolder */ ? "New tab folder" : desktopType === "Journal" /* Journal */ ? "New tab journal" : "New tab value").setDesc(desc).addText((text) => {
-              if (desktopType === "File" /* File */) {
-                new FilePathSuggest(this.app, text.inputEl);
-              } else if (desktopType === "Workspace" /* Workspace */) {
-                new WorkspaceSuggest(this.app, text.inputEl);
-              } else if (desktopType === "Random in folder" /* RandomFolder */) {
-                new FolderSuggest(this.app, text.inputEl);
-              }
-              text.setPlaceholder(placeholder).setValue(desktopValue || "").onChange(async (value) => {
-                this.plugin.settings.newTabValue = value;
-                await this.plugin.saveSettings();
+            setting
+              .setName(
+                desktopType === "File" /* File */
+                  ? "New tab file"
+                  : desktopType === "Workspace" /* Workspace */
+                    ? "New tab workspace"
+                    : desktopType === "Random in folder" /* RandomFolder */
+                      ? "New tab folder"
+                      : desktopType === "Journal" /* Journal */
+                        ? "New tab journal"
+                        : "New tab value",
+              )
+              .setDesc(desc)
+              .addText((text) => {
+                if (desktopType === "File" /* File */) {
+                  new FilePathSuggest(this.app, text.inputEl);
+                } else if (desktopType === "Workspace" /* Workspace */) {
+                  new WorkspaceSuggest(this.app, text.inputEl);
+                } else if (
+                  desktopType === "Random in folder" /* RandomFolder */
+                ) {
+                  new FolderSuggest(this.app, text.inputEl);
+                }
+                text
+                  .setPlaceholder(placeholder)
+                  .setValue(desktopValue || "")
+                  .onChange(async (value) => {
+                    this.plugin.settings.newTabValue = value;
+                    await this.plugin.saveSettings();
+                  });
               });
-            });
           });
         }
       }
     }
-    const uiGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("UI Features");
+    const uiGroup = new import_obsidian4.SettingGroup(containerEl).setHeading(
+      "UI Features",
+    );
     uiGroup.addSetting((setting) => {
-      setting.setName("Sticky home icon").setDesc("Show a home icon in the tab bar that stays pinned to the left (desktop only)").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showStickyHomeIcon).onChange(async (value) => {
-          this.plugin.settings.showStickyHomeIcon = value;
-          await this.plugin.saveSettings();
-          this.plugin.updateStickyTabIcon();
-          const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-          const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-          this.display();
-          requestAnimationFrame(() => {
-            if (scrollContainer) {
-              scrollContainer.scrollTop = scrollTop;
-            }
-          });
+      setting
+        .setName("Sticky home icon")
+        .setDesc(
+          "Show a home icon in the tab bar that stays pinned to the left (desktop only)",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.showStickyHomeIcon)
+            .onChange(async (value) => {
+              this.plugin.settings.showStickyHomeIcon = value;
+              await this.plugin.saveSettings();
+              this.plugin.updateStickyTabIcon();
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop =
+                (scrollContainer == null
+                  ? void 0
+                  : scrollContainer.scrollTop) || 0;
+              this.display();
+              requestAnimationFrame(() => {
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollTop;
+                }
+              });
+            });
         });
-      });
     });
     if (this.plugin.settings.showStickyHomeIcon) {
       uiGroup.addSetting((setting) => {
-        setting.setName("Icon").setDesc("The icon to display in the sticky home icon").addButton((button) => {
-          const iconName = this.plugin.settings.stickyIconName || "home";
-          button.setButtonText("Change icon").setIcon(iconName).onClick(() => {
-            const picker = new IconPicker(
-              this.app,
-              this.plugin.settings.stickyIconName,
-              (icon) => {
-                void (async () => {
-                  this.plugin.settings.stickyIconName = icon;
-                  await this.plugin.saveSettings();
-                  this.plugin.stickyTabService.update();
-                  this.display();
-                })();
-              }
-            );
-            picker.open();
+        setting
+          .setName("Icon")
+          .setDesc("The icon to display in the sticky home icon")
+          .addButton((button) => {
+            const iconName = this.plugin.settings.stickyIconName || "home";
+            button
+              .setButtonText("Change icon")
+              .setIcon(iconName)
+              .onClick(() => {
+                const picker = new IconPicker(
+                  this.app,
+                  this.plugin.settings.stickyIconName,
+                  (icon) => {
+                    void (async () => {
+                      this.plugin.settings.stickyIconName = icon;
+                      await this.plugin.saveSettings();
+                      this.plugin.stickyTabService.update();
+                      this.display();
+                    })();
+                  },
+                );
+                picker.open();
+              });
           });
-        });
       });
       uiGroup.addSetting((setting) => {
-        setting.setName("Hide tab header").setDesc("Hide the sticky home tab header when it's open, using the sticky icon as the tab indicator").addToggle((toggle) => {
-          toggle.setValue(this.plugin.settings.hideHomeTabHeader).onChange(async (value) => {
-            this.plugin.settings.hideHomeTabHeader = value;
-            await this.plugin.saveSettings();
-            this.plugin.stickyTabService.updateTabHeaders();
+        setting
+          .setName("Hide tab header")
+          .setDesc(
+            "Hide the sticky home tab header when it's open, using the sticky icon as the tab indicator",
+          )
+          .addToggle((toggle) => {
+            toggle
+              .setValue(this.plugin.settings.hideHomeTabHeader)
+              .onChange(async (value) => {
+                this.plugin.settings.hideHomeTabHeader = value;
+                await this.plugin.saveSettings();
+                this.plugin.stickyTabService.updateTabHeaders();
+              });
           });
-        });
       });
     }
-    const mobileGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("Mobile");
+    const mobileGroup = new import_obsidian4.SettingGroup(
+      containerEl,
+    ).setHeading("Mobile");
     mobileGroup.addSetting((setting) => {
-      setting.setName("Separate mobile home base").setDesc("Use a different home base on mobile devices").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.separateMobile).onChange(async (value) => {
-          this.plugin.settings.separateMobile = value;
-          await this.plugin.saveSettings();
-          const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-          const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-          this.display();
-          requestAnimationFrame(() => {
-            if (scrollContainer) {
-              scrollContainer.scrollTop = scrollTop;
-            }
-          });
+      setting
+        .setName("Separate mobile home base")
+        .setDesc("Use a different home base on mobile devices")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.separateMobile)
+            .onChange(async (value) => {
+              this.plugin.settings.separateMobile = value;
+              await this.plugin.saveSettings();
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop =
+                (scrollContainer == null
+                  ? void 0
+                  : scrollContainer.scrollTop) || 0;
+              this.display();
+              requestAnimationFrame(() => {
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollTop;
+                }
+              });
+            });
         });
-      });
     });
     if (this.plugin.settings.separateMobile) {
       mobileGroup.addSetting((setting) => {
-        setting.setName("Mobile home base").setDesc("What to open as your home base on mobile").addDropdown((dropdown) => {
-          const mobileType = this.plugin.settings.mobileHomeBaseType || "File" /* File */;
-          let pluginDisabled = false;
-          for (const type of Object.values(HomeBaseType)) {
-            if (!this.plugin.hasRequiredPlugin(type)) {
-              if (type === mobileType) {
-                pluginDisabled = true;
-                dropdown.addOption(type, type);
+        setting
+          .setName("Mobile home base")
+          .setDesc("What to open as your home base on mobile")
+          .addDropdown((dropdown) => {
+            const mobileType =
+              this.plugin.settings.mobileHomeBaseType || "File"; /* File */
+            let pluginDisabled = false;
+            for (const type of Object.values(HomeBaseType)) {
+              if (!this.plugin.hasRequiredPlugin(type)) {
+                if (type === mobileType) {
+                  pluginDisabled = true;
+                  dropdown.addOption(type, type);
+                } else {
+                  dropdown.selectEl.createEl("option", {
+                    text: type,
+                    attr: { disabled: "true" },
+                  });
+                  continue;
+                }
               } else {
-                dropdown.selectEl.createEl("option", {
-                  text: type,
-                  attr: { disabled: "true" }
-                });
-                continue;
+                dropdown.addOption(type, type);
               }
-            } else {
-              dropdown.addOption(type, type);
             }
-          }
-          dropdown.setValue(mobileType).onChange(async (value) => {
-            this.plugin.settings.mobileHomeBaseType = value;
-            await this.plugin.saveSettings();
-            const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-            const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-            this.display();
-            requestAnimationFrame(() => {
-              if (scrollContainer) {
-                scrollContainer.scrollTop = scrollTop;
-              }
+            dropdown.setValue(mobileType).onChange(async (value) => {
+              this.plugin.settings.mobileHomeBaseType = value;
+              await this.plugin.saveSettings();
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop =
+                (scrollContainer == null
+                  ? void 0
+                  : scrollContainer.scrollTop) || 0;
+              this.display();
+              requestAnimationFrame(() => {
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollTop;
+                }
+              });
             });
+            if (pluginDisabled) {
+              setting.descEl.createDiv({
+                text: "The required plugin has not been enabled or configured for this type.",
+                cls: "mod-warning",
+              });
+            }
           });
-          if (pluginDisabled) {
-            setting.descEl.createDiv({
-              text: "The required plugin has not been enabled or configured for this type.",
-              cls: "mod-warning"
-            });
-          }
-        });
       });
-      if (!UNCHANGEABLE_TYPES.includes(this.plugin.settings.mobileHomeBaseType)) {
+      if (
+        !UNCHANGEABLE_TYPES.includes(this.plugin.settings.mobileHomeBaseType)
+      ) {
         mobileGroup.addSetting((setting) => {
           const mobileType = this.plugin.settings.mobileHomeBaseType;
           let desc = "";
@@ -1448,89 +1887,131 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
             desc = "The journal name for mobile";
             placeholder = "Journal name";
           }
-          setting.setName(mobileType === "File" /* File */ ? "Mobile file" : mobileType === "Workspace" /* Workspace */ ? "Mobile workspace" : mobileType === "Random in folder" /* RandomFolder */ ? "Mobile folder" : mobileType === "Journal" /* Journal */ ? "Mobile journal" : "Mobile value").setDesc(desc).addText((text) => {
-            if (mobileType === "File" /* File */) {
-              new FilePathSuggest(this.app, text.inputEl);
-            } else if (mobileType === "Workspace" /* Workspace */) {
-              new WorkspaceSuggest(this.app, text.inputEl);
-            } else if (mobileType === "Random in folder" /* RandomFolder */) {
-              new FolderSuggest(this.app, text.inputEl);
-            }
-            text.setPlaceholder(placeholder).setValue(this.plugin.settings.mobileHomeBaseValue || "").onChange(async (value) => {
-              this.plugin.settings.mobileHomeBaseValue = value;
-              await this.plugin.saveSettings();
+          setting
+            .setName(
+              mobileType === "File" /* File */
+                ? "Mobile file"
+                : mobileType === "Workspace" /* Workspace */
+                  ? "Mobile workspace"
+                  : mobileType === "Random in folder" /* RandomFolder */
+                    ? "Mobile folder"
+                    : mobileType === "Journal" /* Journal */
+                      ? "Mobile journal"
+                      : "Mobile value",
+            )
+            .setDesc(desc)
+            .addText((text) => {
+              if (mobileType === "File" /* File */) {
+                new FilePathSuggest(this.app, text.inputEl);
+              } else if (mobileType === "Workspace" /* Workspace */) {
+                new WorkspaceSuggest(this.app, text.inputEl);
+              } else if (mobileType === "Random in folder" /* RandomFolder */) {
+                new FolderSuggest(this.app, text.inputEl);
+              }
+              text
+                .setPlaceholder(placeholder)
+                .setValue(this.plugin.settings.mobileHomeBaseValue || "")
+                .onChange(async (value) => {
+                  this.plugin.settings.mobileHomeBaseValue = value;
+                  await this.plugin.saveSettings();
+                });
             });
-          });
         });
       }
     }
     mobileGroup.addSetting((setting) => {
-      setting.setName("Replace mobile new tab button").setDesc("Change the mobile new tab button to a home icon").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.replaceMobileNewTab).onChange(async (value) => {
-          this.plugin.settings.replaceMobileNewTab = value;
-          await this.plugin.saveSettings();
-          this.plugin.updateMobileButton();
+      setting
+        .setName("Replace mobile new tab button")
+        .setDesc("Change the mobile new tab button to a home icon")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.replaceMobileNewTab)
+            .onChange(async (value) => {
+              this.plugin.settings.replaceMobileNewTab = value;
+              await this.plugin.saveSettings();
+              this.plugin.updateMobileButton();
+            });
         });
-      });
     });
     if (this.plugin.settings.useDifferentFileForNewTab) {
       mobileGroup.addSetting((setting) => {
-        setting.setName("Separate mobile new tab").setDesc("Use a different new tab file on mobile devices").addToggle((toggle) => {
-          toggle.setValue(this.plugin.settings.newTabSeparateMobile).onChange(async (value) => {
-            this.plugin.settings.newTabSeparateMobile = value;
-            await this.plugin.saveSettings();
-            const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-            const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-            this.display();
-            requestAnimationFrame(() => {
-              if (scrollContainer) {
-                scrollContainer.scrollTop = scrollTop;
-              }
-            });
+        setting
+          .setName("Separate mobile new tab")
+          .setDesc("Use a different new tab file on mobile devices")
+          .addToggle((toggle) => {
+            toggle
+              .setValue(this.plugin.settings.newTabSeparateMobile)
+              .onChange(async (value) => {
+                this.plugin.settings.newTabSeparateMobile = value;
+                await this.plugin.saveSettings();
+                const scrollContainer =
+                  containerEl.closest(".vertical-tab-content") ||
+                  containerEl.closest(".settings-content") ||
+                  containerEl.parentElement;
+                const scrollTop =
+                  (scrollContainer == null
+                    ? void 0
+                    : scrollContainer.scrollTop) || 0;
+                this.display();
+                requestAnimationFrame(() => {
+                  if (scrollContainer) {
+                    scrollContainer.scrollTop = scrollTop;
+                  }
+                });
+              });
           });
-        });
       });
       if (this.plugin.settings.newTabSeparateMobile) {
-        const mobileType = this.plugin.settings.mobileNewTabType || "File" /* File */;
+        const mobileType =
+          this.plugin.settings.mobileNewTabType || "File"; /* File */
         const mobileValue = this.plugin.settings.mobileNewTabValue || "";
         mobileGroup.addSetting((setting) => {
-          setting.setName("Mobile new tab type").setDesc("What to open for new tabs on mobile").addDropdown((dropdown) => {
-            let pluginDisabled = false;
-            for (const type of Object.values(HomeBaseType)) {
-              if (!this.plugin.hasRequiredPlugin(type)) {
-                if (type === mobileType) {
-                  pluginDisabled = true;
-                  dropdown.addOption(type, type);
+          setting
+            .setName("Mobile new tab type")
+            .setDesc("What to open for new tabs on mobile")
+            .addDropdown((dropdown) => {
+              let pluginDisabled = false;
+              for (const type of Object.values(HomeBaseType)) {
+                if (!this.plugin.hasRequiredPlugin(type)) {
+                  if (type === mobileType) {
+                    pluginDisabled = true;
+                    dropdown.addOption(type, type);
+                  } else {
+                    dropdown.selectEl.createEl("option", {
+                      text: type,
+                      attr: { disabled: "true" },
+                    });
+                    continue;
+                  }
                 } else {
-                  dropdown.selectEl.createEl("option", {
-                    text: type,
-                    attr: { disabled: "true" }
-                  });
-                  continue;
+                  dropdown.addOption(type, type);
                 }
-              } else {
-                dropdown.addOption(type, type);
               }
-            }
-            dropdown.setValue(mobileType).onChange(async (value) => {
-              this.plugin.settings.mobileNewTabType = value;
-              await this.plugin.saveSettings();
-              const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-              const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-              this.display();
-              requestAnimationFrame(() => {
-                if (scrollContainer) {
-                  scrollContainer.scrollTop = scrollTop;
-                }
+              dropdown.setValue(mobileType).onChange(async (value) => {
+                this.plugin.settings.mobileNewTabType = value;
+                await this.plugin.saveSettings();
+                const scrollContainer =
+                  containerEl.closest(".vertical-tab-content") ||
+                  containerEl.closest(".settings-content") ||
+                  containerEl.parentElement;
+                const scrollTop =
+                  (scrollContainer == null
+                    ? void 0
+                    : scrollContainer.scrollTop) || 0;
+                this.display();
+                requestAnimationFrame(() => {
+                  if (scrollContainer) {
+                    scrollContainer.scrollTop = scrollTop;
+                  }
+                });
               });
+              if (pluginDisabled) {
+                setting.descEl.createDiv({
+                  text: "The required plugin has not been enabled or configured for this type.",
+                  cls: "mod-warning",
+                });
+              }
             });
-            if (pluginDisabled) {
-              setting.descEl.createDiv({
-                text: "The required plugin has not been enabled or configured for this type.",
-                cls: "mod-warning"
-              });
-            }
-          });
         });
         if (!UNCHANGEABLE_TYPES.includes(mobileType)) {
           mobileGroup.addSetting((setting) => {
@@ -1543,77 +2024,133 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
               desc = "The workspace to load for new tabs on mobile";
               placeholder = "Workspace name";
             } else if (mobileType === "Random in folder" /* RandomFolder */) {
-              desc = "The folder to pick a random file from for new tabs on mobile";
+              desc =
+                "The folder to pick a random file from for new tabs on mobile";
               placeholder = "Folder path";
             } else if (mobileType === "Journal" /* Journal */) {
               desc = "The journal name for new tabs on mobile";
               placeholder = "Journal name";
             }
-            setting.setName(mobileType === "File" /* File */ ? "Mobile new tab file" : mobileType === "Workspace" /* Workspace */ ? "Mobile new tab workspace" : mobileType === "Random in folder" /* RandomFolder */ ? "Mobile new tab folder" : mobileType === "Journal" /* Journal */ ? "Mobile new tab journal" : "Mobile new tab value").setDesc(desc).addText((text) => {
-              if (mobileType === "File" /* File */) {
-                new FilePathSuggest(this.app, text.inputEl);
-              } else if (mobileType === "Workspace" /* Workspace */) {
-                new WorkspaceSuggest(this.app, text.inputEl);
-              } else if (mobileType === "Random in folder" /* RandomFolder */) {
-                new FolderSuggest(this.app, text.inputEl);
-              }
-              text.setPlaceholder(placeholder).setValue(mobileValue || "").onChange(async (value) => {
-                this.plugin.settings.mobileNewTabValue = value;
-                await this.plugin.saveSettings();
+            setting
+              .setName(
+                mobileType === "File" /* File */
+                  ? "Mobile new tab file"
+                  : mobileType === "Workspace" /* Workspace */
+                    ? "Mobile new tab workspace"
+                    : mobileType === "Random in folder" /* RandomFolder */
+                      ? "Mobile new tab folder"
+                      : mobileType === "Journal" /* Journal */
+                        ? "Mobile new tab journal"
+                        : "Mobile new tab value",
+              )
+              .setDesc(desc)
+              .addText((text) => {
+                if (mobileType === "File" /* File */) {
+                  new FilePathSuggest(this.app, text.inputEl);
+                } else if (mobileType === "Workspace" /* Workspace */) {
+                  new WorkspaceSuggest(this.app, text.inputEl);
+                } else if (
+                  mobileType === "Random in folder" /* RandomFolder */
+                ) {
+                  new FolderSuggest(this.app, text.inputEl);
+                }
+                text
+                  .setPlaceholder(placeholder)
+                  .setValue(mobileValue || "")
+                  .onChange(async (value) => {
+                    this.plugin.settings.mobileNewTabValue = value;
+                    await this.plugin.saveSettings();
+                  });
               });
-            });
           });
         }
       }
     }
-    const automationGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("Automation");
+    const automationGroup = new import_obsidian4.SettingGroup(
+      containerEl,
+    ).setHeading("Automation");
     automationGroup.addSetting((setting) => {
       const commandId = this.plugin.settings.commandOnOpen;
       const command = commandId ? getCommandById(this.app, commandId) : void 0;
       const displayValue = command ? command.name : commandId;
-      setting.setName("Command on open").setDesc("Run an Obsidian command when opening home base").addText((text) => {
-        new CommandSuggest(this.app, text.inputEl);
-        text.setPlaceholder("Search for a command...").setValue(displayValue || "").onChange(async (value) => {
-          this.plugin.settings.commandOnOpen = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Command on open")
+        .setDesc("Run an Obsidian command when opening home base")
+        .addText((text) => {
+          new CommandSuggest(this.app, text.inputEl);
+          text
+            .setPlaceholder("Search for a command...")
+            .setValue(displayValue || "")
+            .onChange(async (value) => {
+              this.plugin.settings.commandOnOpen = value;
+              await this.plugin.saveSettings();
+            });
+        })
+        .addExtraButton((btn) => {
+          btn
+            .setIcon("x")
+            .setTooltip("Clear command")
+            .onClick(async () => {
+              this.plugin.settings.commandOnOpen = "";
+              await this.plugin.saveSettings();
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop =
+                (scrollContainer == null
+                  ? void 0
+                  : scrollContainer.scrollTop) || 0;
+              this.display();
+              requestAnimationFrame(() => {
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollTop;
+                }
+              });
+            });
         });
-      }).addExtraButton((btn) => {
-        btn.setIcon("x").setTooltip("Clear command").onClick(async () => {
-          this.plugin.settings.commandOnOpen = "";
-          await this.plugin.saveSettings();
-          const scrollContainer = containerEl.closest(".vertical-tab-content") || containerEl.closest(".settings-content") || containerEl.parentElement;
-          const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-          this.display();
-          requestAnimationFrame(() => {
-            if (scrollContainer) {
-              scrollContainer.scrollTop = scrollTop;
-            }
-          });
-        });
-      });
     });
     automationGroup.addSetting((setting) => {
-      setting.setName("Wait for git sync").setDesc("Wait before creating periodic or journal notes to allow git sync to finish pulling existing notes. Only applies when a note doesn't already exist.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.waitForGitSync).onChange(async (value) => {
-          this.plugin.settings.waitForGitSync = value;
-          await this.plugin.saveSettings();
-          this.display();
+      setting
+        .setName("Wait for git sync")
+        .setDesc(
+          "Wait before creating periodic or journal notes to allow git sync to finish pulling existing notes. Only applies when a note doesn't already exist.",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.waitForGitSync)
+            .onChange(async (value) => {
+              this.plugin.settings.waitForGitSync = value;
+              await this.plugin.saveSettings();
+              this.display();
+            });
         });
-      });
     });
     if (this.plugin.settings.waitForGitSync) {
       automationGroup.addSetting((setting) => {
-        setting.setName("Git sync timeout (seconds)").setDesc("How long to wait for git sync to finish before creating a new note").addText((text) => {
-          var _a;
-          text.inputEl.type = "number";
-          text.setPlaceholder("3").setValue(((_a = this.plugin.settings.gitSyncTimeout) == null ? void 0 : _a.toString()) || "3").onChange(async (value) => {
-            const numValue = parseInt(value);
-            if (!isNaN(numValue) && numValue >= 0) {
-              this.plugin.settings.gitSyncTimeout = numValue;
-              await this.plugin.saveSettings();
-            }
+        setting
+          .setName("Git sync timeout (seconds)")
+          .setDesc(
+            "How long to wait for git sync to finish before creating a new note",
+          )
+          .addText((text) => {
+            var _a;
+            text.inputEl.type = "number";
+            text
+              .setPlaceholder("3")
+              .setValue(
+                ((_a = this.plugin.settings.gitSyncTimeout) == null
+                  ? void 0
+                  : _a.toString()) || "3",
+              )
+              .onChange(async (value) => {
+                const numValue = parseInt(value);
+                if (!isNaN(numValue) && numValue >= 0) {
+                  this.plugin.settings.gitSyncTimeout = numValue;
+                  await this.plugin.saveSettings();
+                }
+              });
           });
-        });
       });
     }
   }
@@ -1657,7 +2194,10 @@ function pathsEqual(path1, path2) {
 }
 function leafHasFile(leaf, filePath) {
   var _a, _b;
-  const state = (_b = (_a = leaf.view) == null ? void 0 : _a.getState) == null ? void 0 : _b.call(_a);
+  const state =
+    (_b = (_a = leaf.view) == null ? void 0 : _a.getState) == null
+      ? void 0
+      : _b.call(_a);
   const leafFile = state == null ? void 0 : state.file;
   if (!leafFile) return false;
   return pathsEqual(leafFile, filePath);
@@ -1677,7 +2217,9 @@ function randomFile(app, root) {
       const pattern = root.toLowerCase();
       files = allFiles.filter((f) => {
         const fileName = f.name.toLowerCase();
-        return fileName === pattern || fileName === pattern.replace(/\.md$/, "");
+        return (
+          fileName === pattern || fileName === pattern.replace(/\.md$/, "")
+        );
       });
     }
   } else {
@@ -1711,35 +2253,35 @@ var PERIODIC_INFO = {
     adjective: "daily",
     create: import_obsidian_daily_notes_interface.createDailyNote,
     get: import_obsidian_daily_notes_interface.getDailyNote,
-    getAll: import_obsidian_daily_notes_interface.getAllDailyNotes
+    getAll: import_obsidian_daily_notes_interface.getAllDailyNotes,
   },
   ["Weekly Note" /* WeeklyNote */]: {
     noun: "week",
     adjective: "weekly",
     create: import_obsidian_daily_notes_interface.createWeeklyNote,
     get: import_obsidian_daily_notes_interface.getWeeklyNote,
-    getAll: import_obsidian_daily_notes_interface.getAllWeeklyNotes
+    getAll: import_obsidian_daily_notes_interface.getAllWeeklyNotes,
   },
   ["Monthly Note" /* MonthlyNote */]: {
     noun: "month",
     adjective: "monthly",
     create: import_obsidian_daily_notes_interface.createMonthlyNote,
     get: import_obsidian_daily_notes_interface.getMonthlyNote,
-    getAll: import_obsidian_daily_notes_interface.getAllMonthlyNotes
+    getAll: import_obsidian_daily_notes_interface.getAllMonthlyNotes,
   },
   ["Quarterly Note" /* QuarterlyNote */]: {
     noun: "quarter",
     adjective: "quarterly",
     create: import_obsidian_daily_notes_interface.createQuarterlyNote,
     get: import_obsidian_daily_notes_interface.getQuarterlyNote,
-    getAll: import_obsidian_daily_notes_interface.getAllQuarterlyNotes
+    getAll: import_obsidian_daily_notes_interface.getAllQuarterlyNotes,
   },
   ["Yearly Note" /* YearlyNote */]: {
     noun: "year",
     adjective: "yearly",
     create: import_obsidian_daily_notes_interface.createYearlyNote,
     get: import_obsidian_daily_notes_interface.getYearlyNote,
-    getAll: import_obsidian_daily_notes_interface.getAllYearlyNotes
+    getAll: import_obsidian_daily_notes_interface.getAllYearlyNotes,
   },
   ["File" /* File */]: null,
   ["Random file" /* Random */]: null,
@@ -1748,7 +2290,7 @@ var PERIODIC_INFO = {
   ["Graph view" /* Graph */]: null,
   ["Nothing" /* None */]: null,
   ["Journal" /* Journal */]: null,
-  ["New note" /* NewNote */]: null
+  ["New note" /* NewNote */]: null,
 };
 async function getPeriodicNote(kind, plugin) {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
@@ -1760,15 +2302,23 @@ async function getPeriodicNote(kind, plugin) {
     return null;
   }
   const date = (0, import_obsidian6.moment)().startOf(info.noun);
-  const communityPlugins = ((_a = plugin.app.plugins) == null ? void 0 : _a.plugins) || {};
+  const communityPlugins =
+    ((_a = plugin.app.plugins) == null ? void 0 : _a.plugins) || {};
   const periodicNotesPlugin = communityPlugins["periodic-notes"];
-  const isLegacy = !periodicNotesPlugin || (((_b = periodicNotesPlugin.manifest) == null ? void 0 : _b.version) || "0").startsWith("0");
+  const isLegacy =
+    !periodicNotesPlugin ||
+    (
+      ((_b = periodicNotesPlugin.manifest) == null ? void 0 : _b.version) || "0"
+    ).startsWith("0");
   let note = null;
   if (isLegacy) {
     let all = info.getAll();
     note = info.get(date, all);
     if (!note && plugin.settings.waitForGitSync) {
-      new import_obsidian6.Notice(`Home Base: Waiting for git sync (${plugin.settings.gitSyncTimeout}s)...`, 5e3);
+      new import_obsidian6.Notice(
+        `Home Base: Waiting for git sync (${plugin.settings.gitSyncTimeout}s)...`,
+        5e3,
+      );
       await delay(plugin.settings.gitSyncTimeout * 1e3);
       all = info.getAll();
       note = info.get(date, all);
@@ -1777,29 +2327,63 @@ async function getPeriodicNote(kind, plugin) {
       note = await info.create(date);
     }
   } else {
-    (_d = (_c = periodicNotesPlugin.cache) == null ? void 0 : _c.initialize) == null ? void 0 : _d.call(_c);
-    note = (_f = (_e = periodicNotesPlugin.getPeriodicNote) == null ? void 0 : _e.call(periodicNotesPlugin, info.noun, date)) != null ? _f : null;
+    (_d = (_c = periodicNotesPlugin.cache) == null ? void 0 : _c.initialize) ==
+    null
+      ? void 0
+      : _d.call(_c);
+    note =
+      (_f =
+        (_e = periodicNotesPlugin.getPeriodicNote) == null
+          ? void 0
+          : _e.call(periodicNotesPlugin, info.noun, date)) != null
+        ? _f
+        : null;
     if (!note && plugin.settings.waitForGitSync) {
-      new import_obsidian6.Notice(`Home Base: Waiting for git sync (${plugin.settings.gitSyncTimeout}s)...`, 5e3);
+      new import_obsidian6.Notice(
+        `Home Base: Waiting for git sync (${plugin.settings.gitSyncTimeout}s)...`,
+        5e3,
+      );
       await delay(plugin.settings.gitSyncTimeout * 1e3);
-      (_h = (_g = periodicNotesPlugin.cache) == null ? void 0 : _g.initialize) == null ? void 0 : _h.call(_g);
-      note = (_j = (_i = periodicNotesPlugin.getPeriodicNote) == null ? void 0 : _i.call(periodicNotesPlugin, info.noun, date)) != null ? _j : null;
+      (_h =
+        (_g = periodicNotesPlugin.cache) == null ? void 0 : _g.initialize) ==
+      null
+        ? void 0
+        : _h.call(_g);
+      note =
+        (_j =
+          (_i = periodicNotesPlugin.getPeriodicNote) == null
+            ? void 0
+            : _i.call(periodicNotesPlugin, info.noun, date)) != null
+          ? _j
+          : null;
     }
     if (!note) {
-      note = (_l = await ((_k = periodicNotesPlugin.createPeriodicNote) == null ? void 0 : _k.call(periodicNotesPlugin, info.noun, date))) != null ? _l : null;
+      note =
+        (_l = await ((_k = periodicNotesPlugin.createPeriodicNote) == null
+          ? void 0
+          : _k.call(periodicNotesPlugin, info.noun, date))) != null
+          ? _l
+          : null;
     }
   }
   return note ? trimFile(note) : null;
 }
 async function getJournalNote(journalName, plugin) {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
-  const communityPlugins = ((_a = plugin.app.plugins) == null ? void 0 : _a.plugins) || {};
+  const communityPlugins =
+    ((_a = plugin.app.plugins) == null ? void 0 : _a.plugins) || {};
   const journals = communityPlugins["journals"];
   if (!journals) return null;
   try {
-    const journal = (_b = journals.getJournal) == null ? void 0 : _b.call(journals, journalName);
+    const journal =
+      (_b = journals.getJournal) == null
+        ? void 0
+        : _b.call(journals, journalName);
     if (!journal) return null;
-    const origAutoCreate = (_d = (_c = journal.config) == null ? void 0 : _c.value) == null ? void 0 : _d.autoCreate;
+    const origAutoCreate =
+      (_d = (_c = journal.config) == null ? void 0 : _c.value) == null
+        ? void 0
+        : _d.autoCreate;
     (_e = journals.reprocessNotes) == null ? void 0 : _e.call(journals);
     if ((_f = journal.config) == null ? void 0 : _f.value) {
       journal.config.value.autoCreate = true;
@@ -1808,16 +2392,22 @@ async function getJournalNote(journalName, plugin) {
     if ((_h = journal.config) == null ? void 0 : _h.value) {
       journal.config.value.autoCreate = origAutoCreate;
     }
-    const today = (0, import_obsidian6.moment)().locale("custom-journal-locale").startOf("day");
+    const today = (0, import_obsidian6.moment)()
+      .locale("custom-journal-locale")
+      .startOf("day");
     let note = (_i = journal.get) == null ? void 0 : _i.call(journal, today);
     if (!note && plugin.settings.waitForGitSync) {
-      new import_obsidian6.Notice(`Home Base: Waiting for git sync (${plugin.settings.gitSyncTimeout}s)...`, 5e3);
+      new import_obsidian6.Notice(
+        `Home Base: Waiting for git sync (${plugin.settings.gitSyncTimeout}s)...`,
+        5e3,
+      );
       await delay(plugin.settings.gitSyncTimeout * 1e3);
       (_j = journals.reprocessNotes) == null ? void 0 : _j.call(journals);
       note = (_k = journal.get) == null ? void 0 : _k.call(journal, today);
     }
     if (!note) return null;
-    const path = (_l = journal.getNotePath) == null ? void 0 : _l.call(journal, note);
+    const path =
+      (_l = journal.getNotePath) == null ? void 0 : _l.call(journal, note);
     return path ? path.replace(/\.md$/, "") : null;
   } catch (e) {
     return null;
@@ -1842,7 +2432,10 @@ function resolvePathSync(type, value, app) {
       return null;
     }
     default:
-      return type === "Random in folder" /* RandomFolder */ || type === "New note" /* NewNote */ ? null : value || null;
+      return type === "Random in folder" /* RandomFolder */ ||
+        type === "New note" /* NewNote */
+        ? null
+        : value || null;
   }
 }
 async function computeHomeBasePath(type, value, plugin) {
@@ -1868,7 +2461,10 @@ async function computeHomeBasePath(type, value, plugin) {
     case "New note" /* NewNote */: {
       const fileManager = plugin.app.fileManager;
       if (fileManager.createNewFile) {
-        const file = await fileManager.createNewFile(plugin.app.vault.getRoot(), value || "Untitled");
+        const file = await fileManager.createNewFile(
+          plugin.app.vault.getRoot(),
+          value || "Untitled",
+        );
         return file ? trimFile(file) : null;
       }
       return null;
@@ -1924,7 +2520,7 @@ var HomeBaseService = class {
     const resolvedPath = await computeHomeBasePath(
       homeBaseSettings.type,
       homeBaseSettings.value,
-      this.plugin
+      this.plugin,
     );
     if (!resolvedPath) {
       return false;
@@ -1934,7 +2530,9 @@ var HomeBaseService = class {
       file = getFileByPath(this.app, resolvedPath);
     }
     if (!file) {
-      const untrimmedPath = resolvedPath.endsWith(".md") ? resolvedPath : `${resolvedPath}.md`;
+      const untrimmedPath = resolvedPath.endsWith(".md")
+        ? resolvedPath
+        : `${resolvedPath}.md`;
       file = getFileByPath(this.app, untrimmedPath);
       if (!file && homeBaseSettings.type === "File" /* File */) {
         return false;
@@ -1946,7 +2544,11 @@ var HomeBaseService = class {
     if (mode === "replace-all") {
       await this.detachAllLeaves();
     } else if (mode === "replace-last") {
-      const activeLeaf = (_a = this.app.workspace.getActiveViewOfType(import_obsidian7.View)) == null ? void 0 : _a.leaf;
+      const activeLeaf =
+        (_a = this.app.workspace.getActiveViewOfType(import_obsidian7.View)) ==
+        null
+          ? void 0
+          : _a.leaf;
       if (activeLeaf) {
         const viewState = activeLeaf.getViewState();
         if (viewState.pinned !== true) {
@@ -1958,7 +2560,10 @@ var HomeBaseService = class {
     const existingLeaf = this.findExistingHomeBaseLeaf(file);
     if (existingLeaf && mode !== "replace-all") {
       const viewState = existingLeaf.getViewState();
-      if (viewState.pinned === true && this.plugin.settings.showStickyHomeIcon) {
+      if (
+        viewState.pinned === true &&
+        this.plugin.settings.showStickyHomeIcon
+      ) {
       } else {
         this.app.workspace.setActiveLeaf(existingLeaf);
         await this.configureView(existingLeaf, file);
@@ -1968,7 +2573,10 @@ var HomeBaseService = class {
         return true;
       }
     }
-    const newLeaf = mode === "retain" ? this.app.workspace.getLeaf("tab") : this.app.workspace.getLeaf(false);
+    const newLeaf =
+      mode === "retain"
+        ? this.app.workspace.getLeaf("tab")
+        : this.app.workspace.getLeaf(false);
     if (!newLeaf) {
       return false;
     }
@@ -1985,8 +2593,15 @@ var HomeBaseService = class {
    */
   async openWorkspace(workspaceName) {
     var _a, _b, _c;
-    const workspacePlugin = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b.workspaces;
-    if (!(workspacePlugin == null ? void 0 : workspacePlugin.enabled) || !((_c = workspacePlugin.instance) == null ? void 0 : _c.loadWorkspace)) {
+    const workspacePlugin =
+      (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
+      null
+        ? void 0
+        : _b.workspaces;
+    if (
+      !(workspacePlugin == null ? void 0 : workspacePlugin.enabled) ||
+      !((_c = workspacePlugin.instance) == null ? void 0 : _c.loadWorkspace)
+    ) {
       return false;
     }
     workspacePlugin.instance.loadWorkspace(workspaceName);
@@ -1998,7 +2613,10 @@ var HomeBaseService = class {
    */
   async openGraph() {
     var _a, _b;
-    await ((_b = (_a = this.app.commands) == null ? void 0 : _a.executeCommandById) == null ? void 0 : _b.call(_a, "graph:open"));
+    await ((_b =
+      (_a = this.app.commands) == null ? void 0 : _a.executeCommandById) == null
+      ? void 0
+      : _b.call(_a, "graph:open"));
     return true;
   }
   // Removed deprecated openGraphInGhostTab - now integrated into openHomeBaseInGhostTab
@@ -2040,17 +2658,26 @@ var HomeBaseService = class {
     const resolvedPath = await computeHomeBasePath(
       settings.type,
       settings.value,
-      this.plugin
+      this.plugin,
     );
     if (!resolvedPath) {
-      console.warn("[Home Base] Could not resolve path for new tab:", settings.type, settings.value);
+      console.warn(
+        "[Home Base] Could not resolve path for new tab:",
+        settings.type,
+        settings.value,
+      );
       return false;
     }
     let file = this.app.metadataCache.getFirstLinkpathDest(resolvedPath, "/");
     if (!file) {
       file = getFileByPath(this.app, resolvedPath);
     }
-    if (!file && !resolvedPath.endsWith(".md") && !resolvedPath.endsWith(".canvas") && !resolvedPath.endsWith(".base")) {
+    if (
+      !file &&
+      !resolvedPath.endsWith(".md") &&
+      !resolvedPath.endsWith(".canvas") &&
+      !resolvedPath.endsWith(".base")
+    ) {
       const untrimmedPath = `${resolvedPath}.md`;
       file = getFileByPath(this.app, untrimmedPath);
     }
@@ -2059,10 +2686,13 @@ var HomeBaseService = class {
       return false;
     }
     if (isNewTab) {
-      console.debug("[Home Base] openInLeafWithSettings: isNewTab=true, bypassing ghost tab logic", {
-        file: file.path,
-        settings
-      });
+      console.debug(
+        "[Home Base] openInLeafWithSettings: isNewTab=true, bypassing ghost tab logic",
+        {
+          file: file.path,
+          settings,
+        },
+      );
       await leaf.openFile(file);
       await this.configureView(leaf, file);
       this.runCommandOnOpen();
@@ -2070,7 +2700,13 @@ var HomeBaseService = class {
     }
     const isTrulyEmpty = !leaf.view || leaf.view.getViewType() === "empty";
     if (this.plugin.settings.showStickyHomeIcon && isTrulyEmpty) {
-      const isRandom = settings.type === "Random file" /* Random */ || settings.type === "Random in folder" /* RandomFolder */ || settings.type === "Daily Note" /* DailyNote */ || settings.type === "Weekly Note" /* WeeklyNote */ || settings.type === "Monthly Note" /* MonthlyNote */ || settings.type === "Yearly Note" /* YearlyNote */;
+      const isRandom =
+        settings.type === "Random file" /* Random */ ||
+        settings.type === "Random in folder" /* RandomFolder */ ||
+        settings.type === "Daily Note" /* DailyNote */ ||
+        settings.type === "Weekly Note" /* WeeklyNote */ ||
+        settings.type === "Monthly Note" /* MonthlyNote */ ||
+        settings.type === "Yearly Note"; /* YearlyNote */
       const ghostTab = this.findGhostTab(file, isRandom);
       if (ghostTab) {
         void leaf.detach();
@@ -2095,7 +2731,10 @@ var HomeBaseService = class {
   async configureView(leaf, file) {
     const settings = this.plugin.settings;
     const view = leaf.view;
-    if (!isMarkdownLike(file) || !(view instanceof import_obsidian7.MarkdownView)) {
+    if (
+      !isMarkdownLike(file) ||
+      !(view instanceof import_obsidian7.MarkdownView)
+    ) {
       return;
     }
     const state = view.getState();
@@ -2127,7 +2766,7 @@ var HomeBaseService = class {
       }
       await leaf.setViewState({
         type: "markdown",
-        state
+        state,
       });
     }
   }
@@ -2136,7 +2775,11 @@ var HomeBaseService = class {
    */
   async revertView() {
     const settings = this.plugin.settings;
-    if (!settings.revertView || !this.lastView || settings.openViewMode === "default") {
+    if (
+      !settings.revertView ||
+      !this.lastView ||
+      settings.openViewMode === "default"
+    ) {
       return;
     }
     const view = this.lastView.deref();
@@ -2148,7 +2791,7 @@ var HomeBaseService = class {
     const resolvedPath = await computeHomeBasePath(
       homeBaseSettings.type,
       homeBaseSettings.value,
-      this.plugin
+      this.plugin,
     );
     if (!resolvedPath) {
       this.lastView = void 0;
@@ -2161,8 +2804,14 @@ var HomeBaseService = class {
     const state = view.getState();
     const config = this.app.vault.config;
     const mode = (config == null ? void 0 : config.defaultViewMode) || "source";
-    const source = (config == null ? void 0 : config.livePreview) !== void 0 ? !config.livePreview : false;
-    if (view.leaf.getViewState().type === "markdown" && (mode !== state.mode || source !== state.source)) {
+    const source =
+      (config == null ? void 0 : config.livePreview) !== void 0
+        ? !config.livePreview
+        : false;
+    if (
+      view.leaf.getViewState().type === "markdown" &&
+      (mode !== state.mode || source !== state.source)
+    ) {
       state.mode = mode;
       state.source = source;
       await view.leaf.setViewState({ type: "markdown", state, active: true });
@@ -2186,8 +2835,8 @@ var HomeBaseService = class {
   findExistingHomeBaseLeaf(file) {
     if (!file) return null;
     const homeBasePath = file.path;
-    const leaves = LEAF_TYPES.flatMap(
-      (type) => this.app.workspace.getLeavesOfType(type)
+    const leaves = LEAF_TYPES.flatMap((type) =>
+      this.app.workspace.getLeavesOfType(type),
     );
     for (const leaf of leaves) {
       if (leafHasFile(leaf, homeBasePath)) {
@@ -2238,7 +2887,10 @@ var HomeBaseService = class {
   async openHomeBaseInGhostTab(options = {}) {
     const { runCommand = true } = options;
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    if (homeBaseSettings.type === "Workspace" /* Workspace */ || homeBaseSettings.type === "Nothing" /* None */) {
+    if (
+      homeBaseSettings.type === "Workspace" /* Workspace */ ||
+      homeBaseSettings.type === "Nothing" /* None */
+    ) {
       return this.openHomeBaseWithMode("retain", runCommand);
     }
     if (homeBaseSettings.type === "Graph view" /* Graph */) {
@@ -2246,7 +2898,9 @@ var HomeBaseService = class {
       if (ghostTab2) {
         this.ghostLeaves.add(ghostTab2);
         ghostTab2.setPinned(true);
-        this.app.workspace.setActiveLeaf(ghostTab2, { focus: !this.isSettingsModalOpen() });
+        this.app.workspace.setActiveLeaf(ghostTab2, {
+          focus: !this.isSettingsModalOpen(),
+        });
         if (runCommand) this.runCommandOnOpen();
         return true;
       }
@@ -2256,30 +2910,42 @@ var HomeBaseService = class {
         await new Promise((resolve) => setTimeout(resolve, GRAPH_INIT_DELAY));
         this.ghostLeaves.add(newLeaf);
         newLeaf.setPinned(true);
-        this.app.workspace.setActiveLeaf(newLeaf, { focus: !this.isSettingsModalOpen() });
+        this.app.workspace.setActiveLeaf(newLeaf, {
+          focus: !this.isSettingsModalOpen(),
+        });
         if (runCommand) this.runCommandOnOpen();
         return true;
       }
       await this.openGraph();
-      await new Promise((resolve) => setTimeout(resolve, GRAPH_COMMAND_FALLBACK_DELAY));
+      await new Promise((resolve) =>
+        setTimeout(resolve, GRAPH_COMMAND_FALLBACK_DELAY),
+      );
       ghostTab2 = this.findGraphGhostTab();
       if (ghostTab2) {
         this.ghostLeaves.add(ghostTab2);
         ghostTab2.setPinned(true);
-        this.app.workspace.setActiveLeaf(ghostTab2, { focus: !this.isSettingsModalOpen() });
+        this.app.workspace.setActiveLeaf(ghostTab2, {
+          focus: !this.isSettingsModalOpen(),
+        });
         if (runCommand) this.runCommandOnOpen();
         return true;
       }
       return false;
     }
-    const isRandom = homeBaseSettings.type === "Random file" /* Random */ || homeBaseSettings.type === "Random in folder" /* RandomFolder */ || homeBaseSettings.type === "Daily Note" /* DailyNote */ || homeBaseSettings.type === "Weekly Note" /* WeeklyNote */ || homeBaseSettings.type === "Monthly Note" /* MonthlyNote */ || homeBaseSettings.type === "Yearly Note" /* YearlyNote */;
+    const isRandom =
+      homeBaseSettings.type === "Random file" /* Random */ ||
+      homeBaseSettings.type === "Random in folder" /* RandomFolder */ ||
+      homeBaseSettings.type === "Daily Note" /* DailyNote */ ||
+      homeBaseSettings.type === "Weekly Note" /* WeeklyNote */ ||
+      homeBaseSettings.type === "Monthly Note" /* MonthlyNote */ ||
+      homeBaseSettings.type === "Yearly Note"; /* YearlyNote */
     if (this.isSettingsModalOpen()) {
       return false;
     }
     const resolvedPath = await computeHomeBasePath(
       homeBaseSettings.type,
       homeBaseSettings.value,
-      this.plugin
+      this.plugin,
     );
     if (!resolvedPath) {
       return false;
@@ -2288,7 +2954,12 @@ var HomeBaseService = class {
     if (!file) {
       file = getFileByPath(this.app, resolvedPath);
     }
-    if (!file && !resolvedPath.endsWith(".md") && !resolvedPath.endsWith(".canvas") && !resolvedPath.endsWith(".base")) {
+    if (
+      !file &&
+      !resolvedPath.endsWith(".md") &&
+      !resolvedPath.endsWith(".canvas") &&
+      !resolvedPath.endsWith(".base")
+    ) {
       const untrimmedPath = `${resolvedPath}.md`;
       file = getFileByPath(this.app, untrimmedPath);
     }
@@ -2300,7 +2971,7 @@ var HomeBaseService = class {
       file: file.path,
       ghostTabFound: !!ghostTab,
       isRandom,
-      zenMode: document.body.classList.contains("zenmode-active")
+      zenMode: document.body.classList.contains("zenmode-active"),
     });
     if (ghostTab) {
       const shouldFocus2 = !this.isSettingsModalOpen();
@@ -2340,7 +3011,11 @@ var HomeBaseService = class {
    */
   getHomeBaseFile() {
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const path = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.app);
+    const path = resolvePathSync(
+      homeBaseSettings.type,
+      homeBaseSettings.value,
+      this.app,
+    );
     if (!path) return null;
     return getFileByPath(this.app, path);
   }
@@ -2352,23 +3027,37 @@ var HomeBaseService = class {
     var _a, _b;
     const layout = this.app.workspace.getLayout();
     layout.main = {
-      "id": "5324373015726ba8",
-      "type": "split",
-      "children": [{
-        "id": "4509724f8bf84da7",
-        "type": "tabs",
-        "children": [{
-          "id": "e7a7b303c61786dc",
-          "type": "leaf",
-          "state": { "type": "empty", "state": {}, "icon": "lucide-file", "title": "New tab" }
-        }]
-      }],
-      "direction": "vertical"
+      id: "5324373015726ba8",
+      type: "split",
+      children: [
+        {
+          id: "4509724f8bf84da7",
+          type: "tabs",
+          children: [
+            {
+              id: "e7a7b303c61786dc",
+              type: "leaf",
+              state: {
+                type: "empty",
+                state: {},
+                icon: "lucide-file",
+                title: "New tab",
+              },
+            },
+          ],
+        },
+      ],
+      direction: "vertical",
     };
     layout.active = "e7a7b303c61786dc";
     await this.app.workspace.changeLayout(layout);
     if (import_obsidian7.Platform.isMobile) {
-      (_b = (_a = this.app.workspace.rightSplit) == null ? void 0 : _a.updateInfo) == null ? void 0 : _b.call(_a);
+      (_b =
+        (_a = this.app.workspace.rightSplit) == null
+          ? void 0
+          : _a.updateInfo) == null
+        ? void 0
+        : _b.call(_a);
     }
   }
   /**
@@ -2392,9 +3081,15 @@ var HomeBaseService = class {
         container = leafAny.containerEl || null;
       }
       if (container) {
-        const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
-        const leftSidebar = container.closest(".workspace-split.mod-left-split");
-        const rightSidebar = container.closest(".workspace-split.mod-right-split");
+        const rootWorkspace = container.closest(
+          ".workspace-split.mod-vertical.mod-root",
+        );
+        const leftSidebar = container.closest(
+          ".workspace-split.mod-left-split",
+        );
+        const rightSidebar = container.closest(
+          ".workspace-split.mod-right-split",
+        );
         if (rootWorkspace && !leftSidebar && !rightSidebar) {
           leavesToClose.push(leaf);
         }
@@ -2405,8 +3100,7 @@ var HomeBaseService = class {
             if (viewState) {
               leavesToClose.push(leaf);
             }
-          } catch (e) {
-          }
+          } catch (e) {}
         }
       }
     });
@@ -2436,11 +3130,17 @@ var HomeBaseService = class {
    */
   isFocusedOnHomeBase() {
     var _a, _b;
-    const activeLeaf = (_a = this.app.workspace.getActiveViewOfType(import_obsidian7.View)) == null ? void 0 : _a.leaf;
+    const activeLeaf =
+      (_a = this.app.workspace.getActiveViewOfType(import_obsidian7.View)) ==
+      null
+        ? void 0
+        : _a.leaf;
     if (!activeLeaf) return false;
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
     if (homeBaseSettings.type === "Graph view" /* Graph */) {
-      return ((_b = activeLeaf.view) == null ? void 0 : _b.getViewType()) === "graph";
+      return (
+        ((_b = activeLeaf.view) == null ? void 0 : _b.getViewType()) === "graph"
+      );
     }
     const homeBaseFile = this.getHomeBaseFile();
     if (!homeBaseFile) return false;
@@ -2451,7 +3151,11 @@ var HomeBaseService = class {
    */
   homeBaseExists() {
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const path = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.app);
+    const path = resolvePathSync(
+      homeBaseSettings.type,
+      homeBaseSettings.value,
+      this.app,
+    );
     if (!path) return false;
     return getFileByPath(this.app, path) !== null;
   }
@@ -2468,11 +3172,18 @@ var HomeBaseService = class {
    * Check if the settings modal is currently open
    */
   isSettingsModalOpen() {
-    const settingsModal = document.querySelector(".modal-container.mod-settings") || document.querySelector(".modal.mod-settings") || document.querySelector(".vertical-tab-content");
+    const settingsModal =
+      document.querySelector(".modal-container.mod-settings") ||
+      document.querySelector(".modal.mod-settings") ||
+      document.querySelector(".vertical-tab-content");
     if (!settingsModal) {
       const allModals = document.querySelectorAll(".modal-container");
       for (const modal of Array.from(allModals)) {
-        if (modal.querySelector(".vertical-tab-content") || modal.querySelector(".settings-content") || modal.classList.contains("mod-settings")) {
+        if (
+          modal.querySelector(".vertical-tab-content") ||
+          modal.querySelector(".settings-content") ||
+          modal.classList.contains("mod-settings")
+        ) {
           return true;
         }
       }
@@ -2488,7 +3199,10 @@ var HomeBaseService = class {
     if (!isSupportedExtension(activeFile.extension.toLowerCase())) {
       return false;
     }
-    if (this.plugin.settings.separateMobile && import_obsidian7.Platform.isMobile) {
+    if (
+      this.plugin.settings.separateMobile &&
+      import_obsidian7.Platform.isMobile
+    ) {
       this.plugin.settings.mobileHomeBaseType = "File" /* File */;
       this.plugin.settings.mobileHomeBaseValue = activeFile.path;
     } else {
@@ -2515,9 +3229,20 @@ var HomeBaseService = class {
       return;
     }
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const homeBasePath = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.app);
-    if (!homeBasePath && homeBaseSettings.type !== "Graph view" /* Graph */) return;
-    const isRandom = homeBaseSettings.type === "Random file" /* Random */ || homeBaseSettings.type === "Random in folder" /* RandomFolder */ || homeBaseSettings.type === "Daily Note" /* DailyNote */ || homeBaseSettings.type === "Weekly Note" /* WeeklyNote */ || homeBaseSettings.type === "Monthly Note" /* MonthlyNote */ || homeBaseSettings.type === "Yearly Note" /* YearlyNote */;
+    const homeBasePath = resolvePathSync(
+      homeBaseSettings.type,
+      homeBaseSettings.value,
+      this.app,
+    );
+    if (!homeBasePath && homeBaseSettings.type !== "Graph view" /* Graph */)
+      return;
+    const isRandom =
+      homeBaseSettings.type === "Random file" /* Random */ ||
+      homeBaseSettings.type === "Random in folder" /* RandomFolder */ ||
+      homeBaseSettings.type === "Daily Note" /* DailyNote */ ||
+      homeBaseSettings.type === "Weekly Note" /* WeeklyNote */ ||
+      homeBaseSettings.type === "Monthly Note" /* MonthlyNote */ ||
+      homeBaseSettings.type === "Yearly Note"; /* YearlyNote */
     if (isRandom) return;
     if (homeBaseSettings.type === "Graph view" /* Graph */) {
       const ghostTab = this.findGraphGhostTab();
@@ -2584,7 +3309,10 @@ var NewTabService = class {
   async handleStartup() {
     const settings = this.plugin.settings;
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    if (!settings.openOnStartup || !homeBaseSettings.value && homeBaseSettings.type === "File" /* File */) {
+    if (
+      !settings.openOnStartup ||
+      (!homeBaseSettings.value && homeBaseSettings.type === "File") /* File */
+    ) {
       this.startupCompleted = true;
       this.isStartup = false;
       return;
@@ -2605,7 +3333,10 @@ var NewTabService = class {
           if (markdownView.file) {
             const file = markdownView.file;
             const configDir = this.app.vault.configDir;
-            if (file.path.includes("release") || file.path.includes(configDir)) {
+            if (
+              file.path.includes("release") ||
+              file.path.includes(configDir)
+            ) {
               const container = markdownView.containerEl;
               if (container && container.querySelector(".release-notes")) {
                 exceptLeaf = leaf;
@@ -2620,12 +3351,12 @@ var NewTabService = class {
     }
     if (settings.showStickyHomeIcon) {
       await this.plugin.homeService.openHomeBaseInGhostTab({
-        runCommand: true
+        runCommand: true,
       });
     } else {
       await this.plugin.homeService.openHomeBase({
         replaceActiveLeaf: false,
-        runCommand: true
+        runCommand: true,
       });
     }
     this.startupCompleted = true;
@@ -2635,11 +3366,18 @@ var NewTabService = class {
    * Check if the settings modal is currently open
    */
   isSettingsModalOpen() {
-    const settingsModal = document.querySelector(".modal-container.mod-settings") || document.querySelector(".modal.mod-settings") || document.querySelector(".vertical-tab-content");
+    const settingsModal =
+      document.querySelector(".modal-container.mod-settings") ||
+      document.querySelector(".modal.mod-settings") ||
+      document.querySelector(".vertical-tab-content");
     if (!settingsModal) {
       const allModals = document.querySelectorAll(".modal-container");
       for (const modal of Array.from(allModals)) {
-        if (modal.querySelector(".vertical-tab-content") || modal.querySelector(".settings-content") || modal.classList.contains("mod-settings")) {
+        if (
+          modal.querySelector(".vertical-tab-content") ||
+          modal.querySelector(".settings-content") ||
+          modal.classList.contains("mod-settings")
+        ) {
           return true;
         }
       }
@@ -2654,25 +3392,35 @@ var NewTabService = class {
     var _a;
     const windowAny = window;
     const capacitor = windowAny.Capacitor;
-    if ((_a = capacitor == null ? void 0 : capacitor.Plugins) == null ? void 0 : _a.App) {
+    if (
+      (_a = capacitor == null ? void 0 : capacitor.Plugins) == null
+        ? void 0
+        : _a.App
+    ) {
       try {
         const launchUrl = await capacitor.Plugins.App.getLaunchUrl();
         if (launchUrl == null ? void 0 : launchUrl.url) {
           const url = new URL(launchUrl.url);
           const params = Array.from(url.searchParams.keys());
           const action = url.hostname;
-          if (["open", "advanced-uri"].includes(action) && ["file", "filepath", "workspace"].some((e) => params.includes(e))) {
+          if (
+            ["open", "advanced-uri"].includes(action) &&
+            ["file", "filepath", "workspace"].some((e) => params.includes(e))
+          ) {
             return true;
           }
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     const obsAct = windowAny.OBS_ACT;
     if (obsAct) {
       const params = Object.keys(obsAct);
       const action = obsAct.action;
-      if (action && ["open", "advanced-uri"].includes(action) && ["file", "filepath", "workspace"].some((e) => params.includes(e))) {
+      if (
+        action &&
+        ["open", "advanced-uri"].includes(action) &&
+        ["file", "filepath", "workspace"].some((e) => params.includes(e))
+      ) {
         return true;
       }
     }
@@ -2743,7 +3491,7 @@ var NewTabService = class {
     console.debug("[Home Base] isOnlyTab:", {
       leaf,
       tabCount,
-      isOnlyTab: result
+      isOnlyTab: result,
     });
     return result;
   }
@@ -2755,36 +3503,50 @@ var NewTabService = class {
   async replaceEmptyTab(leaf, isAllTabsClosed = false) {
     if (!isAllTabsClosed) {
       if (this.plugin.settings.replaceNewTab !== true) {
-        console.debug("[Home Base] replaceEmptyTab: replaceNewTab is not true, aborting");
+        console.debug(
+          "[Home Base] replaceEmptyTab: replaceNewTab is not true, aborting",
+        );
         return;
       }
     }
     await new Promise((resolve) => setTimeout(resolve, PLUGIN_RACE_DELAY));
     if (!isAllTabsClosed) {
       if (this.plugin.settings.replaceNewTab !== true) {
-        console.debug("[Home Base] replaceEmptyTab: replaceNewTab changed during delay, aborting");
+        console.debug(
+          "[Home Base] replaceEmptyTab: replaceNewTab changed during delay, aborting",
+        );
         return;
       }
     } else {
       if (this.plugin.settings.openWhenAllTabsClosed !== true) {
-        console.debug("[Home Base] replaceEmptyTab: openWhenAllTabsClosed changed during delay, aborting");
+        console.debug(
+          "[Home Base] replaceEmptyTab: openWhenAllTabsClosed changed during delay, aborting",
+        );
         return;
       }
     }
     if (!this.isEmptyTab(leaf)) {
-      console.debug("[Home Base] replaceEmptyTab: Tab is no longer empty, skipping");
+      console.debug(
+        "[Home Base] replaceEmptyTab: Tab is no longer empty, skipping",
+      );
       return;
     }
-    const settings = isAllTabsClosed ? this.plugin.getHomeBaseSettings() : this.plugin.getNewTabSettings();
+    const settings = isAllTabsClosed
+      ? this.plugin.getHomeBaseSettings()
+      : this.plugin.getNewTabSettings();
     console.debug("[Home Base] replaceEmptyTab:", {
       leaf,
       isAllTabsClosed,
       settings,
       replaceNewTab: this.plugin.settings.replaceNewTab,
       newTabMode: this.plugin.settings.newTabMode,
-      useDifferentFileForNewTab: this.plugin.settings.useDifferentFileForNewTab
+      useDifferentFileForNewTab: this.plugin.settings.useDifferentFileForNewTab,
     });
-    const success = await this.plugin.homeService.openInLeafWithSettings(leaf, settings, true);
+    const success = await this.plugin.homeService.openInLeafWithSettings(
+      leaf,
+      settings,
+      true,
+    );
     if (!success) {
       console.warn("[Home Base] Failed to open file:", settings);
     } else {
@@ -2795,7 +3557,9 @@ var NewTabService = class {
    * Force check for empty workspace and open home base
    */
   async openIfEmpty() {
-    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian8.View);
+    const activeView = this.app.workspace.getActiveViewOfType(
+      import_obsidian8.View,
+    );
     const activeLeaf = activeView == null ? void 0 : activeView.leaf;
     if (!activeLeaf) return;
     if (this.isEmptyTab(activeLeaf) && this.isOnlyTab(activeLeaf)) {
@@ -2849,7 +3613,9 @@ var StickyTabService = class {
    */
   updateWorkspaceClass(enabled) {
     const applyToDocument = (doc) => {
-      const mainWorkspace = doc.querySelector(".workspace-split.mod-vertical.mod-root");
+      const mainWorkspace = doc.querySelector(
+        ".workspace-split.mod-vertical.mod-root",
+      );
       if (!mainWorkspace) return;
       if (enabled) {
         mainWorkspace.classList.add("home-base-sticky-icon-enabled");
@@ -2860,7 +3626,10 @@ var StickyTabService = class {
     applyToDocument(document);
     this.plugin.app.workspace.iterateAllLeaves((leaf) => {
       var _a, _b;
-      const doc = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.ownerDocument;
+      const doc =
+        (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+          ? void 0
+          : _b.ownerDocument;
       if (doc && doc !== document) {
         applyToDocument(doc);
       }
@@ -2880,50 +3649,67 @@ var StickyTabService = class {
     this.stickyIconEl.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      void this.plugin.homeService.openHomeBaseInGhostTab({
-        runCommand: true
-      }).then(() => {
-        setTimeout(() => {
-          this.updateTabHeaders();
-        }, TAB_HEADER_OPEN_DELAY);
-      });
+      void this.plugin.homeService
+        .openHomeBaseInGhostTab({
+          runCommand: true,
+        })
+        .then(() => {
+          setTimeout(() => {
+            this.updateTabHeaders();
+          }, TAB_HEADER_OPEN_DELAY);
+        });
     });
     this.stickyIconEl.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       e.stopPropagation();
       const menu = new import_obsidian9.Menu();
       menu.addItem((item) => {
-        item.setTitle("Close home base").setIcon("x").onClick(() => {
-          void this.closeHomeBase(true);
-        });
+        item
+          .setTitle("Close home base")
+          .setIcon("x")
+          .onClick(() => {
+            void this.closeHomeBase(true);
+          });
       });
       menu.addItem((item) => {
-        item.setTitle("Change icon").setIcon("lucide-image-plus").onClick(() => {
-          const picker = new IconPicker(
-            this.plugin.app,
-            this.plugin.settings.stickyIconName,
-            (icon) => {
-              void (async () => {
-                this.plugin.settings.stickyIconName = icon;
-                await this.plugin.saveSettings();
-                if (this.stickyIconEl) {
-                  (0, import_obsidian9.setIcon)(this.stickyIconEl, icon || "home");
-                }
-              })();
-            }
-          );
-          picker.open();
-        });
+        item
+          .setTitle("Change icon")
+          .setIcon("lucide-image-plus")
+          .onClick(() => {
+            const picker = new IconPicker(
+              this.plugin.app,
+              this.plugin.settings.stickyIconName,
+              (icon) => {
+                void (async () => {
+                  this.plugin.settings.stickyIconName = icon;
+                  await this.plugin.saveSettings();
+                  if (this.stickyIconEl) {
+                    (0, import_obsidian9.setIcon)(
+                      this.stickyIconEl,
+                      icon || "home",
+                    );
+                  }
+                })();
+              },
+            );
+            picker.open();
+          });
       });
       menu.showAtMouseEvent(e);
     });
     const ensureIconInPlace = () => {
       if (!this.stickyIconEl) return;
-      const mainWorkspace2 = document.querySelector(".workspace-split.mod-vertical.mod-root");
+      const mainWorkspace2 = document.querySelector(
+        ".workspace-split.mod-vertical.mod-root",
+      );
       if (!mainWorkspace2) return;
-      const tabHeaderContainerInner = mainWorkspace2.querySelector(".workspace-tab-header-container-inner");
+      const tabHeaderContainerInner = mainWorkspace2.querySelector(
+        ".workspace-tab-header-container-inner",
+      );
       if (!tabHeaderContainerInner) return;
-      const allIcons = tabHeaderContainerInner.querySelectorAll(`.${STICKY_ICON_CLASS}`);
+      const allIcons = tabHeaderContainerInner.querySelectorAll(
+        `.${STICKY_ICON_CLASS}`,
+      );
       allIcons.forEach((icon) => {
         if (icon !== this.stickyIconEl) {
           icon.remove();
@@ -2932,7 +3718,10 @@ var StickyTabService = class {
       if (tabHeaderContainerInner.contains(this.stickyIconEl)) {
         return;
       }
-      tabHeaderContainerInner.insertBefore(this.stickyIconEl, tabHeaderContainerInner.firstChild);
+      tabHeaderContainerInner.insertBefore(
+        this.stickyIconEl,
+        tabHeaderContainerInner.firstChild,
+      );
       this.updateActiveState();
       this.updateTabHeaders();
       this.updateWorkspaceClass(true);
@@ -2956,30 +3745,40 @@ var StickyTabService = class {
         }
       };
       this.plugin.registerEvent(
-        this.plugin.app.workspace.on("layout-change", this.layoutChangeHandler)
+        this.plugin.app.workspace.on("layout-change", this.layoutChangeHandler),
       );
     }
-    const mainWorkspace = document.querySelector(".workspace-split.mod-vertical.mod-root");
+    const mainWorkspace = document.querySelector(
+      ".workspace-split.mod-vertical.mod-root",
+    );
     if (mainWorkspace) {
       const containerObserver = new MutationObserver(() => {
-        if (!this.stickyIconEl || !this.plugin.settings.showStickyHomeIcon) return;
-        const tabHeaderContainerInner = mainWorkspace.querySelector(".workspace-tab-header-container-inner");
+        if (!this.stickyIconEl || !this.plugin.settings.showStickyHomeIcon)
+          return;
+        const tabHeaderContainerInner = mainWorkspace.querySelector(
+          ".workspace-tab-header-container-inner",
+        );
         if (tabHeaderContainerInner) {
-          const allIcons = tabHeaderContainerInner.querySelectorAll(`.${STICKY_ICON_CLASS}`);
+          const allIcons = tabHeaderContainerInner.querySelectorAll(
+            `.${STICKY_ICON_CLASS}`,
+          );
           allIcons.forEach((icon) => {
             if (icon !== this.stickyIconEl) {
               icon.remove();
             }
           });
           if (!tabHeaderContainerInner.contains(this.stickyIconEl)) {
-            tabHeaderContainerInner.insertBefore(this.stickyIconEl, tabHeaderContainerInner.firstChild);
+            tabHeaderContainerInner.insertBefore(
+              this.stickyIconEl,
+              tabHeaderContainerInner.firstChild,
+            );
             this.updateActiveState();
           }
         }
       });
       containerObserver.observe(mainWorkspace, {
         childList: true,
-        subtree: true
+        subtree: true,
         // Watch subtree to catch tab container recreation
       });
       this.stickyIconEl._containerObserver = containerObserver;
@@ -2995,14 +3794,20 @@ var StickyTabService = class {
       return;
     }
     this.tabHeaderObserver = new MutationObserver((mutations) => {
-      if (!this.plugin.settings.showStickyHomeIcon || !this.plugin.settings.hideHomeTabHeader) {
+      if (
+        !this.plugin.settings.showStickyHomeIcon ||
+        !this.plugin.settings.hideHomeTabHeader
+      ) {
         return;
       }
       let hasNewHeaders = false;
       for (const mutation of mutations) {
         if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
           for (const node of Array.from(mutation.addedNodes)) {
-            if (node instanceof HTMLElement && node.classList.contains("workspace-tab-header")) {
+            if (
+              node instanceof HTMLElement &&
+              node.classList.contains("workspace-tab-header")
+            ) {
               hasNewHeaders = true;
               break;
             }
@@ -3023,19 +3828,31 @@ var StickyTabService = class {
             container = leafAny.containerEl || null;
           }
           if (container) {
-            const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
-            const leftSidebar = container.closest(".workspace-split.mod-left-split");
-            const rightSidebar = container.closest(".workspace-split.mod-right-split");
+            const rootWorkspace = container.closest(
+              ".workspace-split.mod-vertical.mod-root",
+            );
+            const leftSidebar = container.closest(
+              ".workspace-split.mod-left-split",
+            );
+            const rightSidebar = container.closest(
+              ".workspace-split.mod-right-split",
+            );
             if (rootWorkspace && !leftSidebar && !rightSidebar) {
               if (this.plugin.homeService.isGhostLeaf(leaf)) {
                 const tabHeader = this.getTabHeaderForLeaf(leaf);
                 if (tabHeader && tabHeader.parentElement) {
                   const parent = tabHeader.parentElement;
-                  if (parent && parent.classList.contains("workspace-tab-header-container-inner")) {
+                  if (
+                    parent &&
+                    parent.classList.contains(
+                      "workspace-tab-header-container-inner",
+                    )
+                  ) {
                     const tabHeaderExtended = tabHeader;
                     if (parent.contains(tabHeader)) {
                       tabHeaderExtended._homeBaseParent = parent;
-                      tabHeaderExtended._homeBaseNextSibling = tabHeader.nextSibling;
+                      tabHeaderExtended._homeBaseNextSibling =
+                        tabHeader.nextSibling;
                       tabHeader.remove();
                     }
                   }
@@ -3048,19 +3865,28 @@ var StickyTabService = class {
     });
     const observeContainer = (container) => {
       var _a;
-      (_a = this.tabHeaderObserver) == null ? void 0 : _a.observe(container, {
-        childList: true,
-        subtree: false
-      });
+      (_a = this.tabHeaderObserver) == null
+        ? void 0
+        : _a.observe(container, {
+            childList: true,
+            subtree: false,
+          });
     };
     const observeAllWindows = () => {
-      const containers = document.querySelectorAll(".workspace-tab-header-container-inner");
+      const containers = document.querySelectorAll(
+        ".workspace-tab-header-container-inner",
+      );
       containers.forEach(observeContainer);
       this.plugin.app.workspace.iterateAllLeaves((leaf) => {
         var _a, _b;
-        const doc = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.ownerDocument;
+        const doc =
+          (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+            ? void 0
+            : _b.ownerDocument;
         if (doc && doc !== document) {
-          const windowContainers = doc.querySelectorAll(".workspace-tab-header-container-inner");
+          const windowContainers = doc.querySelectorAll(
+            ".workspace-tab-header-container-inner",
+          );
           windowContainers.forEach(observeContainer);
         }
       });
@@ -3069,14 +3895,18 @@ var StickyTabService = class {
     const setupWorkspaceObserver = (win) => {
       const doc = win.document;
       const workspaceObserver = new MutationObserver(() => {
-        const newContainers = doc.querySelectorAll(".workspace-tab-header-container-inner");
+        const newContainers = doc.querySelectorAll(
+          ".workspace-tab-header-container-inner",
+        );
         newContainers.forEach(observeContainer);
       });
-      const mainWorkspace = doc.querySelector(".workspace-split.mod-vertical.mod-root");
+      const mainWorkspace = doc.querySelector(
+        ".workspace-split.mod-vertical.mod-root",
+      );
       if (mainWorkspace) {
         workspaceObserver.observe(mainWorkspace, {
           childList: true,
-          subtree: true
+          subtree: true,
         });
       }
     };
@@ -3088,7 +3918,7 @@ var StickyTabService = class {
           setupWorkspaceObserver(actualWindow);
           setTimeout(observeAllWindows, WINDOW_OPEN_CONTAINER_DELAY);
         }
-      })
+      }),
     );
   }
   /**
@@ -3126,9 +3956,15 @@ var StickyTabService = class {
         container = leafAny.containerEl || null;
       }
       if (container) {
-        const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
-        const leftSidebar = container.closest(".workspace-split.mod-left-split");
-        const rightSidebar = container.closest(".workspace-split.mod-right-split");
+        const rootWorkspace = container.closest(
+          ".workspace-split.mod-vertical.mod-root",
+        );
+        const leftSidebar = container.closest(
+          ".workspace-split.mod-left-split",
+        );
+        const rightSidebar = container.closest(
+          ".workspace-split.mod-right-split",
+        );
         if (rootWorkspace && !leftSidebar && !rightSidebar) {
           const tabHeader = this.getTabHeaderForLeaf(leaf);
           if (tabHeader) {
@@ -3136,7 +3972,10 @@ var StickyTabService = class {
             tabHeader.removeAttribute("data-home-base-ghost");
             tabHeader.removeAttribute("aria-hidden");
             const tabHeaderExtended = tabHeader;
-            if (tabHeaderExtended._homeBaseParent && !tabHeaderExtended._homeBaseParent.contains(tabHeader)) {
+            if (
+              tabHeaderExtended._homeBaseParent &&
+              !tabHeaderExtended._homeBaseParent.contains(tabHeader)
+            ) {
               const parent = tabHeaderExtended._homeBaseParent;
               const nextSibling = tabHeaderExtended._homeBaseNextSibling;
               if (parent) {
@@ -3174,7 +4013,10 @@ var StickyTabService = class {
     cleanupOrphans(document);
     this.plugin.app.workspace.iterateAllLeaves((leaf) => {
       var _a, _b;
-      const doc = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.ownerDocument;
+      const doc =
+        (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+          ? void 0
+          : _b.ownerDocument;
       if (doc && doc !== document) {
         cleanupOrphans(doc);
       }
@@ -3198,7 +4040,9 @@ var StickyTabService = class {
    * Based on obsidian-oxygen-settings implementation
    */
   isLeftSidebarCollapsed() {
-    const leftSidebar = document.querySelector(".workspace-split.mod-left-split") || document.querySelector(".mod-left-split");
+    const leftSidebar =
+      document.querySelector(".workspace-split.mod-left-split") ||
+      document.querySelector(".mod-left-split");
     if (!leftSidebar) return false;
     return leftSidebar.classList.contains("is-sidedock-collapsed");
   }
@@ -3206,15 +4050,13 @@ var StickyTabService = class {
    * Update icon position based on sidebar state
    * Note: With inline positioning, icon flows naturally with tabs, so no special positioning needed
    */
-  updateIconPositionForSidebar() {
-  }
+  updateIconPositionForSidebar() {}
   /**
    * Update icon visibility based on tab bar visibility
    * REMOVED: JavaScript-based visibility checking was causing issues
    * Now relies entirely on CSS which is more reliable
    */
-  updateIconVisibility() {
-  }
+  updateIconVisibility() {}
   /**
    * Watch for sidebar state changes and update icon position
    * Based on obsidian-oxygen-settings implementation
@@ -3223,12 +4065,17 @@ var StickyTabService = class {
     if (this.sidebarObserver) {
       this.sidebarObserver.disconnect();
     }
-    const leftSidebar = document.querySelector(".workspace-split.mod-left-split") || document.querySelector(".mod-left-split");
+    const leftSidebar =
+      document.querySelector(".workspace-split.mod-left-split") ||
+      document.querySelector(".mod-left-split");
     if (!leftSidebar) return;
     this.sidebarObserver = new MutationObserver((mutations) => {
       let shouldUpdate = false;
       mutations.forEach((mutation) => {
-        if (mutation.type === "attributes" && mutation.attributeName === "class") {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "class"
+        ) {
           shouldUpdate = true;
         }
       });
@@ -3238,20 +4085,20 @@ var StickyTabService = class {
     });
     this.sidebarObserver.observe(leftSidebar, {
       attributes: true,
-      attributeFilter: ["class"]
+      attributeFilter: ["class"],
     });
   }
   /**
    * Watch for tab bar visibility changes (Oxygen theme auto-hide, focus mode, etc.)
    * REMOVED: No longer needed - CSS handles all visibility automatically
    */
-  watchTabBarVisibility() {
-  }
+  watchTabBarVisibility() {}
   /**
    * Toggle the sticky icon visibility
    */
   async toggle() {
-    this.plugin.settings.showStickyHomeIcon = !this.plugin.settings.showStickyHomeIcon;
+    this.plugin.settings.showStickyHomeIcon =
+      !this.plugin.settings.showStickyHomeIcon;
     await this.plugin.saveSettings();
     this.update();
     this.updateTabHeaders();
@@ -3272,7 +4119,10 @@ var StickyTabService = class {
    * Internal method that actually updates the tab headers
    */
   _doUpdateTabHeaders() {
-    if (!this.plugin.settings.showStickyHomeIcon || !this.plugin.settings.hideHomeTabHeader) {
+    if (
+      !this.plugin.settings.showStickyHomeIcon ||
+      !this.plugin.settings.hideHomeTabHeader
+    ) {
       this.plugin.app.workspace.iterateAllLeaves((leaf) => {
         const tabHeader = this.getTabHeaderForLeaf(leaf);
         if (tabHeader) {
@@ -3280,7 +4130,10 @@ var StickyTabService = class {
           tabHeader.removeAttribute("data-home-base-ghost");
           tabHeader.removeAttribute("aria-hidden");
           const tabHeaderExtended = tabHeader;
-          if (tabHeaderExtended._homeBaseParent && !tabHeaderExtended._homeBaseParent.contains(tabHeader)) {
+          if (
+            tabHeaderExtended._homeBaseParent &&
+            !tabHeaderExtended._homeBaseParent.contains(tabHeader)
+          ) {
             const parent = tabHeaderExtended._homeBaseParent;
             const nextSibling = tabHeaderExtended._homeBaseNextSibling;
             if (parent) {
@@ -3310,9 +4163,15 @@ var StickyTabService = class {
         container = leafAny.containerEl || null;
       }
       if (container) {
-        const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
-        const leftSidebar = container.closest(".workspace-split.mod-left-split");
-        const rightSidebar = container.closest(".workspace-split.mod-right-split");
+        const rootWorkspace = container.closest(
+          ".workspace-split.mod-vertical.mod-root",
+        );
+        const leftSidebar = container.closest(
+          ".workspace-split.mod-left-split",
+        );
+        const rightSidebar = container.closest(
+          ".workspace-split.mod-right-split",
+        );
         if (rootWorkspace && !leftSidebar && !rightSidebar) {
           if (this.plugin.homeService.isGhostLeaf(leaf)) {
             const tabHeader = this.getTabHeaderForLeaf(leaf);
@@ -3325,7 +4184,10 @@ var StickyTabService = class {
     });
     ghostTabHeadersToRemove.forEach(({ tabHeader }) => {
       const parent = tabHeader.parentElement;
-      if (parent && parent.classList.contains("workspace-tab-header-container-inner")) {
+      if (
+        parent &&
+        parent.classList.contains("workspace-tab-header-container-inner")
+      ) {
         const tabHeaderExtended = tabHeader;
         if (parent.contains(tabHeader)) {
           tabHeaderExtended._homeBaseParent = parent;
@@ -3336,7 +4198,11 @@ var StickyTabService = class {
     });
     requestAnimationFrame(() => {
       const homeBaseSettings = this.plugin.getHomeBaseSettings();
-      const homeBasePath = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.plugin.app);
+      const homeBasePath = resolvePathSync(
+        homeBaseSettings.type,
+        homeBaseSettings.value,
+        this.plugin.app,
+      );
       this.plugin.app.workspace.iterateAllLeaves((leaf) => {
         var _a;
         const view = leaf.view;
@@ -3350,15 +4216,23 @@ var StickyTabService = class {
           container = leafAny.containerEl || null;
         }
         if (container) {
-          const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
-          const leftSidebar = container.closest(".workspace-split.mod-left-split");
-          const rightSidebar = container.closest(".workspace-split.mod-right-split");
+          const rootWorkspace = container.closest(
+            ".workspace-split.mod-vertical.mod-root",
+          );
+          const leftSidebar = container.closest(
+            ".workspace-split.mod-left-split",
+          );
+          const rightSidebar = container.closest(
+            ".workspace-split.mod-right-split",
+          );
           if (rootWorkspace && !leftSidebar && !rightSidebar) {
             const isGhostTab = this.plugin.homeService.isGhostLeaf(leaf);
             const tabHeader = this.getTabHeaderForLeaf(leaf);
             if (!tabHeader) return;
             const tabHeaderExtended = tabHeader;
-            const isRemoved = tabHeaderExtended._homeBaseParent && !tabHeaderExtended._homeBaseParent.contains(tabHeader);
+            const isRemoved =
+              tabHeaderExtended._homeBaseParent &&
+              !tabHeaderExtended._homeBaseParent.contains(tabHeader);
             if (!isGhostTab) {
               if (isRemoved) {
                 const parent = tabHeaderExtended._homeBaseParent;
@@ -3373,8 +4247,14 @@ var StickyTabService = class {
                   delete tabHeaderExtended._homeBaseNextSibling;
                 }
               }
-              const isGraphHome = homeBaseSettings.type === "Graph view" /* Graph */ && ((_a = leaf.view) == null ? void 0 : _a.getViewType()) === "graph";
-              if (homeBasePath && leafHasFile(leaf, homeBasePath) || isGraphHome) {
+              const isGraphHome =
+                homeBaseSettings.type === "Graph view" /* Graph */ &&
+                ((_a = leaf.view) == null ? void 0 : _a.getViewType()) ===
+                  "graph";
+              if (
+                (homeBasePath && leafHasFile(leaf, homeBasePath)) ||
+                isGraphHome
+              ) {
                 tabHeader.classList.add("is-home-base-tab");
               } else {
                 tabHeader.classList.remove("is-home-base-tab");
@@ -3398,10 +4278,15 @@ var StickyTabService = class {
     }
     const viewType = (_a = leaf.view) == null ? void 0 : _a.getViewType();
     if (!viewType) return null;
-    const doc = ((_c = (_b = leaf.view) == null ? void 0 : _b.containerEl) == null ? void 0 : _c.ownerDocument) || document;
+    const doc =
+      ((_c = (_b = leaf.view) == null ? void 0 : _b.containerEl) == null
+        ? void 0
+        : _c.ownerDocument) || document;
     const activeLeaf = this.plugin.app.workspace.getMostRecentLeaf();
     const isActive = leaf === activeLeaf;
-    const tabHeaders = doc.querySelectorAll(`.workspace-tab-header[data-type="${viewType}"]`);
+    const tabHeaders = doc.querySelectorAll(
+      `.workspace-tab-header[data-type="${viewType}"]`,
+    );
     if (isActive) {
       const activeHeader = doc.querySelector(".workspace-tab-header.is-active");
       if (activeHeader && activeHeader.getAttribute("data-type") === viewType) {
@@ -3434,7 +4319,11 @@ var StickyTabService = class {
    */
   closeHomeBase(actuallyClose = false) {
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const homeBasePath = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.plugin.app);
+    const homeBasePath = resolvePathSync(
+      homeBaseSettings.type,
+      homeBaseSettings.value,
+      this.plugin.app,
+    );
     const ghostTabs = [];
     const allHomeBaseLeaves = [];
     this.plugin.app.workspace.iterateAllLeaves((leaf) => {
@@ -3462,11 +4351,16 @@ var StickyTabService = class {
    */
   pinHomeBaseTab() {
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const homeBasePath = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.plugin.app);
+    const homeBasePath = resolvePathSync(
+      homeBaseSettings.type,
+      homeBaseSettings.value,
+      this.plugin.app,
+    );
     if (!homeBasePath) return;
     const homeBaseFile = getFileByPath(this.plugin.app, homeBasePath);
     if (!homeBaseFile) return;
-    const homeBaseLeaf = this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
+    const homeBaseLeaf =
+      this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
     if (homeBaseLeaf) {
       homeBaseLeaf.setPinned(true);
     }
@@ -3476,11 +4370,16 @@ var StickyTabService = class {
    */
   unpinHomeBaseTab() {
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const homeBasePath = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.plugin.app);
+    const homeBasePath = resolvePathSync(
+      homeBaseSettings.type,
+      homeBaseSettings.value,
+      this.plugin.app,
+    );
     if (!homeBasePath) return;
     const homeBaseFile = getFileByPath(this.plugin.app, homeBasePath);
     if (!homeBaseFile) return;
-    const homeBaseLeaf = this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
+    const homeBaseLeaf =
+      this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
     if (homeBaseLeaf) {
       homeBaseLeaf.setPinned(false);
     }
@@ -3490,11 +4389,16 @@ var StickyTabService = class {
    */
   isHomeBaseTabPinned() {
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const homeBasePath = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.plugin.app);
+    const homeBasePath = resolvePathSync(
+      homeBaseSettings.type,
+      homeBaseSettings.value,
+      this.plugin.app,
+    );
     if (!homeBasePath) return false;
     const homeBaseFile = getFileByPath(this.plugin.app, homeBasePath);
     if (!homeBaseFile) return false;
-    const homeBaseLeaf = this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
+    const homeBaseLeaf =
+      this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
     if (!homeBaseLeaf) return false;
     const viewState = homeBaseLeaf.getViewState();
     return viewState.pinned === true;
@@ -3547,7 +4451,9 @@ async function migrateLegacySettings(plugin) {
   }
   if (settings.keepExistingTabs !== void 0) {
     if (plugin.settings.openMode === DEFAULT_SETTINGS.openMode) {
-      plugin.settings.openMode = settings.keepExistingTabs ? "retain" : "replace-all";
+      plugin.settings.openMode = settings.keepExistingTabs
+        ? "retain"
+        : "replace-all";
       needsSave = true;
     }
     delete settings.keepExistingTabs;
@@ -3600,7 +4506,7 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
     this.addRibbonIcon("home", "Open home base", () => {
       void this.homeService.openHomeBase({
         replaceActiveLeaf: false,
-        runCommand: true
+        runCommand: true,
       });
     });
     this.registerCommands();
@@ -3638,7 +4544,7 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
           this.stickyTabService.updateTabHeaders();
           this.stickyTabService.updateIconPositionForSidebar();
         }, TAB_HEADER_UPDATE_DELAY);
-      })
+      }),
     );
     this.registerEvent(
       this.app.workspace.on("file-open", () => {
@@ -3646,14 +4552,14 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
           this.stickyTabService.updateActiveState();
           this.stickyTabService.updateTabHeaders();
         }, FILE_OPEN_ANIMATION_DELAY);
-      })
+      }),
     );
     this.registerEvent(
       this.app.workspace.on("active-leaf-change", () => {
         setTimeout(() => {
           this.stickyTabService.updateTabHeaders();
         }, TAB_SWITCH_ANIMATION_DELAY);
-      })
+      }),
     );
   }
   onunload() {
@@ -3671,15 +4577,20 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
       name: "Open",
       callback: () => {
         const homeBaseSettings = this.getHomeBaseSettings();
-        if (!homeBaseSettings.value && homeBaseSettings.type === "File" /* File */) {
-          new import_obsidian11.Notice("No home base configured. Set one in settings.");
+        if (
+          !homeBaseSettings.value &&
+          homeBaseSettings.type === "File" /* File */
+        ) {
+          new import_obsidian11.Notice(
+            "No home base configured. Set one in settings.",
+          );
           return;
         }
         void this.homeService.openHomeBase({
           replaceActiveLeaf: false,
-          runCommand: true
+          runCommand: true,
         });
-      }
+      },
     });
     this.addCommand({
       id: "set-current-file",
@@ -3692,12 +4603,14 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
           void this.homeService.setActiveFileAsHomeBase().then((success) => {
             if (success) {
               const activeFile = this.app.workspace.getActiveFile();
-              new import_obsidian11.Notice(`Home base set to "${activeFile == null ? void 0 : activeFile.name}"`);
+              new import_obsidian11.Notice(
+                `Home base set to "${activeFile == null ? void 0 : activeFile.name}"`,
+              );
             }
           });
         }
         return true;
-      }
+      },
     });
     this.addCommand({
       id: "toggle-sticky-icon",
@@ -3706,14 +4619,14 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
         await this.stickyTabService.toggle();
         const state = this.settings.showStickyHomeIcon ? "enabled" : "disabled";
         new import_obsidian11.Notice(`Sticky home icon ${state}`);
-      }
+      },
     });
     this.addCommand({
       id: "close",
       name: "Close",
       callback: () => {
         this.stickyTabService.closeHomeBase();
-      }
+      },
     });
   }
   /**
@@ -3721,7 +4634,11 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
    */
   async loadSettings() {
     const data = await this.loadData();
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, data != null ? data : {});
+    this.settings = Object.assign(
+      {},
+      DEFAULT_SETTINGS,
+      data != null ? data : {},
+    );
   }
   /**
    * Get the active home base settings (mobile or desktop)
@@ -3730,12 +4647,12 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
     if (this.settings.separateMobile && import_obsidian11.Platform.isMobile) {
       return {
         type: this.settings.mobileHomeBaseType || "File" /* File */,
-        value: this.settings.mobileHomeBaseValue || ""
+        value: this.settings.mobileHomeBaseValue || "",
       };
     }
     return {
       type: this.settings.homeBaseType || "File" /* File */,
-      value: this.settings.homeBaseValue || ""
+      value: this.settings.homeBaseValue || "",
     };
   }
   /**
@@ -3746,15 +4663,18 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
     if (!this.settings.useDifferentFileForNewTab) {
       return this.getHomeBaseSettings();
     }
-    if (this.settings.newTabSeparateMobile && import_obsidian11.Platform.isMobile) {
+    if (
+      this.settings.newTabSeparateMobile &&
+      import_obsidian11.Platform.isMobile
+    ) {
       return {
         type: this.settings.mobileNewTabType || "File" /* File */,
-        value: this.settings.mobileNewTabValue || ""
+        value: this.settings.mobileNewTabValue || "",
       };
     }
     return {
       type: this.settings.newTabType || "File" /* File */,
-      value: this.settings.newTabValue || ""
+      value: this.settings.newTabValue || "",
     };
   }
   /**
@@ -3784,18 +4704,29 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
     if (this.isSettingsModalOpen()) {
       return true;
     }
-    const hasOpenFiles = this.app.workspace.getLeavesOfType("markdown").length > 0 || this.app.workspace.getLeavesOfType("canvas").length > 0 || this.app.workspace.getLeavesOfType("bases").length > 0 || this.app.workspace.getLeavesOfType("empty").length > 0;
+    const hasOpenFiles =
+      this.app.workspace.getLeavesOfType("markdown").length > 0 ||
+      this.app.workspace.getLeavesOfType("canvas").length > 0 ||
+      this.app.workspace.getLeavesOfType("bases").length > 0 ||
+      this.app.workspace.getLeavesOfType("empty").length > 0;
     return hasOpenFiles;
   }
   /**
    * Check if the settings modal is currently open
    */
   isSettingsModalOpen() {
-    const settingsModal = document.querySelector(".modal-container.mod-settings") || document.querySelector(".modal.mod-settings") || document.querySelector(".vertical-tab-content");
+    const settingsModal =
+      document.querySelector(".modal-container.mod-settings") ||
+      document.querySelector(".modal.mod-settings") ||
+      document.querySelector(".vertical-tab-content");
     if (!settingsModal) {
       const allModals = document.querySelectorAll(".modal-container");
       for (const modal of Array.from(allModals)) {
-        if (modal.querySelector(".vertical-tab-content") || modal.querySelector(".settings-content") || modal.classList.contains("mod-settings")) {
+        if (
+          modal.querySelector(".vertical-tab-content") ||
+          modal.querySelector(".settings-content") ||
+          modal.classList.contains("mod-settings")
+        ) {
           return true;
         }
       }
@@ -3809,7 +4740,8 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
     try {
       this.app.nvOrig_runOpeningBehavior = this.app.runOpeningBehavior;
       this.app.runOpeningBehavior = async (path) => {
-        const openInitially = this.settings.openOnStartup && !this.hasUrlParams();
+        const openInitially =
+          this.settings.openOnStartup && !this.hasUrlParams();
         if (openInitially) {
           this.openingBehaviorRan = true;
           const mode = this.settings.openMode;
@@ -3818,7 +4750,7 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
           }
           if (this.settings.showStickyHomeIcon) {
             void this.homeService.openHomeBaseInGhostTab({
-              runCommand: true
+              runCommand: true,
             });
           } else {
             void this.homeService.openHomeBaseWithMode(mode, true);
@@ -3876,11 +4808,32 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
     var _a, _b, _c, _d, _e, _f, _g, _h;
     switch (type) {
       case "Workspace" /* Workspace */:
-        return ((_c = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b.workspaces) == null ? void 0 : _c.enabled) === true;
+        return (
+          ((_c =
+            (_b =
+              (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
+            null
+              ? void 0
+              : _b.workspaces) == null
+            ? void 0
+            : _c.enabled) === true
+        );
       case "Graph view" /* Graph */:
-        return ((_f = (_e = (_d = this.app.internalPlugins) == null ? void 0 : _d.plugins) == null ? void 0 : _e.graph) == null ? void 0 : _f.enabled) === true;
+        return (
+          ((_f =
+            (_e =
+              (_d = this.app.internalPlugins) == null ? void 0 : _d.plugins) ==
+            null
+              ? void 0
+              : _e.graph) == null
+            ? void 0
+            : _f.enabled) === true
+        );
       case "Journal" /* Journal */:
-        return !!((_h = (_g = this.app.plugins) == null ? void 0 : _g.plugins) == null ? void 0 : _h["journals"]);
+        return !!((_h =
+          (_g = this.app.plugins) == null ? void 0 : _g.plugins) == null
+          ? void 0
+          : _h["journals"]);
       case "Daily Note" /* DailyNote */:
       case "Weekly Note" /* WeeklyNote */:
       case "Monthly Note" /* MonthlyNote */:
@@ -3895,50 +4848,131 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
    * Check if periodic notes are available for the given type
    */
   hasRequiredPeriodicity(type) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s;
+    var _a,
+      _b,
+      _c,
+      _d,
+      _e,
+      _f,
+      _g,
+      _h,
+      _i,
+      _j,
+      _k,
+      _l,
+      _m,
+      _n,
+      _o,
+      _p,
+      _q,
+      _r,
+      _s;
     if (type === "Daily Note" /* DailyNote */) {
-      const coreDailyNotes = ((_c = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["daily-notes"]) == null ? void 0 : _c.enabled) === true;
+      const coreDailyNotes =
+        ((_c =
+          (_b =
+            (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
+          null
+            ? void 0
+            : _b["daily-notes"]) == null
+          ? void 0
+          : _c.enabled) === true;
       if (coreDailyNotes) {
         return true;
       }
-      const periodicNotes2 = (_e = (_d = this.app.plugins) == null ? void 0 : _d.plugins) == null ? void 0 : _e["periodic-notes"];
+      const periodicNotes2 =
+        (_e = (_d = this.app.plugins) == null ? void 0 : _d.plugins) == null
+          ? void 0
+          : _e["periodic-notes"];
       if (periodicNotes2) {
-        const version2 = ((_f = periodicNotes2 == null ? void 0 : periodicNotes2.manifest) == null ? void 0 : _f.version) || "0";
+        const version2 =
+          ((_f = periodicNotes2 == null ? void 0 : periodicNotes2.manifest) ==
+          null
+            ? void 0
+            : _f.version) || "0";
         const isLegacy2 = version2.startsWith("0");
         if (isLegacy2) {
-          return ((_h = (_g = periodicNotes2 == null ? void 0 : periodicNotes2.settings) == null ? void 0 : _g["daily"]) == null ? void 0 : _h.enabled) === true;
+          return (
+            ((_h =
+              (_g =
+                periodicNotes2 == null ? void 0 : periodicNotes2.settings) ==
+              null
+                ? void 0
+                : _g["daily"]) == null
+              ? void 0
+              : _h.enabled) === true
+          );
         } else {
-          const calendarSet = (_j = (_i = periodicNotes2 == null ? void 0 : periodicNotes2.calendarSetManager) == null ? void 0 : _i.getActiveSet) == null ? void 0 : _j.call(_i);
-          return ((_k = calendarSet == null ? void 0 : calendarSet["day"]) == null ? void 0 : _k.enabled) === true;
+          const calendarSet =
+            (_j =
+              (_i =
+                periodicNotes2 == null
+                  ? void 0
+                  : periodicNotes2.calendarSetManager) == null
+                ? void 0
+                : _i.getActiveSet) == null
+              ? void 0
+              : _j.call(_i);
+          return (
+            ((_k = calendarSet == null ? void 0 : calendarSet["day"]) == null
+              ? void 0
+              : _k.enabled) === true
+          );
         }
       }
       return false;
     }
-    const periodicNotes = (_m = (_l = this.app.plugins) == null ? void 0 : _l.plugins) == null ? void 0 : _m["periodic-notes"];
+    const periodicNotes =
+      (_m = (_l = this.app.plugins) == null ? void 0 : _l.plugins) == null
+        ? void 0
+        : _m["periodic-notes"];
     if (!periodicNotes) return false;
-    const version = ((_n = periodicNotes == null ? void 0 : periodicNotes.manifest) == null ? void 0 : _n.version) || "0";
+    const version =
+      ((_n = periodicNotes == null ? void 0 : periodicNotes.manifest) == null
+        ? void 0
+        : _n.version) || "0";
     const isLegacy = version.startsWith("0");
     if (isLegacy) {
       const periodMap = {
         ["Weekly Note" /* WeeklyNote */]: "weekly",
         ["Monthly Note" /* MonthlyNote */]: "monthly",
         ["Quarterly Note" /* QuarterlyNote */]: "quarterly",
-        ["Yearly Note" /* YearlyNote */]: "yearly"
+        ["Yearly Note" /* YearlyNote */]: "yearly",
       };
       const adjective = periodMap[type];
       if (!adjective) return false;
-      return ((_p = (_o = periodicNotes == null ? void 0 : periodicNotes.settings) == null ? void 0 : _o[adjective]) == null ? void 0 : _p.enabled) === true;
+      return (
+        ((_p =
+          (_o = periodicNotes == null ? void 0 : periodicNotes.settings) == null
+            ? void 0
+            : _o[adjective]) == null
+          ? void 0
+          : _p.enabled) === true
+      );
     } else {
       const nounMap = {
         ["Weekly Note" /* WeeklyNote */]: "week",
         ["Monthly Note" /* MonthlyNote */]: "month",
         ["Quarterly Note" /* QuarterlyNote */]: "quarter",
-        ["Yearly Note" /* YearlyNote */]: "year"
+        ["Yearly Note" /* YearlyNote */]: "year",
       };
       const noun = nounMap[type];
       if (!noun) return false;
-      const calendarSet = (_r = (_q = periodicNotes == null ? void 0 : periodicNotes.calendarSetManager) == null ? void 0 : _q.getActiveSet) == null ? void 0 : _r.call(_q);
-      return ((_s = calendarSet == null ? void 0 : calendarSet[noun]) == null ? void 0 : _s.enabled) === true;
+      const calendarSet =
+        (_r =
+          (_q =
+            periodicNotes == null
+              ? void 0
+              : periodicNotes.calendarSetManager) == null
+            ? void 0
+            : _q.getActiveSet) == null
+          ? void 0
+          : _r.call(_q);
+      return (
+        ((_s = calendarSet == null ? void 0 : calendarSet[noun]) == null
+          ? void 0
+          : _s.enabled) === true
+      );
     }
   }
   /**
@@ -3948,7 +4982,11 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
     if (typeof window !== "undefined" && window.OBS_ACT) {
       const params = Object.keys(window.OBS_ACT);
       const action = window.OBS_ACT.action;
-      return action !== void 0 && ["open", "advanced-uri"].includes(action) && ["file", "filepath", "workspace"].some((e) => params.includes(e));
+      return (
+        action !== void 0 &&
+        ["open", "advanced-uri"].includes(action) &&
+        ["file", "filepath", "workspace"].some((e) => params.includes(e))
+      );
     }
     return false;
   }

@@ -1,5 +1,3 @@
 {
-  "appliedMigrations": [
-    "tokens-to-secretstorage-v1"
-  ]
+  "appliedMigrations": ["tokens-to-secretstorage-v1"]
 }

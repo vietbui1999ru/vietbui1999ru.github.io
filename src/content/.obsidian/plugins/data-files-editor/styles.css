@@ -8,16 +8,16 @@ If your plugin does not need CSS, delete this file.
 */
 
 .datafile-source-view.mod-cm6 .cm-gutters {
-	flex: 0 0 auto;
-	background-color: transparent;
-	color: var(--text-faint) !important;
-	border-right: none !important;
-	margin-inline-end: var(--file-folding-offset);
-	font-size: var(--font-ui-smaller);
-	z-index: 1;
-	font-variant: tabular-nums;
+  flex: 0 0 auto;
+  background-color: transparent;
+  color: var(--text-faint) !important;
+  border-right: none !important;
+  margin-inline-end: var(--file-folding-offset);
+  font-size: var(--font-ui-smaller);
+  z-index: 1;
+  font-variant: tabular-nums;
 }
 
 .cm-gutterElement.cm-activeLineGutter {
-	background-color: #aaeeff44;
+  background-color: #aaeeff44;
 }

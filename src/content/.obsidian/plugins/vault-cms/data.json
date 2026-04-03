@@ -130,12 +130,7 @@
         "height": 240,
         "viewOffset": 0,
         "noteOffset": -32,
-        "borderRadius": [
-          8,
-          8,
-          8,
-          8
-        ],
+        "borderRadius": [8, 8, 8, 8],
         "padding": 8,
         "fade": true,
         "iconEnabled": false,
@@ -154,12 +149,7 @@
         "height": 190,
         "viewOffset": 0,
         "noteOffset": -32,
-        "borderRadius": [
-          8,
-          8,
-          8,
-          8
-        ],
+        "borderRadius": [8, 8, 8, 8],
         "padding": 8,
         "fade": true,
         "iconEnabled": false,
@@ -178,12 +168,7 @@
         "height": 160,
         "viewOffset": 0,
         "noteOffset": -32,
-        "borderRadius": [
-          8,
-          8,
-          8,
-          8
-        ],
+        "borderRadius": [8, 8, 8, 8],
         "padding": 8,
         "fade": true,
         "iconEnabled": false,
@@ -198,10 +183,7 @@
         "iconOffsetY": -24
       }
     },
-    "supportedExtensions": [
-      "md",
-      "mdx"
-    ],
+    "supportedExtensions": ["md", "mdx"],
     "debugMode": false
   },
   "homeBase": {

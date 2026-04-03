@@ -4,8 +4,5 @@
   "focusLevel": "parent",
   "customFolderPath": "src/content",
   "hideAncestorFolders": false,
-  "autoHidePaths": [
-    "node_modules",
-    "dist"
-  ]
+  "autoHidePaths": ["node_modules", "dist"]
 }

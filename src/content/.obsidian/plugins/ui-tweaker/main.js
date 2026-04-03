@@ -12,19 +12,23 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => UITweakerPlugin
+  default: () => UITweakerPlugin,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian20 = require("obsidian");
@@ -92,12 +96,12 @@ var DEFAULT_SETTINGS = {
   helpButtonReplacement: {
     enabled: false,
     commandId: "",
-    iconId: "wrench"
+    iconId: "wrench",
   },
   syncButtonReplacement: {
     enabled: false,
     commandId: "",
-    iconId: "wrench"
+    iconId: "wrench",
   },
   // Tab Bar
   tabBarCommands: [],
@@ -112,7 +116,7 @@ var DEFAULT_SETTINGS = {
     newFolder: void 0,
     sortOrder: void 0,
     autoReveal: void 0,
-    collapseAll: void 0
+    collapseAll: void 0,
   },
   // Native explorer button icon overrides
   nativeExplorerButtonIcons: {
@@ -120,12 +124,12 @@ var DEFAULT_SETTINGS = {
     newFolder: void 0,
     sortOrder: void 0,
     autoReveal: void 0,
-    collapseAll: void 0
+    collapseAll: void 0,
   },
   // Property icon settings
   propertyIconItems: [],
   minimalPropertyIcons: false,
-  showPropertyMenuActions: true
+  showPropertyMenuActions: true,
 };
 
 // src/uiManager.ts
@@ -169,28 +173,82 @@ var UIManager = class {
   applyStyles() {
     var _a;
     const body = document.body;
-    this.applyVisibilityState(body, "auto-hide-title-bar", this.settings.titleBar, true);
-    this.applyVisibilityState(body, "auto-hide-file-explorer-nav-header", this.settings.fileExplorerNavHeader);
-    this.applyVisibilityState(body, "auto-hide-other-nav-headers", this.settings.otherNavHeaders);
-    this.applyVisibilityState(body, "auto-hide-left-tab-headers", this.settings.leftTabHeaders);
-    this.applyVisibilityState(body, "auto-hide-right-tab-headers", this.settings.rightTabHeaders);
-    this.applyVisibilityState(body, "auto-hide-vault-switcher", this.settings.vaultSwitcher);
-    this.applyVisibilityState(body, "hider-help-button", this.settings.helpButton);
-    this.applyVisibilityState(body, "auto-hide-settings-button", this.settings.settingsButton);
-    body.classList.toggle("auto-collapse-ribbon", this.settings.ribbonRevealOnHover);
-    body.classList.toggle("ui-tweaker-sync-replacement-enabled", (_a = this.settings.syncButtonReplacement) == null ? void 0 : _a.enabled);
+    this.applyVisibilityState(
+      body,
+      "auto-hide-title-bar",
+      this.settings.titleBar,
+      true,
+    );
+    this.applyVisibilityState(
+      body,
+      "auto-hide-file-explorer-nav-header",
+      this.settings.fileExplorerNavHeader,
+    );
+    this.applyVisibilityState(
+      body,
+      "auto-hide-other-nav-headers",
+      this.settings.otherNavHeaders,
+    );
+    this.applyVisibilityState(
+      body,
+      "auto-hide-left-tab-headers",
+      this.settings.leftTabHeaders,
+    );
+    this.applyVisibilityState(
+      body,
+      "auto-hide-right-tab-headers",
+      this.settings.rightTabHeaders,
+    );
+    this.applyVisibilityState(
+      body,
+      "auto-hide-vault-switcher",
+      this.settings.vaultSwitcher,
+    );
+    this.applyVisibilityState(
+      body,
+      "hider-help-button",
+      this.settings.helpButton,
+    );
+    this.applyVisibilityState(
+      body,
+      "auto-hide-settings-button",
+      this.settings.settingsButton,
+    );
+    body.classList.toggle(
+      "auto-collapse-ribbon",
+      this.settings.ribbonRevealOnHover,
+    );
+    body.classList.toggle(
+      "ui-tweaker-sync-replacement-enabled",
+      (_a = this.settings.syncButtonReplacement) == null ? void 0 : _a.enabled,
+    );
     body.classList.toggle("hider-tabs", this.settings.tabBar);
     if (this.settings.tabBar) {
       const os = this.detectOS();
-      body.classList.remove("hider-tabs-windows", "hider-tabs-macos", "hider-tabs-neutral");
+      body.classList.remove(
+        "hider-tabs-windows",
+        "hider-tabs-macos",
+        "hider-tabs-neutral",
+      );
       body.classList.add(`hider-tabs-${os}`);
     } else {
-      body.classList.remove("hider-tabs-windows", "hider-tabs-macos", "hider-tabs-neutral");
+      body.classList.remove(
+        "hider-tabs-windows",
+        "hider-tabs-macos",
+        "hider-tabs-neutral",
+      );
     }
-    body.classList.toggle("auto-hide-tab-bar-when-single-tab", this.settings.tabBarHideWhenSingle);
+    body.classList.toggle(
+      "auto-hide-tab-bar-when-single-tab",
+      this.settings.tabBarHideWhenSingle,
+    );
     if (this.settings.tabBarHideWhenSingle) {
       const os = this.detectOS();
-      body.classList.remove("auto-hide-tab-bar-windows", "auto-hide-tab-bar-macos", "auto-hide-tab-bar-neutral");
+      body.classList.remove(
+        "auto-hide-tab-bar-windows",
+        "auto-hide-tab-bar-macos",
+        "auto-hide-tab-bar-neutral",
+      );
       body.classList.add(`auto-hide-tab-bar-${os}`);
       this.setupTabObserver();
     } else {
@@ -198,22 +256,63 @@ var UIManager = class {
     }
     if (this.settings.tabBar && this.settings.enableWindowDragging) {
       const os = this.detectOS();
-      body.classList.remove("enable-window-dragging-windows", "enable-window-dragging-macos", "enable-window-dragging-neutral");
+      body.classList.remove(
+        "enable-window-dragging-windows",
+        "enable-window-dragging-macos",
+        "enable-window-dragging-neutral",
+      );
       body.classList.add(`enable-window-dragging-${os}`);
     } else {
-      body.classList.remove("enable-window-dragging-windows", "enable-window-dragging-macos", "enable-window-dragging-neutral");
+      body.classList.remove(
+        "enable-window-dragging-windows",
+        "enable-window-dragging-macos",
+        "enable-window-dragging-neutral",
+      );
     }
     body.classList.toggle("hide-button-new-note", this.settings.newNoteButton);
-    body.classList.toggle("hide-button-new-folder", this.settings.newFolderButton);
-    body.classList.toggle("hide-button-sort-order", this.settings.sortOrderButton);
-    body.classList.toggle("hide-button-auto-reveal", this.settings.autoRevealButton);
-    body.classList.toggle("hide-button-collapse-all", this.settings.collapseAllButton);
-    body.classList.toggle("hide-button-reading-mode", this.settings.readingModeButton);
-    body.classList.toggle("hide-button-bookmarked", this.settings.bookmarkedButton);
-    body.classList.toggle("hide-button-search-settings", this.settings.searchSettingsButton);
-    this.applyVisibilityState(body, "hide-tab-list-icon", this.settings.tabListIcon);
-    this.applyVisibilityState(body, "hide-new-tab-icon", this.settings.newTabIcon);
-    this.applyVisibilityState(body, "hide-tab-close-button", this.settings.tabCloseButton);
+    body.classList.toggle(
+      "hide-button-new-folder",
+      this.settings.newFolderButton,
+    );
+    body.classList.toggle(
+      "hide-button-sort-order",
+      this.settings.sortOrderButton,
+    );
+    body.classList.toggle(
+      "hide-button-auto-reveal",
+      this.settings.autoRevealButton,
+    );
+    body.classList.toggle(
+      "hide-button-collapse-all",
+      this.settings.collapseAllButton,
+    );
+    body.classList.toggle(
+      "hide-button-reading-mode",
+      this.settings.readingModeButton,
+    );
+    body.classList.toggle(
+      "hide-button-bookmarked",
+      this.settings.bookmarkedButton,
+    );
+    body.classList.toggle(
+      "hide-button-search-settings",
+      this.settings.searchSettingsButton,
+    );
+    this.applyVisibilityState(
+      body,
+      "hide-tab-list-icon",
+      this.settings.tabListIcon,
+    );
+    this.applyVisibilityState(
+      body,
+      "hide-new-tab-icon",
+      this.settings.newTabIcon,
+    );
+    this.applyVisibilityState(
+      body,
+      "hide-tab-close-button",
+      this.settings.tabCloseButton,
+    );
     body.classList.toggle("hider-status", this.settings.statusBar);
     this.applyVisibilityState(body, "hider-scroll", this.settings.scrollBars);
     if (this.settings.scrollBars === "reveal") {
@@ -221,48 +320,125 @@ var UIManager = class {
     } else {
       this.removeScrollbarRevealListeners();
     }
-    this.applyVisibilityState(body, "hider-left-sidebar-button", this.settings.leftSidebarToggleButton);
-    this.applyVisibilityState(body, "hider-right-sidebar-button", this.settings.rightSidebarToggleButton);
+    this.applyVisibilityState(
+      body,
+      "hider-left-sidebar-button",
+      this.settings.leftSidebarToggleButton,
+    );
+    this.applyVisibilityState(
+      body,
+      "hider-right-sidebar-button",
+      this.settings.rightSidebarToggleButton,
+    );
     body.classList.toggle("hider-tooltips", this.settings.tooltips);
-    body.classList.toggle("hider-search-suggestions", this.settings.searchSuggestions);
-    body.classList.toggle("hider-search-counts", this.settings.searchTermCounts);
+    body.classList.toggle(
+      "hider-search-suggestions",
+      this.settings.searchSuggestions,
+    );
+    body.classList.toggle(
+      "hider-search-counts",
+      this.settings.searchTermCounts,
+    );
     body.classList.toggle("hider-meta", this.settings.propertiesInReadingView);
-    body.classList.toggle("ui-tweaker-deemphasize-properties", this.settings.deemphasizeProperties);
-    body.classList.toggle("metadata-heading-off", this.settings.propertiesInHeading);
-    body.classList.toggle("metadata-add-property-off", this.settings.addPropertyButton);
+    body.classList.toggle(
+      "ui-tweaker-deemphasize-properties",
+      this.settings.deemphasizeProperties,
+    );
+    body.classList.toggle(
+      "metadata-heading-off",
+      this.settings.propertiesInHeading,
+    );
+    body.classList.toggle(
+      "metadata-add-property-off",
+      this.settings.addPropertyButton,
+    );
     body.classList.toggle("hider-instructions", this.settings.instructions);
-    body.classList.toggle("hide-icon-mobile-chevrons", this.settings.mobileChevronsIcon);
-    body.classList.toggle("hide-button-mobile-navbar-action-back", this.settings.navigateBackButton);
-    body.classList.toggle("hide-button-mobile-navbar-action-forward", this.settings.navigateForwardButton);
-    body.classList.toggle("hide-button-mobile-navbar-action-quick-switcher", this.settings.quickSwitcherButton);
-    body.classList.toggle("hide-button-mobile-navbar-action-new-tab", this.settings.mobileNewTabButton);
-    body.classList.toggle("hide-button-mobile-navbar-action-tabs", this.settings.openTabButton);
-    body.classList.toggle("hide-button-mobile-navbar-action-menu", this.settings.ribbonMenuButton);
-    body.classList.toggle("swap-mobile-new-tab-icon", this.settings.swapMobileNewTabIcon);
+    body.classList.toggle(
+      "hide-icon-mobile-chevrons",
+      this.settings.mobileChevronsIcon,
+    );
+    body.classList.toggle(
+      "hide-button-mobile-navbar-action-back",
+      this.settings.navigateBackButton,
+    );
+    body.classList.toggle(
+      "hide-button-mobile-navbar-action-forward",
+      this.settings.navigateForwardButton,
+    );
+    body.classList.toggle(
+      "hide-button-mobile-navbar-action-quick-switcher",
+      this.settings.quickSwitcherButton,
+    );
+    body.classList.toggle(
+      "hide-button-mobile-navbar-action-new-tab",
+      this.settings.mobileNewTabButton,
+    );
+    body.classList.toggle(
+      "hide-button-mobile-navbar-action-tabs",
+      this.settings.openTabButton,
+    );
+    body.classList.toggle(
+      "hide-button-mobile-navbar-action-menu",
+      this.settings.ribbonMenuButton,
+    );
+    body.classList.toggle(
+      "swap-mobile-new-tab-icon",
+      this.settings.swapMobileNewTabIcon,
+    );
     body.classList.toggle("hide-mobile-title", this.settings.hideMobileTitle);
-    body.classList.toggle("hide-mobile-sync-icon", this.settings.hideMobileSyncIcon);
-    body.classList.toggle("hider-status-mobile", this.settings.hideStatusBarMobile);
-    const orderClasses = Array.from(body.classList).filter(
-      (cls) => cls.startsWith("order-navbar-button-nth-child-")
+    body.classList.toggle(
+      "hide-mobile-sync-icon",
+      this.settings.hideMobileSyncIcon,
+    );
+    body.classList.toggle(
+      "hider-status-mobile",
+      this.settings.hideStatusBarMobile,
+    );
+    const orderClasses = Array.from(body.classList).filter((cls) =>
+      cls.startsWith("order-navbar-button-nth-child-"),
     );
     orderClasses.forEach((cls) => body.classList.remove(cls));
-    body.classList.add(`order-navbar-button-nth-child-1-${this.settings.navigateButtonPosition}`);
-    body.classList.add(`order-navbar-button-nth-child-2-${this.settings.navigationButtonPosition}`);
-    body.classList.add(`order-navbar-button-nth-child-3-${this.settings.quickSwitcherPosition}`);
-    body.classList.add(`order-navbar-button-nth-child-4-${this.settings.newTabPosition}`);
-    body.classList.add(`order-navbar-button-nth-child-5-${this.settings.openTabsPosition}`);
-    body.classList.add(`order-navbar-button-nth-child-6-${this.settings.ribbonMenuPosition}`);
-    const maskValue = getVaultSwitcherMask(this.settings.vaultSwitcherBackgroundTransparency);
+    body.classList.add(
+      `order-navbar-button-nth-child-1-${this.settings.navigateButtonPosition}`,
+    );
+    body.classList.add(
+      `order-navbar-button-nth-child-2-${this.settings.navigationButtonPosition}`,
+    );
+    body.classList.add(
+      `order-navbar-button-nth-child-3-${this.settings.quickSwitcherPosition}`,
+    );
+    body.classList.add(
+      `order-navbar-button-nth-child-4-${this.settings.newTabPosition}`,
+    );
+    body.classList.add(
+      `order-navbar-button-nth-child-5-${this.settings.openTabsPosition}`,
+    );
+    body.classList.add(
+      `order-navbar-button-nth-child-6-${this.settings.ribbonMenuPosition}`,
+    );
+    const maskValue = getVaultSwitcherMask(
+      this.settings.vaultSwitcherBackgroundTransparency,
+    );
     setCssProps(body, {
-      "--auto-hide-vault-switcher-bg-transparency": String(this.settings.vaultSwitcherBackgroundTransparency),
-      "--auto-hide-vault-switcher-mask": maskValue
+      "--auto-hide-vault-switcher-bg-transparency": String(
+        this.settings.vaultSwitcherBackgroundTransparency,
+      ),
+      "--auto-hide-vault-switcher-mask": maskValue,
     });
   }
   applyVisibilityState(body, className, state, useAlwaysShow = false) {
     if (useAlwaysShow) {
-      body.classList.remove("always-show-title-bar", `${className}-hide`, `${className}-reveal`);
+      body.classList.remove(
+        "always-show-title-bar",
+        `${className}-hide`,
+        `${className}-reveal`,
+      );
     } else {
-      body.classList.remove(`${className}-show`, `${className}-hide`, `${className}-reveal`);
+      body.classList.remove(
+        `${className}-show`,
+        `${className}-hide`,
+        `${className}-reveal`,
+      );
     }
     if (state === "show") {
       if (useAlwaysShow) {
@@ -282,7 +458,10 @@ var UIManager = class {
       if (!overflow.includes("scroll") && !overflow.includes("auto")) {
         return false;
       }
-      return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+      return (
+        element.scrollHeight > element.clientHeight ||
+        element.scrollWidth > element.clientWidth
+      );
     };
     const hoveredElements = /* @__PURE__ */ new Set();
     const handleMouseMove = (e) => {
@@ -293,12 +472,19 @@ var UIManager = class {
       });
       hoveredElements.clear();
       let element = target;
-      while (element && element !== document.body && element !== document.documentElement) {
+      while (
+        element &&
+        element !== document.body &&
+        element !== document.documentElement
+      ) {
         if (isScrollable(element)) {
           const rect = element.getBoundingClientRect();
           const scrollbarArea = 25;
-          const isInVerticalScrollbarArea = e.clientX >= rect.right - scrollbarArea && e.clientX <= rect.right;
-          const isInHorizontalScrollbarArea = e.clientY >= rect.bottom - scrollbarArea && e.clientY <= rect.bottom;
+          const isInVerticalScrollbarArea =
+            e.clientX >= rect.right - scrollbarArea && e.clientX <= rect.right;
+          const isInHorizontalScrollbarArea =
+            e.clientY >= rect.bottom - scrollbarArea &&
+            e.clientY <= rect.bottom;
           if (isInVerticalScrollbarArea || isInHorizontalScrollbarArea) {
             element.classList.add("ui-tweaker-scrollbar-hover");
             hoveredElements.add(element);
@@ -342,10 +528,19 @@ var UIManager = class {
     const checkSidebars = () => {
       var _a, _b;
       const workspace2 = this.plugin.app.workspace;
-      const rightSidebarCollapsed = ((_a = workspace2.rightSplit) == null ? void 0 : _a.collapsed) !== false;
-      const leftSidebarCollapsed = ((_b = workspace2.leftSplit) == null ? void 0 : _b.collapsed) !== false;
-      document.body.classList.toggle("is-right-sidebar-collapsed", rightSidebarCollapsed);
-      document.body.classList.toggle("is-left-sidebar-collapsed", leftSidebarCollapsed);
+      const rightSidebarCollapsed =
+        ((_a = workspace2.rightSplit) == null ? void 0 : _a.collapsed) !==
+        false;
+      const leftSidebarCollapsed =
+        ((_b = workspace2.leftSplit) == null ? void 0 : _b.collapsed) !== false;
+      document.body.classList.toggle(
+        "is-right-sidebar-collapsed",
+        rightSidebarCollapsed,
+      );
+      document.body.classList.toggle(
+        "is-left-sidebar-collapsed",
+        leftSidebarCollapsed,
+      );
     };
     let checkTimeout = null;
     const debouncedCheck = () => {
@@ -365,25 +560,28 @@ var UIManager = class {
     if (workspace) {
       this.tabObserver.observe(workspace, {
         childList: true,
-        subtree: true
+        subtree: true,
       });
     }
     this.plugin.registerEvent(
       this.plugin.app.workspace.on("layout-change", () => {
         debouncedCheck();
-      })
+      }),
     );
     this.plugin.registerEvent(
       this.plugin.app.workspace.on("resize", () => {
         debouncedCheck();
-      })
+      }),
     );
     const workspaceEl = document.querySelector(".workspace");
     if (workspaceEl) {
       this.sidebarObserver = new MutationObserver((mutations) => {
         let shouldCheck = false;
         mutations.forEach((mutation) => {
-          if (mutation.type === "attributes" && mutation.attributeName === "class") {
+          if (
+            mutation.type === "attributes" &&
+            mutation.attributeName === "class"
+          ) {
             shouldCheck = true;
           }
         });
@@ -394,7 +592,7 @@ var UIManager = class {
       });
       this.sidebarObserver.observe(workspaceEl, {
         attributes: true,
-        attributeFilter: ["class"]
+        attributeFilter: ["class"],
       });
     }
   }
@@ -410,8 +608,15 @@ var UIManager = class {
       this.sidebarObserver.disconnect();
       this.sidebarObserver = null;
     }
-    document.body.classList.remove("is-right-sidebar-collapsed", "is-left-sidebar-collapsed");
-    document.body.classList.remove("auto-hide-tab-bar-windows", "auto-hide-tab-bar-macos", "auto-hide-tab-bar-neutral");
+    document.body.classList.remove(
+      "is-right-sidebar-collapsed",
+      "is-left-sidebar-collapsed",
+    );
+    document.body.classList.remove(
+      "auto-hide-tab-bar-windows",
+      "auto-hide-tab-bar-macos",
+      "auto-hide-tab-bar-neutral",
+    );
   }
   cleanup() {
     this.cleanupTabObserver();
@@ -420,7 +625,18 @@ var UIManager = class {
     const body = document.body;
     const classesToRemove = [];
     body.classList.forEach((className) => {
-      if (className.startsWith("ui-tweaker-") || className.startsWith("auto-hide-") || className.startsWith("hider-") || className.startsWith("hide-") || className.startsWith("metadata-") || className.startsWith("order-navbar-button-") || className.startsWith("enable-window-dragging-") || className === "auto-collapse-ribbon" || className === "swap-mobile-new-tab-icon" || className === "always-show-title-bar") {
+      if (
+        className.startsWith("ui-tweaker-") ||
+        className.startsWith("auto-hide-") ||
+        className.startsWith("hider-") ||
+        className.startsWith("hide-") ||
+        className.startsWith("metadata-") ||
+        className.startsWith("order-navbar-button-") ||
+        className.startsWith("enable-window-dragging-") ||
+        className === "auto-collapse-ribbon" ||
+        className === "swap-mobile-new-tab-icon" ||
+        className === "always-show-title-bar"
+      ) {
         classesToRemove.push(className);
       }
     });
@@ -438,46 +654,92 @@ var UIManager = class {
 // src/commands.ts
 function registerCommands(context) {
   const { plugin, settings, saveSettings, refresh } = context;
-  registerToggleCommand(plugin, "toggle-title-bar", "Toggle title bar", async () => {
-    settings.titleBar = toggleVisibilityState(settings.titleBar);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-file-explorer-nav-header", "Toggle file explorer navigation header", async () => {
-    settings.fileExplorerNavHeader = toggleVisibilityState(settings.fileExplorerNavHeader);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-other-nav-headers", "Toggle other navigation headers", async () => {
-    settings.otherNavHeaders = toggleVisibilityState(settings.otherNavHeaders);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-left-tab-headers", "Toggle left tab headers", async () => {
-    settings.leftTabHeaders = toggleVisibilityState(settings.leftTabHeaders);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-right-tab-headers", "Toggle right tab headers", async () => {
-    settings.rightTabHeaders = toggleVisibilityState(settings.rightTabHeaders);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-vault-switcher", "Toggle vault switcher", async () => {
-    settings.vaultSwitcher = toggleVisibilityState(settings.vaultSwitcher);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-help-button", "Toggle help button", async () => {
-    settings.helpButton = toggleVisibilityState(settings.helpButton);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-settings-button", "Toggle settings button", async () => {
-    settings.settingsButton = toggleVisibilityState(settings.settingsButton);
-    await saveSettings();
-    refresh();
-  });
+  registerToggleCommand(
+    plugin,
+    "toggle-title-bar",
+    "Toggle title bar",
+    async () => {
+      settings.titleBar = toggleVisibilityState(settings.titleBar);
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-file-explorer-nav-header",
+    "Toggle file explorer navigation header",
+    async () => {
+      settings.fileExplorerNavHeader = toggleVisibilityState(
+        settings.fileExplorerNavHeader,
+      );
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-other-nav-headers",
+    "Toggle other navigation headers",
+    async () => {
+      settings.otherNavHeaders = toggleVisibilityState(
+        settings.otherNavHeaders,
+      );
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-left-tab-headers",
+    "Toggle left tab headers",
+    async () => {
+      settings.leftTabHeaders = toggleVisibilityState(settings.leftTabHeaders);
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-right-tab-headers",
+    "Toggle right tab headers",
+    async () => {
+      settings.rightTabHeaders = toggleVisibilityState(
+        settings.rightTabHeaders,
+      );
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-vault-switcher",
+    "Toggle vault switcher",
+    async () => {
+      settings.vaultSwitcher = toggleVisibilityState(settings.vaultSwitcher);
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-help-button",
+    "Toggle help button",
+    async () => {
+      settings.helpButton = toggleVisibilityState(settings.helpButton);
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-settings-button",
+    "Toggle settings button",
+    async () => {
+      settings.settingsButton = toggleVisibilityState(settings.settingsButton);
+      await saveSettings();
+      refresh();
+    },
+  );
   plugin.addCommand({
     id: "open-settings",
     name: "Open settings",
@@ -488,173 +750,335 @@ function registerCommands(context) {
       if (settingApi) {
         (_a = settingApi.open) == null ? void 0 : _a.call(settingApi);
         const pluginInstance = plugin;
-        if (((_b = pluginInstance.settingTab) == null ? void 0 : _b.id) && settingApi.openTabById) {
+        if (
+          ((_b = pluginInstance.settingTab) == null ? void 0 : _b.id) &&
+          settingApi.openTabById
+        ) {
           settingApi.openTabById(pluginInstance.settingTab.id);
         }
       }
-    }
+    },
   });
-  registerToggleCommand(plugin, "toggle-tab-bar", "Toggle tab bar", async () => {
-    settings.tabBar = !settings.tabBar;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-tab-bar-single", "Toggle hide tab bar when only one tab", async () => {
-    settings.tabBarHideWhenSingle = !settings.tabBarHideWhenSingle;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-new-note-button", "Toggle new note button", async () => {
-    settings.newNoteButton = !settings.newNoteButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-new-folder-button", "Toggle new folder button", async () => {
-    settings.newFolderButton = !settings.newFolderButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-sort-order-button", "Toggle sort order button", async () => {
-    settings.sortOrderButton = !settings.sortOrderButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-auto-reveal-button", "Toggle auto reveal button", async () => {
-    settings.autoRevealButton = !settings.autoRevealButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-collapse-all-button", "Toggle collapse all button", async () => {
-    settings.collapseAllButton = !settings.collapseAllButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-reading-mode-button", "Toggle reading mode button", async () => {
-    settings.readingModeButton = !settings.readingModeButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-search-settings-button", "Toggle search settings button", async () => {
-    settings.searchSettingsButton = !settings.searchSettingsButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-tab-list-icon", "Toggle tab list icon", async () => {
-    settings.tabListIcon = toggleVisibilityState(settings.tabListIcon);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-new-tab-icon", "Toggle new tab icon", async () => {
-    settings.newTabIcon = toggleVisibilityState(settings.newTabIcon);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-tab-close-button", "Toggle tab close button", async () => {
-    settings.tabCloseButton = toggleVisibilityState(settings.tabCloseButton);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-status-bar", "Toggle status bar", async () => {
-    settings.statusBar = !settings.statusBar;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-scroll-bars", "Toggle scroll bars", async () => {
-    settings.scrollBars = toggleVisibilityState(settings.scrollBars);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-left-sidebar-toggle-button", "Toggle left sidebar toggle button", async () => {
-    settings.leftSidebarToggleButton = toggleVisibilityState(settings.leftSidebarToggleButton);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-right-sidebar-toggle-button", "Toggle right sidebar toggle button", async () => {
-    settings.rightSidebarToggleButton = toggleVisibilityState(settings.rightSidebarToggleButton);
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-tooltips", "Toggle tooltips", async () => {
-    settings.tooltips = !settings.tooltips;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-search-suggestions", "Toggle search suggestions", async () => {
-    settings.searchSuggestions = !settings.searchSuggestions;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-search-term-counts", "Toggle search term counts", async () => {
-    settings.searchTermCounts = !settings.searchTermCounts;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-properties-reading-view", "Toggle properties in Reading view", async () => {
-    settings.propertiesInReadingView = !settings.propertiesInReadingView;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-deemphasize-properties", "Toggle deemphasize properties", async () => {
-    settings.deemphasizeProperties = !settings.deemphasizeProperties;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-properties-heading", "Toggle properties heading", async () => {
-    settings.propertiesInHeading = !settings.propertiesInHeading;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-add-property-button", "Toggle add property button", async () => {
-    settings.addPropertyButton = !settings.addPropertyButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-instructions", "Toggle instructions", async () => {
-    settings.instructions = !settings.instructions;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-mobile-chevrons-icon", "Toggle mobile chevrons icon", async () => {
-    settings.mobileChevronsIcon = !settings.mobileChevronsIcon;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-navigate-back-button", "Toggle navigate back button", async () => {
-    settings.navigateBackButton = !settings.navigateBackButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-navigate-forward-button", "Toggle navigate forward button", async () => {
-    settings.navigateForwardButton = !settings.navigateForwardButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-quick-switcher-button", "Toggle quick switcher button", async () => {
-    settings.quickSwitcherButton = !settings.quickSwitcherButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-mobile-new-tab-button", "Toggle mobile new tab button", async () => {
-    settings.mobileNewTabButton = !settings.mobileNewTabButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-open-tab-button", "Toggle open tab button", async () => {
-    settings.openTabButton = !settings.openTabButton;
-    await saveSettings();
-    refresh();
-  });
-  registerToggleCommand(plugin, "toggle-ribbon-menu-button", "Toggle ribbon menu button", async () => {
-    settings.ribbonMenuButton = !settings.ribbonMenuButton;
-    await saveSettings();
-    refresh();
-  });
+  registerToggleCommand(
+    plugin,
+    "toggle-tab-bar",
+    "Toggle tab bar",
+    async () => {
+      settings.tabBar = !settings.tabBar;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-tab-bar-single",
+    "Toggle hide tab bar when only one tab",
+    async () => {
+      settings.tabBarHideWhenSingle = !settings.tabBarHideWhenSingle;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-new-note-button",
+    "Toggle new note button",
+    async () => {
+      settings.newNoteButton = !settings.newNoteButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-new-folder-button",
+    "Toggle new folder button",
+    async () => {
+      settings.newFolderButton = !settings.newFolderButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-sort-order-button",
+    "Toggle sort order button",
+    async () => {
+      settings.sortOrderButton = !settings.sortOrderButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-auto-reveal-button",
+    "Toggle auto reveal button",
+    async () => {
+      settings.autoRevealButton = !settings.autoRevealButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-collapse-all-button",
+    "Toggle collapse all button",
+    async () => {
+      settings.collapseAllButton = !settings.collapseAllButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-reading-mode-button",
+    "Toggle reading mode button",
+    async () => {
+      settings.readingModeButton = !settings.readingModeButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-search-settings-button",
+    "Toggle search settings button",
+    async () => {
+      settings.searchSettingsButton = !settings.searchSettingsButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-tab-list-icon",
+    "Toggle tab list icon",
+    async () => {
+      settings.tabListIcon = toggleVisibilityState(settings.tabListIcon);
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-new-tab-icon",
+    "Toggle new tab icon",
+    async () => {
+      settings.newTabIcon = toggleVisibilityState(settings.newTabIcon);
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-tab-close-button",
+    "Toggle tab close button",
+    async () => {
+      settings.tabCloseButton = toggleVisibilityState(settings.tabCloseButton);
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-status-bar",
+    "Toggle status bar",
+    async () => {
+      settings.statusBar = !settings.statusBar;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-scroll-bars",
+    "Toggle scroll bars",
+    async () => {
+      settings.scrollBars = toggleVisibilityState(settings.scrollBars);
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-left-sidebar-toggle-button",
+    "Toggle left sidebar toggle button",
+    async () => {
+      settings.leftSidebarToggleButton = toggleVisibilityState(
+        settings.leftSidebarToggleButton,
+      );
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-right-sidebar-toggle-button",
+    "Toggle right sidebar toggle button",
+    async () => {
+      settings.rightSidebarToggleButton = toggleVisibilityState(
+        settings.rightSidebarToggleButton,
+      );
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-tooltips",
+    "Toggle tooltips",
+    async () => {
+      settings.tooltips = !settings.tooltips;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-search-suggestions",
+    "Toggle search suggestions",
+    async () => {
+      settings.searchSuggestions = !settings.searchSuggestions;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-search-term-counts",
+    "Toggle search term counts",
+    async () => {
+      settings.searchTermCounts = !settings.searchTermCounts;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-properties-reading-view",
+    "Toggle properties in Reading view",
+    async () => {
+      settings.propertiesInReadingView = !settings.propertiesInReadingView;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-deemphasize-properties",
+    "Toggle deemphasize properties",
+    async () => {
+      settings.deemphasizeProperties = !settings.deemphasizeProperties;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-properties-heading",
+    "Toggle properties heading",
+    async () => {
+      settings.propertiesInHeading = !settings.propertiesInHeading;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-add-property-button",
+    "Toggle add property button",
+    async () => {
+      settings.addPropertyButton = !settings.addPropertyButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-instructions",
+    "Toggle instructions",
+    async () => {
+      settings.instructions = !settings.instructions;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-mobile-chevrons-icon",
+    "Toggle mobile chevrons icon",
+    async () => {
+      settings.mobileChevronsIcon = !settings.mobileChevronsIcon;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-navigate-back-button",
+    "Toggle navigate back button",
+    async () => {
+      settings.navigateBackButton = !settings.navigateBackButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-navigate-forward-button",
+    "Toggle navigate forward button",
+    async () => {
+      settings.navigateForwardButton = !settings.navigateForwardButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-quick-switcher-button",
+    "Toggle quick switcher button",
+    async () => {
+      settings.quickSwitcherButton = !settings.quickSwitcherButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-mobile-new-tab-button",
+    "Toggle mobile new tab button",
+    async () => {
+      settings.mobileNewTabButton = !settings.mobileNewTabButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-open-tab-button",
+    "Toggle open tab button",
+    async () => {
+      settings.openTabButton = !settings.openTabButton;
+      await saveSettings();
+      refresh();
+    },
+  );
+  registerToggleCommand(
+    plugin,
+    "toggle-ribbon-menu-button",
+    "Toggle ribbon menu button",
+    async () => {
+      settings.ribbonMenuButton = !settings.ribbonMenuButton;
+      await saveSettings();
+      refresh();
+    },
+  );
 }
 function registerToggleCommand(plugin, id, name, callback) {
   plugin.addCommand({
     id,
     name,
-    callback
+    callback,
   });
 }
 function toggleVisibilityState(currentState) {
@@ -684,37 +1108,66 @@ var TabRenderer = class {
     await this.plugin.saveSettings();
     this.plugin.refresh();
   }
-  createDropdownSetting(container, name, description, value, options, onChange) {
-    return new import_obsidian2.Setting(container).setName(name).setDesc(description).addDropdown((dropdown) => {
-      Object.entries(options).forEach(([key, label]) => {
-        dropdown.addOption(key, label);
+  createDropdownSetting(
+    container,
+    name,
+    description,
+    value,
+    options,
+    onChange,
+  ) {
+    return new import_obsidian2.Setting(container)
+      .setName(name)
+      .setDesc(description)
+      .addDropdown((dropdown) => {
+        Object.entries(options).forEach(([key, label]) => {
+          dropdown.addOption(key, label);
+        });
+        dropdown.setValue(value);
+        dropdown.onChange(async (value2) => {
+          onChange(value2);
+          await this.saveSettings();
+        });
+        return dropdown;
       });
-      dropdown.setValue(value);
-      dropdown.onChange(async (value2) => {
-        onChange(value2);
-        await this.saveSettings();
-      });
-      return dropdown;
-    });
   }
   createToggleSetting(container, name, description, value, onChange) {
-    return new import_obsidian2.Setting(container).setName(name).setDesc(description).addToggle((toggle) => {
-      toggle.setValue(value);
-      toggle.onChange(async (value2) => {
-        onChange(value2);
-        await this.saveSettings();
+    return new import_obsidian2.Setting(container)
+      .setName(name)
+      .setDesc(description)
+      .addToggle((toggle) => {
+        toggle.setValue(value);
+        toggle.onChange(async (value2) => {
+          onChange(value2);
+          await this.saveSettings();
+        });
+        return toggle;
       });
-      return toggle;
-    });
   }
-  createSliderSetting(container, name, description, value, min, max, step, onChange) {
-    return new import_obsidian2.Setting(container).setName(name).setDesc(description).addSlider((slider) => {
-      slider.setLimits(min, max, step).setValue(value).setDynamicTooltip().onChange(async (value2) => {
-        onChange(value2);
-        await this.saveSettings();
+  createSliderSetting(
+    container,
+    name,
+    description,
+    value,
+    min,
+    max,
+    step,
+    onChange,
+  ) {
+    return new import_obsidian2.Setting(container)
+      .setName(name)
+      .setDesc(description)
+      .addSlider((slider) => {
+        slider
+          .setLimits(min, max, step)
+          .setValue(value)
+          .setDynamicTooltip()
+          .onChange(async (value2) => {
+            onChange(value2);
+            await this.saveSettings();
+          });
+        return slider;
       });
-      return slider;
-    });
   }
   /**
    * Renders a "Reset to defaults" button at the top of the tab
@@ -725,16 +1178,21 @@ var TabRenderer = class {
     setting.setClass("ui-tweaker-reset-setting");
     setting.setName("Reset to default");
     setting.addExtraButton((button) => {
-      button.setIcon("rotate-ccw").setTooltip("Reset tab to defaults").onClick(async () => {
-        keys.forEach((key) => {
-          this.plugin.settings[key] = JSON.parse(JSON.stringify(DEFAULT_SETTINGS[key]));
+      button
+        .setIcon("rotate-ccw")
+        .setTooltip("Reset tab to defaults")
+        .onClick(async () => {
+          keys.forEach((key) => {
+            this.plugin.settings[key] = JSON.parse(
+              JSON.stringify(DEFAULT_SETTINGS[key]),
+            );
+          });
+          if (onReset) {
+            await onReset();
+          }
+          await this.saveSettings();
+          await this.render(container);
         });
-        if (onReset) {
-          await onReset();
-        }
-        await this.saveSettings();
-        await this.render(container);
-      });
     });
   }
 };
@@ -753,17 +1211,23 @@ var CommandPickerModal = class extends import_obsidian3.FuzzySuggestModal {
       try {
         const commands = commandRegistry.listCommands();
         for (const command of commands) {
-          if (command && command.id && command.name && !commandMap.has(command.id)) {
+          if (
+            command &&
+            command.id &&
+            command.name &&
+            !commandMap.has(command.id)
+          ) {
             commandMap.set(command.id, {
               id: command.id,
-              name: command.name
+              name: command.name,
             });
           }
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
-    return Array.from(commandMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+    return Array.from(commandMap.values()).sort((a, b) =>
+      a.name.localeCompare(b.name),
+    );
   }
   getItemText(item) {
     return item.name;
@@ -776,11 +1240,14 @@ var CommandPickerModal = class extends import_obsidian3.FuzzySuggestModal {
 // src/modals/IconPickerModal.ts
 var import_obsidian4 = require("obsidian");
 var getIconList = () => {
-  if (import_obsidian4.requireApiVersion && (0, import_obsidian4.requireApiVersion)("1.7.3") && import_obsidian4.getIconIds) {
+  if (
+    import_obsidian4.requireApiVersion &&
+    (0, import_obsidian4.requireApiVersion)("1.7.3") &&
+    import_obsidian4.getIconIds
+  ) {
     try {
       return (0, import_obsidian4.getIconIds)();
-    } catch (e) {
-    }
+    } catch (e) {}
   }
   return [
     "settings-2",
@@ -936,13 +1403,18 @@ var getIconList = () => {
     "barcode",
     "receipt",
     "piggy-bank",
-    "banknote"
+    "banknote",
   ];
 };
-var LUCIDE_ICONS = getIconList().map((id) => ({
-  id,
-  name: id.replace(/^lucide-/, "").replace(/-/g, " ").replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())
-})).sort((a, b) => a.name.localeCompare(b.name));
+var LUCIDE_ICONS = getIconList()
+  .map((id) => ({
+    id,
+    name: id
+      .replace(/^lucide-/, "")
+      .replace(/-/g, " ")
+      .replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase()),
+  }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 var IconPickerModal = class extends import_obsidian4.FuzzySuggestModal {
   constructor(app, onSelect) {
     super(app);
@@ -965,7 +1437,9 @@ var IconPickerModal = class extends import_obsidian4.FuzzySuggestModal {
     const content = el.createDiv({ cls: "suggestion-content" });
     content.createDiv({ cls: "suggestion-title", text: item.name });
     const aux = el.createDiv({ cls: "suggestion-aux" });
-    const iconSpan = aux.createSpan({ cls: "suggestion-flair ui-tweaker-icon-no-bg" });
+    const iconSpan = aux.createSpan({
+      cls: "suggestion-flair ui-tweaker-icon-no-bg",
+    });
     (0, import_obsidian4.setIcon)(iconSpan, item.id);
   }
 };
@@ -1006,152 +1480,269 @@ var HiderTab = class extends TabRenderer {
       "propertiesInReadingView",
       "deemphasizeProperties",
       "propertiesInHeading",
-      "addPropertyButton"
+      "addPropertyButton",
     ]);
     const generalGroup = new import_obsidian5.SettingGroup(container);
     this.addVisibilitySetting(
       generalGroup,
       "Title bar",
       "Hide title bar until hover. Turn off to always show.",
-      "titleBar"
+      "titleBar",
     );
     this.addVisibilitySetting(
       generalGroup,
       "File explorer nav header",
       "Hide file explorer navigation header until hover. Elegantly reveals on hover.",
-      "fileExplorerNavHeader"
+      "fileExplorerNavHeader",
     );
     this.addVisibilitySetting(
       generalGroup,
       "Other nav headers",
       "Hide navigation headers for tag, backlinks, outgoing links, outline, and bookmarks panes until hover.",
-      "otherNavHeaders"
+      "otherNavHeaders",
     );
     this.addVisibilitySetting(
       generalGroup,
       "Left tab headers",
       "Hide left panel tab headers until hover. Elegantly reveals on hover.",
-      "leftTabHeaders"
+      "leftTabHeaders",
     );
     this.addVisibilitySetting(
       generalGroup,
       "Right tab headers",
       "Hide right panel tab headers until hover. Elegantly reveals on hover.",
-      "rightTabHeaders"
+      "rightTabHeaders",
     );
     generalGroup.addSetting((setting) => {
-      setting.setName("Collapse ribbon").setDesc("Collapse the left ribbon to a thin strip until hover. Elegantly expands on hover.").addToggle(
-        (toggle) => toggle.setValue(this.getSettings().ribbonRevealOnHover).onChange((value) => {
-          this.getSettings().ribbonRevealOnHover = value;
-          void this.saveSettings();
-        })
-      );
+      setting
+        .setName("Collapse ribbon")
+        .setDesc(
+          "Collapse the left ribbon to a thin strip until hover. Elegantly expands on hover.",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.getSettings().ribbonRevealOnHover)
+            .onChange((value) => {
+              this.getSettings().ribbonRevealOnHover = value;
+              void this.saveSettings();
+            }),
+        );
     });
-    const navigationGroup = new import_obsidian5.SettingGroup(container).setHeading("Navigation");
-    this.addToggleSetting(navigationGroup, "Hide tab bar", "Hides the tab container at the top of the window.", "tabBar");
-    this.addToggleSetting(navigationGroup, "Make top of window draggable without tab bar", 'Enables window dragging from the top of the window when the tab bar is hidden. Only works when "Hide tab bar" is enabled.', "enableWindowDragging");
-    this.addToggleSetting(navigationGroup, "Hide tab header when only one tab", "Hide the tab bar automatically when only 1 tab is open.", "tabBarHideWhenSingle");
-    this.addToggleSetting(navigationGroup, 'Hide "Reading mode" button', 'Hide "Reading mode" button in view headers.', "readingModeButton");
-    this.addToggleSetting(navigationGroup, 'Hide "Bookmarked" button', 'Hide "Bookmarked" button in view headers.', "bookmarkedButton");
-    this.addToggleSetting(navigationGroup, 'Hide "Search settings" button', 'Hide "Search settings" button in search pane.', "searchSettingsButton");
-    const vaultProfileGroup = new import_obsidian5.SettingGroup(container).setHeading("Vault profile area");
+    const navigationGroup = new import_obsidian5.SettingGroup(
+      container,
+    ).setHeading("Navigation");
+    this.addToggleSetting(
+      navigationGroup,
+      "Hide tab bar",
+      "Hides the tab container at the top of the window.",
+      "tabBar",
+    );
+    this.addToggleSetting(
+      navigationGroup,
+      "Make top of window draggable without tab bar",
+      'Enables window dragging from the top of the window when the tab bar is hidden. Only works when "Hide tab bar" is enabled.',
+      "enableWindowDragging",
+    );
+    this.addToggleSetting(
+      navigationGroup,
+      "Hide tab header when only one tab",
+      "Hide the tab bar automatically when only 1 tab is open.",
+      "tabBarHideWhenSingle",
+    );
+    this.addToggleSetting(
+      navigationGroup,
+      'Hide "Reading mode" button',
+      'Hide "Reading mode" button in view headers.',
+      "readingModeButton",
+    );
+    this.addToggleSetting(
+      navigationGroup,
+      'Hide "Bookmarked" button',
+      'Hide "Bookmarked" button in view headers.',
+      "bookmarkedButton",
+    );
+    this.addToggleSetting(
+      navigationGroup,
+      'Hide "Search settings" button',
+      'Hide "Search settings" button in search pane.',
+      "searchSettingsButton",
+    );
+    const vaultProfileGroup = new import_obsidian5.SettingGroup(
+      container,
+    ).setHeading("Vault profile area");
     this.addVisibilitySetting(
       vaultProfileGroup,
       "Vault switcher",
       "Hide vault switcher until hover. Does not work when vault name is hidden.",
-      "vaultSwitcher"
+      "vaultSwitcher",
     );
     this.addVisibilitySetting(
       vaultProfileGroup,
       "Help button",
       "Hide help button until hover. Elegantly reveals on hover.",
-      "helpButton"
+      "helpButton",
     );
     this.renderHelpButtonReplacement(container, vaultProfileGroup);
     this.addVisibilitySetting(
       vaultProfileGroup,
       "Settings button",
       "Hide settings button until hover. Elegantly reveals on hover.",
-      "settingsButton"
+      "settingsButton",
     );
     vaultProfileGroup.addSetting((setting) => {
-      setting.setName("Vault switcher background transparency").setDesc("Adjust the transparency of the vault switcher background when hidden. Range: 0 (fully transparent) to 1 (fully opaque).").addSlider(
-        (slider) => slider.setLimits(0, 1, 0.01).setValue(this.getSettings().vaultSwitcherBackgroundTransparency).setDynamicTooltip().onChange((value) => {
-          this.getSettings().vaultSwitcherBackgroundTransparency = value;
-          void this.saveSettings();
-        })
-      );
+      setting
+        .setName("Vault switcher background transparency")
+        .setDesc(
+          "Adjust the transparency of the vault switcher background when hidden. Range: 0 (fully transparent) to 1 (fully opaque).",
+        )
+        .addSlider((slider) =>
+          slider
+            .setLimits(0, 1, 0.01)
+            .setValue(this.getSettings().vaultSwitcherBackgroundTransparency)
+            .setDynamicTooltip()
+            .onChange((value) => {
+              this.getSettings().vaultSwitcherBackgroundTransparency = value;
+              void this.saveSettings();
+            }),
+        );
     });
-    const tabIconsGroup = new import_obsidian5.SettingGroup(container).setHeading("Tab icons");
+    const tabIconsGroup = new import_obsidian5.SettingGroup(
+      container,
+    ).setHeading("Tab icons");
     this.addVisibilitySetting(
       tabIconsGroup,
       "Hide tab list icon",
       "Hides the tab list icon. You can still access tabs via other methods.",
-      "tabListIcon"
+      "tabListIcon",
     );
     this.addVisibilitySetting(
       tabIconsGroup,
       "Hide new tab icon",
       "Hides the new tab icon. You can still create new tabs with Ctrl+T (Cmd+T on Mac).",
-      "newTabIcon"
+      "newTabIcon",
     );
     this.addVisibilitySetting(
       tabIconsGroup,
       "Hide tab close button",
       "Hides the close button on tabs. You can still close tabs with middle click or other methods.",
-      "tabCloseButton"
+      "tabCloseButton",
     );
-    const statusUIGroup = new import_obsidian5.SettingGroup(container).setHeading("Status & UI elements");
-    this.addToggleSetting(statusUIGroup, "Hide status bar", "Hides word count, character count and backlink count.", "statusBar");
+    const statusUIGroup = new import_obsidian5.SettingGroup(
+      container,
+    ).setHeading("Status & UI elements");
+    this.addToggleSetting(
+      statusUIGroup,
+      "Hide status bar",
+      "Hides word count, character count and backlink count.",
+      "statusBar",
+    );
     this.addVisibilitySetting(
       statusUIGroup,
       "Scroll bars",
       "Control scrollbar visibility. Reveal option hides scrollbars until hover.",
-      "scrollBars"
+      "scrollBars",
     );
     this.addVisibilitySetting(
       statusUIGroup,
       "Hide left sidebar toggle button",
       "Hides the left sidebar toggle button.",
-      "leftSidebarToggleButton"
+      "leftSidebarToggleButton",
     );
     this.addVisibilitySetting(
       statusUIGroup,
       "Hide right sidebar toggle button",
       "Hides the right sidebar toggle button.",
-      "rightSidebarToggleButton"
+      "rightSidebarToggleButton",
     );
-    this.addToggleSetting(statusUIGroup, "Hide tooltips", "Hides all tooltips.", "tooltips");
-    this.addToggleSetting(statusUIGroup, "Hide instructions", "Hides instructional tips in modals.", "instructions");
-    const searchGroup = new import_obsidian5.SettingGroup(container).setHeading("Search");
-    this.addToggleSetting(searchGroup, "Hide search suggestions", "Hides suggestions in search pane.", "searchSuggestions");
-    this.addToggleSetting(searchGroup, "Hide count of search term matches", "Hides the number of matches within each search result.", "searchTermCounts");
-    const propertiesGroup = new import_obsidian5.SettingGroup(container).setHeading("Properties");
-    this.addToggleSetting(propertiesGroup, "Hide properties in Reading view", "Hides the properties section in Reading view.", "propertiesInReadingView");
-    this.addToggleSetting(propertiesGroup, "Deemphasize properties", "Softens visual prominence of file properties. They become more visible on hover.", "deemphasizeProperties");
-    this.addToggleSetting(propertiesGroup, "Hide properties heading", 'Hide "Properties" heading above properties.', "propertiesInHeading");
-    this.addToggleSetting(propertiesGroup, 'Hide "Add property" button', 'Hide "Add property" button below properties.', "addPropertyButton");
+    this.addToggleSetting(
+      statusUIGroup,
+      "Hide tooltips",
+      "Hides all tooltips.",
+      "tooltips",
+    );
+    this.addToggleSetting(
+      statusUIGroup,
+      "Hide instructions",
+      "Hides instructional tips in modals.",
+      "instructions",
+    );
+    const searchGroup = new import_obsidian5.SettingGroup(container).setHeading(
+      "Search",
+    );
+    this.addToggleSetting(
+      searchGroup,
+      "Hide search suggestions",
+      "Hides suggestions in search pane.",
+      "searchSuggestions",
+    );
+    this.addToggleSetting(
+      searchGroup,
+      "Hide count of search term matches",
+      "Hides the number of matches within each search result.",
+      "searchTermCounts",
+    );
+    const propertiesGroup = new import_obsidian5.SettingGroup(
+      container,
+    ).setHeading("Properties");
+    this.addToggleSetting(
+      propertiesGroup,
+      "Hide properties in Reading view",
+      "Hides the properties section in Reading view.",
+      "propertiesInReadingView",
+    );
+    this.addToggleSetting(
+      propertiesGroup,
+      "Deemphasize properties",
+      "Softens visual prominence of file properties. They become more visible on hover.",
+      "deemphasizeProperties",
+    );
+    this.addToggleSetting(
+      propertiesGroup,
+      "Hide properties heading",
+      'Hide "Properties" heading above properties.',
+      "propertiesInHeading",
+    );
+    this.addToggleSetting(
+      propertiesGroup,
+      'Hide "Add property" button',
+      'Hide "Add property" button below properties.',
+      "addPropertyButton",
+    );
   }
   addVisibilitySetting(group, name, desc, key) {
     group.addSetting((setting) => {
-      setting.setName(name).setDesc(desc).addDropdown((dropdown) => {
-        const currentValue = this.getSettings()[key];
-        const stringValue = typeof currentValue === "string" ? currentValue : "show";
-        dropdown.addOption("show", "Show").addOption("hide", "Hide").addOption("reveal", "Reveal").setValue(stringValue).onChange((value) => {
-          this.getSettings()[key] = value;
-          void this.saveSettings();
+      setting
+        .setName(name)
+        .setDesc(desc)
+        .addDropdown((dropdown) => {
+          const currentValue = this.getSettings()[key];
+          const stringValue =
+            typeof currentValue === "string" ? currentValue : "show";
+          dropdown
+            .addOption("show", "Show")
+            .addOption("hide", "Hide")
+            .addOption("reveal", "Reveal")
+            .setValue(stringValue)
+            .onChange((value) => {
+              this.getSettings()[key] = value;
+              void this.saveSettings();
+            });
         });
-      });
     });
   }
   addToggleSetting(group, name, desc, key) {
     group.addSetting((setting) => {
-      setting.setName(name).setDesc(desc).addToggle(
-        (toggle) => toggle.setValue(Boolean(this.getSettings()[key])).onChange((value) => {
-          this.getSettings()[key] = value;
-          void this.saveSettings();
-        })
-      );
+      setting
+        .setName(name)
+        .setDesc(desc)
+        .addToggle((toggle) =>
+          toggle
+            .setValue(Boolean(this.getSettings()[key]))
+            .onChange((value) => {
+              this.getSettings()[key] = value;
+              void this.saveSettings();
+            }),
+        );
     });
   }
   renderHelpButtonReplacement(container, group) {
@@ -1160,67 +1751,99 @@ var HiderTab = class extends TabRenderer {
       settings.helpButtonReplacement = {
         enabled: false,
         commandId: "",
-        iconId: "wrench"
+        iconId: "wrench",
       };
     }
     const dependentSettings = [];
     group.addSetting((setting) => {
-      setting.setName("Replace help button with custom action").setDesc("Replace the help button with a custom icon and command. This will hide the original help button and show your custom button instead.").addToggle(
-        (toggle) => toggle.setValue(settings.helpButtonReplacement.enabled).onChange((value) => {
-          settings.helpButtonReplacement.enabled = value;
-          dependentSettings.forEach((el) => {
-            el.style.display = value ? "" : "none";
-          });
-          void this.saveSettings();
-        })
-      );
+      setting
+        .setName("Replace help button with custom action")
+        .setDesc(
+          "Replace the help button with a custom icon and command. This will hide the original help button and show your custom button instead.",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(settings.helpButtonReplacement.enabled)
+            .onChange((value) => {
+              settings.helpButtonReplacement.enabled = value;
+              dependentSettings.forEach((el) => {
+                el.style.display = value ? "" : "none";
+              });
+              void this.saveSettings();
+            }),
+        );
     });
     const getCommandName = (commandId) => {
       if (!commandId) return "Select command...";
       try {
         const commandRegistry = this.app.commands;
-        if (commandRegistry && typeof commandRegistry.listCommands === "function") {
+        if (
+          commandRegistry &&
+          typeof commandRegistry.listCommands === "function"
+        ) {
           const commands = commandRegistry.listCommands();
           const command = commands.find((cmd) => cmd && cmd.id === commandId);
           if (command == null ? void 0 : command.name) {
             return command.name;
           }
         }
-      } catch (e) {
-      }
+      } catch (e) {}
       return "Select command...";
     };
     const getIconName = (iconId) => {
       if (!iconId) return "";
-      return iconId.replace(/^lucide-/, "").split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+      return iconId
+        .replace(/^lucide-/, "")
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
     };
     group.addSetting((setting) => {
       dependentSettings.push(setting.settingEl);
-      setting.settingEl.style.display = settings.helpButtonReplacement.enabled ? "" : "none";
-      setting.setName("Command").setDesc("Select the command to execute when the button is clicked").addButton(
-        (button) => button.setButtonText(getCommandName(settings.helpButtonReplacement.commandId)).onClick(() => {
-          const modal = new CommandPickerModal(this.app, (commandId) => {
-            settings.helpButtonReplacement.commandId = commandId;
-            button.setButtonText(getCommandName(commandId));
-            void this.saveSettings();
-          });
-          modal.open();
-        })
-      );
+      setting.settingEl.style.display = settings.helpButtonReplacement.enabled
+        ? ""
+        : "none";
+      setting
+        .setName("Command")
+        .setDesc("Select the command to execute when the button is clicked")
+        .addButton((button) =>
+          button
+            .setButtonText(
+              getCommandName(settings.helpButtonReplacement.commandId),
+            )
+            .onClick(() => {
+              const modal = new CommandPickerModal(this.app, (commandId) => {
+                settings.helpButtonReplacement.commandId = commandId;
+                button.setButtonText(getCommandName(commandId));
+                void this.saveSettings();
+              });
+              modal.open();
+            }),
+        );
     });
     group.addSetting((setting) => {
       dependentSettings.push(setting.settingEl);
-      setting.settingEl.style.display = settings.helpButtonReplacement.enabled ? "" : "none";
-      setting.setName("Icon").setDesc("Select the icon to display on the button").addButton(
-        (button) => button.setButtonText(getIconName(settings.helpButtonReplacement.iconId) || "Select icon...").onClick(() => {
-          const modal = new IconPickerModal(this.app, (iconId) => {
-            settings.helpButtonReplacement.iconId = iconId;
-            button.setButtonText(getIconName(iconId));
-            void this.saveSettings();
-          });
-          modal.open();
-        })
-      );
+      setting.settingEl.style.display = settings.helpButtonReplacement.enabled
+        ? ""
+        : "none";
+      setting
+        .setName("Icon")
+        .setDesc("Select the icon to display on the button")
+        .addButton((button) =>
+          button
+            .setButtonText(
+              getIconName(settings.helpButtonReplacement.iconId) ||
+                "Select icon...",
+            )
+            .onClick(() => {
+              const modal = new IconPickerModal(this.app, (iconId) => {
+                settings.helpButtonReplacement.iconId = iconId;
+                button.setButtonText(getIconName(iconId));
+                void this.saveSettings();
+              });
+              modal.open();
+            }),
+        );
     });
   }
 };
@@ -1246,8 +1869,13 @@ var NamePickerModal = class extends import_obsidian6.Modal {
     input.setPlaceholder("Enter custom name...");
     input.inputEl.addClass("ui-tweaker-name-input");
     input.inputEl.select();
-    const buttonContainer = contentEl.createDiv({ cls: "modal-button-container" });
-    const submitButton = buttonContainer.createEl("button", { text: "OK", cls: "mod-cta" });
+    const buttonContainer = contentEl.createDiv({
+      cls: "modal-button-container",
+    });
+    const submitButton = buttonContainer.createEl("button", {
+      text: "OK",
+      cls: "mod-cta",
+    });
     const cancelButton = buttonContainer.createEl("button", { text: "Cancel" });
     const handleSubmit = () => {
       const value = input.getValue().trim();
@@ -1284,27 +1912,35 @@ async function chooseNewCommand(plugin) {
       var _a;
       commandSelected = true;
       const commands = plugin.app.commands;
-      const command = (_a = commands == null ? void 0 : commands.commands) == null ? void 0 : _a[commandId];
+      const command =
+        (_a = commands == null ? void 0 : commands.commands) == null
+          ? void 0
+          : _a[commandId];
       setTimeout(() => {
         commandModal.close();
       }, 0);
-      const displayName = (command == null ? void 0 : command.name) || "Custom Command";
+      const displayName =
+        (command == null ? void 0 : command.name) || "Custom Command";
       const iconModal = new IconPickerModal(plugin.app, (iconId) => {
         iconSelected = true;
         iconModal.close();
         setTimeout(() => {
           let nameSelected = false;
-          const nameModal = new NamePickerModal(plugin.app, displayName, (customName) => {
-            nameSelected = true;
-            nameModal.close();
-            resolve({
-              id: commandId,
-              icon: iconId,
-              name: customName,
-              displayName,
-              mode: "any"
-            });
-          });
+          const nameModal = new NamePickerModal(
+            plugin.app,
+            displayName,
+            (customName) => {
+              nameSelected = true;
+              nameModal.close();
+              resolve({
+                id: commandId,
+                icon: iconId,
+                name: customName,
+                displayName,
+                mode: "any",
+              });
+            },
+          );
           nameModal.onClose = () => {
             setTimeout(() => {
               if (!nameSelected && iconSelected && commandSelected) {
@@ -1367,23 +2003,32 @@ var TabBarTab = class extends TabRenderer {
     }
     const addGroup = new import_obsidian7.SettingGroup(container);
     addGroup.addSetting((setting) => {
-      setting.setName("Add command").setDesc("Add a new command button to the tab bar").addButton((button) => {
-        const buttonEl = button.buttonEl;
-        const iconContainer = buttonEl.createSpan({ cls: "ui-tweaker-add-icon" });
-        (0, import_obsidian7.setIcon)(iconContainer, "lucide-image-plus");
-        buttonEl.insertBefore(iconContainer, buttonEl.firstChild);
-        button.setButtonText("Add command").setCta().onClick(() => {
-          void (async () => {
-            var _a;
-            try {
-              const pair = await chooseNewCommand(this.plugin);
-              await ((_a = this.plugin.tabBarManager) == null ? void 0 : _a.addCommand(pair));
-              this.render(container);
-            } catch (e) {
-            }
-          })();
+      setting
+        .setName("Add command")
+        .setDesc("Add a new command button to the tab bar")
+        .addButton((button) => {
+          const buttonEl = button.buttonEl;
+          const iconContainer = buttonEl.createSpan({
+            cls: "ui-tweaker-add-icon",
+          });
+          (0, import_obsidian7.setIcon)(iconContainer, "lucide-image-plus");
+          buttonEl.insertBefore(iconContainer, buttonEl.firstChild);
+          button
+            .setButtonText("Add command")
+            .setCta()
+            .onClick(() => {
+              void (async () => {
+                var _a;
+                try {
+                  const pair = await chooseNewCommand(this.plugin);
+                  await ((_a = this.plugin.tabBarManager) == null
+                    ? void 0
+                    : _a.addCommand(pair));
+                  this.render(container);
+                } catch (e) {}
+              })();
+            });
         });
-      });
     });
   }
   renderCommandItem(container, pair, index) {
@@ -1393,32 +2038,57 @@ var TabBarTab = class extends TabRenderer {
     const displayName = pair.displayName || pair.name;
     group.addSetting((setting) => {
       var _a;
-      setting.settingEl.addEventListener("click", (e) => {
-        const target = e.target;
-        const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
-        const isExtraButton = target.closest(".extra-setting-button") !== null || target.closest(".clickable-icon.extra-setting-button") !== null;
-        const isNameEdit = target.closest(".ui-tweaker-name-display") !== null || target.closest(".ui-tweaker-edit-icon") !== null || target.closest(".ui-tweaker-editable-name") !== null;
-        if (!isChevronClick && !isExtraButton && !isNameEdit) {
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          e.preventDefault();
-          return false;
-        }
-      }, true);
-      setting.settingEl.addEventListener("click", (e) => {
-        const target = e.target;
-        const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
-        const isExtraButton = target.closest(".extra-setting-button") !== null || target.closest(".clickable-icon.extra-setting-button") !== null;
-        const isNameEdit = target.closest(".ui-tweaker-name-display") !== null || target.closest(".ui-tweaker-edit-icon") !== null || target.closest(".ui-tweaker-editable-name") !== null;
-        if (!isChevronClick && !isExtraButton && !isNameEdit) {
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          e.preventDefault();
-          return false;
-        }
-      }, false);
+      setting.settingEl.addEventListener(
+        "click",
+        (e) => {
+          const target = e.target;
+          const isChevronClick =
+            target.closest(".ui-tweaker-collapse-icon") !== null;
+          const isExtraButton =
+            target.closest(".extra-setting-button") !== null ||
+            target.closest(".clickable-icon.extra-setting-button") !== null;
+          const isNameEdit =
+            target.closest(".ui-tweaker-name-display") !== null ||
+            target.closest(".ui-tweaker-edit-icon") !== null ||
+            target.closest(".ui-tweaker-editable-name") !== null;
+          if (!isChevronClick && !isExtraButton && !isNameEdit) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return false;
+          }
+        },
+        true,
+      );
+      setting.settingEl.addEventListener(
+        "click",
+        (e) => {
+          const target = e.target;
+          const isChevronClick =
+            target.closest(".ui-tweaker-collapse-icon") !== null;
+          const isExtraButton =
+            target.closest(".extra-setting-button") !== null ||
+            target.closest(".clickable-icon.extra-setting-button") !== null;
+          const isNameEdit =
+            target.closest(".ui-tweaker-name-display") !== null ||
+            target.closest(".ui-tweaker-edit-icon") !== null ||
+            target.closest(".ui-tweaker-editable-name") !== null;
+          if (!isChevronClick && !isExtraButton && !isNameEdit) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return false;
+          }
+        },
+        false,
+      );
       const nameEl = setting.nameEl;
-      setCssProps(nameEl, { display: "flex", alignItems: "center", gap: "0.5rem", width: "100%" });
+      setCssProps(nameEl, {
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+        width: "100%",
+      });
       const chevronContainer = document.createElement("div");
       chevronContainer.className = "ui-tweaker-collapse-icon";
       setCssProps(chevronContainer, {
@@ -1428,31 +2098,46 @@ var TabBarTab = class extends TabRenderer {
         margin: "0",
         display: "inline-flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
       });
       nameEl.insertBefore(chevronContainer, nameEl.firstChild);
-      let isExpanded = (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
-      (0, import_obsidian7.setIcon)(chevronContainer, isExpanded ? "chevrons-down-up" : "chevrons-up-down");
+      let isExpanded =
+        (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
+      (0, import_obsidian7.setIcon)(
+        chevronContainer,
+        isExpanded ? "chevrons-down-up" : "chevrons-up-down",
+      );
       chevronContainer.addEventListener("click", (e) => {
         e.stopPropagation();
         e.stopImmediatePropagation();
         e.preventDefault();
         isExpanded = !isExpanded;
         this.expandedStates.set(pair.id, isExpanded);
-        (0, import_obsidian7.setIcon)(chevronContainer, isExpanded ? "chevrons-down-up" : "chevrons-up-down");
+        (0, import_obsidian7.setIcon)(
+          chevronContainer,
+          isExpanded ? "chevrons-down-up" : "chevrons-up-down",
+        );
         otherSettings.forEach((settingEl) => {
           setCssProps(settingEl, { display: isExpanded ? "" : "none" });
         });
       });
-      const nameContainer = nameEl.createDiv({ cls: "ui-tweaker-editable-name" });
-      setCssProps(nameContainer, { display: "flex", alignItems: "center", gap: "0.5rem" });
+      const nameContainer = nameEl.createDiv({
+        cls: "ui-tweaker-editable-name",
+      });
+      setCssProps(nameContainer, {
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+      });
       const createNameDisplay = (name) => {
         nameContainer.empty();
         const display = nameContainer.createSpan({
           text: name === displayName ? name : `${name} (${displayName})`,
-          cls: "ui-tweaker-name-display"
+          cls: "ui-tweaker-name-display",
         });
-        const iconContainer = nameContainer.createDiv({ cls: "ui-tweaker-edit-icon" });
+        const iconContainer = nameContainer.createDiv({
+          cls: "ui-tweaker-edit-icon",
+        });
         setCssProps(iconContainer, { opacity: "0.6" });
         (0, import_obsidian7.setIcon)(iconContainer, "lucide-pencil-line");
         const startEdit = () => {
@@ -1460,7 +2145,7 @@ var TabBarTab = class extends TabRenderer {
           nameContainer.empty();
           const nameInput = nameContainer.createEl("input", {
             type: "text",
-            value: currentName
+            value: currentName,
           });
           nameInput.addClass("mod-text-input");
           nameInput.focus();
@@ -1473,7 +2158,9 @@ var TabBarTab = class extends TabRenderer {
               newName = currentName;
             }
             pair.name = newName;
-            (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.updateButtonNames();
+            (_a2 = this.plugin.tabBarManager) == null
+              ? void 0
+              : _a2.updateButtonNames();
             void (async () => {
               await this.saveSettings();
               this.render(container);
@@ -1500,297 +2187,391 @@ var TabBarTab = class extends TabRenderer {
         });
       };
       createNameDisplay(pair.name);
-      setting.setDesc("").addExtraButton((button) => {
-        const iconEl = button.extraSettingsEl;
-        (0, import_obsidian7.setIcon)(iconEl, pair.icon);
-        iconEl.setAttribute("data-command-id", pair.id);
-        if (pair.color && pair.color !== "#000000") {
-          setCssProps(iconEl, { color: pair.color });
-        } else {
-          iconEl.style.removeProperty("color");
-        }
-        button.setTooltip("Change icon");
-        button.onClick(() => {
-          const modal = new IconPickerModal(this.app, (iconId) => {
-            void (async () => {
-              var _a2;
-              if (iconId && iconId !== pair.icon) {
-                pair.icon = iconId;
-                await this.saveSettings();
-                (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
-                this.render(container);
-              }
-            })();
-          });
-          modal.open();
-        });
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      }).addExtraButton((button) => {
-        button.setIcon("chevron-up");
-        if (index > 0) {
-          button.setTooltip("Move up");
-          button.onClick(() => {
-            const scrollContainer = container.closest(".vertical-tab-content") || container.closest(".settings-content") || container.closest(".vertical-tab-content-container") || container;
-            const scrollPos = scrollContainer.scrollTop;
-            void (async () => {
-              var _a2;
-              arrayMoveMutable(settings.tabBarCommands, index, index - 1);
-              await this.saveSettings();
-              (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
-              this.render(container);
-              requestAnimationFrame(() => {
-                scrollContainer.scrollTop = scrollPos;
-                setTimeout(() => {
-                  scrollContainer.scrollTop = scrollPos;
-                  setTimeout(() => {
-                    scrollContainer.scrollTop = scrollPos;
-                  }, 50);
-                }, 0);
-              });
-            })();
-          });
-        } else {
-          button.setTooltip("Already at top");
-          button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
-          setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
-        }
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      }).addExtraButton((button) => {
-        button.setIcon("chevron-down");
-        if (index < settings.tabBarCommands.length - 1) {
-          button.setTooltip("Move down");
-          button.onClick(() => {
-            const scrollContainer = container.closest(".vertical-tab-content") || container.closest(".settings-content") || container.closest(".vertical-tab-content-container") || container;
-            const scrollPos = scrollContainer.scrollTop;
-            void (async () => {
-              var _a2;
-              arrayMoveMutable(settings.tabBarCommands, index, index + 1);
-              await this.saveSettings();
-              (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
-              this.render(container);
-              requestAnimationFrame(() => {
-                scrollContainer.scrollTop = scrollPos;
-                setTimeout(() => {
-                  scrollContainer.scrollTop = scrollPos;
-                  setTimeout(() => {
-                    scrollContainer.scrollTop = scrollPos;
-                  }, 50);
-                }, 0);
-              });
-            })();
-          });
-        } else {
-          button.setTooltip("Already at bottom");
-          button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
-          setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
-        }
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      }).addExtraButton((button) => {
-        button.setIcon("trash");
-        button.setTooltip("Delete");
-        button.extraSettingsEl.addClass("mod-warning");
-        setCssProps(button.extraSettingsEl, { color: "var(--text-error)" });
-        button.onClick(() => {
-          void (async () => {
-            var _a2;
-            settings.tabBarCommands.splice(index, 1);
-            await this.saveSettings();
-            await ((_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.removeCommand(pair));
-            this.render(container);
-          })();
-        });
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      });
-    });
-    group.addSetting((setting) => {
-      otherSettings.push(setting.settingEl);
-      setting.setName("Device mode").setDesc("Choose which devices this command appears on").addDropdown((dropdown) => {
-        const appId = this.app.appId || "this-device";
-        dropdown.addOption("any", "All devices").addOption("desktop", "Desktop only").addOption("mobile", "Mobile only").addOption(appId, "This device");
-        const currentValue = pair.mode === "any" || pair.mode === "desktop" || pair.mode === "mobile" ? pair.mode : appId;
-        dropdown.setValue(currentValue);
-        dropdown.onChange((value) => {
-          void (async () => {
-            var _a;
-            pair.mode = value;
-            await this.saveSettings();
-            (_a = this.plugin.tabBarManager) == null ? void 0 : _a.reorder();
-            this.render(container);
-          })();
-        });
-        dropdown.selectEl.addEventListener("click", (e) => e.stopPropagation());
-      });
-    });
-    group.addSetting((setting) => {
-      otherSettings.push(setting.settingEl);
-      const hasColor = pair.color !== void 0;
-      setting.setName("Custom color").setDesc("Set a custom color for this icon").addColorPicker((colorPicker) => {
-        var _a;
-        const currentColor = (_a = pair.color) != null ? _a : "#000000";
-        colorPicker.setValue(currentColor);
-        const controlEl = setting.controlEl;
-        controlEl.addEventListener("click", (e) => e.stopPropagation());
-        setTimeout(() => {
-          const colorInput = controlEl.querySelector('input[type="color"]');
-          if (colorInput) {
-            colorInput.addEventListener("click", (e) => e.stopPropagation());
+      setting
+        .setDesc("")
+        .addExtraButton((button) => {
+          const iconEl = button.extraSettingsEl;
+          (0, import_obsidian7.setIcon)(iconEl, pair.icon);
+          iconEl.setAttribute("data-command-id", pair.id);
+          if (pair.color && pair.color !== "#000000") {
+            setCssProps(iconEl, { color: pair.color });
+          } else {
+            iconEl.style.removeProperty("color");
           }
-        }, 0);
-        if (hasColor) {
-          setTimeout(() => {
-            const colorPickerEl = controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
-            const resetButton = controlEl.createEl("button", {
-              cls: "clickable-icon ui-tweaker-color-reset",
-              attr: { "aria-label": "Reset to default color" }
-            });
-            (0, import_obsidian7.setIcon)(resetButton, "lucide-rotate-cw");
-            setCssProps(resetButton, { marginRight: "0.5rem" });
-            resetButton.addEventListener("click", (e) => {
-              e.stopPropagation();
-              e.stopImmediatePropagation();
-              e.preventDefault();
+          button.setTooltip("Change icon");
+          button.onClick(() => {
+            const modal = new IconPickerModal(this.app, (iconId) => {
               void (async () => {
                 var _a2;
-                pair.color = void 0;
-                const iconButton = container.querySelector(`[data-command-id="${pair.id}"]`);
-                if (iconButton) {
-                  iconButton.style.removeProperty("color");
+                if (iconId && iconId !== pair.icon) {
+                  pair.icon = iconId;
+                  await this.saveSettings();
+                  (_a2 = this.plugin.tabBarManager) == null
+                    ? void 0
+                    : _a2.reorder();
+                  this.render(container);
                 }
-                await this.saveSettings();
-                (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
-                this.render(container);
               })();
             });
-            if (colorPickerEl) {
-              controlEl.insertBefore(resetButton, colorPickerEl);
-            } else {
-              controlEl.insertBefore(resetButton, controlEl.firstChild);
-            }
-          }, 0);
-        }
-        colorPicker.onChange((value) => {
-          if (value === "#000000") {
-            pair.color = void 0;
-          } else {
-            pair.color = value;
-          }
-          const iconButton = container.querySelector(`[data-command-id="${pair.id}"]`);
-          if (iconButton) {
-            if (pair.color && pair.color !== "#000000") {
-              setCssProps(iconButton, { color: pair.color });
-            } else {
-              iconButton.style.removeProperty("color");
-            }
-          }
-          void (async () => {
-            var _a2;
-            await this.saveSettings();
-            (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
-            this.render(container);
-          })();
-        });
-      });
-    });
-    group.addSetting((setting) => {
-      otherSettings.push(setting.settingEl);
-      const hasToggleIcon = pair.toggleIcon !== void 0;
-      setting.setName("Toggle icon").setDesc("Icon to show when command is toggled on (leave empty to disable toggle). Commands with check callback work automatically. See readme for plugin developer compatibility notes.").setTooltip("For plugin developers: Commands with checkCallback work automatically. See https://github.com/davidvkimball/obsidian-ui-tweaker#toggle-icon-feature-compatibility for details.").addButton((button) => {
-        const currentToggleIcon = pair.toggleIcon || "None";
-        button.setButtonText(currentToggleIcon === "None" ? "Set toggle icon..." : currentToggleIcon).onClick(() => {
-          const modal = new IconPickerModal(this.app, (iconId) => {
-            void (async () => {
-              var _a;
-              if (iconId) {
-                pair.toggleIcon = iconId;
-              } else {
-                pair.toggleIcon = void 0;
-              }
-              await this.saveSettings();
-              (_a = this.plugin.tabBarManager) == null ? void 0 : _a.reorder();
-              this.render(container);
-            })();
+            modal.open();
           });
-          modal.open();
-        });
-        button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
-        if (hasToggleIcon) {
-          setTimeout(() => {
-            const controlEl = setting.controlEl;
-            const buttonEl = controlEl.querySelector("button") || controlEl.lastElementChild;
-            const resetButton = controlEl.createEl("button", {
-              cls: "clickable-icon ui-tweaker-toggle-icon-reset",
-              attr: { "aria-label": "Reset toggle icon" }
-            });
-            (0, import_obsidian7.setIcon)(resetButton, "lucide-rotate-cw");
-            setCssProps(resetButton, { marginRight: "0.5rem" });
-            resetButton.addEventListener("click", (e) => {
-              e.stopPropagation();
-              e.stopImmediatePropagation();
-              e.preventDefault();
-              const scrollContainer = container.closest(".vertical-tab-content") || container.closest(".settings-content") || container.closest(".vertical-tab-content-container") || container;
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        })
+        .addExtraButton((button) => {
+          button.setIcon("chevron-up");
+          if (index > 0) {
+            button.setTooltip("Move up");
+            button.onClick(() => {
+              const scrollContainer =
+                container.closest(".vertical-tab-content") ||
+                container.closest(".settings-content") ||
+                container.closest(".vertical-tab-content-container") ||
+                container;
               const scrollPos = scrollContainer.scrollTop;
               void (async () => {
-                var _a;
-                pair.toggleIcon = void 0;
+                var _a2;
+                arrayMoveMutable(settings.tabBarCommands, index, index - 1);
                 await this.saveSettings();
-                (_a = this.plugin.tabBarManager) == null ? void 0 : _a.reorder();
+                (_a2 = this.plugin.tabBarManager) == null
+                  ? void 0
+                  : _a2.reorder();
                 this.render(container);
                 requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
                   setTimeout(() => {
                     scrollContainer.scrollTop = scrollPos;
+                    setTimeout(() => {
+                      scrollContainer.scrollTop = scrollPos;
+                    }, 50);
                   }, 0);
                 });
               })();
             });
-            if (buttonEl) {
-              controlEl.insertBefore(resetButton, buttonEl);
-            } else {
-              controlEl.insertBefore(resetButton, controlEl.firstChild);
+          } else {
+            button.setTooltip("Already at top");
+            button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
+            setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
+          }
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        })
+        .addExtraButton((button) => {
+          button.setIcon("chevron-down");
+          if (index < settings.tabBarCommands.length - 1) {
+            button.setTooltip("Move down");
+            button.onClick(() => {
+              const scrollContainer =
+                container.closest(".vertical-tab-content") ||
+                container.closest(".settings-content") ||
+                container.closest(".vertical-tab-content-container") ||
+                container;
+              const scrollPos = scrollContainer.scrollTop;
+              void (async () => {
+                var _a2;
+                arrayMoveMutable(settings.tabBarCommands, index, index + 1);
+                await this.saveSettings();
+                (_a2 = this.plugin.tabBarManager) == null
+                  ? void 0
+                  : _a2.reorder();
+                this.render(container);
+                requestAnimationFrame(() => {
+                  scrollContainer.scrollTop = scrollPos;
+                  setTimeout(() => {
+                    scrollContainer.scrollTop = scrollPos;
+                    setTimeout(() => {
+                      scrollContainer.scrollTop = scrollPos;
+                    }, 50);
+                  }, 0);
+                });
+              })();
+            });
+          } else {
+            button.setTooltip("Already at bottom");
+            button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
+            setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
+          }
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        })
+        .addExtraButton((button) => {
+          button.setIcon("trash");
+          button.setTooltip("Delete");
+          button.extraSettingsEl.addClass("mod-warning");
+          setCssProps(button.extraSettingsEl, { color: "var(--text-error)" });
+          button.onClick(() => {
+            void (async () => {
+              var _a2;
+              settings.tabBarCommands.splice(index, 1);
+              await this.saveSettings();
+              await ((_a2 = this.plugin.tabBarManager) == null
+                ? void 0
+                : _a2.removeCommand(pair));
+              this.render(container);
+            })();
+          });
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        });
+    });
+    group.addSetting((setting) => {
+      otherSettings.push(setting.settingEl);
+      setting
+        .setName("Device mode")
+        .setDesc("Choose which devices this command appears on")
+        .addDropdown((dropdown) => {
+          const appId = this.app.appId || "this-device";
+          dropdown
+            .addOption("any", "All devices")
+            .addOption("desktop", "Desktop only")
+            .addOption("mobile", "Mobile only")
+            .addOption(appId, "This device");
+          const currentValue =
+            pair.mode === "any" ||
+            pair.mode === "desktop" ||
+            pair.mode === "mobile"
+              ? pair.mode
+              : appId;
+          dropdown.setValue(currentValue);
+          dropdown.onChange((value) => {
+            void (async () => {
+              var _a;
+              pair.mode = value;
+              await this.saveSettings();
+              (_a = this.plugin.tabBarManager) == null ? void 0 : _a.reorder();
+              this.render(container);
+            })();
+          });
+          dropdown.selectEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        });
+    });
+    group.addSetting((setting) => {
+      otherSettings.push(setting.settingEl);
+      const hasColor = pair.color !== void 0;
+      setting
+        .setName("Custom color")
+        .setDesc("Set a custom color for this icon")
+        .addColorPicker((colorPicker) => {
+          var _a;
+          const currentColor = (_a = pair.color) != null ? _a : "#000000";
+          colorPicker.setValue(currentColor);
+          const controlEl = setting.controlEl;
+          controlEl.addEventListener("click", (e) => e.stopPropagation());
+          setTimeout(() => {
+            const colorInput = controlEl.querySelector('input[type="color"]');
+            if (colorInput) {
+              colorInput.addEventListener("click", (e) => e.stopPropagation());
             }
           }, 0);
-        }
-      });
+          if (hasColor) {
+            setTimeout(() => {
+              const colorPickerEl =
+                controlEl.querySelector(".color-picker") ||
+                controlEl.lastElementChild;
+              const resetButton = controlEl.createEl("button", {
+                cls: "clickable-icon ui-tweaker-color-reset",
+                attr: { "aria-label": "Reset to default color" },
+              });
+              (0, import_obsidian7.setIcon)(resetButton, "lucide-rotate-cw");
+              setCssProps(resetButton, { marginRight: "0.5rem" });
+              resetButton.addEventListener("click", (e) => {
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                void (async () => {
+                  var _a2;
+                  pair.color = void 0;
+                  const iconButton = container.querySelector(
+                    `[data-command-id="${pair.id}"]`,
+                  );
+                  if (iconButton) {
+                    iconButton.style.removeProperty("color");
+                  }
+                  await this.saveSettings();
+                  (_a2 = this.plugin.tabBarManager) == null
+                    ? void 0
+                    : _a2.reorder();
+                  this.render(container);
+                })();
+              });
+              if (colorPickerEl) {
+                controlEl.insertBefore(resetButton, colorPickerEl);
+              } else {
+                controlEl.insertBefore(resetButton, controlEl.firstChild);
+              }
+            }, 0);
+          }
+          colorPicker.onChange((value) => {
+            if (value === "#000000") {
+              pair.color = void 0;
+            } else {
+              pair.color = value;
+            }
+            const iconButton = container.querySelector(
+              `[data-command-id="${pair.id}"]`,
+            );
+            if (iconButton) {
+              if (pair.color && pair.color !== "#000000") {
+                setCssProps(iconButton, { color: pair.color });
+              } else {
+                iconButton.style.removeProperty("color");
+              }
+            }
+            void (async () => {
+              var _a2;
+              await this.saveSettings();
+              (_a2 = this.plugin.tabBarManager) == null
+                ? void 0
+                : _a2.reorder();
+              this.render(container);
+            })();
+          });
+        });
     });
     group.addSetting((setting) => {
       otherSettings.push(setting.settingEl);
-      setting.setName("Show only on these file types").setDesc('Show button only on specified file types or views. Enter comma-separated file extensions (like "md,mdx") or view types for views without files (like "{{graph}}"). Leave empty to show on all. Use {{graph}} for graph view and {{empty}} for blank/new tabs.').addText((text) => {
-        var _a;
-        text.setPlaceholder("Example: md, mdx");
-        text.setValue((_a = pair.showOnFileTypes) != null ? _a : "");
-        text.onChange((value) => {
-          void (async () => {
-            var _a2;
-            pair.showOnFileTypes = value.trim() || void 0;
-            await this.saveSettings();
-            (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
-          })();
+      const hasToggleIcon = pair.toggleIcon !== void 0;
+      setting
+        .setName("Toggle icon")
+        .setDesc(
+          "Icon to show when command is toggled on (leave empty to disable toggle). Commands with check callback work automatically. See readme for plugin developer compatibility notes.",
+        )
+        .setTooltip(
+          "For plugin developers: Commands with checkCallback work automatically. See https://github.com/davidvkimball/obsidian-ui-tweaker#toggle-icon-feature-compatibility for details.",
+        )
+        .addButton((button) => {
+          const currentToggleIcon = pair.toggleIcon || "None";
+          button
+            .setButtonText(
+              currentToggleIcon === "None"
+                ? "Set toggle icon..."
+                : currentToggleIcon,
+            )
+            .onClick(() => {
+              const modal = new IconPickerModal(this.app, (iconId) => {
+                void (async () => {
+                  var _a;
+                  if (iconId) {
+                    pair.toggleIcon = iconId;
+                  } else {
+                    pair.toggleIcon = void 0;
+                  }
+                  await this.saveSettings();
+                  (_a = this.plugin.tabBarManager) == null
+                    ? void 0
+                    : _a.reorder();
+                  this.render(container);
+                })();
+              });
+              modal.open();
+            });
+          button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
+          if (hasToggleIcon) {
+            setTimeout(() => {
+              const controlEl = setting.controlEl;
+              const buttonEl =
+                controlEl.querySelector("button") || controlEl.lastElementChild;
+              const resetButton = controlEl.createEl("button", {
+                cls: "clickable-icon ui-tweaker-toggle-icon-reset",
+                attr: { "aria-label": "Reset toggle icon" },
+              });
+              (0, import_obsidian7.setIcon)(resetButton, "lucide-rotate-cw");
+              setCssProps(resetButton, { marginRight: "0.5rem" });
+              resetButton.addEventListener("click", (e) => {
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                const scrollContainer =
+                  container.closest(".vertical-tab-content") ||
+                  container.closest(".settings-content") ||
+                  container.closest(".vertical-tab-content-container") ||
+                  container;
+                const scrollPos = scrollContainer.scrollTop;
+                void (async () => {
+                  var _a;
+                  pair.toggleIcon = void 0;
+                  await this.saveSettings();
+                  (_a = this.plugin.tabBarManager) == null
+                    ? void 0
+                    : _a.reorder();
+                  this.render(container);
+                  requestAnimationFrame(() => {
+                    scrollContainer.scrollTop = scrollPos;
+                    setTimeout(() => {
+                      scrollContainer.scrollTop = scrollPos;
+                    }, 0);
+                  });
+                })();
+              });
+              if (buttonEl) {
+                controlEl.insertBefore(resetButton, buttonEl);
+              } else {
+                controlEl.insertBefore(resetButton, controlEl.firstChild);
+              }
+            }, 0);
+          }
         });
-        text.inputEl.addEventListener("click", (e) => e.stopPropagation());
-        text.inputEl.addEventListener("focus", (e) => e.stopPropagation());
-      });
     });
     group.addSetting((setting) => {
       otherSettings.push(setting.settingEl);
-      setting.setName("Never show on these file types").setDesc('Hide button on specified file types or views. Enter comma-separated file extensions (like "jpg,png") or view types for views without files (like "{{graph}}"). Leave empty to allow all. Use {{graph}} for graph view and {{empty}} for blank/new tabs.').addText((text) => {
-        var _a;
-        text.setPlaceholder("{{graph}},{{empty}}");
-        text.setValue((_a = pair.hideOnFileTypes) != null ? _a : "");
-        text.onChange((value) => {
-          void (async () => {
-            var _a2;
-            pair.hideOnFileTypes = value.trim() || void 0;
-            await this.saveSettings();
-            (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
-          })();
+      setting
+        .setName("Show only on these file types")
+        .setDesc(
+          'Show button only on specified file types or views. Enter comma-separated file extensions (like "md,mdx") or view types for views without files (like "{{graph}}"). Leave empty to show on all. Use {{graph}} for graph view and {{empty}} for blank/new tabs.',
+        )
+        .addText((text) => {
+          var _a;
+          text.setPlaceholder("Example: md, mdx");
+          text.setValue((_a = pair.showOnFileTypes) != null ? _a : "");
+          text.onChange((value) => {
+            void (async () => {
+              var _a2;
+              pair.showOnFileTypes = value.trim() || void 0;
+              await this.saveSettings();
+              (_a2 = this.plugin.tabBarManager) == null
+                ? void 0
+                : _a2.reorder();
+            })();
+          });
+          text.inputEl.addEventListener("click", (e) => e.stopPropagation());
+          text.inputEl.addEventListener("focus", (e) => e.stopPropagation());
         });
-        text.inputEl.addEventListener("click", (e) => e.stopPropagation());
-        text.inputEl.addEventListener("focus", (e) => e.stopPropagation());
-      });
+    });
+    group.addSetting((setting) => {
+      otherSettings.push(setting.settingEl);
+      setting
+        .setName("Never show on these file types")
+        .setDesc(
+          'Hide button on specified file types or views. Enter comma-separated file extensions (like "jpg,png") or view types for views without files (like "{{graph}}"). Leave empty to allow all. Use {{graph}} for graph view and {{empty}} for blank/new tabs.',
+        )
+        .addText((text) => {
+          var _a;
+          text.setPlaceholder("{{graph}},{{empty}}");
+          text.setValue((_a = pair.hideOnFileTypes) != null ? _a : "");
+          text.onChange((value) => {
+            void (async () => {
+              var _a2;
+              pair.hideOnFileTypes = value.trim() || void 0;
+              await this.saveSettings();
+              (_a2 = this.plugin.tabBarManager) == null
+                ? void 0
+                : _a2.reorder();
+            })();
+          });
+          text.inputEl.addEventListener("click", (e) => e.stopPropagation());
+          text.inputEl.addEventListener("focus", (e) => e.stopPropagation());
+        });
     });
     setTimeout(() => {
       var _a;
-      const savedExpanded = (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
+      const savedExpanded =
+        (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
       otherSettings.forEach((settingEl) => {
         setCssProps(settingEl, { display: savedExpanded ? "" : "none" });
       });
@@ -1821,12 +2602,26 @@ var StatusBarTab = class extends TabRenderer {
       settings.statusBarItems = [];
     }
     const wrapper = container.createDiv("ui-tweaker-status-bar-rows-wrapper");
-    const rowsContainer = wrapper.createDiv("ui-tweaker-status-bar-rows-container");
+    const rowsContainer = wrapper.createDiv(
+      "ui-tweaker-status-bar-rows-container",
+    );
     settings.statusBarItems.forEach((item, index) => {
       if (item.type === "existing") {
-        this.renderExistingRow(rowsContainer, item, settings, index, settings.statusBarItems.length);
+        this.renderExistingRow(
+          rowsContainer,
+          item,
+          settings,
+          index,
+          settings.statusBarItems.length,
+        );
       } else {
-        this.renderCustomRow(rowsContainer, item, settings, index, settings.statusBarItems.length);
+        this.renderCustomRow(
+          rowsContainer,
+          item,
+          settings,
+          index,
+          settings.statusBarItems.length,
+        );
       }
     });
     if (settings.statusBarItems.length > 0) {
@@ -1834,30 +2629,45 @@ var StatusBarTab = class extends TabRenderer {
     }
     const addGroup = new import_obsidian8.SettingGroup(container);
     addGroup.addSetting((setting) => {
-      setting.setName("Add command").setDesc("Add a new command button to the status bar").addButton((button) => {
-        const buttonEl = button.buttonEl;
-        const iconContainer = buttonEl.createSpan({ cls: "ui-tweaker-add-icon" });
-        (0, import_obsidian8.setIcon)(iconContainer, "lucide-image-plus");
-        buttonEl.insertBefore(iconContainer, buttonEl.firstChild);
-        button.setButtonText("Add command").setCta().onClick(() => {
-          void (async () => {
-            var _a;
-            try {
-              const pair = await chooseNewCommand(this.plugin);
-              await ((_a = this.plugin.statusBarManager) == null ? void 0 : _a.addCustomCommand(pair));
-              const scrollContainer = container.closest(".vertical-tab-content") || container.closest(".settings-content") || container.parentElement;
-              const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
-              this.render(container);
-              requestAnimationFrame(() => {
-                if (scrollContainer) {
-                  scrollContainer.scrollTop = scrollTop;
-                }
-              });
-            } catch (e) {
-            }
-          })();
+      setting
+        .setName("Add command")
+        .setDesc("Add a new command button to the status bar")
+        .addButton((button) => {
+          const buttonEl = button.buttonEl;
+          const iconContainer = buttonEl.createSpan({
+            cls: "ui-tweaker-add-icon",
+          });
+          (0, import_obsidian8.setIcon)(iconContainer, "lucide-image-plus");
+          buttonEl.insertBefore(iconContainer, buttonEl.firstChild);
+          button
+            .setButtonText("Add command")
+            .setCta()
+            .onClick(() => {
+              void (async () => {
+                var _a;
+                try {
+                  const pair = await chooseNewCommand(this.plugin);
+                  await ((_a = this.plugin.statusBarManager) == null
+                    ? void 0
+                    : _a.addCustomCommand(pair));
+                  const scrollContainer =
+                    container.closest(".vertical-tab-content") ||
+                    container.closest(".settings-content") ||
+                    container.parentElement;
+                  const scrollTop =
+                    (scrollContainer == null
+                      ? void 0
+                      : scrollContainer.scrollTop) || 0;
+                  this.render(container);
+                  requestAnimationFrame(() => {
+                    if (scrollContainer) {
+                      scrollContainer.scrollTop = scrollTop;
+                    }
+                  });
+                } catch (e) {}
+              })();
+            });
         });
-      });
     });
   }
   /**
@@ -1865,8 +2675,14 @@ var StatusBarTab = class extends TabRenderer {
    */
   renderExistingRow(rowsContainer, item, settings, index, totalItems) {
     var _a;
-    const statusBarContainer = (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl;
-    const actualElement = statusBarContainer == null ? void 0 : statusBarContainer.querySelector(`[data-ui-tweaker-status-bar-id="${item.id}"]`);
+    const statusBarContainer =
+      (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl;
+    const actualElement =
+      statusBarContainer == null
+        ? void 0
+        : statusBarContainer.querySelector(
+            `[data-ui-tweaker-status-bar-id="${item.id}"]`,
+          );
     const exists = !!actualElement;
     const entry = rowsContainer.createDiv("ui-tweaker-status-bar-row");
     entry.addClass("ui-tweaker-row");
@@ -1874,9 +2690,8 @@ var StatusBarTab = class extends TabRenderer {
     if (item.hidden) entry.addClass("ui-tweaker-status-bar-row-hidden");
     entry.setAttribute("data-ui-tweaker-id", item.id);
     const handle = entry.createSpan("ui-tweaker-status-bar-row-handle");
-    handle.addEventListener(
-      "mousedown",
-      (event) => this.handleMouseDown(event, rowsContainer, item, settings)
+    handle.addEventListener("mousedown", (event) =>
+      this.handleMouseDown(event, rowsContainer, item, settings),
     );
     const titleSpan = entry.createSpan("ui-tweaker-status-bar-row-title");
     titleSpan.textContent = item.name;
@@ -1893,17 +2708,36 @@ var StatusBarTab = class extends TabRenderer {
     entry.createSpan("ui-tweaker-status-bar-row-color-picker");
     entry.createSpan("ui-tweaker-status-bar-row-md-only");
     const lockSpan = entry.createSpan("ui-tweaker-status-bar-row-lock");
-    const lockIcon = item.sticky === "right" ? "corner-right-down" : item.sticky === "left" ? "corner-right-up" : "unlock";
-    lockSpan.setAttribute("aria-label", item.sticky ? `Pinned to ${item.sticky === "right" ? "End" : "Start"}` : "Unlocked - click to pin to end");
+    const lockIcon =
+      item.sticky === "right"
+        ? "corner-right-down"
+        : item.sticky === "left"
+          ? "corner-right-up"
+          : "unlock";
+    lockSpan.setAttribute(
+      "aria-label",
+      item.sticky
+        ? `Pinned to ${item.sticky === "right" ? "End" : "Start"}`
+        : "Unlocked - click to pin to end",
+    );
     lockSpan.addEventListener("click", (e) => {
       e.stopPropagation();
-      this.toggleLock(item, lockSpan, index, totalItems, rowsContainer, settings);
+      this.toggleLock(
+        item,
+        lockSpan,
+        index,
+        totalItems,
+        rowsContainer,
+        settings,
+      );
     });
     (0, import_obsidian8.setIcon)(lockSpan, lockIcon);
     if (item.sticky) {
       lockSpan.addClass("ui-tweaker-locked");
     }
-    const visibilitySpan = entry.createSpan("ui-tweaker-status-bar-row-visibility");
+    const visibilitySpan = entry.createSpan(
+      "ui-tweaker-status-bar-row-visibility",
+    );
     if (item.type === "custom") {
       visibilitySpan.setAttribute("aria-label", "Delete item");
       visibilitySpan.addClass("mod-warning");
@@ -1913,11 +2747,17 @@ var StatusBarTab = class extends TabRenderer {
       });
       (0, import_obsidian8.setIcon)(visibilitySpan, "trash-2");
     } else {
-      visibilitySpan.setAttribute("aria-label", item.hidden ? "Hidden - click to show" : "Visible - click to hide");
+      visibilitySpan.setAttribute(
+        "aria-label",
+        item.hidden ? "Hidden - click to show" : "Visible - click to hide",
+      );
       visibilitySpan.addEventListener("click", () => {
         this.toggleVisibility(item, visibilitySpan, entry);
       });
-      (0, import_obsidian8.setIcon)(visibilitySpan, item.hidden ? "eye-off" : "eye");
+      (0, import_obsidian8.setIcon)(
+        visibilitySpan,
+        item.hidden ? "eye-off" : "eye",
+      );
     }
   }
   /**
@@ -1929,13 +2769,13 @@ var StatusBarTab = class extends TabRenderer {
     if (item.hidden) entry.addClass("ui-tweaker-status-bar-row-hidden");
     entry.setAttribute("data-ui-tweaker-id", item.id);
     const handle = entry.createSpan("ui-tweaker-status-bar-row-handle");
-    handle.addEventListener(
-      "mousedown",
-      (event) => this.handleMouseDown(event, rowsContainer, item, settings)
+    handle.addEventListener("mousedown", (event) =>
+      this.handleMouseDown(event, rowsContainer, item, settings),
     );
     const titleSpan = entry.createSpan("ui-tweaker-status-bar-row-title");
     const displayName = item.displayName || item.name;
-    const nameText = item.name === displayName ? item.name : `${item.name} (${displayName})`;
+    const nameText =
+      item.name === displayName ? item.name : `${item.name} (${displayName})`;
     titleSpan.textContent = nameText;
     titleSpan.addEventListener("dblclick", () => {
       const currentName = item.name;
@@ -1953,8 +2793,11 @@ var StatusBarTab = class extends TabRenderer {
         let newName = input.value.trim();
         if (!newName) newName = currentName;
         item.name = newName;
-        (_a = this.plugin.statusBarManager) == null ? void 0 : _a.updateButtonNames();
-        titleSpan.textContent = newName === displayName ? newName : `${newName} (${displayName})`;
+        (_a = this.plugin.statusBarManager) == null
+          ? void 0
+          : _a.updateButtonNames();
+        titleSpan.textContent =
+          newName === displayName ? newName : `${newName} (${displayName})`;
         void this.saveSettings();
       };
       input.addEventListener("keydown", (e) => {
@@ -1970,17 +2813,21 @@ var StatusBarTab = class extends TabRenderer {
     });
     const previewSpan = entry.createSpan("ui-tweaker-status-bar-row-preview");
     if (item.icon) {
-      const previewIcon = previewSpan.createSpan("status-bar-item mod-clickable");
+      const previewIcon = previewSpan.createSpan(
+        "status-bar-item mod-clickable",
+      );
       (0, import_obsidian8.setIcon)(previewIcon, item.icon);
       if (item.color && item.color !== "#000000") {
         setCssProps(previewIcon, { color: item.color });
       }
     }
-    const resetColorContainer = entry.createSpan("ui-tweaker-status-bar-row-reset-color");
+    const resetColorContainer = entry.createSpan(
+      "ui-tweaker-status-bar-row-reset-color",
+    );
     if (item.color) {
       const resetButton = resetColorContainer.createEl("button", {
         cls: "clickable-icon ui-tweaker-color-reset",
-        attr: { "aria-label": "Reset to default color" }
+        attr: { "aria-label": "Reset to default color" },
       });
       (0, import_obsidian8.setIcon)(resetButton, "rotate-cw");
       resetButton.addEventListener("click", (e) => {
@@ -1998,7 +2845,9 @@ var StatusBarTab = class extends TabRenderer {
         }
       });
     }
-    const colorPickerContainer = entry.createSpan("ui-tweaker-status-bar-row-color-picker");
+    const colorPickerContainer = entry.createSpan(
+      "ui-tweaker-status-bar-row-color-picker",
+    );
     const colorPickerEl = colorPickerContainer.createDiv();
     const colorPicker = new import_obsidian8.ColorComponent(colorPickerEl);
     colorPicker.setValue(item.color || "#000000");
@@ -2024,13 +2873,26 @@ var StatusBarTab = class extends TabRenderer {
       }
     });
     const mdOnlySpan = entry.createSpan("ui-tweaker-status-bar-row-md-only");
-    mdOnlySpan.setAttribute("aria-label", item.mdOnly ? "Only show on Markdown files (enabled)" : "Only show on Markdown files (disabled)");
+    mdOnlySpan.setAttribute(
+      "aria-label",
+      item.mdOnly
+        ? "Only show on Markdown files (enabled)"
+        : "Only show on Markdown files (disabled)",
+    );
     mdOnlySpan.addEventListener("click", (e) => {
       var _a;
       e.stopPropagation();
       item.mdOnly = !item.mdOnly;
-      (0, import_obsidian8.setIcon)(mdOnlySpan, item.mdOnly ? "file-check" : "file-x");
-      mdOnlySpan.setAttribute("aria-label", item.mdOnly ? "Only show on Markdown files (enabled)" : "Only show on Markdown files (disabled)");
+      (0, import_obsidian8.setIcon)(
+        mdOnlySpan,
+        item.mdOnly ? "file-check" : "file-x",
+      );
+      mdOnlySpan.setAttribute(
+        "aria-label",
+        item.mdOnly
+          ? "Only show on Markdown files (enabled)"
+          : "Only show on Markdown files (disabled)",
+      );
       if (item.mdOnly) {
         mdOnlySpan.addClass("ui-tweaker-active");
       } else {
@@ -2039,22 +2901,44 @@ var StatusBarTab = class extends TabRenderer {
       (_a = this.plugin.statusBarManager) == null ? void 0 : _a.reorder();
       void this.saveSettings();
     });
-    (0, import_obsidian8.setIcon)(mdOnlySpan, item.mdOnly ? "file-check" : "file-x");
+    (0, import_obsidian8.setIcon)(
+      mdOnlySpan,
+      item.mdOnly ? "file-check" : "file-x",
+    );
     if (item.mdOnly) {
       mdOnlySpan.addClass("ui-tweaker-active");
     }
     const lockSpan = entry.createSpan("ui-tweaker-status-bar-row-lock");
-    const lockIcon = item.sticky === "right" ? "corner-right-down" : item.sticky === "left" ? "corner-right-up" : "unlock";
-    lockSpan.setAttribute("aria-label", item.sticky ? `Pinned to ${item.sticky === "right" ? "End" : "Start"}` : "Unlocked - click to pin to end");
+    const lockIcon =
+      item.sticky === "right"
+        ? "corner-right-down"
+        : item.sticky === "left"
+          ? "corner-right-up"
+          : "unlock";
+    lockSpan.setAttribute(
+      "aria-label",
+      item.sticky
+        ? `Pinned to ${item.sticky === "right" ? "End" : "Start"}`
+        : "Unlocked - click to pin to end",
+    );
     lockSpan.addEventListener("click", (e) => {
       e.stopPropagation();
-      this.toggleLock(item, lockSpan, index, totalItems, rowsContainer, settings);
+      this.toggleLock(
+        item,
+        lockSpan,
+        index,
+        totalItems,
+        rowsContainer,
+        settings,
+      );
     });
     (0, import_obsidian8.setIcon)(lockSpan, lockIcon);
     if (item.sticky) {
       lockSpan.addClass("ui-tweaker-locked");
     }
-    const visibilitySpan = entry.createSpan("ui-tweaker-status-bar-row-visibility");
+    const visibilitySpan = entry.createSpan(
+      "ui-tweaker-status-bar-row-visibility",
+    );
     if (item.type === "custom") {
       visibilitySpan.setAttribute("aria-label", "Delete item");
       visibilitySpan.addClass("mod-warning");
@@ -2064,27 +2948,48 @@ var StatusBarTab = class extends TabRenderer {
       });
       (0, import_obsidian8.setIcon)(visibilitySpan, "trash-2");
     } else {
-      visibilitySpan.setAttribute("aria-label", item.hidden ? "Hidden - click to show" : "Visible - click to hide");
+      visibilitySpan.setAttribute(
+        "aria-label",
+        item.hidden ? "Hidden - click to show" : "Visible - click to hide",
+      );
       visibilitySpan.addEventListener("click", () => {
         this.toggleVisibility(item, visibilitySpan, entry);
       });
-      (0, import_obsidian8.setIcon)(visibilitySpan, item.hidden ? "eye-off" : "eye");
+      (0, import_obsidian8.setIcon)(
+        visibilitySpan,
+        item.hidden ? "eye-off" : "eye",
+      );
     }
   }
   /**
    * Toggle lock position based on current position
    */
-  toggleLock(item, lockSpan, currentIndex, totalItems, rowsContainer, settings) {
+  toggleLock(
+    item,
+    lockSpan,
+    currentIndex,
+    totalItems,
+    rowsContainer,
+    settings,
+  ) {
     var _a;
     if (!item.sticky) {
       item.sticky = "right";
-      const oldIndex = settings.statusBarItems.findIndex((i) => i.id === item.id);
+      const oldIndex = settings.statusBarItems.findIndex(
+        (i) => i.id === item.id,
+      );
       if (oldIndex !== -1) {
-        arrayMoveMutable2(settings.statusBarItems, oldIndex, settings.statusBarItems.length - 1);
+        arrayMoveMutable2(
+          settings.statusBarItems,
+          oldIndex,
+          settings.statusBarItems.length - 1,
+        );
       }
     } else if (item.sticky === "right") {
       item.sticky = "left";
-      const oldIndex = settings.statusBarItems.findIndex((i) => i.id === item.id);
+      const oldIndex = settings.statusBarItems.findIndex(
+        (i) => i.id === item.id,
+      );
       if (oldIndex !== -1) {
         arrayMoveMutable2(settings.statusBarItems, oldIndex, 0);
       }
@@ -2120,11 +3025,15 @@ var StatusBarTab = class extends TabRenderer {
    */
   async removeItem(rowsContainer, item, settings) {
     var _a;
-    const entry = rowsContainer.querySelector(`[data-ui-tweaker-id="${item.id}"]`);
+    const entry = rowsContainer.querySelector(
+      `[data-ui-tweaker-id="${item.id}"]`,
+    );
     if (entry) {
       rowsContainer.removeChild(entry);
     }
-    await ((_a = this.plugin.statusBarManager) == null ? void 0 : _a.removeItem(item));
+    await ((_a = this.plugin.statusBarManager) == null
+      ? void 0
+      : _a.removeItem(item));
     void this.saveSettings();
   }
   /**
@@ -2134,7 +3043,9 @@ var StatusBarTab = class extends TabRenderer {
     var _a, _b;
     if (dragging) return;
     dragging = true;
-    const entry = rowsContainer.querySelector(`[data-ui-tweaker-id="${item.id}"]`);
+    const entry = rowsContainer.querySelector(
+      `[data-ui-tweaker-id="${item.id}"]`,
+    );
     if (!entry) return;
     const stationaryRow = entry;
     stationaryRow.addClass("ui-tweaker-status-bar-row-clone");
@@ -2143,15 +3054,25 @@ var StatusBarTab = class extends TabRenderer {
     movableRow.addClass("ui-tweaker-status-bar-row-drag");
     setCssProps(movableRow, {
       display: "grid",
-      gridTemplateColumns: "1.25em 0.5fr 0.8fr 2em 2em 2em 2em 2em 2em"
+      gridTemplateColumns: "1.25em 0.5fr 0.8fr 2em 2em 2em 2em 2em 2em",
     });
     if (item.hidden) movableRow.addClass("ui-tweaker-status-bar-row-hidden");
     if (item.type === "existing") {
-      const statusBarContainer = (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl;
-      const actualElement = statusBarContainer == null ? void 0 : statusBarContainer.querySelector(`[data-ui-tweaker-id="${item.id}"]`);
-      if (!actualElement) movableRow.addClass("ui-tweaker-status-bar-row-disabled");
+      const statusBarContainer =
+        (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl;
+      const actualElement =
+        statusBarContainer == null
+          ? void 0
+          : statusBarContainer.querySelector(
+              `[data-ui-tweaker-id="${item.id}"]`,
+            );
+      if (!actualElement)
+        movableRow.addClass("ui-tweaker-status-bar-row-disabled");
     }
-    const wrapper = rowsContainer.closest(".ui-tweaker-status-bar-rows-wrapper") || rowsContainer.parentElement || rowsContainer;
+    const wrapper =
+      rowsContainer.closest(".ui-tweaker-status-bar-rows-wrapper") ||
+      rowsContainer.parentElement ||
+      rowsContainer;
     wrapper.appendChild(movableRow);
     const containerX = wrapper.getBoundingClientRect().left;
     const containerY = wrapper.getBoundingClientRect().top;
@@ -2160,15 +3081,23 @@ var StatusBarTab = class extends TabRenderer {
       position: "absolute",
       left: stationaryRect.left - containerX + "px",
       top: stationaryRect.top - containerY + "px",
-      width: stationaryRow.offsetWidth + "px"
+      width: stationaryRow.offsetWidth + "px",
     });
     movableRow.createSpan("ui-tweaker-status-bar-row-handle");
     const dragTitle = movableRow.createSpan("ui-tweaker-status-bar-row-title");
     dragTitle.textContent = item.name;
-    const dragPreview = movableRow.createSpan("ui-tweaker-status-bar-row-preview");
+    const dragPreview = movableRow.createSpan(
+      "ui-tweaker-status-bar-row-preview",
+    );
     if (item.type === "existing") {
-      const statusBarContainer = (_b = this.plugin.app.statusBar) == null ? void 0 : _b.containerEl;
-      const actualElement = statusBarContainer == null ? void 0 : statusBarContainer.querySelector(`[data-ui-tweaker-status-bar-id="${item.id}"]`);
+      const statusBarContainer =
+        (_b = this.plugin.app.statusBar) == null ? void 0 : _b.containerEl;
+      const actualElement =
+        statusBarContainer == null
+          ? void 0
+          : statusBarContainer.querySelector(
+              `[data-ui-tweaker-status-bar-id="${item.id}"]`,
+            );
       if (actualElement) {
         const cloned = actualElement.cloneNode(true);
         cloned.removeAttribute("aria-label");
@@ -2180,7 +3109,9 @@ var StatusBarTab = class extends TabRenderer {
         dragPreview.appendChild(cloned);
       }
     } else if (item.icon) {
-      const previewIcon = dragPreview.createSpan("status-bar-item clickable-icon");
+      const previewIcon = dragPreview.createSpan(
+        "status-bar-item clickable-icon",
+      );
       (0, import_obsidian8.setIcon)(previewIcon, item.icon);
       previewIcon.removeAttribute("aria-label");
       previewIcon.removeAttribute("title");
@@ -2192,10 +3123,20 @@ var StatusBarTab = class extends TabRenderer {
     movableRow.createSpan("ui-tweaker-status-bar-row-color-picker");
     movableRow.createSpan("ui-tweaker-status-bar-row-md-only");
     const dragLock = movableRow.createSpan("ui-tweaker-status-bar-row-lock");
-    const lockIcon = item.sticky === "right" ? "corner-right-down" : item.sticky === "left" ? "corner-right-up" : "unlock";
+    const lockIcon =
+      item.sticky === "right"
+        ? "corner-right-down"
+        : item.sticky === "left"
+          ? "corner-right-up"
+          : "unlock";
     (0, import_obsidian8.setIcon)(dragLock, lockIcon);
-    const dragVisibility = movableRow.createSpan("ui-tweaker-status-bar-row-visibility");
-    (0, import_obsidian8.setIcon)(dragVisibility, item.hidden ? "eye-off" : "eye");
+    const dragVisibility = movableRow.createSpan(
+      "ui-tweaker-status-bar-row-visibility",
+    );
+    (0, import_obsidian8.setIcon)(
+      dragVisibility,
+      item.hidden ? "eye-off" : "eye",
+    );
     let offsetX = event.clientX - movableRow.getBoundingClientRect().left;
     let offsetY = event.clientY - movableRow.getBoundingClientRect().top;
     offsetX = offsetX + containerX;
@@ -2205,24 +3146,36 @@ var StatusBarTab = class extends TabRenderer {
       var _a2;
       setCssProps(movableRow, {
         left: e.clientX - offsetX + "px",
-        top: e.clientY - offsetY + "px"
+        top: e.clientY - offsetY + "px",
       });
-      const dist = movableRow.getBoundingClientRect().top - stationaryRow.getBoundingClientRect().top;
+      const dist =
+        movableRow.getBoundingClientRect().top -
+        stationaryRow.getBoundingClientRect().top;
       if (Math.abs(dist) > stationaryRow.offsetHeight * 0.75) {
         const dir = dist / Math.abs(dist);
-        const newIndex = Math.max(0, Math.min(index + dir, rowsContainer.children.length - 1));
+        const newIndex = Math.max(
+          0,
+          Math.min(index + dir, rowsContainer.children.length - 1),
+        );
         if (newIndex !== index) {
           rowsContainer.removeChild(stationaryRow);
           if (newIndex < rowsContainer.children.length) {
-            rowsContainer.insertBefore(stationaryRow, rowsContainer.children[newIndex]);
+            rowsContainer.insertBefore(
+              stationaryRow,
+              rowsContainer.children[newIndex],
+            );
           } else {
             rowsContainer.appendChild(stationaryRow);
           }
           if (settings.statusBarItems) {
-            const oldIndex = settings.statusBarItems.findIndex((i) => i.id === item.id);
+            const oldIndex = settings.statusBarItems.findIndex(
+              (i) => i.id === item.id,
+            );
             if (oldIndex !== -1 && oldIndex !== newIndex) {
               arrayMoveMutable2(settings.statusBarItems, oldIndex, newIndex);
-              (_a2 = this.plugin.statusBarManager) == null ? void 0 : _a2.reorder();
+              (_a2 = this.plugin.statusBarManager) == null
+                ? void 0
+                : _a2.reorder();
             }
           }
           index = newIndex;
@@ -2260,32 +3213,42 @@ var ExplorerTab = class extends TabRenderer {
   }
   render(container) {
     container.empty();
-    this.renderResetButton(container, [
-      "newNoteButton",
-      "newFolderButton",
-      "sortOrderButton",
-      "autoRevealButton",
-      "collapseAllButton",
-      "explorerCommands",
-      "explorerButtonItems",
-      "nativeExplorerButtonColors",
-      "nativeExplorerButtonIcons"
-    ], async () => {
-      if (this.plugin.explorerManager) {
-        this.plugin.explorerManager.cleanup();
-        const explorers = this.app.workspace.getLeavesOfType("file-explorer");
-        explorers.forEach((leaf) => {
-          var _a, _b;
-          const navButtonsContainer = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.querySelector("div.nav-buttons-container");
-          if (navButtonsContainer) {
-            const buttons = navButtonsContainer.querySelectorAll(".nav-action-button");
-            buttons.forEach((btn) => btn.classList.remove("ui-tweaker-explorer-button-hidden"));
-          }
-        });
-        this.plugin.explorerManager.consolidateSettingsAndElements();
-        this.plugin.explorerManager.reorder();
-      }
-    });
+    this.renderResetButton(
+      container,
+      [
+        "newNoteButton",
+        "newFolderButton",
+        "sortOrderButton",
+        "autoRevealButton",
+        "collapseAllButton",
+        "explorerCommands",
+        "explorerButtonItems",
+        "nativeExplorerButtonColors",
+        "nativeExplorerButtonIcons",
+      ],
+      async () => {
+        if (this.plugin.explorerManager) {
+          this.plugin.explorerManager.cleanup();
+          const explorers = this.app.workspace.getLeavesOfType("file-explorer");
+          explorers.forEach((leaf) => {
+            var _a, _b;
+            const navButtonsContainer =
+              (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+                ? void 0
+                : _b.querySelector("div.nav-buttons-container");
+            if (navButtonsContainer) {
+              const buttons =
+                navButtonsContainer.querySelectorAll(".nav-action-button");
+              buttons.forEach((btn) =>
+                btn.classList.remove("ui-tweaker-explorer-button-hidden"),
+              );
+            }
+          });
+          this.plugin.explorerManager.consolidateSettingsAndElements();
+          this.plugin.explorerManager.reorder();
+        }
+      },
+    );
     const settings = this.getSettings();
     if (!settings.explorerCommands) {
       settings.explorerCommands = [];
@@ -2299,7 +3262,7 @@ var ExplorerTab = class extends TabRenderer {
         newFolder: void 0,
         sortOrder: void 0,
         autoReveal: void 0,
-        collapseAll: void 0
+        collapseAll: void 0,
       };
     }
     if (!settings.nativeExplorerButtonIcons) {
@@ -2308,7 +3271,7 @@ var ExplorerTab = class extends TabRenderer {
         newFolder: void 0,
         sortOrder: void 0,
         autoReveal: void 0,
-        collapseAll: void 0
+        collapseAll: void 0,
       };
     }
     settings.explorerButtonItems.forEach((item, index) => {
@@ -2319,78 +3282,105 @@ var ExplorerTab = class extends TabRenderer {
     }
     const addGroup = new import_obsidian9.SettingGroup(container);
     addGroup.addSetting((setting) => {
-      setting.setName("Add command").setDesc("Add a new command button to the file explorer navigation area").addButton((button) => {
-        const buttonEl = button.buttonEl;
-        const iconContainer = buttonEl.createSpan({ cls: "ui-tweaker-add-icon" });
-        (0, import_obsidian9.setIcon)(iconContainer, "lucide-image-plus");
-        buttonEl.insertBefore(iconContainer, buttonEl.firstChild);
-        button.setButtonText("Add command").setCta().onClick(() => {
-          void (async () => {
-            var _a;
-            try {
-              const pair = await chooseNewCommand(this.plugin);
-              settings.explorerCommands.push(pair);
-              const item = {
-                id: `custom-${pair.id}`,
-                name: pair.name,
-                ariaLabel: pair.name,
-                type: "custom",
-                commandId: pair.id,
-                icon: pair.icon,
-                displayName: pair.displayName,
-                mode: pair.mode,
-                color: pair.color,
-                showOnFileTypes: pair.showOnFileTypes,
-                hideOnFileTypes: pair.hideOnFileTypes,
-                toggleIcon: pair.toggleIcon,
-                useActiveClass: pair.useActiveClass,
-                hidden: false
-              };
-              settings.explorerButtonItems.push(item);
-              await this.saveSettings();
-              (_a = this.plugin.explorerManager) == null ? void 0 : _a.reorder();
-              this.render(container);
-            } catch (e) {
-            }
-          })();
+      setting
+        .setName("Add command")
+        .setDesc(
+          "Add a new command button to the file explorer navigation area",
+        )
+        .addButton((button) => {
+          const buttonEl = button.buttonEl;
+          const iconContainer = buttonEl.createSpan({
+            cls: "ui-tweaker-add-icon",
+          });
+          (0, import_obsidian9.setIcon)(iconContainer, "lucide-image-plus");
+          buttonEl.insertBefore(iconContainer, buttonEl.firstChild);
+          button
+            .setButtonText("Add command")
+            .setCta()
+            .onClick(() => {
+              void (async () => {
+                var _a;
+                try {
+                  const pair = await chooseNewCommand(this.plugin);
+                  settings.explorerCommands.push(pair);
+                  const item = {
+                    id: `custom-${pair.id}`,
+                    name: pair.name,
+                    ariaLabel: pair.name,
+                    type: "custom",
+                    commandId: pair.id,
+                    icon: pair.icon,
+                    displayName: pair.displayName,
+                    mode: pair.mode,
+                    color: pair.color,
+                    showOnFileTypes: pair.showOnFileTypes,
+                    hideOnFileTypes: pair.hideOnFileTypes,
+                    toggleIcon: pair.toggleIcon,
+                    useActiveClass: pair.useActiveClass,
+                    hidden: false,
+                  };
+                  settings.explorerButtonItems.push(item);
+                  await this.saveSettings();
+                  (_a = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a.reorder();
+                  this.render(container);
+                } catch (e) {}
+              })();
+            });
         });
-      });
     });
     const warningDiv = container.createEl("div", {
       cls: "callout",
-      attr: { "data-callout": "warning" }
+      attr: { "data-callout": "warning" },
     });
     warningDiv.createEl("p", {
-      text: "When clicking on a command in the explorer, the explorer view will become focused. This might interfere with commands that are supposed to be executed on an active file or explorer."
+      text: "When clicking on a command in the explorer, the explorer view will become focused. This might interfere with commands that are supposed to be executed on an active file or explorer.",
     });
   }
   renderNativeButtonControls(container, mainContainer) {
     container.empty();
     const settings = this.getSettings();
-    const group = new import_obsidian9.SettingGroup(container).setHeading("Native explorer buttons");
+    const group = new import_obsidian9.SettingGroup(container).setHeading(
+      "Native explorer buttons",
+    );
     const scrollContainer = mainContainer || container;
     const renderNativeButton = (name, settingKey, colorKey) => {
       var _a, _b;
       const isHidden = settings[settingKey];
-      const color = (_a = settings.nativeExplorerButtonColors) == null ? void 0 : _a[colorKey];
-      const iconOverride = (_b = settings.nativeExplorerButtonIcons) == null ? void 0 : _b[colorKey];
+      const color =
+        (_a = settings.nativeExplorerButtonColors) == null
+          ? void 0
+          : _a[colorKey];
+      const iconOverride =
+        (_b = settings.nativeExplorerButtonIcons) == null
+          ? void 0
+          : _b[colorKey];
       group.addSetting((setting) => {
-        setting.setName(name).setDesc("").addExtraButton((button) => {
-          const iconEl = button.extraSettingsEl;
-          (0, import_obsidian9.setIcon)(iconEl, isHidden ? "eye-off" : "eye");
-          button.setTooltip(isHidden ? "Show button" : "Hide button");
-          button.onClick(() => {
-            void (async () => {
-              const currentValue = settings[settingKey];
-              settings[settingKey] = !currentValue;
-              await this.saveSettings();
-              const newIsHidden = settings[settingKey];
-              (0, import_obsidian9.setIcon)(iconEl, newIsHidden ? "eye-off" : "eye");
-              button.setTooltip(newIsHidden ? "Show button" : "Hide button");
-            })();
+        setting
+          .setName(name)
+          .setDesc("")
+          .addExtraButton((button) => {
+            const iconEl = button.extraSettingsEl;
+            (0, import_obsidian9.setIcon)(iconEl, isHidden ? "eye-off" : "eye");
+            button.setTooltip(isHidden ? "Show button" : "Hide button");
+            button.onClick(() => {
+              void (async () => {
+                const currentValue = settings[settingKey];
+                settings[settingKey] = !currentValue;
+                await this.saveSettings();
+                const newIsHidden = settings[settingKey];
+                (0, import_obsidian9.setIcon)(
+                  iconEl,
+                  newIsHidden ? "eye-off" : "eye",
+                );
+                button.setTooltip(newIsHidden ? "Show button" : "Hide button");
+              })();
+            });
+            button.extraSettingsEl.addEventListener("click", (e) =>
+              e.stopPropagation(),
+            );
           });
-          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-        });
         if (color) {
           setting.addColorPicker((colorPicker) => {
             colorPicker.setValue(color);
@@ -2399,14 +3389,18 @@ var ExplorerTab = class extends TabRenderer {
             setTimeout(() => {
               const colorInput = controlEl.querySelector('input[type="color"]');
               if (colorInput) {
-                colorInput.addEventListener("click", (e) => e.stopPropagation());
+                colorInput.addEventListener("click", (e) =>
+                  e.stopPropagation(),
+                );
               }
             }, 0);
             setTimeout(() => {
-              const colorPickerEl = controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
+              const colorPickerEl =
+                controlEl.querySelector(".color-picker") ||
+                controlEl.lastElementChild;
               const resetButton = controlEl.createEl("button", {
                 cls: "clickable-icon ui-tweaker-color-reset",
-                attr: { "aria-label": "Reset to default color" }
+                attr: { "aria-label": "Reset to default color" },
               });
               (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
               setCssProps(resetButton, { marginRight: "0.5rem" });
@@ -2422,7 +3416,9 @@ var ExplorerTab = class extends TabRenderer {
                   }
                   settings.nativeExplorerButtonColors[colorKey] = void 0;
                   await this.saveSettings();
-                  (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.applyNativeIconOverrides();
+                  (_a2 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a2.applyNativeIconOverrides();
                   this.renderNativeButtonControls(container, mainContainer);
                   requestAnimationFrame(() => {
                     scrollContainer.scrollTop = scrollPos;
@@ -2443,7 +3439,9 @@ var ExplorerTab = class extends TabRenderer {
                 }
                 settings.nativeExplorerButtonColors[colorKey] = value;
                 await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.applyNativeIconOverrides();
+                (_a2 = this.plugin.explorerManager) == null
+                  ? void 0
+                  : _a2.applyNativeIconOverrides();
               })();
             });
           });
@@ -2458,49 +3456,60 @@ var ExplorerTab = class extends TabRenderer {
               void (async () => {
                 var _a2;
                 await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.applyNativeIconOverrides();
+                (_a2 = this.plugin.explorerManager) == null
+                  ? void 0
+                  : _a2.applyNativeIconOverrides();
                 this.renderNativeButtonControls(container, mainContainer);
                 requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
                 });
               })();
             });
-            button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
+            button.buttonEl.addEventListener("click", (e) =>
+              e.stopPropagation(),
+            );
           });
         }
         setting.addButton((button) => {
           const currentIcon = iconOverride || "Default";
-          button.setButtonText(currentIcon === "Default" ? "Set icon..." : currentIcon).onClick(() => {
-            const modal = new IconPickerModal(this.app, (iconId) => {
-              void (async () => {
-                var _a2;
-                const scrollPos = scrollContainer.scrollTop;
-                if (!settings.nativeExplorerButtonIcons) {
-                  settings.nativeExplorerButtonIcons = {};
-                }
-                if (iconId) {
-                  settings.nativeExplorerButtonIcons[colorKey] = iconId;
-                } else {
-                  settings.nativeExplorerButtonIcons[colorKey] = void 0;
-                }
-                await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.applyNativeIconOverrides();
-                this.renderNativeButtonControls(container, mainContainer);
-                requestAnimationFrame(() => {
-                  scrollContainer.scrollTop = scrollPos;
-                });
-              })();
+          button
+            .setButtonText(
+              currentIcon === "Default" ? "Set icon..." : currentIcon,
+            )
+            .onClick(() => {
+              const modal = new IconPickerModal(this.app, (iconId) => {
+                void (async () => {
+                  var _a2;
+                  const scrollPos = scrollContainer.scrollTop;
+                  if (!settings.nativeExplorerButtonIcons) {
+                    settings.nativeExplorerButtonIcons = {};
+                  }
+                  if (iconId) {
+                    settings.nativeExplorerButtonIcons[colorKey] = iconId;
+                  } else {
+                    settings.nativeExplorerButtonIcons[colorKey] = void 0;
+                  }
+                  await this.saveSettings();
+                  (_a2 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a2.applyNativeIconOverrides();
+                  this.renderNativeButtonControls(container, mainContainer);
+                  requestAnimationFrame(() => {
+                    scrollContainer.scrollTop = scrollPos;
+                  });
+                })();
+              });
+              modal.open();
             });
-            modal.open();
-          });
           button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
           if (iconOverride) {
             setTimeout(() => {
               const controlEl = setting.controlEl;
-              const buttonEl = controlEl.querySelector("button") || controlEl.lastElementChild;
+              const buttonEl =
+                controlEl.querySelector("button") || controlEl.lastElementChild;
               const resetButton = controlEl.createEl("button", {
                 cls: "clickable-icon ui-tweaker-icon-reset",
-                attr: { "aria-label": "Reset to default icon" }
+                attr: { "aria-label": "Reset to default icon" },
               });
               (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
               setCssProps(resetButton, { marginRight: "0.5rem" });
@@ -2516,7 +3525,9 @@ var ExplorerTab = class extends TabRenderer {
                   }
                   settings.nativeExplorerButtonIcons[colorKey] = void 0;
                   await this.saveSettings();
-                  (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.applyNativeIconOverrides();
+                  (_a2 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a2.applyNativeIconOverrides();
                   this.renderNativeButtonControls(container, mainContainer);
                   requestAnimationFrame(() => {
                     scrollContainer.scrollTop = scrollPos;
@@ -2544,70 +3555,138 @@ var ExplorerTab = class extends TabRenderer {
     const settings = this.getSettings();
     const group = new import_obsidian9.SettingGroup(container);
     const otherSettings = [];
-    const pair = item.type === "custom" && item.commandId ? settings.explorerCommands.find((c) => c.id === item.commandId) : null;
-    const displayName = item.type === "custom" && pair ? pair.displayName || pair.name : item.name;
+    const pair =
+      item.type === "custom" && item.commandId
+        ? settings.explorerCommands.find((c) => c.id === item.commandId)
+        : null;
+    const displayName =
+      item.type === "custom" && pair
+        ? pair.displayName || pair.name
+        : item.name;
     const nativeButtonMap = {
       "native-newNote": { settingKey: "newNoteButton", colorKey: "newNote" },
-      "native-newFolder": { settingKey: "newFolderButton", colorKey: "newFolder" },
-      "native-sortOrder": { settingKey: "sortOrderButton", colorKey: "sortOrder" },
-      "native-autoReveal": { settingKey: "autoRevealButton", colorKey: "autoReveal" },
-      "native-collapseAll": { settingKey: "collapseAllButton", colorKey: "collapseAll" }
+      "native-newFolder": {
+        settingKey: "newFolderButton",
+        colorKey: "newFolder",
+      },
+      "native-sortOrder": {
+        settingKey: "sortOrderButton",
+        colorKey: "sortOrder",
+      },
+      "native-autoReveal": {
+        settingKey: "autoRevealButton",
+        colorKey: "autoReveal",
+      },
+      "native-collapseAll": {
+        settingKey: "collapseAllButton",
+        colorKey: "collapseAll",
+      },
     };
-    const nativeButtonInfo = item.type === "native" ? nativeButtonMap[item.id] : null;
-    const isHidden = nativeButtonInfo ? settings[nativeButtonInfo.settingKey] : item.hidden;
-    const color = nativeButtonInfo ? (_a = settings.nativeExplorerButtonColors) == null ? void 0 : _a[nativeButtonInfo.colorKey] : item.color && item.color !== "#000000" ? item.color : void 0;
-    const iconOverride = nativeButtonInfo ? (_b = settings.nativeExplorerButtonIcons) == null ? void 0 : _b[nativeButtonInfo.colorKey] : item.icon || void 0;
+    const nativeButtonInfo =
+      item.type === "native" ? nativeButtonMap[item.id] : null;
+    const isHidden = nativeButtonInfo
+      ? settings[nativeButtonInfo.settingKey]
+      : item.hidden;
+    const color = nativeButtonInfo
+      ? (_a = settings.nativeExplorerButtonColors) == null
+        ? void 0
+        : _a[nativeButtonInfo.colorKey]
+      : item.color && item.color !== "#000000"
+        ? item.color
+        : void 0;
+    const iconOverride = nativeButtonInfo
+      ? (_b = settings.nativeExplorerButtonIcons) == null
+        ? void 0
+        : _b[nativeButtonInfo.colorKey]
+      : item.icon || void 0;
     group.addSetting((setting) => {
       var _a2;
       if (item.type === "external") {
-        setting.settingEl.addEventListener("click", (e) => {
-          const target = e.target;
-          const isExtraButton = target.closest(".extra-setting-button") !== null || target.closest(".clickable-icon.extra-setting-button") !== null;
-          if (!isExtraButton) {
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            return false;
-          }
-        }, true);
-        setting.settingEl.addEventListener("click", (e) => {
-          const target = e.target;
-          const isExtraButton = target.closest(".extra-setting-button") !== null || target.closest(".clickable-icon.extra-setting-button") !== null;
-          if (!isExtraButton) {
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            return false;
-          }
-        }, false);
+        setting.settingEl.addEventListener(
+          "click",
+          (e) => {
+            const target = e.target;
+            const isExtraButton =
+              target.closest(".extra-setting-button") !== null ||
+              target.closest(".clickable-icon.extra-setting-button") !== null;
+            if (!isExtraButton) {
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+              e.preventDefault();
+              return false;
+            }
+          },
+          true,
+        );
+        setting.settingEl.addEventListener(
+          "click",
+          (e) => {
+            const target = e.target;
+            const isExtraButton =
+              target.closest(".extra-setting-button") !== null ||
+              target.closest(".clickable-icon.extra-setting-button") !== null;
+            if (!isExtraButton) {
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+              e.preventDefault();
+              return false;
+            }
+          },
+          false,
+        );
       } else {
-        setting.settingEl.addEventListener("click", (e) => {
-          const target = e.target;
-          const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
-          const isExtraButton = target.closest(".extra-setting-button") !== null || target.closest(".clickable-icon.extra-setting-button") !== null;
-          const isNameEdit = target.closest(".ui-tweaker-name-display") !== null || target.closest(".ui-tweaker-edit-icon") !== null || target.closest(".ui-tweaker-editable-name") !== null;
-          if (!isChevronClick && !isExtraButton && !isNameEdit) {
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            return false;
-          }
-        }, true);
-        setting.settingEl.addEventListener("click", (e) => {
-          const target = e.target;
-          const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
-          const isExtraButton = target.closest(".extra-setting-button") !== null || target.closest(".clickable-icon.extra-setting-button") !== null;
-          const isNameEdit = target.closest(".ui-tweaker-name-display") !== null || target.closest(".ui-tweaker-edit-icon") !== null || target.closest(".ui-tweaker-editable-name") !== null;
-          if (!isChevronClick && !isExtraButton && !isNameEdit) {
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            return false;
-          }
-        }, false);
+        setting.settingEl.addEventListener(
+          "click",
+          (e) => {
+            const target = e.target;
+            const isChevronClick =
+              target.closest(".ui-tweaker-collapse-icon") !== null;
+            const isExtraButton =
+              target.closest(".extra-setting-button") !== null ||
+              target.closest(".clickable-icon.extra-setting-button") !== null;
+            const isNameEdit =
+              target.closest(".ui-tweaker-name-display") !== null ||
+              target.closest(".ui-tweaker-edit-icon") !== null ||
+              target.closest(".ui-tweaker-editable-name") !== null;
+            if (!isChevronClick && !isExtraButton && !isNameEdit) {
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+              e.preventDefault();
+              return false;
+            }
+          },
+          true,
+        );
+        setting.settingEl.addEventListener(
+          "click",
+          (e) => {
+            const target = e.target;
+            const isChevronClick =
+              target.closest(".ui-tweaker-collapse-icon") !== null;
+            const isExtraButton =
+              target.closest(".extra-setting-button") !== null ||
+              target.closest(".clickable-icon.extra-setting-button") !== null;
+            const isNameEdit =
+              target.closest(".ui-tweaker-name-display") !== null ||
+              target.closest(".ui-tweaker-edit-icon") !== null ||
+              target.closest(".ui-tweaker-editable-name") !== null;
+            if (!isChevronClick && !isExtraButton && !isNameEdit) {
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+              e.preventDefault();
+              return false;
+            }
+          },
+          false,
+        );
       }
       const nameEl = setting.nameEl;
-      setCssProps(nameEl, { display: "flex", alignItems: "center", gap: "0.5rem", width: "100%" });
+      setCssProps(nameEl, {
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+        width: "100%",
+      });
       let chevronContainer = null;
       let isExpanded = false;
       if (item.type === "native" || item.type === "custom") {
@@ -2620,33 +3699,48 @@ var ExplorerTab = class extends TabRenderer {
           margin: "0",
           display: "inline-flex",
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
         });
         nameEl.insertBefore(chevronContainer, nameEl.firstChild);
-        isExpanded = (_a2 = this.expandedStates.get(item.id)) != null ? _a2 : false;
-        (0, import_obsidian9.setIcon)(chevronContainer, isExpanded ? "chevrons-down-up" : "chevrons-up-down");
+        isExpanded =
+          (_a2 = this.expandedStates.get(item.id)) != null ? _a2 : false;
+        (0, import_obsidian9.setIcon)(
+          chevronContainer,
+          isExpanded ? "chevrons-down-up" : "chevrons-up-down",
+        );
         chevronContainer.addEventListener("click", (e) => {
           e.stopPropagation();
           e.stopImmediatePropagation();
           e.preventDefault();
           isExpanded = !isExpanded;
           this.expandedStates.set(item.id, isExpanded);
-          (0, import_obsidian9.setIcon)(chevronContainer, isExpanded ? "chevrons-down-up" : "chevrons-up-down");
+          (0, import_obsidian9.setIcon)(
+            chevronContainer,
+            isExpanded ? "chevrons-down-up" : "chevrons-up-down",
+          );
           otherSettings.forEach((settingEl) => {
             setCssProps(settingEl, { display: isExpanded ? "" : "none" });
           });
         });
       }
-      const nameContainer = nameEl.createDiv({ cls: "ui-tweaker-editable-name" });
-      setCssProps(nameContainer, { display: "flex", alignItems: "center", gap: "0.5rem" });
+      const nameContainer = nameEl.createDiv({
+        cls: "ui-tweaker-editable-name",
+      });
+      setCssProps(nameContainer, {
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+      });
       const createNameDisplay = (name) => {
         nameContainer.empty();
         const display = nameContainer.createSpan({
           text: name === displayName ? name : `${name} (${displayName})`,
-          cls: "ui-tweaker-name-display"
+          cls: "ui-tweaker-name-display",
         });
         if (item.type === "custom") {
-          const iconContainer = nameContainer.createDiv({ cls: "ui-tweaker-edit-icon" });
+          const iconContainer = nameContainer.createDiv({
+            cls: "ui-tweaker-edit-icon",
+          });
           setCssProps(iconContainer, { opacity: "0.6" });
           (0, import_obsidian9.setIcon)(iconContainer, "lucide-pencil-line");
           const startEdit = () => {
@@ -2654,7 +3748,7 @@ var ExplorerTab = class extends TabRenderer {
             nameContainer.empty();
             const nameInput = nameContainer.createEl("input", {
               type: "text",
-              value: currentName
+              value: currentName,
             });
             nameInput.addClass("mod-text-input");
             nameInput.focus();
@@ -2670,7 +3764,9 @@ var ExplorerTab = class extends TabRenderer {
               if (pair) {
                 pair.name = newName;
               }
-              (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.updateButtonNames();
+              (_a3 = this.plugin.explorerManager) == null
+                ? void 0
+                : _a3.updateButtonNames();
               void (async () => {
                 await this.saveSettings();
                 this.render(container);
@@ -2698,123 +3794,165 @@ var ExplorerTab = class extends TabRenderer {
         }
       };
       createNameDisplay(item.name);
-      setting.setDesc("").addExtraButton((button) => {
-        if (item.type === "custom" && pair) {
-          const iconEl = button.extraSettingsEl;
-          (0, import_obsidian9.setIcon)(iconEl, pair.icon);
-          iconEl.setAttribute("data-explorer-command-id", pair.id);
-          if (pair.color && pair.color !== "#000000") {
-            setCssProps(iconEl, { color: pair.color });
-          } else {
-            iconEl.style.removeProperty("color");
-          }
-          button.setTooltip("Change icon");
-          button.onClick(() => {
-            const modal = new IconPickerModal(this.app, (iconId) => {
-              void (async () => {
-                var _a3;
-                if (iconId && iconId !== pair.icon) {
-                  pair.icon = iconId;
-                  item.icon = iconId;
+      setting
+        .setDesc("")
+        .addExtraButton((button) => {
+          if (item.type === "custom" && pair) {
+            const iconEl = button.extraSettingsEl;
+            (0, import_obsidian9.setIcon)(iconEl, pair.icon);
+            iconEl.setAttribute("data-explorer-command-id", pair.id);
+            if (pair.color && pair.color !== "#000000") {
+              setCssProps(iconEl, { color: pair.color });
+            } else {
+              iconEl.style.removeProperty("color");
+            }
+            button.setTooltip("Change icon");
+            button.onClick(() => {
+              const modal = new IconPickerModal(this.app, (iconId) => {
+                void (async () => {
+                  var _a3;
+                  if (iconId && iconId !== pair.icon) {
+                    pair.icon = iconId;
+                    item.icon = iconId;
+                    await this.saveSettings();
+                    (_a3 = this.plugin.explorerManager) == null
+                      ? void 0
+                      : _a3.reorder();
+                    this.render(container);
+                  }
+                })();
+              });
+              modal.open();
+            });
+          } else if (item.type === "native" && iconOverride) {
+            const iconEl = button.extraSettingsEl;
+            (0, import_obsidian9.setIcon)(iconEl, iconOverride);
+            button.setTooltip("Change icon");
+            button.onClick(() => {
+              const modal = new IconPickerModal(this.app, (iconId) => {
+                void (async () => {
+                  var _a3;
+                  if (!nativeButtonInfo) return;
+                  if (!settings.nativeExplorerButtonIcons) {
+                    settings.nativeExplorerButtonIcons = {};
+                  }
+                  if (iconId) {
+                    settings.nativeExplorerButtonIcons[
+                      nativeButtonInfo.colorKey
+                    ] = iconId;
+                  } else {
+                    settings.nativeExplorerButtonIcons[
+                      nativeButtonInfo.colorKey
+                    ] = void 0;
+                  }
                   await this.saveSettings();
-                  (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
+                  (_a3 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a3.applyNativeIconOverrides();
                   this.render(container);
-                }
-              })();
+                })();
+              });
+              modal.open();
             });
-            modal.open();
-          });
-        } else if (item.type === "native" && iconOverride) {
-          const iconEl = button.extraSettingsEl;
-          (0, import_obsidian9.setIcon)(iconEl, iconOverride);
-          button.setTooltip("Change icon");
-          button.onClick(() => {
-            const modal = new IconPickerModal(this.app, (iconId) => {
+          } else {
+            setCssProps(button.extraSettingsEl, { display: "none" });
+          }
+          button.extraSettingsEl.addEventListener("mouseenter", (e) =>
+            e.stopPropagation(),
+          );
+          button.extraSettingsEl.addEventListener("mouseleave", (e) =>
+            e.stopPropagation(),
+          );
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        })
+        .addExtraButton((button) => {
+          button.setIcon("chevron-up");
+          if (index > 0) {
+            button.setTooltip("Move up");
+            button.onClick(() => {
+              const scrollContainer =
+                container.closest(".vertical-tab-content") ||
+                container.closest(".settings-content") ||
+                container.closest(".vertical-tab-content-container") ||
+                container;
+              const scrollPos = scrollContainer.scrollTop;
               void (async () => {
                 var _a3;
-                if (!nativeButtonInfo) return;
-                if (!settings.nativeExplorerButtonIcons) {
-                  settings.nativeExplorerButtonIcons = {};
-                }
-                if (iconId) {
-                  settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = iconId;
-                } else {
-                  settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = void 0;
-                }
+                arrayMoveMutable3(
+                  settings.explorerButtonItems,
+                  index,
+                  index - 1,
+                );
                 await this.saveSettings();
-                (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.applyNativeIconOverrides();
+                (_a3 = this.plugin.explorerManager) == null
+                  ? void 0
+                  : _a3.reorder();
                 this.render(container);
+                requestAnimationFrame(() => {
+                  scrollContainer.scrollTop = scrollPos;
+                  setTimeout(() => {
+                    scrollContainer.scrollTop = scrollPos;
+                    setTimeout(() => {
+                      scrollContainer.scrollTop = scrollPos;
+                    }, 50);
+                  }, 0);
+                });
               })();
             });
-            modal.open();
-          });
-        } else {
-          setCssProps(button.extraSettingsEl, { display: "none" });
-        }
-        button.extraSettingsEl.addEventListener("mouseenter", (e) => e.stopPropagation());
-        button.extraSettingsEl.addEventListener("mouseleave", (e) => e.stopPropagation());
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      }).addExtraButton((button) => {
-        button.setIcon("chevron-up");
-        if (index > 0) {
-          button.setTooltip("Move up");
-          button.onClick(() => {
-            const scrollContainer = container.closest(".vertical-tab-content") || container.closest(".settings-content") || container.closest(".vertical-tab-content-container") || container;
-            const scrollPos = scrollContainer.scrollTop;
-            void (async () => {
-              var _a3;
-              arrayMoveMutable3(settings.explorerButtonItems, index, index - 1);
-              await this.saveSettings();
-              (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
-              this.render(container);
-              requestAnimationFrame(() => {
-                scrollContainer.scrollTop = scrollPos;
-                setTimeout(() => {
+          } else {
+            button.setTooltip("Already at top");
+            button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
+            setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
+          }
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        })
+        .addExtraButton((button) => {
+          button.setIcon("chevron-down");
+          if (index < settings.explorerButtonItems.length - 1) {
+            button.setTooltip("Move down");
+            button.onClick(() => {
+              const scrollContainer =
+                container.closest(".vertical-tab-content") ||
+                container.closest(".settings-content") ||
+                container.closest(".vertical-tab-content-container") ||
+                container;
+              const scrollPos = scrollContainer.scrollTop;
+              void (async () => {
+                var _a3;
+                arrayMoveMutable3(
+                  settings.explorerButtonItems,
+                  index,
+                  index + 1,
+                );
+                await this.saveSettings();
+                (_a3 = this.plugin.explorerManager) == null
+                  ? void 0
+                  : _a3.reorder();
+                this.render(container);
+                requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
                   setTimeout(() => {
                     scrollContainer.scrollTop = scrollPos;
-                  }, 50);
-                }, 0);
-              });
-            })();
-          });
-        } else {
-          button.setTooltip("Already at top");
-          button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
-          setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
-        }
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      }).addExtraButton((button) => {
-        button.setIcon("chevron-down");
-        if (index < settings.explorerButtonItems.length - 1) {
-          button.setTooltip("Move down");
-          button.onClick(() => {
-            const scrollContainer = container.closest(".vertical-tab-content") || container.closest(".settings-content") || container.closest(".vertical-tab-content-container") || container;
-            const scrollPos = scrollContainer.scrollTop;
-            void (async () => {
-              var _a3;
-              arrayMoveMutable3(settings.explorerButtonItems, index, index + 1);
-              await this.saveSettings();
-              (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
-              this.render(container);
-              requestAnimationFrame(() => {
-                scrollContainer.scrollTop = scrollPos;
-                setTimeout(() => {
-                  scrollContainer.scrollTop = scrollPos;
-                  setTimeout(() => {
-                    scrollContainer.scrollTop = scrollPos;
-                  }, 50);
-                }, 0);
-              });
-            })();
-          });
-        } else {
-          button.setTooltip("Already at bottom");
-          button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
-          setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
-        }
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      });
+                    setTimeout(() => {
+                      scrollContainer.scrollTop = scrollPos;
+                    }, 50);
+                  }, 0);
+                });
+              })();
+            });
+          } else {
+            button.setTooltip("Already at bottom");
+            button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
+            setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
+          }
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        });
       if (item.type === "custom") {
         setting.addExtraButton((button) => {
           button.setIcon("trash");
@@ -2835,14 +3973,21 @@ var ExplorerTab = class extends TabRenderer {
                 }
               }
               await this.saveSettings();
-              (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
+              (_a3 = this.plugin.explorerManager) == null
+                ? void 0
+                : _a3.reorder();
               this.render(container);
             })();
           });
-          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
         });
       }
-      if (item.type === "native" && nativeButtonInfo || item.type === "external") {
+      if (
+        (item.type === "native" && nativeButtonInfo) ||
+        item.type === "external"
+      ) {
         setting.addExtraButton((button) => {
           const iconEl = button.extraSettingsEl;
           (0, import_obsidian9.setIcon)(iconEl, isHidden ? "eye-off" : "eye");
@@ -2851,19 +3996,27 @@ var ExplorerTab = class extends TabRenderer {
             void (async () => {
               var _a3;
               if (item.type === "native" && nativeButtonInfo) {
-                settings[nativeButtonInfo.settingKey] = !settings[nativeButtonInfo.settingKey];
+                settings[nativeButtonInfo.settingKey] =
+                  !settings[nativeButtonInfo.settingKey];
                 item.hidden = settings[nativeButtonInfo.settingKey];
               } else if (item.type === "external") {
                 item.hidden = !item.hidden;
               }
               await this.saveSettings();
               const newIsHidden = item.hidden;
-              (0, import_obsidian9.setIcon)(iconEl, newIsHidden ? "eye-off" : "eye");
+              (0, import_obsidian9.setIcon)(
+                iconEl,
+                newIsHidden ? "eye-off" : "eye",
+              );
               button.setTooltip(newIsHidden ? "Show button" : "Hide button");
-              (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
+              (_a3 = this.plugin.explorerManager) == null
+                ? void 0
+                : _a3.reorder();
             })();
           });
-          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
         });
       }
     });
@@ -2872,64 +4025,270 @@ var ExplorerTab = class extends TabRenderer {
         group.addSetting((setting) => {
           otherSettings.push(setting.settingEl);
           const hasColor = color !== void 0;
-          setting.setName("Custom color").setDesc("Set a custom color for this icon").addColorPicker((colorPicker) => {
-            const currentColor = color != null ? color : "#000000";
-            colorPicker.setValue(currentColor);
-            const controlEl = setting.controlEl;
-            controlEl.addEventListener("click", (e) => e.stopPropagation());
-            setTimeout(() => {
-              const colorInput = controlEl.querySelector('input[type="color"]');
-              if (colorInput) {
-                colorInput.addEventListener("click", (e) => e.stopPropagation());
-              }
-            }, 0);
-            if (hasColor) {
+          setting
+            .setName("Custom color")
+            .setDesc("Set a custom color for this icon")
+            .addColorPicker((colorPicker) => {
+              const currentColor = color != null ? color : "#000000";
+              colorPicker.setValue(currentColor);
+              const controlEl = setting.controlEl;
+              controlEl.addEventListener("click", (e) => e.stopPropagation());
               setTimeout(() => {
-                const colorPickerEl = controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
-                const resetButton = controlEl.createEl("button", {
-                  cls: "clickable-icon ui-tweaker-color-reset",
-                  attr: { "aria-label": "Reset to default color" }
+                const colorInput = controlEl.querySelector(
+                  'input[type="color"]',
+                );
+                if (colorInput) {
+                  colorInput.addEventListener("click", (e) =>
+                    e.stopPropagation(),
+                  );
+                }
+              }, 0);
+              if (hasColor) {
+                setTimeout(() => {
+                  const colorPickerEl =
+                    controlEl.querySelector(".color-picker") ||
+                    controlEl.lastElementChild;
+                  const resetButton = controlEl.createEl("button", {
+                    cls: "clickable-icon ui-tweaker-color-reset",
+                    attr: { "aria-label": "Reset to default color" },
+                  });
+                  (0, import_obsidian9.setIcon)(
+                    resetButton,
+                    "lucide-rotate-cw",
+                  );
+                  setCssProps(resetButton, { marginRight: "0.5rem" });
+                  resetButton.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                    void (async () => {
+                      var _a2;
+                      if (!settings.nativeExplorerButtonColors) {
+                        settings.nativeExplorerButtonColors = {};
+                      }
+                      settings.nativeExplorerButtonColors[
+                        nativeButtonInfo.colorKey
+                      ] = void 0;
+                      await this.saveSettings();
+                      (_a2 = this.plugin.explorerManager) == null
+                        ? void 0
+                        : _a2.applyNativeIconOverrides();
+                      this.render(container);
+                    })();
+                  });
+                  if (colorPickerEl) {
+                    controlEl.insertBefore(resetButton, colorPickerEl);
+                  }
+                }, 0);
+              }
+              colorPicker.onChange((value) => {
+                void (async () => {
+                  var _a2;
+                  if (!settings.nativeExplorerButtonColors) {
+                    settings.nativeExplorerButtonColors = {};
+                  }
+                  const newColor = value === "#000000" ? void 0 : value;
+                  settings.nativeExplorerButtonColors[
+                    nativeButtonInfo.colorKey
+                  ] = newColor;
+                  await this.saveSettings();
+                  (_a2 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a2.applyNativeIconOverrides();
+                  const existingReset = controlEl.querySelector(
+                    ".ui-tweaker-color-reset",
+                  );
+                  if (newColor && !existingReset) {
+                    const colorPickerEl =
+                      controlEl.querySelector(".color-picker") ||
+                      controlEl.lastElementChild;
+                    const resetButton = controlEl.createEl("button", {
+                      cls: "clickable-icon ui-tweaker-color-reset",
+                      attr: { "aria-label": "Reset to default color" },
+                    });
+                    (0, import_obsidian9.setIcon)(
+                      resetButton,
+                      "lucide-rotate-cw",
+                    );
+                    setCssProps(resetButton, { marginRight: "0.5rem" });
+                    resetButton.addEventListener("click", (e) => {
+                      e.stopPropagation();
+                      e.stopImmediatePropagation();
+                      e.preventDefault();
+                      void (async () => {
+                        var _a3;
+                        if (!settings.nativeExplorerButtonColors) {
+                          settings.nativeExplorerButtonColors = {};
+                        }
+                        settings.nativeExplorerButtonColors[
+                          nativeButtonInfo.colorKey
+                        ] = void 0;
+                        await this.saveSettings();
+                        (_a3 = this.plugin.explorerManager) == null
+                          ? void 0
+                          : _a3.applyNativeIconOverrides();
+                        this.render(container);
+                      })();
+                    });
+                    if (colorPickerEl) {
+                      controlEl.insertBefore(resetButton, colorPickerEl);
+                    }
+                  } else if (!newColor && existingReset) {
+                    existingReset.remove();
+                  }
+                })();
+              });
+            });
+        });
+        group.addSetting((setting) => {
+          otherSettings.push(setting.settingEl);
+          const hasIconOverride = iconOverride !== void 0;
+          setting
+            .setName("Icon override")
+            .setDesc("Override the default icon for this button")
+            .addButton((button) => {
+              const currentIcon = iconOverride || "Default";
+              button
+                .setButtonText(
+                  currentIcon === "Default" ? "Set icon..." : currentIcon,
+                )
+                .onClick(() => {
+                  const modal = new IconPickerModal(this.app, (iconId) => {
+                    void (async () => {
+                      var _a2;
+                      if (!settings.nativeExplorerButtonIcons) {
+                        settings.nativeExplorerButtonIcons = {};
+                      }
+                      if (iconId) {
+                        settings.nativeExplorerButtonIcons[
+                          nativeButtonInfo.colorKey
+                        ] = iconId;
+                      } else {
+                        settings.nativeExplorerButtonIcons[
+                          nativeButtonInfo.colorKey
+                        ] = void 0;
+                      }
+                      await this.saveSettings();
+                      (_a2 = this.plugin.explorerManager) == null
+                        ? void 0
+                        : _a2.applyNativeIconOverrides();
+                      this.render(container);
+                    })();
+                  });
+                  modal.open();
                 });
-                (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
-                setCssProps(resetButton, { marginRight: "0.5rem" });
-                resetButton.addEventListener("click", (e) => {
-                  e.stopPropagation();
-                  e.stopImmediatePropagation();
-                  e.preventDefault();
+              button.buttonEl.addEventListener("click", (e) =>
+                e.stopPropagation(),
+              );
+              if (hasIconOverride) {
+                setTimeout(() => {
+                  const controlEl = setting.controlEl;
+                  const buttonEl =
+                    controlEl.querySelector("button") ||
+                    controlEl.lastElementChild;
+                  const resetButton = controlEl.createEl("button", {
+                    cls: "clickable-icon ui-tweaker-icon-override-reset",
+                    attr: { "aria-label": "Reset icon override" },
+                  });
+                  (0, import_obsidian9.setIcon)(
+                    resetButton,
+                    "lucide-rotate-cw",
+                  );
+                  setCssProps(resetButton, { marginRight: "0.5rem" });
+                  resetButton.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                    void (async () => {
+                      var _a2;
+                      if (!settings.nativeExplorerButtonIcons) {
+                        settings.nativeExplorerButtonIcons = {};
+                      }
+                      settings.nativeExplorerButtonIcons[
+                        nativeButtonInfo.colorKey
+                      ] = void 0;
+                      await this.saveSettings();
+                      (_a2 = this.plugin.explorerManager) == null
+                        ? void 0
+                        : _a2.applyNativeIconOverrides();
+                      this.render(container);
+                    })();
+                  });
+                  if (buttonEl) {
+                    controlEl.insertBefore(resetButton, buttonEl);
+                  } else {
+                    controlEl.insertBefore(resetButton, controlEl.firstChild);
+                  }
+                }, 0);
+              }
+            });
+        });
+      } else if (item.type === "custom" && pair) {
+        group.addSetting((setting) => {
+          otherSettings.push(setting.settingEl);
+          setting
+            .setName("Device mode")
+            .setDesc("Choose which devices this button appears on")
+            .addDropdown((dropdown) => {
+              const appId = this.app.appId || "this-device";
+              dropdown
+                .addOption("any", "All devices")
+                .addOption("desktop", "Desktop only")
+                .addOption("mobile", "Mobile only")
+                .addOption(appId, "This device")
+                .setValue(pair.mode || "any")
+                .onChange((value) => {
                   void (async () => {
                     var _a2;
-                    if (!settings.nativeExplorerButtonColors) {
-                      settings.nativeExplorerButtonColors = {};
-                    }
-                    settings.nativeExplorerButtonColors[nativeButtonInfo.colorKey] = void 0;
+                    pair.mode = value;
+                    item.mode = value;
                     await this.saveSettings();
-                    (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.applyNativeIconOverrides();
+                    (_a2 = this.plugin.explorerManager) == null
+                      ? void 0
+                      : _a2.reorder();
                     this.render(container);
                   })();
                 });
-                if (colorPickerEl) {
-                  controlEl.insertBefore(resetButton, colorPickerEl);
+              dropdown.selectEl.addEventListener("click", (e) =>
+                e.stopPropagation(),
+              );
+            });
+        });
+        group.addSetting((setting) => {
+          otherSettings.push(setting.settingEl);
+          const hasColor = pair.color !== void 0;
+          setting
+            .setName("Custom color")
+            .setDesc("Set a custom color for this icon")
+            .addColorPicker((colorPicker) => {
+              var _a2;
+              const currentColor = (_a2 = pair.color) != null ? _a2 : "#000000";
+              colorPicker.setValue(currentColor);
+              const controlEl = setting.controlEl;
+              controlEl.addEventListener("click", (e) => e.stopPropagation());
+              setTimeout(() => {
+                const colorInput = controlEl.querySelector(
+                  'input[type="color"]',
+                );
+                if (colorInput) {
+                  colorInput.addEventListener("click", (e) =>
+                    e.stopPropagation(),
+                  );
                 }
               }, 0);
-            }
-            colorPicker.onChange((value) => {
-              void (async () => {
-                var _a2;
-                if (!settings.nativeExplorerButtonColors) {
-                  settings.nativeExplorerButtonColors = {};
-                }
-                const newColor = value === "#000000" ? void 0 : value;
-                settings.nativeExplorerButtonColors[nativeButtonInfo.colorKey] = newColor;
-                await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.applyNativeIconOverrides();
-                const existingReset = controlEl.querySelector(".ui-tweaker-color-reset");
-                if (newColor && !existingReset) {
-                  const colorPickerEl = controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
+              if (hasColor) {
+                setTimeout(() => {
+                  const colorPickerEl =
+                    controlEl.querySelector(".color-picker") ||
+                    controlEl.lastElementChild;
                   const resetButton = controlEl.createEl("button", {
                     cls: "clickable-icon ui-tweaker-color-reset",
-                    attr: { "aria-label": "Reset to default color" }
+                    attr: { "aria-label": "Reset to default color" },
                   });
-                  (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
+                  (0, import_obsidian9.setIcon)(
+                    resetButton,
+                    "lucide-rotate-cw",
+                  );
                   setCssProps(resetButton, { marginRight: "0.5rem" });
                   resetButton.addEventListener("click", (e) => {
                     e.stopPropagation();
@@ -2937,241 +4296,160 @@ var ExplorerTab = class extends TabRenderer {
                     e.preventDefault();
                     void (async () => {
                       var _a3;
-                      if (!settings.nativeExplorerButtonColors) {
-                        settings.nativeExplorerButtonColors = {};
-                      }
-                      settings.nativeExplorerButtonColors[nativeButtonInfo.colorKey] = void 0;
+                      pair.color = void 0;
+                      item.color = void 0;
                       await this.saveSettings();
-                      (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.applyNativeIconOverrides();
+                      (_a3 = this.plugin.explorerManager) == null
+                        ? void 0
+                        : _a3.reorder();
                       this.render(container);
                     })();
                   });
                   if (colorPickerEl) {
                     controlEl.insertBefore(resetButton, colorPickerEl);
                   }
+                }, 0);
+              }
+              colorPicker.onChange((value) => {
+                const newColor = value === "#000000" ? void 0 : value;
+                pair.color = newColor;
+                item.color = newColor;
+                const iconButton = container.querySelector(
+                  `[data-explorer-command-id="${pair.id}"]`,
+                );
+                if (iconButton) {
+                  if (newColor && newColor !== "#000000") {
+                    setCssProps(iconButton, { color: newColor });
+                  } else {
+                    iconButton.style.removeProperty("color");
+                  }
+                }
+                const controlEl2 = setting.controlEl;
+                const existingReset = controlEl2.querySelector(
+                  ".ui-tweaker-color-reset",
+                );
+                if (newColor && !existingReset) {
+                  const colorPickerEl =
+                    controlEl2.querySelector(".color-picker") ||
+                    controlEl2.lastElementChild;
+                  const resetButton = controlEl2.createEl("button", {
+                    cls: "clickable-icon ui-tweaker-color-reset",
+                    attr: { "aria-label": "Reset to default color" },
+                  });
+                  (0, import_obsidian9.setIcon)(
+                    resetButton,
+                    "lucide-rotate-cw",
+                  );
+                  setCssProps(resetButton, { marginRight: "0.5rem" });
+                  resetButton.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                    void (async () => {
+                      var _a3;
+                      pair.color = void 0;
+                      item.color = void 0;
+                      await this.saveSettings();
+                      (_a3 = this.plugin.explorerManager) == null
+                        ? void 0
+                        : _a3.reorder();
+                      this.render(container);
+                    })();
+                  });
+                  if (colorPickerEl) {
+                    controlEl2.insertBefore(resetButton, colorPickerEl);
+                  }
                 } else if (!newColor && existingReset) {
                   existingReset.remove();
                 }
-              })();
+                void (async () => {
+                  var _a3;
+                  await this.saveSettings();
+                  (_a3 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a3.reorder();
+                })();
+              });
             });
-          });
         });
         group.addSetting((setting) => {
           otherSettings.push(setting.settingEl);
-          const hasIconOverride = iconOverride !== void 0;
-          setting.setName("Icon override").setDesc("Override the default icon for this button").addButton((button) => {
-            const currentIcon = iconOverride || "Default";
-            button.setButtonText(currentIcon === "Default" ? "Set icon..." : currentIcon).onClick(() => {
-              const modal = new IconPickerModal(this.app, (iconId) => {
+          setting
+            .setName("Toggle icon")
+            .setDesc(
+              "Icon to show when command is toggled on (leave empty to disable toggle). Commands with check callback work automatically. See readme for plugin developer compatibility notes.",
+            )
+            .setTooltip(
+              "For plugin developers: Commands with checkCallback work automatically. See https://github.com/davidvkimball/obsidian-ui-tweaker#toggle-icon-feature-compatibility for details.",
+            )
+            .addButton((button) => {
+              const currentToggleIcon = pair.toggleIcon || "None";
+              button
+                .setButtonText(
+                  currentToggleIcon === "None"
+                    ? "Set toggle icon..."
+                    : currentToggleIcon,
+                )
+                .onClick(() => {
+                  const modal = new IconPickerModal(this.app, (iconId) => {
+                    void (async () => {
+                      var _a2;
+                      if (iconId) {
+                        pair.toggleIcon = iconId;
+                        item.toggleIcon = iconId;
+                      } else {
+                        pair.toggleIcon = void 0;
+                        item.toggleIcon = void 0;
+                      }
+                      await this.saveSettings();
+                      (_a2 = this.plugin.explorerManager) == null
+                        ? void 0
+                        : _a2.reorder();
+                      this.render(container);
+                    })();
+                  });
+                  modal.open();
+                });
+              button.buttonEl.addEventListener("click", (e) =>
+                e.stopPropagation(),
+              );
+            });
+        });
+        group.addSetting((setting) => {
+          otherSettings.push(setting.settingEl);
+          setting
+            .setName("Use active class instead of icon swap")
+            .setDesc(
+              "When toggled on, add is-active class instead of swapping icon (explorer only)",
+            )
+            .addToggle((toggle) => {
+              var _a2;
+              toggle.setValue(
+                (_a2 = pair.useActiveClass) != null ? _a2 : false,
+              );
+              toggle.onChange((value) => {
                 void (async () => {
-                  var _a2;
-                  if (!settings.nativeExplorerButtonIcons) {
-                    settings.nativeExplorerButtonIcons = {};
-                  }
-                  if (iconId) {
-                    settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = iconId;
-                  } else {
-                    settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = void 0;
-                  }
+                  var _a3;
+                  pair.useActiveClass = value;
+                  item.useActiveClass = value;
                   await this.saveSettings();
-                  (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.applyNativeIconOverrides();
+                  (_a3 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a3.reorder();
                   this.render(container);
                 })();
               });
-              modal.open();
+              toggle.toggleEl.addEventListener("click", (e) =>
+                e.stopPropagation(),
+              );
             });
-            button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
-            if (hasIconOverride) {
-              setTimeout(() => {
-                const controlEl = setting.controlEl;
-                const buttonEl = controlEl.querySelector("button") || controlEl.lastElementChild;
-                const resetButton = controlEl.createEl("button", {
-                  cls: "clickable-icon ui-tweaker-icon-override-reset",
-                  attr: { "aria-label": "Reset icon override" }
-                });
-                (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
-                setCssProps(resetButton, { marginRight: "0.5rem" });
-                resetButton.addEventListener("click", (e) => {
-                  e.stopPropagation();
-                  e.stopImmediatePropagation();
-                  e.preventDefault();
-                  void (async () => {
-                    var _a2;
-                    if (!settings.nativeExplorerButtonIcons) {
-                      settings.nativeExplorerButtonIcons = {};
-                    }
-                    settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = void 0;
-                    await this.saveSettings();
-                    (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.applyNativeIconOverrides();
-                    this.render(container);
-                  })();
-                });
-                if (buttonEl) {
-                  controlEl.insertBefore(resetButton, buttonEl);
-                } else {
-                  controlEl.insertBefore(resetButton, controlEl.firstChild);
-                }
-              }, 0);
-            }
-          });
-        });
-      } else if (item.type === "custom" && pair) {
-        group.addSetting((setting) => {
-          otherSettings.push(setting.settingEl);
-          setting.setName("Device mode").setDesc("Choose which devices this button appears on").addDropdown((dropdown) => {
-            const appId = this.app.appId || "this-device";
-            dropdown.addOption("any", "All devices").addOption("desktop", "Desktop only").addOption("mobile", "Mobile only").addOption(appId, "This device").setValue(pair.mode || "any").onChange((value) => {
-              void (async () => {
-                var _a2;
-                pair.mode = value;
-                item.mode = value;
-                await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-                this.render(container);
-              })();
-            });
-            dropdown.selectEl.addEventListener("click", (e) => e.stopPropagation());
-          });
-        });
-        group.addSetting((setting) => {
-          otherSettings.push(setting.settingEl);
-          const hasColor = pair.color !== void 0;
-          setting.setName("Custom color").setDesc("Set a custom color for this icon").addColorPicker((colorPicker) => {
-            var _a2;
-            const currentColor = (_a2 = pair.color) != null ? _a2 : "#000000";
-            colorPicker.setValue(currentColor);
-            const controlEl = setting.controlEl;
-            controlEl.addEventListener("click", (e) => e.stopPropagation());
-            setTimeout(() => {
-              const colorInput = controlEl.querySelector('input[type="color"]');
-              if (colorInput) {
-                colorInput.addEventListener("click", (e) => e.stopPropagation());
-              }
-            }, 0);
-            if (hasColor) {
-              setTimeout(() => {
-                const colorPickerEl = controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
-                const resetButton = controlEl.createEl("button", {
-                  cls: "clickable-icon ui-tweaker-color-reset",
-                  attr: { "aria-label": "Reset to default color" }
-                });
-                (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
-                setCssProps(resetButton, { marginRight: "0.5rem" });
-                resetButton.addEventListener("click", (e) => {
-                  e.stopPropagation();
-                  e.stopImmediatePropagation();
-                  e.preventDefault();
-                  void (async () => {
-                    var _a3;
-                    pair.color = void 0;
-                    item.color = void 0;
-                    await this.saveSettings();
-                    (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
-                    this.render(container);
-                  })();
-                });
-                if (colorPickerEl) {
-                  controlEl.insertBefore(resetButton, colorPickerEl);
-                }
-              }, 0);
-            }
-            colorPicker.onChange((value) => {
-              const newColor = value === "#000000" ? void 0 : value;
-              pair.color = newColor;
-              item.color = newColor;
-              const iconButton = container.querySelector(`[data-explorer-command-id="${pair.id}"]`);
-              if (iconButton) {
-                if (newColor && newColor !== "#000000") {
-                  setCssProps(iconButton, { color: newColor });
-                } else {
-                  iconButton.style.removeProperty("color");
-                }
-              }
-              const controlEl2 = setting.controlEl;
-              const existingReset = controlEl2.querySelector(".ui-tweaker-color-reset");
-              if (newColor && !existingReset) {
-                const colorPickerEl = controlEl2.querySelector(".color-picker") || controlEl2.lastElementChild;
-                const resetButton = controlEl2.createEl("button", {
-                  cls: "clickable-icon ui-tweaker-color-reset",
-                  attr: { "aria-label": "Reset to default color" }
-                });
-                (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
-                setCssProps(resetButton, { marginRight: "0.5rem" });
-                resetButton.addEventListener("click", (e) => {
-                  e.stopPropagation();
-                  e.stopImmediatePropagation();
-                  e.preventDefault();
-                  void (async () => {
-                    var _a3;
-                    pair.color = void 0;
-                    item.color = void 0;
-                    await this.saveSettings();
-                    (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
-                    this.render(container);
-                  })();
-                });
-                if (colorPickerEl) {
-                  controlEl2.insertBefore(resetButton, colorPickerEl);
-                }
-              } else if (!newColor && existingReset) {
-                existingReset.remove();
-              }
-              void (async () => {
-                var _a3;
-                await this.saveSettings();
-                (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
-              })();
-            });
-          });
-        });
-        group.addSetting((setting) => {
-          otherSettings.push(setting.settingEl);
-          setting.setName("Toggle icon").setDesc("Icon to show when command is toggled on (leave empty to disable toggle). Commands with check callback work automatically. See readme for plugin developer compatibility notes.").setTooltip("For plugin developers: Commands with checkCallback work automatically. See https://github.com/davidvkimball/obsidian-ui-tweaker#toggle-icon-feature-compatibility for details.").addButton((button) => {
-            const currentToggleIcon = pair.toggleIcon || "None";
-            button.setButtonText(currentToggleIcon === "None" ? "Set toggle icon..." : currentToggleIcon).onClick(() => {
-              const modal = new IconPickerModal(this.app, (iconId) => {
-                void (async () => {
-                  var _a2;
-                  if (iconId) {
-                    pair.toggleIcon = iconId;
-                    item.toggleIcon = iconId;
-                  } else {
-                    pair.toggleIcon = void 0;
-                    item.toggleIcon = void 0;
-                  }
-                  await this.saveSettings();
-                  (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-                  this.render(container);
-                })();
-              });
-              modal.open();
-            });
-            button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
-          });
-        });
-        group.addSetting((setting) => {
-          otherSettings.push(setting.settingEl);
-          setting.setName("Use active class instead of icon swap").setDesc("When toggled on, add is-active class instead of swapping icon (explorer only)").addToggle((toggle) => {
-            var _a2;
-            toggle.setValue((_a2 = pair.useActiveClass) != null ? _a2 : false);
-            toggle.onChange((value) => {
-              void (async () => {
-                var _a3;
-                pair.useActiveClass = value;
-                item.useActiveClass = value;
-                await this.saveSettings();
-                (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
-                this.render(container);
-              })();
-            });
-            toggle.toggleEl.addEventListener("click", (e) => e.stopPropagation());
-          });
         });
       }
     }
     setTimeout(() => {
       var _a2;
-      const savedExpanded = (_a2 = this.expandedStates.get(item.id)) != null ? _a2 : false;
+      const savedExpanded =
+        (_a2 = this.expandedStates.get(item.id)) != null ? _a2 : false;
       otherSettings.forEach((settingEl) => {
         setCssProps(settingEl, { display: savedExpanded ? "" : "none" });
       });
@@ -3184,32 +4462,57 @@ var ExplorerTab = class extends TabRenderer {
     const displayName = pair.displayName || pair.name;
     group.addSetting((setting) => {
       var _a;
-      setting.settingEl.addEventListener("click", (e) => {
-        const target = e.target;
-        const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
-        const isExtraButton = target.closest(".extra-setting-button") !== null || target.closest(".clickable-icon.extra-setting-button") !== null;
-        const isNameEdit = target.closest(".ui-tweaker-name-display") !== null || target.closest(".ui-tweaker-edit-icon") !== null || target.closest(".ui-tweaker-editable-name") !== null;
-        if (!isChevronClick && !isExtraButton && !isNameEdit) {
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          e.preventDefault();
-          return false;
-        }
-      }, true);
-      setting.settingEl.addEventListener("click", (e) => {
-        const target = e.target;
-        const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
-        const isExtraButton = target.closest(".extra-setting-button") !== null || target.closest(".clickable-icon.extra-setting-button") !== null;
-        const isNameEdit = target.closest(".ui-tweaker-name-display") !== null || target.closest(".ui-tweaker-edit-icon") !== null || target.closest(".ui-tweaker-editable-name") !== null;
-        if (!isChevronClick && !isExtraButton && !isNameEdit) {
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          e.preventDefault();
-          return false;
-        }
-      }, false);
+      setting.settingEl.addEventListener(
+        "click",
+        (e) => {
+          const target = e.target;
+          const isChevronClick =
+            target.closest(".ui-tweaker-collapse-icon") !== null;
+          const isExtraButton =
+            target.closest(".extra-setting-button") !== null ||
+            target.closest(".clickable-icon.extra-setting-button") !== null;
+          const isNameEdit =
+            target.closest(".ui-tweaker-name-display") !== null ||
+            target.closest(".ui-tweaker-edit-icon") !== null ||
+            target.closest(".ui-tweaker-editable-name") !== null;
+          if (!isChevronClick && !isExtraButton && !isNameEdit) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return false;
+          }
+        },
+        true,
+      );
+      setting.settingEl.addEventListener(
+        "click",
+        (e) => {
+          const target = e.target;
+          const isChevronClick =
+            target.closest(".ui-tweaker-collapse-icon") !== null;
+          const isExtraButton =
+            target.closest(".extra-setting-button") !== null ||
+            target.closest(".clickable-icon.extra-setting-button") !== null;
+          const isNameEdit =
+            target.closest(".ui-tweaker-name-display") !== null ||
+            target.closest(".ui-tweaker-edit-icon") !== null ||
+            target.closest(".ui-tweaker-editable-name") !== null;
+          if (!isChevronClick && !isExtraButton && !isNameEdit) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return false;
+          }
+        },
+        false,
+      );
       const nameEl = setting.nameEl;
-      setCssProps(nameEl, { display: "flex", alignItems: "center", gap: "0.5rem", width: "100%" });
+      setCssProps(nameEl, {
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+        width: "100%",
+      });
       const chevronContainer = document.createElement("div");
       chevronContainer.className = "ui-tweaker-collapse-icon";
       setCssProps(chevronContainer, {
@@ -3219,31 +4522,46 @@ var ExplorerTab = class extends TabRenderer {
         margin: "0",
         display: "inline-flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
       });
       nameEl.insertBefore(chevronContainer, nameEl.firstChild);
-      let isExpanded = (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
-      (0, import_obsidian9.setIcon)(chevronContainer, isExpanded ? "chevrons-down-up" : "chevrons-up-down");
+      let isExpanded =
+        (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
+      (0, import_obsidian9.setIcon)(
+        chevronContainer,
+        isExpanded ? "chevrons-down-up" : "chevrons-up-down",
+      );
       chevronContainer.addEventListener("click", (e) => {
         e.stopPropagation();
         e.stopImmediatePropagation();
         e.preventDefault();
         isExpanded = !isExpanded;
         this.expandedStates.set(pair.id, isExpanded);
-        (0, import_obsidian9.setIcon)(chevronContainer, isExpanded ? "chevrons-down-up" : "chevrons-up-down");
+        (0, import_obsidian9.setIcon)(
+          chevronContainer,
+          isExpanded ? "chevrons-down-up" : "chevrons-up-down",
+        );
         otherSettings.forEach((settingEl) => {
           setCssProps(settingEl, { display: isExpanded ? "" : "none" });
         });
       });
-      const nameContainer = nameEl.createDiv({ cls: "ui-tweaker-editable-name" });
-      setCssProps(nameContainer, { display: "flex", alignItems: "center", gap: "0.5rem" });
+      const nameContainer = nameEl.createDiv({
+        cls: "ui-tweaker-editable-name",
+      });
+      setCssProps(nameContainer, {
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+      });
       const createNameDisplay = (name) => {
         nameContainer.empty();
         const display = nameContainer.createSpan({
           text: name === displayName ? name : `${name} (${displayName})`,
-          cls: "ui-tweaker-name-display"
+          cls: "ui-tweaker-name-display",
         });
-        const iconContainer = nameContainer.createDiv({ cls: "ui-tweaker-edit-icon" });
+        const iconContainer = nameContainer.createDiv({
+          cls: "ui-tweaker-edit-icon",
+        });
         setCssProps(iconContainer, { opacity: "0.6" });
         (0, import_obsidian9.setIcon)(iconContainer, "lucide-pencil-line");
         const startEdit = () => {
@@ -3251,7 +4569,7 @@ var ExplorerTab = class extends TabRenderer {
           nameContainer.empty();
           const nameInput = nameContainer.createEl("input", {
             type: "text",
-            value: currentName
+            value: currentName,
           });
           nameInput.addClass("mod-text-input");
           nameInput.focus();
@@ -3264,7 +4582,9 @@ var ExplorerTab = class extends TabRenderer {
               newName = currentName;
             }
             pair.name = newName;
-            (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.updateButtonNames();
+            (_a2 = this.plugin.explorerManager) == null
+              ? void 0
+              : _a2.updateButtonNames();
             void (async () => {
               await this.saveSettings();
               this.render(container);
@@ -3291,308 +4611,402 @@ var ExplorerTab = class extends TabRenderer {
         });
       };
       createNameDisplay(pair.name);
-      setting.setDesc("").addExtraButton((button) => {
-        const iconEl = button.extraSettingsEl;
-        (0, import_obsidian9.setIcon)(iconEl, pair.icon);
-        iconEl.setAttribute("data-explorer-command-id", pair.id);
-        if (pair.color && pair.color !== "#000000") {
-          setCssProps(iconEl, { color: pair.color });
-        } else {
-          iconEl.style.removeProperty("color");
-        }
-        button.setTooltip("Change icon");
-        button.onClick(() => {
-          const modal = new IconPickerModal(this.app, (iconId) => {
-            void (async () => {
-              var _a2;
-              if (iconId && iconId !== pair.icon) {
-                pair.icon = iconId;
-                await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-                this.render(container);
-              }
-            })();
-          });
-          modal.open();
-        });
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      }).addExtraButton((button) => {
-        button.setIcon("chevron-up");
-        if (index > 0) {
-          button.setTooltip("Move up");
-          button.onClick(() => {
-            const scrollContainer = container.closest(".vertical-tab-content") || container.closest(".settings-content") || container.closest(".vertical-tab-content-container") || container;
-            const scrollPos = scrollContainer.scrollTop;
-            void (async () => {
-              var _a2;
-              arrayMoveMutable3(settings.explorerCommands, index, index - 1);
-              await this.saveSettings();
-              (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-              this.render(container);
-              requestAnimationFrame(() => {
-                scrollContainer.scrollTop = scrollPos;
-                setTimeout(() => {
-                  scrollContainer.scrollTop = scrollPos;
-                  setTimeout(() => {
-                    scrollContainer.scrollTop = scrollPos;
-                  }, 50);
-                }, 0);
-              });
-            })();
-          });
-        } else {
-          button.setTooltip("Already at top");
-          button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
-          setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
-        }
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      }).addExtraButton((button) => {
-        button.setIcon("chevron-down");
-        if (index < settings.explorerCommands.length - 1) {
-          button.setTooltip("Move down");
-          button.onClick(() => {
-            const scrollContainer = container.closest(".vertical-tab-content") || container.closest(".settings-content") || container.closest(".vertical-tab-content-container") || container;
-            const scrollPos = scrollContainer.scrollTop;
-            void (async () => {
-              var _a2;
-              arrayMoveMutable3(settings.explorerCommands, index, index + 1);
-              await this.saveSettings();
-              (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-              this.render(container);
-              requestAnimationFrame(() => {
-                scrollContainer.scrollTop = scrollPos;
-                setTimeout(() => {
-                  scrollContainer.scrollTop = scrollPos;
-                  setTimeout(() => {
-                    scrollContainer.scrollTop = scrollPos;
-                  }, 50);
-                }, 0);
-              });
-            })();
-          });
-        } else {
-          button.setTooltip("Already at bottom");
-          button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
-          setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
-        }
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      }).addExtraButton((button) => {
-        button.setIcon("trash");
-        button.setTooltip("Delete");
-        button.extraSettingsEl.addClass("mod-warning");
-        setCssProps(button.extraSettingsEl, { color: "var(--text-error)" });
-        button.onClick(() => {
-          void (async () => {
-            var _a2;
-            const idx = settings.explorerCommands.indexOf(pair);
-            if (idx > -1) {
-              settings.explorerCommands.splice(idx, 1);
-              await this.saveSettings();
-              (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-              this.render(container);
-            }
-          })();
-        });
-        button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
-      });
-    });
-    group.addSetting((setting) => {
-      otherSettings.push(setting.settingEl);
-      setting.setName("Device mode").setDesc("Choose which devices this button appears on").addDropdown((dropdown) => {
-        const appId = this.app.appId || "this-device";
-        dropdown.addOption("any", "All devices").addOption("desktop", "Desktop only").addOption("mobile", "Mobile only").addOption(appId, "This device").setValue(pair.mode || "any").onChange((value) => {
-          void (async () => {
-            var _a;
-            pair.mode = value;
-            await this.saveSettings();
-            (_a = this.plugin.explorerManager) == null ? void 0 : _a.reorder();
-            this.render(container);
-          })();
-        });
-        dropdown.selectEl.addEventListener("click", (e) => e.stopPropagation());
-      });
-    });
-    group.addSetting((setting) => {
-      otherSettings.push(setting.settingEl);
-      const hasColor = pair.color !== void 0;
-      setting.setName("Custom color").setDesc("Set a custom color for this icon").addColorPicker((colorPicker) => {
-        var _a;
-        const currentColor = (_a = pair.color) != null ? _a : "#000000";
-        colorPicker.setValue(currentColor);
-        const controlEl = setting.controlEl;
-        controlEl.addEventListener("click", (e) => e.stopPropagation());
-        setTimeout(() => {
-          const colorInput = controlEl.querySelector('input[type="color"]');
-          if (colorInput) {
-            colorInput.addEventListener("click", (e) => e.stopPropagation());
+      setting
+        .setDesc("")
+        .addExtraButton((button) => {
+          const iconEl = button.extraSettingsEl;
+          (0, import_obsidian9.setIcon)(iconEl, pair.icon);
+          iconEl.setAttribute("data-explorer-command-id", pair.id);
+          if (pair.color && pair.color !== "#000000") {
+            setCssProps(iconEl, { color: pair.color });
+          } else {
+            iconEl.style.removeProperty("color");
           }
-        }, 0);
-        if (hasColor) {
-          setTimeout(() => {
-            const colorPickerEl = controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
-            const resetButton = controlEl.createEl("button", {
-              cls: "clickable-icon ui-tweaker-color-reset",
-              attr: { "aria-label": "Reset to default color" }
-            });
-            (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
-            setCssProps(resetButton, { marginRight: "0.5rem" });
-            resetButton.addEventListener("click", (e) => {
-              e.stopPropagation();
-              e.stopImmediatePropagation();
-              e.preventDefault();
+          button.setTooltip("Change icon");
+          button.onClick(() => {
+            const modal = new IconPickerModal(this.app, (iconId) => {
               void (async () => {
                 var _a2;
-                pair.color = void 0;
-                const iconButton = container.querySelector(`[data-explorer-command-id="${pair.id}"]`);
-                if (iconButton) {
-                  iconButton.style.removeProperty("color");
+                if (iconId && iconId !== pair.icon) {
+                  pair.icon = iconId;
+                  await this.saveSettings();
+                  (_a2 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a2.reorder();
+                  this.render(container);
                 }
-                await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-                this.render(container);
               })();
             });
-            if (colorPickerEl) {
-              controlEl.insertBefore(resetButton, colorPickerEl);
-            } else {
-              controlEl.insertBefore(resetButton, controlEl.firstChild);
-            }
-          }, 0);
-        }
-        colorPicker.onChange((value) => {
-          const newColor = value === "#000000" ? void 0 : value;
-          pair.color = newColor;
-          const iconButton = container.querySelector(`[data-explorer-command-id="${pair.id}"]`);
-          if (iconButton) {
-            if (newColor && newColor !== "#000000") {
-              setCssProps(iconButton, { color: newColor });
-            } else {
-              iconButton.style.removeProperty("color");
-            }
-          }
-          const controlEl2 = setting.controlEl;
-          const existingReset = controlEl2.querySelector(".ui-tweaker-color-reset");
-          if (newColor && !existingReset) {
-            const colorPickerEl = controlEl2.querySelector(".color-picker") || controlEl2.lastElementChild;
-            const resetButton = controlEl2.createEl("button", {
-              cls: "clickable-icon ui-tweaker-color-reset",
-              attr: { "aria-label": "Reset to default color" }
-            });
-            (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
-            setCssProps(resetButton, { marginRight: "0.5rem" });
-            resetButton.addEventListener("click", (e) => {
-              e.stopPropagation();
-              e.stopImmediatePropagation();
-              e.preventDefault();
-              void (async () => {
-                var _a2;
-                pair.color = void 0;
-                const iconButton2 = container.querySelector(`[data-explorer-command-id="${pair.id}"]`);
-                if (iconButton2) {
-                  iconButton2.style.removeProperty("color");
-                }
-                await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-                this.render(container);
-              })();
-            });
-            if (colorPickerEl) {
-              controlEl2.insertBefore(resetButton, colorPickerEl);
-            } else {
-              controlEl2.insertBefore(resetButton, controlEl2.firstChild);
-            }
-          } else if (!newColor && existingReset) {
-            existingReset.remove();
-          }
-          void (async () => {
-            var _a2;
-            await this.saveSettings();
-            (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-          })();
-        });
-      });
-    });
-    group.addSetting((setting) => {
-      otherSettings.push(setting.settingEl);
-      const hasToggleIcon = pair.toggleIcon !== void 0;
-      setting.setName("Toggle icon").setDesc("Icon to show when command is toggled on (leave empty to disable toggle). Commands with check callback work automatically. See readme for plugin developer compatibility notes.").setTooltip("For plugin developers: Commands with checkCallback work automatically. See https://github.com/davidvkimball/obsidian-ui-tweaker#toggle-icon-feature-compatibility for details.").addButton((button) => {
-        const currentToggleIcon = pair.toggleIcon || "None";
-        button.setButtonText(currentToggleIcon === "None" ? "Set toggle icon..." : currentToggleIcon).onClick(() => {
-          const modal = new IconPickerModal(this.app, (iconId) => {
-            void (async () => {
-              var _a;
-              if (iconId) {
-                pair.toggleIcon = iconId;
-              } else {
-                pair.toggleIcon = void 0;
-              }
-              await this.saveSettings();
-              (_a = this.plugin.explorerManager) == null ? void 0 : _a.reorder();
-              this.render(container);
-            })();
+            modal.open();
           });
-          modal.open();
-        });
-        button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
-        if (hasToggleIcon) {
-          setTimeout(() => {
-            const controlEl = setting.controlEl;
-            const buttonEl = controlEl.querySelector("button") || controlEl.lastElementChild;
-            const resetButton = controlEl.createEl("button", {
-              cls: "clickable-icon ui-tweaker-toggle-icon-reset",
-              attr: { "aria-label": "Reset toggle icon" }
-            });
-            (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
-            setCssProps(resetButton, { marginRight: "0.5rem" });
-            resetButton.addEventListener("click", (e) => {
-              e.stopPropagation();
-              e.stopImmediatePropagation();
-              e.preventDefault();
-              const scrollContainer = container.closest(".vertical-tab-content") || container.closest(".settings-content") || container.closest(".vertical-tab-content-container") || container;
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        })
+        .addExtraButton((button) => {
+          button.setIcon("chevron-up");
+          if (index > 0) {
+            button.setTooltip("Move up");
+            button.onClick(() => {
+              const scrollContainer =
+                container.closest(".vertical-tab-content") ||
+                container.closest(".settings-content") ||
+                container.closest(".vertical-tab-content-container") ||
+                container;
               const scrollPos = scrollContainer.scrollTop;
               void (async () => {
-                var _a;
-                pair.toggleIcon = void 0;
+                var _a2;
+                arrayMoveMutable3(settings.explorerCommands, index, index - 1);
                 await this.saveSettings();
-                (_a = this.plugin.explorerManager) == null ? void 0 : _a.reorder();
+                (_a2 = this.plugin.explorerManager) == null
+                  ? void 0
+                  : _a2.reorder();
                 this.render(container);
                 requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
                   setTimeout(() => {
                     scrollContainer.scrollTop = scrollPos;
+                    setTimeout(() => {
+                      scrollContainer.scrollTop = scrollPos;
+                    }, 50);
                   }, 0);
                 });
               })();
             });
-            if (buttonEl) {
-              controlEl.insertBefore(resetButton, buttonEl);
-            } else {
-              controlEl.insertBefore(resetButton, controlEl.firstChild);
-            }
-          }, 0);
-        }
-      });
+          } else {
+            button.setTooltip("Already at top");
+            button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
+            setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
+          }
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        })
+        .addExtraButton((button) => {
+          button.setIcon("chevron-down");
+          if (index < settings.explorerCommands.length - 1) {
+            button.setTooltip("Move down");
+            button.onClick(() => {
+              const scrollContainer =
+                container.closest(".vertical-tab-content") ||
+                container.closest(".settings-content") ||
+                container.closest(".vertical-tab-content-container") ||
+                container;
+              const scrollPos = scrollContainer.scrollTop;
+              void (async () => {
+                var _a2;
+                arrayMoveMutable3(settings.explorerCommands, index, index + 1);
+                await this.saveSettings();
+                (_a2 = this.plugin.explorerManager) == null
+                  ? void 0
+                  : _a2.reorder();
+                this.render(container);
+                requestAnimationFrame(() => {
+                  scrollContainer.scrollTop = scrollPos;
+                  setTimeout(() => {
+                    scrollContainer.scrollTop = scrollPos;
+                    setTimeout(() => {
+                      scrollContainer.scrollTop = scrollPos;
+                    }, 50);
+                  }, 0);
+                });
+              })();
+            });
+          } else {
+            button.setTooltip("Already at bottom");
+            button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
+            setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
+          }
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        })
+        .addExtraButton((button) => {
+          button.setIcon("trash");
+          button.setTooltip("Delete");
+          button.extraSettingsEl.addClass("mod-warning");
+          setCssProps(button.extraSettingsEl, { color: "var(--text-error)" });
+          button.onClick(() => {
+            void (async () => {
+              var _a2;
+              const idx = settings.explorerCommands.indexOf(pair);
+              if (idx > -1) {
+                settings.explorerCommands.splice(idx, 1);
+                await this.saveSettings();
+                (_a2 = this.plugin.explorerManager) == null
+                  ? void 0
+                  : _a2.reorder();
+                this.render(container);
+              }
+            })();
+          });
+          button.extraSettingsEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
+        });
     });
     group.addSetting((setting) => {
       otherSettings.push(setting.settingEl);
-      setting.setName("Use active class instead of icon swap").setDesc("When toggled on, add is-active class instead of swapping icon (explorer only)").addToggle((toggle) => {
-        var _a;
-        toggle.setValue((_a = pair.useActiveClass) != null ? _a : false);
-        toggle.onChange((value) => {
-          void (async () => {
-            var _a2;
-            pair.useActiveClass = value;
-            await this.saveSettings();
-            (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
-            this.render(container);
-          })();
+      setting
+        .setName("Device mode")
+        .setDesc("Choose which devices this button appears on")
+        .addDropdown((dropdown) => {
+          const appId = this.app.appId || "this-device";
+          dropdown
+            .addOption("any", "All devices")
+            .addOption("desktop", "Desktop only")
+            .addOption("mobile", "Mobile only")
+            .addOption(appId, "This device")
+            .setValue(pair.mode || "any")
+            .onChange((value) => {
+              void (async () => {
+                var _a;
+                pair.mode = value;
+                await this.saveSettings();
+                (_a = this.plugin.explorerManager) == null
+                  ? void 0
+                  : _a.reorder();
+                this.render(container);
+              })();
+            });
+          dropdown.selectEl.addEventListener("click", (e) =>
+            e.stopPropagation(),
+          );
         });
-        toggle.toggleEl.addEventListener("click", (e) => e.stopPropagation());
-      });
+    });
+    group.addSetting((setting) => {
+      otherSettings.push(setting.settingEl);
+      const hasColor = pair.color !== void 0;
+      setting
+        .setName("Custom color")
+        .setDesc("Set a custom color for this icon")
+        .addColorPicker((colorPicker) => {
+          var _a;
+          const currentColor = (_a = pair.color) != null ? _a : "#000000";
+          colorPicker.setValue(currentColor);
+          const controlEl = setting.controlEl;
+          controlEl.addEventListener("click", (e) => e.stopPropagation());
+          setTimeout(() => {
+            const colorInput = controlEl.querySelector('input[type="color"]');
+            if (colorInput) {
+              colorInput.addEventListener("click", (e) => e.stopPropagation());
+            }
+          }, 0);
+          if (hasColor) {
+            setTimeout(() => {
+              const colorPickerEl =
+                controlEl.querySelector(".color-picker") ||
+                controlEl.lastElementChild;
+              const resetButton = controlEl.createEl("button", {
+                cls: "clickable-icon ui-tweaker-color-reset",
+                attr: { "aria-label": "Reset to default color" },
+              });
+              (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
+              setCssProps(resetButton, { marginRight: "0.5rem" });
+              resetButton.addEventListener("click", (e) => {
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                void (async () => {
+                  var _a2;
+                  pair.color = void 0;
+                  const iconButton = container.querySelector(
+                    `[data-explorer-command-id="${pair.id}"]`,
+                  );
+                  if (iconButton) {
+                    iconButton.style.removeProperty("color");
+                  }
+                  await this.saveSettings();
+                  (_a2 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a2.reorder();
+                  this.render(container);
+                })();
+              });
+              if (colorPickerEl) {
+                controlEl.insertBefore(resetButton, colorPickerEl);
+              } else {
+                controlEl.insertBefore(resetButton, controlEl.firstChild);
+              }
+            }, 0);
+          }
+          colorPicker.onChange((value) => {
+            const newColor = value === "#000000" ? void 0 : value;
+            pair.color = newColor;
+            const iconButton = container.querySelector(
+              `[data-explorer-command-id="${pair.id}"]`,
+            );
+            if (iconButton) {
+              if (newColor && newColor !== "#000000") {
+                setCssProps(iconButton, { color: newColor });
+              } else {
+                iconButton.style.removeProperty("color");
+              }
+            }
+            const controlEl2 = setting.controlEl;
+            const existingReset = controlEl2.querySelector(
+              ".ui-tweaker-color-reset",
+            );
+            if (newColor && !existingReset) {
+              const colorPickerEl =
+                controlEl2.querySelector(".color-picker") ||
+                controlEl2.lastElementChild;
+              const resetButton = controlEl2.createEl("button", {
+                cls: "clickable-icon ui-tweaker-color-reset",
+                attr: { "aria-label": "Reset to default color" },
+              });
+              (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
+              setCssProps(resetButton, { marginRight: "0.5rem" });
+              resetButton.addEventListener("click", (e) => {
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                void (async () => {
+                  var _a2;
+                  pair.color = void 0;
+                  const iconButton2 = container.querySelector(
+                    `[data-explorer-command-id="${pair.id}"]`,
+                  );
+                  if (iconButton2) {
+                    iconButton2.style.removeProperty("color");
+                  }
+                  await this.saveSettings();
+                  (_a2 = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a2.reorder();
+                  this.render(container);
+                })();
+              });
+              if (colorPickerEl) {
+                controlEl2.insertBefore(resetButton, colorPickerEl);
+              } else {
+                controlEl2.insertBefore(resetButton, controlEl2.firstChild);
+              }
+            } else if (!newColor && existingReset) {
+              existingReset.remove();
+            }
+            void (async () => {
+              var _a2;
+              await this.saveSettings();
+              (_a2 = this.plugin.explorerManager) == null
+                ? void 0
+                : _a2.reorder();
+            })();
+          });
+        });
+    });
+    group.addSetting((setting) => {
+      otherSettings.push(setting.settingEl);
+      const hasToggleIcon = pair.toggleIcon !== void 0;
+      setting
+        .setName("Toggle icon")
+        .setDesc(
+          "Icon to show when command is toggled on (leave empty to disable toggle). Commands with check callback work automatically. See readme for plugin developer compatibility notes.",
+        )
+        .setTooltip(
+          "For plugin developers: Commands with checkCallback work automatically. See https://github.com/davidvkimball/obsidian-ui-tweaker#toggle-icon-feature-compatibility for details.",
+        )
+        .addButton((button) => {
+          const currentToggleIcon = pair.toggleIcon || "None";
+          button
+            .setButtonText(
+              currentToggleIcon === "None"
+                ? "Set toggle icon..."
+                : currentToggleIcon,
+            )
+            .onClick(() => {
+              const modal = new IconPickerModal(this.app, (iconId) => {
+                void (async () => {
+                  var _a;
+                  if (iconId) {
+                    pair.toggleIcon = iconId;
+                  } else {
+                    pair.toggleIcon = void 0;
+                  }
+                  await this.saveSettings();
+                  (_a = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a.reorder();
+                  this.render(container);
+                })();
+              });
+              modal.open();
+            });
+          button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
+          if (hasToggleIcon) {
+            setTimeout(() => {
+              const controlEl = setting.controlEl;
+              const buttonEl =
+                controlEl.querySelector("button") || controlEl.lastElementChild;
+              const resetButton = controlEl.createEl("button", {
+                cls: "clickable-icon ui-tweaker-toggle-icon-reset",
+                attr: { "aria-label": "Reset toggle icon" },
+              });
+              (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
+              setCssProps(resetButton, { marginRight: "0.5rem" });
+              resetButton.addEventListener("click", (e) => {
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                const scrollContainer =
+                  container.closest(".vertical-tab-content") ||
+                  container.closest(".settings-content") ||
+                  container.closest(".vertical-tab-content-container") ||
+                  container;
+                const scrollPos = scrollContainer.scrollTop;
+                void (async () => {
+                  var _a;
+                  pair.toggleIcon = void 0;
+                  await this.saveSettings();
+                  (_a = this.plugin.explorerManager) == null
+                    ? void 0
+                    : _a.reorder();
+                  this.render(container);
+                  requestAnimationFrame(() => {
+                    scrollContainer.scrollTop = scrollPos;
+                    setTimeout(() => {
+                      scrollContainer.scrollTop = scrollPos;
+                    }, 0);
+                  });
+                })();
+              });
+              if (buttonEl) {
+                controlEl.insertBefore(resetButton, buttonEl);
+              } else {
+                controlEl.insertBefore(resetButton, controlEl.firstChild);
+              }
+            }, 0);
+          }
+        });
+    });
+    group.addSetting((setting) => {
+      otherSettings.push(setting.settingEl);
+      setting
+        .setName("Use active class instead of icon swap")
+        .setDesc(
+          "When toggled on, add is-active class instead of swapping icon (explorer only)",
+        )
+        .addToggle((toggle) => {
+          var _a;
+          toggle.setValue((_a = pair.useActiveClass) != null ? _a : false);
+          toggle.onChange((value) => {
+            void (async () => {
+              var _a2;
+              pair.useActiveClass = value;
+              await this.saveSettings();
+              (_a2 = this.plugin.explorerManager) == null
+                ? void 0
+                : _a2.reorder();
+              this.render(container);
+            })();
+          });
+          toggle.toggleEl.addEventListener("click", (e) => e.stopPropagation());
+        });
     });
     setTimeout(() => {
       var _a;
-      const savedExpanded = (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
+      const savedExpanded =
+        (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
       otherSettings.forEach((settingEl) => {
         setCssProps(settingEl, { display: savedExpanded ? "" : "none" });
       });
@@ -3623,52 +5037,148 @@ var MobileTab = class extends TabRenderer {
       "quickSwitcherPosition",
       "newTabPosition",
       "openTabsPosition",
-      "ribbonMenuPosition"
+      "ribbonMenuPosition",
     ]);
     const mobileGroup = new import_obsidian10.SettingGroup(container);
-    this.addToggleSetting(mobileGroup, 'Hide "Mobile chevrons" icon', 'Hide "Mobile chevrons" icon (long-press flair) in mobile navbar.', "mobileChevronsIcon");
-    this.addToggleSetting(mobileGroup, 'Hide "Navigate back" button', 'Hide "Navigate back" button in mobile navbar.', "navigateBackButton");
-    this.addToggleSetting(mobileGroup, 'Hide "Navigate forward" button', 'Hide "Navigate forward" button in mobile navbar.', "navigateForwardButton");
-    this.addToggleSetting(mobileGroup, 'Hide "Quick switcher" button', 'Hide "Quick switcher" button in mobile navbar.', "quickSwitcherButton");
-    this.addToggleSetting(mobileGroup, 'Hide "New tab" button', 'Hide "New tab" button in mobile navbar.', "mobileNewTabButton");
-    this.addToggleSetting(mobileGroup, 'Hide "Open tabs" button', 'Hide "Open tabs" button in mobile navbar.', "openTabButton");
-    this.addToggleSetting(mobileGroup, 'Hide "Ribbon menu" button', 'Hide "Ribbon menu" button in mobile navbar.', "ribbonMenuButton");
-    this.addToggleSetting(mobileGroup, "Swap mobile new tab icon", "Replace the new tab plus icon with a home button icon in mobile navbar.", "swapMobileNewTabIcon");
-    this.addToggleSetting(mobileGroup, "Hide title", "Hide the title in mobile view headers.", "hideMobileTitle");
-    this.addToggleSetting(mobileGroup, "Hide sync icon", "Hide sync status icons in mobile interface.", "hideMobileSyncIcon");
-    this.addToggleSetting(mobileGroup, "Hide status bar", "Hide the status bar on mobile devices.", "hideStatusBarMobile");
+    this.addToggleSetting(
+      mobileGroup,
+      'Hide "Mobile chevrons" icon',
+      'Hide "Mobile chevrons" icon (long-press flair) in mobile navbar.',
+      "mobileChevronsIcon",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      'Hide "Navigate back" button',
+      'Hide "Navigate back" button in mobile navbar.',
+      "navigateBackButton",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      'Hide "Navigate forward" button',
+      'Hide "Navigate forward" button in mobile navbar.',
+      "navigateForwardButton",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      'Hide "Quick switcher" button',
+      'Hide "Quick switcher" button in mobile navbar.',
+      "quickSwitcherButton",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      'Hide "New tab" button',
+      'Hide "New tab" button in mobile navbar.',
+      "mobileNewTabButton",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      'Hide "Open tabs" button',
+      'Hide "Open tabs" button in mobile navbar.',
+      "openTabButton",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      'Hide "Ribbon menu" button',
+      'Hide "Ribbon menu" button in mobile navbar.',
+      "ribbonMenuButton",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      "Swap mobile new tab icon",
+      "Replace the new tab plus icon with a home button icon in mobile navbar.",
+      "swapMobileNewTabIcon",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      "Hide title",
+      "Hide the title in mobile view headers.",
+      "hideMobileTitle",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      "Hide sync icon",
+      "Hide sync status icons in mobile interface.",
+      "hideMobileSyncIcon",
+    );
+    this.addToggleSetting(
+      mobileGroup,
+      "Hide status bar",
+      "Hide the status bar on mobile devices.",
+      "hideStatusBarMobile",
+    );
     this.renderSyncButtonReplacement(container, mobileGroup);
-    const mobileNavGroup = new import_obsidian10.SettingGroup(container).setHeading("Mobile navigation menu");
-    this.addPositionSetting(mobileNavGroup, '"Navigate back" button position', 'Select the position for the "Navigate back" button (default 1).', "navigateButtonPosition");
-    this.addPositionSetting(mobileNavGroup, '"Navigate forward" button position', 'Select the position for the "Navigate forward" button (default 2).', "navigationButtonPosition");
-    this.addPositionSetting(mobileNavGroup, '"Quick switcher" button position', 'Select the position for the "Quick switcher" button (default 3).', "quickSwitcherPosition");
-    this.addPositionSetting(mobileNavGroup, '"New tab" button position', 'Select the position for the "New tab" button (default 4).', "newTabPosition");
-    this.addPositionSetting(mobileNavGroup, '"Open tabs" button position', 'Select the position for the "Open tabs" button (default 5).', "openTabsPosition");
-    this.addPositionSetting(mobileNavGroup, '"Ribbon menu" button position', 'Select the position for the "Ribbon menu" button (default 6).', "ribbonMenuPosition");
+    const mobileNavGroup = new import_obsidian10.SettingGroup(
+      container,
+    ).setHeading("Mobile navigation menu");
+    this.addPositionSetting(
+      mobileNavGroup,
+      '"Navigate back" button position',
+      'Select the position for the "Navigate back" button (default 1).',
+      "navigateButtonPosition",
+    );
+    this.addPositionSetting(
+      mobileNavGroup,
+      '"Navigate forward" button position',
+      'Select the position for the "Navigate forward" button (default 2).',
+      "navigationButtonPosition",
+    );
+    this.addPositionSetting(
+      mobileNavGroup,
+      '"Quick switcher" button position',
+      'Select the position for the "Quick switcher" button (default 3).',
+      "quickSwitcherPosition",
+    );
+    this.addPositionSetting(
+      mobileNavGroup,
+      '"New tab" button position',
+      'Select the position for the "New tab" button (default 4).',
+      "newTabPosition",
+    );
+    this.addPositionSetting(
+      mobileNavGroup,
+      '"Open tabs" button position',
+      'Select the position for the "Open tabs" button (default 5).',
+      "openTabsPosition",
+    );
+    this.addPositionSetting(
+      mobileNavGroup,
+      '"Ribbon menu" button position',
+      'Select the position for the "Ribbon menu" button (default 6).',
+      "ribbonMenuPosition",
+    );
   }
   addToggleSetting(group, name, desc, key) {
     group.addSetting((setting) => {
-      setting.setName(name).setDesc(desc).addToggle(
-        (toggle) => toggle.setValue(Boolean(this.getSettings()[key])).onChange((value) => {
-          this.getSettings()[key] = value;
-          void this.saveSettings();
-        })
-      );
+      setting
+        .setName(name)
+        .setDesc(desc)
+        .addToggle((toggle) =>
+          toggle
+            .setValue(Boolean(this.getSettings()[key]))
+            .onChange((value) => {
+              this.getSettings()[key] = value;
+              void this.saveSettings();
+            }),
+        );
     });
   }
   addPositionSetting(group, name, desc, key) {
     group.addSetting((setting) => {
-      setting.setName(name).setDesc(desc).addDropdown((dropdown) => {
-        for (let i = 1; i <= 6; i++) {
-          dropdown.addOption(String(i), String(i));
-        }
-        const currentValue = this.getSettings()[key];
-        const stringValue = typeof currentValue === "string" ? currentValue : "1";
-        dropdown.setValue(stringValue).onChange((value) => {
-          this.getSettings()[key] = value;
-          void this.saveSettings();
+      setting
+        .setName(name)
+        .setDesc(desc)
+        .addDropdown((dropdown) => {
+          for (let i = 1; i <= 6; i++) {
+            dropdown.addOption(String(i), String(i));
+          }
+          const currentValue = this.getSettings()[key];
+          const stringValue =
+            typeof currentValue === "string" ? currentValue : "1";
+          dropdown.setValue(stringValue).onChange((value) => {
+            this.getSettings()[key] = value;
+            void this.saveSettings();
+          });
         });
-      });
     });
   }
   renderSyncButtonReplacement(container, group) {
@@ -3677,67 +5187,99 @@ var MobileTab = class extends TabRenderer {
       settings.syncButtonReplacement = {
         enabled: false,
         commandId: "ui-tweaker:open-settings",
-        iconId: "wrench"
+        iconId: "wrench",
       };
     }
     const dependentSettings = [];
     group.addSetting((setting) => {
-      setting.setName("Replace sync button with custom action").setDesc("Replace the sync button in the mobile sidebar with a custom icon and command. This will hide the original sync button and show your custom button instead.").addToggle(
-        (toggle) => toggle.setValue(settings.syncButtonReplacement.enabled).onChange((value) => {
-          settings.syncButtonReplacement.enabled = value;
-          dependentSettings.forEach((el) => {
-            el.style.display = value ? "" : "none";
-          });
-          void this.saveSettings();
-        })
-      );
+      setting
+        .setName("Replace sync button with custom action")
+        .setDesc(
+          "Replace the sync button in the mobile sidebar with a custom icon and command. This will hide the original sync button and show your custom button instead.",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(settings.syncButtonReplacement.enabled)
+            .onChange((value) => {
+              settings.syncButtonReplacement.enabled = value;
+              dependentSettings.forEach((el) => {
+                el.style.display = value ? "" : "none";
+              });
+              void this.saveSettings();
+            }),
+        );
     });
     const getCommandName = (commandId) => {
       if (!commandId) return "Select command...";
       try {
         const commandRegistry = this.app.commands;
-        if (commandRegistry && typeof commandRegistry.listCommands === "function") {
+        if (
+          commandRegistry &&
+          typeof commandRegistry.listCommands === "function"
+        ) {
           const commands = commandRegistry.listCommands();
           const command = commands.find((cmd) => cmd && cmd.id === commandId);
           if (command == null ? void 0 : command.name) {
             return command.name;
           }
         }
-      } catch (e) {
-      }
+      } catch (e) {}
       return "Select command...";
     };
     const getIconName = (iconId) => {
       if (!iconId) return "";
-      return iconId.replace(/^lucide-/, "").split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+      return iconId
+        .replace(/^lucide-/, "")
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
     };
     group.addSetting((setting) => {
       dependentSettings.push(setting.settingEl);
-      setting.settingEl.style.display = settings.syncButtonReplacement.enabled ? "" : "none";
-      setting.setName("Command").setDesc("Select the command to execute when the button is clicked").addButton(
-        (button) => button.setButtonText(getCommandName(settings.syncButtonReplacement.commandId)).onClick(() => {
-          const modal = new CommandPickerModal(this.app, (commandId) => {
-            settings.syncButtonReplacement.commandId = commandId;
-            button.setButtonText(getCommandName(commandId));
-            void this.saveSettings();
-          });
-          modal.open();
-        })
-      );
+      setting.settingEl.style.display = settings.syncButtonReplacement.enabled
+        ? ""
+        : "none";
+      setting
+        .setName("Command")
+        .setDesc("Select the command to execute when the button is clicked")
+        .addButton((button) =>
+          button
+            .setButtonText(
+              getCommandName(settings.syncButtonReplacement.commandId),
+            )
+            .onClick(() => {
+              const modal = new CommandPickerModal(this.app, (commandId) => {
+                settings.syncButtonReplacement.commandId = commandId;
+                button.setButtonText(getCommandName(commandId));
+                void this.saveSettings();
+              });
+              modal.open();
+            }),
+        );
     });
     group.addSetting((setting) => {
       dependentSettings.push(setting.settingEl);
-      setting.settingEl.style.display = settings.syncButtonReplacement.enabled ? "" : "none";
-      setting.setName("Icon").setDesc("Select the icon to display on the button").addButton(
-        (button) => button.setButtonText(getIconName(settings.syncButtonReplacement.iconId) || "Select icon...").onClick(() => {
-          const modal = new IconPickerModal(this.app, (iconId) => {
-            settings.syncButtonReplacement.iconId = iconId;
-            button.setButtonText(getIconName(iconId));
-            void this.saveSettings();
-          });
-          modal.open();
-        })
-      );
+      setting.settingEl.style.display = settings.syncButtonReplacement.enabled
+        ? ""
+        : "none";
+      setting
+        .setName("Icon")
+        .setDesc("Select the icon to display on the button")
+        .addButton((button) =>
+          button
+            .setButtonText(
+              getIconName(settings.syncButtonReplacement.iconId) ||
+                "Select icon...",
+            )
+            .onClick(() => {
+              const modal = new IconPickerModal(this.app, (iconId) => {
+                settings.syncButtonReplacement.iconId = iconId;
+                button.setButtonText(getIconName(iconId));
+                void this.saveSettings();
+              });
+              modal.open();
+            }),
+        );
     });
   }
 };
@@ -3750,37 +5292,67 @@ var PropertiesTab = class extends TabRenderer {
     this.container = container;
     container.empty();
     const settings = this.getSettings();
-    this.renderResetButton(container, ["propertyIconItems", "minimalPropertyIcons", "showPropertyMenuActions"]);
+    this.renderResetButton(container, [
+      "propertyIconItems",
+      "minimalPropertyIcons",
+      "showPropertyMenuActions",
+    ]);
     if (!settings.propertyIconItems) {
       settings.propertyIconItems = [];
     }
     const topGroup = new import_obsidian11.SettingGroup(container);
     topGroup.addSetting((setting) => {
-      setting.setName("Minimal property icons").setDesc("Hide the default property type icon and only show your custom icon.").addToggle((toggle) => {
-        toggle.setValue(settings.minimalPropertyIcons).onChange(async (value) => {
-          var _a2;
-          settings.minimalPropertyIcons = value;
-          await this.saveSettings();
-          (_a2 = this.plugin.propertiesManager) == null ? void 0 : _a2.refresh();
+      setting
+        .setName("Minimal property icons")
+        .setDesc(
+          "Hide the default property type icon and only show your custom icon.",
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(settings.minimalPropertyIcons)
+            .onChange(async (value) => {
+              var _a2;
+              settings.minimalPropertyIcons = value;
+              await this.saveSettings();
+              (_a2 = this.plugin.propertiesManager) == null
+                ? void 0
+                : _a2.refresh();
+            });
         });
-      });
     });
     topGroup.addSetting((setting) => {
-      setting.setName("Right-click menu").setDesc('Add "Change icon" and "Remove icon" to the property context menu.').addToggle((toggle) => {
-        toggle.setValue(settings.showPropertyMenuActions).onChange(async (value) => {
-          settings.showPropertyMenuActions = value;
-          await this.saveSettings();
+      setting
+        .setName("Right-click menu")
+        .setDesc(
+          'Add "Change icon" and "Remove icon" to the property context menu.',
+        )
+        .addToggle((toggle) => {
+          toggle
+            .setValue(settings.showPropertyMenuActions)
+            .onChange(async (value) => {
+              settings.showPropertyMenuActions = value;
+              await this.saveSettings();
+            });
         });
-      });
     });
-    const propGroup = new import_obsidian11.SettingGroup(container).setHeading("Property Icons");
-    const metadataProps = Object.keys(((_a = this.app.metadataTypeManager) == null ? void 0 : _a.properties) || {});
+    const propGroup = new import_obsidian11.SettingGroup(container).setHeading(
+      "Property Icons",
+    );
+    const metadataProps = Object.keys(
+      ((_a = this.app.metadataTypeManager) == null ? void 0 : _a.properties) ||
+        {},
+    );
     const savedProps = settings.propertyIconItems.map((i) => i.id);
-    const allProperties = Array.from(new Set([...metadataProps, ...savedProps].map((p) => p.toLowerCase()))).sort();
+    const allProperties = Array.from(
+      new Set([...metadataProps, ...savedProps].map((p) => p.toLowerCase())),
+    ).sort();
     if (allProperties.length === 0) {
       container.createDiv("ui-tweaker-empty-state", (el) => {
         el.createEl("p", { text: "No properties found in your vault yet." });
-        el.createEl("p", { text: "Add some properties to your notes to see them here.", cls: "sub-text" });
+        el.createEl("p", {
+          text: "Add some properties to your notes to see them here.",
+          cls: "sub-text",
+        });
       });
       return;
     }
@@ -3791,18 +5363,30 @@ var PropertiesTab = class extends TabRenderer {
   renderPropertySetting(group, propName) {
     const settings = this.getSettings();
     const normalizedPropName = propName.toLowerCase();
-    let item = settings.propertyIconItems.find((i) => i.id.toLowerCase() === normalizedPropName);
+    let item = settings.propertyIconItems.find(
+      (i) => i.id.toLowerCase() === normalizedPropName,
+    );
     group.addSetting((setting) => {
       setting.setName(propName);
-      if ((item == null ? void 0 : item.icon) || (item == null ? void 0 : item.color)) {
+      if (
+        (item == null ? void 0 : item.icon) ||
+        (item == null ? void 0 : item.color)
+      ) {
         setting.addExtraButton((button) => {
-          button.setIcon("lucide-rotate-ccw").setTooltip("Reset to default").onClick(async () => {
-            var _a;
-            settings.propertyIconItems = settings.propertyIconItems.filter((i) => i.id.toLowerCase() !== normalizedPropName);
-            await this.saveSettings();
-            if (this.container) this.render(this.container);
-            (_a = this.plugin.propertiesManager) == null ? void 0 : _a.refresh();
-          });
+          button
+            .setIcon("lucide-rotate-ccw")
+            .setTooltip("Reset to default")
+            .onClick(async () => {
+              var _a;
+              settings.propertyIconItems = settings.propertyIconItems.filter(
+                (i) => i.id.toLowerCase() !== normalizedPropName,
+              );
+              await this.saveSettings();
+              if (this.container) this.render(this.container);
+              (_a = this.plugin.propertiesManager) == null
+                ? void 0
+                : _a.refresh();
+            });
         });
       }
       setting.addExtraButton((button) => {
@@ -3817,11 +5401,17 @@ var PropertiesTab = class extends TabRenderer {
           (0, import_obsidian11.setIcon)(iconEl, "lucide-plus-circle");
           setCssProps(iconEl, { opacity: "0.4" });
         }
-        button.setTooltip((item == null ? void 0 : item.icon) ? `Icon: ${item.icon} (click to change)` : "Add icon");
+        button.setTooltip(
+          (item == null ? void 0 : item.icon)
+            ? `Icon: ${item.icon} (click to change)`
+            : "Add icon",
+        );
         button.onClick(() => {
           const modal = new IconPickerModal(this.app, async (iconId) => {
             var _a;
-            let currentItem = settings.propertyIconItems.find((i) => i.id.toLowerCase() === normalizedPropName);
+            let currentItem = settings.propertyIconItems.find(
+              (i) => i.id.toLowerCase() === normalizedPropName,
+            );
             if (!currentItem) {
               currentItem = { id: normalizedPropName };
               settings.propertyIconItems.push(currentItem);
@@ -3832,25 +5422,35 @@ var PropertiesTab = class extends TabRenderer {
               currentItem.icon = void 0;
             }
             if (!currentItem.icon && !currentItem.color) {
-              settings.propertyIconItems = settings.propertyIconItems.filter((i) => i.id.toLowerCase() !== normalizedPropName);
+              settings.propertyIconItems = settings.propertyIconItems.filter(
+                (i) => i.id.toLowerCase() !== normalizedPropName,
+              );
             }
             await this.saveSettings();
             if (this.container) this.render(this.container);
-            (_a = this.plugin.propertiesManager) == null ? void 0 : _a.refresh();
+            (_a = this.plugin.propertiesManager) == null
+              ? void 0
+              : _a.refresh();
           });
           modal.open();
         });
       });
       if (item == null ? void 0 : item.icon) {
-        const colorPicker = new import_obsidian11.ColorComponent(setting.controlEl);
+        const colorPicker = new import_obsidian11.ColorComponent(
+          setting.controlEl,
+        );
         colorPicker.setValue(item.color || "#000000");
         colorPicker.onChange(async (value) => {
           var _a;
-          const currentItem = settings.propertyIconItems.find((i) => i.id.toLowerCase() === normalizedPropName);
+          const currentItem = settings.propertyIconItems.find(
+            (i) => i.id.toLowerCase() === normalizedPropName,
+          );
           if (!currentItem) return;
           currentItem.color = value === "#000000" ? void 0 : value;
           await this.saveSettings();
-          const iconBtn = setting.settingEl.querySelector(".ui-tweaker-property-icon-btn");
+          const iconBtn = setting.settingEl.querySelector(
+            ".ui-tweaker-property-icon-btn",
+          );
           if (iconBtn) {
             if (currentItem.color) {
               setCssProps(iconBtn, { color: currentItem.color });
@@ -3883,17 +5483,43 @@ var UITweakerSettingTab = class extends import_obsidian12.PluginSettingTab {
     this.tabContentMap.clear();
     this.tabButtons.clear();
     const tabs = [
-      { id: "hider", name: "Hider", renderer: new HiderTab(this.app, this.plugin) },
-      { id: "status-bar", name: "Status bar", renderer: new StatusBarTab(this.app, this.plugin) },
-      { id: "tab-bar", name: "Tab bar", renderer: new TabBarTab(this.app, this.plugin) },
-      { id: "explorer", name: "Explorer", renderer: new ExplorerTab(this.app, this.plugin) },
-      { id: "properties", name: "Properties", renderer: new PropertiesTab(this.app, this.plugin) },
-      { id: "mobile", name: "Mobile", renderer: new MobileTab(this.app, this.plugin) }
+      {
+        id: "hider",
+        name: "Hider",
+        renderer: new HiderTab(this.app, this.plugin),
+      },
+      {
+        id: "status-bar",
+        name: "Status bar",
+        renderer: new StatusBarTab(this.app, this.plugin),
+      },
+      {
+        id: "tab-bar",
+        name: "Tab bar",
+        renderer: new TabBarTab(this.app, this.plugin),
+      },
+      {
+        id: "explorer",
+        name: "Explorer",
+        renderer: new ExplorerTab(this.app, this.plugin),
+      },
+      {
+        id: "properties",
+        name: "Properties",
+        renderer: new PropertiesTab(this.app, this.plugin),
+      },
+      {
+        id: "mobile",
+        name: "Mobile",
+        renderer: new MobileTab(this.app, this.plugin),
+      },
     ];
     const tabsWrapper = containerEl.createDiv("ui-tweaker-settings-tabs");
     const navEl = tabsWrapper.createDiv("ui-tweaker-settings-tabs-nav");
     navEl.setAttribute("role", "tablist");
-    const contentWrapper = tabsWrapper.createDiv("ui-tweaker-settings-tabs-content");
+    const contentWrapper = tabsWrapper.createDiv(
+      "ui-tweaker-settings-tabs-content",
+    );
     tabs.forEach((tab) => {
       const buttonComponent = new import_obsidian12.ButtonComponent(navEl);
       buttonComponent.setButtonText(tab.name);
@@ -3907,7 +5533,10 @@ var UITweakerSettingTab = class extends import_obsidian12.PluginSettingTab {
       });
       this.tabButtons.set(tab.id, buttonComponent);
     });
-    const initialTabId = this.activeTabId && tabs.some((t) => t.id === this.activeTabId) ? this.activeTabId : tabs[0].id;
+    const initialTabId =
+      this.activeTabId && tabs.some((t) => t.id === this.activeTabId)
+        ? this.activeTabId
+        : tabs[0].id;
     void this.activateTab(initialTabId, tabs, contentWrapper);
   }
   async activateTab(id, tabs, contentWrapper) {
@@ -3951,7 +5580,10 @@ var import_obsidian13 = require("obsidian");
 function parseFileAndViewTypes(types) {
   const result = { fileTypes: [], viewTypes: [] };
   if (!types || !types.trim()) return result;
-  const parts = types.split(",").map((p) => p.trim()).filter((p) => p);
+  const parts = types
+    .split(",")
+    .map((p) => p.trim())
+    .filter((p) => p);
   for (const part of parts) {
     const viewTypeMatch = part.match(/^\{\{(\w+)\}\}$/);
     if (viewTypeMatch) {
@@ -4047,15 +5679,27 @@ function matchesFileTypeFilter(leaf, showOnFileTypes, hideOnFileTypes) {
   const hideFilters = parseFileAndViewTypes(hideOnFileTypes);
   const fileExt = getFileExtension(leaf);
   const viewType = getViewType(leaf);
-  if (hideFilters.fileTypes.length > 0 && fileExt && hideFilters.fileTypes.includes(fileExt)) {
+  if (
+    hideFilters.fileTypes.length > 0 &&
+    fileExt &&
+    hideFilters.fileTypes.includes(fileExt)
+  ) {
     return false;
   }
-  if (hideFilters.viewTypes.length > 0 && viewType && hideFilters.viewTypes.includes(viewType)) {
+  if (
+    hideFilters.viewTypes.length > 0 &&
+    viewType &&
+    hideFilters.viewTypes.includes(viewType)
+  ) {
     return false;
   }
   if (showFilters.fileTypes.length > 0 || showFilters.viewTypes.length > 0) {
-    const matchesFileType = fileExt ? showFilters.fileTypes.includes(fileExt) : false;
-    const matchesViewType = viewType ? showFilters.viewTypes.includes(viewType) : false;
+    const matchesFileType = fileExt
+      ? showFilters.fileTypes.includes(fileExt)
+      : false;
+    const matchesViewType = viewType
+      ? showFilters.viewTypes.includes(viewType)
+      : false;
     return matchesFileType || matchesViewType;
   }
   return true;
@@ -4068,12 +5712,21 @@ function isModeActive(mode, plugin) {
   if (mode !== "any" && mode !== "desktop" && mode !== "mobile") {
     return mode === appId;
   }
-  return mode === "any" || mode === "mobile" && isMobile || mode === "desktop" && !isMobile;
+  return (
+    mode === "any" ||
+    (mode === "mobile" && isMobile) ||
+    (mode === "desktop" && !isMobile)
+  );
 }
 function getCommandFromId(id, plugin) {
   var _a, _b;
   const commands = plugin.app.commands;
-  return (_b = (_a = commands == null ? void 0 : commands.commands) == null ? void 0 : _a[id]) != null ? _b : null;
+  return (_b =
+    (_a = commands == null ? void 0 : commands.commands) == null
+      ? void 0
+      : _a[id]) != null
+    ? _b
+    : null;
 }
 var commandToggleTracker = new CommandToggleTracker();
 function isCommandChecked(id, plugin) {
@@ -4085,8 +5738,18 @@ function isCommandChecked(id, plugin) {
   }
   if (id === "editing-toolbar:hide-show-menu" || id === "hide-show-menu") {
     const plugins = plugin.app.plugins;
-    const editingToolbarPlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a["editing-toolbar"];
-    if (((_b = editingToolbarPlugin == null ? void 0 : editingToolbarPlugin.settings) == null ? void 0 : _b.cMenuVisibility) !== void 0) {
+    const editingToolbarPlugin =
+      (_a = plugins == null ? void 0 : plugins.plugins) == null
+        ? void 0
+        : _a["editing-toolbar"];
+    if (
+      ((_b =
+        editingToolbarPlugin == null
+          ? void 0
+          : editingToolbarPlugin.settings) == null
+        ? void 0
+        : _b.cMenuVisibility) !== void 0
+    ) {
       const isVisible = editingToolbarPlugin.settings.cMenuVisibility;
       commandToggleTracker.syncState(id, isVisible);
       return isVisible;
@@ -4104,7 +5767,9 @@ function isCommandChecked(id, plugin) {
       commandToggleTracker.syncState(id, isChecked);
       return isChecked;
     } catch (e) {
-      return (_e = commandToggleTracker.getTrackedState(id)) != null ? _e : false;
+      return (_e = commandToggleTracker.getTrackedState(id)) != null
+        ? _e
+        : false;
     }
   }
   return (_f = commandToggleTracker.getTrackedState(id)) != null ? _f : false;
@@ -4130,10 +5795,10 @@ var TabBarManager = class {
     this.plugin.registerEvent(
       this.plugin.app.workspace.on("layout-change", () => {
         this.addButtonsToAllLeaves();
-      })
+      }),
     );
-    this.plugin.app.workspace.onLayoutReady(
-      () => setTimeout(() => this.addButtonsToAllLeaves(), 100)
+    this.plugin.app.workspace.onLayoutReady(() =>
+      setTimeout(() => this.addButtonsToAllLeaves(), 100),
     );
   }
   addPageHeaderButton(leaf, pair) {
@@ -4161,7 +5826,9 @@ var TabBarManager = class {
         return;
       }
     }
-    if (!matchesFileTypeFilter(leaf, pair.showOnFileTypes, pair.hideOnFileTypes)) {
+    if (
+      !matchesFileTypeFilter(leaf, pair.showOnFileTypes, pair.hideOnFileTypes)
+    ) {
       return;
     }
     const initialIcon = this.getIconForToggleState(pair);
@@ -4184,30 +5851,39 @@ var TabBarManager = class {
     this.updateButtonToggleState(buttonIcon, pair);
     buttonIcon.addEventListener("contextmenu", (event) => {
       event.stopImmediatePropagation();
-      new import_obsidian14.Menu().addItem((item) => {
-        item.setTitle("Change icon").setIcon("lucide-image-plus").onClick(() => {
-          const modal = new IconPickerModal(this.plugin.app, (iconId) => {
-            if (iconId && iconId !== pair.icon) {
-              pair.icon = iconId;
-              void this.plugin.saveSettings();
-              this.reorder();
+      new import_obsidian14.Menu()
+        .addItem((item) => {
+          item
+            .setTitle("Change icon")
+            .setIcon("lucide-image-plus")
+            .onClick(() => {
+              const modal = new IconPickerModal(this.plugin.app, (iconId) => {
+                if (iconId && iconId !== pair.icon) {
+                  pair.icon = iconId;
+                  void this.plugin.saveSettings();
+                  this.reorder();
+                }
+              });
+              modal.open();
+            });
+        })
+        .addItem((item) => {
+          item
+            .setTitle("Delete")
+            .setIcon("lucide-trash")
+            .onClick(() => {
+              void this.removeCommand(pair);
+            });
+          const dom = item.dom;
+          if (dom) {
+            dom.classList.add("mod-warning");
+            const iconEl = dom.querySelector(".menu-item-icon svg");
+            if (iconEl) {
+              setCssProps(iconEl, { color: "var(--text-error)" });
             }
-          });
-          modal.open();
-        });
-      }).addItem((item) => {
-        item.setTitle("Delete").setIcon("lucide-trash").onClick(() => {
-          void this.removeCommand(pair);
-        });
-        const dom = item.dom;
-        if (dom) {
-          dom.classList.add("mod-warning");
-          const iconEl = dom.querySelector(".menu-item-icon svg");
-          if (iconEl) {
-            setCssProps(iconEl, { color: "var(--text-error)" });
           }
-        }
-      }).showAtMouseEvent(event);
+        })
+        .showAtMouseEvent(event);
     });
   }
   buttonsFor(leaf, create = false) {
@@ -4224,10 +5900,10 @@ var TabBarManager = class {
     });
   }
   removeButtonsFromAllLeaves() {
-    requestAnimationFrame(
-      () => this.plugin.app.workspace.iterateAllLeaves(
-        (leaf) => this.removeButtonsFromLeaf(leaf)
-      )
+    requestAnimationFrame(() =>
+      this.plugin.app.workspace.iterateAllLeaves((leaf) =>
+        this.removeButtonsFromLeaf(leaf),
+      ),
     );
   }
   addButtonsToLeaf(leaf, refresh = false) {
@@ -4299,7 +5975,10 @@ var TabBarManager = class {
       return;
     }
     const isChecked = isCommandChecked(pair.id, this.plugin);
-    (0, import_obsidian14.setIcon)(button, isChecked ? pair.toggleIcon : pair.icon);
+    (0, import_obsidian14.setIcon)(
+      button,
+      isChecked ? pair.toggleIcon : pair.icon,
+    );
   }
   /**
    * Update all buttons for a specific command ID across all leaves
@@ -4378,7 +6057,12 @@ var StatusBarManager = class {
   init() {
     this.plugin.app.workspace.onLayoutReady(() => {
       var _a, _b;
-      this.container = (_b = (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl) != null ? _b : null;
+      this.container =
+        (_b =
+          (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl) !=
+        null
+          ? _b
+          : null;
       if (!this.container) {
         return;
       }
@@ -4402,7 +6086,10 @@ var StatusBarManager = class {
           }
         }, 200);
       });
-      this.observer.observe(this.container, { childList: true, subtree: false });
+      this.observer.observe(this.container, {
+        childList: true,
+        subtree: false,
+      });
       this.plugin.register(() => {
         this.cleanup();
       });
@@ -4418,10 +6105,16 @@ var StatusBarManager = class {
     this.customActions.forEach((action) => action.remove());
     this.customActions.clear();
     if (this.container) {
-      const managedButtons = this.container.querySelectorAll('[data-ui-tweaker-managed="true"]');
+      const managedButtons = this.container.querySelectorAll(
+        '[data-ui-tweaker-managed="true"]',
+      );
       managedButtons.forEach((btn) => btn.remove());
-      const hiddenItems = this.container.querySelectorAll(".ui-tweaker-status-bar-hidden");
-      hiddenItems.forEach((item) => item.removeClass("ui-tweaker-status-bar-hidden"));
+      const hiddenItems = this.container.querySelectorAll(
+        ".ui-tweaker-status-bar-hidden",
+      );
+      hiddenItems.forEach((item) =>
+        item.removeClass("ui-tweaker-status-bar-hidden"),
+      );
     }
   }
   /**
@@ -4434,7 +6127,7 @@ var StatusBarManager = class {
       // Common state classes that shouldn't be part of an element's identity
       /^(is-active|is-loading|is-hidden|is-collapsed|is-selected|is-flashing|mod-active|mod-loading)$/,
       // obsidian-git specific dynamic classes
-      /^obsidian-git-statusbar-/
+      /^obsidian-git-statusbar-/,
     ];
     return dynamicPatterns.some((pattern) => pattern.test(className));
   }
@@ -4444,21 +6137,46 @@ var StatusBarManager = class {
    */
   generateCanonicalName(element, allClasses) {
     var _a;
-    const ignoredClasses = ["mod-clickable", "status-bar-item", "ui-tweaker-status-bar-item", "ui-tweaker-status-bar-hidden"];
+    const ignoredClasses = [
+      "mod-clickable",
+      "status-bar-item",
+      "ui-tweaker-status-bar-item",
+      "ui-tweaker-status-bar-hidden",
+    ];
     const pluginClass = allClasses.find(
-      (cls) => cls.includes("plugin-") || cls.includes("obsidian-git") || cls.includes("-git") || cls.startsWith("git-") && cls !== "git-changes-status-bar"
+      (cls) =>
+        cls.includes("plugin-") ||
+        cls.includes("obsidian-git") ||
+        cls.includes("-git") ||
+        (cls.startsWith("git-") && cls !== "git-changes-status-bar"),
     );
     if (pluginClass) {
-      if (pluginClass.includes("obsidian-git") || pluginClass.startsWith("git-")) {
-        if (allClasses.some((cls) => cls.startsWith("obsidian-git-statusbar-"))) return "plugin-obsidian-git-status";
-        if (allClasses.includes("git-changes-status-bar")) return "plugin-obsidian-git-changes";
-        const textContent = (_a = element.textContent) == null ? void 0 : _a.trim();
-        const looksLikeBranch = textContent && textContent.length > 0 && /^[a-z0-9][a-z0-9._\-/]*$/i.test(textContent) && textContent.length < 30 && !textContent.includes(":") && !/^[0-9]/.test(textContent) && !element.getAttribute("data-ui-tweaker-managed");
+      if (
+        pluginClass.includes("obsidian-git") ||
+        pluginClass.startsWith("git-")
+      ) {
+        if (allClasses.some((cls) => cls.startsWith("obsidian-git-statusbar-")))
+          return "plugin-obsidian-git-status";
+        if (allClasses.includes("git-changes-status-bar"))
+          return "plugin-obsidian-git-changes";
+        const textContent =
+          (_a = element.textContent) == null ? void 0 : _a.trim();
+        const looksLikeBranch =
+          textContent &&
+          textContent.length > 0 &&
+          /^[a-z0-9][a-z0-9._\-/]*$/i.test(textContent) &&
+          textContent.length < 30 &&
+          !textContent.includes(":") &&
+          !/^[0-9]/.test(textContent) &&
+          !element.getAttribute("data-ui-tweaker-managed");
         if (looksLikeBranch) return "plugin-obsidian-git-branch";
         return "plugin-obsidian-git";
       }
       const stableClasses2 = allClasses.filter(
-        (cls) => !this.isDynamicStateClass(cls) && !ignoredClasses.includes(cls) && cls !== pluginClass
+        (cls) =>
+          !this.isDynamicStateClass(cls) &&
+          !ignoredClasses.includes(cls) &&
+          cls !== pluginClass,
       );
       if (stableClasses2.length > 0) {
         return `${pluginClass}-${stableClasses2.join("-")}`;
@@ -4466,7 +6184,7 @@ var StatusBarManager = class {
       return pluginClass;
     }
     const stableClasses = allClasses.filter(
-      (cls) => !this.isDynamicStateClass(cls) && !ignoredClasses.includes(cls)
+      (cls) => !this.isDynamicStateClass(cls) && !ignoredClasses.includes(cls),
     );
     if (stableClasses.length > 0) {
       return stableClasses.join("-");
@@ -4482,9 +6200,18 @@ var StatusBarManager = class {
     const parts = id.split(";");
     parts.pop();
     const fullName = parts.join(";");
-    if (fullName.includes("obsidian-git-statusbar-") || fullName === "plugin-obsidian-git") {
+    if (
+      fullName.includes("obsidian-git-statusbar-") ||
+      fullName === "plugin-obsidian-git"
+    ) {
       const savedItem = this.items.find((i) => i.id === id);
-      if (savedItem && savedItem.name && /^[a-z0-9][a-z0-9._\-/]*$/i.test(savedItem.name) && savedItem.name.length < 30 && !savedItem.name.includes("plugin-")) {
+      if (
+        savedItem &&
+        savedItem.name &&
+        /^[a-z0-9][a-z0-9._\-/]*$/i.test(savedItem.name) &&
+        savedItem.name.length < 30 &&
+        !savedItem.name.includes("plugin-")
+      ) {
         return "plugin-obsidian-git-branch";
       }
       return "plugin-obsidian-git-status";
@@ -4503,11 +6230,27 @@ var StatusBarManager = class {
       }
       if (nameParts[i] === "statusbar" && i < nameParts.length - 1) {
         const nextPart = nameParts[i + 1];
-        if (["idle", "pull", "push", "commit", "message", "status", "add", "conflict", "paused"].includes(nextPart)) {
+        if (
+          [
+            "idle",
+            "pull",
+            "push",
+            "commit",
+            "message",
+            "status",
+            "add",
+            "conflict",
+            "paused",
+          ].includes(nextPart)
+        ) {
           skipNext = true;
           continue;
         }
-        if (nextPart === "failed" && i < nameParts.length - 2 && nameParts[i + 2] === "init") {
+        if (
+          nextPart === "failed" &&
+          i < nameParts.length - 2 &&
+          nameParts[i + 2] === "init"
+        ) {
           i += 2;
           continue;
         }
@@ -4529,7 +6272,8 @@ var StatusBarManager = class {
     const existingElements = Array.from(this.container.children).filter(
       (el) => {
         const element = el;
-        if (element.classList.contains("ui-tweaker-status-bar-item")) return false;
+        if (element.classList.contains("ui-tweaker-status-bar-item"))
+          return false;
         if (element.getAttribute("data-ui-tweaker-managed") === "true") {
           const id = element.getAttribute("data-ui-tweaker-status-bar-id");
           if (!id || !this.items.some((item) => item.id === id)) {
@@ -4537,7 +6281,7 @@ var StatusBarManager = class {
           }
         }
         return true;
-      }
+      },
     );
     const savedItems = this.items.filter((item) => item.type === "existing");
     const savedItemsMap = new Map(savedItems.map((item) => [item.id, item]));
@@ -4556,28 +6300,45 @@ var StatusBarManager = class {
       } else {
         const allClasses = Array.from(element.classList);
         canonicalName = this.generateCanonicalName(element, allClasses);
-        index = canonicalName in pluginElementCount ? pluginElementCount[canonicalName] + 1 : 1;
+        index =
+          canonicalName in pluginElementCount
+            ? pluginElementCount[canonicalName] + 1
+            : 1;
         id = `${canonicalName};${index}`;
         element.setAttribute("data-ui-tweaker-status-bar-id", id);
       }
-      pluginElementCount[canonicalName] = Math.max(index, pluginElementCount[canonicalName] || 0);
+      pluginElementCount[canonicalName] = Math.max(
+        index,
+        pluginElementCount[canonicalName] || 0,
+      );
       const savedItem = savedItemsMap.get(id);
       if (savedItem) {
         matchedSavedIds.add(id);
-        let elementName = element.getAttribute("aria-label") || element.getAttribute("title") || ((_a = element.textContent) == null ? void 0 : _a.trim());
+        let elementName =
+          element.getAttribute("aria-label") ||
+          element.getAttribute("title") ||
+          ((_a = element.textContent) == null ? void 0 : _a.trim());
         const isBranch = canonicalName === "plugin-obsidian-git-branch";
-        const hasGenericName = !savedItem.name || savedItem.name === canonicalName || savedItem.name === "Status bar item" || savedItem.name.startsWith("plugin-");
+        const hasGenericName =
+          !savedItem.name ||
+          savedItem.name === canonicalName ||
+          savedItem.name === "Status bar item" ||
+          savedItem.name.startsWith("plugin-");
         if (elementName && (isBranch || hasGenericName)) {
           savedItem.name = elementName.substring(0, 50);
         }
       } else {
-        let elementName = element.getAttribute("aria-label") || element.getAttribute("title") || ((_b = element.textContent) == null ? void 0 : _b.trim()) || canonicalName;
+        let elementName =
+          element.getAttribute("aria-label") ||
+          element.getAttribute("title") ||
+          ((_b = element.textContent) == null ? void 0 : _b.trim()) ||
+          canonicalName;
         newItems.push({
           id,
           name: elementName.substring(0, 50),
           type: "existing",
           hidden: false,
-          mdOnly: false
+          mdOnly: false,
         });
       }
     });
@@ -4599,7 +6360,7 @@ var StatusBarManager = class {
   /**
    * Reorder and apply visibility to all status bar items (like Status Bar Organizer)
    * Handles sticky items (left/right) and items that aren't currently visible
-   * 
+   *
    * Note: Items with the same sticky position maintain their relative order
    * (e.g., if 3 items are sticky-left, they appear in the order they're in settings)
    */
@@ -4610,7 +6371,9 @@ var StatusBarManager = class {
     this.customActions.forEach((action) => action.remove());
     this.customActions.clear();
     const allExistingElements = Array.from(this.container.children).filter(
-      (el) => el.classList.contains("status-bar-item") && !el.classList.contains("ui-tweaker-status-bar-item")
+      (el) =>
+        el.classList.contains("status-bar-item") &&
+        !el.classList.contains("ui-tweaker-status-bar-item"),
     );
     const leftSticky = [];
     const rightSticky = [];
@@ -4620,7 +6383,8 @@ var StatusBarManager = class {
       if (item.hidden) {
         if (item.type === "existing") {
           const element = allExistingElements.find(
-            (el) => el.getAttribute("data-ui-tweaker-status-bar-id") === item.id
+            (el) =>
+              el.getAttribute("data-ui-tweaker-status-bar-id") === item.id,
           );
           if (element) {
             element.addClass("ui-tweaker-status-bar-hidden");
@@ -4631,7 +6395,8 @@ var StatusBarManager = class {
       if (item.mdOnly && !isMarkdownView(activeLeaf)) {
         if (item.type === "existing") {
           const element = allExistingElements.find(
-            (el) => el.getAttribute("data-ui-tweaker-status-bar-id") === item.id
+            (el) =>
+              el.getAttribute("data-ui-tweaker-status-bar-id") === item.id,
           );
           if (element) {
             element.addClass("ui-tweaker-status-bar-hidden");
@@ -4641,7 +6406,10 @@ var StatusBarManager = class {
       }
       if (item.type === "custom") {
         const commands = this.plugin.app.commands;
-        const command = (_a = commands == null ? void 0 : commands.commands) == null ? void 0 : _a[item.commandId || ""];
+        const command =
+          (_a = commands == null ? void 0 : commands.commands) == null
+            ? void 0
+            : _a[item.commandId || ""];
         const mode = item.mode || "any";
         if (command && isModeActive(mode, this.plugin)) {
           this.addCustomAction(item);
@@ -4658,7 +6426,7 @@ var StatusBarManager = class {
         }
       } else {
         const element = allExistingElements.find(
-          (el) => el.getAttribute("data-ui-tweaker-status-bar-id") === item.id
+          (el) => el.getAttribute("data-ui-tweaker-status-bar-id") === item.id,
         );
         if (element) {
           element.removeClass("ui-tweaker-status-bar-hidden");
@@ -4697,8 +6465,8 @@ var StatusBarManager = class {
         "aria-label": item.name,
         "data-tooltip-position": "top",
         "data-ui-tweaker-status-bar-id": item.id,
-        "data-ui-tweaker-managed": "true"
-      }
+        "data-ui-tweaker-managed": "true",
+      },
     });
     if (item.icon) {
       (0, import_obsidian15.setIcon)(btn, item.icon);
@@ -4708,36 +6476,48 @@ var StatusBarManager = class {
     }
     btn.onclick = () => {
       const commands = this.plugin.app.commands;
-      if ((commands == null ? void 0 : commands.executeCommandById) && item.commandId) {
+      if (
+        (commands == null ? void 0 : commands.executeCommandById) &&
+        item.commandId
+      ) {
         void commands.executeCommandById(item.commandId);
       }
     };
     btn.addEventListener("contextmenu", (event) => {
       event.stopImmediatePropagation();
-      new import_obsidian15.Menu().addItem((menuItem) => {
-        menuItem.setTitle("Change icon").setIcon("lucide-image-plus").onClick(() => {
-          const modal = new IconPickerModal(this.plugin.app, (iconId) => {
-            if (iconId && iconId !== item.icon) {
-              item.icon = iconId;
-              void this.plugin.saveSettings();
-              this.reorder();
+      new import_obsidian15.Menu()
+        .addItem((menuItem) => {
+          menuItem
+            .setTitle("Change icon")
+            .setIcon("lucide-image-plus")
+            .onClick(() => {
+              const modal = new IconPickerModal(this.plugin.app, (iconId) => {
+                if (iconId && iconId !== item.icon) {
+                  item.icon = iconId;
+                  void this.plugin.saveSettings();
+                  this.reorder();
+                }
+              });
+              modal.open();
+            });
+        })
+        .addItem((menuItem) => {
+          menuItem
+            .setTitle("Delete")
+            .setIcon("lucide-trash")
+            .onClick(() => {
+              void this.removeItem(item);
+            });
+          const dom = menuItem.dom;
+          if (dom) {
+            dom.classList.add("mod-warning");
+            const iconEl = dom.querySelector(".menu-item-icon svg");
+            if (iconEl) {
+              setCssProps(iconEl, { color: "var(--text-error)" });
             }
-          });
-          modal.open();
-        });
-      }).addItem((menuItem) => {
-        menuItem.setTitle("Delete").setIcon("lucide-trash").onClick(() => {
-          void this.removeItem(item);
-        });
-        const dom = menuItem.dom;
-        if (dom) {
-          dom.classList.add("mod-warning");
-          const iconEl = dom.querySelector(".menu-item-icon svg");
-          if (iconEl) {
-            setCssProps(iconEl, { color: "var(--text-error)" });
           }
-        }
-      }).showAtMouseEvent(event);
+        })
+        .showAtMouseEvent(event);
     });
     this.customActions.set(item, btn);
   }
@@ -4748,7 +6528,10 @@ var StatusBarManager = class {
     if (!this.plugin.settings.statusBarItems) {
       this.plugin.settings.statusBarItems = [];
     }
-    const hasMarkdownFilter = pair.showOnFileTypes && (pair.showOnFileTypes.includes("md") || pair.showOnFileTypes.includes("mdx"));
+    const hasMarkdownFilter =
+      pair.showOnFileTypes &&
+      (pair.showOnFileTypes.includes("md") ||
+        pair.showOnFileTypes.includes("mdx"));
     const mdOnly = hasMarkdownFilter ? true : false;
     const item = {
       id: `custom-${pair.id}`,
@@ -4760,7 +6543,7 @@ var StatusBarManager = class {
       mdOnly,
       commandId: pair.id,
       color: pair.color,
-      mode: pair.mode
+      mode: pair.mode,
     };
     this.plugin.settings.statusBarItems.push(item);
     this.reorder();
@@ -4832,7 +6615,7 @@ var ExplorerManager = class {
           this.consolidateSettingsAndElements();
           this.reorder();
           this.applyNativeIconOverrides();
-        })
+        }),
       );
       this.addButtonsToAllLeaves();
       this.reorder();
@@ -4850,19 +6633,26 @@ var ExplorerManager = class {
   cleanup() {
     this.observers.forEach((observer) => observer.disconnect());
     this.observers = [];
-    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers =
+      this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
-      const navButtonsContainer = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.querySelector("div.nav-buttons-container");
+      const navButtonsContainer =
+        (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+          ? void 0
+          : _b.querySelector("div.nav-buttons-container");
       if (navButtonsContainer) {
-        const managedButtons = navButtonsContainer.querySelectorAll('[data-ui-tweaker-managed="true"]');
+        const managedButtons = navButtonsContainer.querySelectorAll(
+          '[data-ui-tweaker-managed="true"]',
+        );
         managedButtons.forEach((btn) => btn.remove());
       }
     });
     this.buttons.clear();
   }
   addButtonsToAllLeaves() {
-    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers =
+      this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       this.addButtonsToExplorer(leaf);
     });
@@ -4873,10 +6663,11 @@ var ExplorerManager = class {
   /**
    * Migrate existing explorerCommands to explorerButtonItems
    */
-  migrateExplorerCommands() {
-  }
+  migrateExplorerCommands() {}
   createOrUpdateExplorerButton(container, pair, leaf) {
-    const existingButton = container.querySelector(`[data-explorer-command-id="${pair.id}"]`);
+    const existingButton = container.querySelector(
+      `[data-explorer-command-id="${pair.id}"]`,
+    );
     if (existingButton) {
       existingButton.setAttribute("aria-label", pair.name);
       if (pair.color && pair.color !== "#000000") {
@@ -4896,8 +6687,8 @@ var ExplorerManager = class {
         "data-explorer-command-id": pair.id,
         "aria-label": pair.name,
         "aria-label-position": "top",
-        "data-ui-tweaker-managed": "true"
-      }
+        "data-ui-tweaker-managed": "true",
+      },
     });
     this.updateButtonToggleState(button, pair);
     button.onclick = () => {
@@ -4913,30 +6704,39 @@ var ExplorerManager = class {
     this.buttons.set(pair.id, button);
     button.addEventListener("contextmenu", (event) => {
       event.stopImmediatePropagation();
-      new import_obsidian16.Menu().addItem((item) => {
-        item.setTitle("Change icon").setIcon("lucide-image-plus").onClick(() => {
-          const modal = new IconPickerModal(this.plugin.app, (iconId) => {
-            if (iconId && iconId !== pair.icon) {
-              pair.icon = iconId;
-              void this.plugin.saveSettings();
-              this.reorder();
+      new import_obsidian16.Menu()
+        .addItem((item) => {
+          item
+            .setTitle("Change icon")
+            .setIcon("lucide-image-plus")
+            .onClick(() => {
+              const modal = new IconPickerModal(this.plugin.app, (iconId) => {
+                if (iconId && iconId !== pair.icon) {
+                  pair.icon = iconId;
+                  void this.plugin.saveSettings();
+                  this.reorder();
+                }
+              });
+              modal.open();
+            });
+        })
+        .addItem((item) => {
+          item
+            .setTitle("Delete")
+            .setIcon("lucide-trash")
+            .onClick(() => {
+              void this.removeCommand(pair);
+            });
+          const dom = item.dom;
+          if (dom) {
+            dom.classList.add("mod-warning");
+            const iconEl = dom.querySelector(".menu-item-icon svg");
+            if (iconEl) {
+              setCssProps(iconEl, { color: "var(--text-error)" });
             }
-          });
-          modal.open();
-        });
-      }).addItem((item) => {
-        item.setTitle("Delete").setIcon("lucide-trash").onClick(() => {
-          void this.removeCommand(pair);
-        });
-        const dom = item.dom;
-        if (dom) {
-          dom.classList.add("mod-warning");
-          const iconEl = dom.querySelector(".menu-item-icon svg");
-          if (iconEl) {
-            setCssProps(iconEl, { color: "var(--text-error)" });
           }
-        }
-      }).showAtMouseEvent(event);
+        })
+        .showAtMouseEvent(event);
     });
     container.appendChild(button);
     return button;
@@ -4951,7 +6751,7 @@ var ExplorerManager = class {
       "Change sort order": "sortOrder",
       "Auto-reveal current file": "autoReveal",
       "Collapse all": "collapseAll",
-      "Expand all": "collapseAll"
+      "Expand all": "collapseAll",
       // Both map to same key
     };
     if (nativeButtonMap[ariaLabel]) {
@@ -4963,12 +6763,19 @@ var ExplorerManager = class {
     }
     const allClasses = Array.from(element.classList);
     const ignoredClasses = ["clickable-icon", "nav-action-button"];
-    const stableClasses = allClasses.filter((cls) => !ignoredClasses.includes(cls));
+    const stableClasses = allClasses.filter(
+      (cls) => !ignoredClasses.includes(cls),
+    );
     const pluginClass = stableClasses.find(
-      (cls) => cls.includes("plugin-") || cls.includes("commander") || cls.includes("explorer-focus")
+      (cls) =>
+        cls.includes("plugin-") ||
+        cls.includes("commander") ||
+        cls.includes("explorer-focus"),
     );
     if (pluginClass) {
-      const sanitizedAriaLabel = ariaLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const sanitizedAriaLabel = ariaLabel
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-");
       return `external-${pluginClass}-${sanitizedAriaLabel}`;
     }
     const sanitized = ariaLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -4979,22 +6786,31 @@ var ExplorerManager = class {
    */
   consolidateSettingsAndElements() {
     var _a, _b;
-    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers =
+      this.plugin.app.workspace.getLeavesOfType("file-explorer");
     if (explorers.length === 0) return;
     const firstExplorer = explorers[0];
-    const navButtonsContainer = (_b = (_a = firstExplorer.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.querySelector("div.nav-buttons-container");
+    const navButtonsContainer =
+      (_b = (_a = firstExplorer.view) == null ? void 0 : _a.containerEl) == null
+        ? void 0
+        : _b.querySelector("div.nav-buttons-container");
     if (!navButtonsContainer) return;
-    const existingButtons = Array.from(navButtonsContainer.querySelectorAll(".nav-action-button")).filter(
-      (element) => {
-        if (element.getAttribute("data-ui-tweaker-managed") === "true") {
-          const commandId = element.getAttribute("data-explorer-command-id");
-          if (!commandId || !this.plugin.settings.explorerButtonItems.some((item) => item.commandId === commandId)) {
-            return false;
-          }
+    const existingButtons = Array.from(
+      navButtonsContainer.querySelectorAll(".nav-action-button"),
+    ).filter((element) => {
+      if (element.getAttribute("data-ui-tweaker-managed") === "true") {
+        const commandId = element.getAttribute("data-explorer-command-id");
+        if (
+          !commandId ||
+          !this.plugin.settings.explorerButtonItems.some(
+            (item) => item.commandId === commandId,
+          )
+        ) {
+          return false;
         }
-        return true;
       }
-    );
+      return true;
+    });
     const savedItems = this.plugin.settings.explorerButtonItems || [];
     const savedItemsMap = new Map(savedItems.map((item) => [item.id, item]));
     const matchedSavedIds = /* @__PURE__ */ new Set();
@@ -5018,7 +6834,11 @@ var ExplorerManager = class {
       if (savedItemsMap.has(id)) {
         matchedSavedIds.add(id);
         const savedItem = savedItemsMap.get(id);
-        if (!savedItem.name || savedItem.name === id || savedItem.name.startsWith("external-")) {
+        if (
+          !savedItem.name ||
+          savedItem.name === id ||
+          savedItem.name.startsWith("external-")
+        ) {
           savedItem.name = ariaLabel || savedItem.name || id;
         }
         if (ariaLabel) {
@@ -5039,10 +6859,12 @@ var ExplorerManager = class {
           ariaLabel,
           type,
           commandId: commandId || void 0,
-          hidden: false
+          hidden: false,
         };
         if (type === "custom" && commandId) {
-          const existingCommand = this.plugin.settings.explorerCommands.find((c) => c.id === commandId);
+          const existingCommand = this.plugin.settings.explorerCommands.find(
+            (c) => c.id === commandId,
+          );
           if (existingCommand) {
             newItem.icon = existingCommand.icon;
             newItem.displayName = existingCommand.displayName;
@@ -5066,20 +6888,29 @@ var ExplorerManager = class {
    * Set up mutation observer to detect new external buttons
    */
   setupMutationObserver() {
-    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers =
+      this.plugin.app.workspace.getLeavesOfType("file-explorer");
     if (explorers.length === 0) return;
     explorers.forEach((explorer) => {
       var _a, _b;
-      const navButtonsContainer = (_b = (_a = explorer.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.querySelector("div.nav-buttons-container");
+      const navButtonsContainer =
+        (_b = (_a = explorer.view) == null ? void 0 : _a.containerEl) == null
+          ? void 0
+          : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
       let observerTimeout = null;
       const observer = new MutationObserver((mutations) => {
         if (this.isReordering) return;
         const hasNewNodes = mutations.some(
-          (mutation) => mutation.addedNodes.length > 0 && Array.from(mutation.addedNodes).some(
-            (node) => node instanceof HTMLElement && node.classList.contains("nav-action-button") && !node.hasAttribute("data-explorer-command-id")
-            // Only external buttons (not our custom ones)
-          )
+          (mutation) =>
+            mutation.addedNodes.length > 0 &&
+            Array.from(mutation.addedNodes).some(
+              (node) =>
+                node instanceof HTMLElement &&
+                node.classList.contains("nav-action-button") &&
+                !node.hasAttribute("data-explorer-command-id"),
+              // Only external buttons (not our custom ones)
+            ),
         );
         if (!hasNewNodes) return;
         if (observerTimeout) {
@@ -5092,7 +6923,10 @@ var ExplorerManager = class {
           }
         }, 1e3);
       });
-      observer.observe(navButtonsContainer, { childList: true, subtree: false });
+      observer.observe(navButtonsContainer, {
+        childList: true,
+        subtree: false,
+      });
       this.observers.push(observer);
     });
   }
@@ -5102,12 +6936,18 @@ var ExplorerManager = class {
   reorder() {
     this.isReordering = true;
     this.observers.forEach((observer) => observer.disconnect());
-    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers =
+      this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
-      const navButtonsContainer = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.querySelector("div.nav-buttons-container");
+      const navButtonsContainer =
+        (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+          ? void 0
+          : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
-      const allButtons = Array.from(navButtonsContainer.querySelectorAll(".nav-action-button"));
+      const allButtons = Array.from(
+        navButtonsContainer.querySelectorAll(".nav-action-button"),
+      );
       const buttonMap = /* @__PURE__ */ new Map();
       allButtons.forEach((button) => {
         const ariaLabel = button.getAttribute("aria-label") || "";
@@ -5147,9 +6987,15 @@ var ExplorerManager = class {
           orderedButtons.push(button);
           buttonMap.delete(item.id);
         } else if (item.type === "custom") {
-          const commandPair = this.plugin.settings.explorerCommands.find((c) => c.id === item.commandId);
+          const commandPair = this.plugin.settings.explorerCommands.find(
+            (c) => c.id === item.commandId,
+          );
           if (commandPair) {
-            const newButton = this.createOrUpdateExplorerButton(navButtonsContainer, commandPair, leaf);
+            const newButton = this.createOrUpdateExplorerButton(
+              navButtonsContainer,
+              commandPair,
+              leaf,
+            );
             if (newButton) {
               orderedButtons.push(newButton);
             }
@@ -5205,7 +7051,10 @@ var ExplorerManager = class {
       }
     } else if (pair.toggleIcon) {
       button.empty();
-      (0, import_obsidian16.setIcon)(button, isChecked ? pair.toggleIcon : pair.icon);
+      (0, import_obsidian16.setIcon)(
+        button,
+        isChecked ? pair.toggleIcon : pair.icon,
+      );
       button.classList.remove("is-active");
     }
     if (pair.color && pair.color !== "#000000") {
@@ -5218,13 +7067,19 @@ var ExplorerManager = class {
    * Update button names/tooltips for all existing buttons
    */
   updateButtonNames() {
-    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers =
+      this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
-      const navButtonsContainer = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.querySelector("div.nav-buttons-container");
+      const navButtonsContainer =
+        (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+          ? void 0
+          : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
       for (const pair of this.plugin.settings.explorerCommands) {
-        const button = navButtonsContainer.querySelector(`[data-explorer-command-id="${pair.id}"]`);
+        const button = navButtonsContainer.querySelector(
+          `[data-explorer-command-id="${pair.id}"]`,
+        );
         if (button) {
           button.setAttribute("aria-label", pair.name);
           this.updateButtonToggleState(button, pair);
@@ -5236,14 +7091,22 @@ var ExplorerManager = class {
    * Update all buttons for a specific command ID across all explorers
    */
   updateAllButtonsForCommand(commandId) {
-    const pair = this.plugin.settings.explorerCommands.find((p) => p.id === commandId);
+    const pair = this.plugin.settings.explorerCommands.find(
+      (p) => p.id === commandId,
+    );
     if (!pair) return;
-    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers =
+      this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
-      const navButtonsContainer = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.querySelector("div.nav-buttons-container");
+      const navButtonsContainer =
+        (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+          ? void 0
+          : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
-      const button = navButtonsContainer.querySelector(`[data-explorer-command-id="${commandId}"]`);
+      const button = navButtonsContainer.querySelector(
+        `[data-explorer-command-id="${commandId}"]`,
+      );
       if (button) {
         this.updateButtonToggleState(button, pair);
       }
@@ -5253,13 +7116,19 @@ var ExplorerManager = class {
    * Refresh toggle states for all buttons
    */
   refreshToggleStates() {
-    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers =
+      this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
-      const navButtonsContainer = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.querySelector("div.nav-buttons-container");
+      const navButtonsContainer =
+        (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+          ? void 0
+          : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
       for (const pair of this.plugin.settings.explorerCommands) {
-        const button = navButtonsContainer.querySelector(`[data-explorer-command-id="${pair.id}"]`);
+        const button = navButtonsContainer.querySelector(
+          `[data-explorer-command-id="${pair.id}"]`,
+        );
         if (button && (pair.toggleIcon || pair.useActiveClass)) {
           this.updateButtonToggleState(button, pair);
         }
@@ -5270,27 +7139,37 @@ var ExplorerManager = class {
    * Apply icon overrides to native explorer buttons
    */
   applyNativeIconOverrides() {
-    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers =
+      this.plugin.app.workspace.getLeavesOfType("file-explorer");
     const iconOverrides = this.plugin.settings.nativeExplorerButtonIcons;
     const defaultIcons = {
       "New note": { icon: "lucide-edit", key: "newNote" },
       "New folder": { icon: "lucide-folder-plus", key: "newFolder" },
       "Change sort order": { icon: "lucide-sort-asc", key: "sortOrder" },
-      "Auto-reveal current file": { icon: "lucide-gallery-vertical", key: "autoReveal" },
-      "Collapse all": { icon: "lucide-chevrons-up-down", key: "collapseAll" }
+      "Auto-reveal current file": {
+        icon: "lucide-gallery-vertical",
+        key: "autoReveal",
+      },
+      "Collapse all": { icon: "lucide-chevrons-up-down", key: "collapseAll" },
     };
     explorers.forEach((leaf) => {
       var _a, _b;
-      const navButtonsContainer = (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null ? void 0 : _b.querySelector("div.nav-buttons-container");
+      const navButtonsContainer =
+        (_b = (_a = leaf.view) == null ? void 0 : _a.containerEl) == null
+          ? void 0
+          : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
-      const nativeButtons = navButtonsContainer.querySelectorAll(".nav-action-button:not([data-explorer-command-id])");
+      const nativeButtons = navButtonsContainer.querySelectorAll(
+        ".nav-action-button:not([data-explorer-command-id])",
+      );
       nativeButtons.forEach((button) => {
         const ariaLabel = button.getAttribute("aria-label");
         if (!ariaLabel) return;
         const buttonInfo = defaultIcons[ariaLabel];
         if (!buttonInfo) return;
         const iconKey = buttonInfo.key;
-        const iconOverride = iconOverrides == null ? void 0 : iconOverrides[iconKey];
+        const iconOverride =
+          iconOverrides == null ? void 0 : iconOverrides[iconKey];
         const colorOverrides = this.plugin.settings.nativeExplorerButtonColors;
         const color = colorOverrides == null ? void 0 : colorOverrides[iconKey];
         button.empty();
@@ -5343,7 +7222,9 @@ var ButtonReplacer = class {
   }
   tryInstall() {
     var _a, _b, _c, _d;
-    const parent = this.options.parentSelector ? document.querySelector(this.options.parentSelector) : document.body;
+    const parent = this.options.parentSelector
+      ? document.querySelector(this.options.parentSelector)
+      : document.body;
     if (!parent) return;
     let originalBtn = null;
     if (this.options.findButton) {
@@ -5357,7 +7238,11 @@ var ButtonReplacer = class {
       }
       return;
     }
-    if (this.customButton && this.customButton.parentElement && document.body.contains(this.customButton)) {
+    if (
+      this.customButton &&
+      this.customButton.parentElement &&
+      document.body.contains(this.customButton)
+    ) {
       return;
     }
     this.removeCustomButton();
@@ -5365,34 +7250,54 @@ var ButtonReplacer = class {
     customButton.removeAttribute("aria-label");
     customButton.setAttribute(`data-${this.options.uniqueId}`, "true");
     if (this.options.cssClass) {
-      this.options.cssClass.split(" ").filter(Boolean).forEach((cls) => customButton.classList.add(cls));
+      this.options.cssClass
+        .split(" ")
+        .filter(Boolean)
+        .forEach((cls) => customButton.classList.add(cls));
     }
     if (this.options.stripClasses) {
-      this.options.stripClasses.forEach((cls) => customButton.classList.remove(cls));
+      this.options.stripClasses.forEach((cls) =>
+        customButton.classList.remove(cls),
+      );
     }
     customButton.onclick = null;
-    const iconContainer = ((_a = customButton.querySelector("svg")) == null ? void 0 : _a.parentElement) || customButton;
+    const iconContainer =
+      ((_a = customButton.querySelector("svg")) == null
+        ? void 0
+        : _a.parentElement) || customButton;
     try {
       const oldSvg = customButton.querySelector("svg");
       if (oldSvg) oldSvg.remove();
       (0, import_obsidian17.setIcon)(iconContainer, this.replacementIcon);
     } catch (e) {
-      console.error(`[UI Tweaker] Failed to set icon ${this.replacementIcon}:`, e);
+      console.error(
+        `[UI Tweaker] Failed to set icon ${this.replacementIcon}:`,
+        e,
+      );
       try {
         (0, import_obsidian17.setIcon)(iconContainer, "wrench");
-      } catch (e2) {
-      }
+      } catch (e2) {}
     }
     const handler = (evt) => {
       evt.preventDefault();
       evt.stopPropagation();
       this.callback();
     };
-    customButton.addEventListener("click", handler, (_b = this.options.useCapture) != null ? _b : true);
+    customButton.addEventListener(
+      "click",
+      handler,
+      (_b = this.options.useCapture) != null ? _b : true,
+    );
     if (this.options.handleTouch) {
-      customButton.addEventListener("touchstart", handler, (_c = this.options.useCapture) != null ? _c : true);
+      customButton.addEventListener(
+        "touchstart",
+        handler,
+        (_c = this.options.useCapture) != null ? _c : true,
+      );
     }
-    (_d = originalBtn.parentElement) == null ? void 0 : _d.insertBefore(customButton, originalBtn);
+    (_d = originalBtn.parentElement) == null
+      ? void 0
+      : _d.insertBefore(customButton, originalBtn);
     this.customButton = customButton;
     this.originalButton = originalBtn;
     if (this.options.onAfterInstall) {
@@ -5401,7 +7306,9 @@ var ButtonReplacer = class {
   }
   tryFallbackInstall() {
     var _a, _b;
-    const fallbackParent = document.querySelector(this.options.fallbackParentSelector);
+    const fallbackParent = document.querySelector(
+      this.options.fallbackParentSelector,
+    );
     if (!fallbackParent) return;
     if (fallbackParent.querySelector(`[data-${this.options.uniqueId}]`)) return;
     const customButton = document.createElement("div");
@@ -5417,9 +7324,17 @@ var ButtonReplacer = class {
       evt.stopPropagation();
       this.callback();
     };
-    customButton.addEventListener("click", handler, (_a = this.options.useCapture) != null ? _a : true);
+    customButton.addEventListener(
+      "click",
+      handler,
+      (_a = this.options.useCapture) != null ? _a : true,
+    );
     if (this.options.handleTouch) {
-      customButton.addEventListener("touchstart", handler, (_b = this.options.useCapture) != null ? _b : true);
+      customButton.addEventListener(
+        "touchstart",
+        handler,
+        (_b = this.options.useCapture) != null ? _b : true,
+      );
     }
     if (this.options.fallbackInsertBehavior === "start") {
       fallbackParent.prepend(customButton);
@@ -5475,7 +7390,7 @@ var ButtonReplacer = class {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ["class", "src", "aria-label"]
+      attributeFilter: ["class", "src", "aria-label"],
     });
   }
 };
@@ -5496,16 +7411,23 @@ var PropertiesManager = class {
         this.plugin.app.workspace.on("layout-change", () => {
           this.refresh();
           this.setupObservers();
-        })
+        }),
       );
-      this.plugin.registerDomEvent(window, "contextmenu", (evt) => {
-        if (!this.plugin.settings.showPropertyMenuActions) return;
-        const target = evt.target;
-        const propEl = target.closest(".metadata-property") || target.closest(".all-properties-container .tree-item");
-        if (propEl) {
-          this.handleContextMenu(evt, propEl);
-        }
-      }, { capture: true });
+      this.plugin.registerDomEvent(
+        window,
+        "contextmenu",
+        (evt) => {
+          if (!this.plugin.settings.showPropertyMenuActions) return;
+          const target = evt.target;
+          const propEl =
+            target.closest(".metadata-property") ||
+            target.closest(".all-properties-container .tree-item");
+          if (propEl) {
+            this.handleContextMenu(evt, propEl);
+          }
+        },
+        { capture: true },
+      );
       this.plugin.register(() => {
         this.observers.forEach((o) => o.disconnect());
       });
@@ -5517,7 +7439,11 @@ var PropertiesManager = class {
   refresh() {
     this.plugin.app.workspace.iterateAllLeaves((leaf) => {
       const type = leaf.getViewState().type;
-      if (type === "markdown" || type === "all-properties" || type === "file-properties") {
+      if (
+        type === "markdown" ||
+        type === "all-properties" ||
+        type === "file-properties"
+      ) {
         this.refreshLeaf(leaf);
       }
     });
@@ -5537,16 +7463,24 @@ var PropertiesManager = class {
     this.plugin.app.workspace.iterateAllLeaves((leaf) => {
       const type = leaf.getViewState().type;
       if (type === "all-properties") {
-        const container = leaf.view.containerEl.querySelector(".all-properties-container") || leaf.view.containerEl.querySelector(".view-content > div");
+        const container =
+          leaf.view.containerEl.querySelector(".all-properties-container") ||
+          leaf.view.containerEl.querySelector(".view-content > div");
         if (container) {
-          const observer = new MutationObserver(() => this.refreshAllPropertiesInContainer(leaf.view.containerEl));
+          const observer = new MutationObserver(() =>
+            this.refreshAllPropertiesInContainer(leaf.view.containerEl),
+          );
           observer.observe(container, { childList: true, subtree: true });
           this.observers.push(observer);
         }
       } else if (type === "markdown" || type === "file-properties") {
-        const container = leaf.view.containerEl.querySelector(".metadata-container") || leaf.view.containerEl.querySelector(".metadata-properties");
+        const container =
+          leaf.view.containerEl.querySelector(".metadata-container") ||
+          leaf.view.containerEl.querySelector(".metadata-properties");
         if (container) {
-          const observer = new MutationObserver(() => this.refreshFilePropertiesInContainer(leaf.view.containerEl));
+          const observer = new MutationObserver(() =>
+            this.refreshFilePropertiesInContainer(leaf.view.containerEl),
+          );
           observer.observe(container, { childList: true, subtree: true });
           this.observers.push(observer);
         }
@@ -5561,7 +7495,9 @@ var PropertiesManager = class {
       if (!textEl) return;
       const propName = (_a = textEl.textContent) == null ? void 0 : _a.trim();
       if (!propName) return;
-      const setting = this.plugin.settings.propertyIconItems.find((i) => i.id.toLowerCase() === propName.toLowerCase());
+      const setting = this.plugin.settings.propertyIconItems.find(
+        (i) => i.id.toLowerCase() === propName.toLowerCase(),
+      );
       const iconEl = item.querySelector(".tree-item-icon");
       if (iconEl) {
         if (setting == null ? void 0 : setting.icon) {
@@ -5581,9 +7517,16 @@ var PropertiesManager = class {
       var _a;
       const keyInput = prop.querySelector(".metadata-property-key-input");
       const keyText = prop.querySelector(".metadata-property-key-text");
-      const propName = (_a = (keyInput == null ? void 0 : keyInput.value) || (keyText == null ? void 0 : keyText.textContent)) == null ? void 0 : _a.trim();
+      const propName =
+        (_a =
+          (keyInput == null ? void 0 : keyInput.value) ||
+          (keyText == null ? void 0 : keyText.textContent)) == null
+          ? void 0
+          : _a.trim();
       if (!propName) return;
-      const setting = this.plugin.settings.propertyIconItems.find((i) => i.id.toLowerCase() === propName.toLowerCase());
+      const setting = this.plugin.settings.propertyIconItems.find(
+        (i) => i.id.toLowerCase() === propName.toLowerCase(),
+      );
       const iconContainer = prop.querySelector(".metadata-property-icon");
       if (iconContainer) {
         if (setting == null ? void 0 : setting.icon) {
@@ -5661,44 +7604,82 @@ var PropertiesManager = class {
   handleContextMenu(evt, propEl) {
     var _a;
     const keyInput = propEl.querySelector(".metadata-property-key-input");
-    const keyText = propEl.querySelector(".tree-item-inner-text") || propEl.querySelector(".metadata-property-key-text");
-    const propName = (_a = (keyInput == null ? void 0 : keyInput.value) || (keyText == null ? void 0 : keyText.textContent)) == null ? void 0 : _a.trim();
+    const keyText =
+      propEl.querySelector(".tree-item-inner-text") ||
+      propEl.querySelector(".metadata-property-key-text");
+    const propName =
+      (_a =
+        (keyInput == null ? void 0 : keyInput.value) ||
+        (keyText == null ? void 0 : keyText.textContent)) == null
+        ? void 0
+        : _a.trim();
     if (!propName) return;
     const normalizedPropName = propName.toLowerCase();
-    const setting = this.plugin.settings.propertyIconItems.find((i) => i.id.toLowerCase() === normalizedPropName);
+    const setting = this.plugin.settings.propertyIconItems.find(
+      (i) => i.id.toLowerCase() === normalizedPropName,
+    );
     this.plugin.menuManager.reset();
-    this.plugin.menuManager.addItemAfter(["action.changeType", "action"], (item) => {
-      item.setTitle((setting == null ? void 0 : setting.icon) ? "Change icon" : "Add icon").setIcon("lucide-image-plus").onClick(() => {
-        const modal = new IconPickerModal(this.plugin.app, async (iconId) => {
-          let currentItem = this.plugin.settings.propertyIconItems.find((i) => i.id.toLowerCase() === normalizedPropName);
-          if (!currentItem) {
-            currentItem = { id: normalizedPropName };
-            this.plugin.settings.propertyIconItems.push(currentItem);
-          }
-          currentItem.icon = iconId || void 0;
-          if (!currentItem.icon && !currentItem.color) {
-            this.plugin.settings.propertyIconItems = this.plugin.settings.propertyIconItems.filter((i) => i.id.toLowerCase() !== normalizedPropName);
-          }
-          await this.plugin.saveSettings();
-          this.refresh();
-        });
-        modal.open();
-      });
-    });
+    this.plugin.menuManager.addItemAfter(
+      ["action.changeType", "action"],
+      (item) => {
+        item
+          .setTitle(
+            (setting == null ? void 0 : setting.icon)
+              ? "Change icon"
+              : "Add icon",
+          )
+          .setIcon("lucide-image-plus")
+          .onClick(() => {
+            const modal = new IconPickerModal(
+              this.plugin.app,
+              async (iconId) => {
+                let currentItem = this.plugin.settings.propertyIconItems.find(
+                  (i) => i.id.toLowerCase() === normalizedPropName,
+                );
+                if (!currentItem) {
+                  currentItem = { id: normalizedPropName };
+                  this.plugin.settings.propertyIconItems.push(currentItem);
+                }
+                currentItem.icon = iconId || void 0;
+                if (!currentItem.icon && !currentItem.color) {
+                  this.plugin.settings.propertyIconItems =
+                    this.plugin.settings.propertyIconItems.filter(
+                      (i) => i.id.toLowerCase() !== normalizedPropName,
+                    );
+                }
+                await this.plugin.saveSettings();
+                this.refresh();
+              },
+            );
+            modal.open();
+          });
+      },
+    );
     if (setting == null ? void 0 : setting.icon) {
-      this.plugin.menuManager.addItemAfter(["action.changeType", "action"], (item) => {
-        item.setTitle("Remove icon").setIcon("lucide-trash").onClick(async () => {
-          const currentItem = this.plugin.settings.propertyIconItems.find((i) => i.id.toLowerCase() === normalizedPropName);
-          if (currentItem) {
-            currentItem.icon = void 0;
-            if (!currentItem.color) {
-              this.plugin.settings.propertyIconItems = this.plugin.settings.propertyIconItems.filter((i) => i.id.toLowerCase() !== normalizedPropName);
-            }
-            await this.plugin.saveSettings();
-            this.refresh();
-          }
-        });
-      });
+      this.plugin.menuManager.addItemAfter(
+        ["action.changeType", "action"],
+        (item) => {
+          item
+            .setTitle("Remove icon")
+            .setIcon("lucide-trash")
+            .onClick(async () => {
+              const currentItem = this.plugin.settings.propertyIconItems.find(
+                (i) => i.id.toLowerCase() === normalizedPropName,
+              );
+              if (currentItem) {
+                currentItem.icon = void 0;
+                if (!currentItem.color) {
+                  this.plugin.settings.propertyIconItems =
+                    this.plugin.settings.propertyIconItems.filter(
+                      (i) => i.id.toLowerCase() !== normalizedPropName,
+                    );
+                }
+                await this.plugin.saveSettings();
+                this.refresh();
+              }
+            });
+        },
+      );
     }
   }
   triggerViewUpdate(container) {
@@ -5731,7 +7712,10 @@ var PropertiesManager = class {
           needsUpdate = true;
         }
       } else {
-        if (!el.classList.contains("ui-tweaker-emoji-icon") || el.textContent !== icon) {
+        if (
+          !el.classList.contains("ui-tweaker-emoji-icon") ||
+          el.textContent !== icon
+        ) {
           needsUpdate = true;
         }
       }
@@ -5740,7 +7724,9 @@ var PropertiesManager = class {
     if (!el.hasAttribute("data-ui-tweaker-native-icon")) {
       const svg = el.querySelector("svg");
       if (svg) {
-        const lucideClass = Array.from(svg.classList).find((c) => c.startsWith("lucide-") && c !== "lucide-icon");
+        const lucideClass = Array.from(svg.classList).find(
+          (c) => c.startsWith("lucide-") && c !== "lucide-icon",
+        );
         if (lucideClass) {
           const nativeName = lucideClass.replace("lucide-", "");
           el.setAttribute("data-ui-tweaker-native-icon", nativeName);
@@ -5777,16 +7763,20 @@ var MenuManager = class {
     this.menu = null;
     this.queuedActions = [];
     const manager = this;
-    this.showAtPositionOriginal = import_obsidian19.Menu.prototype.showAtPosition;
-    this.showAtPositionProxy = new Proxy(import_obsidian19.Menu.prototype.showAtPosition, {
-      apply(target, thisArg, argArray) {
-        manager.menu = thisArg;
-        if (manager.queuedActions.length > 0) {
-          manager.runQueuedActions();
-        }
-        return target.apply(thisArg, argArray);
-      }
-    });
+    this.showAtPositionOriginal =
+      import_obsidian19.Menu.prototype.showAtPosition;
+    this.showAtPositionProxy = new Proxy(
+      import_obsidian19.Menu.prototype.showAtPosition,
+      {
+        apply(target, thisArg, argArray) {
+          manager.menu = thisArg;
+          if (manager.queuedActions.length > 0) {
+            manager.runQueuedActions();
+          }
+          return target.apply(thisArg, argArray);
+        },
+      },
+    );
     import_obsidian19.Menu.prototype.showAtPosition = this.showAtPositionProxy;
   }
   /**
@@ -5860,8 +7850,12 @@ var MenuManager = class {
    * Restore original method.
    */
   unload() {
-    if (import_obsidian19.Menu.prototype.showAtPosition === this.showAtPositionProxy) {
-      import_obsidian19.Menu.prototype.showAtPosition = this.showAtPositionOriginal;
+    if (
+      import_obsidian19.Menu.prototype.showAtPosition ===
+      this.showAtPositionProxy
+    ) {
+      import_obsidian19.Menu.prototype.showAtPosition =
+        this.showAtPositionOriginal;
     }
   }
 };
@@ -5874,7 +7868,11 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
     this.wrappedCommands = /* @__PURE__ */ new Map();
   }
   get isMobile() {
-    return import_obsidian20.Platform.isMobile || document.body.classList.contains("is-mobile") || document.body.classList.contains("emulate-mobile");
+    return (
+      import_obsidian20.Platform.isMobile ||
+      document.body.classList.contains("is-mobile") ||
+      document.body.classList.contains("emulate-mobile")
+    );
   }
   async onload() {
     await this.loadSettings();
@@ -5898,7 +7896,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
       plugin: this,
       settings: this.settings,
       saveSettings: () => this.saveSettings(),
-      refresh: () => this.refresh()
+      refresh: () => this.refresh(),
     });
     this.setupToggleStateRefresh();
     this.setupToggleStateObservers();
@@ -5947,7 +7945,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         this.settings.helpButtonReplacement = {
           enabled: false,
           commandId: "",
-          iconId: "settings-2"
+          iconId: "settings-2",
         };
       } else {
         if (!this.settings.helpButtonReplacement.iconId) {
@@ -5958,7 +7956,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         this.settings.syncButtonReplacement = {
           enabled: false,
           commandId: "",
-          iconId: "wrench"
+          iconId: "wrench",
         };
       } else {
         if (!this.settings.syncButtonReplacement.iconId) {
@@ -5969,7 +7967,10 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         let needsSave = false;
         for (const pair of this.settings.tabBarCommands) {
           const pairWithOldProps = pair;
-          if (pair.showOnFileTypes !== void 0 || pair.hideOnFileTypes !== void 0) {
+          if (
+            pair.showOnFileTypes !== void 0 ||
+            pair.hideOnFileTypes !== void 0
+          ) {
             continue;
           }
           if (pairWithOldProps.mdOnly === true && !pair.showOnFileTypes) {
@@ -5977,9 +7978,16 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
             delete pairWithOldProps.mdOnly;
             needsSave = true;
           }
-          if (pairWithOldProps.fileTypeFilter && !pair.showOnFileTypes && !pair.hideOnFileTypes) {
+          if (
+            pairWithOldProps.fileTypeFilter &&
+            !pair.showOnFileTypes &&
+            !pair.hideOnFileTypes
+          ) {
             const filter = pairWithOldProps.fileTypeFilter;
-            const parts = filter.split(",").map((p) => p.trim()).filter((p) => p);
+            const parts = filter
+              .split(",")
+              .map((p) => p.trim())
+              .filter((p) => p);
             const showTypes = [];
             const hideTypes = [];
             for (const part of parts) {
@@ -6030,7 +8038,9 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
     if (this.uiManager) {
       this.uiManager.updateSettings(this.settings);
     }
-    (_a = this.explorerManager) == null ? void 0 : _a.applyNativeIconOverrides();
+    (_a = this.explorerManager) == null
+      ? void 0
+      : _a.applyNativeIconOverrides();
     this.setupHelpButtonReplacement();
     this.updateSyncButtonCSS();
     if (this.isMobile) {
@@ -6043,7 +8053,11 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
   setupHelpButtonReplacement() {
     var _a, _b;
     this.updateHelpButtonCSS();
-    if (!((_a = this.settings.helpButtonReplacement) == null ? void 0 : _a.enabled)) {
+    if (
+      !((_a = this.settings.helpButtonReplacement) == null
+        ? void 0
+        : _a.enabled)
+    ) {
       (_b = this.helpButtonReplacer) == null ? void 0 : _b.uninstall();
       this.helpButtonReplacer = void 0;
       return;
@@ -6054,7 +8068,10 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         this.settings.helpButtonReplacement.iconId || "settings-2",
         () => {
           var _a2;
-          const commandId = (_a2 = this.settings.helpButtonReplacement) == null ? void 0 : _a2.commandId;
+          const commandId =
+            (_a2 = this.settings.helpButtonReplacement) == null
+              ? void 0
+              : _a2.commandId;
           if (commandId) {
             void (async () => {
               try {
@@ -6065,7 +8082,9 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
                   throw new Error("Command execution not available");
                 }
               } catch (e) {
-                new import_obsidian20.Notice(`Failed to execute command: ${commandId}`);
+                new import_obsidian20.Notice(
+                  `Failed to execute command: ${commandId}`,
+                );
               }
             })();
           }
@@ -6080,15 +8099,15 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
               ".workspace-drawer-vault-actions .clickable-icon svg.help",
               ".workspace-sidedock-vault-profile .clickable-icon svg.help",
               ".workspace-drawer .clickable-icon svg.help",
-              ".clickable-icon svg.help"
+              ".clickable-icon svg.help",
             ];
             for (const selector of selectors) {
               const svg = document.querySelector(selector);
               if (svg && svg.parentElement) return svg.parentElement;
             }
             return null;
-          }
-        }
+          },
+        },
       );
       this.helpButtonReplacer.install();
     } else {
@@ -6099,13 +8118,25 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
   }
   updateHelpButtonCSS() {
     var _a;
-    const shouldHideHelpButton = this.settings.helpButton === "hide" || ((_a = this.settings.helpButtonReplacement) == null ? void 0 : _a.enabled);
-    document.body.classList.toggle("ui-tweaker-hide-help-button", shouldHideHelpButton);
+    const shouldHideHelpButton =
+      this.settings.helpButton === "hide" ||
+      ((_a = this.settings.helpButtonReplacement) == null
+        ? void 0
+        : _a.enabled);
+    document.body.classList.toggle(
+      "ui-tweaker-hide-help-button",
+      shouldHideHelpButton,
+    );
   }
   setupSyncButtonReplacement() {
     var _a, _b;
     this.updateSyncButtonCSS();
-    if (!((_a = this.settings.syncButtonReplacement) == null ? void 0 : _a.enabled) || !this.isMobile) {
+    if (
+      !((_a = this.settings.syncButtonReplacement) == null
+        ? void 0
+        : _a.enabled) ||
+      !this.isMobile
+    ) {
       (_b = this.syncButtonReplacer) == null ? void 0 : _b.uninstall();
       this.syncButtonReplacer = void 0;
       return;
@@ -6116,21 +8147,40 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         this.settings.syncButtonReplacement.iconId || "wrench",
         () => {
           var _a2, _b2, _c, _d, _e;
-          const commandId = (_a2 = this.settings.syncButtonReplacement) == null ? void 0 : _a2.commandId;
+          const commandId =
+            (_a2 = this.settings.syncButtonReplacement) == null
+              ? void 0
+              : _a2.commandId;
           if (commandId) {
-            if (commandId === "open-settings" || commandId === "ui-tweaker:open-settings") {
+            if (
+              commandId === "open-settings" ||
+              commandId === "ui-tweaker:open-settings"
+            ) {
               const settingApi = this.app.setting;
               if (settingApi) {
                 (_b2 = settingApi.open) == null ? void 0 : _b2.call(settingApi);
-                if (((_c = this.settingTab) == null ? void 0 : _c.id) && settingApi.openTabById) {
+                if (
+                  ((_c = this.settingTab) == null ? void 0 : _c.id) &&
+                  settingApi.openTabById
+                ) {
                   settingApi.openTabById(this.settingTab.id);
                 }
               }
             } else {
-              (_e = (_d = this.app.commands) == null ? void 0 : _d.executeCommandById) == null ? void 0 : _e.call(_d, commandId).catch((error) => {
-                console.warn("[UI Tweaker] Error executing command:", error);
-                new import_obsidian20.Notice(`Failed to execute command: ${commandId}`);
-              });
+              (_e =
+                (_d = this.app.commands) == null
+                  ? void 0
+                  : _d.executeCommandById) == null
+                ? void 0
+                : _e.call(_d, commandId).catch((error) => {
+                    console.warn(
+                      "[UI Tweaker] Error executing command:",
+                      error,
+                    );
+                    new import_obsidian20.Notice(
+                      `Failed to execute command: ${commandId}`,
+                    );
+                  });
             }
           }
         },
@@ -6138,37 +8188,55 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
           survivalObserver: true,
           parentSelector: ".workspace-drawer.mod-right",
           uniqueId: "ui-tweaker-sync-replacement",
-          cssClass: "ui-tweaker-sync-replacement workspace-drawer-header-icon mod-raised",
+          cssClass:
+            "ui-tweaker-sync-replacement workspace-drawer-header-icon mod-raised",
           handleTouch: true,
-          stripClasses: ["is-failed", "is-error", "is-warning", "mod-error", "mod-warning"],
-          fallbackParentSelector: ".workspace-drawer.mod-right .workspace-drawer-header",
+          stripClasses: [
+            "is-failed",
+            "is-error",
+            "is-warning",
+            "mod-error",
+            "mod-warning",
+          ],
+          fallbackParentSelector:
+            ".workspace-drawer.mod-right .workspace-drawer-header",
           fallbackInsertBehavior: "end",
           onAfterInstall: (custom, original) => {
             if (original) {
               setCssProps(original, { display: "none" });
-              original.setAttribute("data-ui-tweaker-original-sync-hidden", "true");
+              original.setAttribute(
+                "data-ui-tweaker-original-sync-hidden",
+                "true",
+              );
             }
           },
           onBeforeUninstall: (custom) => {
-            const originals = document.querySelectorAll("[data-ui-tweaker-original-sync-hidden]");
+            const originals = document.querySelectorAll(
+              "[data-ui-tweaker-original-sync-hidden]",
+            );
             originals.forEach((el) => {
               el.style.removeProperty("display");
               el.removeAttribute("data-ui-tweaker-original-sync-hidden");
             });
           },
           findButton: (parent) => {
-            const drawerHeader = parent.querySelector(".workspace-drawer-header");
+            const drawerHeader = parent.querySelector(
+              ".workspace-drawer-header",
+            );
             if (!drawerHeader) return null;
             let syncButton = drawerHeader.querySelector(".sync-status-icon");
             if (!syncButton) {
-              const clickableIcons = Array.from(drawerHeader.querySelectorAll(".clickable-icon"));
+              const clickableIcons = Array.from(
+                drawerHeader.querySelectorAll(".clickable-icon"),
+              );
               for (const icon of clickableIcons) {
-                if (icon.querySelector("svg.refresh-cw-off, svg.refresh-cw")) return icon;
+                if (icon.querySelector("svg.refresh-cw-off, svg.refresh-cw"))
+                  return icon;
               }
             }
             return syncButton;
-          }
-        }
+          },
+        },
       );
       this.syncButtonReplacer.install();
     } else {
@@ -6179,7 +8247,13 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
   }
   updateSyncButtonCSS() {
     var _a, _b;
-    const shouldHide = ((_b = (_a = this.settings.syncButtonReplacement) == null ? void 0 : _a.enabled) != null ? _b : false) && this.isMobile;
+    const shouldHide =
+      ((_b =
+        (_a = this.settings.syncButtonReplacement) == null
+          ? void 0
+          : _a.enabled) != null
+        ? _b
+        : false) && this.isMobile;
     document.body.classList.toggle("ui-tweaker-hide-sync-button", shouldHide);
   }
   /**
@@ -6198,17 +8272,17 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
     const bodyObserver = new MutationObserver(refreshToggleStates);
     bodyObserver.observe(document.body, {
       attributes: true,
-      attributeFilter: ["class"]
+      attributeFilter: ["class"],
     });
     this.registerEvent(
-      this.app.workspace.on("layout-change", refreshToggleStates)
+      this.app.workspace.on("layout-change", refreshToggleStates),
     );
     const workspaceEl = document.querySelector(".workspace");
     if (workspaceEl) {
       const workspaceObserver = new MutationObserver(refreshToggleStates);
       workspaceObserver.observe(workspaceEl, {
         attributes: true,
-        attributeFilter: ["class"]
+        attributeFilter: ["class"],
       });
     }
   }
@@ -6238,12 +8312,16 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
       }, 50);
     };
     const toggleCommandIds = /* @__PURE__ */ new Set();
-    (_a = this.settings.explorerCommands) == null ? void 0 : _a.forEach((p) => {
-      if (p.toggleIcon) toggleCommandIds.add(p.id);
-    });
-    (_b = this.settings.tabBarCommands) == null ? void 0 : _b.forEach((p) => {
-      if (p.toggleIcon) toggleCommandIds.add(p.id);
-    });
+    (_a = this.settings.explorerCommands) == null
+      ? void 0
+      : _a.forEach((p) => {
+          if (p.toggleIcon) toggleCommandIds.add(p.id);
+        });
+    (_b = this.settings.tabBarCommands) == null
+      ? void 0
+      : _b.forEach((p) => {
+          if (p.toggleIcon) toggleCommandIds.add(p.id);
+        });
     for (const [id, wrapper] of this.wrappedCommands) {
       if (!toggleCommandIds.has(id)) {
         wrapper.restore();
@@ -6267,7 +8345,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         this.wrappedCommands.set(id, {
           restore: () => {
             command.checkCallback = original;
-          }
+          },
         });
       } else if (command.callback) {
         const original = command.callback;
@@ -6280,7 +8358,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         this.wrappedCommands.set(id, {
           restore: () => {
             command.callback = original;
-          }
+          },
         });
       } else if (command.editorCheckCallback) {
         const original = command.editorCheckCallback;
@@ -6295,7 +8373,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         this.wrappedCommands.set(id, {
           restore: () => {
             command.editorCheckCallback = original;
-          }
+          },
         });
       } else if (command.editorCallback) {
         const original = command.editorCallback;
@@ -6308,7 +8386,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         this.wrappedCommands.set(id, {
           restore: () => {
             command.editorCallback = original;
-          }
+          },
         });
       }
     }

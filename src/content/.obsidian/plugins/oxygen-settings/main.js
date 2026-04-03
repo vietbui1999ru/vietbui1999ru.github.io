@@ -12,19 +12,23 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => MinimalTheme
+  default: () => MinimalTheme,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian12 = require("obsidian");
@@ -73,7 +77,7 @@ var DEFAULT_SETTINGS = {
   // Blur background
   enableBlur: false,
   // Folder icon
-  useDefaultFolderIcon: false
+  useDefaultFolderIcon: false,
 };
 
 // src/settings.ts
@@ -82,323 +86,561 @@ var import_obsidian10 = require("obsidian");
 // src/settings/sections/ColorSchemeSettings.ts
 var import_obsidian = require("obsidian");
 function buildColorSchemeSettings(containerEl, plugin) {
-  const colorGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Color scheme");
+  const colorGroup = new import_obsidian.SettingGroup(containerEl).setHeading(
+    "Color scheme",
+  );
   colorGroup.addSetting((setting) => {
-    setting.setName("Light mode color scheme").setDesc("Preset color options for light mode. To create a custom color scheme use the Style Settings plugin. See Documentation for details.").addDropdown((dropdown) => {
-      dropdown.addOption("oxygen-oxygen-light", "Oxygen").addOption("oxygen-minimal-light", "Minimal").addOption("oxygen-atom-light", "Atom").addOption("oxygen-ayu-light", "Ayu").addOption("oxygen-catppuccin-light", "Catppuccin").addOption("oxygen-eink-light", "E-ink (beta)").addOption("oxygen-everforest-light", "Everforest").addOption("oxygen-flexoki-light", "Flexoki").addOption("oxygen-gruvbox-light", "Gruvbox").addOption("oxygen-macos-light", "macOS").addOption("oxygen-nord-light", "Nord").addOption("oxygen-rose-pine-light", "Ros\xE9 Pine").addOption("oxygen-notion-light", "Sky").addOption("oxygen-solarized-light", "Solarized").addOption("oxygen-things-light", "Things");
-      if (plugin.settings.enableCustomPresets && plugin.settings.customPresets.length > 0) {
-        plugin.settings.customPresets.sort((a, b) => a.name.localeCompare(b.name)).forEach((preset) => {
-          dropdown.addOption(`oxygen-custom-${preset.id}`, preset.name);
+    setting
+      .setName("Light mode color scheme")
+      .setDesc(
+        "Preset color options for light mode. To create a custom color scheme use the Style Settings plugin. See Documentation for details.",
+      )
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("oxygen-oxygen-light", "Oxygen")
+          .addOption("oxygen-minimal-light", "Minimal")
+          .addOption("oxygen-atom-light", "Atom")
+          .addOption("oxygen-ayu-light", "Ayu")
+          .addOption("oxygen-catppuccin-light", "Catppuccin")
+          .addOption("oxygen-eink-light", "E-ink (beta)")
+          .addOption("oxygen-everforest-light", "Everforest")
+          .addOption("oxygen-flexoki-light", "Flexoki")
+          .addOption("oxygen-gruvbox-light", "Gruvbox")
+          .addOption("oxygen-macos-light", "macOS")
+          .addOption("oxygen-nord-light", "Nord")
+          .addOption("oxygen-rose-pine-light", "Ros\xE9 Pine")
+          .addOption("oxygen-notion-light", "Sky")
+          .addOption("oxygen-solarized-light", "Solarized")
+          .addOption("oxygen-things-light", "Things");
+        if (
+          plugin.settings.enableCustomPresets &&
+          plugin.settings.customPresets.length > 0
+        ) {
+          plugin.settings.customPresets
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .forEach((preset) => {
+              dropdown.addOption(`oxygen-custom-${preset.id}`, preset.name);
+            });
+        }
+        dropdown.setValue(plugin.settings.lightScheme).onChange((value) => {
+          plugin.settings.lightScheme = value;
+          void plugin.saveData(plugin.settings);
+          plugin.updateStyle();
+          plugin.updateCustomPresetCSS();
         });
-      }
-      dropdown.setValue(plugin.settings.lightScheme).onChange((value) => {
-        plugin.settings.lightScheme = value;
-        void plugin.saveData(plugin.settings);
-        plugin.updateStyle();
-        plugin.updateCustomPresetCSS();
       });
-    });
   });
   colorGroup.addSetting((setting) => {
-    setting.setName("Light mode background contrast").setDesc("Level of contrast between sidebar and main content.").addDropdown((dropdown) => {
-      dropdown.addOption("oxygen-light", "Default").addOption("oxygen-light-white", "All white").addOption("oxygen-light-tonal", "Low contrast").addOption("oxygen-light-contrast", "High contrast").setValue(plugin.settings.lightStyle).onChange((value) => {
-        plugin.settings.lightStyle = value;
-        void plugin.saveData(plugin.settings);
-        plugin.updateStyle();
+    setting
+      .setName("Light mode background contrast")
+      .setDesc("Level of contrast between sidebar and main content.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("oxygen-light", "Default")
+          .addOption("oxygen-light-white", "All white")
+          .addOption("oxygen-light-tonal", "Low contrast")
+          .addOption("oxygen-light-contrast", "High contrast")
+          .setValue(plugin.settings.lightStyle)
+          .onChange((value) => {
+            plugin.settings.lightStyle = value;
+            void plugin.saveData(plugin.settings);
+            plugin.updateStyle();
+          });
       });
-    });
   });
   colorGroup.addSetting((setting) => {
-    setting.setName("Dark mode color scheme").setDesc("Preset colors options for dark mode.").addDropdown((dropdown) => {
-      dropdown.addOption("oxygen-oxygen-dark", "Oxygen").addOption("oxygen-minimal-dark", "Minimal").addOption("oxygen-atom-dark", "Atom").addOption("oxygen-ayu-dark", "Ayu").addOption("oxygen-catppuccin-dark", "Catppuccin").addOption("oxygen-dracula-dark", "Dracula").addOption("oxygen-eink-dark", "E-ink (beta)").addOption("oxygen-everforest-dark", "Everforest").addOption("oxygen-flexoki-dark", "Flexoki").addOption("oxygen-gruvbox-dark", "Gruvbox").addOption("oxygen-macos-dark", "macOS").addOption("oxygen-nord-dark", "Nord").addOption("oxygen-rose-pine-dark", "Ros\xE9 Pine").addOption("oxygen-notion-dark", "Sky").addOption("oxygen-solarized-dark", "Solarized").addOption("oxygen-things-dark", "Things");
-      if (plugin.settings.enableCustomPresets && plugin.settings.customPresets.length > 0) {
-        plugin.settings.customPresets.sort((a, b) => a.name.localeCompare(b.name)).forEach((preset) => {
-          dropdown.addOption(`oxygen-custom-${preset.id}`, preset.name);
+    setting
+      .setName("Dark mode color scheme")
+      .setDesc("Preset colors options for dark mode.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("oxygen-oxygen-dark", "Oxygen")
+          .addOption("oxygen-minimal-dark", "Minimal")
+          .addOption("oxygen-atom-dark", "Atom")
+          .addOption("oxygen-ayu-dark", "Ayu")
+          .addOption("oxygen-catppuccin-dark", "Catppuccin")
+          .addOption("oxygen-dracula-dark", "Dracula")
+          .addOption("oxygen-eink-dark", "E-ink (beta)")
+          .addOption("oxygen-everforest-dark", "Everforest")
+          .addOption("oxygen-flexoki-dark", "Flexoki")
+          .addOption("oxygen-gruvbox-dark", "Gruvbox")
+          .addOption("oxygen-macos-dark", "macOS")
+          .addOption("oxygen-nord-dark", "Nord")
+          .addOption("oxygen-rose-pine-dark", "Ros\xE9 Pine")
+          .addOption("oxygen-notion-dark", "Sky")
+          .addOption("oxygen-solarized-dark", "Solarized")
+          .addOption("oxygen-things-dark", "Things");
+        if (
+          plugin.settings.enableCustomPresets &&
+          plugin.settings.customPresets.length > 0
+        ) {
+          plugin.settings.customPresets
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .forEach((preset) => {
+              dropdown.addOption(`oxygen-custom-${preset.id}`, preset.name);
+            });
+        }
+        dropdown.setValue(plugin.settings.darkScheme).onChange((value) => {
+          plugin.settings.darkScheme = value;
+          void plugin.saveData(plugin.settings);
+          plugin.updateStyle();
+          plugin.updateCustomPresetCSS();
         });
-      }
-      dropdown.setValue(plugin.settings.darkScheme).onChange((value) => {
-        plugin.settings.darkScheme = value;
-        void plugin.saveData(plugin.settings);
-        plugin.updateStyle();
-        plugin.updateCustomPresetCSS();
       });
-    });
   });
   colorGroup.addSetting((setting) => {
-    setting.setName("Dark mode background contrast").setDesc("Level of contrast between sidebar and main content.").addDropdown((dropdown) => {
-      dropdown.addOption("oxygen-dark", "Default").addOption("oxygen-dark-tonal", "Low contrast").addOption("oxygen-dark-black", "True black").setValue(plugin.settings.darkStyle).onChange((value) => {
-        plugin.settings.darkStyle = value;
-        void plugin.saveData(plugin.settings);
-        plugin.updateStyle();
+    setting
+      .setName("Dark mode background contrast")
+      .setDesc("Level of contrast between sidebar and main content.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("oxygen-dark", "Default")
+          .addOption("oxygen-dark-tonal", "Low contrast")
+          .addOption("oxygen-dark-black", "True black")
+          .setValue(plugin.settings.darkStyle)
+          .onChange((value) => {
+            plugin.settings.darkStyle = value;
+            void plugin.saveData(plugin.settings);
+            plugin.updateStyle();
+          });
       });
-    });
   });
 }
 
 // src/settings/sections/FeatureSettings.ts
 var import_obsidian2 = require("obsidian");
 function buildFeatureSettings(containerEl, plugin) {
-  const featuresGroup = new import_obsidian2.SettingGroup(containerEl).setHeading("Features");
+  const featuresGroup = new import_obsidian2.SettingGroup(
+    containerEl,
+  ).setHeading("Features");
   featuresGroup.addSetting((setting) => {
-    setting.setName("Text labels for primary navigation").setDesc("Navigation items in the left sidebar uses text labels. See Documentation for details.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.labeledNav).onChange((value) => {
-        plugin.settings.labeledNav = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Text labels for primary navigation")
+      .setDesc(
+        "Navigation items in the left sidebar uses text labels. See Documentation for details.",
+      )
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.labeledNav).onChange((value) => {
+          plugin.settings.labeledNav = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Colorful window frame").setDesc("The top area of the app uses your accent color.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.colorfulFrame).onChange((value) => {
-        plugin.settings.colorfulFrame = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Colorful window frame")
+      .setDesc("The top area of the app uses your accent color.")
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.colorfulFrame).onChange((value) => {
+          plugin.settings.colorfulFrame = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Colorful active states").setDesc("Active file and menu items use your accent color.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.colorfulActiveStates).onChange((value) => {
-        plugin.settings.colorfulActiveStates = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Colorful active states")
+      .setDesc("Active file and menu items use your accent color.")
+      .addToggle((toggle) => {
+        toggle
+          .setValue(plugin.settings.colorfulActiveStates)
+          .onChange((value) => {
+            plugin.settings.colorfulActiveStates = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Colorful headings").setDesc("Headings use a different color for each size.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.colorfulHeadings).onChange((value) => {
-        plugin.settings.colorfulHeadings = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Colorful headings")
+      .setDesc("Headings use a different color for each size.")
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.colorfulHeadings).onChange((value) => {
+          plugin.settings.colorfulHeadings = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Minimal status bar").setDesc("Turn off to use full-width status bar.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.minimalStatus).onChange((value) => {
-        plugin.settings.minimalStatus = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Minimal status bar")
+      .setDesc("Turn off to use full-width status bar.")
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.minimalStatus).onChange((value) => {
+          plugin.settings.minimalStatus = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Trim file names in sidebars").setDesc("Use ellipses to fit file names on a single line.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.trimNames).onChange((value) => {
-        plugin.settings.trimNames = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Trim file names in sidebars")
+      .setDesc("Use ellipses to fit file names on a single line.")
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.trimNames).onChange((value) => {
+          plugin.settings.trimNames = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Borders").setDesc("Border style for workspace elements.").addDropdown((dropdown) => {
-      dropdown.addOption("enhanced", "Enhanced").addOption("default", "Default").addOption("none", "None").setValue(plugin.settings.workspaceBorders).onChange((value) => {
-        plugin.settings.workspaceBorders = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Borders")
+      .setDesc("Border style for workspace elements.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("enhanced", "Enhanced")
+          .addOption("default", "Default")
+          .addOption("none", "None")
+          .setValue(plugin.settings.workspaceBorders)
+          .onChange((value) => {
+            plugin.settings.workspaceBorders = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Indentation guides thickness").setDesc("Thickness of indentation guides in the sidebar file explorer.").addDropdown((dropdown) => {
-      dropdown.addOption("0px", "None").addOption("1px", "Thin").addOption("2px", "Medium").addOption("3px", "Thick").setValue(plugin.settings.navIndentationGuideWidth).onChange((value) => {
-        plugin.settings.navIndentationGuideWidth = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Indentation guides thickness")
+      .setDesc("Thickness of indentation guides in the sidebar file explorer.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("0px", "None")
+          .addOption("1px", "Thin")
+          .addOption("2px", "Medium")
+          .addOption("3px", "Thick")
+          .setValue(plugin.settings.navIndentationGuideWidth)
+          .onChange((value) => {
+            plugin.settings.navIndentationGuideWidth = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Indentation guides color").setDesc("Color of indentation guides in the sidebar.").addDropdown((dropdown) => {
-      dropdown.addOption("rgba(var(--mono-rgb-100), 0.12)", "Subtle").addOption("var(--text-faint)", "Strong").addOption("var(--color-accent)", "Accent color").setValue(plugin.settings.navIndentationGuideColor).onChange((value) => {
-        plugin.settings.navIndentationGuideColor = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Indentation guides color")
+      .setDesc("Color of indentation guides in the sidebar.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("rgba(var(--mono-rgb-100), 0.12)", "Subtle")
+          .addOption("var(--text-faint)", "Strong")
+          .addOption("var(--color-accent)", "Accent color")
+          .setValue(plugin.settings.navIndentationGuideColor)
+          .onChange((value) => {
+            plugin.settings.navIndentationGuideColor = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Underline internal links").setDesc("Show underlines on internal links.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.underlineInternal).onChange((value) => {
-        plugin.settings.underlineInternal = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Underline internal links")
+      .setDesc("Show underlines on internal links.")
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.underlineInternal).onChange((value) => {
+          plugin.settings.underlineInternal = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Underline external links").setDesc("Show underlines on external links.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.underlineExternal).onChange((value) => {
-        plugin.settings.underlineExternal = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Underline external links")
+      .setDesc("Show underlines on external links.")
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.underlineExternal).onChange((value) => {
+          plugin.settings.underlineExternal = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
-    setting.setName("Maximize media").setDesc("Images and videos fill the width of the line.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.fullWidthMedia).onChange((value) => {
-        plugin.settings.fullWidthMedia = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Maximize media")
+      .setDesc("Images and videos fill the width of the line.")
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.fullWidthMedia).onChange((value) => {
+          plugin.settings.fullWidthMedia = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
     if (!("enableBlur" in plugin.settings)) {
       plugin.settings.enableBlur = false;
     }
-    setting.setName("Enable background blur").setDesc("Adds background blur to modal dialogs. Disable if scrolling becomes laggy. Not available on mobile devices.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.enableBlur).onChange((value) => {
-        plugin.settings.enableBlur = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Enable background blur")
+      .setDesc(
+        "Adds background blur to modal dialogs. Disable if scrolling becomes laggy. Not available on mobile devices.",
+      )
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.enableBlur).onChange((value) => {
+          plugin.settings.enableBlur = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   featuresGroup.addSetting((setting) => {
     if (!("useDefaultFolderIcon" in plugin.settings)) {
       plugin.settings.useDefaultFolderIcon = false;
     }
-    setting.setName("Use default Obsidian folder icon").setDesc("Toggle to use Obsidian's default file explorer icon instead of the folder-closed icon.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.useDefaultFolderIcon).onChange((value) => {
-        plugin.settings.useDefaultFolderIcon = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Use default Obsidian folder icon")
+      .setDesc(
+        "Toggle to use Obsidian's default file explorer icon instead of the folder-closed icon.",
+      )
+      .addToggle((toggle) => {
+        toggle
+          .setValue(plugin.settings.useDefaultFolderIcon)
+          .onChange((value) => {
+            plugin.settings.useDefaultFolderIcon = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
 }
 
 // src/settings/sections/LayoutSettings.ts
 var import_obsidian3 = require("obsidian");
 function buildLayoutSettings(containerEl, plugin) {
-  const layoutGroup = new import_obsidian3.SettingGroup(containerEl).setHeading("Layout");
+  const layoutGroup = new import_obsidian3.SettingGroup(containerEl).setHeading(
+    "Layout",
+  );
   layoutGroup.addSetting((setting) => {
-    setting.setName("Image grids").setDesc("Turn consecutive images into columns. To make a new row, add an extra line break between images. These options can also be defined on a per-file basis, see Documentation for details.").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.imgGrid).onChange((value) => {
-        plugin.settings.imgGrid = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Image grids")
+      .setDesc(
+        "Turn consecutive images into columns. To make a new row, add an extra line break between images. These options can also be defined on a per-file basis, see Documentation for details.",
+      )
+      .addToggle((toggle) => {
+        toggle.setValue(plugin.settings.imgGrid).onChange((value) => {
+          plugin.settings.imgGrid = value;
+          void plugin.saveData(plugin.settings);
+          plugin.refresh();
+        });
       });
-    });
   });
   layoutGroup.addSetting((setting) => {
-    setting.setName("Chart width").setDesc("Default width for chart blocks.").addDropdown((dropdown) => {
-      dropdown.addOption("chart-default-width", "Default").addOption("chart-wide", "Wide line width").addOption("chart-max", "Maximum line width").addOption("chart-100", "100% pane width").setValue(plugin.settings.chartWidth).onChange((value) => {
-        plugin.settings.chartWidth = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Chart width")
+      .setDesc("Default width for chart blocks.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("chart-default-width", "Default")
+          .addOption("chart-wide", "Wide line width")
+          .addOption("chart-max", "Maximum line width")
+          .addOption("chart-100", "100% pane width")
+          .setValue(plugin.settings.chartWidth)
+          .onChange((value) => {
+            plugin.settings.chartWidth = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   layoutGroup.addSetting((setting) => {
-    setting.setName("Iframe width").setDesc("Default width for iframe blocks.").addDropdown((dropdown) => {
-      dropdown.addOption("iframe-default-width", "Default").addOption("iframe-wide", "Wide line width").addOption("iframe-max", "Maximum line width").addOption("iframe-100", "100% pane width").setValue(plugin.settings.iframeWidth).onChange((value) => {
-        plugin.settings.iframeWidth = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Iframe width")
+      .setDesc("Default width for iframe blocks.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("iframe-default-width", "Default")
+          .addOption("iframe-wide", "Wide line width")
+          .addOption("iframe-max", "Maximum line width")
+          .addOption("iframe-100", "100% pane width")
+          .setValue(plugin.settings.iframeWidth)
+          .onChange((value) => {
+            plugin.settings.iframeWidth = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   layoutGroup.addSetting((setting) => {
-    setting.setName("Image width").setDesc("Default width for image blocks.").addDropdown((dropdown) => {
-      dropdown.addOption("img-default-width", "Default").addOption("img-wide", "Wide line width").addOption("img-max", "Maximum line width").addOption("img-100", "100% pane width").setValue(plugin.settings.imgWidth).onChange((value) => {
-        plugin.settings.imgWidth = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Image width")
+      .setDesc("Default width for image blocks.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("img-default-width", "Default")
+          .addOption("img-wide", "Wide line width")
+          .addOption("img-max", "Maximum line width")
+          .addOption("img-100", "100% pane width")
+          .setValue(plugin.settings.imgWidth)
+          .onChange((value) => {
+            plugin.settings.imgWidth = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   layoutGroup.addSetting((setting) => {
-    setting.setName("Map width").setDesc("Default width for map blocks.").addDropdown((dropdown) => {
-      dropdown.addOption("map-default-width", "Default").addOption("map-wide", "Wide line width").addOption("map-max", "Maximum line width").addOption("map-100", "100% pane width").setValue(plugin.settings.mapWidth).onChange((value) => {
-        plugin.settings.mapWidth = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Map width")
+      .setDesc("Default width for map blocks.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("map-default-width", "Default")
+          .addOption("map-wide", "Wide line width")
+          .addOption("map-max", "Maximum line width")
+          .addOption("map-100", "100% pane width")
+          .setValue(plugin.settings.mapWidth)
+          .onChange((value) => {
+            plugin.settings.mapWidth = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   layoutGroup.addSetting((setting) => {
-    setting.setName("Table width").setDesc("Default width for table and Dataview blocks.").addDropdown((dropdown) => {
-      dropdown.addOption("table-default-width", "Default").addOption("table-wide", "Wide line width").addOption("table-max", "Maximum line width").addOption("table-100", "100% pane width").setValue(plugin.settings.tableWidth).onChange((value) => {
-        plugin.settings.tableWidth = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Table width")
+      .setDesc("Default width for table and Dataview blocks.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("table-default-width", "Default")
+          .addOption("table-wide", "Wide line width")
+          .addOption("table-max", "Maximum line width")
+          .addOption("table-100", "100% pane width")
+          .setValue(plugin.settings.tableWidth)
+          .onChange((value) => {
+            plugin.settings.tableWidth = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
 }
 
 // src/settings/sections/TypographySettings.ts
 var import_obsidian4 = require("obsidian");
 function buildTypographySettings(containerEl, plugin) {
-  const typographyGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("Typography");
+  const typographyGroup = new import_obsidian4.SettingGroup(
+    containerEl,
+  ).setHeading("Typography");
   typographyGroup.addSetting((setting) => {
-    setting.setName("Text font size").setDesc("Used for the main text (default 16).").addText((text) => {
-      text.setPlaceholder("16").setValue((plugin.settings.textNormal || "") + "").onChange((value) => {
-        plugin.settings.textNormal = parseFloat(value);
-        void plugin.saveData(plugin.settings);
-        plugin.setFontSize();
+    setting
+      .setName("Text font size")
+      .setDesc("Used for the main text (default 16).")
+      .addText((text) => {
+        text
+          .setPlaceholder("16")
+          .setValue((plugin.settings.textNormal || "") + "")
+          .onChange((value) => {
+            plugin.settings.textNormal = parseFloat(value);
+            void plugin.saveData(plugin.settings);
+            plugin.setFontSize();
+          });
       });
-    });
   });
   typographyGroup.addSetting((setting) => {
-    setting.setName("Small font size").setDesc("Used for text in the sidebars and tabs (default 13).").addText((text) => {
-      text.setPlaceholder("13").setValue((plugin.settings.textSmall || "") + "").onChange((value) => {
-        plugin.settings.textSmall = parseFloat(value);
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Small font size")
+      .setDesc("Used for text in the sidebars and tabs (default 13).")
+      .addText((text) => {
+        text
+          .setPlaceholder("13")
+          .setValue((plugin.settings.textSmall || "") + "")
+          .onChange((value) => {
+            plugin.settings.textSmall = parseFloat(value);
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   typographyGroup.addSetting((setting) => {
-    setting.setName("Line height").setDesc("Line height of text (default 1.5).").addText((text) => {
-      text.setPlaceholder("1.5").setValue((plugin.settings.lineHeight || "") + "").onChange((value) => {
-        plugin.settings.lineHeight = parseFloat(value);
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Line height")
+      .setDesc("Line height of text (default 1.5).")
+      .addText((text) => {
+        text
+          .setPlaceholder("1.5")
+          .setValue((plugin.settings.lineHeight || "") + "")
+          .onChange((value) => {
+            plugin.settings.lineHeight = parseFloat(value);
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   typographyGroup.addSetting((setting) => {
-    setting.setName("Normal line width").setDesc("Number of characters per line (default 40).").addText((text) => {
-      text.setPlaceholder("40").setValue((plugin.settings.lineWidth || "") + "").onChange((value) => {
-        plugin.settings.lineWidth = parseInt(value.trim());
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Normal line width")
+      .setDesc("Number of characters per line (default 40).")
+      .addText((text) => {
+        text
+          .setPlaceholder("40")
+          .setValue((plugin.settings.lineWidth || "") + "")
+          .onChange((value) => {
+            plugin.settings.lineWidth = parseInt(value.trim());
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   typographyGroup.addSetting((setting) => {
-    setting.setName("Wide line width").setDesc("Number of characters per line for wide elements (default 50).").addText((text) => {
-      text.setPlaceholder("50").setValue((plugin.settings.lineWidthWide || "") + "").onChange((value) => {
-        plugin.settings.lineWidthWide = parseInt(value.trim());
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Wide line width")
+      .setDesc("Number of characters per line for wide elements (default 50).")
+      .addText((text) => {
+        text
+          .setPlaceholder("50")
+          .setValue((plugin.settings.lineWidthWide || "") + "")
+          .onChange((value) => {
+            plugin.settings.lineWidthWide = parseInt(value.trim());
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   typographyGroup.addSetting((setting) => {
-    setting.setName("Maximum line width %").setDesc("Percentage of space inside a pane that a line can fill (default 88).").addText((text) => {
-      text.setPlaceholder("88").setValue((plugin.settings.maxWidth || "") + "").onChange((value) => {
-        plugin.settings.maxWidth = parseInt(value.trim());
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Maximum line width %")
+      .setDesc(
+        "Percentage of space inside a pane that a line can fill (default 88).",
+      )
+      .addText((text) => {
+        text
+          .setPlaceholder("88")
+          .setValue((plugin.settings.maxWidth || "") + "")
+          .onChange((value) => {
+            plugin.settings.maxWidth = parseInt(value.trim());
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
   typographyGroup.addSetting((setting) => {
-    setting.setName("Editor font").setDesc("Overrides the text font defined in Obsidian appearance settings when in edit mode.").addText((text) => {
-      text.setPlaceholder("").setValue((plugin.settings.editorFont || "") + "").onChange((value) => {
-        plugin.settings.editorFont = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Editor font")
+      .setDesc(
+        "Overrides the text font defined in Obsidian appearance settings when in edit mode.",
+      )
+      .addText((text) => {
+        text
+          .setPlaceholder("")
+          .setValue((plugin.settings.editorFont || "") + "")
+          .onChange((value) => {
+            plugin.settings.editorFont = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
   });
 }
 
@@ -423,7 +665,9 @@ function hexToHSL(hex) {
   const b = parseInt(hex.substring(4, 6), 16) / 255;
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  let h = 0, s = 0, l = (max + min) / 2;
+  let h = 0,
+    s = 0,
+    l = (max + min) / 2;
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -443,7 +687,7 @@ function hexToHSL(hex) {
   return {
     h: Math.round(h * 360),
     s: Math.round(s * 100),
-    l: Math.round(l * 100)
+    l: Math.round(l * 100),
   };
 }
 function hslToHex(hsl) {
@@ -475,7 +719,8 @@ function hslToHex(hsl) {
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 function validateHex(hex) {
-  const hexRegex = /^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}|[A-Fa-f0-9]{8}|[A-Fa-f0-9]{4})$/;
+  const hexRegex =
+    /^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}|[A-Fa-f0-9]{8}|[A-Fa-f0-9]{4})$/;
   return hexRegex.test(hex);
 }
 function generateColorSwatch(preset) {
@@ -487,7 +732,7 @@ function generateColorSwatch(preset) {
   setCssProps(swatch, {
     "--swatch-gradient-start": lightBaseHex,
     "--swatch-gradient-mid": lightAccentHex,
-    "--swatch-gradient-end": darkBaseHex
+    "--swatch-gradient-end": darkBaseHex,
   });
   return swatch;
 }
@@ -495,14 +740,20 @@ function sanitizePresetName(name) {
   return name.trim().replace(/[<>:"/\\|?*]/g, "");
 }
 function generatePresetId(name) {
-  return sanitizePresetName(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "").substring(0, 50);
+  return sanitizePresetName(name)
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .substring(0, 50);
 }
 function validatePresetId(id) {
   const idRegex = /^[a-z0-9-]+$/;
   return idRegex.test(id) && id.length > 0 && id.length <= 50;
 }
 function isPresetIdUnique(id, existingPresets, excludeId) {
-  return !existingPresets.some((preset) => preset.id === id && preset.id !== excludeId);
+  return !existingPresets.some(
+    (preset) => preset.id === id && preset.id !== excludeId,
+  );
 }
 
 // src/presets/PresetManager.ts
@@ -511,7 +762,9 @@ var PresetManager = class {
    * Validate preset ID format and uniqueness
    */
   static validatePresetId(id, existingPresets, excludeId) {
-    return validatePresetId(id) && isPresetIdUnique(id, existingPresets, excludeId);
+    return (
+      validatePresetId(id) && isPresetIdUnique(id, existingPresets, excludeId)
+    );
   }
   /**
    * Sanitize preset name
@@ -542,14 +795,14 @@ var PresetManager = class {
         base: { h: 210, s: 2, l: 96 },
         // Light background
         accent: { h: 200, s: 80, l: 50 },
-        colors: {}
+        colors: {},
       },
       dark: {
         base: { h: 210, s: 2, l: 13 },
         // Dark background
         accent: { h: 200, s: 80, l: 50 },
-        colors: {}
-      }
+        colors: {},
+      },
     };
   }
   /**
@@ -563,7 +816,9 @@ var PresetManager = class {
     const updatedPreset = { ...existingPreset, ...updates };
     if (updates.id && updates.id !== id) {
       if (!this.validatePresetId(updates.id, existingPresets, id)) {
-        throw new Error(`Preset ID "${updates.id}" is invalid or already exists`);
+        throw new Error(
+          `Preset ID "${updates.id}" is invalid or already exists`,
+        );
       }
     }
     if (updates.name) {
@@ -599,7 +854,12 @@ var PresetManager = class {
       if (!data.id || !data.name || !data.light || !data.dark) {
         throw new Error("Invalid preset format: missing required fields");
       }
-      if (!data.light.base || !data.light.accent || !data.dark.base || !data.dark.accent) {
+      if (
+        !data.light.base ||
+        !data.light.accent ||
+        !data.dark.base ||
+        !data.dark.accent
+      ) {
         throw new Error("Invalid preset format: missing base or accent colors");
       }
       const validateHSL = (hsl) => {
@@ -607,9 +867,24 @@ var PresetManager = class {
         const h = hsl.h;
         const s = hsl.s;
         const l = hsl.l;
-        return typeof h === "number" && h >= 0 && h <= 360 && typeof s === "number" && s >= 0 && s <= 100 && typeof l === "number" && l >= 0 && l <= 100;
+        return (
+          typeof h === "number" &&
+          h >= 0 &&
+          h <= 360 &&
+          typeof s === "number" &&
+          s >= 0 &&
+          s <= 100 &&
+          typeof l === "number" &&
+          l >= 0 &&
+          l <= 100
+        );
       };
-      if (!validateHSL(data.light.base) || !validateHSL(data.light.accent) || !validateHSL(data.dark.base) || !validateHSL(data.dark.accent)) {
+      if (
+        !validateHSL(data.light.base) ||
+        !validateHSL(data.light.accent) ||
+        !validateHSL(data.dark.base) ||
+        !validateHSL(data.dark.accent)
+      ) {
         throw new Error("Invalid preset format: HSL values out of range");
       }
       const extractColors = (colors) => {
@@ -639,7 +914,8 @@ var PresetManager = class {
       const idStr = data.id;
       const nameStr = data.name;
       const authorStr = typeof data.author === "string" ? data.author : "";
-      const versionStr = typeof data.version === "string" ? data.version : "1.0.0";
+      const versionStr =
+        typeof data.version === "string" ? data.version : "1.0.0";
       const preset = {
         id: this.sanitizePresetName(idStr),
         name: this.sanitizePresetName(nameStr),
@@ -649,17 +925,23 @@ var PresetManager = class {
           base: data.light.base,
           accent: data.light.accent,
           colors: extractColors(data.light.colors),
-          frameLightnessOffset: extractFrameOffset(data.light.frameLightnessOffset)
+          frameLightnessOffset: extractFrameOffset(
+            data.light.frameLightnessOffset,
+          ),
         },
         dark: {
           base: data.dark.base,
           accent: data.dark.accent,
           colors: extractColors(data.dark.colors),
-          frameLightnessOffset: extractFrameOffset(data.dark.frameLightnessOffset)
-        }
+          frameLightnessOffset: extractFrameOffset(
+            data.dark.frameLightnessOffset,
+          ),
+        },
       };
       if (!preset.id || !preset.name) {
-        throw new Error("Invalid preset format: ID or name is empty after sanitization");
+        throw new Error(
+          "Invalid preset format: ID or name is empty after sanitization",
+        );
       }
       return preset;
     } catch (error) {
@@ -679,7 +961,10 @@ var PresetManager = class {
    * Check if preset is currently active
    */
   static isPresetActive(presetId, lightScheme, darkScheme) {
-    return lightScheme === `oxygen-custom-${presetId}` || darkScheme === `oxygen-custom-${presetId}`;
+    return (
+      lightScheme === `oxygen-custom-${presetId}` ||
+      darkScheme === `oxygen-custom-${presetId}`
+    );
   }
   /**
    * Generate a preview of the preset colors
@@ -690,15 +975,25 @@ var PresetManager = class {
       light: [
         hslToHex(preset.light.base),
         hslToHex(preset.light.accent),
-        ((_a = preset.light.colors) == null ? void 0 : _a.bg1) || hslToHex(preset.light.base),
-        ((_b = preset.light.colors) == null ? void 0 : _b.tx1) || hslToHex({ ...preset.light.base, l: Math.max(0, preset.light.base.l - 30) })
+        ((_a = preset.light.colors) == null ? void 0 : _a.bg1) ||
+          hslToHex(preset.light.base),
+        ((_b = preset.light.colors) == null ? void 0 : _b.tx1) ||
+          hslToHex({
+            ...preset.light.base,
+            l: Math.max(0, preset.light.base.l - 30),
+          }),
       ],
       dark: [
         hslToHex(preset.dark.base),
         hslToHex(preset.dark.accent),
-        ((_c = preset.dark.colors) == null ? void 0 : _c.bg1) || hslToHex(preset.dark.base),
-        ((_d = preset.dark.colors) == null ? void 0 : _d.tx1) || hslToHex({ ...preset.dark.base, l: Math.min(100, preset.dark.base.l + 30) })
-      ]
+        ((_c = preset.dark.colors) == null ? void 0 : _c.bg1) ||
+          hslToHex(preset.dark.base),
+        ((_d = preset.dark.colors) == null ? void 0 : _d.tx1) ||
+          hslToHex({
+            ...preset.dark.base,
+            l: Math.min(100, preset.dark.base.l + 30),
+          }),
+      ],
     };
   }
 };
@@ -714,14 +1009,14 @@ function getDefaultColorForKey(key, palette) {
   const accentH = palette.accent.h;
   const isLightBase = baseL > 50;
   const syntaxDefaults = {
-    "red": "#e74c3c",
-    "orange": "#e67e22",
-    "yellow": "#f39c12",
-    "green": "#27ae60",
-    "cyan": "#16a085",
-    "blue": "#3498db",
-    "purple": "#9b59b6",
-    "pink": "#e91e63"
+    red: "#e74c3c",
+    orange: "#e67e22",
+    yellow: "#f39c12",
+    green: "#27ae60",
+    cyan: "#16a085",
+    blue: "#3498db",
+    purple: "#9b59b6",
+    pink: "#e91e63",
   };
   if (syntaxDefaults[key]) {
     return syntaxDefaults[key];
@@ -774,11 +1069,16 @@ function getDefaultColorForKey(key, palette) {
 function createHSLControls(container, hsl, onChange) {
   const controls = container.createEl("div", { cls: "hsl-controls" });
   const hslCopy = { ...hsl };
-  const previewWrapper = controls.createEl("div", { cls: "color-preview-wrapper" });
+  const previewWrapper = controls.createEl("div", {
+    cls: "color-preview-wrapper",
+  });
   const preview = previewWrapper.createEl("div", { cls: "color-preview" });
   setCssProp(preview, "--preview-color", hslToHex(hslCopy));
   preview.title = "Click to pick a color with hex input";
-  const colorInput = previewWrapper.createEl("input", { type: "color", cls: "hsl-color-input-overlay" });
+  const colorInput = previewWrapper.createEl("input", {
+    type: "color",
+    cls: "hsl-color-input-overlay",
+  });
   colorInput.value = hslToHex(hslCopy);
   const updatePreview = () => {
     const hexColor = hslToHex(hslCopy);
@@ -840,13 +1140,22 @@ function createHSLControls(container, hsl, onChange) {
   };
 }
 function createColorOverride(container, label, key, colors, palette, onUpdate) {
-  const override = container.createEl("div", { cls: "color-override collapsible-item" });
+  const override = container.createEl("div", {
+    cls: "color-override collapsible-item",
+  });
   const header = override.createEl("div", { cls: "override-header" });
   const toggle = header.createEl("input", { type: "checkbox" });
   header.createEl("label", { text: label });
-  const colorInputWrapper = header.createEl("div", { cls: "color-input-wrapper" });
-  const colorPreview = colorInputWrapper.createEl("div", { cls: "color-preview-swatch" });
-  const colorInput = colorInputWrapper.createEl("input", { type: "color", cls: "hsl-color-input-overlay" });
+  const colorInputWrapper = header.createEl("div", {
+    cls: "color-input-wrapper",
+  });
+  const colorPreview = colorInputWrapper.createEl("div", {
+    cls: "color-preview-swatch",
+  });
+  const colorInput = colorInputWrapper.createEl("input", {
+    type: "color",
+    cls: "hsl-color-input-overlay",
+  });
   colorInput.disabled = true;
   let originalColor = null;
   const updateColorPreview = (color) => {
@@ -867,7 +1176,8 @@ function createColorOverride(container, label, key, colors, palette, onUpdate) {
     if (!toggle.checked) {
       toggle.checked = true;
       colorInput.disabled = false;
-      const restoredColor = originalColor || colors[key] || getDefaultColorForKey(key, palette);
+      const restoredColor =
+        originalColor || colors[key] || getDefaultColorForKey(key, palette);
       colors[key] = restoredColor;
       updateColorPreview(restoredColor);
       originalColor = restoredColor;
@@ -877,7 +1187,8 @@ function createColorOverride(container, label, key, colors, palette, onUpdate) {
   toggle.onchange = () => {
     if (toggle.checked) {
       colorInput.disabled = false;
-      const restoredColor = originalColor || colors[key] || getDefaultColorForKey(key, palette);
+      const restoredColor =
+        originalColor || colors[key] || getDefaultColorForKey(key, palette);
       colors[key] = restoredColor;
       updateColorPreview(restoredColor);
       originalColor = restoredColor;
@@ -937,19 +1248,15 @@ var CSS_CLASSES = {
   THEME_LIGHT: "theme-light",
   THEME_DARK: "theme-dark",
   CUSTOM_PRESETS_STYLE: "oxygen-custom-presets",
-  THEME_OVERRIDE: "data-theme-override"
+  THEME_OVERRIDE: "data-theme-override",
 };
 var LIGHT_STYLES = [
   "oxygen-light",
   "oxygen-light-tonal",
   "oxygen-light-contrast",
-  "oxygen-light-white"
+  "oxygen-light-white",
 ];
-var DARK_STYLES = [
-  "oxygen-dark",
-  "oxygen-dark-tonal",
-  "oxygen-dark-black"
-];
+var DARK_STYLES = ["oxygen-dark", "oxygen-dark-tonal", "oxygen-dark-black"];
 var LIGHT_SCHEMES = [
   "oxygen-oxygen-light",
   "oxygen-minimal-light",
@@ -965,7 +1272,7 @@ var LIGHT_SCHEMES = [
   "oxygen-rose-pine-light",
   "oxygen-notion-light",
   "oxygen-solarized-light",
-  "oxygen-things-light"
+  "oxygen-things-light",
 ];
 var DARK_SCHEMES = [
   "oxygen-oxygen-dark",
@@ -983,37 +1290,32 @@ var DARK_SCHEMES = [
   "oxygen-rose-pine-dark",
   "oxygen-notion-dark",
   "oxygen-solarized-dark",
-  "oxygen-things-dark"
+  "oxygen-things-dark",
 ];
 var TABLE_WIDTH_STYLES = [
   "table-100",
   "table-default-width",
   "table-wide",
-  "table-max"
+  "table-max",
 ];
 var IFRAME_WIDTH_STYLES = [
   "iframe-100",
   "iframe-default-width",
   "iframe-wide",
-  "iframe-max"
+  "iframe-max",
 ];
 var IMAGE_WIDTH_STYLES = [
   "img-100",
   "img-default-width",
   "img-wide",
-  "img-max"
+  "img-max",
 ];
-var MAP_WIDTH_STYLES = [
-  "map-100",
-  "map-default-width",
-  "map-wide",
-  "map-max"
-];
+var MAP_WIDTH_STYLES = ["map-100", "map-default-width", "map-wide", "map-max"];
 var CHART_WIDTH_STYLES = [
   "chart-100",
   "chart-default-width",
   "chart-wide",
-  "chart-max"
+  "chart-max",
 ];
 var COMMAND_IDS = {
   // Font commands
@@ -1051,7 +1353,7 @@ var COMMAND_IDS = {
   // Dev commands
   DEV_BLOCK_WIDTH: "toggle-minimal-dev-block-width",
   // Settings command
-  OPEN_SETTINGS: "oxygen-settings:open-settings"
+  OPEN_SETTINGS: "oxygen-settings:open-settings",
 };
 var DEFAULTS = {
   FONT_SIZE_NORMAL: 16,
@@ -1060,19 +1362,19 @@ var DEFAULTS = {
   LINE_WIDTH: 40,
   LINE_WIDTH_WIDE: 50,
   MAX_WIDTH: 88,
-  FONT_STEP: 0.5
+  FONT_STEP: 0.5,
 };
 var VAULT_CONFIG = {
   BASE_FONT_SIZE: "baseFontSize",
   FOLD_HEADING: "foldHeading",
   SHOW_LINE_NUMBER: "showLineNumber",
   READABLE_LINE_LENGTH: "readableLineLength",
-  THEME: "theme"
+  THEME: "theme",
 };
 var OBSIDIAN_THEMES = {
   LIGHT: "moonstone",
   DARK: "obsidian",
-  SYSTEM: "system"
+  SYSTEM: "system",
 };
 var OXYGEN_THEME_NAME = "Oxygen";
 var SCHEME_DISPLAY_NAMES = {
@@ -1108,7 +1410,7 @@ var SCHEME_DISPLAY_NAMES = {
   "oxygen-rose-pine-dark": "Ros\xE9 Pine",
   "oxygen-notion-dark": "Sky",
   "oxygen-solarized-dark": "Solarized",
-  "oxygen-things-dark": "Things"
+  "oxygen-things-dark": "Things",
 };
 
 // src/utils/theme-utils.ts
@@ -1132,28 +1434,46 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
     this.onSave = onSave;
   }
   createDefaultPreset() {
-    return PresetManager.createPreset("New Preset", "", this.plugin.settings.customPresets);
+    return PresetManager.createPreset(
+      "New Preset",
+      "",
+      this.plugin.settings.customPresets,
+    );
   }
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
     contentEl.addClass("preset-editor-modal");
     const header = contentEl.createEl("div", { cls: "modal-header" });
-    header.createEl("h2", { text: this.isEditing ? "Edit preset" : "Create new preset" });
+    header.createEl("h2", {
+      text: this.isEditing ? "Edit preset" : "Create new preset",
+    });
     const basicInfo = contentEl.createEl("div", { cls: "modal-section" });
-    new import_obsidian5.Setting(basicInfo).setName("Preset name").setDesc("A unique name for your color preset").addText((text) => {
-      this.nameInput = text.inputEl;
-      text.setValue(this.preset.name).setPlaceholder("Enter preset name").onChange((value) => {
-        this.preset.name = value;
-        this.updatePreview();
+    new import_obsidian5.Setting(basicInfo)
+      .setName("Preset name")
+      .setDesc("A unique name for your color preset")
+      .addText((text) => {
+        this.nameInput = text.inputEl;
+        text
+          .setValue(this.preset.name)
+          .setPlaceholder("Enter preset name")
+          .onChange((value) => {
+            this.preset.name = value;
+            this.updatePreview();
+          });
       });
-    });
-    new import_obsidian5.Setting(basicInfo).setName("Author (optional)").setDesc("Your name or the creator of this preset").addText((text) => {
-      this.authorInput = text.inputEl;
-      text.setValue(this.preset.author || "").setPlaceholder("Enter author name").onChange((value) => {
-        this.preset.author = value;
+    new import_obsidian5.Setting(basicInfo)
+      .setName("Author (optional)")
+      .setDesc("Your name or the creator of this preset")
+      .addText((text) => {
+        this.authorInput = text.inputEl;
+        text
+          .setValue(this.preset.author || "")
+          .setPlaceholder("Enter author name")
+          .onChange((value) => {
+            this.preset.author = value;
+          });
       });
-    });
     const contentArea = contentEl.createEl("div", { cls: "modes-container" });
     const lightSection = contentArea.createEl("div", { cls: "mode-section" });
     lightSection.createEl("h3", { text: "Light mode" });
@@ -1163,14 +1483,19 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
     this.buildModeContent(darkSection, "dark");
     const previewSection = contentEl.createEl("div", { cls: "modal-section" });
     previewSection.createEl("h3", { text: "Preview" });
-    this.previewSwatch = previewSection.createEl("div", { cls: "preview-swatch" });
+    this.previewSwatch = previewSection.createEl("div", {
+      cls: "preview-swatch",
+    });
     this.updatePreview();
     const footer = contentEl.createEl("div", { cls: "modal-footer" });
-    const cancelBtn = footer.createEl("button", { text: "Cancel", cls: "mod-cta" });
+    const cancelBtn = footer.createEl("button", {
+      text: "Cancel",
+      cls: "mod-cta",
+    });
     cancelBtn.onclick = () => this.close();
     const saveBtn = footer.createEl("button", {
       text: this.isEditing ? "Update" : "Create",
-      cls: "mod-cta"
+      cls: "mod-cta",
     });
     saveBtn.onclick = () => this.savePreset();
   }
@@ -1178,7 +1503,8 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
     container.empty();
     const palette = mode === "light" ? this.preset.light : this.preset.dark;
     const requiredSection = container.createEl("div", { cls: "color-section" });
-    const headerText = mode === "light" ? "Light theme colors" : "Dark theme colors";
+    const headerText =
+      mode === "light" ? "Light theme colors" : "Dark theme colors";
     requiredSection.createEl("h3", { text: headerText });
     const baseSection = requiredSection.createEl("div", { cls: "color-group" });
     baseSection.createEl("label", { text: "Base color" });
@@ -1190,7 +1516,9 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
       }
       this.updatePreview();
     });
-    const accentSection = requiredSection.createEl("div", { cls: "color-group" });
+    const accentSection = requiredSection.createEl("div", {
+      cls: "color-group",
+    });
     accentSection.createEl("label", { text: "Accent color" });
     createHSLControls(accentSection, palette.accent, (hsl) => {
       if (mode === "light") {
@@ -1200,11 +1528,24 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
       }
       this.updatePreview();
     });
-    const frameSection = requiredSection.createEl("div", { cls: "color-group" });
-    frameSection.createEl("label", { text: "Colorful frame lightness override (optional)", cls: "frame-label" });
-    const frameDesc = frameSection.createEl("div", { cls: "setting-item-description frame-description" });
-    frameDesc.textContent = mode === "dark" ? "Offset from accent lightness for colorful frame. Default: -25 (darkens by 25%). Leave empty for default." : "Offset from accent lightness for colorful frame. Default: +30 (brightens by 30%). Leave empty for default.";
-    const frameInput = frameSection.createEl("input", { type: "number", cls: "frame-input" });
+    const frameSection = requiredSection.createEl("div", {
+      cls: "color-group",
+    });
+    frameSection.createEl("label", {
+      text: "Colorful frame lightness override (optional)",
+      cls: "frame-label",
+    });
+    const frameDesc = frameSection.createEl("div", {
+      cls: "setting-item-description frame-description",
+    });
+    frameDesc.textContent =
+      mode === "dark"
+        ? "Offset from accent lightness for colorful frame. Default: -25 (darkens by 25%). Leave empty for default."
+        : "Offset from accent lightness for colorful frame. Default: +30 (brightens by 30%). Leave empty for default.";
+    const frameInput = frameSection.createEl("input", {
+      type: "number",
+      cls: "frame-input",
+    });
     frameInput.placeholder = mode === "dark" ? "-25" : "+30";
     frameInput.min = "-100";
     frameInput.max = "100";
@@ -1233,18 +1574,46 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
       this.updatePreview();
     };
     const advancedSection = container.createEl("div", { cls: "color-section" });
-    const advancedHeader = advancedSection.createEl("div", { cls: "collapsible-header" });
+    const advancedHeader = advancedSection.createEl("div", {
+      cls: "collapsible-header",
+    });
     advancedHeader.createEl("h4", { text: "Advanced overrides (optional)" });
     const advancedToggle = advancedHeader.createEl("button", {
-      cls: "collapse-toggle"
+      cls: "collapse-toggle",
     });
     (0, import_obsidian5.setIcon)(advancedToggle, "chevron-down");
     if (!palette.colors) {
       palette.colors = {};
     }
     const advancedItems = [];
-    const overrideKeys = ["bg1", "bg2", "bg3", "ui1", "ui2", "ui3", "tx1", "tx2", "tx3", "tx4", "hl1", "hl2"];
-    const overrideLabels = ["Background 1", "Background 2", "Background 3", "UI 1", "UI 2", "UI 3", "Text 1", "Text 2", "Text 3", "Text 4", "Highlight 1", "Highlight 2"];
+    const overrideKeys = [
+      "bg1",
+      "bg2",
+      "bg3",
+      "ui1",
+      "ui2",
+      "ui3",
+      "tx1",
+      "tx2",
+      "tx3",
+      "tx4",
+      "hl1",
+      "hl2",
+    ];
+    const overrideLabels = [
+      "Background 1",
+      "Background 2",
+      "Background 3",
+      "UI 1",
+      "UI 2",
+      "UI 3",
+      "Text 1",
+      "Text 2",
+      "Text 3",
+      "Text 4",
+      "Highlight 1",
+      "Highlight 2",
+    ];
     const colors = palette.colors;
     overrideKeys.forEach((key, index) => {
       const item = createColorOverride(
@@ -1253,7 +1622,7 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
         key,
         colors,
         palette,
-        () => this.updatePreview()
+        () => this.updatePreview(),
       );
       advancedItems.push(item);
       item.addClass("collapsible-content-item");
@@ -1267,16 +1636,30 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
           item.removeClass("expanded");
         }
       });
-      (0, import_obsidian5.setIcon)(advancedToggle, isCollapsed ? "chevron-up" : "chevron-down");
+      (0, import_obsidian5.setIcon)(
+        advancedToggle,
+        isCollapsed ? "chevron-up" : "chevron-down",
+      );
     };
     const syntaxSection = container.createEl("div", { cls: "color-section" });
-    const syntaxHeader = syntaxSection.createEl("div", { cls: "collapsible-header" });
+    const syntaxHeader = syntaxSection.createEl("div", {
+      cls: "collapsible-header",
+    });
     syntaxHeader.createEl("h4", { text: "Syntax colors (optional)" });
     const syntaxToggle = syntaxHeader.createEl("button", {
-      cls: "collapse-toggle"
+      cls: "collapse-toggle",
     });
     (0, import_obsidian5.setIcon)(syntaxToggle, "chevron-down");
-    const syntaxColors = ["red", "orange", "yellow", "green", "cyan", "blue", "purple", "pink"];
+    const syntaxColors = [
+      "red",
+      "orange",
+      "yellow",
+      "green",
+      "cyan",
+      "blue",
+      "purple",
+      "pink",
+    ];
     const syntaxItems = [];
     syntaxColors.forEach((color) => {
       const item = createColorOverride(
@@ -1285,7 +1668,7 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
         color,
         colors,
         palette,
-        () => this.updatePreview()
+        () => this.updatePreview(),
       );
       syntaxItems.push(item);
       item.addClass("collapsible-content-item");
@@ -1299,12 +1682,17 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
           item.removeClass("expanded");
         }
       });
-      (0, import_obsidian5.setIcon)(syntaxToggle, isCollapsed ? "chevron-up" : "chevron-down");
+      (0, import_obsidian5.setIcon)(
+        syntaxToggle,
+        isCollapsed ? "chevron-up" : "chevron-down",
+      );
     };
   }
   updatePreview() {
     this.previewSwatch.empty();
-    const presetIndex = this.plugin.settings.customPresets.findIndex((p) => p.id === this.preset.id);
+    const presetIndex = this.plugin.settings.customPresets.findIndex(
+      (p) => p.id === this.preset.id,
+    );
     if (presetIndex !== -1) {
       this.plugin.settings.customPresets[presetIndex] = this.preset;
       const presetSchemeId = `oxygen-custom-${this.preset.id}`;
@@ -1330,10 +1718,14 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
     const lightRow = this.previewSwatch.createEl("div", { cls: "preview-row" });
     lightRow.createEl("div", { text: "Light mode", cls: "preview-label" });
     const lightColors = lightRow.createEl("div", { cls: "preview-colors" });
-    const lightBaseColor = lightColors.createEl("div", { cls: "preview-color" });
+    const lightBaseColor = lightColors.createEl("div", {
+      cls: "preview-color",
+    });
     lightBaseColor.setAttribute("data-color", lightBaseHex);
     setCssProp(lightBaseColor, "--preview-color", lightBaseHex);
-    const lightAccentColor = lightColors.createEl("div", { cls: "preview-color" });
+    const lightAccentColor = lightColors.createEl("div", {
+      cls: "preview-color",
+    });
     lightAccentColor.setAttribute("data-color", lightAccentHex);
     setCssProp(lightAccentColor, "--preview-color", lightAccentHex);
     const darkRow = this.previewSwatch.createEl("div", { cls: "preview-row" });
@@ -1342,7 +1734,9 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
     const darkBaseColor = darkColors.createEl("div", { cls: "preview-color" });
     darkBaseColor.setAttribute("data-color", darkBaseHex);
     setCssProp(darkBaseColor, "--preview-color", darkBaseHex);
-    const darkAccentColor = darkColors.createEl("div", { cls: "preview-color" });
+    const darkAccentColor = darkColors.createEl("div", {
+      cls: "preview-color",
+    });
     darkAccentColor.setAttribute("data-color", darkAccentHex);
     setCssProp(darkAccentColor, "--preview-color", darkAccentHex);
   }
@@ -1355,7 +1749,7 @@ var PresetEditorModal = class extends import_obsidian5.Modal {
         this.preset.id = PresetManager.createPreset(
           this.preset.name,
           this.preset.author || "",
-          this.plugin.settings.customPresets
+          this.plugin.settings.customPresets,
         ).id;
       }
       this.onSave(this.preset);
@@ -1387,30 +1781,42 @@ var PresetImportModal = class extends import_obsidian6.Modal {
     header.createEl("h2", { text: "Import custom preset" });
     const instructions = contentEl.createEl("div", { cls: "modal-section" });
     instructions.createEl("p", {
-      text: "Paste a JSON preset below. You can export presets from this plugin or create them manually following the correct format."
+      text: "Paste a JSON preset below. You can export presets from this plugin or create them manually following the correct format.",
     });
     const inputSection = contentEl.createEl("div", { cls: "modal-section" });
     inputSection.createEl("h3", { text: "JSON preset data" });
-    new import_obsidian6.Setting(inputSection).setName("Preset JSON").setDesc("Paste the complete JSON preset data here").addTextArea((text) => {
-      this.textArea = text.inputEl;
-      this.textArea.addClass("preset-json-input");
-      text.setPlaceholder("Paste JSON preset data here...").onChange((value) => this.parseJSON(value));
-    });
+    new import_obsidian6.Setting(inputSection)
+      .setName("Preset JSON")
+      .setDesc("Paste the complete JSON preset data here")
+      .addTextArea((text) => {
+        this.textArea = text.inputEl;
+        this.textArea.addClass("preset-json-input");
+        text
+          .setPlaceholder("Paste JSON preset data here...")
+          .onChange((value) => this.parseJSON(value));
+      });
     const previewSection = contentEl.createEl("div", { cls: "modal-section" });
     previewSection.createEl("h3", { text: "Preview" });
-    this.previewContainer = previewSection.createEl("div", { cls: "preview-container" });
+    this.previewContainer = previewSection.createEl("div", {
+      cls: "preview-container",
+    });
     this.previewContainer.createEl("p", {
       text: "Enter valid JSON to see a preview of the preset",
-      cls: "preview-placeholder"
+      cls: "preview-placeholder",
     });
-    const errorSection = contentEl.createEl("div", { cls: "modal-section error-section hidden" });
+    const errorSection = contentEl.createEl("div", {
+      cls: "modal-section error-section hidden",
+    });
     errorSection.createEl("div", { cls: "error-message" });
     const footer = contentEl.createEl("div", { cls: "modal-footer" });
-    const cancelBtn = footer.createEl("button", { text: "Cancel", cls: "mod-cta" });
+    const cancelBtn = footer.createEl("button", {
+      text: "Cancel",
+      cls: "mod-cta",
+    });
     cancelBtn.onclick = () => this.close();
     this.importButton = footer.createEl("button", {
       text: "Import preset",
-      cls: "mod-cta"
+      cls: "mod-cta",
     });
     this.importButton.disabled = true;
     this.importButton.onclick = () => this.importPreset();
@@ -1425,24 +1831,29 @@ var PresetImportModal = class extends import_obsidian6.Modal {
     if (!jsonString.trim()) {
       this.previewContainer.createEl("p", {
         text: "Enter valid JSON to see a preview of the preset",
-        cls: "preview-placeholder"
+        cls: "preview-placeholder",
       });
       return;
     }
     try {
       this.parsedPreset = PresetManager.importPresetFromJSON(jsonString);
-      const existingPreset = this.plugin.settings.customPresets.find((p) => p.id === this.parsedPreset.id);
+      const existingPreset = this.plugin.settings.customPresets.find(
+        (p) => p.id === this.parsedPreset.id,
+      );
       if (existingPreset) {
-        throw new Error(`A preset with ID "${this.parsedPreset.id}" already exists. Please rename the preset.`);
+        throw new Error(
+          `A preset with ID "${this.parsedPreset.id}" already exists. Please rename the preset.`,
+        );
       }
       this.showPreview(this.parsedPreset);
       this.importButton.disabled = false;
     } catch (error) {
-      errorMessage.textContent = error instanceof Error ? error.message : "Invalid JSON format";
+      errorMessage.textContent =
+        error instanceof Error ? error.message : "Invalid JSON format";
       errorSection.removeClass("hidden");
       this.previewContainer.createEl("p", {
         text: "Fix the JSON errors above to see a preview",
-        cls: "preview-error"
+        cls: "preview-error",
       });
     }
   }
@@ -1463,36 +1874,52 @@ var PresetImportModal = class extends import_obsidian6.Modal {
     const idRow = info.createEl("div", { cls: "info-row" });
     idRow.createEl("strong", { text: "ID: " });
     idRow.createEl("span", { text: preset.id, cls: "preset-id" });
-    const preview = this.previewContainer.createEl("div", { cls: "color-preview-section" });
+    const preview = this.previewContainer.createEl("div", {
+      cls: "color-preview-section",
+    });
     preview.createEl("h4", { text: "Color preview" });
     const modeToggle = preview.createEl("div", { cls: "mode-toggle" });
     const lightModeBtn = modeToggle.createEl("button", {
       text: "Light mode",
-      cls: "mode-btn active"
+      cls: "mode-btn active",
     });
     const darkModeBtn = modeToggle.createEl("button", {
       text: "Dark mode",
-      cls: "mode-btn"
+      cls: "mode-btn",
     });
-    const swatchContainer = preview.createEl("div", { cls: "swatch-container" });
-    const lightSwatches = swatchContainer.createEl("div", { cls: "mode-swatches active" });
-    const lightBaseSwatchPreview = lightSwatches.createEl("div", { cls: "color-swatch" });
+    const swatchContainer = preview.createEl("div", {
+      cls: "swatch-container",
+    });
+    const lightSwatches = swatchContainer.createEl("div", {
+      cls: "mode-swatches active",
+    });
+    const lightBaseSwatchPreview = lightSwatches.createEl("div", {
+      cls: "color-swatch",
+    });
     const lightBaseHSL = `${preset.light.base.h}, ${preset.light.base.s}%, ${preset.light.base.l}%`;
     lightBaseSwatchPreview.setAttribute("data-hsl", lightBaseHSL);
     setCssProp(lightBaseSwatchPreview, "--swatch-hsl", lightBaseHSL);
     lightBaseSwatchPreview.title = `Base: hsl(${preset.light.base.h}, ${preset.light.base.s}%, ${preset.light.base.l}%)`;
-    const lightAccentSwatchPreview = lightSwatches.createEl("div", { cls: "color-swatch" });
+    const lightAccentSwatchPreview = lightSwatches.createEl("div", {
+      cls: "color-swatch",
+    });
     const lightAccentHSL = `${preset.light.accent.h}, ${preset.light.accent.s}%, ${preset.light.accent.l}%`;
     lightAccentSwatchPreview.setAttribute("data-hsl", lightAccentHSL);
     setCssProp(lightAccentSwatchPreview, "--swatch-hsl", lightAccentHSL);
     lightAccentSwatchPreview.title = `Accent: hsl(${preset.light.accent.h}, ${preset.light.accent.s}%, ${preset.light.accent.l}%)`;
-    const darkSwatches = swatchContainer.createEl("div", { cls: "mode-swatches" });
-    const darkBaseSwatchPreview = darkSwatches.createEl("div", { cls: "color-swatch" });
+    const darkSwatches = swatchContainer.createEl("div", {
+      cls: "mode-swatches",
+    });
+    const darkBaseSwatchPreview = darkSwatches.createEl("div", {
+      cls: "color-swatch",
+    });
     const darkBaseHSL = `${preset.dark.base.h}, ${preset.dark.base.s}%, ${preset.dark.base.l}%`;
     darkBaseSwatchPreview.setAttribute("data-hsl", darkBaseHSL);
     setCssProp(darkBaseSwatchPreview, "--swatch-hsl", darkBaseHSL);
     darkBaseSwatchPreview.title = `Base: hsl(${preset.dark.base.h}, ${preset.dark.base.s}%, ${preset.dark.base.l}%)`;
-    const darkAccentSwatchPreview = darkSwatches.createEl("div", { cls: "color-swatch" });
+    const darkAccentSwatchPreview = darkSwatches.createEl("div", {
+      cls: "color-swatch",
+    });
     const darkAccentHSL = `${preset.dark.accent.h}, ${preset.dark.accent.s}%, ${preset.dark.accent.l}%`;
     darkAccentSwatchPreview.setAttribute("data-hsl", darkAccentHSL);
     setCssProp(darkAccentSwatchPreview, "--swatch-hsl", darkAccentHSL);
@@ -1509,46 +1936,66 @@ var PresetImportModal = class extends import_obsidian6.Modal {
       darkSwatches.classList.add("active");
       lightSwatches.classList.remove("active");
     };
-    const details = this.previewContainer.createEl("div", { cls: "color-details-section" });
+    const details = this.previewContainer.createEl("div", {
+      cls: "color-details-section",
+    });
     details.createEl("h4", { text: "Color values" });
     const lightDetails = details.createEl("div", { cls: "mode-details" });
     lightDetails.createEl("h5", { text: "Light mode" });
     const lightBase = lightDetails.createEl("div", { cls: "color-detail" });
-    const lightBaseSwatchDetail = lightBase.createEl("div", { cls: "detail-swatch" });
+    const lightBaseSwatchDetail = lightBase.createEl("div", {
+      cls: "detail-swatch",
+    });
     const lightBaseHSLDetail = `${preset.light.base.h}, ${preset.light.base.s}%, ${preset.light.base.l}%`;
     lightBaseSwatchDetail.setAttribute("data-hsl", lightBaseHSLDetail);
     setCssProp(lightBaseSwatchDetail, "--detail-hsl", lightBaseHSLDetail);
     lightBase.createEl("span", { text: "Base: " });
-    lightBase.createEl("span", { text: `hsl(${preset.light.base.h}, ${preset.light.base.s}%, ${preset.light.base.l}%)` });
+    lightBase.createEl("span", {
+      text: `hsl(${preset.light.base.h}, ${preset.light.base.s}%, ${preset.light.base.l}%)`,
+    });
     const lightAccent = lightDetails.createEl("div", { cls: "color-detail" });
-    const lightAccentSwatchDetail = lightAccent.createEl("div", { cls: "detail-swatch" });
+    const lightAccentSwatchDetail = lightAccent.createEl("div", {
+      cls: "detail-swatch",
+    });
     const lightAccentHSLDetail = `${preset.light.accent.h}, ${preset.light.accent.s}%, ${preset.light.accent.l}%`;
     lightAccentSwatchDetail.setAttribute("data-hsl", lightAccentHSLDetail);
     setCssProp(lightAccentSwatchDetail, "--detail-hsl", lightAccentHSLDetail);
     lightAccent.createEl("span", { text: "Accent: " });
-    lightAccent.createEl("span", { text: `hsl(${preset.light.accent.h}, ${preset.light.accent.s}%, ${preset.light.accent.l}%)` });
+    lightAccent.createEl("span", {
+      text: `hsl(${preset.light.accent.h}, ${preset.light.accent.s}%, ${preset.light.accent.l}%)`,
+    });
     const darkDetails = details.createEl("div", { cls: "mode-details" });
     darkDetails.createEl("h5", { text: "Dark mode" });
     const darkBase = darkDetails.createEl("div", { cls: "color-detail" });
-    const darkBaseSwatchDetail = darkBase.createEl("div", { cls: "detail-swatch" });
+    const darkBaseSwatchDetail = darkBase.createEl("div", {
+      cls: "detail-swatch",
+    });
     const darkBaseHSLDetail = `${preset.dark.base.h}, ${preset.dark.base.s}%, ${preset.dark.base.l}%`;
     darkBaseSwatchDetail.setAttribute("data-hsl", darkBaseHSLDetail);
     setCssProp(darkBaseSwatchDetail, "--detail-hsl", darkBaseHSLDetail);
     darkBase.createEl("span", { text: "Base: " });
-    darkBase.createEl("span", { text: `hsl(${preset.dark.base.h}, ${preset.dark.base.s}%, ${preset.dark.base.l}%)` });
+    darkBase.createEl("span", {
+      text: `hsl(${preset.dark.base.h}, ${preset.dark.base.s}%, ${preset.dark.base.l}%)`,
+    });
     const darkAccent = darkDetails.createEl("div", { cls: "color-detail" });
-    const darkAccentSwatchDetail = darkAccent.createEl("div", { cls: "detail-swatch" });
+    const darkAccentSwatchDetail = darkAccent.createEl("div", {
+      cls: "detail-swatch",
+    });
     const darkAccentHSLDetail = `${preset.dark.accent.h}, ${preset.dark.accent.s}%, ${preset.dark.accent.l}%`;
     darkAccentSwatchDetail.setAttribute("data-hsl", darkAccentHSLDetail);
     setCssProp(darkAccentSwatchDetail, "--detail-hsl", darkAccentHSLDetail);
     darkAccent.createEl("span", { text: "Accent: " });
-    darkAccent.createEl("span", { text: `hsl(${preset.dark.accent.h}, ${preset.dark.accent.s}%, ${preset.dark.accent.l}%)` });
+    darkAccent.createEl("span", {
+      text: `hsl(${preset.dark.accent.h}, ${preset.dark.accent.s}%, ${preset.dark.accent.l}%)`,
+    });
     const lightOverrides = Object.keys(preset.light.colors || {}).length;
     const darkOverrides = Object.keys(preset.dark.colors || {}).length;
     if (lightOverrides > 0 || darkOverrides > 0) {
-      const overridesInfo = this.previewContainer.createEl("div", { cls: "overrides-info" });
+      const overridesInfo = this.previewContainer.createEl("div", {
+        cls: "overrides-info",
+      });
       overridesInfo.createEl("p", {
-        text: `Custom overrides: ${lightOverrides} light mode, ${darkOverrides} dark mode`
+        text: `Custom overrides: ${lightOverrides} light mode, ${darkOverrides} dark mode`,
       });
     }
   }
@@ -1566,7 +2013,9 @@ var PresetImportModal = class extends import_obsidian6.Modal {
 
 // src/modals/ConfirmationModal.ts
 var import_obsidian7 = require("obsidian");
-var ConfirmationModal = class _ConfirmationModal extends import_obsidian7.Modal {
+var ConfirmationModal = class _ConfirmationModal
+  extends import_obsidian7.Modal
+{
   constructor(app, title, message, confirmText = "Yes", cancelText = "Cancel") {
     super(app);
     this.title = title;
@@ -1582,7 +2031,7 @@ var ConfirmationModal = class _ConfirmationModal extends import_obsidian7.Modal 
     const buttonContainer = contentEl.createDiv("modal-button-container");
     const cancelButton = buttonContainer.createEl("button", {
       text: this.cancelText,
-      cls: "mod-cta"
+      cls: "mod-cta",
     });
     cancelButton.addEventListener("click", () => {
       this.close();
@@ -1590,7 +2039,7 @@ var ConfirmationModal = class _ConfirmationModal extends import_obsidian7.Modal 
     });
     const confirmButton = buttonContainer.createEl("button", {
       text: this.confirmText,
-      cls: "mod-cta confirm-button"
+      cls: "mod-cta confirm-button",
     });
     confirmButton.addEventListener("click", () => {
       this.close();
@@ -1603,9 +2052,21 @@ var ConfirmationModal = class _ConfirmationModal extends import_obsidian7.Modal 
     contentEl.empty();
   }
   // Static method to show the modal and return a promise
-  static async show(app, title, message, confirmText = "Yes", cancelText = "Cancel") {
+  static async show(
+    app,
+    title,
+    message,
+    confirmText = "Yes",
+    cancelText = "Cancel",
+  ) {
     return new Promise((resolve) => {
-      const modal = new _ConfirmationModal(app, title, message, confirmText, cancelText);
+      const modal = new _ConfirmationModal(
+        app,
+        title,
+        message,
+        confirmText,
+        cancelText,
+      );
       modal.resolve = resolve;
       modal.open();
     });
@@ -1614,55 +2075,80 @@ var ConfirmationModal = class _ConfirmationModal extends import_obsidian7.Modal 
 
 // src/settings/sections/CustomPresetSettings.ts
 function buildCustomPresetSettings(containerEl, plugin, app, refreshCallback) {
-  const customPresetsGroup = new import_obsidian8.SettingGroup(containerEl).setHeading("Custom color schemes");
+  const customPresetsGroup = new import_obsidian8.SettingGroup(
+    containerEl,
+  ).setHeading("Custom color schemes");
   customPresetsGroup.addSetting((setting) => {
-    setting.setName("Enable custom presets").setDesc("Allow creation and use of custom color presets").addToggle((toggle) => {
-      toggle.setValue(plugin.settings.enableCustomPresets).onChange((value) => {
-        plugin.settings.enableCustomPresets = value;
-        if (!value) {
-          let needsUpdate = false;
-          if (plugin.settings.lightScheme.startsWith("oxygen-custom-")) {
-            plugin.settings.lightScheme = "oxygen-oxygen-light";
-            needsUpdate = true;
-          }
-          if (plugin.settings.darkScheme.startsWith("oxygen-custom-")) {
-            plugin.settings.darkScheme = "oxygen-oxygen-dark";
-            needsUpdate = true;
-          }
-          if (needsUpdate) {
-            plugin.updateStyle();
-            plugin.updateCustomPresetCSS();
-          }
-        }
-        void plugin.saveData(plugin.settings);
-        refreshCallback();
+    setting
+      .setName("Enable custom presets")
+      .setDesc("Allow creation and use of custom color presets")
+      .addToggle((toggle) => {
+        toggle
+          .setValue(plugin.settings.enableCustomPresets)
+          .onChange((value) => {
+            plugin.settings.enableCustomPresets = value;
+            if (!value) {
+              let needsUpdate = false;
+              if (plugin.settings.lightScheme.startsWith("oxygen-custom-")) {
+                plugin.settings.lightScheme = "oxygen-oxygen-light";
+                needsUpdate = true;
+              }
+              if (plugin.settings.darkScheme.startsWith("oxygen-custom-")) {
+                plugin.settings.darkScheme = "oxygen-oxygen-dark";
+                needsUpdate = true;
+              }
+              if (needsUpdate) {
+                plugin.updateStyle();
+                plugin.updateCustomPresetCSS();
+              }
+            }
+            void plugin.saveData(plugin.settings);
+            refreshCallback();
+          });
       });
-    });
   });
   if (!plugin.settings.enableCustomPresets) {
     return;
   }
   customPresetsGroup.addSetting((setting) => {
-    setting.setName("Create new preset").setDesc("Design a custom color scheme from scratch").addExtraButton((button) => {
-      button.setIcon("plus").setTooltip("Create new preset").onClick(() => openPresetEditor(app, plugin, null, refreshCallback));
-    });
+    setting
+      .setName("Create new preset")
+      .setDesc("Design a custom color scheme from scratch")
+      .addExtraButton((button) => {
+        button
+          .setIcon("plus")
+          .setTooltip("Create new preset")
+          .onClick(() => openPresetEditor(app, plugin, null, refreshCallback));
+      });
   });
   customPresetsGroup.addSetting((setting) => {
-    setting.setName("Import preset").setDesc("Import a preset from JSON data").addExtraButton((button) => {
-      button.setIcon("download").setTooltip("Import preset").onClick(() => openPresetImporter(app, plugin, refreshCallback));
-    });
+    setting
+      .setName("Import preset")
+      .setDesc("Import a preset from JSON data")
+      .addExtraButton((button) => {
+        button
+          .setIcon("download")
+          .setTooltip("Import preset")
+          .onClick(() => openPresetImporter(app, plugin, refreshCallback));
+      });
   });
   containerEl.createEl("br");
   if (plugin.settings.customPresets.length > 0) {
-    const presetsList = containerEl.createEl("div", { cls: "custom-presets-list" });
-    plugin.settings.customPresets.sort((a, b) => a.name.localeCompare(b.name)).forEach((preset) => {
-      addPresetListItem(presetsList, preset, app, plugin, refreshCallback);
+    const presetsList = containerEl.createEl("div", {
+      cls: "custom-presets-list",
     });
+    plugin.settings.customPresets
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach((preset) => {
+        addPresetListItem(presetsList, preset, app, plugin, refreshCallback);
+      });
   } else {
-    const emptyState = containerEl.createEl("div", { cls: "custom-presets-empty" });
+    const emptyState = containerEl.createEl("div", {
+      cls: "custom-presets-empty",
+    });
     emptyState.createEl("p", {
       text: "No custom presets yet. Create your first preset to get started!",
-      cls: "empty-message"
+      cls: "empty-message",
     });
   }
   containerEl.createEl("br");
@@ -1675,15 +2161,45 @@ function addPresetListItem(container, preset, app, plugin, refreshCallback) {
   const details = presetInfo.createEl("div", { cls: "preset-details" });
   details.createEl("div", { text: preset.name, cls: "preset-name" });
   if (preset.author) {
-    details.createEl("div", { text: `by ${preset.author}`, cls: "preset-author" });
+    details.createEl("div", {
+      text: `by ${preset.author}`,
+      cls: "preset-author",
+    });
   }
-  details.createEl("div", { text: preset.id, cls: "preset-id preset-id-display" });
-  new import_obsidian8.Setting(presetItem).setName("").setDesc("").addExtraButton((button) => button.setIcon("edit").setTooltip("Edit preset").onClick(() => openPresetEditor(app, plugin, preset, refreshCallback))).addExtraButton((button) => button.setIcon("download").setTooltip("Export preset").onClick(() => exportPreset(preset))).addExtraButton((button) => button.setIcon("trash").setTooltip("Delete preset").onClick(async () => await deletePreset(app, plugin, preset, refreshCallback)));
+  details.createEl("div", {
+    text: preset.id,
+    cls: "preset-id preset-id-display",
+  });
+  new import_obsidian8.Setting(presetItem)
+    .setName("")
+    .setDesc("")
+    .addExtraButton((button) =>
+      button
+        .setIcon("edit")
+        .setTooltip("Edit preset")
+        .onClick(() => openPresetEditor(app, plugin, preset, refreshCallback)),
+    )
+    .addExtraButton((button) =>
+      button
+        .setIcon("download")
+        .setTooltip("Export preset")
+        .onClick(() => exportPreset(preset)),
+    )
+    .addExtraButton((button) =>
+      button
+        .setIcon("trash")
+        .setTooltip("Delete preset")
+        .onClick(
+          async () => await deletePreset(app, plugin, preset, refreshCallback),
+        ),
+    );
 }
 function openPresetEditor(app, plugin, preset, refreshCallback) {
   const modal = new PresetEditorModal(app, plugin, preset, (updatedPreset) => {
     if (preset) {
-      const index = plugin.settings.customPresets.findIndex((p) => p.id === preset.id);
+      const index = plugin.settings.customPresets.findIndex(
+        (p) => p.id === preset.id,
+      );
       if (index !== -1) {
         plugin.settings.customPresets[index] = updatedPreset;
       }
@@ -1732,14 +2248,14 @@ async function deletePreset(app, plugin, preset, refreshCallback) {
   const isActive = PresetManager.isPresetActive(
     preset.id,
     plugin.settings.lightScheme,
-    plugin.settings.darkScheme
+    plugin.settings.darkScheme,
   );
   if (isActive) {
     const confirmed = await ConfirmationModal.show(
       app,
       "Delete active preset",
       "This preset is currently active. Deleting it will switch to the default scheme. Continue?",
-      "Delete"
+      "Delete",
     );
     if (!confirmed) {
       return;
@@ -1751,7 +2267,9 @@ async function deletePreset(app, plugin, preset, refreshCallback) {
       plugin.settings.darkScheme = "oxygen-oxygen-dark";
     }
   }
-  plugin.settings.customPresets = plugin.settings.customPresets.filter((p) => p.id !== preset.id);
+  plugin.settings.customPresets = plugin.settings.customPresets.filter(
+    (p) => p.id !== preset.id,
+  );
   await plugin.saveData(plugin.settings);
   plugin.updateStyle();
   plugin.updateCustomPresetCSS();
@@ -1761,33 +2279,54 @@ async function deletePreset(app, plugin, preset, refreshCallback) {
 // src/settings/sections/AnimationSettings.ts
 var import_obsidian9 = require("obsidian");
 function buildAnimationSettings(containerEl, plugin) {
-  const animationGroup = new import_obsidian9.SettingGroup(containerEl).setHeading("Animations");
+  const animationGroup = new import_obsidian9.SettingGroup(
+    containerEl,
+  ).setHeading("Animations");
   let speedSetting;
   animationGroup.addSetting((setting) => {
-    setting.setName("Animation personality").setDesc("Choose the animation style: Default (smooth), Playful (bouncy), or Off (disabled).").addDropdown((dropdown) => {
-      dropdown.addOption("default", "Default").addOption("playful", "Playful").addOption("off", "Off").setValue(plugin.settings.animationPersonality || "default").onChange((value) => {
-        plugin.settings.animationPersonality = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
-        if (speedSetting !== void 0) {
-          if (value === "off") {
-            speedSetting.settingEl.addClass("hidden");
-          } else {
-            speedSetting.settingEl.removeClass("hidden");
-          }
-        }
+    setting
+      .setName("Animation personality")
+      .setDesc(
+        "Choose the animation style: Default (smooth), Playful (bouncy), or Off (disabled).",
+      )
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("default", "Default")
+          .addOption("playful", "Playful")
+          .addOption("off", "Off")
+          .setValue(plugin.settings.animationPersonality || "default")
+          .onChange((value) => {
+            plugin.settings.animationPersonality = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+            if (speedSetting !== void 0) {
+              if (value === "off") {
+                speedSetting.settingEl.addClass("hidden");
+              } else {
+                speedSetting.settingEl.removeClass("hidden");
+              }
+            }
+          });
       });
-    });
   });
   animationGroup.addSetting((setting) => {
     speedSetting = setting;
-    setting.setName("Animation speed").setDesc("Control the speed of animations. Range: 0 (disabled) to 2 (half speed / slower). Default: 1 (normal speed). Lower values = faster animations, higher values = slower animations.").addSlider((slider) => {
-      slider.setLimits(0, 2, 0.1).setValue(plugin.settings.animationSpeed).setDynamicTooltip().onChange((value) => {
-        plugin.settings.animationSpeed = value;
-        void plugin.saveData(plugin.settings);
-        plugin.refresh();
+    setting
+      .setName("Animation speed")
+      .setDesc(
+        "Control the speed of animations. Range: 0 (disabled) to 2 (half speed / slower). Default: 1 (normal speed). Lower values = faster animations, higher values = slower animations.",
+      )
+      .addSlider((slider) => {
+        slider
+          .setLimits(0, 2, 0.1)
+          .setValue(plugin.settings.animationSpeed)
+          .setDynamicTooltip()
+          .onChange((value) => {
+            plugin.settings.animationSpeed = value;
+            void plugin.saveData(plugin.settings);
+            plugin.refresh();
+          });
       });
-    });
     if (plugin.settings.animationPersonality === "off") {
       speedSetting.settingEl.addClass("hidden");
     }
@@ -1805,7 +2344,9 @@ var MinimalSettingsTab = class extends import_obsidian10.PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     buildColorSchemeSettings(containerEl, this.plugin);
-    buildCustomPresetSettings(containerEl, this.plugin, this.app, () => this.display());
+    buildCustomPresetSettings(containerEl, this.plugin, this.app, () =>
+      this.display(),
+    );
     buildFeatureSettings(containerEl, this.plugin);
     buildAnimationSettings(containerEl, this.plugin);
     buildLayoutSettings(containerEl, this.plugin);
@@ -1832,9 +2373,15 @@ var PresetCSSGenerator = class {
     const bg1 = `hsl(${baseH}, ${baseS}%, ${baseL}%)`;
     const bg2 = `hsl(${baseH}, ${baseS}%, ${isLightBase ? Math.max(0, baseL - 5) : Math.min(100, baseL + 5)}%)`;
     const bg3 = `hsl(${baseH}, ${baseS}%, ${isLightBase ? Math.max(0, baseL - 10) : Math.min(100, baseL + 10)}%)`;
-    const ui1L = isLightBase ? Math.max(0, baseL - 15) : Math.min(100, baseL + 15);
-    const ui2L = isLightBase ? Math.max(0, baseL - 10) : Math.min(100, baseL + 10);
-    const ui3L = isLightBase ? Math.max(0, baseL - 5) : Math.min(100, baseL + 5);
+    const ui1L = isLightBase
+      ? Math.max(0, baseL - 15)
+      : Math.min(100, baseL + 15);
+    const ui2L = isLightBase
+      ? Math.max(0, baseL - 10)
+      : Math.min(100, baseL + 10);
+    const ui3L = isLightBase
+      ? Math.max(0, baseL - 5)
+      : Math.min(100, baseL + 5);
     const ui1 = `hsl(${baseH}, ${baseS}%, ${ui1L}%)`;
     const ui2 = `hsl(${baseH}, ${baseS}%, ${ui2L}%)`;
     const ui3 = `hsl(${baseH}, ${baseS}%, ${ui3L}%)`;
@@ -1872,7 +2419,10 @@ var PresetCSSGenerator = class {
       return [r2, g2, b2];
     };
     const [r, g, b] = hslToRgb(accentH, accentS, accentL);
-    const luminance = 0.2126 * (r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4)) + 0.7152 * (g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4)) + 0.0722 * (b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4));
+    const luminance =
+      0.2126 * (r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4)) +
+      0.7152 * (g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4)) +
+      0.0722 * (b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4));
     const textOnAccent = luminance > 0.5 ? "black" : "white";
     const props = {
       "--base-h": `${baseH}`,
@@ -1895,7 +2445,7 @@ var PresetCSSGenerator = class {
       "--hl1": hl1,
       "--hl2": hl2,
       "--sp1": sp1,
-      "--text-on-accent": textOnAccent
+      "--text-on-accent": textOnAccent,
     };
     const extendedS = accentS;
     const extendedL = isLightBase ? 55 : 65;
@@ -1908,7 +2458,10 @@ var PresetCSSGenerator = class {
     props["--color-purple"] = `hsl(280, var(--accent-s), ${extendedL}%)`;
     props["--color-pink"] = `hsl(330, var(--accent-s), ${extendedL}%)`;
     if (palette.frameLightnessOffset !== void 0) {
-      const offset = palette.frameLightnessOffset >= 0 ? `+ ${palette.frameLightnessOffset}` : `- ${Math.abs(palette.frameLightnessOffset)}`;
+      const offset =
+        palette.frameLightnessOffset >= 0
+          ? `+ ${palette.frameLightnessOffset}`
+          : `- ${Math.abs(palette.frameLightnessOffset)}`;
       props["--frame-background-l"] = `calc(var(--accent-l) ${offset}%)`;
     }
     if (palette.colors) {
@@ -1932,7 +2485,7 @@ var PresetCSSGenerator = class {
         "cyan",
         "blue",
         "purple",
-        "pink"
+        "pink",
       ];
       overrides.forEach((colorKey) => {
         var _a;
@@ -1984,9 +2537,15 @@ var PresetCSSGenerator = class {
     const bg1 = `hsl(${baseH}, ${baseS}%, ${baseL}%)`;
     const bg2 = `hsl(${baseH}, ${baseS}%, ${isLightBase ? Math.max(0, baseL - 5) : Math.min(100, baseL + 5)}%)`;
     const bg3 = `hsl(${baseH}, ${baseS}%, ${isLightBase ? Math.max(0, baseL - 10) : Math.min(100, baseL + 10)}%)`;
-    const ui1L = isLightBase ? Math.max(0, baseL - 15) : Math.min(100, baseL + 15);
-    const ui2L = isLightBase ? Math.max(0, baseL - 10) : Math.min(100, baseL + 10);
-    const ui3L = isLightBase ? Math.max(0, baseL - 5) : Math.min(100, baseL + 5);
+    const ui1L = isLightBase
+      ? Math.max(0, baseL - 15)
+      : Math.min(100, baseL + 15);
+    const ui2L = isLightBase
+      ? Math.max(0, baseL - 10)
+      : Math.min(100, baseL + 10);
+    const ui3L = isLightBase
+      ? Math.max(0, baseL - 5)
+      : Math.min(100, baseL + 5);
     const ui1 = `hsl(${baseH}, ${baseS}%, ${ui1L}%)`;
     const ui2 = `hsl(${baseH}, ${baseS}%, ${ui2L}%)`;
     const ui3 = `hsl(${baseH}, ${baseS}%, ${ui3L}%)`;
@@ -2024,7 +2583,10 @@ var PresetCSSGenerator = class {
       return [r2, g2, b2];
     };
     const [r, g, b] = hslToRgb(accentH, accentS, accentL);
-    const luminance = 0.2126 * (r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4)) + 0.7152 * (g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4)) + 0.0722 * (b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4));
+    const luminance =
+      0.2126 * (r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4)) +
+      0.7152 * (g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4)) +
+      0.0722 * (b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4));
     const textOnAccent = luminance > 0.5 ? "black" : "white";
     css += `  --base-h: ${baseH};
 `;
@@ -2103,7 +2665,10 @@ var PresetCSSGenerator = class {
     css += `
 `;
     if (palette.frameLightnessOffset !== void 0) {
-      const offset = palette.frameLightnessOffset >= 0 ? `+ ${palette.frameLightnessOffset}` : `- ${Math.abs(palette.frameLightnessOffset)}`;
+      const offset =
+        palette.frameLightnessOffset >= 0
+          ? `+ ${palette.frameLightnessOffset}`
+          : `- ${Math.abs(palette.frameLightnessOffset)}`;
       css += `  --frame-background-l: calc(var(--accent-l) ${offset}%);
 `;
       css += `
@@ -2130,7 +2695,7 @@ var PresetCSSGenerator = class {
         "cyan",
         "blue",
         "purple",
-        "pink"
+        "pink",
       ];
       overrides.forEach((colorKey) => {
         var _a;
@@ -2168,7 +2733,12 @@ var PresetCSSGenerator = class {
 };
 
 // src/managers/custom-preset-css.ts
-var ACCENT_PROPERTIES = ["--accent-h", "--accent-s", "--accent-l", "--text-on-accent"];
+var ACCENT_PROPERTIES = [
+  "--accent-h",
+  "--accent-s",
+  "--accent-l",
+  "--text-on-accent",
+];
 var STYLE_ELEMENT_ID = "oxygen-custom-preset-accent";
 var CustomPresetCSS = class {
   constructor(plugin) {
@@ -2205,12 +2775,16 @@ var CustomPresetCSS = class {
   applyUserAccentInline() {
     const userHSL = this.getUserAccentHSL();
     if (userHSL) {
-      const textOnAccent = this.calculateTextOnAccent(userHSL.h, userHSL.s, userHSL.l);
+      const textOnAccent = this.calculateTextOnAccent(
+        userHSL.h,
+        userHSL.s,
+        userHSL.l,
+      );
       setCssProps(document.body, {
         "--accent-h": `${userHSL.h}`,
         "--accent-s": `${userHSL.s}%`,
         "--accent-l": `${userHSL.l}%`,
-        "--text-on-accent": textOnAccent
+        "--text-on-accent": textOnAccent,
       });
     }
   }
@@ -2233,13 +2807,17 @@ var CustomPresetCSS = class {
     if (sNorm === 0) {
       r = g = b = lNorm;
     } else {
-      const q = lNorm < 0.5 ? lNorm * (1 + sNorm) : lNorm + sNorm - lNorm * sNorm;
+      const q =
+        lNorm < 0.5 ? lNorm * (1 + sNorm) : lNorm + sNorm - lNorm * sNorm;
       const p = 2 * lNorm - q;
       r = hue2rgb(p, q, hNorm + 1 / 3);
       g = hue2rgb(p, q, hNorm);
       b = hue2rgb(p, q, hNorm - 1 / 3);
     }
-    const luminance = 0.2126 * (r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4)) + 0.7152 * (g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4)) + 0.0722 * (b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4));
+    const luminance =
+      0.2126 * (r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4)) +
+      0.7152 * (g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4)) +
+      0.0722 * (b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4));
     return luminance > 0.5 ? "black" : "white";
   }
   /**
@@ -2263,8 +2841,8 @@ var CustomPresetCSS = class {
     }
     this.isUpdating = true;
     const hasUserAccent = this.getUserAccentHSL() !== null;
-    const allPresetClasses = Array.from(document.body.classList).filter(
-      (cls) => cls.startsWith("oxygen-custom-")
+    const allPresetClasses = Array.from(document.body.classList).filter((cls) =>
+      cls.startsWith("oxygen-custom-"),
     );
     allPresetClasses.forEach((cls) => document.body.classList.remove(cls));
     const presetProperties = [
@@ -2297,17 +2875,17 @@ var CustomPresetCSS = class {
       "--color-blue",
       "--color-purple",
       "--color-pink",
-      "--frame-background-l"
+      "--frame-background-l",
     ];
     presetProperties.forEach((prop) => {
       document.body.style.removeProperty(prop);
     });
     this.removeAccentStyleElement();
     const activeLightPreset = this.plugin.settings.customPresets.find(
-      (p) => this.plugin.settings.lightScheme === `oxygen-custom-${p.id}`
+      (p) => this.plugin.settings.lightScheme === `oxygen-custom-${p.id}`,
     );
     const activeDarkPreset = this.plugin.settings.customPresets.find(
-      (p) => this.plugin.settings.darkScheme === `oxygen-custom-${p.id}`
+      (p) => this.plugin.settings.darkScheme === `oxygen-custom-${p.id}`,
     );
     const isLightMode = document.body.classList.contains("theme-light");
     const activePreset = isLightMode ? activeLightPreset : activeDarkPreset;
@@ -2315,7 +2893,10 @@ var CustomPresetCSS = class {
       const presetClass = `oxygen-custom-${activePreset.id}`;
       document.body.classList.add(presetClass);
       const mode = isLightMode ? "light" : "dark";
-      const properties = PresetCSSGenerator.generateProperties(activePreset, mode);
+      const properties = PresetCSSGenerator.generateProperties(
+        activePreset,
+        mode,
+      );
       const inlineProps = {};
       const accentProps = {};
       for (const [key, value] of Object.entries(properties)) {
@@ -2372,8 +2953,8 @@ var CustomPresetCSS = class {
    * Cleanup - remove all custom preset classes, CSS properties, and style element
    */
   cleanup() {
-    const allPresetClasses = Array.from(document.body.classList).filter(
-      (cls) => cls.startsWith("oxygen-custom-")
+    const allPresetClasses = Array.from(document.body.classList).filter((cls) =>
+      cls.startsWith("oxygen-custom-"),
     );
     allPresetClasses.forEach((cls) => document.body.classList.remove(cls));
     const presetProperties = [
@@ -2406,7 +2987,7 @@ var CustomPresetCSS = class {
       "--color-blue",
       "--color-purple",
       "--color-pink",
-      "--frame-background-l"
+      "--frame-background-l",
     ];
     presetProperties.forEach((prop) => {
       document.body.style.removeProperty(prop);
@@ -2486,10 +3067,16 @@ var StyleManagerImpl = class {
     }
     this.removeStyle();
     this.removeSettings();
-    if (this.plugin.settings.lightStyle && this.plugin.settings.lightStyle.trim()) {
+    if (
+      this.plugin.settings.lightStyle &&
+      this.plugin.settings.lightStyle.trim()
+    ) {
       document.body.addClass(this.plugin.settings.lightStyle);
     }
-    if (this.plugin.settings.darkStyle && this.plugin.settings.darkStyle.trim()) {
+    if (
+      this.plugin.settings.darkStyle &&
+      this.plugin.settings.darkStyle.trim()
+    ) {
       document.body.addClass(this.plugin.settings.darkStyle);
     }
     try {
@@ -2514,26 +3101,65 @@ var StyleManagerImpl = class {
       document.body.classList.remove("borders-on");
       document.body.classList.add("borders-none");
     }
-    document.body.classList.toggle("colorful-headings", this.plugin.settings.colorfulHeadings);
-    document.body.classList.toggle("colorful-frame", this.plugin.settings.colorfulFrame);
-    document.body.classList.toggle("colorful-active", this.plugin.settings.colorfulActiveStates);
-    document.body.classList.toggle("enable-blur", this.plugin.settings.enableBlur);
-    document.body.classList.toggle("links-int-on", this.plugin.settings.underlineInternal);
-    document.body.classList.toggle("links-ext-on", this.plugin.settings.underlineExternal);
-    document.body.classList.toggle("full-width-media", this.plugin.settings.fullWidthMedia);
+    document.body.classList.toggle(
+      "colorful-headings",
+      this.plugin.settings.colorfulHeadings,
+    );
+    document.body.classList.toggle(
+      "colorful-frame",
+      this.plugin.settings.colorfulFrame,
+    );
+    document.body.classList.toggle(
+      "colorful-active",
+      this.plugin.settings.colorfulActiveStates,
+    );
+    document.body.classList.toggle(
+      "enable-blur",
+      this.plugin.settings.enableBlur,
+    );
+    document.body.classList.toggle(
+      "links-int-on",
+      this.plugin.settings.underlineInternal,
+    );
+    document.body.classList.toggle(
+      "links-ext-on",
+      this.plugin.settings.underlineExternal,
+    );
+    document.body.classList.toggle(
+      "full-width-media",
+      this.plugin.settings.fullWidthMedia,
+    );
     document.body.classList.toggle("img-grid", this.plugin.settings.imgGrid);
-    document.body.classList.toggle("oxygen-dev-block-width", this.plugin.settings.devBlockWidth);
-    document.body.classList.toggle("oxygen-status-off", !this.plugin.settings.minimalStatus);
-    document.body.classList.toggle("full-file-names", !this.plugin.settings.trimNames);
-    document.body.classList.toggle("labeled-nav", this.plugin.settings.labeledNav);
-    document.body.classList.toggle("oxygen-folding", this.plugin.settings.folding);
-    document.body.classList.toggle("use-default-folder-icon", this.plugin.settings.useDefaultFolderIcon);
+    document.body.classList.toggle(
+      "oxygen-dev-block-width",
+      this.plugin.settings.devBlockWidth,
+    );
+    document.body.classList.toggle(
+      "oxygen-status-off",
+      !this.plugin.settings.minimalStatus,
+    );
+    document.body.classList.toggle(
+      "full-file-names",
+      !this.plugin.settings.trimNames,
+    );
+    document.body.classList.toggle(
+      "labeled-nav",
+      this.plugin.settings.labeledNav,
+    );
+    document.body.classList.toggle(
+      "oxygen-folding",
+      this.plugin.settings.folding,
+    );
+    document.body.classList.toggle(
+      "use-default-folder-icon",
+      this.plugin.settings.useDefaultFolderIcon,
+    );
     document.body.addClass(
       this.plugin.settings.chartWidth,
       this.plugin.settings.tableWidth,
       this.plugin.settings.imgWidth,
       this.plugin.settings.iframeWidth,
-      this.plugin.settings.mapWidth
+      this.plugin.settings.mapWidth,
     );
     const cssProps = {
       "--font-ui-small": `${this.plugin.settings.textSmall}px`,
@@ -2541,32 +3167,49 @@ var StyleManagerImpl = class {
       "--line-width": `${this.plugin.settings.lineWidth}rem`,
       "--line-width-wide": `${this.plugin.settings.lineWidthWide}rem`,
       "--max-width": `${this.plugin.settings.maxWidth}%`,
-      "--font-editor-override": this.plugin.settings.editorFont
+      "--font-editor-override": this.plugin.settings.editorFont,
     };
-    const isDefaultWidth = this.plugin.settings.navIndentationGuideWidth === "0px";
-    const isDefaultColor = this.plugin.settings.navIndentationGuideColor === "rgba(var(--mono-rgb-100), 0.12)";
+    const isDefaultWidth =
+      this.plugin.settings.navIndentationGuideWidth === "0px";
+    const isDefaultColor =
+      this.plugin.settings.navIndentationGuideColor ===
+      "rgba(var(--mono-rgb-100), 0.12)";
     if (!isDefaultWidth) {
-      cssProps["--nav-indentation-guide-width"] = this.plugin.settings.navIndentationGuideWidth;
+      cssProps["--nav-indentation-guide-width"] =
+        this.plugin.settings.navIndentationGuideWidth;
     } else {
       document.body.style.removeProperty("--nav-indentation-guide-width");
     }
     if (!isDefaultColor) {
-      cssProps["--nav-indentation-guide-color"] = this.plugin.settings.navIndentationGuideColor;
+      cssProps["--nav-indentation-guide-color"] =
+        this.plugin.settings.navIndentationGuideColor;
     } else {
       document.body.style.removeProperty("--nav-indentation-guide-color");
     }
     setCssProps(document.body, cssProps);
-    document.body.classList.remove("animations-refined", "animations-default", "animations-playful", "animations-off");
-    const animationPersonality = this.plugin.settings.animationPersonality || "default";
+    document.body.classList.remove(
+      "animations-refined",
+      "animations-default",
+      "animations-playful",
+      "animations-off",
+    );
+    const animationPersonality =
+      this.plugin.settings.animationPersonality || "default";
     if (animationPersonality === "off") {
       document.body.classList.add("animations-off");
       document.body.style.removeProperty("--anim-speed-modifier");
     } else if (animationPersonality === "playful") {
       document.body.classList.add("animations-playful");
-      document.body.style.setProperty("--anim-speed-modifier", this.plugin.settings.animationSpeed.toString());
+      document.body.style.setProperty(
+        "--anim-speed-modifier",
+        this.plugin.settings.animationSpeed.toString(),
+      );
     } else {
       document.body.classList.add("animations-default");
-      document.body.style.setProperty("--anim-speed-modifier", this.plugin.settings.animationSpeed.toString());
+      document.body.style.setProperty(
+        "--anim-speed-modifier",
+        this.plugin.settings.animationSpeed.toString(),
+      );
     }
     this.customPresetCSS.updateCSS();
     this.customPresetCSS.applyUserAccentInline();
@@ -2618,7 +3261,10 @@ var StyleManagerImpl = class {
       document.body.removeClass("theme-dark");
       document.body.addClass("theme-light");
     }
-    if (this.plugin.settings.lightScheme && this.plugin.settings.lightScheme.trim()) {
+    if (
+      this.plugin.settings.lightScheme &&
+      this.plugin.settings.lightScheme.trim()
+    ) {
       document.body.addClass(this.plugin.settings.lightScheme);
     }
   }
@@ -2635,7 +3281,10 @@ var StyleManagerImpl = class {
       document.body.removeClass("theme-light");
       document.body.addClass("theme-dark");
     }
-    if (this.plugin.settings.darkScheme && this.plugin.settings.darkScheme.trim()) {
+    if (
+      this.plugin.settings.darkScheme &&
+      this.plugin.settings.darkScheme.trim()
+    ) {
       document.body.addClass(this.plugin.settings.darkScheme);
     }
   }
@@ -2658,7 +3307,7 @@ var StyleManagerImpl = class {
       "minimal-light-white",
       "minimal-dark",
       "minimal-dark-tonal",
-      "minimal-dark-black"
+      "minimal-dark-black",
     );
   }
   /**
@@ -2723,7 +3372,7 @@ var StyleManagerImpl = class {
       "map-wide",
       "map-max",
       "map-100",
-      "map-default-width"
+      "map-default-width",
     );
   }
   /**
@@ -2755,8 +3404,7 @@ var StyleManagerImpl = class {
   /**
    * Setup CSS watcher for re-applying custom presets
    */
-  setupCSSWatcher() {
-  }
+  setupCSSWatcher() {}
 };
 
 // src/managers/theme-manager.ts
@@ -2786,7 +3434,10 @@ var ThemeManagerImpl = class {
         document.body.addClass("theme-light");
       }
       const theme = getVaultConfig(this.plugin.app, "theme");
-      const newTheme = theme === OBSIDIAN_THEMES.LIGHT ? OBSIDIAN_THEMES.DARK : OBSIDIAN_THEMES.LIGHT;
+      const newTheme =
+        theme === OBSIDIAN_THEMES.LIGHT
+          ? OBSIDIAN_THEMES.DARK
+          : OBSIDIAN_THEMES.LIGHT;
       setTheme(this.plugin.app, newTheme);
       setVaultConfig(this.plugin.app, "theme", newTheme);
     }
@@ -2833,7 +3484,12 @@ var ThemeManagerImpl = class {
     }
     const sidebarEl = document.getElementsByClassName("mod-left-split")[0];
     const ribbonEl = document.getElementsByClassName("side-dock-ribbon")[0];
-    if (sidebarEl && ribbonEl && document.body.classList.contains("theme-light") && this.plugin.settings.lightStyle === "oxygen-light-contrast") {
+    if (
+      sidebarEl &&
+      ribbonEl &&
+      document.body.classList.contains("theme-light") &&
+      this.plugin.settings.lightStyle === "oxygen-light-contrast"
+    ) {
       sidebarEl.addClass("theme-dark");
       ribbonEl.addClass("theme-dark");
     } else if (sidebarEl && ribbonEl) {
@@ -2868,12 +3524,12 @@ var SettingsSyncManager = class {
     this.plugin.registerEvent(
       onVaultConfigChanged(this.plugin.app, () => {
         this.syncFromVault();
-      })
+      }),
     );
     this.plugin.registerEvent(
       this.plugin.app.workspace.on("css-change", () => {
         this.updateSidebarTheme();
-      })
+      }),
     );
   }
   /**
@@ -2881,18 +3537,36 @@ var SettingsSyncManager = class {
    * @param skipSave - If true, don't save settings (used during initial load)
    */
   syncFromVault(skipSave = false) {
-    const fontSize = getVaultConfig(this.plugin.app, VAULT_CONFIG.BASE_FONT_SIZE);
+    const fontSize = getVaultConfig(
+      this.plugin.app,
+      VAULT_CONFIG.BASE_FONT_SIZE,
+    );
     if (typeof fontSize === "number") {
       this.plugin.settings.textNormal = fontSize;
     }
-    this.plugin.settings.folding = !!getVaultConfig(this.plugin.app, VAULT_CONFIG.FOLD_HEADING);
-    this.plugin.settings.lineNumbers = !!getVaultConfig(this.plugin.app, VAULT_CONFIG.SHOW_LINE_NUMBER);
-    this.plugin.settings.readableLineLength = !!getVaultConfig(this.plugin.app, VAULT_CONFIG.READABLE_LINE_LENGTH);
+    this.plugin.settings.folding = !!getVaultConfig(
+      this.plugin.app,
+      VAULT_CONFIG.FOLD_HEADING,
+    );
+    this.plugin.settings.lineNumbers = !!getVaultConfig(
+      this.plugin.app,
+      VAULT_CONFIG.SHOW_LINE_NUMBER,
+    );
+    this.plugin.settings.readableLineLength = !!getVaultConfig(
+      this.plugin.app,
+      VAULT_CONFIG.READABLE_LINE_LENGTH,
+    );
     const bodyClassList = document.body.classList;
     bodyClassList.toggle("oxygen-folding", this.plugin.settings.folding);
     bodyClassList.toggle("oxygen-line-nums", this.plugin.settings.lineNumbers);
-    bodyClassList.toggle("oxygen-readable", this.plugin.settings.readableLineLength);
-    bodyClassList.toggle("oxygen-readable-off", !this.plugin.settings.readableLineLength);
+    bodyClassList.toggle(
+      "oxygen-readable",
+      this.plugin.settings.readableLineLength,
+    );
+    bodyClassList.toggle(
+      "oxygen-readable-off",
+      !this.plugin.settings.readableLineLength,
+    );
     if (!skipSave) {
       void this.plugin.saveData(this.plugin.settings);
     }
@@ -2901,7 +3575,11 @@ var SettingsSyncManager = class {
    * Sync font size to Obsidian vault config
    */
   setFontSize() {
-    setVaultConfig(this.plugin.app, VAULT_CONFIG.BASE_FONT_SIZE, this.plugin.settings.textNormal);
+    setVaultConfig(
+      this.plugin.app,
+      VAULT_CONFIG.BASE_FONT_SIZE,
+      this.plugin.settings.textNormal,
+    );
     updateFontSize(this.plugin.app);
   }
   /**
@@ -2910,7 +3588,12 @@ var SettingsSyncManager = class {
   updateSidebarTheme() {
     const sidebarEl = document.getElementsByClassName("mod-left-split")[0];
     const ribbonEl = document.getElementsByClassName("side-dock-ribbon")[0];
-    if (sidebarEl && ribbonEl && document.body.classList.contains("theme-light") && this.plugin.settings.lightStyle === "oxygen-light-contrast") {
+    if (
+      sidebarEl &&
+      ribbonEl &&
+      document.body.classList.contains("theme-light") &&
+      this.plugin.settings.lightStyle === "oxygen-light-contrast"
+    ) {
       sidebarEl.addClass("theme-dark");
       ribbonEl.addClass("theme-dark");
     } else if (sidebarEl && ribbonEl) {
@@ -2921,8 +3604,7 @@ var SettingsSyncManager = class {
   /**
    * Cleanup - no specific cleanup needed for this manager
    */
-  cleanup() {
-  }
+  cleanup() {}
 };
 
 // src/commands/font-commands.ts
@@ -2934,7 +3616,7 @@ function registerFontCommands(plugin) {
       plugin.settings.textNormal += DEFAULTS.FONT_STEP;
       void plugin.saveData(plugin.settings);
       setFontSize(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.DECREASE_FONT,
@@ -2943,7 +3625,7 @@ function registerFontCommands(plugin) {
       plugin.settings.textNormal -= DEFAULTS.FONT_STEP;
       void plugin.saveData(plugin.settings);
       setFontSize(plugin);
-    }
+    },
   });
 }
 function setFontSize(plugin) {
@@ -2963,7 +3645,7 @@ function registerSchemeCommands(plugin) {
         void plugin.saveData(plugin.settings);
         updateLightScheme(plugin);
         updateLightStyle(plugin);
-      }
+      },
     });
   });
   DARK_SCHEMES.forEach((scheme) => {
@@ -2976,7 +3658,7 @@ function registerSchemeCommands(plugin) {
         void plugin.saveData(plugin.settings);
         updateDarkScheme(plugin);
         updateDarkStyle(plugin);
-      }
+      },
     });
   });
 }
@@ -3007,7 +3689,7 @@ function updateLightStyle(plugin) {
     "oxygen-light",
     "oxygen-light-tonal",
     "oxygen-light-contrast",
-    "oxygen-light-white"
+    "oxygen-light-white",
   );
   document.body.addClass("theme-light", plugin.settings.lightStyle);
   const theme = getVaultConfig(plugin.app, "theme");
@@ -3025,7 +3707,7 @@ function updateDarkStyle(plugin) {
     "theme-light",
     "oxygen-dark",
     "oxygen-dark-tonal",
-    "oxygen-dark-black"
+    "oxygen-dark-black",
   );
   document.body.addClass("theme-dark", plugin.settings.darkStyle);
   const theme = getVaultConfig(plugin.app, "theme");
@@ -3059,7 +3741,7 @@ function registerStyleCommands(plugin) {
       plugin.settings.darkStyle = DARK_STYLES[nextIndex];
       void plugin.saveData(plugin.settings);
       updateDarkStyle2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.CYCLE_LIGHT_STYLE,
@@ -3070,7 +3752,7 @@ function registerStyleCommands(plugin) {
       plugin.settings.lightStyle = LIGHT_STYLES[nextIndex];
       void plugin.saveData(plugin.settings);
       updateLightStyle2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.LIGHT_DEFAULT,
@@ -3081,7 +3763,7 @@ function registerStyleCommands(plugin) {
       void plugin.saveData(plugin.settings);
       updateLightScheme(plugin);
       updateLightStyle2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.LIGHT_WHITE,
@@ -3090,7 +3772,7 @@ function registerStyleCommands(plugin) {
       plugin.settings.lightStyle = "oxygen-light-white";
       void plugin.saveData(plugin.settings);
       updateLightStyle2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.LIGHT_TONAL,
@@ -3099,7 +3781,7 @@ function registerStyleCommands(plugin) {
       plugin.settings.lightStyle = "oxygen-light-tonal";
       void plugin.saveData(plugin.settings);
       updateLightStyle2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.LIGHT_CONTRAST,
@@ -3108,7 +3790,7 @@ function registerStyleCommands(plugin) {
       plugin.settings.lightStyle = "oxygen-light-contrast";
       void plugin.saveData(plugin.settings);
       updateLightStyle2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.DARK_DEFAULT,
@@ -3119,7 +3801,7 @@ function registerStyleCommands(plugin) {
       void plugin.saveData(plugin.settings);
       updateDarkScheme(plugin);
       updateDarkStyle2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.DARK_TONAL,
@@ -3128,7 +3810,7 @@ function registerStyleCommands(plugin) {
       plugin.settings.darkStyle = "oxygen-dark-tonal";
       void plugin.saveData(plugin.settings);
       updateDarkStyle2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.DARK_BLACK,
@@ -3137,7 +3819,7 @@ function registerStyleCommands(plugin) {
       plugin.settings.darkStyle = "oxygen-dark-black";
       void plugin.saveData(plugin.settings);
       updateDarkStyle2(plugin);
-    }
+    },
   });
 }
 function updateLightStyle2(plugin) {
@@ -3149,7 +3831,7 @@ function updateLightStyle2(plugin) {
     "oxygen-light",
     "oxygen-light-tonal",
     "oxygen-light-contrast",
-    "oxygen-light-white"
+    "oxygen-light-white",
   );
   document.body.addClass("theme-light", plugin.settings.lightStyle);
   const theme = getVaultConfig(plugin.app, "theme");
@@ -3167,7 +3849,7 @@ function updateDarkStyle2(plugin) {
     "theme-light",
     "oxygen-dark",
     "oxygen-dark-tonal",
-    "oxygen-dark-black"
+    "oxygen-dark-black",
   );
   document.body.addClass("theme-dark", plugin.settings.darkStyle);
   const theme = getVaultConfig(plugin.app, "theme");
@@ -3184,12 +3866,17 @@ function registerPresetCommands(plugin) {
     id: COMMAND_IDS.CREATE_PRESET,
     name: "Create custom color preset",
     callback: () => {
-      const modal = new PresetEditorModal(plugin.app, plugin, null, (preset) => {
-        plugin.settings.customPresets.push(preset);
-        void plugin.saveData(plugin.settings);
-      });
+      const modal = new PresetEditorModal(
+        plugin.app,
+        plugin,
+        null,
+        (preset) => {
+          plugin.settings.customPresets.push(preset);
+          void plugin.saveData(plugin.settings);
+        },
+      );
       modal.open();
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.IMPORT_PRESET,
@@ -3200,7 +3887,7 @@ function registerPresetCommands(plugin) {
         void plugin.saveData(plugin.settings);
       });
       modal.open();
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.CYCLE_PRESETS_LIGHT,
@@ -3208,14 +3895,15 @@ function registerPresetCommands(plugin) {
     callback: () => {
       if (plugin.settings.customPresets.length === 0) return;
       const currentIndex = plugin.settings.customPresets.findIndex(
-        (p) => plugin.settings.lightScheme === `oxygen-custom-${p.id}`
+        (p) => plugin.settings.lightScheme === `oxygen-custom-${p.id}`,
       );
-      const nextIndex = (currentIndex + 1) % plugin.settings.customPresets.length;
+      const nextIndex =
+        (currentIndex + 1) % plugin.settings.customPresets.length;
       const nextPreset = plugin.settings.customPresets[nextIndex];
       plugin.settings.lightScheme = `oxygen-custom-${nextPreset.id}`;
       void plugin.saveData(plugin.settings);
       updateLightScheme2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.CYCLE_PRESETS_DARK,
@@ -3223,14 +3911,15 @@ function registerPresetCommands(plugin) {
     callback: () => {
       if (plugin.settings.customPresets.length === 0) return;
       const currentIndex = plugin.settings.customPresets.findIndex(
-        (p) => plugin.settings.darkScheme === `oxygen-custom-${p.id}`
+        (p) => plugin.settings.darkScheme === `oxygen-custom-${p.id}`,
       );
-      const nextIndex = (currentIndex + 1) % plugin.settings.customPresets.length;
+      const nextIndex =
+        (currentIndex + 1) % plugin.settings.customPresets.length;
       const nextPreset = plugin.settings.customPresets[nextIndex];
       plugin.settings.darkScheme = `oxygen-custom-${nextPreset.id}`;
       void plugin.saveData(plugin.settings);
       updateDarkScheme2(plugin);
-    }
+    },
   });
 }
 function updateLightScheme2(plugin) {
@@ -3256,7 +3945,7 @@ function registerFeatureCommands(plugin) {
       }
       void plugin.saveData(plugin.settings);
       refresh(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.TOGGLE_COLORFUL_HEADINGS,
@@ -3265,7 +3954,7 @@ function registerFeatureCommands(plugin) {
       plugin.settings.colorfulHeadings = !plugin.settings.colorfulHeadings;
       void plugin.saveData(plugin.settings);
       refresh(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.TOGGLE_COLORFUL_FRAME,
@@ -3274,7 +3963,7 @@ function registerFeatureCommands(plugin) {
       plugin.settings.colorfulFrame = !plugin.settings.colorfulFrame;
       void plugin.saveData(plugin.settings);
       refresh(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.TOGGLE_IMAGE_GRID,
@@ -3283,14 +3972,14 @@ function registerFeatureCommands(plugin) {
       plugin.settings.imgGrid = !plugin.settings.imgGrid;
       void plugin.saveData(plugin.settings);
       refresh(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.TOGGLE_THEME,
     name: "Switch between light and dark mode",
     callback: () => {
       updateTheme(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.DEV_BLOCK_WIDTH,
@@ -3299,7 +3988,7 @@ function registerFeatureCommands(plugin) {
       plugin.settings.devBlockWidth = !plugin.settings.devBlockWidth;
       void plugin.saveData(plugin.settings);
       refresh(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.OPEN_SETTINGS,
@@ -3309,7 +3998,7 @@ function registerFeatureCommands(plugin) {
       const appWithSettings = plugin.app;
       appWithSettings.setting.open();
       appWithSettings.setting.openTabById(plugin.manifest.id);
-    }
+    },
   });
 }
 function refresh(plugin) {
@@ -3350,12 +4039,14 @@ function registerWidthCommands(plugin) {
     id: COMMAND_IDS.CYCLE_TABLE_WIDTH,
     name: "Cycle between table width options",
     callback: () => {
-      const currentIndex = TABLE_WIDTH_STYLES.indexOf(plugin.settings.tableWidth);
+      const currentIndex = TABLE_WIDTH_STYLES.indexOf(
+        plugin.settings.tableWidth,
+      );
       const nextIndex = (currentIndex + 1) % TABLE_WIDTH_STYLES.length;
       plugin.settings.tableWidth = TABLE_WIDTH_STYLES[nextIndex];
       void plugin.saveData(plugin.settings);
       refresh2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.CYCLE_IMAGE_WIDTH,
@@ -3366,29 +4057,33 @@ function registerWidthCommands(plugin) {
       plugin.settings.imgWidth = IMAGE_WIDTH_STYLES[nextIndex];
       void plugin.saveData(plugin.settings);
       refresh2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.CYCLE_IFRAME_WIDTH,
     name: "Cycle between iframe width options",
     callback: () => {
-      const currentIndex = IFRAME_WIDTH_STYLES.indexOf(plugin.settings.iframeWidth);
+      const currentIndex = IFRAME_WIDTH_STYLES.indexOf(
+        plugin.settings.iframeWidth,
+      );
       const nextIndex = (currentIndex + 1) % IFRAME_WIDTH_STYLES.length;
       plugin.settings.iframeWidth = IFRAME_WIDTH_STYLES[nextIndex];
       void plugin.saveData(plugin.settings);
       refresh2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.CYCLE_CHART_WIDTH,
     name: "Cycle between chart width options",
     callback: () => {
-      const currentIndex = CHART_WIDTH_STYLES.indexOf(plugin.settings.chartWidth);
+      const currentIndex = CHART_WIDTH_STYLES.indexOf(
+        plugin.settings.chartWidth,
+      );
       const nextIndex = (currentIndex + 1) % CHART_WIDTH_STYLES.length;
       plugin.settings.chartWidth = CHART_WIDTH_STYLES[nextIndex];
       void plugin.saveData(plugin.settings);
       refresh2(plugin);
-    }
+    },
   });
   plugin.addCommand({
     id: COMMAND_IDS.CYCLE_MAP_WIDTH,
@@ -3399,7 +4094,7 @@ function registerWidthCommands(plugin) {
       plugin.settings.mapWidth = MAP_WIDTH_STYLES[nextIndex];
       void plugin.saveData(plugin.settings);
       refresh2(plugin);
-    }
+    },
   });
 }
 function refresh2(plugin) {
@@ -3425,22 +4120,49 @@ var MigrationRunner = class {
   async run() {
     let migrated = false;
     const migrationVersion = "minimal-to-oxygen-prefix-v1";
-    if (!this.settings._migrationVersions || !this.settings._migrationVersions.includes(migrationVersion)) {
+    if (
+      !this.settings._migrationVersions ||
+      !this.settings._migrationVersions.includes(migrationVersion)
+    ) {
       let prefixMigrated = false;
-      if (this.settings.lightStyle && this.settings.lightStyle.startsWith("minimal-")) {
-        this.settings.lightStyle = this.settings.lightStyle.replace(/^minimal-/, "oxygen-");
+      if (
+        this.settings.lightStyle &&
+        this.settings.lightStyle.startsWith("minimal-")
+      ) {
+        this.settings.lightStyle = this.settings.lightStyle.replace(
+          /^minimal-/,
+          "oxygen-",
+        );
         prefixMigrated = true;
       }
-      if (this.settings.darkStyle && this.settings.darkStyle.startsWith("minimal-")) {
-        this.settings.darkStyle = this.settings.darkStyle.replace(/^minimal-/, "oxygen-");
+      if (
+        this.settings.darkStyle &&
+        this.settings.darkStyle.startsWith("minimal-")
+      ) {
+        this.settings.darkStyle = this.settings.darkStyle.replace(
+          /^minimal-/,
+          "oxygen-",
+        );
         prefixMigrated = true;
       }
-      if (this.settings.lightScheme && this.settings.lightScheme.startsWith("minimal-")) {
-        this.settings.lightScheme = this.settings.lightScheme.replace(/^minimal-/, "oxygen-");
+      if (
+        this.settings.lightScheme &&
+        this.settings.lightScheme.startsWith("minimal-")
+      ) {
+        this.settings.lightScheme = this.settings.lightScheme.replace(
+          /^minimal-/,
+          "oxygen-",
+        );
         prefixMigrated = true;
       }
-      if (this.settings.darkScheme && this.settings.darkScheme.startsWith("minimal-")) {
-        this.settings.darkScheme = this.settings.darkScheme.replace(/^minimal-/, "oxygen-");
+      if (
+        this.settings.darkScheme &&
+        this.settings.darkScheme.startsWith("minimal-")
+      ) {
+        this.settings.darkScheme = this.settings.darkScheme.replace(
+          /^minimal-/,
+          "oxygen-",
+        );
         prefixMigrated = true;
       }
       if (prefixMigrated) {
@@ -3449,7 +4171,9 @@ var MigrationRunner = class {
         }
         this.settings._migrationVersions.push(migrationVersion);
         migrated = true;
-        console.debug("[Oxygen Settings] Migrated settings from minimal- to oxygen- prefix");
+        console.debug(
+          "[Oxygen Settings] Migrated settings from minimal- to oxygen- prefix",
+        );
       }
     }
     if (this.settings.lightScheme === "minimal-default-light") {
@@ -3472,7 +4196,10 @@ var MigrationRunner = class {
   migrateWorkspaceBorders(loadedData) {
     if (loadedData && typeof loadedData === "object") {
       const legacyData = loadedData;
-      if (legacyData.bordersToggle !== void 0 || legacyData.workspaceBordersEnhanced !== void 0) {
+      if (
+        legacyData.bordersToggle !== void 0 ||
+        legacyData.workspaceBordersEnhanced !== void 0
+      ) {
         if (legacyData.workspaceBorders === void 0) {
           if (legacyData.bordersToggle === false) {
             this.settings.workspaceBorders = "none";
@@ -3505,7 +4232,9 @@ var MinimalTheme = class extends import_obsidian12.Plugin {
     this.settingsTab = new MinimalSettingsTab(this.app, this);
     this.addSettingTab(this.settingsTab);
     this._isOxygenActive = isOxygenThemeActive(this.app);
-    const initialThemeMode = document.body.classList.contains("theme-light") ? "light" : "dark";
+    const initialThemeMode = document.body.classList.contains("theme-light")
+      ? "light"
+      : "dark";
     if (this._isOxygenActive) {
       this.styleManager.initialize();
       this._isInitialized = true;
@@ -3525,25 +4254,43 @@ var MinimalTheme = class extends import_obsidian12.Plugin {
         window.clearTimeout(debounceTimer);
         debounceTimer = window.setTimeout(() => {
           const newThemeState = isOxygenThemeActive(this.app);
-          const currentThemeMode = document.body.classList.contains("theme-light") ? "light" : "dark";
-          const themeModeChanged = lastThemeMode !== null && lastThemeMode !== currentThemeMode;
+          const currentThemeMode = document.body.classList.contains(
+            "theme-light",
+          )
+            ? "light"
+            : "dark";
+          const themeModeChanged =
+            lastThemeMode !== null && lastThemeMode !== currentThemeMode;
           lastThemeMode = currentThemeMode;
           if (this._isOxygenActive && !newThemeState) {
             this._isOxygenActive = false;
             this._isInitialized = false;
             this.styleManager.cleanup();
-          } else if (!this._isOxygenActive && newThemeState && !this._isInitialized) {
+          } else if (
+            !this._isOxygenActive &&
+            newThemeState &&
+            !this._isInitialized
+          ) {
             this._isOxygenActive = true;
             this._isInitialized = true;
             this.styleManager.initialize();
-          } else if (this._isOxygenActive && newThemeState && this._isInitialized && themeModeChanged) {
+          } else if (
+            this._isOxygenActive &&
+            newThemeState &&
+            this._isInitialized &&
+            themeModeChanged
+          ) {
             this.styleManager.updateStyle();
             this.styleManager.updateCustomPresetCSS();
-          } else if (this._isOxygenActive && newThemeState && this._isInitialized) {
+          } else if (
+            this._isOxygenActive &&
+            newThemeState &&
+            this._isInitialized
+          ) {
             this.styleManager.updateCustomPresetCSS();
           }
         }, 100);
-      })
+      }),
     );
   }
   onunload() {

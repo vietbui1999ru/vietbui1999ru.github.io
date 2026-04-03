@@ -13,19 +13,23 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => DisableTabsPlugin
+  default: () => DisableTabsPlugin,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian2 = require("obsidian");
@@ -33,7 +37,7 @@ var import_obsidian2 = require("obsidian");
 // src/settings.ts
 var DEFAULT_SETTINGS = {
   enabled: true,
-  hideMobileNewTabIcon: false
+  hideMobileNewTabIcon: false,
 };
 
 // src/utils/tab-enforcer.ts
@@ -80,13 +84,18 @@ var DisableTabsSettingTab = class extends import_obsidian.PluginSettingTab {
     containerEl.empty();
     const generalGroup = new import_obsidian.SettingGroup(containerEl);
     generalGroup.addSetting((setting) => {
-      setting.setName("Hide mobile tabs icon").setDesc("Hide the tabs icon on mobile devices").addToggle(
-        (toggle) => toggle.setValue(this.settings.hideMobileNewTabIcon).onChange(async (value) => {
-          this.settings.hideMobileNewTabIcon = value;
-          await this.plugin.saveSettings();
-          this.plugin.updateMobileTabIconCSS();
-        })
-      );
+      setting
+        .setName("Hide mobile tabs icon")
+        .setDesc("Hide the tabs icon on mobile devices")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.settings.hideMobileNewTabIcon)
+            .onChange(async (value) => {
+              this.settings.hideMobileNewTabIcon = value;
+              await this.plugin.saveSettings();
+              this.plugin.updateMobileTabIconCSS();
+            }),
+        );
     });
   }
 };
@@ -98,9 +107,11 @@ var DisableTabsPlugin = class extends import_obsidian2.Plugin {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
     this.tabEnforcer = new TabEnforcer(this.app);
     this.updateMobileTabIconCSS();
-    this.registerEvent(this.app.workspace.on("layout-change", () => {
-      this.tabEnforcer.enforceSingleTab();
-    }));
+    this.registerEvent(
+      this.app.workspace.on("layout-change", () => {
+        this.tabEnforcer.enforceSingleTab();
+      }),
+    );
     this.app.workspace.onLayoutReady(() => {
       this.tabEnforcer.enforceSingleTab();
     });

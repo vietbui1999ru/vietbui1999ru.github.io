@@ -8,22 +8,27 @@ var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
+var __esm = (fn, res) =>
+  function __init() {
+    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res);
+  };
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/ui/panel-utils.ts
 function getDisplayPath(fullPath) {
@@ -39,7 +44,10 @@ function getVaultFoldersInfo(scanDirectories, fileCount) {
   if (!scanDirectories || scanDirectories.trim() === "") {
     baseText += "all";
   } else {
-    const folders = scanDirectories.split(",").map((f) => f.trim()).filter((f) => f.length > 0);
+    const folders = scanDirectories
+      .split(",")
+      .map((f) => f.trim())
+      .filter((f) => f.length > 0);
     baseText += folders.join(", ");
   }
   if (fileCount !== void 0) {
@@ -154,8 +162,10 @@ function sortFiles(files, sortType) {
         if (nameCompare !== 0) return nameCompare;
         const aParts = a.file.split("/");
         const bParts = b.file.split("/");
-        const aParent = aParts.length > 1 ? aParts[aParts.length - 2] || "" : "";
-        const bParent = bParts.length > 1 ? bParts[bParts.length - 2] || "" : "";
+        const aParent =
+          aParts.length > 1 ? aParts[aParts.length - 2] || "" : "";
+        const bParent =
+          bParts.length > 1 ? bParts[bParts.length - 2] || "" : "";
         const parentCompare = aParent.localeCompare(bParent);
         if (parentCompare !== 0) return parentCompare;
         if (b.issuesCount !== a.issuesCount) {
@@ -175,8 +185,10 @@ function sortFiles(files, sortType) {
         if (nameCompare !== 0) return nameCompare;
         const aParts = a.file.split("/");
         const bParts = b.file.split("/");
-        const aParent = aParts.length > 1 ? aParts[aParts.length - 2] || "" : "";
-        const bParent = bParts.length > 1 ? bParts[bParts.length - 2] || "" : "";
+        const aParent =
+          aParts.length > 1 ? aParts[aParts.length - 2] || "" : "";
+        const bParent =
+          bParts.length > 1 ? bParts[bParts.length - 2] || "" : "";
         const parentCompare = bParent.localeCompare(aParent);
         if (parentCompare !== 0) return parentCompare;
         if (b.issuesCount !== a.issuesCount) {
@@ -194,20 +206,32 @@ function sortFiles(files, sortType) {
 var init_panel_utils = __esm({
   "src/ui/panel-utils.ts"() {
     "use strict";
-  }
+  },
 });
 
 // src/checks/utils/content-parser.ts
 function removeCodeBlocks(content) {
-  return content.replace(/```[\s\S]*?```/g, "").replace(/~~~[\s\S]*?~~~/g, "").replace(/`[^`\n]+`/g, "").replace(/<[^>]*>/g, "").replace(/^---\n[\s\S]*?\n---\n/, "").replace(/::\w+\{[^}]*\}/g, "");
+  return content
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/~~~[\s\S]*?~~~/g, "")
+    .replace(/`[^`\n]+`/g, "")
+    .replace(/<[^>]*>/g, "")
+    .replace(/^---\n[\s\S]*?\n---\n/, "")
+    .replace(/::\w+\{[^}]*\}/g, "");
 }
 function removeHtmlAttributes(content) {
-  return content.replace(/```[\s\S]*?```/g, "").replace(/~~~[\s\S]*?~~~/g, "").replace(/`[^`\n]+`/g, "").replace(/<[^>]*>/g, "").replace(/^---\n[\s\S]*?\n---\n/, "").replace(/::\w+\{[^}]*\}/g, "");
+  return content
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/~~~[\s\S]*?~~~/g, "")
+    .replace(/`[^`\n]+`/g, "")
+    .replace(/<[^>]*>/g, "")
+    .replace(/^---\n[\s\S]*?\n---\n/, "")
+    .replace(/::\w+\{[^}]*\}/g, "");
 }
 var init_content_parser = __esm({
   "src/checks/utils/content-parser.ts"() {
     "use strict";
-  }
+  },
 });
 
 // src/checks/utils/position-utils.ts
@@ -230,7 +254,7 @@ function getContextAroundLine(content, lineNumber, contextLines = 2) {
 var init_position_utils = __esm({
   "src/checks/utils/position-utils.ts"() {
     "use strict";
-  }
+  },
 });
 
 // src/checks/alt-text-check.ts
@@ -244,7 +268,8 @@ function checkAltText(content, file, settings) {
   if (markdownImages) {
     const missingAltText = markdownImages.filter((match) => {
       var _a;
-      const altText = (_a = match.match(/!\[([^\]]*)\]/)) == null ? void 0 : _a[1];
+      const altText =
+        (_a = match.match(/!\[([^\]]*)\]/)) == null ? void 0 : _a[1];
       return !altText || altText.trim() === "";
     });
     if (missingAltText.length > 0) {
@@ -260,15 +285,17 @@ function checkAltText(content, file, settings) {
           position: {
             line: lineNumber,
             searchText: match,
-            context: getContextAroundLine(content, lineNumber)
-          }
+            context: getContextAroundLine(content, lineNumber),
+          },
         });
       });
     }
   }
   const wikilinkImages = cleanContent.match(/!\[\[([^\]]+)\]\]/g);
   if (wikilinkImages) {
-    const missingAltText = wikilinkImages.filter((match) => !match.includes("|"));
+    const missingAltText = wikilinkImages.filter(
+      (match) => !match.includes("|"),
+    );
     if (missingAltText.length > 0) {
       missingAltText.forEach((match, index) => {
         const pathMatch = match.match(/!\[\[([^\]]+)\]\]/);
@@ -277,13 +304,14 @@ function checkAltText(content, file, settings) {
         results.push({
           passed: false,
           message: `Wikilink media missing alt text: ${imagePath}`,
-          suggestion: "Add alt text using ![[media.png|alt text]] syntax or consider using standard markdown media syntax",
+          suggestion:
+            "Add alt text using ![[media.png|alt text]] syntax or consider using standard markdown media syntax",
           severity: "error",
           position: {
             line: lineNumber,
             searchText: match,
-            context: getContextAroundLine(content, lineNumber)
-          }
+            context: getContextAroundLine(content, lineNumber),
+          },
         });
       });
     }
@@ -307,25 +335,28 @@ function checkAltText(content, file, settings) {
           position: {
             line: lineNumber,
             searchText: img,
-            context: getContextAroundLine(content, lineNumber)
-          }
+            context: getContextAroundLine(content, lineNumber),
+          },
         });
       });
     }
   }
   if (results.length === 0) {
-    const hasMedia = markdownImages && markdownImages.length > 0 || htmlImages && htmlImages.length > 0 || wikilinkImages && wikilinkImages.length > 0;
+    const hasMedia =
+      (markdownImages && markdownImages.length > 0) ||
+      (htmlImages && htmlImages.length > 0) ||
+      (wikilinkImages && wikilinkImages.length > 0);
     if (hasMedia) {
       results.push({
         passed: true,
         message: "All media elements have alt text",
-        severity: "info"
+        severity: "info",
       });
     } else {
       results.push({
         passed: true,
         message: "No media elements in this post",
-        severity: "info"
+        severity: "info",
       });
     }
   }
@@ -336,7 +367,7 @@ var init_alt_text_check = __esm({
     "use strict";
     init_content_parser();
     init_position_utils();
-  }
+  },
 });
 
 // src/checks/link-checks.ts
@@ -346,10 +377,17 @@ function checkNakedLinks(content, file, settings) {
     return Promise.resolve([]);
   }
   const cleanContent = removeHtmlAttributes(content);
-  const nakedLinks = cleanContent.match(/(?<!\]\()(?<!https?:\/\/[^\s)]*\/)https?:\/\/[^\s)]+/g);
+  const nakedLinks = cleanContent.match(
+    /(?<!\]\()(?<!https?:\/\/[^\s)]*\/)https?:\/\/[^\s)]+/g,
+  );
   if (nakedLinks) {
     nakedLinks.forEach((link, index) => {
-      if (link.includes("web.archive.org/web/") || link.includes("archive.today/") || link.includes("archive.is/") || link.includes("web.archive.org/save/")) {
+      if (
+        link.includes("web.archive.org/web/") ||
+        link.includes("archive.today/") ||
+        link.includes("archive.is/") ||
+        link.includes("web.archive.org/save/")
+      ) {
         return;
       }
       const lineNumber = findLineNumberForImage(content, link);
@@ -361,8 +399,8 @@ function checkNakedLinks(content, file, settings) {
         position: {
           line: lineNumber,
           searchText: link,
-          context: getContextAroundLine(content, lineNumber)
-        }
+          context: getContextAroundLine(content, lineNumber),
+        },
       });
     });
   }
@@ -370,7 +408,7 @@ function checkNakedLinks(content, file, settings) {
     results.push({
       passed: true,
       message: "No naked links found",
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -387,9 +425,15 @@ function checkBrokenLinks(content, file, settings, app) {
       const linkStart = content.indexOf(wikilink);
       if (linkStart === -1) continue;
       const contentBeforeLink = content.substring(0, linkStart);
-      const codeBlockMatches = contentBeforeLink.match(/```[\s\S]*?```|~~~[\s\S]*?~~~/g);
-      const openCodeBlocks = (contentBeforeLink.match(/```/g) || []).length - (codeBlockMatches || []).length;
-      const openTildeBlocks = (contentBeforeLink.match(/~~~/g) || []).length - (codeBlockMatches || []).length;
+      const codeBlockMatches = contentBeforeLink.match(
+        /```[\s\S]*?```|~~~[\s\S]*?~~~/g,
+      );
+      const openCodeBlocks =
+        (contentBeforeLink.match(/```/g) || []).length -
+        (codeBlockMatches || []).length;
+      const openTildeBlocks =
+        (contentBeforeLink.match(/~~~/g) || []).length -
+        (codeBlockMatches || []).length;
       if (openCodeBlocks > 0 || openTildeBlocks > 0) {
         continue;
       }
@@ -422,13 +466,16 @@ function checkBrokenLinks(content, file, settings, app) {
         }
       }
       if (app) {
-        const resolvedLink = app.metadataCache.getFirstLinkpathDest(linkPath, file.path);
+        const resolvedLink = app.metadataCache.getFirstLinkpathDest(
+          linkPath,
+          file.path,
+        );
         if (!resolvedLink) {
           brokenLinks.push({
             link: wikilink,
             path: linkPath,
             displayText,
-            anchor
+            anchor,
           });
         }
       }
@@ -448,8 +495,8 @@ function checkBrokenLinks(content, file, settings, app) {
           position: {
             line: lineNumber,
             searchText: link,
-            context: getContextAroundLine(content, lineNumber)
-          }
+            context: getContextAroundLine(content, lineNumber),
+          },
         });
       });
     }
@@ -460,9 +507,15 @@ function checkBrokenLinks(content, file, settings, app) {
       const linkStart = content.indexOf(markdownLink);
       if (linkStart === -1) continue;
       const contentBeforeLink = content.substring(0, linkStart);
-      const codeBlockMatches = contentBeforeLink.match(/```[\s\S]*?```|~~~[\s\S]*?~~~/g);
-      const openCodeBlocks = (contentBeforeLink.match(/```/g) || []).length - (codeBlockMatches || []).length;
-      const openTildeBlocks = (contentBeforeLink.match(/~~~/g) || []).length - (codeBlockMatches || []).length;
+      const codeBlockMatches = contentBeforeLink.match(
+        /```[\s\S]*?```|~~~[\s\S]*?~~~/g,
+      );
+      const openCodeBlocks =
+        (contentBeforeLink.match(/```/g) || []).length -
+        (codeBlockMatches || []).length;
+      const openTildeBlocks =
+        (contentBeforeLink.match(/~~~/g) || []).length -
+        (codeBlockMatches || []).length;
       if (openCodeBlocks > 0 || openTildeBlocks > 0) {
         continue;
       }
@@ -473,7 +526,12 @@ function checkBrokenLinks(content, file, settings, app) {
       if (markdownLink.startsWith("![") || linkText.startsWith("![")) {
         continue;
       }
-      if (!linkUrl.startsWith("http://") && !linkUrl.startsWith("https://") && !linkUrl.startsWith("mailto:") && !linkUrl.startsWith("#")) {
+      if (
+        !linkUrl.startsWith("http://") &&
+        !linkUrl.startsWith("https://") &&
+        !linkUrl.startsWith("mailto:") &&
+        !linkUrl.startsWith("#")
+      ) {
         if (settings.publishMode && linkUrl.startsWith("/")) {
           continue;
         }
@@ -485,10 +543,15 @@ function checkBrokenLinks(content, file, settings, app) {
             linkPath = anchorParts[0] || "";
             anchor = anchorParts[1] || null;
           }
-          const resolvedLink = app.metadataCache.getFirstLinkpathDest(linkPath, file.path);
+          const resolvedLink = app.metadataCache.getFirstLinkpathDest(
+            linkPath,
+            file.path,
+          );
           if (!resolvedLink) {
             const lineNumber = findLineNumberForImage(content, markdownLink);
-            let suggestedPath = linkPath.endsWith(".md") ? linkPath : linkPath + ".md";
+            let suggestedPath = linkPath.endsWith(".md")
+              ? linkPath
+              : linkPath + ".md";
             let suggestion = `Check if the file "${suggestedPath}" exists or update the link`;
             if (anchor) {
               suggestion += ` (anchor: #${anchor})`;
@@ -501,8 +564,8 @@ function checkBrokenLinks(content, file, settings, app) {
               position: {
                 line: lineNumber,
                 searchText: markdownLink,
-                context: getContextAroundLine(content, lineNumber)
-              }
+                context: getContextAroundLine(content, lineNumber),
+              },
             });
           }
         }
@@ -513,7 +576,7 @@ function checkBrokenLinks(content, file, settings, app) {
     results.push({
       passed: true,
       message: "No broken internal links found",
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -523,11 +586,19 @@ async function checkPotentiallyBrokenLinks(content, file, settings, app) {
   if (!settings.checkPotentiallyBrokenLinks || !settings.publishMode) {
     return Promise.resolve([]);
   }
-  const brokenLinksResults = await checkBrokenLinks(content, file, settings, app);
+  const brokenLinksResults = await checkBrokenLinks(
+    content,
+    file,
+    settings,
+    app,
+  );
   const definitelyBrokenLinks = /* @__PURE__ */ new Set();
   brokenLinksResults.forEach((result) => {
     var _a;
-    if (!result.passed && ((_a = result.position) == null ? void 0 : _a.searchText)) {
+    if (
+      !result.passed &&
+      ((_a = result.position) == null ? void 0 : _a.searchText)
+    ) {
       definitelyBrokenLinks.add(result.position.searchText);
     }
   });
@@ -536,9 +607,15 @@ async function checkPotentiallyBrokenLinks(content, file, settings, app) {
     const openBracket = content.indexOf("[", pos);
     if (openBracket === -1) break;
     const contentBeforeBracket = content.substring(0, openBracket);
-    const codeBlockMatches = contentBeforeBracket.match(/```[\s\S]*?```|~~~[\s\S]*?~~~/g);
-    const openCodeBlocks = (contentBeforeBracket.match(/```/g) || []).length - (codeBlockMatches || []).length;
-    const openTildeBlocks = (contentBeforeBracket.match(/~~~/g) || []).length - (codeBlockMatches || []).length;
+    const codeBlockMatches = contentBeforeBracket.match(
+      /```[\s\S]*?```|~~~[\s\S]*?~~~/g,
+    );
+    const openCodeBlocks =
+      (contentBeforeBracket.match(/```/g) || []).length -
+      (codeBlockMatches || []).length;
+    const openTildeBlocks =
+      (contentBeforeBracket.match(/~~~/g) || []).length -
+      (codeBlockMatches || []).length;
     if (openCodeBlocks > 0 || openTildeBlocks > 0) {
       pos = openBracket + 1;
       continue;
@@ -576,18 +653,24 @@ async function checkPotentiallyBrokenLinks(content, file, settings, app) {
           pos = closeParen;
           continue;
         }
-        if (settings.publishMode && linkUrl.startsWith("/") && !linkUrl.startsWith("http://") && !linkUrl.startsWith("https://")) {
+        if (
+          settings.publishMode &&
+          linkUrl.startsWith("/") &&
+          !linkUrl.startsWith("http://") &&
+          !linkUrl.startsWith("https://")
+        ) {
           const lineNumber = findLineNumberForImage(content, fullLink);
           results.push({
             passed: true,
             message: `Relative path link: ${linkText}`,
-            suggestion: "This link may be valid for static site generators but may not work in Obsidian",
+            suggestion:
+              "This link may be valid for static site generators but may not work in Obsidian",
             severity: "notice",
             position: {
               line: lineNumber,
               searchText: fullLink,
-              context: getContextAroundLine(content, lineNumber)
-            }
+              context: getContextAroundLine(content, lineNumber),
+            },
           });
         }
         pos = closeParen;
@@ -605,9 +688,15 @@ async function checkPotentiallyBrokenLinks(content, file, settings, app) {
       const linkStart = content.indexOf(wikilink);
       if (linkStart === -1) continue;
       const contentBeforeLink = content.substring(0, linkStart);
-      const codeBlockMatches = contentBeforeLink.match(/```[\s\S]*?```|~~~[\s\S]*?~~~/g);
-      const openCodeBlocks = (contentBeforeLink.match(/```/g) || []).length - (codeBlockMatches || []).length;
-      const openTildeBlocks = (contentBeforeLink.match(/~~~/g) || []).length - (codeBlockMatches || []).length;
+      const codeBlockMatches = contentBeforeLink.match(
+        /```[\s\S]*?```|~~~[\s\S]*?~~~/g,
+      );
+      const openCodeBlocks =
+        (contentBeforeLink.match(/```/g) || []).length -
+        (codeBlockMatches || []).length;
+      const openTildeBlocks =
+        (contentBeforeLink.match(/~~~/g) || []).length -
+        (codeBlockMatches || []).length;
       if (openCodeBlocks > 0 || openTildeBlocks > 0) {
         continue;
       }
@@ -643,11 +732,16 @@ async function checkPotentiallyBrokenLinks(content, file, settings, app) {
         }
       }
       if (app && linkPath) {
-        const resolvedLink = app.metadataCache.getFirstLinkpathDest(linkPath, file.path);
+        const resolvedLink = app.metadataCache.getFirstLinkpathDest(
+          linkPath,
+          file.path,
+        );
         if (!resolvedLink) {
           const allFiles = app.vault.getMarkdownFiles();
           const similarFiles = allFiles.filter(
-            (f) => f.path.toLowerCase().includes(linkPath.toLowerCase()) || f.basename.toLowerCase().includes(linkPath.toLowerCase())
+            (f) =>
+              f.path.toLowerCase().includes(linkPath.toLowerCase()) ||
+              f.basename.toLowerCase().includes(linkPath.toLowerCase()),
           );
           if (similarFiles.length > 0) {
             potentiallyBroken.push({
@@ -655,7 +749,7 @@ async function checkPotentiallyBrokenLinks(content, file, settings, app) {
               path: linkPath,
               displayText,
               anchor,
-              suggestions: similarFiles.map((f) => f.path)
+              suggestions: similarFiles.map((f) => f.path),
             });
           }
         }
@@ -672,8 +766,8 @@ async function checkPotentiallyBrokenLinks(content, file, settings, app) {
           position: {
             line: lineNumber,
             searchText: link,
-            context: getContextAroundLine(content, lineNumber)
-          }
+            context: getContextAroundLine(content, lineNumber),
+          },
         });
       });
     }
@@ -682,7 +776,7 @@ async function checkPotentiallyBrokenLinks(content, file, settings, app) {
     results.push({
       passed: true,
       message: "No potentially broken links found",
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -692,21 +786,47 @@ var init_link_checks = __esm({
     "use strict";
     init_content_parser();
     init_position_utils();
-  }
+  },
 });
 
 // src/checks/external-link-checks.ts
 function isValidUrl(url) {
-  if (url.includes("&gt;") || url.includes("&lt;") || url.includes("&amp;") || url.includes("&quot;") || url.includes("&apos;") || url.includes("&nbsp;")) {
+  if (
+    url.includes("&gt;") ||
+    url.includes("&lt;") ||
+    url.includes("&amp;") ||
+    url.includes("&quot;") ||
+    url.includes("&apos;") ||
+    url.includes("&nbsp;")
+  ) {
     return false;
   }
-  if (url.includes("<") || url.includes(">") || url.includes('"') || url.includes("'")) {
+  if (
+    url.includes("<") ||
+    url.includes(">") ||
+    url.includes('"') ||
+    url.includes("'")
+  ) {
     return false;
   }
-  if (url.endsWith("&gt;") || url.endsWith("&lt;") || url.endsWith("&amp;") || url.endsWith("&quot;") || url.endsWith("&apos;") || url.endsWith("&nbsp;")) {
+  if (
+    url.endsWith("&gt;") ||
+    url.endsWith("&lt;") ||
+    url.endsWith("&amp;") ||
+    url.endsWith("&quot;") ||
+    url.endsWith("&apos;") ||
+    url.endsWith("&nbsp;")
+  ) {
     return false;
   }
-  if (url.includes("/a&gt;") || url.includes("/p&gt;") || url.includes("/div&gt;") || url.includes("/span&gt;") || url.includes("/img&gt;") || url.includes("/script&gt;")) {
+  if (
+    url.includes("/a&gt;") ||
+    url.includes("/p&gt;") ||
+    url.includes("/div&gt;") ||
+    url.includes("/span&gt;") ||
+    url.includes("/img&gt;") ||
+    url.includes("/script&gt;")
+  ) {
     return false;
   }
   try {
@@ -717,7 +837,12 @@ function isValidUrl(url) {
     if (!urlObj.hostname || urlObj.hostname.length === 0) {
       return false;
     }
-    if (urlObj.hostname.includes("<") || urlObj.hostname.includes(">") || urlObj.hostname.includes('"') || urlObj.hostname.includes("'")) {
+    if (
+      urlObj.hostname.includes("<") ||
+      urlObj.hostname.includes(">") ||
+      urlObj.hostname.includes('"') ||
+      urlObj.hostname.includes("'")
+    ) {
       return false;
     }
     return true;
@@ -746,7 +871,10 @@ function extractValidExternalLinks(content) {
       pos = openBracket + 1;
       continue;
     }
-    if (closeBracket < cleanContent.length && cleanContent[closeBracket] === "(") {
+    if (
+      closeBracket < cleanContent.length &&
+      cleanContent[closeBracket] === "("
+    ) {
       let parenCount = 1;
       let closeParen = closeBracket + 1;
       while (closeParen < cleanContent.length && parenCount > 0) {
@@ -758,7 +886,10 @@ function extractValidExternalLinks(content) {
         closeParen++;
       }
       if (parenCount === 0) {
-        const linkUrl = cleanContent.substring(closeBracket + 1, closeParen - 1);
+        const linkUrl = cleanContent.substring(
+          closeBracket + 1,
+          closeParen - 1,
+        );
         if (linkUrl.startsWith("http://") || linkUrl.startsWith("https://")) {
           if (isValidUrl(linkUrl)) {
             externalLinks.push(linkUrl);
@@ -779,7 +910,12 @@ function extractValidExternalLinks(content) {
       if (markdownLinkUrls.has(url)) {
         return;
       }
-      if (url.includes("web.archive.org/web/") || url.includes("archive.today/") || url.includes("archive.is/") || url.includes("web.archive.org/save/")) {
+      if (
+        url.includes("web.archive.org/web/") ||
+        url.includes("archive.today/") ||
+        url.includes("archive.is/") ||
+        url.includes("web.archive.org/save/")
+      ) {
         return;
       }
       if (isValidUrl(url)) {
@@ -801,25 +937,31 @@ function checkExternalLinks(content, file, settings) {
       results.push({
         passed: true,
         message: `External link: ${url}`,
-        suggestion: "To find if any of these are broken, use the 'Check external links for 404s' button to trigger it.",
+        suggestion:
+          "To find if any of these are broken, use the 'Check external links for 404s' button to trigger it.",
         severity: "notice",
         position: {
           line: lineNumber,
           searchText: url,
-          context: getContextAroundLine(content, lineNumber)
-        }
+          context: getContextAroundLine(content, lineNumber),
+        },
       });
     });
   } else {
     results.push({
       passed: true,
       message: "No external links found",
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
 }
-async function checkExternalBrokenLinks(content, file, settings, abortController) {
+async function checkExternalBrokenLinks(
+  content,
+  file,
+  settings,
+  abortController,
+) {
   const results = [];
   if (!settings.enableExternalLinkVaultCheck) {
     return Promise.resolve([]);
@@ -829,7 +971,7 @@ async function checkExternalBrokenLinks(content, file, settings, abortController
     results.push({
       passed: true,
       message: "No external links found",
-      severity: "info"
+      severity: "info",
     });
     return Promise.resolve(results);
   }
@@ -842,7 +984,8 @@ async function checkExternalBrokenLinks(content, file, settings, abortController
       return cached.result;
     }
     return await limiter.schedule(async () => {
-      if (abortController == null ? void 0 : abortController.signal.aborted) return null;
+      if (abortController == null ? void 0 : abortController.signal.aborted)
+        return null;
       let linkIsBroken = false;
       let errorMessage = "";
       let suggestion = "";
@@ -851,20 +994,22 @@ async function checkExternalBrokenLinks(content, file, settings, abortController
         const response = await (0, import_obsidian2.requestUrl)({
           url,
           headers: {
-            "User-Agent": "Mozilla/5.0 (compatible; Obsidian-SEO-Plugin/1.0)"
+            "User-Agent": "Mozilla/5.0 (compatible; Obsidian-SEO-Plugin/1.0)",
           },
-          throw: false
+          throw: false,
           // Handle status codes manually
         });
         if (response.status === 429) {
           linkIsBroken = true;
           errorMessage = `External link rate limited (429): ${url}`;
-          suggestion = "The server is limiting requests. Try again later or run the check on fewer links.";
+          suggestion =
+            "The server is limiting requests. Try again later or run the check on fewer links.";
           severity = "warning";
         } else if (response.status === 403) {
           linkIsBroken = true;
           errorMessage = `External link access restricted (403): ${url}`;
-          suggestion = "This link returned a 403 Forbidden error. This may indicate bot protection rather than a broken link.";
+          suggestion =
+            "This link returned a 403 Forbidden error. This may indicate bot protection rather than a broken link.";
           severity = "warning";
         } else if (response.status >= 400) {
           linkIsBroken = true;
@@ -896,8 +1041,8 @@ async function checkExternalBrokenLinks(content, file, settings, abortController
           position: {
             line: lineNumber,
             searchText: url,
-            context: getContextAroundLine(content, lineNumber)
-          }
+            context: getContextAroundLine(content, lineNumber),
+          },
         };
       }
       externalLinkCache.set(url, { result, timestamp: Date.now() });
@@ -912,7 +1057,7 @@ async function checkExternalBrokenLinks(content, file, settings, abortController
     results.push({
       passed: true,
       message: `Found ${uniqueLinks.length} external link(s), all appear to resolve and are working`,
-      severity: "info"
+      severity: "info",
     });
   } else if (uniqueLinks.length > 0) {
     const brokenCount = results.filter((r) => !r.passed).length;
@@ -921,13 +1066,19 @@ async function checkExternalBrokenLinks(content, file, settings, abortController
       results.push({
         passed: true,
         message: `${workingLinks} of ${uniqueLinks.length} external link(s) are working`,
-        severity: "info"
+        severity: "info",
       });
     }
   }
   return results;
 }
-var import_obsidian2, EXTERNAL_LINK_CACHE_TTL, externalLinkCache, MAX_CONCURRENT_REQUESTS, REQUEST_DELAY_MS, RateLimiter, limiter;
+var import_obsidian2,
+  EXTERNAL_LINK_CACHE_TTL,
+  externalLinkCache,
+  MAX_CONCURRENT_REQUESTS,
+  REQUEST_DELAY_MS,
+  RateLimiter,
+  limiter;
 var init_external_link_checks = __esm({
   "src/checks/external-link-checks.ts"() {
     "use strict";
@@ -951,13 +1102,19 @@ var init_external_link_checks = __esm({
         });
       }
       async processQueue() {
-        if (this.activeRequests >= MAX_CONCURRENT_REQUESTS || this.queue.length === 0) {
+        if (
+          this.activeRequests >= MAX_CONCURRENT_REQUESTS ||
+          this.queue.length === 0
+        ) {
           return;
         }
         const now = Date.now();
         const timeSinceLastRequest = now - this.lastRequestTime;
         if (timeSinceLastRequest < REQUEST_DELAY_MS) {
-          setTimeout(() => this.processQueue(), REQUEST_DELAY_MS - timeSinceLastRequest);
+          setTimeout(
+            () => this.processQueue(),
+            REQUEST_DELAY_MS - timeSinceLastRequest,
+          );
           return;
         }
         const { fn, resolve, reject } = this.queue.shift();
@@ -975,7 +1132,7 @@ var init_external_link_checks = __esm({
       }
     };
     limiter = new RateLimiter();
-  }
+  },
 });
 
 // src/checks/utils/reading-level.ts
@@ -1010,7 +1167,7 @@ function getReadingLevelDescription(level) {
 var init_reading_level = __esm({
   "src/checks/utils/reading-level.ts"() {
     "use strict";
-  }
+  },
 });
 
 // src/checks/content-checks.ts
@@ -1022,19 +1179,21 @@ function checkContentLength(content, file, settings) {
   let bodyContent = content.replace(/^---\n[\s\S]*?\n---\n/, "");
   bodyContent = bodyContent.replace(/```[\s\S]*?```/g, "");
   bodyContent = bodyContent.replace(/~~~[\s\S]*?~~~/g, "");
-  const wordCount = bodyContent.split(/\s+/).filter((word) => word.length > 0).length;
+  const wordCount = bodyContent
+    .split(/\s+/)
+    .filter((word) => word.length > 0).length;
   if (wordCount < settings.minContentLength) {
     results.push({
       passed: false,
       message: `Content too short: ${wordCount} words`,
       suggestion: `Aim for at least ${settings.minContentLength} words`,
-      severity: "warning"
+      severity: "warning",
     });
   } else {
     results.push({
       passed: true,
       message: `Good content length: ${wordCount} words`,
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -1045,33 +1204,40 @@ function checkReadingLevel(content, file, settings) {
     return Promise.resolve([]);
   }
   const cleanContent = removeCodeBlocks(content);
-  const sentences = cleanContent.split(/[.!?]+/).filter((s) => s.trim().length > 0);
+  const sentences = cleanContent
+    .split(/[.!?]+/)
+    .filter((s) => s.trim().length > 0);
   const words = cleanContent.split(/\s+/).filter((word) => word.length > 0);
   if (sentences.length === 0 || words.length === 0) {
     results.push({
       passed: true,
       message: "No readable content found for reading level analysis",
-      severity: "info"
+      severity: "info",
     });
     return Promise.resolve(results);
   }
-  const totalSyllables = words.reduce((sum, word) => sum + countSyllables(word), 0);
+  const totalSyllables = words.reduce(
+    (sum, word) => sum + countSyllables(word),
+    0,
+  );
   const avgWordsPerSentence = words.length / sentences.length;
   const avgSyllablesPerWord = totalSyllables / words.length;
-  const readingLevel = 0.39 * avgWordsPerSentence + 11.8 * avgSyllablesPerWord - 15.59;
+  const readingLevel =
+    0.39 * avgWordsPerSentence + 11.8 * avgSyllablesPerWord - 15.59;
   const description = getReadingLevelDescription(readingLevel);
   if (readingLevel > 12) {
     results.push({
       passed: false,
       message: `Reading level too high: ${readingLevel.toFixed(1)} (${description})`,
-      suggestion: "Consider simplifying sentence structure and using shorter words",
-      severity: "warning"
+      suggestion:
+        "Consider simplifying sentence structure and using shorter words",
+      severity: "warning",
     });
   } else {
     results.push({
       passed: true,
       message: `Good reading level: ${readingLevel.toFixed(1)} (${description})`,
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -1082,7 +1248,9 @@ function checkDuplicateContent(content, file, settings) {
     return Promise.resolve([]);
   }
   const cleanContent = removeCodeBlocks(content);
-  const paragraphs = cleanContent.split(/\n\s*\n/).filter((p) => p.trim().length > 20);
+  const paragraphs = cleanContent
+    .split(/\n\s*\n/)
+    .filter((p) => p.trim().length > 20);
   const duplicateParagraphs = [];
   for (let i = 0; i < paragraphs.length; i++) {
     for (let j = i + 1; j < paragraphs.length; j++) {
@@ -1094,7 +1262,7 @@ function checkDuplicateContent(content, file, settings) {
           duplicateParagraphs.push({
             paragraph1: i + 1,
             paragraph2: j + 1,
-            similarity
+            similarity,
           });
         }
       }
@@ -1106,14 +1274,14 @@ function checkDuplicateContent(content, file, settings) {
         passed: false,
         message: `Duplicate content detected between paragraphs ${paragraph1} and ${paragraph2}`,
         suggestion: `Similarity: ${similarity.toFixed(1)}% - consider rewriting one of these paragraphs`,
-        severity: "warning"
+        severity: "warning",
       });
     });
   } else {
     results.push({
       passed: true,
       message: "No duplicate content detected",
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -1125,15 +1293,25 @@ function calculateSimilarity(text1, text2) {
   const set2 = new Set(words2);
   const intersection = new Set([...set1].filter((x) => set2.has(x)));
   const union = /* @__PURE__ */ new Set([...set1, ...set2]);
-  return intersection.size / union.size * 100;
+  return (intersection.size / union.size) * 100;
 }
 async function checkDuplicateTitles(content, file, settings, vaultDetector) {
   return await vaultDetector.checkDuplicateTitles(file, settings);
 }
-async function checkDuplicateDescriptions(content, file, settings, vaultDetector) {
+async function checkDuplicateDescriptions(
+  content,
+  file,
+  settings,
+  vaultDetector,
+) {
   return await vaultDetector.checkDuplicateDescriptions(file, settings);
 }
-async function checkVaultDuplicateContent(content, file, settings, vaultDetector) {
+async function checkVaultDuplicateContent(
+  content,
+  file,
+  settings,
+  vaultDetector,
+) {
   return await vaultDetector.checkDuplicateContent(file, settings);
 }
 function checkNotices(content, file, settings) {
@@ -1144,7 +1322,7 @@ var init_content_checks = __esm({
     "use strict";
     init_content_parser();
     init_reading_level();
-  }
+  },
 });
 
 // src/checks/utils/note-utils.ts
@@ -1167,7 +1345,10 @@ function getDisplayName(file, content, settings) {
           const colonIndex = trimmedLine.indexOf(":");
           if (colonIndex !== -1) {
             let title = trimmedLine.substring(colonIndex + 1).trim();
-            if (title.startsWith('"') && title.endsWith('"') || title.startsWith("'") && title.endsWith("'")) {
+            if (
+              (title.startsWith('"') && title.endsWith('"')) ||
+              (title.startsWith("'") && title.endsWith("'"))
+            ) {
               title = title.slice(1, -1);
             }
             if (title) {
@@ -1191,7 +1372,10 @@ function getSlugFromFile(file, content, settings) {
         const trimmed = line.trim();
         if (trimmed.startsWith(prefix)) {
           let value = trimmed.slice(prefix.length).trim();
-          if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
+          if (
+            (value.startsWith('"') && value.endsWith('"')) ||
+            (value.startsWith("'") && value.endsWith("'"))
+          ) {
             value = value.slice(1, -1);
           }
           if (value) return value;
@@ -1201,7 +1385,10 @@ function getSlugFromFile(file, content, settings) {
     }
   }
   const base = file.basename.toLowerCase();
-  const useParentFolder = base === "index" || ((_b = settings.parentFolderSlugFilename) == null ? void 0 : _b.trim()) && base === settings.parentFolderSlugFilename.trim().toLowerCase();
+  const useParentFolder =
+    base === "index" ||
+    (((_b = settings.parentFolderSlugFilename) == null ? void 0 : _b.trim()) &&
+      base === settings.parentFolderSlugFilename.trim().toLowerCase());
   if (useParentFolder) {
     const parts = file.path.replace(/\\/g, "/").split("/");
     if (parts.length >= 2) {
@@ -1218,13 +1405,17 @@ var init_note_utils = __esm({
   "src/checks/utils/note-utils.ts"() {
     "use strict";
     init_panel_utils();
-  }
+  },
 });
 
 // src/checks/meta-checks.ts
 function stripYamlScalarQuotes(value) {
   const t = value.trim();
-  if (t.length >= 2 && (t.startsWith('"') && t.endsWith('"') || t.startsWith("'") && t.endsWith("'"))) {
+  if (
+    t.length >= 2 &&
+    ((t.startsWith('"') && t.endsWith('"')) ||
+      (t.startsWith("'") && t.endsWith("'")))
+  ) {
     return t.slice(1, -1);
   }
   return t;
@@ -1252,7 +1443,7 @@ function checkMetaDescription(content, file, settings) {
       passed: false,
       message: "No properties found",
       suggestion: "Add properties with description property",
-      severity: "warning"
+      severity: "warning",
     });
     return Promise.resolve(results);
   }
@@ -1262,22 +1453,27 @@ function checkMetaDescription(content, file, settings) {
       passed: false,
       message: "No properties content found",
       suggestion: "Add properties with description property",
-      severity: "warning"
+      severity: "warning",
     });
     return Promise.resolve(results);
   }
-  const descriptionMatch = frontmatter.match(new RegExp(`^${settings.descriptionProperty}:\\s*(.+)$`, "m"));
+  const descriptionMatch = frontmatter.match(
+    new RegExp(`^${settings.descriptionProperty}:\\s*(.+)$`, "m"),
+  );
   if (!descriptionMatch || !descriptionMatch[1]) {
     results.push({
       passed: false,
       message: `No ${settings.descriptionProperty} found in properties`,
       suggestion: `Add ${settings.descriptionProperty} to properties`,
-      severity: "warning"
+      severity: "warning",
     });
     return Promise.resolve(results);
   }
   let description = descriptionMatch[1].trim();
-  if (description.startsWith('"') && description.endsWith('"') || description.startsWith("'") && description.endsWith("'")) {
+  if (
+    (description.startsWith('"') && description.endsWith('"')) ||
+    (description.startsWith("'") && description.endsWith("'"))
+  ) {
     description = description.slice(1, -1);
   }
   const length = description.length;
@@ -1286,20 +1482,20 @@ function checkMetaDescription(content, file, settings) {
       passed: false,
       message: `Description too short: ${length} characters`,
       suggestion: "Aim for 120-160 characters",
-      severity: "warning"
+      severity: "warning",
     });
   } else if (length > 160) {
     results.push({
       passed: false,
       message: `Description too long: ${length} characters`,
       suggestion: "Aim for 120-160 characters",
-      severity: "warning"
+      severity: "warning",
     });
   } else {
     results.push({
       passed: true,
       message: `Good description length: ${length} characters`,
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -1314,7 +1510,9 @@ function checkTitleLength(content, file, settings) {
     const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
     if (frontmatterMatch && frontmatterMatch[1]) {
       const frontmatter = frontmatterMatch[1];
-      const titleMatch = frontmatter.match(new RegExp(`^${settings.titleProperty}:\\s*(.+)$`, "m"));
+      const titleMatch = frontmatter.match(
+        new RegExp(`^${settings.titleProperty}:\\s*(.+)$`, "m"),
+      );
       if (titleMatch && titleMatch[1]) {
         title = titleMatch[1].trim();
       }
@@ -1332,30 +1530,38 @@ function checkTitleLength(content, file, settings) {
   if (!title) {
     return Promise.resolve(results);
   }
-  const fullTitle = settings.titlePrefixSuffix ? `${title} ${settings.titlePrefixSuffix}` : title;
+  const fullTitle = settings.titlePrefixSuffix
+    ? `${title} ${settings.titlePrefixSuffix}`
+    : title;
   const length = fullTitle.length;
   if (length < 30) {
-    const message = settings.titlePrefixSuffix ? `Title too short: ${length} characters (${title} + " ${settings.titlePrefixSuffix}")` : `Title too short: ${length} characters`;
+    const message = settings.titlePrefixSuffix
+      ? `Title too short: ${length} characters (${title} + " ${settings.titlePrefixSuffix}")`
+      : `Title too short: ${length} characters`;
     results.push({
       passed: false,
       message,
       suggestion: "Aim for 30-60 characters",
-      severity: "warning"
+      severity: "warning",
     });
   } else if (length > 60) {
-    const message = settings.titlePrefixSuffix ? `Title too long: ${length} characters (${title} + " ${settings.titlePrefixSuffix}")` : `Title too long: ${length} characters`;
+    const message = settings.titlePrefixSuffix
+      ? `Title too long: ${length} characters (${title} + " ${settings.titlePrefixSuffix}")`
+      : `Title too long: ${length} characters`;
     results.push({
       passed: false,
       message,
       suggestion: "Aim for 30-60 characters",
-      severity: "warning"
+      severity: "warning",
     });
   } else {
-    const message = settings.titlePrefixSuffix ? `Good title length: ${length} characters (${title} + " ${settings.titlePrefixSuffix}")` : `Good title length: ${length} characters`;
+    const message = settings.titlePrefixSuffix
+      ? `Good title length: ${length} characters (${title} + " ${settings.titlePrefixSuffix}")`
+      : `Good title length: ${length} characters`;
     results.push({
       passed: true,
       message,
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -1371,7 +1577,7 @@ function checkKeywordDensity(content, file, settings) {
       passed: false,
       message: "No properties found",
       suggestion: "Add properties with keyword property",
-      severity: "warning"
+      severity: "warning",
     });
     return Promise.resolve(results);
   }
@@ -1381,7 +1587,7 @@ function checkKeywordDensity(content, file, settings) {
       passed: false,
       message: "No properties content found",
       suggestion: "Add properties with keyword property",
-      severity: "warning"
+      severity: "warning",
     });
     return Promise.resolve(results);
   }
@@ -1391,7 +1597,9 @@ function checkKeywordDensity(content, file, settings) {
   for (const line of lines) {
     if (line.startsWith(settings.keywordProperty + ":")) {
       foundKeywordLine = true;
-      keyword = stripYamlScalarQuotes(line.substring(settings.keywordProperty.length + 1).trim());
+      keyword = stripYamlScalarQuotes(
+        line.substring(settings.keywordProperty.length + 1).trim(),
+      );
       break;
     }
   }
@@ -1399,32 +1607,45 @@ function checkKeywordDensity(content, file, settings) {
     results.push({
       passed: true,
       message: `No ${settings.keywordProperty} defined in properties`,
-      severity: "notice"
+      severity: "notice",
     });
     return Promise.resolve(results);
   }
-  if (!keyword || keyword === "false" || keyword === "true" || keyword === "null" || keyword === "undefined") {
+  if (
+    !keyword ||
+    keyword === "false" ||
+    keyword === "true" ||
+    keyword === "null" ||
+    keyword === "undefined"
+  ) {
     results.push({
       passed: true,
       message: `No valid keyword defined in properties`,
-      severity: "notice"
+      severity: "notice",
     });
     return Promise.resolve(results);
   }
   let cleanContent = removeCodeBlocks(content);
   const titleFrontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
-  if (titleFrontmatterMatch && titleFrontmatterMatch[1] && settings.titleProperty) {
+  if (
+    titleFrontmatterMatch &&
+    titleFrontmatterMatch[1] &&
+    settings.titleProperty
+  ) {
     const frontmatter2 = titleFrontmatterMatch[1];
     const lines2 = frontmatter2.split("\n");
     for (const line of lines2) {
       if (line.startsWith(settings.titleProperty + ":")) {
-        let title = stripYamlScalarQuotes(line.substring(settings.titleProperty.length + 1).trim());
+        let title = stripYamlScalarQuotes(
+          line.substring(settings.titleProperty.length + 1).trim(),
+        );
         cleanContent = title + " " + cleanContent;
         break;
       }
     }
   }
-  const stripApostrophes = (s) => s.replace(/[''\u2018\u2019\u201A\u201B]/g, "");
+  const stripApostrophes = (s) =>
+    s.replace(/[''\u2018\u2019\u201A\u201B]/g, "");
   const normalizeContentWordToken = (token) => {
     let w = stripApostrophes(token).toLowerCase();
     w = w.replace(/^\*+/, "").replace(/\*+$/, "");
@@ -1438,50 +1659,59 @@ function checkKeywordDensity(content, file, settings) {
   };
   const keywordLower = keyword.toLowerCase();
   const cleanContentLower = cleanContent.toLowerCase();
-  const keywordWords = keywordLower.split(/\s+/).filter((word) => word.length > 0).map((w) => stripApostrophes(w)).filter((w) => w.length > 0);
+  const keywordWords = keywordLower
+    .split(/\s+/)
+    .filter((word) => word.length > 0)
+    .map((w) => stripApostrophes(w))
+    .filter((w) => w.length > 0);
   if (keywordWords.length === 0) {
     return Promise.resolve(results);
   }
   let keywordCount = 0;
   const contentWords = cleanContentLower.split(/\s+/);
   for (let i = 0; i <= contentWords.length - keywordWords.length; i++) {
-    const slice = contentWords.slice(i, i + keywordWords.length).map(normalizeContentWordToken);
+    const slice = contentWords
+      .slice(i, i + keywordWords.length)
+      .map(normalizeContentWordToken);
     if (slice.length !== keywordWords.length) continue;
     const consecutiveMatch = keywordWords.every((kw, j) => slice[j] === kw);
     if (consecutiveMatch) {
       keywordCount++;
     }
   }
-  const words = cleanContentLower.split(/\s+/).map(normalizeContentWordToken).filter((w) => w.length > 0);
+  const words = cleanContentLower
+    .split(/\s+/)
+    .map(normalizeContentWordToken)
+    .filter((w) => w.length > 0);
   const totalWords = words.length;
   if (totalWords === 0) {
     results.push({
       passed: false,
       message: "No content found for keyword analysis",
-      severity: "warning"
+      severity: "warning",
     });
     return Promise.resolve(results);
   }
-  const density = keywordCount / totalWords * 100;
+  const density = (keywordCount / totalWords) * 100;
   if (density < settings.keywordDensityMin) {
     results.push({
       passed: false,
       message: `Keyword density too low: ${density.toFixed(1)}%`,
       suggestion: `Aim for at least ${settings.keywordDensityMin}% density`,
-      severity: "warning"
+      severity: "warning",
     });
   } else if (density > settings.keywordDensityMax) {
     results.push({
       passed: false,
       message: `Keyword density too high: ${density.toFixed(1)}%`,
       suggestion: `Aim for no more than ${settings.keywordDensityMax}% density`,
-      severity: "warning"
+      severity: "warning",
     });
   } else {
     results.push({
       passed: true,
       message: `Good keyword density: ${density.toFixed(1)}%`,
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -1505,11 +1735,20 @@ function checkKeywordInDescription(content, file, settings) {
   for (const line of lines) {
     if (line.startsWith(settings.keywordProperty + ":")) {
       foundKeywordLine = true;
-      keyword = stripYamlScalarQuotes(line.substring(settings.keywordProperty.length + 1).trim());
+      keyword = stripYamlScalarQuotes(
+        line.substring(settings.keywordProperty.length + 1).trim(),
+      );
       break;
     }
   }
-  if (!foundKeywordLine || !keyword || keyword === "false" || keyword === "true" || keyword === "null" || keyword === "undefined") {
+  if (
+    !foundKeywordLine ||
+    !keyword ||
+    keyword === "false" ||
+    keyword === "true" ||
+    keyword === "null" ||
+    keyword === "undefined"
+  ) {
     return Promise.resolve(results);
   }
   let description = "";
@@ -1517,7 +1756,9 @@ function checkKeywordInDescription(content, file, settings) {
   for (const line of lines) {
     if (line.startsWith(settings.descriptionProperty + ":")) {
       foundDescriptionLine = true;
-      description = stripYamlScalarQuotes(line.substring(settings.descriptionProperty.length + 1).trim());
+      description = stripYamlScalarQuotes(
+        line.substring(settings.descriptionProperty.length + 1).trim(),
+      );
       break;
     }
   }
@@ -1526,7 +1767,7 @@ function checkKeywordInDescription(content, file, settings) {
       passed: false,
       message: "No description found",
       suggestion: "Add a meta description to your properties",
-      severity: "warning"
+      severity: "warning",
     });
     return Promise.resolve(results);
   }
@@ -1535,14 +1776,14 @@ function checkKeywordInDescription(content, file, settings) {
     results.push({
       passed: true,
       message: `Keyword found in description`,
-      severity: "info"
+      severity: "info",
     });
   } else {
     results.push({
       passed: false,
       message: `Keyword not found in description`,
       suggestion: "Include your target keyword in the description",
-      severity: "warning"
+      severity: "warning",
     });
   }
   return Promise.resolve(results);
@@ -1565,7 +1806,10 @@ function checkTitleH1Uniqueness(content, file, settings) {
   for (const line of lines) {
     if (line.startsWith(settings.titleProperty + ":")) {
       metaTitle = line.substring(settings.titleProperty.length + 1).trim();
-      if (metaTitle.startsWith('"') && metaTitle.endsWith('"') || metaTitle.startsWith("'") && metaTitle.endsWith("'")) {
+      if (
+        (metaTitle.startsWith('"') && metaTitle.endsWith('"')) ||
+        (metaTitle.startsWith("'") && metaTitle.endsWith("'"))
+      ) {
         metaTitle = metaTitle.slice(1, -1);
       }
       break;
@@ -1580,7 +1824,7 @@ function checkTitleH1Uniqueness(content, file, settings) {
       results.push({
         passed: true,
         message: "Meta title and H1 are unique (prefix/suffix configured)",
-        severity: "info"
+        severity: "info",
       });
       return Promise.resolve(results);
     }
@@ -1591,7 +1835,9 @@ function checkTitleH1Uniqueness(content, file, settings) {
         h1Heading = h1Heading.substring(prefixSuffix.length).trim();
       }
       if (h1Heading.endsWith(prefixSuffix)) {
-        h1Heading = h1Heading.substring(0, h1Heading.length - prefixSuffix.length).trim();
+        h1Heading = h1Heading
+          .substring(0, h1Heading.length - prefixSuffix.length)
+          .trim();
       }
     }
   } else {
@@ -1609,8 +1855,9 @@ function checkTitleH1Uniqueness(content, file, settings) {
     results.push({
       passed: false,
       message: "No H1 heading found to compare with meta title",
-      suggestion: "Add an H1 heading to your content, or enable 'Title property is H1' if your static site generator creates H1s from the title",
-      severity: "warning"
+      suggestion:
+        "Add an H1 heading to your content, or enable 'Title property is H1' if your static site generator creates H1s from the title",
+      severity: "warning",
     });
     return Promise.resolve(results);
   }
@@ -1620,14 +1867,15 @@ function checkTitleH1Uniqueness(content, file, settings) {
     results.push({
       passed: false,
       message: "Meta title and H1 are identical",
-      suggestion: "Modify one to be unique, or specify a suffix/prefix in plugin settings",
-      severity: "warning"
+      suggestion:
+        "Modify one to be unique, or specify a suffix/prefix in plugin settings",
+      severity: "warning",
     });
   } else {
     results.push({
       passed: true,
       message: "Meta title and H1 are unique",
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -1651,7 +1899,9 @@ function checkKeywordInHeadings(content, file, settings) {
   for (const line of lines) {
     if (line.startsWith(settings.keywordProperty + ":")) {
       foundKeywordLine = true;
-      keyword = stripYamlScalarQuotes(line.substring(settings.keywordProperty.length + 1).trim());
+      keyword = stripYamlScalarQuotes(
+        line.substring(settings.keywordProperty.length + 1).trim(),
+      );
       break;
     }
   }
@@ -1659,15 +1909,21 @@ function checkKeywordInHeadings(content, file, settings) {
     results.push({
       passed: true,
       message: `No ${settings.keywordProperty} defined in properties`,
-      severity: "notice"
+      severity: "notice",
     });
     return Promise.resolve(results);
   }
-  if (!keyword || keyword === "false" || keyword === "true" || keyword === "null" || keyword === "undefined") {
+  if (
+    !keyword ||
+    keyword === "false" ||
+    keyword === "true" ||
+    keyword === "null" ||
+    keyword === "undefined"
+  ) {
     results.push({
       passed: true,
       message: `No valid keyword defined in properties`,
-      severity: "notice"
+      severity: "notice",
     });
     return Promise.resolve(results);
   }
@@ -1680,7 +1936,10 @@ function checkKeywordInHeadings(content, file, settings) {
       for (const line of lines2) {
         if (line.startsWith(settings.titleProperty + ":")) {
           let title = line.substring(settings.titleProperty.length + 1).trim();
-          if (title.startsWith('"') && title.endsWith('"') || title.startsWith("'") && title.endsWith("'")) {
+          if (
+            (title.startsWith('"') && title.endsWith('"')) ||
+            (title.startsWith("'") && title.endsWith("'"))
+          ) {
             title = title.slice(1, -1);
           }
           if (settings.titlePrefixSuffix) {
@@ -1689,7 +1948,9 @@ function checkKeywordInHeadings(content, file, settings) {
               title = title.substring(prefixSuffix.length).trim();
             }
             if (title.endsWith(prefixSuffix)) {
-              title = title.substring(0, title.length - prefixSuffix.length).trim();
+              title = title
+                .substring(0, title.length - prefixSuffix.length)
+                .trim();
             }
           }
           h1Headings.push({ text: title });
@@ -1710,8 +1971,9 @@ function checkKeywordInHeadings(content, file, settings) {
     results.push({
       passed: false,
       message: "No H1 heading found in content",
-      suggestion: "Add an H1 heading to structure your content and include your target keyword",
-      severity: "warning"
+      suggestion:
+        "Add an H1 heading to structure your content and include your target keyword",
+      severity: "warning",
     });
     return Promise.resolve(results);
   }
@@ -1726,14 +1988,15 @@ function checkKeywordInHeadings(content, file, settings) {
     results.push({
       passed: true,
       message: `Keyword found in H1`,
-      severity: "info"
+      severity: "info",
     });
   } else {
     results.push({
       passed: false,
       message: `Keyword not found in H1`,
-      suggestion: "Include your target keyword in the H1 heading for better SEO",
-      severity: "warning"
+      suggestion:
+        "Include your target keyword in the H1 heading for better SEO",
+      severity: "warning",
     });
   }
   return Promise.resolve(results);
@@ -1759,14 +2022,18 @@ function checkKeywordInTitle(content, file, settings) {
   for (const line of lines) {
     if (line.startsWith(settings.keywordProperty + ":")) {
       foundKeywordLine = true;
-      keyword = stripYamlScalarQuotes(line.substring(settings.keywordProperty.length + 1).trim());
+      keyword = stripYamlScalarQuotes(
+        line.substring(settings.keywordProperty.length + 1).trim(),
+      );
       break;
     }
   }
   for (const line of lines) {
     if (line.startsWith(settings.titleProperty + ":")) {
       foundTitleLine = true;
-      title = stripYamlScalarQuotes(line.substring(settings.titleProperty.length + 1).trim());
+      title = stripYamlScalarQuotes(
+        line.substring(settings.titleProperty.length + 1).trim(),
+      );
       break;
     }
   }
@@ -1774,15 +2041,21 @@ function checkKeywordInTitle(content, file, settings) {
     results.push({
       passed: true,
       message: `No ${settings.keywordProperty} defined in properties`,
-      severity: "notice"
+      severity: "notice",
     });
     return Promise.resolve(results);
   }
-  if (!keyword || keyword === "false" || keyword === "true" || keyword === "null" || keyword === "undefined") {
+  if (
+    !keyword ||
+    keyword === "false" ||
+    keyword === "true" ||
+    keyword === "null" ||
+    keyword === "undefined"
+  ) {
     results.push({
       passed: true,
       message: `No valid keyword defined in properties`,
-      severity: "notice"
+      severity: "notice",
     });
     return Promise.resolve(results);
   }
@@ -1794,14 +2067,14 @@ function checkKeywordInTitle(content, file, settings) {
     results.push({
       passed: true,
       message: `Keyword found in title`,
-      severity: "info"
+      severity: "info",
     });
   } else {
     results.push({
       passed: false,
       message: `Keyword not found in title`,
       suggestion: "Include your target keyword in the title",
-      severity: "warning"
+      severity: "warning",
     });
   }
   return Promise.resolve(results);
@@ -1825,7 +2098,9 @@ function checkKeywordInSlug(content, file, settings) {
   for (const line of lines) {
     if (line.startsWith(settings.keywordProperty + ":")) {
       foundKeywordLine = true;
-      keyword = stripYamlScalarQuotes(line.substring(settings.keywordProperty.length + 1).trim());
+      keyword = stripYamlScalarQuotes(
+        line.substring(settings.keywordProperty.length + 1).trim(),
+      );
       break;
     }
   }
@@ -1833,15 +2108,21 @@ function checkKeywordInSlug(content, file, settings) {
     results.push({
       passed: true,
       message: `No ${settings.keywordProperty} defined in properties`,
-      severity: "notice"
+      severity: "notice",
     });
     return Promise.resolve(results);
   }
-  if (!keyword || keyword === "false" || keyword === "true" || keyword === "null" || keyword === "undefined") {
+  if (
+    !keyword ||
+    keyword === "false" ||
+    keyword === "true" ||
+    keyword === "null" ||
+    keyword === "undefined"
+  ) {
     results.push({
       passed: true,
       message: `No valid keyword defined in properties`,
-      severity: "notice"
+      severity: "notice",
     });
     return Promise.resolve(results);
   }
@@ -1853,20 +2134,26 @@ function checkKeywordInSlug(content, file, settings) {
       if (parent) slug = parent.toLowerCase();
     }
   }
-  const keywordNormalized = keyword.toLowerCase().replace(/[''\u2018\u2019\u201A\u201B]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
-  const found = keywordNormalized.length > 0 && slug.includes(keywordNormalized);
+  const keywordNormalized = keyword
+    .toLowerCase()
+    .replace(/[''\u2018\u2019\u201A\u201B]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  const found =
+    keywordNormalized.length > 0 && slug.includes(keywordNormalized);
   if (found) {
     results.push({
       passed: true,
       message: `Target keyword "${keyword}" found in slug`,
-      severity: "info"
+      severity: "info",
     });
   } else {
     results.push({
       passed: false,
       message: `Target keyword "${keyword}" not found in slug`,
       suggestion: "Include your target keyword in the file name",
-      severity: "warning"
+      severity: "warning",
     });
   }
   return Promise.resolve(results);
@@ -1876,7 +2163,7 @@ var init_meta_checks = __esm({
     "use strict";
     init_content_parser();
     init_note_utils();
-  }
+  },
 });
 
 // src/checks/heading-checks.ts
@@ -1922,13 +2209,14 @@ function checkHeadingOrder(content, file, settings) {
         results.push({
           passed: false,
           message: `"${headingText}" (H${currentLevel}) skips heading level(s) after H${lastHeadingLevel}`,
-          suggestion: "Use heading levels in order (H1 \u2192 H2 \u2192 H3, etc.)",
+          suggestion:
+            "Use heading levels in order (H1 \u2192 H2 \u2192 H3, etc.)",
           severity: "warning",
           position: {
             line: lineNumber,
             searchText: line,
-            context: getContextAroundLine(content, lineNumber)
-          }
+            context: getContextAroundLine(content, lineNumber),
+          },
         });
       }
       if (currentLevel === 1 && lastHeadingLevel > 1) {
@@ -1940,8 +2228,8 @@ function checkHeadingOrder(content, file, settings) {
           position: {
             line: lineNumber,
             searchText: line,
-            context: getContextAroundLine(content, lineNumber)
-          }
+            context: getContextAroundLine(content, lineNumber),
+          },
         });
       }
       lastHeadingLevel = currentLevel;
@@ -1952,7 +2240,7 @@ function checkHeadingOrder(content, file, settings) {
       passed: false,
       message: "No H1 heading found",
       suggestion: "Add an H1 heading at the beginning of your content",
-      severity: "warning"
+      severity: "warning",
       // No position info since there's no H1 to jump to
     });
   }
@@ -1960,13 +2248,13 @@ function checkHeadingOrder(content, file, settings) {
     results.push({
       passed: true,
       message: "No heading structure issues found",
-      severity: "info"
+      severity: "info",
     });
   } else if (results.length === 0) {
     results.push({
       passed: true,
       message: "Heading structure is correct",
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -1975,7 +2263,7 @@ var init_heading_checks = __esm({
   "src/checks/heading-checks.ts"() {
     "use strict";
     init_position_utils();
-  }
+  },
 });
 
 // src/checks/image-checks.ts
@@ -1987,13 +2275,18 @@ function checkImageNaming(content, file, settings) {
   const cleanContent = removeCodeBlocks(content);
   function isExternalUrl(path) {
     const trimmed = path.trim();
-    return trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.startsWith("//");
+    return (
+      trimmed.startsWith("http://") ||
+      trimmed.startsWith("https://") ||
+      trimmed.startsWith("//")
+    );
   }
   const imageMatches = cleanContent.match(/!\[[^\]]*\]\(([^)]+)\)/g);
   if (imageMatches) {
     imageMatches.forEach((match, index) => {
       var _a;
-      const imagePath = (_a = match.match(/!\[[^\]]*\]\(([^)]+)\)/)) == null ? void 0 : _a[1];
+      const imagePath =
+        (_a = match.match(/!\[[^\]]*\]\(([^)]+)\)/)) == null ? void 0 : _a[1];
       if (imagePath && !isExternalUrl(imagePath)) {
         const fileName = imagePath.split("/").pop() || "";
         const lineNumber = findLineNumberForImage(content, match);
@@ -2006,10 +2299,15 @@ function checkImageNaming(content, file, settings) {
             position: {
               line: lineNumber,
               searchText: match,
-              context: getContextAroundLine(content, lineNumber)
-            }
+              context: getContextAroundLine(content, lineNumber),
+            },
           });
-        } else if (fileName.match(/^[a-f0-9]{8,}$/) || fileName.match(/^[a-f0-9]{8,}_[A-Z0-9]+\./) || fileName.match(/^[a-f0-9]{8,}_MD5\./) || fileName.match(/^[a-f0-9]{20,}\./)) {
+        } else if (
+          fileName.match(/^[a-f0-9]{8,}$/) ||
+          fileName.match(/^[a-f0-9]{8,}_[A-Z0-9]+\./) ||
+          fileName.match(/^[a-f0-9]{8,}_MD5\./) ||
+          fileName.match(/^[a-f0-9]{20,}\./)
+        ) {
           results.push({
             passed: false,
             message: `Image ${index + 1} has random file name: ${fileName}`,
@@ -2018,12 +2316,19 @@ function checkImageNaming(content, file, settings) {
             position: {
               line: lineNumber,
               searchText: match,
-              context: getContextAroundLine(content, lineNumber)
-            }
+              context: getContextAroundLine(content, lineNumber),
+            },
           });
-        } else if (fileName.toLowerCase().includes("pasted") || fileName.toLowerCase().includes("untitled") || fileName.toLowerCase().includes("photo") || // Only flag generic screenshots (no descriptive content)
-        fileName.match(/^screenshot\d*\.(png|jpg|jpeg|gif|webp)$/i) || // Flag screenshots with only random characters
-        fileName.toLowerCase().includes("screenshot") && fileName.match(/^screenshot[a-f0-9]{6,}\.(png|jpg|jpeg|gif|webp)$/i)) {
+        } else if (
+          fileName.toLowerCase().includes("pasted") ||
+          fileName.toLowerCase().includes("untitled") ||
+          fileName.toLowerCase().includes("photo") || // Only flag generic screenshots (no descriptive content)
+          fileName.match(/^screenshot\d*\.(png|jpg|jpeg|gif|webp)$/i) || // Flag screenshots with only random characters
+          (fileName.toLowerCase().includes("screenshot") &&
+            fileName.match(
+              /^screenshot[a-f0-9]{6,}\.(png|jpg|jpeg|gif|webp)$/i,
+            ))
+        ) {
           results.push({
             passed: false,
             message: `Image ${index + 1} has a potentially generic file name: ${fileName}`,
@@ -2032,8 +2337,8 @@ function checkImageNaming(content, file, settings) {
             position: {
               line: lineNumber,
               searchText: match,
-              context: getContextAroundLine(content, lineNumber)
-            }
+              context: getContextAroundLine(content, lineNumber),
+            },
           });
         } else if (fileName.length < 5 || fileName.length > 50) {
           results.push({
@@ -2044,8 +2349,8 @@ function checkImageNaming(content, file, settings) {
             position: {
               line: lineNumber,
               searchText: match,
-              context: getContextAroundLine(content, lineNumber)
-            }
+              context: getContextAroundLine(content, lineNumber),
+            },
           });
         }
       }
@@ -2055,7 +2360,7 @@ function checkImageNaming(content, file, settings) {
     results.push({
       passed: true,
       message: "All images have good file names",
-      severity: "info"
+      severity: "info",
     });
   }
   return Promise.resolve(results);
@@ -2065,7 +2370,7 @@ var init_image_checks = __esm({
     "use strict";
     init_content_parser();
     init_position_utils();
-  }
+  },
 });
 
 // src/checks/index.ts
@@ -2083,7 +2388,7 @@ var init_checks = __esm({
     init_position_utils();
     init_reading_level();
     init_note_utils();
-  }
+  },
 });
 
 // src/checks/duplicate-detection.ts
@@ -2106,15 +2411,20 @@ var init_duplicate_detection = __esm({
           files: /* @__PURE__ */ new Map(),
           titleMap: /* @__PURE__ */ new Map(),
           descriptionMap: /* @__PURE__ */ new Map(),
-          lastUpdated: Date.now()
+          lastUpdated: Date.now(),
         };
         const files = this.app.vault.getMarkdownFiles();
         const filteredFiles = files.filter((file) => {
-          if (this.settings.ignoreUnderscoreFiles && file.basename.startsWith("_")) {
+          if (
+            this.settings.ignoreUnderscoreFiles &&
+            file.basename.startsWith("_")
+          ) {
             return false;
           }
           if (this.settings.scanDirectories) {
-            const directories = this.settings.scanDirectories.split(",").map((d) => d.trim());
+            const directories = this.settings.scanDirectories
+              .split(",")
+              .map((d) => d.trim());
             return directories.some((dir) => file.path.startsWith(dir));
           }
           return true;
@@ -2163,7 +2473,10 @@ var init_duplicate_detection = __esm({
             if (match && match[1] && match[2] !== void 0) {
               const key = match[1];
               let value = match[2];
-              if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
+              if (
+                (value.startsWith('"') && value.endsWith('"')) ||
+                (value.startsWith("'") && value.endsWith("'"))
+              ) {
                 value = value.slice(1, -1);
               }
               frontmatter[key] = value;
@@ -2171,7 +2484,10 @@ var init_duplicate_detection = __esm({
           }
         }
         let title = "";
-        if (this.settings.titleProperty && frontmatter[this.settings.titleProperty]) {
+        if (
+          this.settings.titleProperty &&
+          frontmatter[this.settings.titleProperty]
+        ) {
           const titleValue = frontmatter[this.settings.titleProperty];
           title = typeof titleValue === "string" ? titleValue : file.basename;
         } else if (this.settings.useFilenameAsTitle) {
@@ -2180,7 +2496,10 @@ var init_duplicate_detection = __esm({
           title = file.basename;
         }
         let description;
-        if (this.settings.descriptionProperty && frontmatter[this.settings.descriptionProperty]) {
+        if (
+          this.settings.descriptionProperty &&
+          frontmatter[this.settings.descriptionProperty]
+        ) {
           const descValue = frontmatter[this.settings.descriptionProperty];
           description = typeof descValue === "string" ? descValue : void 0;
         }
@@ -2189,7 +2508,7 @@ var init_duplicate_detection = __esm({
           title,
           description,
           content,
-          ignored: false
+          ignored: false,
         };
       }
       /**
@@ -2198,7 +2517,10 @@ var init_duplicate_detection = __esm({
       async checkDuplicateTitles(file, settings) {
         var _a;
         const results = [];
-        if (!settings.checkDuplicateContent || !settings.titleProperty && !settings.useFilenameAsTitle) {
+        if (
+          !settings.checkDuplicateContent ||
+          (!settings.titleProperty && !settings.useFilenameAsTitle)
+        ) {
           return results;
         }
         if (!this.vaultData) {
@@ -2212,14 +2534,27 @@ var init_duplicate_detection = __esm({
         if (!titleKey) {
           return results;
         }
-        const duplicateFiles = ((_a = this.vaultData) == null ? void 0 : _a.titleMap.get(titleKey)) || [];
+        const duplicateFiles =
+          ((_a = this.vaultData) == null
+            ? void 0
+            : _a.titleMap.get(titleKey)) || [];
         if (duplicateFiles.length > 1) {
           const otherFiles = duplicateFiles.filter((f) => f !== file.path);
-          const genericTitles = ["untitled", "new note", "untitled note", "new file", "document"];
+          const genericTitles = [
+            "untitled",
+            "new note",
+            "untitled note",
+            "new file",
+            "document",
+          ];
           const isGeneric = genericTitles.includes(titleKey);
           const severity = isGeneric ? "warning" : "error";
-          const message = isGeneric ? `Generic title "${fileMetadata.title}" used in ${duplicateFiles.length} files` : `Duplicate title "${fileMetadata.title}" found in ${duplicateFiles.length} files`;
-          const suggestion = isGeneric ? "Consider using a more descriptive title" : `This title is also used in: ${otherFiles.map((f) => `<a href="#" data-file-path="${f}" class="seo-file-link">${this.getDisplayPath(f)}</a>`).join(", ")}`;
+          const message = isGeneric
+            ? `Generic title "${fileMetadata.title}" used in ${duplicateFiles.length} files`
+            : `Duplicate title "${fileMetadata.title}" found in ${duplicateFiles.length} files`;
+          const suggestion = isGeneric
+            ? "Consider using a more descriptive title"
+            : `This title is also used in: ${otherFiles.map((f) => `<a href="#" data-file-path="${f}" class="seo-file-link">${this.getDisplayPath(f)}</a>`).join(", ")}`;
           results.push({
             passed: false,
             message,
@@ -2228,14 +2563,14 @@ var init_duplicate_detection = __esm({
             position: {
               line: 1,
               searchText: this.settings.titleProperty || "title",
-              context: `title: "${fileMetadata.title}"`
-            }
+              context: `title: "${fileMetadata.title}"`,
+            },
           });
         } else {
           results.push({
             passed: true,
             message: `Unique title: "${fileMetadata.title}"`,
-            severity: "info"
+            severity: "info",
           });
         }
         return results;
@@ -2257,14 +2592,25 @@ var init_duplicate_detection = __esm({
           return results;
         }
         const descKey = fileMetadata.description.toLowerCase().trim();
-        const duplicateFiles = ((_a = this.vaultData) == null ? void 0 : _a.descriptionMap.get(descKey)) || [];
+        const duplicateFiles =
+          ((_a = this.vaultData) == null
+            ? void 0
+            : _a.descriptionMap.get(descKey)) || [];
         if (duplicateFiles.length > 1) {
           const otherFiles = duplicateFiles.filter((f) => f !== file.path);
-          const genericDescriptions = ["description", "meta description", "page description"];
+          const genericDescriptions = [
+            "description",
+            "meta description",
+            "page description",
+          ];
           const isGeneric = genericDescriptions.includes(descKey);
           const severity = isGeneric ? "warning" : "error";
-          const message = isGeneric ? `Generic description "${fileMetadata.description}" used in ${duplicateFiles.length} files` : `Duplicate description "${fileMetadata.description}" found in ${duplicateFiles.length} files`;
-          const suggestion = isGeneric ? "Consider using a more descriptive meta description" : `This description is also used in: ${otherFiles.map((f) => `<a href="#" data-file-path="${f}" class="seo-file-link">${this.getDisplayPath(f)}</a>`).join(", ")}`;
+          const message = isGeneric
+            ? `Generic description "${fileMetadata.description}" used in ${duplicateFiles.length} files`
+            : `Duplicate description "${fileMetadata.description}" found in ${duplicateFiles.length} files`;
+          const suggestion = isGeneric
+            ? "Consider using a more descriptive meta description"
+            : `This description is also used in: ${otherFiles.map((f) => `<a href="#" data-file-path="${f}" class="seo-file-link">${this.getDisplayPath(f)}</a>`).join(", ")}`;
           results.push({
             passed: false,
             message,
@@ -2273,14 +2619,14 @@ var init_duplicate_detection = __esm({
             position: {
               line: 1,
               searchText: this.settings.descriptionProperty || "description",
-              context: `description: "${fileMetadata.description}"`
-            }
+              context: `description: "${fileMetadata.description}"`,
+            },
           });
         } else {
           results.push({
             passed: true,
             message: `Unique description: "${fileMetadata.description}"`,
-            severity: "info"
+            severity: "info",
           });
         }
         return results;
@@ -2297,7 +2643,8 @@ var init_duplicate_detection = __esm({
         if (!this.vaultData) {
           await this.collectVaultData();
         }
-        const fileMetadata = (_a = this.vaultData) == null ? void 0 : _a.files.get(file.path);
+        const fileMetadata =
+          (_a = this.vaultData) == null ? void 0 : _a.files.get(file.path);
         if (!fileMetadata) {
           return results;
         }
@@ -2307,16 +2654,24 @@ var init_duplicate_detection = __esm({
           const paragraph = paragraphs[i];
           if (!paragraph || paragraph.length < 50) continue;
           const similarFiles = [];
-          for (const [otherFilePath, otherMetadata] of ((_b = this.vaultData) == null ? void 0 : _b.files) || []) {
+          for (const [otherFilePath, otherMetadata] of ((_b = this.vaultData) ==
+          null
+            ? void 0
+            : _b.files) || []) {
             if (otherFilePath === file.path) continue;
-            const otherParagraphs = this.splitIntoParagraphs(otherMetadata.content);
+            const otherParagraphs = this.splitIntoParagraphs(
+              otherMetadata.content,
+            );
             for (const otherParagraph of otherParagraphs) {
               if (!otherParagraph || otherParagraph.length < 50) continue;
-              const similarity = this.calculateJaccardSimilarity(paragraph, otherParagraph);
+              const similarity = this.calculateJaccardSimilarity(
+                paragraph,
+                otherParagraph,
+              );
               if (similarity >= settings.duplicateThreshold) {
                 similarFiles.push({
                   file: otherFilePath,
-                  similarity
+                  similarity,
                 });
               }
             }
@@ -2324,32 +2679,47 @@ var init_duplicate_detection = __esm({
           if (similarFiles.length > 0) {
             duplicates.push({
               paragraph: i + 1,
-              similarFiles
+              similarFiles,
             });
           }
         }
         if (duplicates.length > 0) {
           duplicates.forEach(({ paragraph, similarFiles }) => {
             var _a2;
-            const maxSimilarity = Math.max(...similarFiles.map((s) => s.similarity));
-            const fileList = similarFiles.sort((a, b) => b.similarity - a.similarity).slice(0, 3).map((s) => `<a href="#" data-file-path="${s.file}" class="seo-file-link">${this.getDisplayPath(s.file)}</a> (${s.similarity.toFixed(1)}%)`).join(", ");
+            const maxSimilarity = Math.max(
+              ...similarFiles.map((s) => s.similarity),
+            );
+            const fileList = similarFiles
+              .sort((a, b) => b.similarity - a.similarity)
+              .slice(0, 3)
+              .map(
+                (s) =>
+                  `<a href="#" data-file-path="${s.file}" class="seo-file-link">${this.getDisplayPath(s.file)}</a> (${s.similarity.toFixed(1)}%)`,
+              )
+              .join(", ");
             results.push({
               passed: false,
               message: `Duplicate content detected in paragraph ${paragraph}`,
               suggestion: `Similarity: ${maxSimilarity.toFixed(1)}% with: ${fileList}`,
               severity: "error",
               position: {
-                line: this.findParagraphLine(fileMetadata.content, paragraph - 1),
-                searchText: ((_a2 = paragraphs[paragraph - 1]) == null ? void 0 : _a2.substring(0, 50)) + "...",
-                context: `Paragraph ${paragraph} content`
-              }
+                line: this.findParagraphLine(
+                  fileMetadata.content,
+                  paragraph - 1,
+                ),
+                searchText:
+                  ((_a2 = paragraphs[paragraph - 1]) == null
+                    ? void 0
+                    : _a2.substring(0, 50)) + "...",
+                context: `Paragraph ${paragraph} content`,
+              },
             });
           });
         } else {
           results.push({
             passed: true,
             message: "No duplicate content detected",
-            severity: "info"
+            severity: "info",
           });
         }
         return results;
@@ -2359,38 +2729,121 @@ var init_duplicate_detection = __esm({
        */
       splitIntoParagraphs(content) {
         let cleanContent = removeCodeBlocks(content);
-        cleanContent = cleanContent.replace(/^#{1,6}\s+/gm, "").replace(/^\s*[-*+]\s+/gm, "").replace(/^\s*\d+\.\s+/gm, "").replace(/^\s*>\s*/gm, "").replace(/^\s*\|.*\|.*$/gm, "").replace(/^\s*\|.*$/gm, "").replace(/\[\[.*?\]\]/g, "").replace(/!\[\[.*?\]\]/g, "").replace(/\[.*?\]\(.*?\)/g, "").replace(/!\[.*?\]\(.*?\)/g, "").replace(/^\s*---\s*$/gm, "").replace(/^\s*\+\+\+\s*$/gm, "").replace(/^\s*==\s*$/gm, "").replace(/^\s*!!\s*$/gm, "").replace(/^\s*>\s*\[!.*?\]\s*$/gm, "").replace(/^\s*>\s*$/gm, "").replace(/^\s*$/gm, "").trim();
-        return cleanContent.split(/\n\s*\n/).map((p) => p.trim()).filter((p) => {
-          if (p.length < 30) return false;
-          const htmlLikeRatio = (p.match(/<[^>]*>/g) || []).join("").length / p.length;
-          if (htmlLikeRatio > 0.3) return false;
-          const specialCharRatio = (p.match(/[^\w\s.,!?;:'"()-]/g) || []).length / p.length;
-          if (specialCharRatio > 0.5) return false;
-          const wordRatio = (p.match(/\b\w+\b/g) || []).length / p.split(/\s+/).length;
-          if (wordRatio < 0.3) return false;
-          return true;
-        });
+        cleanContent = cleanContent
+          .replace(/^#{1,6}\s+/gm, "")
+          .replace(/^\s*[-*+]\s+/gm, "")
+          .replace(/^\s*\d+\.\s+/gm, "")
+          .replace(/^\s*>\s*/gm, "")
+          .replace(/^\s*\|.*\|.*$/gm, "")
+          .replace(/^\s*\|.*$/gm, "")
+          .replace(/\[\[.*?\]\]/g, "")
+          .replace(/!\[\[.*?\]\]/g, "")
+          .replace(/\[.*?\]\(.*?\)/g, "")
+          .replace(/!\[.*?\]\(.*?\)/g, "")
+          .replace(/^\s*---\s*$/gm, "")
+          .replace(/^\s*\+\+\+\s*$/gm, "")
+          .replace(/^\s*==\s*$/gm, "")
+          .replace(/^\s*!!\s*$/gm, "")
+          .replace(/^\s*>\s*\[!.*?\]\s*$/gm, "")
+          .replace(/^\s*>\s*$/gm, "")
+          .replace(/^\s*$/gm, "")
+          .trim();
+        return cleanContent
+          .split(/\n\s*\n/)
+          .map((p) => p.trim())
+          .filter((p) => {
+            if (p.length < 30) return false;
+            const htmlLikeRatio =
+              (p.match(/<[^>]*>/g) || []).join("").length / p.length;
+            if (htmlLikeRatio > 0.3) return false;
+            const specialCharRatio =
+              (p.match(/[^\w\s.,!?;:'"()-]/g) || []).length / p.length;
+            if (specialCharRatio > 0.5) return false;
+            const wordRatio =
+              (p.match(/\b\w+\b/g) || []).length / p.split(/\s+/).length;
+            if (wordRatio < 0.3) return false;
+            return true;
+          });
       }
       /**
        * Calculate Jaccard similarity between two texts
        */
       calculateJaccardSimilarity(text1, text2) {
-        const normalize = (text) => text.toLowerCase().replace(/\s+/g, " ").trim();
+        const normalize = (text) =>
+          text.toLowerCase().replace(/\s+/g, " ").trim();
         const normalized1 = normalize(text1);
         const normalized2 = normalize(text2);
-        const stopWords = /* @__PURE__ */ new Set(["the", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by", "a", "an", "is", "are", "was", "were", "be", "been", "have", "has", "had", "do", "does", "did", "will", "would", "could", "should", "may", "might", "can", "this", "that", "these", "those", "i", "you", "he", "she", "it", "we", "they", "me", "him", "her", "us", "them"]);
+        const stopWords = /* @__PURE__ */ new Set([
+          "the",
+          "and",
+          "or",
+          "but",
+          "in",
+          "on",
+          "at",
+          "to",
+          "for",
+          "of",
+          "with",
+          "by",
+          "a",
+          "an",
+          "is",
+          "are",
+          "was",
+          "were",
+          "be",
+          "been",
+          "have",
+          "has",
+          "had",
+          "do",
+          "does",
+          "did",
+          "will",
+          "would",
+          "could",
+          "should",
+          "may",
+          "might",
+          "can",
+          "this",
+          "that",
+          "these",
+          "those",
+          "i",
+          "you",
+          "he",
+          "she",
+          "it",
+          "we",
+          "they",
+          "me",
+          "him",
+          "her",
+          "us",
+          "them",
+        ]);
         const words1 = new Set(
-          normalized1.split(/\s+/).filter((w) => w.length > 2 && !stopWords.has(w)).map((w) => w.replace(/[^\w]/g, "")).filter((w) => w.length > 0)
+          normalized1
+            .split(/\s+/)
+            .filter((w) => w.length > 2 && !stopWords.has(w))
+            .map((w) => w.replace(/[^\w]/g, ""))
+            .filter((w) => w.length > 0),
         );
         const words2 = new Set(
-          normalized2.split(/\s+/).filter((w) => w.length > 2 && !stopWords.has(w)).map((w) => w.replace(/[^\w]/g, "")).filter((w) => w.length > 0)
+          normalized2
+            .split(/\s+/)
+            .filter((w) => w.length > 2 && !stopWords.has(w))
+            .map((w) => w.replace(/[^\w]/g, ""))
+            .filter((w) => w.length > 0),
         );
         if (words1.size === 0 || words2.size === 0) {
           return 0;
         }
         const intersection = new Set([...words1].filter((x) => words2.has(x)));
         const union = /* @__PURE__ */ new Set([...words1, ...words2]);
-        return intersection.size / union.size * 100;
+        return (intersection.size / union.size) * 100;
       }
       /**
        * Find the line number of a paragraph in the content
@@ -2435,7 +2888,7 @@ var init_duplicate_detection = __esm({
         return this.vaultData;
       }
     };
-  }
+  },
 });
 
 // src/seo-checker.ts
@@ -2445,7 +2898,7 @@ __export(seo_checker_exports, {
   clearCache: () => clearCache,
   clearCacheForFile: () => clearCacheForFile,
   getCacheStats: () => getCacheStats,
-  runSEOCheck: () => runSEOCheck
+  runSEOCheck: () => runSEOCheck,
 });
 async function runSEOCheck(plugin, files, abortController) {
   const results = [];
@@ -2464,7 +2917,13 @@ async function runSEOCheck(plugin, files, abortController) {
         continue;
       }
       const content = await plugin.app.vault.read(file);
-      const result = await checkFile(plugin, file, content, vaultDetector, abortController);
+      const result = await checkFile(
+        plugin,
+        file,
+        content,
+        vaultDetector,
+        abortController,
+      );
       void cacheResult(file, result, plugin);
       results.push(result);
     } catch (error) {
@@ -2476,75 +2935,131 @@ async function runSEOCheck(plugin, files, abortController) {
   }
   return results;
 }
-async function checkFile(plugin, file, content, vaultDetector, abortController) {
+async function checkFile(
+  plugin,
+  file,
+  content,
+  vaultDetector,
+  abortController,
+) {
   const checks = {
     titleLength: await checkTitleLength(content, file, plugin.settings),
     metaDescription: await checkMetaDescription(content, file, plugin.settings),
-    titleH1Uniqueness: await checkTitleH1Uniqueness(content, file, plugin.settings),
+    titleH1Uniqueness: await checkTitleH1Uniqueness(
+      content,
+      file,
+      plugin.settings,
+    ),
     keywordInTitle: await checkKeywordInTitle(content, file, plugin.settings),
-    keywordInDescription: await checkKeywordInDescription(content, file, plugin.settings),
-    keywordInHeadings: await checkKeywordInHeadings(content, file, plugin.settings),
+    keywordInDescription: await checkKeywordInDescription(
+      content,
+      file,
+      plugin.settings,
+    ),
+    keywordInHeadings: await checkKeywordInHeadings(
+      content,
+      file,
+      plugin.settings,
+    ),
     keywordInSlug: await checkKeywordInSlug(content, file, plugin.settings),
     slugFormat: await checkSlugFormat(content, file, plugin.settings),
     keywordDensity: await checkKeywordDensity(content, file, plugin.settings),
     headingOrder: await checkHeadingOrder(content, file, plugin.settings),
     contentLength: await checkContentLength(content, file, plugin.settings),
-    duplicateTitles: await checkDuplicateTitles(content, file, plugin.settings, vaultDetector),
-    duplicateDescriptions: await checkDuplicateDescriptions(content, file, plugin.settings, vaultDetector),
-    duplicateContent: plugin.settings.checkDuplicateContent ? await checkVaultDuplicateContent(content, file, plugin.settings, vaultDetector) : await checkDuplicateContent(content, file, plugin.settings),
+    duplicateTitles: await checkDuplicateTitles(
+      content,
+      file,
+      plugin.settings,
+      vaultDetector,
+    ),
+    duplicateDescriptions: await checkDuplicateDescriptions(
+      content,
+      file,
+      plugin.settings,
+      vaultDetector,
+    ),
+    duplicateContent: plugin.settings.checkDuplicateContent
+      ? await checkVaultDuplicateContent(
+          content,
+          file,
+          plugin.settings,
+          vaultDetector,
+        )
+      : await checkDuplicateContent(content, file, plugin.settings),
     altText: await checkAltText(content, file, plugin.settings),
     imageFileNames: await checkImageNaming(content, file, plugin.settings),
     nakedLinks: await checkNakedLinks(content, file, plugin.settings),
-    brokenLinks: await checkBrokenLinks(content, file, plugin.settings, plugin.app),
-    potentiallyBrokenLinks: await checkPotentiallyBrokenLinks(content, file, plugin.settings, plugin.app),
+    brokenLinks: await checkBrokenLinks(
+      content,
+      file,
+      plugin.settings,
+      plugin.app,
+    ),
+    potentiallyBrokenLinks: await checkPotentiallyBrokenLinks(
+      content,
+      file,
+      plugin.settings,
+      plugin.app,
+    ),
     potentiallyBrokenEmbeds: await checkNotices(content, file, plugin.settings),
-    externalBrokenLinks: plugin.settings.enableExternalLinkVaultCheck ? await checkExternalBrokenLinks(content, file, plugin.settings, abortController) : plugin.settings.checkExternalLinks ? await checkExternalLinks(content, file, plugin.settings) : [],
-    readingLevel: await checkReadingLevel(content, file, plugin.settings)
+    externalBrokenLinks: plugin.settings.enableExternalLinkVaultCheck
+      ? await checkExternalBrokenLinks(
+          content,
+          file,
+          plugin.settings,
+          abortController,
+        )
+      : plugin.settings.checkExternalLinks
+        ? await checkExternalLinks(content, file, plugin.settings)
+        : [],
+    readingLevel: await checkReadingLevel(content, file, plugin.settings),
   };
   const allResults = Object.values(checks).flat();
   const issuesCount = allResults.filter((r) => r.severity === "error").length;
-  const warningsCount = allResults.filter((r) => r.severity === "warning").length;
+  const warningsCount = allResults.filter(
+    (r) => r.severity === "warning",
+  ).length;
   const noticesCount = allResults.filter((r) => r.severity === "notice").length;
   let overallScore = 0;
   const titleResults = [...checks.titleLength, ...checks.titleH1Uniqueness];
   if (titleResults.length > 0) {
     const passedCount = titleResults.filter((r) => r.passed).length;
-    overallScore += passedCount / titleResults.length * 15;
+    overallScore += (passedCount / titleResults.length) * 15;
   } else {
     overallScore += 15;
   }
   const metaResults = checks.metaDescription;
   if (metaResults.length > 0) {
     const passedCount = metaResults.filter((r) => r.passed).length;
-    overallScore += passedCount / metaResults.length * 15;
+    overallScore += (passedCount / metaResults.length) * 15;
   } else {
     overallScore += 15;
   }
   const headingResults = checks.headingOrder;
   if (headingResults.length > 0) {
     const passedCount = headingResults.filter((r) => r.passed).length;
-    overallScore += passedCount / headingResults.length * 15;
+    overallScore += (passedCount / headingResults.length) * 15;
   } else {
     overallScore += 15;
   }
   const contentResults = [...checks.contentLength, ...checks.readingLevel];
   if (contentResults.length > 0) {
     const passedCount = contentResults.filter((r) => r.passed).length;
-    overallScore += passedCount / contentResults.length * 20;
+    overallScore += (passedCount / contentResults.length) * 20;
   } else {
     overallScore += 20;
   }
   const altTextResults = checks.altText;
   if (altTextResults.length > 0) {
     const passedCount = altTextResults.filter((r) => r.passed).length;
-    overallScore += passedCount / altTextResults.length * 10;
+    overallScore += (passedCount / altTextResults.length) * 10;
   } else {
     overallScore += 10;
   }
   const linkResults = [...checks.brokenLinks, ...checks.nakedLinks];
   if (linkResults.length > 0) {
     const passedCount = linkResults.filter((r) => r.passed).length;
-    overallScore += passedCount / linkResults.length * 15;
+    overallScore += (passedCount / linkResults.length) * 15;
   } else {
     overallScore += 15;
   }
@@ -2553,11 +3068,11 @@ async function checkFile(plugin, file, content, vaultDetector, abortController) 
     ...checks.keywordInTitle,
     ...checks.keywordInDescription,
     ...checks.keywordInHeadings,
-    ...checks.keywordInSlug
+    ...checks.keywordInSlug,
   ];
   if (keywordResults.length > 0) {
     const passedCount = keywordResults.filter((r) => r.passed).length;
-    overallScore += passedCount / keywordResults.length * 10;
+    overallScore += (passedCount / keywordResults.length) * 10;
   } else {
     overallScore += 10;
   }
@@ -2569,7 +3084,7 @@ async function checkFile(plugin, file, content, vaultDetector, abortController) 
     overallScore,
     issuesCount,
     warningsCount,
-    noticesCount
+    noticesCount,
   };
 }
 async function generateFileHash(file, app) {
@@ -2608,7 +3123,7 @@ function generateSettingsHash(settings) {
     checkDuplicateContent: settings.checkDuplicateContent,
     checkReadingLevel: settings.checkReadingLevel,
     // Thresholds that affect results
-    duplicateThreshold: settings.duplicateThreshold
+    duplicateThreshold: settings.duplicateThreshold,
     // Add other settings that affect SEO results
   };
   return JSON.stringify(relevantSettings);
@@ -2635,7 +3150,7 @@ async function cacheResult(file, result, plugin) {
     result,
     timestamp: Date.now(),
     fileHash,
-    settingsHash
+    settingsHash,
   });
 }
 function clearCache() {
@@ -2659,13 +3174,13 @@ var init_seo_checker = __esm({
     init_duplicate_detection();
     cache = /* @__PURE__ */ new Map();
     CACHE_EXPIRY_MS = 24 * 60 * 60 * 1e3;
-  }
+  },
 });
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => SEOPlugin
+  default: () => SEOPlugin,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian11 = require("obsidian");
@@ -2708,7 +3223,7 @@ var DEFAULT_SETTINGS = {
   keywordDensityMax: 2,
   duplicateThreshold: 80,
   cachedGlobalResults: [],
-  lastScanTimestamp: 0
+  lastScanTimestamp: 0,
 };
 
 // src/commands/index.ts
@@ -2719,7 +3234,7 @@ function registerCommands(plugin) {
     icon: "search-check",
     callback: () => {
       plugin.openCurrentPanel();
-    }
+    },
   });
   plugin.addCommand({
     id: "open-global",
@@ -2727,7 +3242,7 @@ function registerCommands(plugin) {
     icon: "search-check",
     callback: () => {
       plugin.openGlobalPanel();
-    }
+    },
   });
   plugin.addCommand({
     id: "run-current",
@@ -2736,15 +3251,17 @@ function registerCommands(plugin) {
     callback: () => {
       plugin.openCurrentPanel();
       setTimeout(() => {
-        const currentPanel = plugin.app.workspace.getLeavesOfType("seo-current-panel")[0];
+        const currentPanel =
+          plugin.app.workspace.getLeavesOfType("seo-current-panel")[0];
         if (currentPanel && currentPanel.view) {
-          const checkBtn = currentPanel.view.containerEl.querySelector(".seo-top-btn");
+          const checkBtn =
+            currentPanel.view.containerEl.querySelector(".seo-top-btn");
           if (checkBtn) {
             checkBtn.click();
           }
         }
       }, 200);
-    }
+    },
   });
   plugin.addCommand({
     id: "run-global",
@@ -2754,7 +3271,8 @@ function registerCommands(plugin) {
       plugin.openGlobalPanel();
       void setTimeout(() => {
         void (async () => {
-          const globalPanels = plugin.app.workspace.getLeavesOfType("seo-global-panel");
+          const globalPanels =
+            plugin.app.workspace.getLeavesOfType("seo-global-panel");
           if (globalPanels.length === 0) {
             plugin.openGlobalPanel();
             return;
@@ -2767,7 +3285,7 @@ function registerCommands(plugin) {
           }
         })();
       }, 300);
-    }
+    },
   });
 }
 
@@ -2782,269 +3300,534 @@ var SEOSettingTab = class extends import_obsidian.PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    const globalGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Global");
+    const globalGroup = new import_obsidian.SettingGroup(
+      containerEl,
+    ).setHeading("Global");
     globalGroup.addSetting((setting) => {
-      setting.setName("Scan directories").setDesc("Comma-separated list of directory names to scan. Leave blank to scan all directories.").addText((text) => {
-        text.setPlaceholder("like blog, posts, public");
-        text.setValue(this.plugin.settings.scanDirectories);
-        text.onChange(async (value) => {
-          this.plugin.settings.scanDirectories = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    globalGroup.addSetting((setting) => {
-      setting.setName("Use note titles instead of file names").setDesc("Display note titles from properties instead of file names in the issues list and current note audit").addToggle((toggle) => toggle.setValue(this.plugin.settings.useNoteTitles).onChange(async (value) => {
-        this.plugin.settings.useNoteTitles = value;
-        await this.plugin.saveSettings();
-      }));
-    });
-    globalGroup.addSetting((setting) => {
-      setting.setName("Title prefix / suffix").setDesc("Specify an optional prefix or suffix that gets appended to your meta title - used to factor in character count for the title length check").addText((text) => text.setPlaceholder("Author name").setValue(this.plugin.settings.titlePrefixSuffix).onChange(async (value) => {
-        this.plugin.settings.titlePrefixSuffix = value;
-        await this.plugin.saveSettings();
-      }));
-    });
-    globalGroup.addSetting((setting) => {
-      setting.setName("Ignores files with an underscore prefix").setDesc("Don't process files that begin with an underscore, like _example.md").addToggle((toggle) => toggle.setValue(this.plugin.settings.ignoreUnderscoreFiles).onChange(async (value) => {
-        this.plugin.settings.ignoreUnderscoreFiles = value;
-        await this.plugin.saveSettings();
-      }));
-    });
-    globalGroup.addSetting((setting) => {
-      setting.setName("Enable MDX file support").setDesc("Process MDX files in addition to Markdown files. MDX files use the same properties format as Markdown.").addToggle((toggle) => toggle.setValue(this.plugin.settings.enableMDXSupport).onChange(async (value) => {
-        this.plugin.settings.enableMDXSupport = value;
-        await this.plugin.saveSettings();
-      }));
-    });
-    globalGroup.addSetting((setting) => {
-      setting.setName("Show ribbon icon").setDesc("Show or hide the wizard icon in the left sidebar ribbon").addToggle((toggle) => toggle.setValue(this.plugin.settings.showRibbonIcon).onChange(async (value) => {
-        this.plugin.settings.showRibbonIcon = value;
-        await this.plugin.saveSettings();
-        this.plugin.toggleRibbonIcon();
-      }));
-    });
-    globalGroup.addSetting((setting) => {
-      setting.setName("Export format").setDesc("Format for copy and download from the audit panel (CSV or Markdown). Markdown is useful for pasting into agents or docs.").addDropdown((dropdown) => dropdown.addOption("csv", "CSV").addOption("markdown", "Markdown").setValue(this.plugin.settings.exportFormat).onChange(async (value) => {
-        this.plugin.settings.exportFormat = value;
-        await this.plugin.saveSettings();
-      }));
-    });
-    const propertyNamesGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Property names");
-    propertyNamesGroup.addSetting((setting) => {
-      setting.setName("Keyword property").setDesc("Property name for target keyword (targetKeyword, seo, keyword, etc.)").addText((text) => {
-        text.setPlaceholder("targetKeyword");
-        text.setValue(this.plugin.settings.keywordProperty);
-        text.onChange(async (value) => {
-          this.plugin.settings.keywordProperty = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    propertyNamesGroup.addSetting((setting) => {
-      setting.setName("Description property").setDesc("Property name for meta description").addText((text) => {
-        text.setPlaceholder("description");
-        text.setValue(this.plugin.settings.descriptionProperty);
-        text.onChange(async (value) => {
-          this.plugin.settings.descriptionProperty = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    propertyNamesGroup.addSetting((setting) => {
-      setting.setName("Title property").setDesc("Property name for title (leave blank to skip title checks)").addText((text) => {
-        text.setPlaceholder("title");
-        text.setValue(this.plugin.settings.titleProperty);
-        text.onChange(async (value) => {
-          this.plugin.settings.titleProperty = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    propertyNamesGroup.addSetting((setting) => {
-      setting.setName("Use file name as title").setDesc("Use file name as title instead of a property").addToggle((toggle) => toggle.setValue(this.plugin.settings.useFilenameAsTitle).onChange(async (value) => {
-        this.plugin.settings.useFilenameAsTitle = value;
-        await this.plugin.saveSettings();
-      }));
-    });
-    propertyNamesGroup.addSetting((setting) => {
-      setting.setName("Slug property").setDesc("Property name for slug (leave blank to skip slug checks)").addText((text) => {
-        text.setPlaceholder("slug");
-        text.setValue(this.plugin.settings.slugProperty);
-        text.onChange(async (value) => {
-          this.plugin.settings.slugProperty = value;
-          await this.plugin.saveSettings();
-        });
-      });
-    });
-    propertyNamesGroup.addSetting((setting) => {
-      setting.setName("Use file/folder name as slug").setDesc("Use file/folder name as slug instead of a property").addToggle((toggle) => toggle.setValue(this.plugin.settings.useFilenameAsSlug).onChange(async (value) => {
-        this.plugin.settings.useFilenameAsSlug = value;
-        await this.plugin.saveSettings();
-        this.display();
-      }));
-    });
-    if (this.plugin.settings.useFilenameAsSlug) {
-      propertyNamesGroup.addSetting((setting) => {
-        setting.setName("Use parent folder name instead when specified file name is used").setDesc("If a markdown file matches this file name, use the parent folder name as the slug instead").addText((text) => {
-          text.setPlaceholder("index");
-          text.setValue(this.plugin.settings.parentFolderSlugFilename);
+      setting
+        .setName("Scan directories")
+        .setDesc(
+          "Comma-separated list of directory names to scan. Leave blank to scan all directories.",
+        )
+        .addText((text) => {
+          text.setPlaceholder("like blog, posts, public");
+          text.setValue(this.plugin.settings.scanDirectories);
           text.onChange(async (value) => {
-            this.plugin.settings.parentFolderSlugFilename = value;
+            this.plugin.settings.scanDirectories = value;
             await this.plugin.saveSettings();
           });
         });
+    });
+    globalGroup.addSetting((setting) => {
+      setting
+        .setName("Use note titles instead of file names")
+        .setDesc(
+          "Display note titles from properties instead of file names in the issues list and current note audit",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.useNoteTitles)
+            .onChange(async (value) => {
+              this.plugin.settings.useNoteTitles = value;
+              await this.plugin.saveSettings();
+            }),
+        );
+    });
+    globalGroup.addSetting((setting) => {
+      setting
+        .setName("Title prefix / suffix")
+        .setDesc(
+          "Specify an optional prefix or suffix that gets appended to your meta title - used to factor in character count for the title length check",
+        )
+        .addText((text) =>
+          text
+            .setPlaceholder("Author name")
+            .setValue(this.plugin.settings.titlePrefixSuffix)
+            .onChange(async (value) => {
+              this.plugin.settings.titlePrefixSuffix = value;
+              await this.plugin.saveSettings();
+            }),
+        );
+    });
+    globalGroup.addSetting((setting) => {
+      setting
+        .setName("Ignores files with an underscore prefix")
+        .setDesc(
+          "Don't process files that begin with an underscore, like _example.md",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.ignoreUnderscoreFiles)
+            .onChange(async (value) => {
+              this.plugin.settings.ignoreUnderscoreFiles = value;
+              await this.plugin.saveSettings();
+            }),
+        );
+    });
+    globalGroup.addSetting((setting) => {
+      setting
+        .setName("Enable MDX file support")
+        .setDesc(
+          "Process MDX files in addition to Markdown files. MDX files use the same properties format as Markdown.",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.enableMDXSupport)
+            .onChange(async (value) => {
+              this.plugin.settings.enableMDXSupport = value;
+              await this.plugin.saveSettings();
+            }),
+        );
+    });
+    globalGroup.addSetting((setting) => {
+      setting
+        .setName("Show ribbon icon")
+        .setDesc("Show or hide the wizard icon in the left sidebar ribbon")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.showRibbonIcon)
+            .onChange(async (value) => {
+              this.plugin.settings.showRibbonIcon = value;
+              await this.plugin.saveSettings();
+              this.plugin.toggleRibbonIcon();
+            }),
+        );
+    });
+    globalGroup.addSetting((setting) => {
+      setting
+        .setName("Export format")
+        .setDesc(
+          "Format for copy and download from the audit panel (CSV or Markdown). Markdown is useful for pasting into agents or docs.",
+        )
+        .addDropdown((dropdown) =>
+          dropdown
+            .addOption("csv", "CSV")
+            .addOption("markdown", "Markdown")
+            .setValue(this.plugin.settings.exportFormat)
+            .onChange(async (value) => {
+              this.plugin.settings.exportFormat = value;
+              await this.plugin.saveSettings();
+            }),
+        );
+    });
+    const propertyNamesGroup = new import_obsidian.SettingGroup(
+      containerEl,
+    ).setHeading("Property names");
+    propertyNamesGroup.addSetting((setting) => {
+      setting
+        .setName("Keyword property")
+        .setDesc(
+          "Property name for target keyword (targetKeyword, seo, keyword, etc.)",
+        )
+        .addText((text) => {
+          text.setPlaceholder("targetKeyword");
+          text.setValue(this.plugin.settings.keywordProperty);
+          text.onChange(async (value) => {
+            this.plugin.settings.keywordProperty = value;
+            await this.plugin.saveSettings();
+          });
+        });
+    });
+    propertyNamesGroup.addSetting((setting) => {
+      setting
+        .setName("Description property")
+        .setDesc("Property name for meta description")
+        .addText((text) => {
+          text.setPlaceholder("description");
+          text.setValue(this.plugin.settings.descriptionProperty);
+          text.onChange(async (value) => {
+            this.plugin.settings.descriptionProperty = value;
+            await this.plugin.saveSettings();
+          });
+        });
+    });
+    propertyNamesGroup.addSetting((setting) => {
+      setting
+        .setName("Title property")
+        .setDesc("Property name for title (leave blank to skip title checks)")
+        .addText((text) => {
+          text.setPlaceholder("title");
+          text.setValue(this.plugin.settings.titleProperty);
+          text.onChange(async (value) => {
+            this.plugin.settings.titleProperty = value;
+            await this.plugin.saveSettings();
+          });
+        });
+    });
+    propertyNamesGroup.addSetting((setting) => {
+      setting
+        .setName("Use file name as title")
+        .setDesc("Use file name as title instead of a property")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.useFilenameAsTitle)
+            .onChange(async (value) => {
+              this.plugin.settings.useFilenameAsTitle = value;
+              await this.plugin.saveSettings();
+            }),
+        );
+    });
+    propertyNamesGroup.addSetting((setting) => {
+      setting
+        .setName("Slug property")
+        .setDesc("Property name for slug (leave blank to skip slug checks)")
+        .addText((text) => {
+          text.setPlaceholder("slug");
+          text.setValue(this.plugin.settings.slugProperty);
+          text.onChange(async (value) => {
+            this.plugin.settings.slugProperty = value;
+            await this.plugin.saveSettings();
+          });
+        });
+    });
+    propertyNamesGroup.addSetting((setting) => {
+      setting
+        .setName("Use file/folder name as slug")
+        .setDesc("Use file/folder name as slug instead of a property")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.useFilenameAsSlug)
+            .onChange(async (value) => {
+              this.plugin.settings.useFilenameAsSlug = value;
+              await this.plugin.saveSettings();
+              this.display();
+            }),
+        );
+    });
+    if (this.plugin.settings.useFilenameAsSlug) {
+      propertyNamesGroup.addSetting((setting) => {
+        setting
+          .setName(
+            "Use parent folder name instead when specified file name is used",
+          )
+          .setDesc(
+            "If a markdown file matches this file name, use the parent folder name as the slug instead",
+          )
+          .addText((text) => {
+            text.setPlaceholder("index");
+            text.setValue(this.plugin.settings.parentFolderSlugFilename);
+            text.onChange(async (value) => {
+              this.plugin.settings.parentFolderSlugFilename = value;
+              await this.plugin.saveSettings();
+            });
+          });
       });
     }
-    const auditOptionsGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Audit options");
+    const auditOptionsGroup = new import_obsidian.SettingGroup(
+      containerEl,
+    ).setHeading("Audit options");
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check meta title length").setDesc("Enable meta title length checking").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkTitleLength).onChange(async (value) => {
-        this.plugin.settings.checkTitleLength = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check meta title length")
+        .setDesc("Enable meta title length checking")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkTitleLength)
+            .onChange(async (value) => {
+              this.plugin.settings.checkTitleLength = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check heading order").setDesc("Enable heading hierarchy checking").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkHeadingOrder).onChange(async (value) => {
-        this.plugin.settings.checkHeadingOrder = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check heading order")
+        .setDesc("Enable heading hierarchy checking")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkHeadingOrder)
+            .onChange(async (value) => {
+              this.plugin.settings.checkHeadingOrder = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check content length").setDesc("Enable content length checking").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkContentLength).onChange(async (value) => {
-        this.plugin.settings.checkContentLength = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check content length")
+        .setDesc("Enable content length checking")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkContentLength)
+            .onChange(async (value) => {
+              this.plugin.settings.checkContentLength = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check duplicate content").setDesc("Enable duplicate content detection").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkDuplicateContent).onChange(async (value) => {
-        this.plugin.settings.checkDuplicateContent = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check duplicate content")
+        .setDesc("Enable duplicate content detection")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkDuplicateContent)
+            .onChange(async (value) => {
+              this.plugin.settings.checkDuplicateContent = value;
+              await this.plugin.saveSettings();
+            }),
+        );
       setting.descEl.createEl("div", {
         // eslint-disable-next-line obsidianmd/ui/sentence-case
         text: "Warning: This feature can be very resource-intensive with large vaults and many notes. Disable for faster audits.",
-        cls: "setting-item-description seo-warning-message"
+        cls: "setting-item-description seo-warning-message",
       });
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check alt text").setDesc("Enable alt text checking for media content (images, videos, embeds, etc.)").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkAltText).onChange(async (value) => {
-        this.plugin.settings.checkAltText = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check alt text")
+        .setDesc(
+          "Enable alt text checking for media content (images, videos, embeds, etc.)",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkAltText)
+            .onChange(async (value) => {
+              this.plugin.settings.checkAltText = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check image file names").setDesc("Enable image file name checking").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkImageNaming).onChange(async (value) => {
-        this.plugin.settings.checkImageNaming = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check image file names")
+        .setDesc("Enable image file name checking")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkImageNaming)
+            .onChange(async (value) => {
+              this.plugin.settings.checkImageNaming = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check broken internal links").setDesc("Enable broken internal link detection").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkBrokenLinks).onChange(async (value) => {
-        this.plugin.settings.checkBrokenLinks = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check broken internal links")
+        .setDesc("Enable broken internal link detection")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkBrokenLinks)
+            .onChange(async (value) => {
+              this.plugin.settings.checkBrokenLinks = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check external links").setDesc("Return a list of external links").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkExternalLinks).onChange(async (value) => {
-        this.plugin.settings.checkExternalLinks = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check external links")
+        .setDesc("Return a list of external links")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkExternalLinks)
+            .onChange(async (value) => {
+              this.plugin.settings.checkExternalLinks = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Enable broken external link check button").setDesc('Show "Check external links for 404s" button in current note panel').addToggle((toggle) => toggle.setValue(this.plugin.settings.enableExternalLinkButton).onChange(async (value) => {
-        this.plugin.settings.enableExternalLinkButton = value;
-        await this.plugin.saveSettings();
-        if (this.plugin.sidePanel) {
-          this.plugin.sidePanel.refresh();
-        }
-      }));
+      setting
+        .setName("Enable broken external link check button")
+        .setDesc(
+          'Show "Check external links for 404s" button in current note panel',
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.enableExternalLinkButton)
+            .onChange(async (value) => {
+              this.plugin.settings.enableExternalLinkButton = value;
+              await this.plugin.saveSettings();
+              if (this.plugin.sidePanel) {
+                this.plugin.sidePanel.refresh();
+              }
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check naked links").setDesc("Enable naked URL detection").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkNakedLinks).onChange(async (value) => {
-        this.plugin.settings.checkNakedLinks = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check naked links")
+        .setDesc("Enable naked URL detection")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkNakedLinks)
+            .onChange(async (value) => {
+              this.plugin.settings.checkNakedLinks = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check reading level").setDesc("Enable reading level analysis").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkReadingLevel).onChange(async (value) => {
-        this.plugin.settings.checkReadingLevel = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check reading level")
+        .setDesc("Enable reading level analysis")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkReadingLevel)
+            .onChange(async (value) => {
+              this.plugin.settings.checkReadingLevel = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check potentially broken links").setDesc("Check for potentially broken internal links that may not work on web publishing").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkPotentiallyBrokenLinks).onChange(async (value) => {
-        this.plugin.settings.checkPotentiallyBrokenLinks = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check potentially broken links")
+        .setDesc(
+          "Check for potentially broken internal links that may not work on web publishing",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkPotentiallyBrokenLinks)
+            .onChange(async (value) => {
+              this.plugin.settings.checkPotentiallyBrokenLinks = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Check potentially broken embeds").setDesc("Check for potentially broken markdown or wikilink-based embedded media that may not work on web publishing").addToggle((toggle) => toggle.setValue(this.plugin.settings.checkPotentiallyBrokenEmbeds).onChange(async (value) => {
-        this.plugin.settings.checkPotentiallyBrokenEmbeds = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Check potentially broken embeds")
+        .setDesc(
+          "Check for potentially broken markdown or wikilink-based embedded media that may not work on web publishing",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.checkPotentiallyBrokenEmbeds)
+            .onChange(async (value) => {
+              this.plugin.settings.checkPotentiallyBrokenEmbeds = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Flexible relative link check").setDesc("Uses flexible validation for relative paths like /page that can be resolved by a static site generator, but may be considered broken by typical Obsidian validation").addToggle((toggle) => toggle.setValue(this.plugin.settings.publishMode).onChange(async (value) => {
-        this.plugin.settings.publishMode = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Flexible relative link check")
+        .setDesc(
+          "Uses flexible validation for relative paths like /page that can be resolved by a static site generator, but may be considered broken by typical Obsidian validation",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.publishMode)
+            .onChange(async (value) => {
+              this.plugin.settings.publishMode = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Title property is H1").setDesc("Enable when your static site generator uses the title property to automatically generate the H1 heading. This prevents H1 validation errors while still flagging H1s that appear after other heading levels.").addToggle((toggle) => toggle.setValue(this.plugin.settings.skipH1Check).onChange(async (value) => {
-        this.plugin.settings.skipH1Check = value;
-        await this.plugin.saveSettings();
-      }));
+      setting
+        .setName("Title property is H1")
+        .setDesc(
+          "Enable when your static site generator uses the title property to automatically generate the H1 heading. This prevents H1 validation errors while still flagging H1s that appear after other heading levels.",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.skipH1Check)
+            .onChange(async (value) => {
+              this.plugin.settings.skipH1Check = value;
+              await this.plugin.saveSettings();
+            }),
+        );
     });
     auditOptionsGroup.addSetting((setting) => {
-      setting.setName("Automatically include broken external link checks in audits (not recommended)").setDesc("Include broken external link checking in vault-wide and current note audits").addToggle((toggle) => toggle.setValue(this.plugin.settings.enableExternalLinkVaultCheck).onChange(async (value) => {
-        this.plugin.settings.enableExternalLinkVaultCheck = value;
-        await this.plugin.saveSettings();
-        if (this.plugin.sidePanel) {
-          this.plugin.sidePanel.refresh();
-        }
-      }));
+      setting
+        .setName(
+          "Automatically include broken external link checks in audits (not recommended)",
+        )
+        .setDesc(
+          "Include broken external link checking in vault-wide and current note audits",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.enableExternalLinkVaultCheck)
+            .onChange(async (value) => {
+              this.plugin.settings.enableExternalLinkVaultCheck = value;
+              await this.plugin.saveSettings();
+              if (this.plugin.sidePanel) {
+                this.plugin.sidePanel.refresh();
+              }
+            }),
+        );
       setting.descEl.createEl("div", {
         // eslint-disable-next-line obsidianmd/ui/sentence-case
         text: 'Warning: This will make vault audits extremely slow. Use the "Check external links" button instead for individual notes.',
-        cls: "setting-item-description seo-warning-message"
+        cls: "setting-item-description seo-warning-message",
       });
     });
-    const thresholdsGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Thresholds");
+    const thresholdsGroup = new import_obsidian.SettingGroup(
+      containerEl,
+    ).setHeading("Thresholds");
     thresholdsGroup.addSetting((setting) => {
-      setting.setName("Minimum content length").setDesc("Minimum word count for content length check").addText((text) => text.setPlaceholder("300").setValue(this.plugin.settings.minContentLength.toString()).onChange(async (value) => {
-        const num = parseInt(value);
-        if (!isNaN(num)) {
-          this.plugin.settings.minContentLength = num;
-          await this.plugin.saveSettings();
-        }
-      }));
+      setting
+        .setName("Minimum content length")
+        .setDesc("Minimum word count for content length check")
+        .addText((text) =>
+          text
+            .setPlaceholder("300")
+            .setValue(this.plugin.settings.minContentLength.toString())
+            .onChange(async (value) => {
+              const num = parseInt(value);
+              if (!isNaN(num)) {
+                this.plugin.settings.minContentLength = num;
+                await this.plugin.saveSettings();
+              }
+            }),
+        );
     });
     thresholdsGroup.addSetting((setting) => {
-      setting.setName("Keyword density minimum").setDesc("Minimum keyword density percentage").addText((text) => text.setPlaceholder("1").setValue(this.plugin.settings.keywordDensityMin.toString()).onChange(async (value) => {
-        const num = parseFloat(value);
-        if (!isNaN(num)) {
-          this.plugin.settings.keywordDensityMin = num;
-          await this.plugin.saveSettings();
-        }
-      }));
+      setting
+        .setName("Keyword density minimum")
+        .setDesc("Minimum keyword density percentage")
+        .addText((text) =>
+          text
+            .setPlaceholder("1")
+            .setValue(this.plugin.settings.keywordDensityMin.toString())
+            .onChange(async (value) => {
+              const num = parseFloat(value);
+              if (!isNaN(num)) {
+                this.plugin.settings.keywordDensityMin = num;
+                await this.plugin.saveSettings();
+              }
+            }),
+        );
     });
     thresholdsGroup.addSetting((setting) => {
-      setting.setName("Keyword density maximum").setDesc("Maximum keyword density percentage").addText((text) => text.setPlaceholder("2").setValue(this.plugin.settings.keywordDensityMax.toString()).onChange(async (value) => {
-        const num = parseFloat(value);
-        if (!isNaN(num)) {
-          this.plugin.settings.keywordDensityMax = num;
-          await this.plugin.saveSettings();
-        }
-      }));
+      setting
+        .setName("Keyword density maximum")
+        .setDesc("Maximum keyword density percentage")
+        .addText((text) =>
+          text
+            .setPlaceholder("2")
+            .setValue(this.plugin.settings.keywordDensityMax.toString())
+            .onChange(async (value) => {
+              const num = parseFloat(value);
+              if (!isNaN(num)) {
+                this.plugin.settings.keywordDensityMax = num;
+                await this.plugin.saveSettings();
+              }
+            }),
+        );
     });
     thresholdsGroup.addSetting((setting) => {
-      setting.setName("Duplicate content threshold").setDesc("Similarity percentage threshold for duplicate content detection").addText((text) => text.setPlaceholder("80").setValue(this.plugin.settings.duplicateThreshold.toString()).onChange(async (value) => {
-        const num = parseInt(value);
-        if (!isNaN(num)) {
-          this.plugin.settings.duplicateThreshold = num;
-          await this.plugin.saveSettings();
-        }
-      }));
+      setting
+        .setName("Duplicate content threshold")
+        .setDesc(
+          "Similarity percentage threshold for duplicate content detection",
+        )
+        .addText((text) =>
+          text
+            .setPlaceholder("80")
+            .setValue(this.plugin.settings.duplicateThreshold.toString())
+            .onChange(async (value) => {
+              const num = parseInt(value);
+              if (!isNaN(num)) {
+                this.plugin.settings.duplicateThreshold = num;
+                await this.plugin.saveSettings();
+              }
+            }),
+        );
     });
   }
 };
@@ -3089,18 +3872,26 @@ var PanelActions = class {
         return [];
       }
       if (files.length > 20) {
-        new import_obsidian3.Notice(`Running SEO audit on ${files.length} files... This may take a moment.`);
+        new import_obsidian3.Notice(
+          `Running SEO audit on ${files.length} files... This may take a moment.`,
+        );
       }
-      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
+      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(
+        () => (init_seo_checker(), seo_checker_exports),
+      );
       const results = await runSEOCheck2(this.plugin, files);
       this.plugin.settings.cachedGlobalResults = results;
       this.plugin.settings.lastScanTimestamp = Date.now();
       await this.plugin.saveSettings();
-      new import_obsidian3.Notice(`SEO audit complete with ${results.length} files.`);
+      new import_obsidian3.Notice(
+        `SEO audit complete with ${results.length} files.`,
+      );
       return results;
     } catch (error) {
       console.error("Error running initial scan:", error);
-      new import_obsidian3.Notice("Error analyzing files. Check console for details.");
+      new import_obsidian3.Notice(
+        "Error analyzing files. Check console for details.",
+      );
       return [];
     }
   }
@@ -3111,10 +3902,19 @@ var PanelActions = class {
       return null;
     }
     try {
-      const { clearCacheForFile: clearCacheForFile2 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
+      const { clearCacheForFile: clearCacheForFile2 } =
+        await Promise.resolve().then(
+          () => (init_seo_checker(), seo_checker_exports),
+        );
       clearCacheForFile2(activeFile.path);
-      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
-      const results = await runSEOCheck2(this.plugin, [activeFile], abortSignal ? { signal: abortSignal } : void 0);
+      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(
+        () => (init_seo_checker(), seo_checker_exports),
+      );
+      const results = await runSEOCheck2(
+        this.plugin,
+        [activeFile],
+        abortSignal ? { signal: abortSignal } : void 0,
+      );
       if (results.length > 0) {
         new import_obsidian3.Notice("SEO audit complete.");
         return results[0] || null;
@@ -3126,7 +3926,9 @@ var PanelActions = class {
         throw error;
       }
       console.error("Error checking current note:", error);
-      new import_obsidian3.Notice("Error analyzing current note. Check console for details.");
+      new import_obsidian3.Notice(
+        "Error analyzing current note. Check console for details.",
+      );
       return null;
     }
   }
@@ -3137,13 +3939,19 @@ var PanelActions = class {
       return null;
     }
     try {
-      const originalVaultSetting = this.plugin.settings.enableExternalLinkVaultCheck;
+      const originalVaultSetting =
+        this.plugin.settings.enableExternalLinkVaultCheck;
       const originalExternalSetting = this.plugin.settings.checkExternalLinks;
       this.plugin.settings.enableExternalLinkVaultCheck = true;
       this.plugin.settings.checkExternalLinks = false;
-      const { clearCacheForFile: clearCacheForFile2 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
+      const { clearCacheForFile: clearCacheForFile2 } =
+        await Promise.resolve().then(
+          () => (init_seo_checker(), seo_checker_exports),
+        );
       clearCacheForFile2(activeFile.path);
-      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
+      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(
+        () => (init_seo_checker(), seo_checker_exports),
+      );
       const results = await runSEOCheck2(this.plugin, [activeFile]);
       this.plugin.settings.enableExternalLinkVaultCheck = originalVaultSetting;
       this.plugin.settings.checkExternalLinks = originalExternalSetting;
@@ -3154,7 +3962,9 @@ var PanelActions = class {
       return null;
     } catch (error) {
       console.error("Error checking external links:", error);
-      new import_obsidian3.Notice("Error checking external links. Check console for details.");
+      new import_obsidian3.Notice(
+        "Error checking external links. Check console for details.",
+      );
       return null;
     }
   }
@@ -3162,57 +3972,89 @@ var PanelActions = class {
     try {
       const files = await this.plugin.getFilesToCheck();
       if (files.length === 0) {
-        const fileTypeText = this.plugin.settings.enableMDXSupport ? "markdown or MDX files" : "markdown files";
-        new import_obsidian3.Notice(`No ${fileTypeText} found in configured directories.`);
+        const fileTypeText = this.plugin.settings.enableMDXSupport
+          ? "markdown or MDX files"
+          : "markdown files";
+        new import_obsidian3.Notice(
+          `No ${fileTypeText} found in configured directories.`,
+        );
         return [];
       }
-      const originalVaultSetting = this.plugin.settings.enableExternalLinkVaultCheck;
+      const originalVaultSetting =
+        this.plugin.settings.enableExternalLinkVaultCheck;
       const originalExternalSetting = this.plugin.settings.checkExternalLinks;
       this.plugin.settings.enableExternalLinkVaultCheck = true;
       this.plugin.settings.checkExternalLinks = false;
-      const { clearAllCache: clearAllCache3 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
+      const { clearAllCache: clearAllCache3 } = await Promise.resolve().then(
+        () => (init_seo_checker(), seo_checker_exports),
+      );
       clearAllCache3();
       if (files.length > 20) {
-        new import_obsidian3.Notice(`Checking external links for 404s on ${files.length} files... This may take a moment.`);
+        new import_obsidian3.Notice(
+          `Checking external links for 404s on ${files.length} files... This may take a moment.`,
+        );
       }
-      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
+      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(
+        () => (init_seo_checker(), seo_checker_exports),
+      );
       const results = await runSEOCheck2(this.plugin, files);
       this.plugin.settings.enableExternalLinkVaultCheck = originalVaultSetting;
       this.plugin.settings.checkExternalLinks = originalExternalSetting;
       this.plugin.settings.cachedGlobalResults = results;
       this.plugin.settings.lastScanTimestamp = Date.now();
       await this.plugin.saveSettings();
-      new import_obsidian3.Notice(`External links check complete with ${results.length} files.`);
+      new import_obsidian3.Notice(
+        `External links check complete with ${results.length} files.`,
+      );
       return results;
     } catch (error) {
       console.error("Error checking all external links:", error);
-      new import_obsidian3.Notice("Error checking external links. Check console for details.");
+      new import_obsidian3.Notice(
+        "Error checking external links. Check console for details.",
+      );
       return [];
     }
   }
   async refreshGlobalResults(abortSignal) {
     let auditNotice = null;
     try {
-      const { clearAllCache: clearAllCache3 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
+      const { clearAllCache: clearAllCache3 } = await Promise.resolve().then(
+        () => (init_seo_checker(), seo_checker_exports),
+      );
       clearAllCache3();
       const files = await this.plugin.getFilesToCheck();
       if (files.length === 0) {
-        const fileTypeText = this.plugin.settings.enableMDXSupport ? "markdown or MDX files" : "markdown files";
-        new import_obsidian3.Notice(`No ${fileTypeText} found in configured directories.`);
+        const fileTypeText = this.plugin.settings.enableMDXSupport
+          ? "markdown or MDX files"
+          : "markdown files";
+        new import_obsidian3.Notice(
+          `No ${fileTypeText} found in configured directories.`,
+        );
         return [];
       }
       if (files.length > 20) {
-        auditNotice = new import_obsidian3.Notice(`Refreshing SEO audit on ${files.length} files... This may take a moment.`, 0);
+        auditNotice = new import_obsidian3.Notice(
+          `Refreshing SEO audit on ${files.length} files... This may take a moment.`,
+          0,
+        );
       }
-      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
-      const results = await runSEOCheck2(this.plugin, files, abortSignal ? { signal: abortSignal } : void 0);
+      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(
+        () => (init_seo_checker(), seo_checker_exports),
+      );
+      const results = await runSEOCheck2(
+        this.plugin,
+        files,
+        abortSignal ? { signal: abortSignal } : void 0,
+      );
       this.plugin.settings.cachedGlobalResults = results;
       this.plugin.settings.lastScanTimestamp = Date.now();
       await this.plugin.saveSettings();
       if (auditNotice) {
         auditNotice.hide();
       }
-      new import_obsidian3.Notice(`SEO audit complete with ${results.length} files.`);
+      new import_obsidian3.Notice(
+        `SEO audit complete with ${results.length} files.`,
+      );
       return results;
     } catch (error) {
       if (auditNotice) {
@@ -3224,7 +4066,9 @@ var PanelActions = class {
         return [];
       }
       console.error("Error checking all notes:", error);
-      new import_obsidian3.Notice("Error analyzing files. Check console for details.");
+      new import_obsidian3.Notice(
+        "Error analyzing files. Check console for details.",
+      );
       return [];
     }
   }
@@ -3259,7 +4103,8 @@ This file may have been renamed or deleted.`);
     this.plugin.openCurrentPanel();
     await new Promise((resolve) => {
       const checkPanel = () => {
-        const currentPanels = this.app.workspace.getLeavesOfType("seo-current-panel");
+        const currentPanels =
+          this.app.workspace.getLeavesOfType("seo-current-panel");
         if (currentPanels.length > 0) {
           const currentPanel = currentPanels[0];
           if (currentPanel && currentPanel.view) {
@@ -3282,20 +4127,28 @@ This file may have been renamed or deleted.`);
         SEOSidePanel.globalAuditController = new AbortController();
       }
       await new Promise((resolve) => setTimeout(resolve, 100));
-      const currentPanels = this.app.workspace.getLeavesOfType("seo-current-panel");
+      const currentPanels =
+        this.app.workspace.getLeavesOfType("seo-current-panel");
       if (currentPanels.length > 0) {
         const currentPanel = currentPanels[0];
         if (currentPanel && currentPanel.view) {
-          const refreshBtn = currentPanel.view.containerEl.querySelector("button[data-refresh-btn]");
+          const refreshBtn = currentPanel.view.containerEl.querySelector(
+            "button[data-refresh-btn]",
+          );
           if (refreshBtn) {
             refreshBtn.disabled = true;
             refreshBtn.textContent = "Auditing...";
           }
         }
       }
-      const results = await this.checkCurrentNote((_a = SEOSidePanel.globalAuditController) == null ? void 0 : _a.signal);
+      const results = await this.checkCurrentNote(
+        (_a = SEOSidePanel.globalAuditController) == null ? void 0 : _a.signal,
+      );
       if (results) {
-        if (this.plugin.sidePanel && this.plugin.sidePanel.panelType === "current") {
+        if (
+          this.plugin.sidePanel &&
+          this.plugin.sidePanel.panelType === "current"
+        ) {
           this.plugin.sidePanel.currentNoteResults = results;
           this.plugin.sidePanel.render();
         }
@@ -3303,11 +4156,14 @@ This file may have been renamed or deleted.`);
     } catch (error) {
       console.error("Error running audit after opening file:", error);
     } finally {
-      const currentPanels = this.app.workspace.getLeavesOfType("seo-current-panel");
+      const currentPanels =
+        this.app.workspace.getLeavesOfType("seo-current-panel");
       if (currentPanels.length > 0) {
         const currentPanel = currentPanels[0];
         if (currentPanel && currentPanel.view) {
-          const refreshBtn = currentPanel.view.containerEl.querySelector("button[data-refresh-btn]");
+          const refreshBtn = currentPanel.view.containerEl.querySelector(
+            "button[data-refresh-btn]",
+          );
           if (refreshBtn) {
             refreshBtn.disabled = false;
             refreshBtn.textContent = "Refresh";
@@ -3316,14 +4172,33 @@ This file may have been renamed or deleted.`);
       }
     }
   }
-  showSortMenu(event, issuesFiles, issuesList, currentSort, onSortChange, settings) {
+  showSortMenu(
+    event,
+    issuesFiles,
+    issuesList,
+    currentSort,
+    onSortChange,
+    settings,
+  ) {
     const menu = new import_obsidian3.Menu();
-    const showNotices = settings ? settings.checkPotentiallyBrokenLinks && settings.checkPotentiallyBrokenEmbeds : true;
-    const displaySort = !showNotices && (currentSort === "notices-desc" || currentSort === "notices-asc") ? "issues-desc" : currentSort;
+    const showNotices = settings
+      ? settings.checkPotentiallyBrokenLinks &&
+        settings.checkPotentiallyBrokenEmbeds
+      : true;
+    const displaySort =
+      !showNotices &&
+      (currentSort === "notices-desc" || currentSort === "notices-asc")
+        ? "issues-desc"
+        : currentSort;
     menu.addItem((item) => {
       item.setTitle("Issues (high to low)").onClick(() => {
         onSortChange("issues-desc");
-        this.sortAndRenderFiles(issuesFiles, issuesList, "issues-desc", settings);
+        this.sortAndRenderFiles(
+          issuesFiles,
+          issuesList,
+          "issues-desc",
+          settings,
+        );
       });
       if (displaySort === "issues-desc") {
         item.setIcon("check");
@@ -3332,7 +4207,12 @@ This file may have been renamed or deleted.`);
     menu.addItem((item) => {
       item.setTitle("Issues (low to high)").onClick(() => {
         onSortChange("issues-asc");
-        this.sortAndRenderFiles(issuesFiles, issuesList, "issues-asc", settings);
+        this.sortAndRenderFiles(
+          issuesFiles,
+          issuesList,
+          "issues-asc",
+          settings,
+        );
       });
       if (displaySort === "issues-asc") {
         item.setIcon("check");
@@ -3342,7 +4222,12 @@ This file may have been renamed or deleted.`);
     menu.addItem((item) => {
       item.setTitle("Warnings (high to low)").onClick(() => {
         onSortChange("warnings-desc");
-        this.sortAndRenderFiles(issuesFiles, issuesList, "warnings-desc", settings);
+        this.sortAndRenderFiles(
+          issuesFiles,
+          issuesList,
+          "warnings-desc",
+          settings,
+        );
       });
       if (displaySort === "warnings-desc") {
         item.setIcon("check");
@@ -3351,7 +4236,12 @@ This file may have been renamed or deleted.`);
     menu.addItem((item) => {
       item.setTitle("Warnings (low to high)").onClick(() => {
         onSortChange("warnings-asc");
-        this.sortAndRenderFiles(issuesFiles, issuesList, "warnings-asc", settings);
+        this.sortAndRenderFiles(
+          issuesFiles,
+          issuesList,
+          "warnings-asc",
+          settings,
+        );
       });
       if (displaySort === "warnings-asc") {
         item.setIcon("check");
@@ -3362,7 +4252,12 @@ This file may have been renamed or deleted.`);
       menu.addItem((item) => {
         item.setTitle("Notices (high to low)").onClick(() => {
           onSortChange("notices-desc");
-          this.sortAndRenderFiles(issuesFiles, issuesList, "notices-desc", settings);
+          this.sortAndRenderFiles(
+            issuesFiles,
+            issuesList,
+            "notices-desc",
+            settings,
+          );
         });
         if (displaySort === "notices-desc") {
           item.setIcon("check");
@@ -3371,7 +4266,12 @@ This file may have been renamed or deleted.`);
       menu.addItem((item) => {
         item.setTitle("Notices (low to high)").onClick(() => {
           onSortChange("notices-asc");
-          this.sortAndRenderFiles(issuesFiles, issuesList, "notices-asc", settings);
+          this.sortAndRenderFiles(
+            issuesFiles,
+            issuesList,
+            "notices-asc",
+            settings,
+          );
         });
         if (displaySort === "notices-asc") {
           item.setIcon("check");
@@ -3382,7 +4282,12 @@ This file may have been renamed or deleted.`);
     menu.addItem((item) => {
       item.setTitle("File name (A to Z)").onClick(() => {
         onSortChange("filename-asc");
-        this.sortAndRenderFiles(issuesFiles, issuesList, "filename-asc", settings);
+        this.sortAndRenderFiles(
+          issuesFiles,
+          issuesList,
+          "filename-asc",
+          settings,
+        );
       });
       if (displaySort === "filename-asc") {
         item.setIcon("check");
@@ -3391,7 +4296,12 @@ This file may have been renamed or deleted.`);
     menu.addItem((item) => {
       item.setTitle("File name (Z to A)").onClick(() => {
         onSortChange("filename-desc");
-        this.sortAndRenderFiles(issuesFiles, issuesList, "filename-desc", settings);
+        this.sortAndRenderFiles(
+          issuesFiles,
+          issuesList,
+          "filename-desc",
+          settings,
+        );
       });
       if (displaySort === "filename-desc") {
         item.setIcon("check");
@@ -3401,9 +4311,13 @@ This file may have been renamed or deleted.`);
   }
   sortAndRenderFiles(issuesFiles, issuesList, sortType, settings) {
     const sortedFiles = sortFiles([...issuesFiles], sortType);
-    const filesListContainer = issuesList.querySelector(".seo-files-list-container");
+    const filesListContainer = issuesList.querySelector(
+      ".seo-files-list-container",
+    );
     if (!filesListContainer) return;
-    filesListContainer.querySelectorAll(".seo-file-issue").forEach((el) => el.remove());
+    filesListContainer
+      .querySelectorAll(".seo-file-issue")
+      .forEach((el) => el.remove());
     this.renderFilesList(sortedFiles, filesListContainer, settings);
   }
   renderFilesList(files, container, settings) {
@@ -3413,26 +4327,34 @@ This file may have been renamed or deleted.`);
       const fileLink = fileEl.createEl("a", {
         text: result.displayName || this.getDisplayPath(result.file),
         cls: "seo-file-link",
-        href: "#"
+        href: "#",
       });
       fileLink.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
         void this.openFile(result.file);
       });
-      const statsContainer = fileEl.createEl("div", { cls: "seo-stats-container" });
-      const showNotices = settings ? settings.checkPotentiallyBrokenLinks && settings.checkPotentiallyBrokenEmbeds : true;
+      const statsContainer = fileEl.createEl("div", {
+        cls: "seo-stats-container",
+      });
+      const showNotices = settings
+        ? settings.checkPotentiallyBrokenLinks &&
+          settings.checkPotentiallyBrokenEmbeds
+        : true;
       const statsText = [];
-      if (result.issuesCount > 0) statsText.push(`${result.issuesCount} issues`);
-      if (result.warningsCount > 0) statsText.push(`${result.warningsCount} warnings`);
-      if (showNotices && result.noticesCount > 0) statsText.push(`${result.noticesCount} notices`);
+      if (result.issuesCount > 0)
+        statsText.push(`${result.issuesCount} issues`);
+      if (result.warningsCount > 0)
+        statsText.push(`${result.warningsCount} warnings`);
+      if (showNotices && result.noticesCount > 0)
+        statsText.push(`${result.noticesCount} notices`);
       statsContainer.createEl("span", {
         text: statsText.join(", "),
-        cls: "seo-file-stats"
+        cls: "seo-file-stats",
       });
       const auditBtn = statsContainer.createEl("button", {
         cls: "clickable-icon seo-audit-btn",
-        attr: { "aria-label": "Audit this note" }
+        attr: { "aria-label": "Audit this note" },
       });
       (0, import_obsidian3.setIcon)(auditBtn, "search-check");
       auditBtn.addEventListener("click", (e) => {
@@ -3510,7 +4432,11 @@ var ResultsDisplay = class {
         console.warn("No markdown view found");
         return;
       }
-      if (typeof markdownView === "object" && markdownView !== null && "editor" in markdownView) {
+      if (
+        typeof markdownView === "object" &&
+        markdownView !== null &&
+        "editor" in markdownView
+      ) {
         editor = markdownView.editor;
       }
       if (!editor) {
@@ -3531,27 +4457,30 @@ var ResultsDisplay = class {
           } catch (e) {
             try {
               editorObj.scrollIntoView(lineIndex);
-            } catch (e2) {
-            }
+            } catch (e2) {}
           }
         }
-        if (editorObj.getLine && editorObj.addHighlights && editorObj.removeHighlights) {
+        if (
+          editorObj.getLine &&
+          editorObj.addHighlights &&
+          editorObj.removeHighlights
+        ) {
           try {
             const lineLength = editorObj.getLine(lineIndex).length;
-            editorObj.addHighlights([{
-              from: { line: lineIndex, ch: 0 },
-              to: { line: lineIndex, ch: lineLength }
-            }]);
+            editorObj.addHighlights([
+              {
+                from: { line: lineIndex, ch: 0 },
+                to: { line: lineIndex, ch: lineLength },
+              },
+            ]);
             setTimeout(() => {
               try {
                 if (editorObj.removeHighlights) {
                   editorObj.removeHighlights();
                 }
-              } catch (e) {
-              }
+              } catch (e) {}
             }, 2e3);
-          } catch (e) {
-          }
+          } catch (e) {}
         }
       }
     } catch (error) {
@@ -3563,7 +4492,9 @@ var ResultsDisplay = class {
     const scoreEl = this.container.createEl("div", { cls: "seo-score-header" });
     const scoreText = scoreEl.createEl("div", { cls: "seo-score-text" });
     scoreText.createEl("span", { text: "Score: " });
-    const scoreNumber = scoreText.createEl("span", { text: `${Math.round(results.overallScore)}%` });
+    const scoreNumber = scoreText.createEl("span", {
+      text: `${Math.round(results.overallScore)}%`,
+    });
     if (results.overallScore >= 80) {
       scoreNumber.addClass("seo-score-excellent");
     } else if (results.overallScore >= 60) {
@@ -3573,22 +4504,26 @@ var ResultsDisplay = class {
     } else {
       scoreNumber.addClass("seo-score-poor");
     }
-    if (results.issuesCount > 0 || results.warningsCount > 0 || filteredNoticesCount > 0) {
+    if (
+      results.issuesCount > 0 ||
+      results.warningsCount > 0 ||
+      filteredNoticesCount > 0
+    ) {
       scoreText.createEl("span", { text: ` (` });
       scoreText.createEl("span", {
         text: `${results.issuesCount} issues`,
-        cls: "seo-issues-count-text"
+        cls: "seo-issues-count-text",
       });
       scoreText.createEl("span", { text: ", " });
       scoreText.createEl("span", {
         text: `${results.warningsCount} warnings`,
-        cls: "seo-warnings-count-text"
+        cls: "seo-warnings-count-text",
       });
       if (filteredNoticesCount > 0) {
         scoreText.createEl("span", { text: ", " });
         scoreText.createEl("span", {
           text: `${filteredNoticesCount} notices`,
-          cls: "seo-notices-count-text"
+          cls: "seo-notices-count-text",
         });
       }
       scoreText.createEl("span", { text: ")" });
@@ -3596,25 +4531,41 @@ var ResultsDisplay = class {
       scoreText.createEl("span", {
         // eslint-disable-next-line obsidianmd/ui/sentence-case
         text: " (All checks passed!)",
-        cls: "seo-success"
+        cls: "seo-success",
       });
     }
     const toggleBtn = scoreEl.createEl("div", { cls: "seo-toggle-icon" });
-    toggleBtn.setAttribute("aria-label", this.isCollapsed ? "Expand all" : "Collapse all");
-    (0, import_obsidian4.setIcon)(toggleBtn, this.isCollapsed ? "chevrons-up-down" : "chevrons-down-up");
+    toggleBtn.setAttribute(
+      "aria-label",
+      this.isCollapsed ? "Expand all" : "Collapse all",
+    );
+    (0, import_obsidian4.setIcon)(
+      toggleBtn,
+      this.isCollapsed ? "chevrons-up-down" : "chevrons-down-up",
+    );
     toggleBtn.addEventListener("mousedown", (e) => {
       e.preventDefault();
       e.stopPropagation();
       this.isCollapsed = !this.isCollapsed;
-      toggleBtn.setAttribute("aria-label", this.isCollapsed ? "Expand all" : "Collapse all");
-      (0, import_obsidian4.setIcon)(toggleBtn, this.isCollapsed ? "chevrons-up-down" : "chevrons-down-up");
+      toggleBtn.setAttribute(
+        "aria-label",
+        this.isCollapsed ? "Expand all" : "Collapse all",
+      );
+      (0, import_obsidian4.setIcon)(
+        toggleBtn,
+        this.isCollapsed ? "chevrons-up-down" : "chevrons-down-up",
+      );
       this.toggleChecksVisibility();
     });
-    const checksContainer = this.container.createEl("div", { cls: "seo-checks" });
+    const checksContainer = this.container.createEl("div", {
+      cls: "seo-checks",
+    });
     Object.entries(results.checks).forEach(([checkName, checkResults]) => {
       if (checkResults.length === 0) return;
       const checkHasErrors = checkResults.some((r) => r.severity === "error");
-      const checkHasWarnings = checkResults.some((r) => r.severity === "warning");
+      const checkHasWarnings = checkResults.some(
+        (r) => r.severity === "warning",
+      );
       const checkHasNotices = checkResults.some((r) => r.severity === "notice");
       const checkHasOnlyInfo = checkResults.every((r) => r.severity === "info");
       let statusClass = "seo-passed";
@@ -3627,10 +4578,17 @@ var ResultsDisplay = class {
       } else if (checkHasOnlyInfo) {
         statusClass = "seo-passed";
       }
-      const checkEl = checksContainer.createEl("div", { cls: `seo-check ${statusClass}` });
-      const header = checkEl.createEl("div", { cls: "seo-check-header seo-collapsible-header" });
+      const checkEl = checksContainer.createEl("div", {
+        cls: `seo-check ${statusClass}`,
+      });
+      const header = checkEl.createEl("div", {
+        cls: "seo-check-header seo-collapsible-header",
+      });
       header.setAttribute("data-check-name", checkName);
-      let displayName = checkName.replace(/([A-Z])/g, " $1").trim().replace(/^./, (str) => str.toUpperCase());
+      let displayName = checkName
+        .replace(/([A-Z])/g, " $1")
+        .trim()
+        .replace(/^./, (str) => str.toUpperCase());
       if (checkName === "brokenLinks") {
         displayName = "Broken Internal Links";
       } else if (checkName === "externalBrokenLinks") {
@@ -3648,7 +4606,9 @@ var ResultsDisplay = class {
       } else if (checkName === "duplicateContent") {
         displayName = "Duplicate Content";
       }
-      const collapseIcon = header.createEl("span", { cls: "seo-collapse-icon" });
+      const collapseIcon = header.createEl("span", {
+        cls: "seo-collapse-icon",
+      });
       collapseIcon.appendChild(createCollapseIcon());
       header.createEl("span", { text: displayName });
       const statusIcon = header.createEl("span", { cls: "seo-status" });
@@ -3664,7 +4624,9 @@ var ResultsDisplay = class {
       } else {
         (0, import_obsidian4.setIcon)(statusIcon, "circle-check");
       }
-      const resultsList = checkEl.createEl("ul", { cls: "seo-results seo-results-list-expanded" });
+      const resultsList = checkEl.createEl("ul", {
+        cls: "seo-results seo-results-list-expanded",
+      });
       const savedCollapseState = this.individualCollapseStates.get(checkName);
       if (savedCollapseState !== void 0) {
         if (savedCollapseState) {
@@ -3687,12 +4649,12 @@ var ResultsDisplay = class {
       }
       checkResults.forEach((result) => {
         const li = resultsList.createEl("li", {
-          cls: `seo-result seo-${result.severity}`
+          cls: `seo-result seo-${result.severity}`,
         });
         if (result.position) {
           const messageEl = li.createEl("span", {
             text: result.message,
-            cls: "seo-result-message seo-clickable"
+            cls: "seo-result-message seo-clickable",
           });
           messageEl.addEventListener("click", (e) => {
             e.preventDefault();
@@ -3706,12 +4668,12 @@ var ResultsDisplay = class {
         } else {
           li.createEl("span", {
             text: result.message,
-            cls: "seo-result-message"
+            cls: "seo-result-message",
           });
         }
         if (result.suggestion) {
           const suggestionEl = li.createEl("div", {
-            cls: "seo-suggestion"
+            cls: "seo-suggestion",
           });
           if (result.suggestion.includes('<a href="#" data-file-path=')) {
             const parser = new DOMParser();
@@ -3723,7 +4685,11 @@ var ResultsDisplay = class {
             suggestionEl.addEventListener("click", (e) => {
               void (async () => {
                 const target = e.target;
-                if (target && target.tagName === "A" && target.hasAttribute("data-file-path")) {
+                if (
+                  target &&
+                  target.tagName === "A" &&
+                  target.hasAttribute("data-file-path")
+                ) {
                   e.preventDefault();
                   e.stopPropagation();
                   const filePath = target.getAttribute("data-file-path");
@@ -3742,7 +4708,10 @@ var ResultsDisplay = class {
         var _a;
         e.preventDefault();
         e.stopPropagation();
-        const currentState = (_a = this.individualCollapseStates.get(checkName)) != null ? _a : false;
+        const currentState =
+          (_a = this.individualCollapseStates.get(checkName)) != null
+            ? _a
+            : false;
         const newState = !currentState;
         this.individualCollapseStates.set(checkName, newState);
         if (newState) {
@@ -3773,18 +4742,26 @@ var ResultsDisplay = class {
     });
   }
   renderGlobalResults(results, settings) {
-    const summary = this.container.createEl("div", { cls: "seo-vault-summary" });
+    const summary = this.container.createEl("div", {
+      cls: "seo-vault-summary",
+    });
     const totalFiles = results.length;
     const totalIssues = results.reduce((sum, r) => sum + r.issuesCount, 0);
     const totalWarnings = results.reduce((sum, r) => sum + r.warningsCount, 0);
     const totalNotices = results.reduce((sum, r) => sum + r.noticesCount, 0);
     const avgScore = Math.round(
-      results.reduce((sum, r) => sum + r.overallScore, 0) / totalFiles
+      results.reduce((sum, r) => sum + r.overallScore, 0) / totalFiles,
     );
-    const showNotices = settings ? settings.checkPotentiallyBrokenLinks && settings.checkPotentiallyBrokenEmbeds : true;
+    const showNotices = settings
+      ? settings.checkPotentiallyBrokenLinks &&
+        settings.checkPotentiallyBrokenEmbeds
+      : true;
     const statsGrid = summary.createEl("div", { cls: "seo-stats-grid" });
     const scoreStat = statsGrid.createEl("div", { cls: "seo-stat-item" });
-    const scoreNumber = scoreStat.createEl("div", { cls: "seo-stat-number", text: `${avgScore}%` });
+    const scoreNumber = scoreStat.createEl("div", {
+      cls: "seo-stat-number",
+      text: `${avgScore}%`,
+    });
     if (avgScore >= 80) {
       scoreNumber.addClass("seo-score-excellent");
     } else if (avgScore >= 60) {
@@ -3796,28 +4773,46 @@ var ResultsDisplay = class {
     }
     scoreStat.createEl("div", { cls: "seo-stat-label", text: "Average score" });
     const issuesStat = statsGrid.createEl("div", { cls: "seo-stat-item" });
-    const issuesNumber = issuesStat.createEl("div", { cls: "seo-stat-number", text: totalIssues.toString() });
+    const issuesNumber = issuesStat.createEl("div", {
+      cls: "seo-stat-number",
+      text: totalIssues.toString(),
+    });
     if (totalIssues > 0) {
       issuesNumber.addClass("seo-issues-count");
     }
     issuesStat.createEl("div", { cls: "seo-stat-label", text: "Issues" });
     const warningsStat = statsGrid.createEl("div", { cls: "seo-stat-item" });
-    const warningsNumber = warningsStat.createEl("div", { cls: "seo-stat-number", text: totalWarnings.toString() });
+    const warningsNumber = warningsStat.createEl("div", {
+      cls: "seo-stat-number",
+      text: totalWarnings.toString(),
+    });
     if (totalWarnings > 0) {
       warningsNumber.addClass("seo-warnings-count");
     }
     warningsStat.createEl("div", { cls: "seo-stat-label", text: "Warnings" });
     if (showNotices) {
       const noticesStat = statsGrid.createEl("div", { cls: "seo-stat-item" });
-      const noticesNumber = noticesStat.createEl("div", { cls: "seo-stat-number", text: totalNotices.toString() });
+      const noticesNumber = noticesStat.createEl("div", {
+        cls: "seo-stat-number",
+        text: totalNotices.toString(),
+      });
       if (totalNotices > 0) {
         noticesNumber.addClass("seo-notices-count");
       }
       noticesStat.createEl("div", { cls: "seo-stat-label", text: "Notices" });
     }
   }
-  renderIssuesList(results, currentSort, onSortChange, onShowSortMenu, settings) {
-    const showNotices = settings ? settings.checkPotentiallyBrokenLinks && settings.checkPotentiallyBrokenEmbeds : true;
+  renderIssuesList(
+    results,
+    currentSort,
+    onSortChange,
+    onShowSortMenu,
+    settings,
+  ) {
+    const showNotices = settings
+      ? settings.checkPotentiallyBrokenLinks &&
+        settings.checkPotentiallyBrokenEmbeds
+      : true;
     const issuesFiles = results.filter((r) => {
       const hasIssues = r.issuesCount > 0;
       const hasWarnings = r.warningsCount > 0;
@@ -3825,27 +4820,40 @@ var ResultsDisplay = class {
       return hasIssues || hasWarnings || hasNotices;
     });
     if (issuesFiles.length === 0) return;
-    const issuesList = this.container.createEl("div", { cls: "seo-issues-list" });
-    const issuesHeader = issuesList.createEl("div", { cls: "seo-issues-header-container" });
-    const collapseIcon = issuesHeader.createEl("span", { cls: "seo-collapse-icon seo-collapsible-header" });
+    const issuesList = this.container.createEl("div", {
+      cls: "seo-issues-list",
+    });
+    const issuesHeader = issuesList.createEl("div", {
+      cls: "seo-issues-header-container",
+    });
+    const collapseIcon = issuesHeader.createEl("span", {
+      cls: "seo-collapse-icon seo-collapsible-header",
+    });
     collapseIcon.setAttribute("aria-label", "Collapse list");
     collapseIcon.appendChild(createCollapseIcon());
-    issuesHeader.createEl("h4", { text: "Files with results", cls: "seo-issues-header" });
+    issuesHeader.createEl("h4", {
+      text: "Files with results",
+      cls: "seo-issues-header",
+    });
     const sortBtn = issuesHeader.createEl("button", {
       cls: "seo-sort-btn",
-      attr: { "aria-label": "Sort files" }
+      attr: { "aria-label": "Sort files" },
     });
     (0, import_obsidian4.setIcon)(sortBtn, "arrow-up-narrow-wide");
     sortBtn.addEventListener("click", onShowSortMenu);
-    const filesListContainer = issuesList.createEl("div", { cls: "seo-files-list-container" });
+    const filesListContainer = issuesList.createEl("div", {
+      cls: "seo-files-list-container",
+    });
     const sortedFiles = this.sortFiles(issuesFiles, currentSort);
     sortedFiles.forEach((result) => {
-      const fileEl = filesListContainer.createEl("div", { cls: "seo-file-issue" });
+      const fileEl = filesListContainer.createEl("div", {
+        cls: "seo-file-issue",
+      });
       fileEl.setAttribute("data-file-path", result.file);
       const fileLink = fileEl.createEl("a", {
         text: result.displayName || getDisplayPath(result.file),
         cls: "seo-file-link",
-        href: "#"
+        href: "#",
       });
       fileLink.addEventListener("click", (e) => {
         e.preventDefault();
@@ -3853,18 +4861,23 @@ var ResultsDisplay = class {
           await this.onFileClick(result.file);
         })();
       });
-      const statsContainer = fileEl.createEl("div", { cls: "seo-stats-container" });
+      const statsContainer = fileEl.createEl("div", {
+        cls: "seo-stats-container",
+      });
       const statsText = [];
-      if (result.issuesCount > 0) statsText.push(`${result.issuesCount} issues`);
-      if (result.warningsCount > 0) statsText.push(`${result.warningsCount} warnings`);
-      if (showNotices && result.noticesCount > 0) statsText.push(`${result.noticesCount} notices`);
+      if (result.issuesCount > 0)
+        statsText.push(`${result.issuesCount} issues`);
+      if (result.warningsCount > 0)
+        statsText.push(`${result.warningsCount} warnings`);
+      if (showNotices && result.noticesCount > 0)
+        statsText.push(`${result.noticesCount} notices`);
       statsContainer.createEl("span", {
         text: statsText.join(", "),
-        cls: "seo-file-stats"
+        cls: "seo-file-stats",
       });
       const auditBtn = statsContainer.createEl("button", {
         cls: "clickable-icon seo-audit-btn",
-        attr: { "aria-label": "Audit this note" }
+        attr: { "aria-label": "Audit this note" },
       });
       (0, import_obsidian4.setIcon)(auditBtn, "search-check");
       auditBtn.addEventListener("click", (e) => {
@@ -3878,7 +4891,9 @@ var ResultsDisplay = class {
     collapseIcon.addEventListener("mousedown", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const isCollapsed = filesListContainer.classList.contains("seo-results-list-collapsed");
+      const isCollapsed = filesListContainer.classList.contains(
+        "seo-results-list-collapsed",
+      );
       if (isCollapsed) {
         filesListContainer.classList.remove("seo-results-list-collapsed");
         filesListContainer.classList.add("seo-results-list-expanded");
@@ -3908,28 +4923,41 @@ var ResultsDisplay = class {
       return !hasIssues && !hasWarnings;
     });
     if (passingFiles.length === 0) return;
-    const passingList = this.container.createEl("div", { cls: "seo-issues-list" });
-    const passingHeader = passingList.createEl("div", { cls: "seo-issues-header-container" });
-    const collapseIcon = passingHeader.createEl("span", { cls: "seo-collapse-icon seo-collapsible-header" });
+    const passingList = this.container.createEl("div", {
+      cls: "seo-issues-list",
+    });
+    const passingHeader = passingList.createEl("div", {
+      cls: "seo-issues-header-container",
+    });
+    const collapseIcon = passingHeader.createEl("span", {
+      cls: "seo-collapse-icon seo-collapsible-header",
+    });
     collapseIcon.setAttribute("aria-label", "Expand list");
     collapseIcon.appendChild(createCollapseIcon());
     const icon = collapseIcon.querySelector("svg");
     if (icon) {
       icon.classList.add("seo-collapse-icon-rotated");
     }
-    const headingContainer = passingHeader.createEl("div", { cls: "seo-heading-center" });
-    headingContainer.createEl("h4", { text: "Files that pass", cls: "seo-issues-header" });
+    const headingContainer = passingHeader.createEl("div", {
+      cls: "seo-heading-center",
+    });
+    headingContainer.createEl("h4", {
+      text: "Files that pass",
+      cls: "seo-issues-header",
+    });
     const filesListContainer = passingList.createEl("div", {
-      cls: "seo-files-list-container seo-results-list-collapsed"
+      cls: "seo-files-list-container seo-results-list-collapsed",
     });
     const sortedFiles = this.sortFiles(passingFiles, currentSort);
     sortedFiles.forEach((result) => {
-      const fileEl = filesListContainer.createEl("div", { cls: "seo-file-issue" });
+      const fileEl = filesListContainer.createEl("div", {
+        cls: "seo-file-issue",
+      });
       fileEl.setAttribute("data-file-path", result.file);
       const fileLink = fileEl.createEl("a", {
         text: result.displayName || getDisplayPath(result.file),
         cls: "seo-file-link",
-        href: "#"
+        href: "#",
       });
       fileLink.addEventListener("click", (e) => {
         e.preventDefault();
@@ -3937,16 +4965,18 @@ var ResultsDisplay = class {
           await this.onFileClick(result.file);
         })();
       });
-      const statsContainer = fileEl.createEl("div", { cls: "seo-stats-container" });
+      const statsContainer = fileEl.createEl("div", {
+        cls: "seo-stats-container",
+      });
       if (showNotices && result.noticesCount > 0) {
         statsContainer.createEl("span", {
           text: `${result.noticesCount} notices`,
-          cls: "seo-file-stats"
+          cls: "seo-file-stats",
         });
       }
       const auditBtn = statsContainer.createEl("button", {
         cls: "clickable-icon seo-audit-btn",
-        attr: { "aria-label": "Audit this note" }
+        attr: { "aria-label": "Audit this note" },
       });
       (0, import_obsidian4.setIcon)(auditBtn, "search-check");
       auditBtn.addEventListener("click", (e) => {
@@ -3960,7 +4990,9 @@ var ResultsDisplay = class {
     collapseIcon.addEventListener("mousedown", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const isCollapsed = filesListContainer.classList.contains("seo-results-list-collapsed");
+      const isCollapsed = filesListContainer.classList.contains(
+        "seo-results-list-collapsed",
+      );
       if (isCollapsed) {
         filesListContainer.classList.remove("seo-results-list-collapsed");
         filesListContainer.classList.add("seo-results-list-expanded");
@@ -4063,8 +5095,10 @@ var ResultsDisplay = class {
           if (fileNameCompare !== 0) return fileNameCompare;
           const aParts = a.file.split("/");
           const bParts = b.file.split("/");
-          const aParent = aParts.length > 1 ? aParts[aParts.length - 2] || "" : "";
-          const bParent = bParts.length > 1 ? bParts[bParts.length - 2] || "" : "";
+          const aParent =
+            aParts.length > 1 ? aParts[aParts.length - 2] || "" : "";
+          const bParent =
+            bParts.length > 1 ? bParts[bParts.length - 2] || "" : "";
           const parentCompare = aParent.localeCompare(bParent);
           if (parentCompare !== 0) return parentCompare;
           if (b.issuesCount !== a.issuesCount) {
@@ -4084,8 +5118,10 @@ var ResultsDisplay = class {
           if (fileNameCompare !== 0) return fileNameCompare;
           const aParts = a.file.split("/");
           const bParts = b.file.split("/");
-          const aParent = aParts.length > 1 ? aParts[aParts.length - 2] || "" : "";
-          const bParent = bParts.length > 1 ? bParts[bParts.length - 2] || "" : "";
+          const aParent =
+            aParts.length > 1 ? aParts[aParts.length - 2] || "" : "";
+          const bParent =
+            bParts.length > 1 ? bParts[bParts.length - 2] || "" : "";
           const parentCompare = bParent.localeCompare(aParent);
           if (parentCompare !== 0) return parentCompare;
           if (b.issuesCount !== a.issuesCount) {
@@ -4107,7 +5143,10 @@ var ResultsDisplay = class {
     allHeaders.forEach((header) => {
       var _a;
       const htmlHeader = header;
-      const resultsList = (_a = htmlHeader.parentElement) == null ? void 0 : _a.querySelector(".seo-results");
+      const resultsList =
+        (_a = htmlHeader.parentElement) == null
+          ? void 0
+          : _a.querySelector(".seo-results");
       const collapseIcon = htmlHeader.querySelector(".seo-collapse-icon svg");
       const checkName = this.findCheckNameForHeader(htmlHeader);
       if (resultsList && collapseIcon) {
@@ -4162,7 +5201,7 @@ var CHECK_TYPE_LABELS = {
   duplicateDescriptions: "Duplicate descriptions",
   readingLevel: "Reading level",
   potentiallyBrokenEmbeds: "Potentially broken embeds",
-  potentiallyBrokenLinks: "Potentially broken links"
+  potentiallyBrokenLinks: "Potentially broken links",
 };
 function escapeCsvField(value) {
   if (value === null || value === void 0) return "";
@@ -4174,7 +5213,12 @@ function escapeCsvField(value) {
 }
 function getCheckLabel(key) {
   var _a;
-  return (_a = CHECK_TYPE_LABELS[key]) != null ? _a : key.replace(/([A-Z])/g, " $1").replace(/^./, (c) => c.toUpperCase()).trim();
+  return (_a = CHECK_TYPE_LABELS[key]) != null
+    ? _a
+    : key
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (c) => c.toUpperCase())
+        .trim();
 }
 function* iterateFindings(results) {
   for (const [key, list] of Object.entries(results.checks)) {
@@ -4189,22 +5233,35 @@ function* iterateFindings(results) {
 function resultsToCsv(results) {
   var _a, _b, _c, _d;
   const rows = Array.isArray(results) ? results : [results];
-  const header = ["file", "displayName", "checkType", "severity", "message", "line", "suggestion"];
+  const header = [
+    "file",
+    "displayName",
+    "checkType",
+    "severity",
+    "message",
+    "line",
+    "suggestion",
+  ];
   const lines = [header.map(escapeCsvField).join(",")];
   for (const r of rows) {
     const file = r.file;
     const displayName = (_a = r.displayName) != null ? _a : r.file;
     for (const { checkType, finding } of iterateFindings(r)) {
-      const line = (_c = (_b = finding.position) == null ? void 0 : _b.line) != null ? _c : finding.line;
-      lines.push([
-        escapeCsvField(file),
-        escapeCsvField(displayName),
-        escapeCsvField(checkType),
-        escapeCsvField(finding.severity),
-        escapeCsvField(finding.message),
-        escapeCsvField(line != null ? String(line) : ""),
-        escapeCsvField((_d = finding.suggestion) != null ? _d : "")
-      ].join(","));
+      const line =
+        (_c = (_b = finding.position) == null ? void 0 : _b.line) != null
+          ? _c
+          : finding.line;
+      lines.push(
+        [
+          escapeCsvField(file),
+          escapeCsvField(displayName),
+          escapeCsvField(checkType),
+          escapeCsvField(finding.severity),
+          escapeCsvField(finding.message),
+          escapeCsvField(line != null ? String(line) : ""),
+          escapeCsvField((_d = finding.suggestion) != null ? _d : ""),
+        ].join(","),
+      );
     }
   }
   return lines.join("\r\n");
@@ -4216,14 +5273,14 @@ function resultsToMarkdown(results) {
   const severityHeadings = {
     error: "### Issues",
     warning: "### Warnings",
-    notice: "### Notices"
+    notice: "### Notices",
   };
   for (const r of rows) {
     const displayName = (_a = r.displayName) != null ? _a : r.file;
     const bySeverity = {
       error: [],
       warning: [],
-      notice: []
+      notice: [],
     };
     for (const item of iterateFindings(r)) {
       const sev = item.finding.severity;
@@ -4231,7 +5288,11 @@ function resultsToMarkdown(results) {
         bySeverity[sev].push(item);
       }
     }
-    const hasAny = bySeverity.error.length + bySeverity.warning.length + bySeverity.notice.length > 0;
+    const hasAny =
+      bySeverity.error.length +
+        bySeverity.warning.length +
+        bySeverity.notice.length >
+      0;
     if (!hasAny) continue;
     lines.push(`## ${displayName}`);
     lines.push("");
@@ -4240,7 +5301,10 @@ function resultsToMarkdown(results) {
       if (items.length === 0) continue;
       lines.push(severityHeadings[sev]);
       for (const { checkType, finding } of items) {
-        const lineNum = (_c = (_b = finding.position) == null ? void 0 : _b.line) != null ? _c : finding.line;
+        const lineNum =
+          (_c = (_b = finding.position) == null ? void 0 : _b.line) != null
+            ? _c
+            : finding.line;
         const linePart = lineNum != null ? ` (line ${lineNum})` : "";
         let bullet = `- **${checkType}**${linePart}: ${finding.message}`;
         if (finding.suggestion) bullet += ` ${finding.suggestion}`;
@@ -4253,12 +5317,19 @@ function resultsToMarkdown(results) {
   return lines.length ? lines.join("\n").trimEnd() : "";
 }
 function resultsToExportString(results, format) {
-  return format === "markdown" ? resultsToMarkdown(results) : resultsToCsv(results);
+  return format === "markdown"
+    ? resultsToMarkdown(results)
+    : resultsToCsv(results);
 }
 function downloadExport(content, filenameBase, format) {
   const ext = format === "markdown" ? "md" : "csv";
-  const mime = format === "markdown" ? "text/markdown;charset=utf-8" : "text/csv;charset=utf-8";
-  const filename = filenameBase.endsWith(`.${ext}`) ? filenameBase : `${filenameBase}.${ext}`;
+  const mime =
+    format === "markdown"
+      ? "text/markdown;charset=utf-8"
+      : "text/csv;charset=utf-8";
+  const filename = filenameBase.endsWith(`.${ext}`)
+    ? filenameBase
+    : `${filenameBase}.${ext}`;
   const blob = new Blob([content], { type: mime });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -4286,14 +5357,26 @@ var PanelRenderer = class {
   /**
    * Renders the main panel content
    */
-  render(containerEl, panelType, currentNoteResults, globalResults, onRefreshClick, onExternalLinksClick) {
+  render(
+    containerEl,
+    panelType,
+    currentNoteResults,
+    globalResults,
+    onRefreshClick,
+    onExternalLinksClick,
+  ) {
     var _a, _b;
     try {
       containerEl.empty();
       containerEl.addClass("seo-panel");
       const header = containerEl.createEl("div", { cls: "seo-panel-header" });
       const headerRow = header.createEl("div", { cls: "seo-panel-header-row" });
-      headerRow.createEl("h2", { text: panelType === "current" ? "SEO audit: current note" : "SEO audit: vault" });
+      headerRow.createEl("h2", {
+        text:
+          panelType === "current"
+            ? "SEO audit: current note"
+            : "SEO audit: vault",
+      });
       if (panelType === "global" && globalResults.length > 0) {
         this.renderHeaderIcons(headerRow, "global", globalResults, null);
       } else if (panelType === "current") {
@@ -4308,23 +5391,43 @@ var PanelRenderer = class {
             }
           }
         }
-        const currentFileResults = activeFile && this.plugin.settings.cachedGlobalResults ? (_b = this.plugin.settings.cachedGlobalResults.find((r) => r.file === activeFile.path)) != null ? _b : null : null;
+        const currentFileResults =
+          activeFile && this.plugin.settings.cachedGlobalResults
+            ? (_b = this.plugin.settings.cachedGlobalResults.find(
+                (r) => r.file === activeFile.path,
+              )) != null
+              ? _b
+              : null
+            : null;
         const resultsToShow = currentNoteResults || currentFileResults;
-        const hasActiveFile = activeFile && isSupportedFile(activeFile, this.plugin.settings);
+        const hasActiveFile =
+          activeFile && isSupportedFile(activeFile, this.plugin.settings);
         if (resultsToShow || hasActiveFile) {
-          this.renderHeaderIcons(headerRow, "current", resultsToShow ? [resultsToShow] : [], resultsToShow != null ? resultsToShow : null);
+          this.renderHeaderIcons(
+            headerRow,
+            "current",
+            resultsToShow ? [resultsToShow] : [],
+            resultsToShow != null ? resultsToShow : null,
+          );
         }
       }
       if (panelType === "current") {
         this.renderCurrentNoteHeader(header, currentNoteResults);
       } else {
         const fileCount = globalResults.length;
-        const foldersInfo = getVaultFoldersInfo(this.plugin.settings.scanDirectories, fileCount);
+        const foldersInfo = getVaultFoldersInfo(
+          this.plugin.settings.scanDirectories,
+          fileCount,
+        );
         const foldersEl = header.createEl("div", { cls: "seo-filename" });
         foldersEl.textContent = foldersInfo;
       }
       if (panelType === "current") {
-        this.renderCurrentNoteActions(containerEl, onRefreshClick, onExternalLinksClick);
+        this.renderCurrentNoteActions(
+          containerEl,
+          onRefreshClick,
+          onExternalLinksClick,
+        );
       }
       if (panelType === "current") {
         this.renderCurrentNoteContent(containerEl, currentNoteResults);
@@ -4332,13 +5435,19 @@ var PanelRenderer = class {
         if (globalResults.length > 0) {
           this.renderGlobalResults(containerEl, globalResults);
         } else {
-          const noGlobal = containerEl.createEl("div", { cls: "seo-no-results" });
-          noGlobal.createEl("p", { text: 'Click "Audit all notes" to audit your files in your configured directories.' });
+          const noGlobal = containerEl.createEl("div", {
+            cls: "seo-no-results",
+          });
+          noGlobal.createEl("p", {
+            text: 'Click "Audit all notes" to audit your files in your configured directories.',
+          });
         }
       }
     } catch (error) {
       console.error("Error rendering SEO panel:", error);
-      containerEl.createEl("div", { text: "Error loading SEO panel. Please try again." });
+      containerEl.createEl("div", {
+        text: "Error loading SEO panel. Please try again.",
+      });
     }
   }
   /**
@@ -4353,7 +5462,7 @@ var PanelRenderer = class {
         displayName = currentNoteResults.displayName || activeFile.path;
       } else if (this.plugin.settings.cachedGlobalResults) {
         const globalResult = this.plugin.settings.cachedGlobalResults.find(
-          (result) => result.file === activeFile.path
+          (result) => result.file === activeFile.path,
         );
         if (globalResult) {
           displayName = globalResult.displayName || activeFile.path;
@@ -4368,31 +5477,50 @@ var PanelRenderer = class {
   renderHeaderIcons(headerRow, panelType, resultsForCsv, singleNoteResult) {
     const wrap = headerRow.createEl("div", { cls: "seo-header-icon-wrap" });
     if (panelType === "current") {
-      const copyBtn = wrap.createEl("button", { type: "button", cls: "clickable-icon", attr: { "aria-label": "Copy results to clipboard" } });
+      const copyBtn = wrap.createEl("button", {
+        type: "button",
+        cls: "clickable-icon",
+        attr: { "aria-label": "Copy results to clipboard" },
+      });
       (0, import_obsidian6.setIcon)(copyBtn, "lucide-copy");
       copyBtn.addEventListener("click", () => {
         if (!singleNoteResult) {
-          new import_obsidian7.Notice("No results to export. Run Refresh first.");
+          new import_obsidian7.Notice(
+            "No results to export. Run Refresh first.",
+          );
           return;
         }
         const format = this.plugin.settings.exportFormat;
         const content = resultsToExportString(singleNoteResult, format);
         void copyExportToClipboard(content);
       });
-      const downloadBtn = wrap.createEl("button", { type: "button", cls: "clickable-icon", attr: { "aria-label": "Download results" } });
+      const downloadBtn = wrap.createEl("button", {
+        type: "button",
+        cls: "clickable-icon",
+        attr: { "aria-label": "Download results" },
+      });
       (0, import_obsidian6.setIcon)(downloadBtn, "lucide-download");
       downloadBtn.addEventListener("click", () => {
         if (!singleNoteResult) {
-          new import_obsidian7.Notice("No results to export. Run Refresh first.");
+          new import_obsidian7.Notice(
+            "No results to export. Run Refresh first.",
+          );
           return;
         }
         const format = this.plugin.settings.exportFormat;
         const content = resultsToExportString(singleNoteResult, format);
-        const base = singleNoteResult.file.replace(/\.[^.]+$/, "").replace(/[/\\]/g, "-") || "note";
+        const base =
+          singleNoteResult.file
+            .replace(/\.[^.]+$/, "")
+            .replace(/[/\\]/g, "-") || "note";
         downloadExport(content, `seo-audit-${base}`, format);
       });
     } else if (panelType === "global" && resultsForCsv.length > 0) {
-      const downloadBtn = wrap.createEl("button", { type: "button", cls: "clickable-icon", attr: { "aria-label": "Download results" } });
+      const downloadBtn = wrap.createEl("button", {
+        type: "button",
+        cls: "clickable-icon",
+        attr: { "aria-label": "Download results" },
+      });
       (0, import_obsidian6.setIcon)(downloadBtn, "lucide-download");
       downloadBtn.addEventListener("click", () => {
         const format = this.plugin.settings.exportFormat;
@@ -4408,7 +5536,7 @@ var PanelRenderer = class {
     const auditCurrentBtn = containerEl.createEl("button", {
       text: "Refresh",
       cls: "mod-cta seo-btn seo-top-btn",
-      attr: { "data-refresh-btn": "true" }
+      attr: { "data-refresh-btn": "true" },
     });
     auditCurrentBtn.addEventListener("click", (event) => {
       event.preventDefault();
@@ -4417,10 +5545,13 @@ var PanelRenderer = class {
         await onRefreshClick(auditCurrentBtn);
       })();
     });
-    if (this.plugin.settings.enableExternalLinkButton && !this.plugin.settings.enableExternalLinkVaultCheck) {
+    if (
+      this.plugin.settings.enableExternalLinkButton &&
+      !this.plugin.settings.enableExternalLinkVaultCheck
+    ) {
       const externalLinksBtn = containerEl.createEl("button", {
         text: "Check external links for 404s",
-        cls: "seo-btn"
+        cls: "seo-btn",
       });
       externalLinksBtn.addEventListener("click", () => {
         void (async () => {
@@ -4446,23 +5577,30 @@ var PanelRenderer = class {
     const activeFile = this.app.workspace.getActiveFile();
     let currentFileResults = null;
     if (activeFile && this.plugin.settings.cachedGlobalResults) {
-      currentFileResults = this.plugin.settings.cachedGlobalResults.find(
-        (result) => result.file === activeFile.path
-      ) || null;
+      currentFileResults =
+        this.plugin.settings.cachedGlobalResults.find(
+          (result) => result.file === activeFile.path,
+        ) || null;
     }
     const resultsToShow = currentNoteResults || currentFileResults;
     if (resultsToShow) {
-      const newResultsContainer = containerEl.createEl("div", { cls: "seo-results-container" });
+      const newResultsContainer = containerEl.createEl("div", {
+        cls: "seo-results-container",
+      });
       const tempResultsDisplay = new ResultsDisplay(
         newResultsContainer,
         async (filePath) => await this.actions.openFile(filePath),
-        async (filePath) => await this.actions.openFileAndAudit(filePath)
+        async (filePath) => await this.actions.openFileAndAudit(filePath),
       );
       tempResultsDisplay.renderResults(resultsToShow);
     } else {
       const noResults = containerEl.createEl("div", { cls: "seo-no-results" });
-      const fileTypeText = this.plugin.settings.enableMDXSupport ? "markdown or MDX file" : "markdown file";
-      noResults.createEl("p", { text: `Open a ${fileTypeText} and click "Refresh" to audit it.` });
+      const fileTypeText = this.plugin.settings.enableMDXSupport
+        ? "markdown or MDX file"
+        : "markdown file";
+      noResults.createEl("p", {
+        text: `Open a ${fileTypeText} and click "Refresh" to audit it.`,
+      });
     }
   }
   /**
@@ -4472,18 +5610,21 @@ var PanelRenderer = class {
     const tempResultsDisplay = new ResultsDisplay(
       containerEl,
       async (filePath) => await this.actions.openFile(filePath),
-      async (filePath) => await this.actions.openFileAndAudit(filePath)
+      async (filePath) => await this.actions.openFileAndAudit(filePath),
     );
     tempResultsDisplay.renderGlobalResults(globalResults, this.plugin.settings);
     const refreshBtn = containerEl.createEl("button", {
       text: "Refresh",
       cls: "mod-cta seo-btn seo-refresh-btn",
-      attr: { "data-refresh-btn": "true" }
+      attr: { "data-refresh-btn": "true" },
     });
-    if (this.plugin.settings.enableExternalLinkButton && !this.plugin.settings.enableExternalLinkVaultCheck) {
+    if (
+      this.plugin.settings.enableExternalLinkButton &&
+      !this.plugin.settings.enableExternalLinkVaultCheck
+    ) {
       const externalLinksBtn = containerEl.createEl("button", {
         text: "Check all 404s",
-        cls: "seo-btn"
+        cls: "seo-btn",
       });
       externalLinksBtn.addEventListener("click", () => {
         void (async () => {
@@ -4493,9 +5634,11 @@ var PanelRenderer = class {
           try {
             const results = await this.actions.checkAllExternalLinks();
             if (results.length > 0) {
-              containerEl.dispatchEvent(new CustomEvent("seo-refresh-complete", {
-                detail: { results }
-              }));
+              containerEl.dispatchEvent(
+                new CustomEvent("seo-refresh-complete", {
+                  detail: { results },
+                }),
+              );
             }
           } finally {
             externalLinksBtn.disabled = false;
@@ -4523,12 +5666,21 @@ var PanelRenderer = class {
         refreshBtn.disabled = false;
         SEOSidePanel.globalAuditController = new AbortController();
         try {
-          const results = await this.actions.refreshGlobalResults((_a = SEOSidePanel.globalAuditController) == null ? void 0 : _a.signal);
+          const results = await this.actions.refreshGlobalResults(
+            (_a = SEOSidePanel.globalAuditController) == null
+              ? void 0
+              : _a.signal,
+          );
           if (results.length > 0) {
-            if (SEOSidePanel.globalAuditController && !SEOSidePanel.globalAuditController.signal.aborted) {
-              containerEl.dispatchEvent(new CustomEvent("seo-refresh-complete", {
-                detail: { results }
-              }));
+            if (
+              SEOSidePanel.globalAuditController &&
+              !SEOSidePanel.globalAuditController.signal.aborted
+            ) {
+              containerEl.dispatchEvent(
+                new CustomEvent("seo-refresh-complete", {
+                  detail: { results },
+                }),
+              );
             }
           }
         } catch (error) {
@@ -4547,25 +5699,38 @@ var PanelRenderer = class {
       globalResults,
       this.plugin.settings.defaultSort,
       (sortType) => {
-        containerEl.dispatchEvent(new CustomEvent("seo-sort-change", {
-          detail: { sortType }
-        }));
+        containerEl.dispatchEvent(
+          new CustomEvent("seo-sort-change", {
+            detail: { sortType },
+          }),
+        );
       },
       (event) => {
-        const showNotices = this.plugin.settings.checkPotentiallyBrokenLinks && this.plugin.settings.checkPotentiallyBrokenEmbeds;
+        const showNotices =
+          this.plugin.settings.checkPotentiallyBrokenLinks &&
+          this.plugin.settings.checkPotentiallyBrokenEmbeds;
         const issuesFiles = globalResults.filter((r) => {
           const hasIssues = r.issuesCount > 0;
           const hasWarnings = r.warningsCount > 0;
           const hasNotices = showNotices && r.noticesCount > 0;
           return hasIssues || hasWarnings || hasNotices;
         });
-        this.actions.showSortMenu(event, issuesFiles, containerEl, this.plugin.settings.defaultSort, (sortType) => {
-          containerEl.dispatchEvent(new CustomEvent("seo-sort-change", {
-            detail: { sortType }
-          }));
-        }, this.plugin.settings);
+        this.actions.showSortMenu(
+          event,
+          issuesFiles,
+          containerEl,
+          this.plugin.settings.defaultSort,
+          (sortType) => {
+            containerEl.dispatchEvent(
+              new CustomEvent("seo-sort-change", {
+                detail: { sortType },
+              }),
+            );
+          },
+          this.plugin.settings,
+        );
       },
-      this.plugin.settings
+      this.plugin.settings,
     );
   }
 };
@@ -4587,31 +5752,35 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
     this.resultsDisplay = new ResultsDisplay(
       this.containerEl,
       async (filePath) => await this.actions.openFile(filePath),
-      async (filePath) => await this.actions.openFileAndAudit(filePath)
+      async (filePath) => await this.actions.openFileAndAudit(filePath),
     );
     this.renderer = new PanelRenderer(this.app, this.plugin, this.actions);
     if (this.panelType === "current") {
-      this.registerEvent(this.app.workspace.on("active-leaf-change", () => {
-        if (_SEOSidePanel.globalAuditController) {
-          _SEOSidePanel.globalAuditController.abort();
-          _SEOSidePanel.globalAuditController = null;
-          console.debug("Audit cancelled due to file switch");
-        }
-        if (this.isRefreshing) {
-          return;
-        }
-        const activeFile = this.app.workspace.getActiveFile();
-        if (!activeFile) {
-          return;
-        }
-        if (activeFile) {
-          this.updateCurrentNoteResults(activeFile);
-        }
-      }));
+      this.registerEvent(
+        this.app.workspace.on("active-leaf-change", () => {
+          if (_SEOSidePanel.globalAuditController) {
+            _SEOSidePanel.globalAuditController.abort();
+            _SEOSidePanel.globalAuditController = null;
+            console.debug("Audit cancelled due to file switch");
+          }
+          if (this.isRefreshing) {
+            return;
+          }
+          const activeFile = this.app.workspace.getActiveFile();
+          if (!activeFile) {
+            return;
+          }
+          if (activeFile) {
+            this.updateCurrentNoteResults(activeFile);
+          }
+        }),
+      );
     }
   }
   getViewType() {
-    return this.panelType === "current" ? SEOCurrentPanelViewType : SEOGlobalPanelViewType;
+    return this.panelType === "current"
+      ? SEOCurrentPanelViewType
+      : SEOGlobalPanelViewType;
   }
   async handleRefreshClick(button) {
     if (button.disabled) {
@@ -4625,7 +5794,9 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
     button.textContent = "Refreshing...";
     button.disabled = true;
     try {
-      const result = await this.actions.checkCurrentNote(_SEOSidePanel.globalAuditController.signal);
+      const result = await this.actions.checkCurrentNote(
+        _SEOSidePanel.globalAuditController.signal,
+      );
       if (result) {
         this.currentNoteResults = result;
         this.updateGlobalResultsIfExists(result);
@@ -4645,18 +5816,27 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
     }
   }
   getDisplayText() {
-    return this.panelType === "current" ? "SEO audit: current note" : "SEO audit: vault";
+    return this.panelType === "current"
+      ? "SEO audit: current note"
+      : "SEO audit: vault";
   }
   getIcon() {
     return "search-check";
   }
   async onOpen() {
     try {
-      if (this.panelType === "global" && this.plugin.settings.cachedGlobalResults.length > 0) {
+      if (
+        this.panelType === "global" &&
+        this.plugin.settings.cachedGlobalResults.length > 0
+      ) {
         this.globalResults = this.plugin.settings.cachedGlobalResults;
       }
       this.forceIconRefresh();
-      if (this.panelType === "global" && !this.hasRunInitialScan && this.globalResults.length === 0) {
+      if (
+        this.panelType === "global" &&
+        !this.hasRunInitialScan &&
+        this.globalResults.length === 0
+      ) {
         this.showLoadingState();
         this.hasRunInitialScan = true;
         await this.runInitialScan();
@@ -4671,10 +5851,8 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
       console.error("Error opening SEO panel:", error);
     }
   }
-  async onClose() {
-  }
-  cleanup() {
-  }
+  async onClose() {}
+  cleanup() {}
   // Run initial scan for global panel
   async runInitialScan() {
     const results = await this.actions.runInitialScan();
@@ -4688,7 +5866,7 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
     if (this.leaf) {
       void this.leaf.setViewState({
         type: this.getViewType(),
-        state: this.leaf.view.getState()
+        state: this.leaf.view.getState(),
       });
     }
     setTimeout(() => {
@@ -4719,9 +5897,10 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
     try {
       let currentFileResults = null;
       if (this.plugin.settings.cachedGlobalResults) {
-        currentFileResults = this.plugin.settings.cachedGlobalResults.find(
-          (result) => result.file === file.path
-        ) || null;
+        currentFileResults =
+          this.plugin.settings.cachedGlobalResults.find(
+            (result) => result.file === file.path,
+          ) || null;
       }
       if (currentFileResults) {
         this.currentNoteResults = currentFileResults;
@@ -4729,15 +5908,19 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
         this.currentNoteResults = null;
       }
       const resultsToShow = this.currentNoteResults;
-      const existingResults = this.containerEl.querySelectorAll(".seo-results-container, .seo-file-issue, .seo-issue, .seo-warning, .seo-notice, .seo-info-note, .seo-check, .seo-result, .seo-score-header, .seo-score-text, .seo-score-number, .seo-toggle-icon, .seo-collapse-icon");
+      const existingResults = this.containerEl.querySelectorAll(
+        ".seo-results-container, .seo-file-issue, .seo-issue, .seo-warning, .seo-notice, .seo-info-note, .seo-check, .seo-result, .seo-score-header, .seo-score-text, .seo-score-number, .seo-toggle-icon, .seo-collapse-icon",
+      );
       existingResults.forEach((el) => el.remove());
       if (resultsToShow) {
-        const newResultsContainer = this.containerEl.createEl("div", { cls: "seo-results-container" });
+        const newResultsContainer = this.containerEl.createEl("div", {
+          cls: "seo-results-container",
+        });
         if (!this.resultsDisplay) {
           this.resultsDisplay = new ResultsDisplay(
             newResultsContainer,
             async (filePath) => await this.actions.openFile(filePath),
-            async (filePath) => await this.actions.openFileAndAudit(filePath)
+            async (filePath) => await this.actions.openFileAndAudit(filePath),
           );
         } else {
           this.resultsDisplay.updateContainer(newResultsContainer);
@@ -4747,7 +5930,7 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
         this.containerEl.createEl("div", {
           cls: "seo-info-note seo-no-results-message",
           // eslint-disable-next-line obsidianmd/ui/sentence-case
-          text: 'No SEO results available for this file. Click "Refresh" to run an audit.'
+          text: 'No SEO results available for this file. Click "Refresh" to run an audit.',
         });
       }
       this.updateHeaderAndResults();
@@ -4767,11 +5950,15 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
         const activeFile = this.app.workspace.getActiveFile();
         if (activeFile && isSupportedFile(activeFile, this.plugin.settings)) {
           let displayName = activeFile.path;
-          if (this.currentNoteResults && this.currentNoteResults.file === activeFile.path) {
-            displayName = this.currentNoteResults.displayName || activeFile.path;
+          if (
+            this.currentNoteResults &&
+            this.currentNoteResults.file === activeFile.path
+          ) {
+            displayName =
+              this.currentNoteResults.displayName || activeFile.path;
           } else if (this.plugin.settings.cachedGlobalResults) {
             const globalResult = this.plugin.settings.cachedGlobalResults.find(
-              (result) => result.file === activeFile.path
+              (result) => result.file === activeFile.path,
             );
             if (globalResult) {
               displayName = globalResult.displayName || activeFile.path;
@@ -4792,23 +5979,34 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
     containerEl.empty();
     containerEl.addClass("seo-panel");
     const header = containerEl.createEl("div", { cls: "seo-panel-header" });
-    header.createEl("h2", { text: this.panelType === "current" ? "SEO audit: current note" : "SEO audit: vault" });
+    header.createEl("h2", {
+      text:
+        this.panelType === "current"
+          ? "SEO audit: current note"
+          : "SEO audit: vault",
+    });
     if (this.panelType === "global") {
-      const foldersInfo = getVaultFoldersInfo(this.plugin.settings.scanDirectories);
+      const foldersInfo = getVaultFoldersInfo(
+        this.plugin.settings.scanDirectories,
+      );
       const foldersEl = header.createEl("div", { cls: "seo-filename" });
       foldersEl.textContent = foldersInfo;
     }
-    const loadingContainer = containerEl.createEl("div", { cls: "seo-loading-container" });
-    const spinnerEl = loadingContainer.createEl("div", { cls: "seo-loading-spinner" });
+    const loadingContainer = containerEl.createEl("div", {
+      cls: "seo-loading-container",
+    });
+    const spinnerEl = loadingContainer.createEl("div", {
+      cls: "seo-loading-spinner",
+    });
     (0, import_obsidian8.setIcon)(spinnerEl, "loader-circle");
     loadingContainer.createEl("h3", {
       // eslint-disable-next-line obsidianmd/ui/sentence-case
       text: "Running SEO audit...",
-      cls: "seo-loading-title"
+      cls: "seo-loading-title",
     });
     loadingContainer.createEl("p", {
       text: "This may take a moment for large vaults. Please wait...",
-      cls: "seo-loading-message"
+      cls: "seo-loading-message",
     });
   }
   // Method to refresh the panel when settings change
@@ -4829,7 +6027,7 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
           this.updateGlobalResultsIfExists(result);
           this.render();
         }
-      }
+      },
     );
     this.containerEl.addEventListener("seo-refresh-complete", (event) => {
       const customEvent = event;
@@ -4854,17 +6052,26 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
       containerEl.empty();
       containerEl.addClass("seo-panel");
       const header = containerEl.createEl("div", { cls: "seo-panel-header" });
-      header.createEl("h2", { text: this.panelType === "current" ? "SEO audit: current note" : "SEO audit: vault" });
+      header.createEl("h2", {
+        text:
+          this.panelType === "current"
+            ? "SEO audit: current note"
+            : "SEO audit: vault",
+      });
       if (this.panelType === "current") {
         const activeFile = this.app.workspace.getActiveFile();
         if (activeFile && isSupportedFile(activeFile, this.plugin.settings)) {
           const filenameEl = header.createEl("div", { cls: "seo-filename" });
           let displayName = activeFile.path;
-          if (this.currentNoteResults && this.currentNoteResults.file === activeFile.path) {
-            displayName = this.currentNoteResults.displayName || activeFile.path;
+          if (
+            this.currentNoteResults &&
+            this.currentNoteResults.file === activeFile.path
+          ) {
+            displayName =
+              this.currentNoteResults.displayName || activeFile.path;
           } else if (this.plugin.settings.cachedGlobalResults) {
             const globalResult = this.plugin.settings.cachedGlobalResults.find(
-              (result) => result.file === activeFile.path
+              (result) => result.file === activeFile.path,
             );
             if (globalResult) {
               displayName = globalResult.displayName || activeFile.path;
@@ -4874,14 +6081,17 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
         }
       } else {
         const fileCount = this.globalResults.length;
-        const foldersInfo = getVaultFoldersInfo(this.plugin.settings.scanDirectories, fileCount);
+        const foldersInfo = getVaultFoldersInfo(
+          this.plugin.settings.scanDirectories,
+          fileCount,
+        );
         const foldersEl = header.createEl("div", { cls: "seo-filename" });
         foldersEl.textContent = foldersInfo;
       }
       if (this.panelType === "current") {
         const auditCurrentBtn = containerEl.createEl("button", {
           text: "Refresh",
-          cls: "mod-cta seo-btn seo-top-btn"
+          cls: "mod-cta seo-btn seo-top-btn",
         });
         auditCurrentBtn.addEventListener("click", (event) => {
           event.preventDefault();
@@ -4890,10 +6100,13 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
             await this.handleRefreshClick(auditCurrentBtn);
           })();
         });
-        if (this.plugin.settings.enableExternalLinkButton && !this.plugin.settings.enableExternalLinkVaultCheck) {
+        if (
+          this.plugin.settings.enableExternalLinkButton &&
+          !this.plugin.settings.enableExternalLinkVaultCheck
+        ) {
           const externalLinksBtn = containerEl.createEl("button", {
             text: "Check external links for 404s",
-            cls: "seo-btn"
+            cls: "seo-btn",
           });
           externalLinksBtn.addEventListener("click", () => {
             void (async () => {
@@ -4921,35 +6134,50 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
         const activeFile = this.app.workspace.getActiveFile();
         let currentFileResults = null;
         if (activeFile && this.plugin.settings.cachedGlobalResults) {
-          currentFileResults = this.plugin.settings.cachedGlobalResults.find(
-            (result) => result.file === activeFile.path
-          ) || null;
+          currentFileResults =
+            this.plugin.settings.cachedGlobalResults.find(
+              (result) => result.file === activeFile.path,
+            ) || null;
         }
         const resultsToShow = this.currentNoteResults || currentFileResults;
         if (resultsToShow) {
-          const newResultsContainer = this.containerEl.createEl("div", { cls: "seo-results-container" });
+          const newResultsContainer = this.containerEl.createEl("div", {
+            cls: "seo-results-container",
+          });
           const tempResultsDisplay = new ResultsDisplay(
             newResultsContainer,
             async (filePath) => await this.actions.openFile(filePath),
-            async (filePath) => await this.actions.openFileAndAudit(filePath)
+            async (filePath) => await this.actions.openFileAndAudit(filePath),
           );
           tempResultsDisplay.renderResults(resultsToShow);
         } else {
-          const noResults = containerEl.createEl("div", { cls: "seo-no-results" });
-          const fileTypeText = this.plugin.settings.enableMDXSupport ? "markdown or MDX file" : "markdown file";
-          noResults.createEl("p", { text: `Open a ${fileTypeText} and click "Refresh" to audit it.` });
+          const noResults = containerEl.createEl("div", {
+            cls: "seo-no-results",
+          });
+          const fileTypeText = this.plugin.settings.enableMDXSupport
+            ? "markdown or MDX file"
+            : "markdown file";
+          noResults.createEl("p", {
+            text: `Open a ${fileTypeText} and click "Refresh" to audit it.`,
+          });
         }
       } else {
         if (this.globalResults.length > 0) {
           this.renderGlobalResults(containerEl);
         } else {
-          const noGlobal = containerEl.createEl("div", { cls: "seo-no-results" });
-          noGlobal.createEl("p", { text: 'Click "Audit all notes" to audit your files in your configured directories.' });
+          const noGlobal = containerEl.createEl("div", {
+            cls: "seo-no-results",
+          });
+          noGlobal.createEl("p", {
+            text: 'Click "Audit all notes" to audit your files in your configured directories.',
+          });
         }
       }
     } catch (error) {
       console.error("Error rendering SEO panel:", error);
-      this.containerEl.createEl("div", { text: "Error loading SEO panel. Please try again." });
+      this.containerEl.createEl("div", {
+        text: "Error loading SEO panel. Please try again.",
+      });
     }
   }
   shouldIncludeFileInGlobalResults(filePath) {
@@ -4964,19 +6192,24 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
     if (scanDirectories.trim()) {
       const directories = scanDirectories.split(",").map((dir) => dir.trim());
       const isInConfiguredDirectory = directories.some(
-        (dir) => filePath.startsWith(dir + "/") || filePath === dir
+        (dir) => filePath.startsWith(dir + "/") || filePath === dir,
       );
       return isInConfiguredDirectory;
     }
     return true;
   }
   updateGlobalResultsIfExists(currentResult) {
-    if (this.plugin.settings.cachedGlobalResults && this.plugin.settings.cachedGlobalResults.length > 0) {
+    if (
+      this.plugin.settings.cachedGlobalResults &&
+      this.plugin.settings.cachedGlobalResults.length > 0
+    ) {
       if (!this.shouldIncludeFileInGlobalResults(currentResult.file)) {
         return;
       }
       const globalResults = this.plugin.settings.cachedGlobalResults;
-      const existingIndex = globalResults.findIndex((r) => r.file === currentResult.file);
+      const existingIndex = globalResults.findIndex(
+        (r) => r.file === currentResult.file,
+      );
       if (existingIndex !== -1) {
         globalResults[existingIndex] = currentResult;
       } else {
@@ -4992,11 +6225,14 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
       const filenameEl = this.containerEl.querySelector(".seo-filename");
       if (filenameEl) {
         let displayName = activeFile.path;
-        if (this.currentNoteResults && this.currentNoteResults.file === activeFile.path) {
+        if (
+          this.currentNoteResults &&
+          this.currentNoteResults.file === activeFile.path
+        ) {
           displayName = this.currentNoteResults.displayName || activeFile.path;
         } else if (this.plugin.settings.cachedGlobalResults) {
           const globalResult = this.plugin.settings.cachedGlobalResults.find(
-            (result) => result.file === activeFile.path
+            (result) => result.file === activeFile.path,
           );
           if (globalResult) {
             displayName = globalResult.displayName || activeFile.path;
@@ -5011,31 +6247,43 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
     const activeFile = this.app.workspace.getActiveFile();
     let currentFileResults = null;
     if (activeFile && this.plugin.settings.cachedGlobalResults) {
-      currentFileResults = this.plugin.settings.cachedGlobalResults.find(
-        (result) => result.file === activeFile.path
-      ) || null;
+      currentFileResults =
+        this.plugin.settings.cachedGlobalResults.find(
+          (result) => result.file === activeFile.path,
+        ) || null;
     }
     const resultsToShow = this.currentNoteResults || currentFileResults;
-    const existingResults = this.containerEl.querySelectorAll(".seo-results-container, .seo-file-issue, .seo-issue, .seo-warning, .seo-notice, .seo-info-note, .seo-check, .seo-result, .seo-score-header, .seo-score-text, .seo-score-number, .seo-toggle-icon, .seo-collapse-icon");
+    const existingResults = this.containerEl.querySelectorAll(
+      ".seo-results-container, .seo-file-issue, .seo-issue, .seo-warning, .seo-notice, .seo-info-note, .seo-check, .seo-result, .seo-score-header, .seo-score-text, .seo-score-number, .seo-toggle-icon, .seo-collapse-icon",
+    );
     existingResults.forEach((el) => el.remove());
     if (resultsToShow) {
-      const newResultsContainer = this.containerEl.createEl("div", { cls: "seo-results-container" });
+      const newResultsContainer = this.containerEl.createEl("div", {
+        cls: "seo-results-container",
+      });
       const tempResultsDisplay = new ResultsDisplay(
         newResultsContainer,
         async (filePath) => await this.actions.openFile(filePath),
-        async (filePath) => await this.actions.openFileAndAudit(filePath)
+        async (filePath) => await this.actions.openFileAndAudit(filePath),
       );
       tempResultsDisplay.renderResults(resultsToShow);
     } else {
-      const noResults = this.containerEl.createEl("div", { cls: "seo-no-results" });
-      noResults.createEl("p", { text: 'Open a markdown file and click "Refresh" to audit it.' });
+      const noResults = this.containerEl.createEl("div", {
+        cls: "seo-no-results",
+      });
+      noResults.createEl("p", {
+        text: 'Open a markdown file and click "Refresh" to audit it.',
+      });
     }
   }
   updateGlobalPanelIfOpen() {
     const globalPanels = this.app.workspace.getLeavesOfType("seo-global-panel");
     if (globalPanels.length > 0) {
       const globalPanel = globalPanels[0];
-      if ((globalPanel == null ? void 0 : globalPanel.view) && globalPanel.view instanceof _SEOSidePanel) {
+      if (
+        (globalPanel == null ? void 0 : globalPanel.view) &&
+        globalPanel.view instanceof _SEOSidePanel
+      ) {
         const seoPanel = globalPanel.view;
         seoPanel.globalResults = [...this.plugin.settings.cachedGlobalResults];
         seoPanel.render();
@@ -5043,11 +6291,14 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
     }
   }
   renderGlobalResults(container) {
-    this.resultsDisplay.renderGlobalResults(this.globalResults, this.plugin.settings);
+    this.resultsDisplay.renderGlobalResults(
+      this.globalResults,
+      this.plugin.settings,
+    );
     const refreshBtn = container.createEl("button", {
       text: "Refresh",
       cls: "mod-cta seo-btn seo-refresh-btn",
-      attr: { "data-refresh-btn": "true" }
+      attr: { "data-refresh-btn": "true" },
     });
     refreshBtn.addEventListener("click", () => {
       void (async () => {
@@ -5074,20 +6325,29 @@ var _SEOSidePanel = class _SEOSidePanel extends import_obsidian8.ItemView {
         void this.plugin.saveSettings();
       },
       (event) => {
-        const showNotices = this.plugin.settings.checkPotentiallyBrokenLinks && this.plugin.settings.checkPotentiallyBrokenEmbeds;
+        const showNotices =
+          this.plugin.settings.checkPotentiallyBrokenLinks &&
+          this.plugin.settings.checkPotentiallyBrokenEmbeds;
         const issuesFiles = this.globalResults.filter((r) => {
           const hasIssues = r.issuesCount > 0;
           const hasWarnings = r.warningsCount > 0;
           const hasNotices = showNotices && r.noticesCount > 0;
           return hasIssues || hasWarnings || hasNotices;
         });
-        this.actions.showSortMenu(event, issuesFiles, container, this.currentSort, (sortType) => {
-          this.currentSort = sortType;
-          this.plugin.settings.defaultSort = sortType;
-          void this.plugin.saveSettings();
-        }, this.plugin.settings);
+        this.actions.showSortMenu(
+          event,
+          issuesFiles,
+          container,
+          this.currentSort,
+          (sortType) => {
+            this.currentSort = sortType;
+            this.plugin.settings.defaultSort = sortType;
+            void this.plugin.saveSettings();
+          },
+          this.plugin.settings,
+        );
       },
-      this.plugin.settings
+      this.plugin.settings,
     );
   }
 };
@@ -5144,14 +6404,19 @@ var PanelManager = class {
   }
   getFilesToCheck() {
     const { vault } = this.app;
-    const { scanDirectories, ignoreUnderscoreFiles, enableMDXSupport } = this.plugin.settings;
+    const { scanDirectories, ignoreUnderscoreFiles, enableMDXSupport } =
+      this.plugin.settings;
     let files;
     if (!scanDirectories.trim()) {
       files = vault.getMarkdownFiles();
       if (enableMDXSupport) {
-        const mdxFiles = vault.getFiles().filter(
-          (file) => file instanceof import_obsidian9.TFile && file.extension.toLowerCase() === "mdx"
-        );
+        const mdxFiles = vault
+          .getFiles()
+          .filter(
+            (file) =>
+              file instanceof import_obsidian9.TFile &&
+              file.extension.toLowerCase() === "mdx",
+          );
         files = [...files, ...mdxFiles];
       }
     } else {
@@ -5160,14 +6425,21 @@ var PanelManager = class {
       for (const dir of directories) {
         const folder = vault.getAbstractFileByPath(dir);
         if (folder && folder instanceof import_obsidian9.TFolder) {
-          const mdFiles = vault.getMarkdownFiles().filter(
-            (file) => file.path.startsWith(dir + "/") || file.path === dir
-          );
+          const mdFiles = vault
+            .getMarkdownFiles()
+            .filter(
+              (file) => file.path.startsWith(dir + "/") || file.path === dir,
+            );
           files.push(...mdFiles);
           if (enableMDXSupport) {
-            const mdxFiles = vault.getFiles().filter(
-              (file) => file instanceof import_obsidian9.TFile && file.extension.toLowerCase() === "mdx" && (file.path.startsWith(dir + "/") || file.path === dir)
-            );
+            const mdxFiles = vault
+              .getFiles()
+              .filter(
+                (file) =>
+                  file instanceof import_obsidian9.TFile &&
+                  file.extension.toLowerCase() === "mdx" &&
+                  (file.path.startsWith(dir + "/") || file.path === dir),
+              );
             files.push(...mdxFiles);
           }
         }
@@ -5187,7 +6459,12 @@ var PanelManager = class {
 // src/utils/error-handler.ts
 var import_obsidian10 = require("obsidian");
 var SEOPluginError = class extends Error {
-  constructor(message, severity = "error" /* ERROR */, userMessage, suggestion) {
+  constructor(
+    message,
+    severity = "error" /* ERROR */,
+    userMessage,
+    suggestion,
+  ) {
     super(message);
     this.name = "SEOPluginError";
     this.severity = severity;
@@ -5197,7 +6474,7 @@ var SEOPluginError = class extends Error {
 };
 function handleError(error, context, showNotice = true) {
   let message;
-  let severity = "error" /* ERROR */;
+  let severity = "error"; /* ERROR */
   let suggestion;
   if (error instanceof SEOPluginError) {
     message = error.userMessage;
@@ -5228,13 +6505,15 @@ async function withErrorHandling(fn, context, fallback) {
   }
 }
 function validateRequiredParams(params, context) {
-  const missing = Object.entries(params).filter(([_, value]) => value === null || value === void 0).map(([name]) => name);
+  const missing = Object.entries(params)
+    .filter(([_, value]) => value === null || value === void 0)
+    .map(([name]) => name);
   if (missing.length > 0) {
     throw new SEOPluginError(
       `Missing required parameters: ${missing.join(", ")}`,
       "error" /* ERROR */,
       `Missing required parameters: ${missing.join(", ")}`,
-      "Please check your plugin configuration"
+      "Please check your plugin configuration",
     );
   }
 }
@@ -5248,7 +6527,7 @@ var CacheManager = class {
       maxSize: config.maxSize || 100,
       maxAge: config.maxAge || 30 * 60 * 1e3,
       // 30 minutes
-      cleanupInterval: config.cleanupInterval || 5 * 60 * 1e3
+      cleanupInterval: config.cleanupInterval || 5 * 60 * 1e3,
       // 5 minutes
     };
     this.startCleanupTimer();
@@ -5287,7 +6566,7 @@ var CacheManager = class {
       value,
       timestamp: Date.now(),
       accessCount: 1,
-      lastAccessed: Date.now()
+      lastAccessed: Date.now(),
     });
   }
   /**
@@ -5330,7 +6609,7 @@ var CacheManager = class {
       hitRate: this.calculateHitRate(),
       oldestEntry: Math.min(...entries.map((e) => e.timestamp)),
       newestEntry: Math.max(...entries.map((e) => e.timestamp)),
-      expiredEntries: entries.filter((e) => this.isExpired(e)).length
+      expiredEntries: entries.filter((e) => this.isExpired(e)).length,
     };
   }
   /**
@@ -5382,7 +6661,10 @@ var CacheManager = class {
    */
   calculateHitRate() {
     const entries = Array.from(this.cache.values());
-    const totalAccesses = entries.reduce((sum, entry) => sum + entry.accessCount, 0);
+    const totalAccesses = entries.reduce(
+      (sum, entry) => sum + entry.accessCount,
+      0,
+    );
     return totalAccesses > 0 ? entries.length / totalAccesses : 0;
   }
   /**
@@ -5402,7 +6684,7 @@ var SEOCacheManager = class {
       // Store up to 50 scan results
       maxAge: 60 * 60 * 1e3,
       // 1 hour
-      cleanupInterval: 10 * 60 * 1e3
+      cleanupInterval: 10 * 60 * 1e3,
       // 10 minutes
     });
     this.fileCache = new CacheManager({
@@ -5410,7 +6692,7 @@ var SEOCacheManager = class {
       // Store up to 200 file contents
       maxAge: 30 * 60 * 1e3,
       // 30 minutes
-      cleanupInterval: 5 * 60 * 1e3
+      cleanupInterval: 5 * 60 * 1e3,
       // 5 minutes
     });
   }
@@ -5459,7 +6741,7 @@ var SEOCacheManager = class {
   getStats() {
     return {
       results: this.resultsCache.getStats(),
-      files: this.fileCache.getStats()
+      files: this.fileCache.getStats(),
     };
   }
   /**
@@ -5499,12 +6781,12 @@ var SEOPlugin = class extends import_obsidian11.Plugin {
       await this.loadSettings();
       validateRequiredParams(
         { app: this.app, settings: this.settings },
-        "plugin initialization"
+        "plugin initialization",
       );
       this.panelManager = await withErrorHandling(
         () => Promise.resolve(new PanelManager(this.app, this)),
         "panel manager initialization",
-        null
+        null,
       );
       this.forceIconRefresh();
       await withErrorHandling(
@@ -5521,56 +6803,64 @@ var SEOPlugin = class extends import_obsidian11.Plugin {
           });
         },
         "side panel registration",
-        void 0
+        void 0,
       );
       await withErrorHandling(
         () => {
           registerCommands(this);
         },
         "command registration",
-        void 0
+        void 0,
       );
       await withErrorHandling(
         () => {
           this.addSettingTab(new SEOSettingTab(this.app, this));
         },
         "settings tab registration",
-        void 0
+        void 0,
       );
       if (this.settings.showRibbonIcon) {
         await withErrorHandling(
           () => {
-            this.ribbonIcon = this.addRibbonIcon("search-check", "Open SEO audit panel", () => {
-              try {
-                const existingPanels = this.app.workspace.getLeavesOfType("seo-global-panel");
-                const isFirstRun = existingPanels.length === 0;
-                this.openGlobalPanel();
-                if (!isFirstRun) {
-                  void setTimeout(() => {
-                    void (async () => {
-                      try {
-                        const globalPanels = this.app.workspace.getLeavesOfType("seo-global-panel");
-                        if (globalPanels.length > 0) {
-                          const panel = globalPanels[0];
-                          if (panel == null ? void 0 : panel.view) {
-                            const seoPanel = panel.view;
-                            await seoPanel.actions.refreshGlobalResults();
-                            seoPanel.render();
+            this.ribbonIcon = this.addRibbonIcon(
+              "search-check",
+              "Open SEO audit panel",
+              () => {
+                try {
+                  const existingPanels =
+                    this.app.workspace.getLeavesOfType("seo-global-panel");
+                  const isFirstRun = existingPanels.length === 0;
+                  this.openGlobalPanel();
+                  if (!isFirstRun) {
+                    void setTimeout(() => {
+                      void (async () => {
+                        try {
+                          const globalPanels =
+                            this.app.workspace.getLeavesOfType(
+                              "seo-global-panel",
+                            );
+                          if (globalPanels.length > 0) {
+                            const panel = globalPanels[0];
+                            if (panel == null ? void 0 : panel.view) {
+                              const seoPanel = panel.view;
+                              await seoPanel.actions.refreshGlobalResults();
+                              seoPanel.render();
+                            }
                           }
+                        } catch (error) {
+                          handleError(error, "ribbon icon panel refresh", true);
                         }
-                      } catch (error) {
-                        handleError(error, "ribbon icon panel refresh", true);
-                      }
-                    })();
-                  }, 500);
+                      })();
+                    }, 500);
+                  }
+                } catch (error) {
+                  handleError(error, "ribbon icon click handler", true);
                 }
-              } catch (error) {
-                handleError(error, "ribbon icon click handler", true);
-              }
-            });
+              },
+            );
           },
           "ribbon icon registration",
-          void 0
+          void 0,
         );
       }
     } catch (error) {
@@ -5609,10 +6899,8 @@ var SEOPlugin = class extends import_obsidian11.Plugin {
       handleError(error, "saving settings", true);
     }
   }
-  addStatusBar() {
-  }
-  removeStatusBar() {
-  }
+  addStatusBar() {}
+  removeStatusBar() {}
   /**
    * Opens the current note SEO audit panel
    * Shows SEO analysis for the currently active note
@@ -5649,7 +6937,9 @@ var SEOPlugin = class extends import_obsidian11.Plugin {
    */
   async runBulkCheck() {
     try {
-      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(() => (init_seo_checker(), seo_checker_exports));
+      const { runSEOCheck: runSEOCheck2 } = await Promise.resolve().then(
+        () => (init_seo_checker(), seo_checker_exports),
+      );
       const files = await this.getFilesToCheck();
       if (files.length === 0) {
         return [];
@@ -5680,8 +6970,12 @@ var SEOPlugin = class extends import_obsidian11.Plugin {
   // Proper icon refresh using Obsidian's onLayoutReady API
   forceIconRefresh() {
     this.app.workspace.onLayoutReady(() => {
-      const existingCurrentPanels = this.app.workspace.getLeavesOfType(SEOCurrentPanelViewType);
-      const existingGlobalPanels = this.app.workspace.getLeavesOfType(SEOGlobalPanelViewType);
+      const existingCurrentPanels = this.app.workspace.getLeavesOfType(
+        SEOCurrentPanelViewType,
+      );
+      const existingGlobalPanels = this.app.workspace.getLeavesOfType(
+        SEOGlobalPanelViewType,
+      );
       [...existingCurrentPanels, ...existingGlobalPanels].forEach((leaf) => {
         if (leaf.view instanceof SEOSidePanel) {
           leaf.view.render();
@@ -5697,34 +6991,42 @@ var SEOPlugin = class extends import_obsidian11.Plugin {
     try {
       if (this.settings.showRibbonIcon) {
         if (!this.ribbonIcon) {
-          this.ribbonIcon = this.addRibbonIcon("search-check", "Open SEO audit panel", () => {
-            try {
-              const existingPanels = this.app.workspace.getLeavesOfType("seo-global-panel");
-              const isFirstRun = existingPanels.length === 0;
-              this.openGlobalPanel();
-              if (!isFirstRun) {
-                void setTimeout(() => {
-                  void (async () => {
-                    try {
-                      const globalPanels = this.app.workspace.getLeavesOfType("seo-global-panel");
-                      if (globalPanels.length > 0) {
-                        const panel = globalPanels[0];
-                        if (panel == null ? void 0 : panel.view) {
-                          const seoPanel = panel.view;
-                          await seoPanel.actions.refreshGlobalResults();
-                          seoPanel.render();
+          this.ribbonIcon = this.addRibbonIcon(
+            "search-check",
+            "Open SEO audit panel",
+            () => {
+              try {
+                const existingPanels =
+                  this.app.workspace.getLeavesOfType("seo-global-panel");
+                const isFirstRun = existingPanels.length === 0;
+                this.openGlobalPanel();
+                if (!isFirstRun) {
+                  void setTimeout(() => {
+                    void (async () => {
+                      try {
+                        const globalPanels =
+                          this.app.workspace.getLeavesOfType(
+                            "seo-global-panel",
+                          );
+                        if (globalPanels.length > 0) {
+                          const panel = globalPanels[0];
+                          if (panel == null ? void 0 : panel.view) {
+                            const seoPanel = panel.view;
+                            await seoPanel.actions.refreshGlobalResults();
+                            seoPanel.render();
+                          }
                         }
+                      } catch (error) {
+                        handleError(error, "ribbon icon panel refresh", true);
                       }
-                    } catch (error) {
-                      handleError(error, "ribbon icon panel refresh", true);
-                    }
-                  })();
-                }, 500);
+                    })();
+                  }, 500);
+                }
+              } catch (error) {
+                handleError(error, "ribbon icon click handler", true);
               }
-            } catch (error) {
-              handleError(error, "ribbon icon click handler", true);
-            }
-          });
+            },
+          );
         }
       } else {
         if (this.ribbonIcon) {
@@ -5738,7 +7040,8 @@ var SEOPlugin = class extends import_obsidian11.Plugin {
               const items = menu.querySelectorAll(".menu-item");
               items.forEach((item) => {
                 var _a;
-                const text = (_a = item.textContent) == null ? void 0 : _a.trim();
+                const text =
+                  (_a = item.textContent) == null ? void 0 : _a.trim();
                 if (text === "Open SEO audit panel") {
                   item.remove();
                 }

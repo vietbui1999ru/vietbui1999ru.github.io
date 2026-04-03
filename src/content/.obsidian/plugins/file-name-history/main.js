@@ -12,19 +12,23 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => FileNameHistoryPlugin
+  default: () => FileNameHistoryPlugin,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian3 = require("obsidian");
@@ -40,7 +44,7 @@ var DEFAULT_SETTINGS = {
   excludeFolders: [],
   fileExtensions: ["md"],
   trackFolderRenames: "",
-  excludePropertyName: ""
+  excludePropertyName: "",
 };
 
 // src/ui/settings-tab.ts
@@ -59,97 +63,176 @@ var FileNameHistorySettingTab = class extends import_obsidian.PluginSettingTab {
     };
     const generalGroup = new import_obsidian.SettingGroup(containerEl);
     generalGroup.addSetting((setting) => {
-      setting.setName("History property name").setDesc("The list property to store file name history.").addText(
-        (text) => text.setPlaceholder("aliases").setValue(this.plugin.settings.historyPropertyName).onChange((value) => {
-          this.plugin.settings.historyPropertyName = value || "aliases";
-          saveSettings();
-        })
-      );
+      setting
+        .setName("History property name")
+        .setDesc("The list property to store file name history.")
+        .addText((text) =>
+          text
+            .setPlaceholder("aliases")
+            .setValue(this.plugin.settings.historyPropertyName)
+            .onChange((value) => {
+              this.plugin.settings.historyPropertyName = value || "aliases";
+              saveSettings();
+            }),
+        );
     });
     generalGroup.addSetting((setting) => {
-      setting.setName("Timeout seconds").setDesc("Time in seconds the name must be stable before adding to the configured property.").addSlider(
-        (slider) => slider.setLimits(1, 20, 1).setValue(this.plugin.settings.timeoutSeconds).setDynamicTooltip().onChange((value) => {
-          this.plugin.settings.timeoutSeconds = value;
-          saveSettings();
-        })
-      );
+      setting
+        .setName("Timeout seconds")
+        .setDesc(
+          "Time in seconds the name must be stable before adding to the configured property.",
+        )
+        .addSlider((slider) =>
+          slider
+            .setLimits(1, 20, 1)
+            .setValue(this.plugin.settings.timeoutSeconds)
+            .setDynamicTooltip()
+            .onChange((value) => {
+              this.plugin.settings.timeoutSeconds = value;
+              saveSettings();
+            }),
+        );
     });
     generalGroup.addSetting((setting) => {
-      setting.setName("Case-sensitive uniqueness").setDesc("If enabled, treat case differences as unique values in the configured property.").addToggle(
-        (toggle) => toggle.setValue(this.plugin.settings.caseSensitive).onChange((value) => {
-          this.plugin.settings.caseSensitive = value;
-          saveSettings();
-        })
-      );
+      setting
+        .setName("Case-sensitive uniqueness")
+        .setDesc(
+          "If enabled, treat case differences as unique values in the configured property.",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.caseSensitive)
+            .onChange((value) => {
+              this.plugin.settings.caseSensitive = value;
+              saveSettings();
+            }),
+        );
     });
     generalGroup.addSetting((setting) => {
-      setting.setName("Auto-create history property").setDesc("Automatically create the configured property if missing.").addToggle(
-        (toggle) => toggle.setValue(this.plugin.settings.autoCreateFrontmatter).onChange((value) => {
-          this.plugin.settings.autoCreateFrontmatter = value;
-          saveSettings();
-        })
-      );
+      setting
+        .setName("Auto-create history property")
+        .setDesc("Automatically create the configured property if missing.")
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.autoCreateFrontmatter)
+            .onChange((value) => {
+              this.plugin.settings.autoCreateFrontmatter = value;
+              saveSettings();
+            }),
+        );
     });
     generalGroup.addSetting((setting) => {
-      setting.setName("File extensions").setDesc("Comma-separated list of file extensions to track.").addText(
-        (text) => text.setPlaceholder("Md, txt").setValue(this.plugin.settings.fileExtensions.join(",")).onChange((value) => {
-          this.plugin.settings.fileExtensions = value.split(",").map((s) => s.trim()).filter((s) => s);
-          saveSettings();
-        })
-      );
+      setting
+        .setName("File extensions")
+        .setDesc("Comma-separated list of file extensions to track.")
+        .addText((text) =>
+          text
+            .setPlaceholder("Md, txt")
+            .setValue(this.plugin.settings.fileExtensions.join(","))
+            .onChange((value) => {
+              this.plugin.settings.fileExtensions = value
+                .split(",")
+                .map((s) => s.trim())
+                .filter((s) => s);
+              saveSettings();
+            }),
+        );
     });
-    const filteringGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Filtering");
-    const foldersGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Folders");
-    const advancedGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Advanced");
+    const filteringGroup = new import_obsidian.SettingGroup(
+      containerEl,
+    ).setHeading("Filtering");
+    const foldersGroup = new import_obsidian.SettingGroup(
+      containerEl,
+    ).setHeading("Folders");
+    const advancedGroup = new import_obsidian.SettingGroup(
+      containerEl,
+    ).setHeading("Advanced");
     filteringGroup.addSetting((setting) => {
-      setting.setName("Ignore regex patterns").setDesc(
-        "Comma-separated regex patterns for file names or immediate parent folder names to ignore (e.g., ^_ for underscore prefixes, ^untitled$ for untitled). Leave empty to disable."
-      ).addText(
-        (text) => text.setPlaceholder("^_, ^untitled$, ^untitled \\d+$").setValue(this.plugin.settings.ignoreRegexes.join(",")).onChange((value) => {
-          this.plugin.settings.ignoreRegexes = value.split(",").map((s) => s.trim()).filter((s) => s);
-          saveSettings();
-        })
-      );
+      setting
+        .setName("Ignore regex patterns")
+        .setDesc(
+          "Comma-separated regex patterns for file names or immediate parent folder names to ignore (e.g., ^_ for underscore prefixes, ^untitled$ for untitled). Leave empty to disable.",
+        )
+        .addText((text) =>
+          text
+            .setPlaceholder("^_, ^untitled$, ^untitled \\d+$")
+            .setValue(this.plugin.settings.ignoreRegexes.join(","))
+            .onChange((value) => {
+              this.plugin.settings.ignoreRegexes = value
+                .split(",")
+                .map((s) => s.trim())
+                .filter((s) => s);
+              saveSettings();
+            }),
+        );
     });
     filteringGroup.addSetting((setting) => {
-      setting.setName("Exclude property name").setDesc(
-        "Name of a boolean property to check in files. Files with this property set to true will be excluded from tracking. Takes priority over folder filtering."
-      ).addText(
-        (text) => text.setPlaceholder("Skip-rename-tracking").setValue(this.plugin.settings.excludePropertyName).onChange((value) => {
-          this.plugin.settings.excludePropertyName = value;
-          saveSettings();
-        })
-      );
+      setting
+        .setName("Exclude property name")
+        .setDesc(
+          "Name of a boolean property to check in files. Files with this property set to true will be excluded from tracking. Takes priority over folder filtering.",
+        )
+        .addText((text) =>
+          text
+            .setPlaceholder("Skip-rename-tracking")
+            .setValue(this.plugin.settings.excludePropertyName)
+            .onChange((value) => {
+              this.plugin.settings.excludePropertyName = value;
+              saveSettings();
+            }),
+        );
     });
     foldersGroup.addSetting((setting) => {
-      setting.setName("Include folders").setDesc(
-        "Comma-separated list of folder paths to include. If empty, all folders are included. Use {vault} or {root} to include only files directly in the vault root (no subfolders)."
-      ).addText(
-        (text) => text.setValue(this.plugin.settings.includeFolders.join(",")).onChange((value) => {
-          this.plugin.settings.includeFolders = value.split(",").map((s) => s.trim()).filter((s) => s);
-          saveSettings();
-        })
-      );
+      setting
+        .setName("Include folders")
+        .setDesc(
+          "Comma-separated list of folder paths to include. If empty, all folders are included. Use {vault} or {root} to include only files directly in the vault root (no subfolders).",
+        )
+        .addText((text) =>
+          text
+            .setValue(this.plugin.settings.includeFolders.join(","))
+            .onChange((value) => {
+              this.plugin.settings.includeFolders = value
+                .split(",")
+                .map((s) => s.trim())
+                .filter((s) => s);
+              saveSettings();
+            }),
+        );
     });
     foldersGroup.addSetting((setting) => {
-      setting.setName("Exclude folders").setDesc(
-        'Comma-separated list of folder paths to exclude. Supports wildcards: use "folder/*" to exclude direct children, "folder/**" to exclude all descendants. Use {vault} or {root} to exclude files directly in the vault root.'
-      ).addText(
-        (text) => text.setValue(this.plugin.settings.excludeFolders.join(",")).onChange((value) => {
-          this.plugin.settings.excludeFolders = value.split(",").map((s) => s.trim()).filter((s) => s);
-          saveSettings();
-        })
-      );
+      setting
+        .setName("Exclude folders")
+        .setDesc(
+          'Comma-separated list of folder paths to exclude. Supports wildcards: use "folder/*" to exclude direct children, "folder/**" to exclude all descendants. Use {vault} or {root} to exclude files directly in the vault root.',
+        )
+        .addText((text) =>
+          text
+            .setValue(this.plugin.settings.excludeFolders.join(","))
+            .onChange((value) => {
+              this.plugin.settings.excludeFolders = value
+                .split(",")
+                .map((s) => s.trim())
+                .filter((s) => s);
+              saveSettings();
+            }),
+        );
     });
     advancedGroup.addSetting((setting) => {
-      setting.setName("Track folder renames for specific file name").setDesc(
-        "If a Markdown file matches this file name, store old immediate parent folder names in the configured property when parent folders are renamed."
-      ).addText(
-        (text) => text.setPlaceholder("Index").setValue(this.plugin.settings.trackFolderRenames).onChange((value) => {
-          this.plugin.settings.trackFolderRenames = value;
-          saveSettings();
-        })
-      );
+      setting
+        .setName("Track folder renames for specific file name")
+        .setDesc(
+          "If a Markdown file matches this file name, store old immediate parent folder names in the configured property when parent folders are renamed.",
+        )
+        .addText((text) =>
+          text
+            .setPlaceholder("Index")
+            .setValue(this.plugin.settings.trackFolderRenames)
+            .onChange((value) => {
+              this.plugin.settings.trackFolderRenames = value;
+              saveSettings();
+            }),
+        );
     });
   }
 };
@@ -182,7 +265,10 @@ var HistoryProcessor = class {
         continue;
       }
       const nameLower = name.toLowerCase();
-      if (this.settings.caseSensitive && name === currentBasename || !this.settings.caseSensitive && nameLower === currentBasenameLower) {
+      if (
+        (this.settings.caseSensitive && name === currentBasename) ||
+        (!this.settings.caseSensitive && nameLower === currentBasenameLower)
+      ) {
         continue;
       }
       toAdd.push(name);
@@ -219,7 +305,9 @@ var HistoryProcessor = class {
     }
     const aliasesArray = aliases;
     const existing = new Set(
-      this.settings.caseSensitive ? aliasesArray : aliasesArray.map((a) => a.toLowerCase())
+      this.settings.caseSensitive
+        ? aliasesArray
+        : aliasesArray.map((a) => a.toLowerCase()),
     );
     let added = false;
     for (const name of toAdd) {
@@ -234,7 +322,9 @@ var HistoryProcessor = class {
       return;
     }
     frontmatter[this.settings.historyPropertyName] = aliasesArray;
-    const newFrontmatterText = (0, import_obsidian2.stringifyYaml)(frontmatter).trim();
+    const newFrontmatterText = (0, import_obsidian2.stringifyYaml)(
+      frontmatter,
+    ).trim();
     const newContent = `---
 ${newFrontmatterText}
 ---
@@ -260,7 +350,10 @@ ${bodyContent}`;
         continue;
       }
       const nameLower = name.toLowerCase();
-      if (this.settings.caseSensitive && name === currentBasename || !this.settings.caseSensitive && nameLower === currentBasenameLower) {
+      if (
+        (this.settings.caseSensitive && name === currentBasename) ||
+        (!this.settings.caseSensitive && nameLower === currentBasenameLower)
+      ) {
         continue;
       }
       toAdd.push(name);
@@ -284,10 +377,14 @@ ${bodyContent}`;
       }
       const aliasesArray = aliases;
       const existing = new Set(
-        this.settings.caseSensitive ? aliasesArray : aliasesArray.map((a) => a.toLowerCase())
+        this.settings.caseSensitive
+          ? aliasesArray
+          : aliasesArray.map((a) => a.toLowerCase()),
       );
       for (const name of toAdd) {
-        const checkName = this.settings.caseSensitive ? name : name.toLowerCase();
+        const checkName = this.settings.caseSensitive
+          ? name
+          : name.toLowerCase();
         if (!existing.has(checkName)) {
           aliasesArray.push(name);
           existing.add(checkName);
@@ -321,7 +418,7 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
     this.registerEvent(
       this.app.vault.on("rename", (file, oldPath) => {
         this.handleRename(file, oldPath);
-      })
+      }),
     );
   }
   onunload() {
@@ -351,7 +448,10 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
     return path.startsWith(folder + "/") || path === folder;
   }
   isPathExcluded(path, excludePattern) {
-    if (excludePattern.includes("{vault}") || excludePattern.includes("{root}")) {
+    if (
+      excludePattern.includes("{vault}") ||
+      excludePattern.includes("{root}")
+    ) {
       const resolvedPattern = excludePattern.replace(/\{vault\}|\{root\}/g, "");
       if (resolvedPattern === "" || resolvedPattern === "/") {
         return !path.includes("/");
@@ -378,28 +478,50 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
     const newBasename = newFile.basename;
     const oldImmediateParentName = getImmediateParentName(oldPath);
     const newImmediateParentName = getImmediateParentName(newFile.path);
-    const isNameChange = this.settings.caseSensitive ? oldBasename !== newBasename : oldBasename.toLowerCase() !== newBasename.toLowerCase();
-    const isFolderChange = oldImmediateParentName !== newImmediateParentName && !isNameChange;
+    const isNameChange = this.settings.caseSensitive
+      ? oldBasename !== newBasename
+      : oldBasename.toLowerCase() !== newBasename.toLowerCase();
+    const isFolderChange =
+      oldImmediateParentName !== newImmediateParentName && !isNameChange;
     if (!isNameChange && !isFolderChange) {
       return;
     }
     const path = newFile.path;
-    if (this.settings.excludePropertyName && this.settings.excludePropertyName.trim() !== "") {
+    if (
+      this.settings.excludePropertyName &&
+      this.settings.excludePropertyName.trim() !== ""
+    ) {
       const cache = this.app.metadataCache.getFileCache(newFile);
       const frontmatter = cache == null ? void 0 : cache.frontmatter;
-      if (frontmatter && frontmatter[this.settings.excludePropertyName] === true) {
+      if (
+        frontmatter &&
+        frontmatter[this.settings.excludePropertyName] === true
+      ) {
         return;
       }
     }
     if (this.settings.includeFolders.length > 0) {
-      if (!this.settings.includeFolders.some((f) => this.isPathInFolder(path, f))) {
+      if (
+        !this.settings.includeFolders.some((f) => this.isPathInFolder(path, f))
+      ) {
         return;
       }
     }
-    const isIndexFileForFolderRename = isFolderChange && this.settings.trackFolderRenames && this.settings.trackFolderRenames.trim() !== "" && (this.settings.caseSensitive ? newFile.basename === this.settings.trackFolderRenames : newFile.basename.toLowerCase() === this.settings.trackFolderRenames.toLowerCase());
+    const isIndexFileForFolderRename =
+      isFolderChange &&
+      this.settings.trackFolderRenames &&
+      this.settings.trackFolderRenames.trim() !== "" &&
+      (this.settings.caseSensitive
+        ? newFile.basename === this.settings.trackFolderRenames
+        : newFile.basename.toLowerCase() ===
+          this.settings.trackFolderRenames.toLowerCase());
     for (const excludePattern of this.settings.excludeFolders) {
       if (this.isPathExcluded(path, excludePattern)) {
-        if (isIndexFileForFolderRename && excludePattern.endsWith("/*") && !excludePattern.endsWith("/**")) {
+        if (
+          isIndexFileForFolderRename &&
+          excludePattern.endsWith("/*") &&
+          !excludePattern.endsWith("/**")
+        ) {
           const baseFolder = excludePattern.slice(0, -2);
           if (path.startsWith(baseFolder + "/")) {
             const pathAfterBase = path.slice(baseFolder.length + 1);
@@ -426,16 +548,28 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
         return;
       }
       toQueue = oldBasename;
-    } else if (isFolderChange && this.settings.trackFolderRenames && this.settings.trackFolderRenames.trim() !== "") {
+    } else if (
+      isFolderChange &&
+      this.settings.trackFolderRenames &&
+      this.settings.trackFolderRenames.trim() !== ""
+    ) {
       const currentBasename = newFile.basename;
-      const matchesFilename = this.settings.caseSensitive ? currentBasename === this.settings.trackFolderRenames : currentBasename.toLowerCase() === this.settings.trackFolderRenames.toLowerCase();
+      const matchesFilename = this.settings.caseSensitive
+        ? currentBasename === this.settings.trackFolderRenames
+        : currentBasename.toLowerCase() ===
+          this.settings.trackFolderRenames.toLowerCase();
       if (!matchesFilename) {
         return;
       }
       if (oldImmediateParentName === "" || newImmediateParentName === "") {
         return;
       }
-      if (regexes.some((re) => re.test(oldImmediateParentName) || re.test(newImmediateParentName))) {
+      if (
+        regexes.some(
+          (re) =>
+            re.test(oldImmediateParentName) || re.test(newImmediateParentName),
+        )
+      ) {
         return;
       }
       toQueue = oldImmediateParentName;
@@ -457,12 +591,15 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
     const entry = {
       queue: /* @__PURE__ */ new Set([toQueue]),
       timeoutId: 0,
-      currentPath: newFile.path
+      currentPath: newFile.path,
     };
     entry.timeoutId = window.setTimeout(() => {
       void (async () => {
         try {
-          await this.historyProcessor.processAliases(entry.currentPath, entry.queue);
+          await this.historyProcessor.processAliases(
+            entry.currentPath,
+            entry.queue,
+          );
         } catch (error) {
           console.error("Error processing aliases:", error);
         }

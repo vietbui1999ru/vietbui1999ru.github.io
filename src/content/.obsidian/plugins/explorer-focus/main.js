@@ -13,20 +13,24 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
   ExplorerFocusPlugin: () => ExplorerFocusPlugin,
-  default: () => main_default
+  default: () => main_default,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian5 = require("obsidian");
@@ -38,7 +42,7 @@ var DEFAULT_SETTINGS = {
   focusLevel: "parent",
   customFolderPath: "",
   hideAncestorFolders: false,
-  autoHidePaths: []
+  autoHidePaths: [],
 };
 
 // src/ui/settings-tab.ts
@@ -49,35 +53,38 @@ var import_obsidian = require("obsidian");
 
 // node_modules/.pnpm/monkey-around@3.0.0/node_modules/monkey-around/dist/index.mjs
 function around(obj, factories) {
-  const removers = Object.keys(factories).map((key) => around1(obj, key, factories[key]));
-  return removers.length === 1 ? removers[0] : function() {
-    removers.forEach((r) => r());
-  };
+  const removers = Object.keys(factories).map((key) =>
+    around1(obj, key, factories[key]),
+  );
+  return removers.length === 1
+    ? removers[0]
+    : function () {
+        removers.forEach((r) => r());
+      };
 }
 function around1(obj, method, createWrapper) {
-  const inherited = obj[method], hadOwn = obj.hasOwnProperty(method), original = hadOwn ? inherited : function() {
-    return Object.getPrototypeOf(obj)[method].apply(this, arguments);
-  };
+  const inherited = obj[method],
+    hadOwn = obj.hasOwnProperty(method),
+    original = hadOwn
+      ? inherited
+      : function () {
+          return Object.getPrototypeOf(obj)[method].apply(this, arguments);
+        };
   let current = createWrapper(original);
-  if (inherited)
-    Object.setPrototypeOf(current, inherited);
+  if (inherited) Object.setPrototypeOf(current, inherited);
   Object.setPrototypeOf(wrapper, current);
   obj[method] = wrapper;
   return remove;
   function wrapper(...args) {
-    if (current === original && obj[method] === wrapper)
-      remove();
+    if (current === original && obj[method] === wrapper) remove();
     return current.apply(this, args);
   }
   function remove() {
     if (obj[method] === wrapper) {
-      if (hadOwn)
-        obj[method] = original;
-      else
-        delete obj[method];
+      if (hadOwn) obj[method] = original;
+      else delete obj[method];
     }
-    if (current === original)
-      return;
+    if (current === original) return;
     current = original;
     Object.setPrototypeOf(wrapper, inherited || Function);
   }
@@ -102,12 +109,14 @@ function patchFileExplorer(plugin) {
     try {
       const prototype = Object.getPrototypeOf(fileExplorer);
       if (typeof prototype.getSortedFolderItems !== "function") {
-        throw new Error("getSortedFolderItems method not found on file explorer prototype");
+        throw new Error(
+          "getSortedFolderItems method not found on file explorer prototype",
+        );
       }
       plugin.register(
         around(prototype, {
           getSortedFolderItems(old) {
-            return function(folder) {
+            return function (folder) {
               let sortedChildren = old.call(this, folder);
               if (plugin.isFocus && plugin.focusedPath) {
                 const focusedPath = plugin.focusedPath;
@@ -135,19 +144,19 @@ function patchFileExplorer(plugin) {
               }
               return sortedChildren;
             };
-          }
-        })
+          },
+        }),
       );
       prototypePatched = true;
     } catch (error) {
       patchingFailed = true;
       console.warn(
         "[Explorer Focus] Failed to patch file explorer. The plugin will use CSS-based hiding as a fallback, which may be less precise. This usually happens after an Obsidian update - please check for plugin updates.",
-        error
+        error,
       );
       new import_obsidian.Notice(
         "Explorer Focus: File explorer patching failed. The plugin will still work but may need an update for full functionality.",
-        8e3
+        8e3,
       );
       return;
     }
@@ -156,11 +165,15 @@ function patchFileExplorer(plugin) {
 }
 function getFileExplorer(plugin) {
   var _a;
-  const fileExplorerContainer = (_a = plugin.app.workspace.getLeavesOfType("file-explorer")) == null ? void 0 : _a.first();
+  const fileExplorerContainer =
+    (_a = plugin.app.workspace.getLeavesOfType("file-explorer")) == null
+      ? void 0
+      : _a.first();
   return fileExplorerContainer == null ? void 0 : fileExplorerContainer.view;
 }
 function getAllFileExplorers(plugin) {
-  const fileExplorerLeaves = plugin.app.workspace.getLeavesOfType("file-explorer");
+  const fileExplorerLeaves =
+    plugin.app.workspace.getLeavesOfType("file-explorer");
   return fileExplorerLeaves.map((leaf) => leaf.view);
 }
 
@@ -202,7 +215,7 @@ var AutoHideModal = class extends import_obsidian3.Modal {
     super(app);
     this.addInput = null;
     this.plugin = plugin;
-    this.paths = [...(_a = plugin.settings.autoHidePaths) != null ? _a : []];
+    this.paths = [...((_a = plugin.settings.autoHidePaths) != null ? _a : [])];
     this.onSave = onSave;
   }
   onOpen() {
@@ -214,18 +227,18 @@ var AutoHideModal = class extends import_obsidian3.Modal {
     const { contentEl } = this;
     contentEl.empty();
     contentEl.createEl("p", {
-      text: "The following folders are currently hidden from the file explorer."
+      text: "The following folders are currently hidden from the file explorer.",
     });
     const listWrapper = contentEl.createDiv();
     this.paths.forEach((path, index) => {
       const row = listWrapper.createDiv({ cls: "mobile-option-setting-item" });
       row.createSpan({
         text: path || "(empty)",
-        cls: "mobile-option-setting-item-name"
+        cls: "mobile-option-setting-item-name",
       });
       const removeBtn = row.createDiv({
         cls: "clickable-icon mobile-option-setting-item-option-icon",
-        attr: { "aria-label": "Delete" }
+        attr: { "aria-label": "Delete" },
       });
       (0, import_obsidian3.setIcon)(removeBtn, "x");
       removeBtn.addEventListener("click", () => {
@@ -233,24 +246,37 @@ var AutoHideModal = class extends import_obsidian3.Modal {
         this.renderContent();
       });
     });
-    new import_obsidian3.Setting(contentEl).setName("Folder").addText((text) => {
-      new FolderSuggest(this.app, text.inputEl);
-      text.setPlaceholder("Enter folder path");
-      this.addInput = text;
-    }).addButton((button) => button.setButtonText("Add").onClick(() => {
-      var _a2, _b, _c;
-      const value = (_b = (_a2 = this.addInput) == null ? void 0 : _a2.getValue()) == null ? void 0 : _b.trim();
-      if (value) {
-        this.paths.push(value);
-        (_c = this.addInput) == null ? void 0 : _c.setValue("");
-        this.renderContent();
-      }
-    }));
-    (_a = this.modalEl.querySelector(".modal-button-container")) == null ? void 0 : _a.remove();
-    const buttonContainer = this.modalEl.createDiv({ cls: "modal-button-container" });
+    new import_obsidian3.Setting(contentEl)
+      .setName("Folder")
+      .addText((text) => {
+        new FolderSuggest(this.app, text.inputEl);
+        text.setPlaceholder("Enter folder path");
+        this.addInput = text;
+      })
+      .addButton((button) =>
+        button.setButtonText("Add").onClick(() => {
+          var _a2, _b, _c;
+          const value =
+            (_b = (_a2 = this.addInput) == null ? void 0 : _a2.getValue()) ==
+            null
+              ? void 0
+              : _b.trim();
+          if (value) {
+            this.paths.push(value);
+            (_c = this.addInput) == null ? void 0 : _c.setValue("");
+            this.renderContent();
+          }
+        }),
+      );
+    (_a = this.modalEl.querySelector(".modal-button-container")) == null
+      ? void 0
+      : _a.remove();
+    const buttonContainer = this.modalEl.createDiv({
+      cls: "modal-button-container",
+    });
     const saveBtn = buttonContainer.createEl("button", {
       text: "Save",
-      cls: "mod-cta"
+      cls: "mod-cta",
     });
     saveBtn.addEventListener("click", () => {
       this.plugin.settings.autoHidePaths = this.paths;
@@ -261,7 +287,7 @@ var AutoHideModal = class extends import_obsidian3.Modal {
     });
     const cancelBtn = buttonContainer.createEl("button", {
       text: "Cancel",
-      cls: "mod-cancel"
+      cls: "mod-cancel",
     });
     cancelBtn.addEventListener("click", () => {
       this.close();
@@ -281,61 +307,104 @@ var ExplorerFocusSettingTab = class extends import_obsidian4.PluginSettingTab {
     containerEl.empty();
     const generalGroup = new import_obsidian4.SettingGroup(containerEl);
     generalGroup.addSetting((setting) => {
-      setting.setName("Show right-click menu option").addToggle((toggle) => toggle.setValue(this.plugin.settings.showRightClickMenu).onChange(async (value) => {
-        this.plugin.settings.showRightClickMenu = value;
-        await this.plugin.saveSettings();
-      }));
+      setting.setName("Show right-click menu option").addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.showRightClickMenu)
+          .onChange(async (value) => {
+            this.plugin.settings.showRightClickMenu = value;
+            await this.plugin.saveSettings();
+          }),
+      );
     });
     generalGroup.addSetting((setting) => {
-      setting.setName("Show file explorer icon").addToggle((toggle) => toggle.setValue(this.plugin.settings.showFileExplorerIcon).onChange(async (value) => {
-        this.plugin.settings.showFileExplorerIcon = value;
-        await this.plugin.saveSettings();
-        this.plugin.updateFileExplorerIcon();
-      }));
+      setting.setName("Show file explorer icon").addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.showFileExplorerIcon)
+          .onChange(async (value) => {
+            this.plugin.settings.showFileExplorerIcon = value;
+            await this.plugin.saveSettings();
+            this.plugin.updateFileExplorerIcon();
+          }),
+      );
     });
     generalGroup.addSetting((setting) => {
-      setting.setName("Command focus level").setDesc("Determines what to focus when using the toggle command or file explorer icon. Right-click menu always focuses the clicked file/folder.").addDropdown((dropdown) => dropdown.addOption("file", "Current file only").addOption("parent", "Parent folder").addOption("grandparent", "Grandparent folder").addOption("greatgrandparent", "Great grandparent folder").addOption("custom", "Specific folder").setValue(this.plugin.settings.focusLevel).onChange(async (value) => {
-        this.plugin.settings.focusLevel = value;
-        await this.plugin.saveSettings();
-        if (this.plugin.isFocus) {
-          const fileExplorers = getAllFileExplorers(this.plugin);
-          fileExplorers.forEach((fileExplorer) => {
-            if (fileExplorer == null ? void 0 : fileExplorer.requestSort) {
-              fileExplorer.requestSort();
-            }
-          });
-        }
-        this.display();
-      }));
+      setting
+        .setName("Command focus level")
+        .setDesc(
+          "Determines what to focus when using the toggle command or file explorer icon. Right-click menu always focuses the clicked file/folder.",
+        )
+        .addDropdown((dropdown) =>
+          dropdown
+            .addOption("file", "Current file only")
+            .addOption("parent", "Parent folder")
+            .addOption("grandparent", "Grandparent folder")
+            .addOption("greatgrandparent", "Great grandparent folder")
+            .addOption("custom", "Specific folder")
+            .setValue(this.plugin.settings.focusLevel)
+            .onChange(async (value) => {
+              this.plugin.settings.focusLevel = value;
+              await this.plugin.saveSettings();
+              if (this.plugin.isFocus) {
+                const fileExplorers = getAllFileExplorers(this.plugin);
+                fileExplorers.forEach((fileExplorer) => {
+                  if (
+                    fileExplorer == null ? void 0 : fileExplorer.requestSort
+                  ) {
+                    fileExplorer.requestSort();
+                  }
+                });
+              }
+              this.display();
+            }),
+        );
     });
     if (this.plugin.settings.focusLevel === "custom") {
       generalGroup.addSetting((setting) => {
-        setting.setName("Custom folder path").setDesc("Enter a folder path (folder/subfolder). This folder will be focused regardless of which file is open.").addText((text) => {
-          new FolderSuggest(this.app, text.inputEl);
-          text.setPlaceholder("Folder/subfolder").setValue(this.plugin.settings.customFolderPath).onChange(async (value) => {
-            this.plugin.settings.customFolderPath = value;
-            await this.plugin.saveSettings();
+        setting
+          .setName("Custom folder path")
+          .setDesc(
+            "Enter a folder path (folder/subfolder). This folder will be focused regardless of which file is open.",
+          )
+          .addText((text) => {
+            new FolderSuggest(this.app, text.inputEl);
+            text
+              .setPlaceholder("Folder/subfolder")
+              .setValue(this.plugin.settings.customFolderPath)
+              .onChange(async (value) => {
+                this.plugin.settings.customFolderPath = value;
+                await this.plugin.saveSettings();
+              });
           });
-        });
       });
     }
-    const autoHideGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("Auto-hide folders");
+    const autoHideGroup = new import_obsidian4.SettingGroup(
+      containerEl,
+    ).setHeading("Auto-hide folders");
     autoHideGroup.addSetting((setting) => {
       var _a;
-      const autoHidePaths = ((_a = this.plugin.settings.autoHidePaths) != null ? _a : []).filter((p) => p.trim().length > 0);
+      const autoHidePaths = (
+        (_a = this.plugin.settings.autoHidePaths) != null ? _a : []
+      ).filter((p) => p.trim().length > 0);
       const descFragment = document.createDocumentFragment();
-      descFragment.appendText("These folders are always hidden from the file explorer.");
+      descFragment.appendText(
+        "These folders are always hidden from the file explorer.",
+      );
       if (autoHidePaths.length > 0) {
         const list = descFragment.createEl("ul");
         autoHidePaths.forEach((p) => {
           list.createEl("li", { text: p });
         });
       }
-      setting.setName("Hidden folders").setDesc(descFragment).addButton((button) => button.setButtonText("Manage").onClick(() => {
-        new AutoHideModal(this.app, this.plugin, () => {
-          this.display();
-        }).open();
-      }));
+      setting
+        .setName("Hidden folders")
+        .setDesc(descFragment)
+        .addButton((button) =>
+          button.setButtonText("Manage").onClick(() => {
+            new AutoHideModal(this.app, this.plugin, () => {
+              this.display();
+            }).open();
+          }),
+        );
     });
   }
 };
@@ -383,12 +452,16 @@ function registerCommands(plugin) {
         } else {
           const file = plugin.app.workspace.getActiveFile();
           if (file == null ? void 0 : file.path) {
-            const focusPath = getFocusPath(file.path, plugin.settings.focusLevel, plugin.settings);
+            const focusPath = getFocusPath(
+              file.path,
+              plugin.settings.focusLevel,
+              plugin.settings,
+            );
             plugin.enterFocus(focusPath);
           }
         }
       }
-    }
+    },
   });
   if (plugin.settings.showRightClickMenu) {
     plugin.registerEvent(
@@ -397,11 +470,14 @@ function registerCommands(plugin) {
           return;
         }
         menu.addItem((item) => {
-          item.setTitle(plugin.isFocus ? "Exit focus" : "Focus").setIcon(plugin.isFocus ? "log-out" : "focus").onClick(() => {
-            plugin.toggleFocus(file == null ? void 0 : file.path);
-          });
+          item
+            .setTitle(plugin.isFocus ? "Exit focus" : "Focus")
+            .setIcon(plugin.isFocus ? "log-out" : "focus")
+            .onClick(() => {
+              plugin.toggleFocus(file == null ? void 0 : file.path);
+            });
         });
-      })
+      }),
     );
   }
 }
@@ -417,49 +493,70 @@ function findNavButtonsContainer(fileExplorerView) {
   if (container) {
     return container;
   }
-  const existingButtons = fileExplorerView.querySelectorAll(".nav-action-button");
+  const existingButtons =
+    fileExplorerView.querySelectorAll(".nav-action-button");
   if (existingButtons.length > 0) {
     const firstButton = existingButtons[0];
     const parent = firstButton.parentElement;
-    if (parent && (parent.classList.contains("nav-buttons-container") || parent.classList.contains("nav-header-button-container") || Array.from(parent.children).some((el) => el.classList.contains("nav-action-button")))) {
+    if (
+      parent &&
+      (parent.classList.contains("nav-buttons-container") ||
+        parent.classList.contains("nav-header-button-container") ||
+        Array.from(parent.children).some((el) =>
+          el.classList.contains("nav-action-button"),
+        ))
+    ) {
       return parent;
     }
   }
   const viewHeader = fileExplorerView.querySelector(".view-header");
   if (viewHeader) {
-    const headerContainer = viewHeader.querySelector(".nav-buttons-container") || viewHeader.querySelector(".nav-header-button-container") || viewHeader.querySelector(".view-header-title-container");
+    const headerContainer =
+      viewHeader.querySelector(".nav-buttons-container") ||
+      viewHeader.querySelector(".nav-header-button-container") ||
+      viewHeader.querySelector(".view-header-title-container");
     if (headerContainer) {
       return headerContainer;
     }
     return viewHeader;
   }
-  const navFilesContainer = fileExplorerView.querySelector(".nav-files-container");
+  const navFilesContainer = fileExplorerView.querySelector(
+    ".nav-files-container",
+  );
   if (navFilesContainer) {
-    let mobileButtonContainer = fileExplorerView.querySelector(".explorer-focus-mobile-buttons");
+    let mobileButtonContainer = fileExplorerView.querySelector(
+      ".explorer-focus-mobile-buttons",
+    );
     if (!mobileButtonContainer) {
       mobileButtonContainer = document.createElement("div");
-      mobileButtonContainer.className = "nav-buttons-container explorer-focus-mobile-buttons";
+      mobileButtonContainer.className =
+        "nav-buttons-container explorer-focus-mobile-buttons";
       mobileButtonContainer.setCssProps({
         display: "flex",
         alignItems: "center",
         gap: "4px",
         padding: "8px",
-        borderBottom: "1px solid var(--background-modifier-border)"
+        borderBottom: "1px solid var(--background-modifier-border)",
       });
-      (_a = navFilesContainer.parentElement) == null ? void 0 : _a.insertBefore(mobileButtonContainer, navFilesContainer);
+      (_a = navFilesContainer.parentElement) == null
+        ? void 0
+        : _a.insertBefore(mobileButtonContainer, navFilesContainer);
     }
     return mobileButtonContainer;
   }
-  let topContainer = fileExplorerView.querySelector(".explorer-focus-mobile-buttons");
+  let topContainer = fileExplorerView.querySelector(
+    ".explorer-focus-mobile-buttons",
+  );
   if (!topContainer) {
     topContainer = document.createElement("div");
-    topContainer.className = "nav-buttons-container explorer-focus-mobile-buttons";
+    topContainer.className =
+      "nav-buttons-container explorer-focus-mobile-buttons";
     topContainer.setCssProps({
       display: "flex",
       alignItems: "center",
       gap: "4px",
       padding: "8px",
-      borderBottom: "1px solid var(--background-modifier-border)"
+      borderBottom: "1px solid var(--background-modifier-border)",
     });
     fileExplorerView.insertBefore(topContainer, fileExplorerView.firstChild);
   }
@@ -480,7 +577,10 @@ function createFileExplorerIcon(plugin) {
   svg.setAttribute("stroke-linecap", "round");
   svg.setAttribute("stroke-linejoin", "round");
   svg.setAttribute("class", "svg-icon lucide-focus");
-  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  const circle = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "circle",
+  );
   circle.setAttribute("cx", "12");
   circle.setAttribute("cy", "12");
   circle.setAttribute("r", "3");
@@ -504,8 +604,12 @@ function insertFileExplorerIcon(icon, navButtonsContainer) {
   if (navButtonsContainer.contains(icon)) {
     return;
   }
-  const allIcons = Array.from(navButtonsContainer.querySelectorAll(".clickable-icon.nav-action-button"));
-  const defaultIcons = allIcons.filter((el) => !el.classList.contains("cmdr") && el !== icon);
+  const allIcons = Array.from(
+    navButtonsContainer.querySelectorAll(".clickable-icon.nav-action-button"),
+  );
+  const defaultIcons = allIcons.filter(
+    (el) => !el.classList.contains("cmdr") && el !== icon,
+  );
   const cmdrIcons = Array.from(navButtonsContainer.querySelectorAll(".cmdr"));
   if (cmdrIcons.length > 0) {
     navButtonsContainer.insertBefore(icon, cmdrIcons[0]);
@@ -642,11 +746,17 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
     for (const path of rootItems) {
       const vEl = fileExplorer.fileItems[path];
       if (!(vEl == null ? void 0 : vEl.el)) continue;
-      const shouldShow = path === focusedPath || focusedPath.startsWith(path + "/") || path.startsWith(focusedPath + "/");
+      const shouldShow =
+        path === focusedPath ||
+        focusedPath.startsWith(path + "/") ||
+        path.startsWith(focusedPath + "/");
       this.updateItemVisibility(vEl, shouldShow);
     }
     for (const [topLevel, paths] of topLevelFolders) {
-      const isInFocusPath = topLevel === focusedTopLevel || ancestorPaths.has(topLevel) || focusedPath === topLevel;
+      const isInFocusPath =
+        topLevel === focusedTopLevel ||
+        ancestorPaths.has(topLevel) ||
+        focusedPath === topLevel;
       if (!isInFocusPath) {
         for (const path of paths) {
           const vEl = fileExplorer.fileItems[path];
@@ -657,7 +767,10 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
         for (const path of paths) {
           const vEl = fileExplorer.fileItems[path];
           if (!(vEl == null ? void 0 : vEl.el)) continue;
-          const shouldShow = path === focusedPath || path.startsWith(focusedPath + "/") || ancestorPaths.has(path);
+          const shouldShow =
+            path === focusedPath ||
+            path.startsWith(focusedPath + "/") ||
+            ancestorPaths.has(path);
           this.updateItemVisibility(vEl, shouldShow);
         }
       }
@@ -698,14 +811,19 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
         } else {
           const file = this.app.workspace.getActiveFile();
           if (file == null ? void 0 : file.path) {
-            const focusPath = getFocusPath(file.path, this.settings.focusLevel, this.settings);
+            const focusPath = getFocusPath(
+              file.path,
+              this.settings.focusLevel,
+              this.settings,
+            );
             this.enterFocus(focusPath);
           }
         }
       }
     };
     const addIconToFileExplorer = () => {
-      const fileExplorerLeaves = this.app.workspace.getLeavesOfType("file-explorer");
+      const fileExplorerLeaves =
+        this.app.workspace.getLeavesOfType("file-explorer");
       if (fileExplorerLeaves.length === 0) {
         return;
       }
@@ -714,7 +832,10 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
       if (!navButtonsContainer) {
         return;
       }
-      if (this.fileExplorerIcon && navButtonsContainer.contains(this.fileExplorerIcon)) {
+      if (
+        this.fileExplorerIcon &&
+        navButtonsContainer.contains(this.fileExplorerIcon)
+      ) {
         return;
       }
       if (this.fileExplorerIcon && this.fileExplorerIcon.parentElement) {
@@ -753,7 +874,7 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
         if (this.settings.showFileExplorerIcon) {
           addIconToFileExplorer();
         }
-      })
+      }),
     );
   }
   updateFileExplorerIcon() {
@@ -767,7 +888,8 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
       return;
     }
     if (!this.fileExplorerIcon.parentElement) {
-      const fileExplorerLeaves = this.app.workspace.getLeavesOfType("file-explorer");
+      const fileExplorerLeaves =
+        this.app.workspace.getLeavesOfType("file-explorer");
       if (fileExplorerLeaves.length > 0) {
         const fileExplorerView = fileExplorerLeaves[0].view.containerEl;
         const navButtonsContainer = findNavButtonsContainer(fileExplorerView);
@@ -788,7 +910,9 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
   updateAutoHideStyles() {
     var _a;
     const paths = new Set(
-      ((_a = this.settings.autoHidePaths) != null ? _a : []).map((p) => p.trim()).filter((p) => p.length > 0)
+      ((_a = this.settings.autoHidePaths) != null ? _a : [])
+        .map((p) => p.trim())
+        .filter((p) => p.length > 0),
     );
     const fileExplorers = getAllFileExplorers(this);
     fileExplorers.forEach((fileExplorer) => {

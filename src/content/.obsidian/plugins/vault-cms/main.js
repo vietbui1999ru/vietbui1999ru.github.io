@@ -9,37 +9,47 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
+var __esm = (fn, res) =>
+  function __init() {
+    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res);
+  };
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toESM = (mod, isNodeMode, target) => (
+  (target = mod != null ? __create(__getProtoOf(mod)) : {}),
+  __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule
+      ? __defProp(target, "default", { value: mod, enumerable: true })
+      : target,
+    mod,
+  )
+);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/utils/VaultPathHelper.ts
 var VaultPathHelper_exports = {};
 __export(VaultPathHelper_exports, {
   getVaultPath: () => getVaultPath,
   resolveProjectRoot: () => resolveProjectRoot,
-  toVaultRelative: () => toVaultRelative
+  toVaultRelative: () => toVaultRelative,
 });
 function getVaultPath(app) {
   var _a;
@@ -48,8 +58,7 @@ function getVaultPath(app) {
     try {
       const p2 = adapter.getBasePath();
       return p2 ? path.normalize(p2) : null;
-    } catch (e) {
-    }
+    } catch (e) {}
   }
   const p = (_a = adapter.basePath) != null ? _a : adapter.path;
   return p ? path.normalize(p) : null;
@@ -66,7 +75,8 @@ function toVaultRelative(app, absolutePath) {
 }
 function resolveProjectRoot(app, projectRoot) {
   const vaultPath = getVaultPath(app);
-  if (!vaultPath || !(projectRoot == null ? void 0 : projectRoot.trim())) return null;
+  if (!vaultPath || !(projectRoot == null ? void 0 : projectRoot.trim()))
+    return null;
   const trimmed = projectRoot.trim();
   if (path.isAbsolute(trimmed)) return path.normalize(trimmed);
   return path.resolve(vaultPath, trimmed);
@@ -75,18 +85,19 @@ var path;
 var init_VaultPathHelper = __esm({
   "src/utils/VaultPathHelper.ts"() {
     path = __toESM(require("path"), 1);
-  }
+  },
 });
 
 // src/utils/ProjectRootResolver.ts
 var ProjectRootResolver_exports = {};
 __export(ProjectRootResolver_exports, {
   resolveProjectRoot: () => resolveProjectRoot2,
-  resolveProjectRootFromVaultPath: () => resolveProjectRootFromVaultPath
+  resolveProjectRootFromVaultPath: () => resolveProjectRootFromVaultPath,
 });
 function resolveProjectRoot2(app, projectRoot) {
   const vaultPath = getVaultPath(app);
-  if (!vaultPath || !(projectRoot == null ? void 0 : projectRoot.trim())) return null;
+  if (!vaultPath || !(projectRoot == null ? void 0 : projectRoot.trim()))
+    return null;
   const trimmed = projectRoot.trim();
   if (path7.isAbsolute(trimmed)) return path7.normalize(trimmed);
   return path7.resolve(vaultPath, trimmed);
@@ -95,22 +106,30 @@ function resolveProjectRootFromVaultPath(vaultPath, projectRoot) {
   if (!projectRoot || !vaultPath) return null;
   const trimmed = projectRoot.trim();
   if (!trimmed) return null;
-  return path7.isAbsolute(trimmed) ? path7.normalize(trimmed) : path7.resolve(vaultPath, trimmed);
+  return path7.isAbsolute(trimmed)
+    ? path7.normalize(trimmed)
+    : path7.resolve(vaultPath, trimmed);
 }
 var path7;
 var init_ProjectRootResolver = __esm({
   "src/utils/ProjectRootResolver.ts"() {
     path7 = __toESM(require("path"), 1);
     init_VaultPathHelper();
-  }
+  },
 });
 
 // src/utils/GitManager.ts
 var GitManager_exports = {};
 __export(GitManager_exports, {
-  GitManager: () => GitManager
+  GitManager: () => GitManager,
 });
-var import_obsidian15, import_child_process, import_util, path9, fs6, execAsync, GitManager;
+var import_obsidian15,
+  import_child_process,
+  import_util,
+  path9,
+  fs6,
+  execAsync,
+  GitManager;
 var init_GitManager = __esm({
   "src/utils/GitManager.ts"() {
     import_obsidian15 = require("obsidian");
@@ -133,7 +152,7 @@ var init_GitManager = __esm({
             projectRoot,
             absolutePath,
             dotGitPath,
-            exists
+            exists,
           });
           if (!fs6.existsSync(absolutePath)) return false;
           return exists;
@@ -153,10 +172,17 @@ var init_GitManager = __esm({
        */
       static async setRemote(projectRoot, url, remoteName = "origin") {
         try {
-          await execAsync(`git remote add ${remoteName} ${url}`, { cwd: projectRoot });
+          await execAsync(`git remote add ${remoteName} ${url}`, {
+            cwd: projectRoot,
+          });
         } catch (error) {
-          if (error instanceof Error && error.message.includes("already exists")) {
-            await execAsync(`git remote set-url ${remoteName} ${url}`, { cwd: projectRoot });
+          if (
+            error instanceof Error &&
+            error.message.includes("already exists")
+          ) {
+            await execAsync(`git remote set-url ${remoteName} ${url}`, {
+              cwd: projectRoot,
+            });
           } else {
             throw error;
           }
@@ -167,7 +193,10 @@ var init_GitManager = __esm({
        */
       static async getRemoteUrl(projectRoot, remoteName = "origin") {
         try {
-          const { stdout } = await execAsync(`git remote get-url ${remoteName}`, { cwd: projectRoot });
+          const { stdout } = await execAsync(
+            `git remote get-url ${remoteName}`,
+            { cwd: projectRoot },
+          );
           let url = stdout.trim() || null;
           if (url && url.includes("@github.com")) {
             url = url.replace(/https:\/\/.*@github\.com/, "https://github.com");
@@ -182,7 +211,9 @@ var init_GitManager = __esm({
        */
       static async getCurrentBranch(projectRoot) {
         try {
-          const { stdout } = await execAsync("git branch --show-current", { cwd: projectRoot });
+          const { stdout } = await execAsync("git branch --show-current", {
+            cwd: projectRoot,
+          });
           return stdout.trim() || "main";
         } catch (e) {
           return "main";
@@ -191,22 +222,44 @@ var init_GitManager = __esm({
       /**
        * Creates an initial commit and pushes to the remote, setting the upstream.
        */
-      static async initialCommitAndPush(projectRoot, branch, remoteName = "origin", token) {
+      static async initialCommitAndPush(
+        projectRoot,
+        branch,
+        remoteName = "origin",
+        token,
+      ) {
         try {
-          console.debug("GitManager.initialCommitAndPush: starting", { projectRoot, branch, remoteName, hasToken: !!token });
+          console.debug("GitManager.initialCommitAndPush: starting", {
+            projectRoot,
+            branch,
+            remoteName,
+            hasToken: !!token,
+          });
           try {
             await execAsync("git config user.name", { cwd: projectRoot });
           } catch (e) {
             console.debug("GitManager: Setting local git user.name");
-            await execAsync('git config user.name "Vault CMS User"', { cwd: projectRoot });
-            await execAsync('git config user.email "vault-cms@example.com"', { cwd: projectRoot });
+            await execAsync('git config user.name "Vault CMS User"', {
+              cwd: projectRoot,
+            });
+            await execAsync('git config user.email "vault-cms@example.com"', {
+              cwd: projectRoot,
+            });
           }
           await execAsync("git add .", { cwd: projectRoot });
           try {
-            await execAsync('git commit -m "Initial commit from Vault CMS"', { cwd: projectRoot });
+            await execAsync('git commit -m "Initial commit from Vault CMS"', {
+              cwd: projectRoot,
+            });
           } catch (commitError) {
-            const errorMessage = commitError instanceof Error ? commitError.message : String(commitError);
-            if (errorMessage.includes("nothing to commit") || errorMessage.includes("working tree clean")) {
+            const errorMessage =
+              commitError instanceof Error
+                ? commitError.message
+                : String(commitError);
+            if (
+              errorMessage.includes("nothing to commit") ||
+              errorMessage.includes("working tree clean")
+            ) {
               console.debug("GitManager: Nothing to commit");
             } else {
               throw commitError;
@@ -217,24 +270,41 @@ var init_GitManager = __esm({
           if (token) {
             const remoteUrl = await this.getRemoteUrl(projectRoot, remoteName);
             if (remoteUrl && remoteUrl.startsWith("https://")) {
-              const authenticatedUrl = remoteUrl.replace("https://", `https://${token}@`);
+              const authenticatedUrl = remoteUrl.replace(
+                "https://",
+                `https://${token}@`,
+              );
               const escaped = authenticatedUrl.replace(/"/g, '\\"');
               const original = remoteUrl.replace(/"/g, '\\"');
               await execAsync(
                 `git -c "url.${escaped}.insteadOf=${original}" push -u ${remoteName} ${branch}`,
-                { cwd: projectRoot, maxBuffer: 10 * 1024 * 1024 }
+                { cwd: projectRoot, maxBuffer: 10 * 1024 * 1024 },
               );
             } else {
-              await execAsync(`git push -u ${remoteName} ${branch}`, { cwd: projectRoot, maxBuffer: 10 * 1024 * 1024 });
+              await execAsync(`git push -u ${remoteName} ${branch}`, {
+                cwd: projectRoot,
+                maxBuffer: 10 * 1024 * 1024,
+              });
             }
           } else {
-            await execAsync(`git push -u ${remoteName} ${branch}`, { cwd: projectRoot, maxBuffer: 10 * 1024 * 1024 });
+            await execAsync(`git push -u ${remoteName} ${branch}`, {
+              cwd: projectRoot,
+              maxBuffer: 10 * 1024 * 1024,
+            });
           }
           try {
-            const { stdout: trackingInfo } = await execAsync(`git rev-parse --abbrev-ref ${branch}@{upstream}`, { cwd: projectRoot });
-            console.debug("GitManager: Push verified. Upstream:", trackingInfo.trim());
+            const { stdout: trackingInfo } = await execAsync(
+              `git rev-parse --abbrev-ref ${branch}@{upstream}`,
+              { cwd: projectRoot },
+            );
+            console.debug(
+              "GitManager: Push verified. Upstream:",
+              trackingInfo.trim(),
+            );
           } catch (e) {
-            throw new Error(`Push failed. The repository was created but files could not be uploaded. Try pushing manually with: git push -u origin ${branch}`);
+            throw new Error(
+              `Push failed. The repository was created but files could not be uploaded. Try pushing manually with: git push -u origin ${branch}`,
+            );
           }
         } catch (error) {
           console.error("GitManager.initialCommitAndPush failed:", error);
@@ -250,43 +320,59 @@ var init_GitManager = __esm({
           url: "https://api.github.com/user/repos",
           method: "POST",
           headers: {
-            "Authorization": `token ${token}`,
-            "Accept": "application/vnd.github.v3+json",
-            "Content-Type": "application/json"
+            Authorization: `token ${token}`,
+            Accept: "application/vnd.github.v3+json",
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name,
             description,
-            private: isPrivate
-          })
+            private: isPrivate,
+          }),
         };
         try {
           const response = await (0, import_obsidian15.requestUrl)(params);
           if (response.status === 422) {
-            throw new Error("Repository name already exists on your GitHub account.");
+            throw new Error(
+              "Repository name already exists on your GitHub account.",
+            );
           }
           if (response.status !== 201) {
             let errorMessage = `GitHub API Error: ${response.status}`;
             try {
-              const errorData = typeof response.json === "string" ? JSON.parse(response.json) : response.json;
+              const errorData =
+                typeof response.json === "string"
+                  ? JSON.parse(response.json)
+                  : response.json;
               if (errorData == null ? void 0 : errorData.message) {
                 errorMessage = `GitHub API Error: ${errorData.message}`;
-                if ((_b = (_a = errorData.errors) == null ? void 0 : _a[0]) == null ? void 0 : _b.message) {
+                if (
+                  (_b = (_a = errorData.errors) == null ? void 0 : _a[0]) ==
+                  null
+                    ? void 0
+                    : _b.message
+                ) {
                   errorMessage += ` (${errorData.errors[0].message})`;
                 }
               }
-            } catch (e) {
-            }
+            } catch (e) {}
             throw new Error(errorMessage);
           }
           return response.json;
         } catch (error) {
-          if (error instanceof Error && (error.message.includes("already exists") || error.message.includes("GitHub API Error"))) {
+          if (
+            error instanceof Error &&
+            (error.message.includes("already exists") ||
+              error.message.includes("GitHub API Error"))
+          ) {
             throw error;
           }
-          const message = error instanceof Error ? error.message : String(error);
+          const message =
+            error instanceof Error ? error.message : String(error);
           if (message.includes("422") || message.includes("already exists")) {
-            throw new Error("Repository name already exists on your GitHub account.");
+            throw new Error(
+              "Repository name already exists on your GitHub account.",
+            );
           }
           throw error;
         }
@@ -301,9 +387,9 @@ var init_GitManager = __esm({
             url: "https://api.github.com/user",
             method: "GET",
             headers: {
-              "Authorization": `token ${token}`,
-              "Accept": "application/vnd.github.v3+json"
-            }
+              Authorization: `token ${token}`,
+              Accept: "application/vnd.github.v3+json",
+            },
           };
           const response = await (0, import_obsidian15.requestUrl)(params);
           if (response.status === 200) {
@@ -315,13 +401,13 @@ var init_GitManager = __esm({
         }
       }
     };
-  }
+  },
 });
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => VaultCMSPlugin
+  default: () => VaultCMSPlugin,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian28 = require("obsidian");
@@ -343,13 +429,13 @@ var DEFAULT_SETTINGS = {
   disabledPlugins: [],
   theme: "",
   basesCMSConfig: {
-    views: []
+    views: [],
   },
   astroComposerConfig: {
     customContentTypes: [],
     defaultTemplate: "",
     configFilePath: "",
-    terminalProjectRootPath: ""
+    terminalProjectRootPath: "",
   },
   seoConfig: {
     titleProperty: "title",
@@ -357,28 +443,28 @@ var DEFAULT_SETTINGS = {
     scanDirectories: "",
     useFilenameAsTitle: false,
     useFilenameAsSlug: true,
-    enableMDXSupport: false
+    enableMDXSupport: false,
   },
   propertyOverFileName: {
-    propertyKey: "title"
+    propertyKey: "title",
   },
   imageManager: {},
   homeBase: {},
   explorerFocus: {},
   ignoreConfig: {
     gitIgnoreConfigured: false,
-    viteIgnoreConfigured: false
+    viteIgnoreConfigured: false,
   },
   gitConfig: {
     enabled: false,
     isPrivate: true,
     branchName: "main",
-    autoConfigureObsidianGit: true
+    autoConfigureObsidianGit: true,
   },
   deploymentPlatform: "",
   resolvePublicImages: false,
   runWizardOnStartup: true,
-  wizardCompleted: false
+  wizardCompleted: false,
 };
 
 // src/ui/SettingsTab.ts
@@ -398,12 +484,18 @@ var ImageManagerConfigurator = class {
     const pluginId = "image-manager";
     try {
       const plugins = this.app.plugins;
-      const imageManagerPlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a[pluginId];
+      const imageManagerPlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a[pluginId];
       if (imageManagerPlugin && imageManagerPlugin.settings) {
         return imageManagerPlugin.settings;
       }
     } catch (error) {
-      console.warn("Failed to load Image Manager config from plugin API:", error);
+      console.warn(
+        "Failed to load Image Manager config from plugin API:",
+        error,
+      );
     }
     return await this.loadConfigFallback();
   }
@@ -417,7 +509,10 @@ var ImageManagerConfigurator = class {
         const existingData = JSON.parse(await this.app.vault.read(dataFile));
         return existingData;
       } catch (error) {
-        console.warn("Failed to parse existing Image Manager data.json:", error);
+        console.warn(
+          "Failed to parse existing Image Manager data.json:",
+          error,
+        );
         return {};
       }
     }
@@ -428,13 +523,18 @@ var ImageManagerConfigurator = class {
     const pluginId = "image-manager";
     try {
       const plugins = this.app.plugins;
-      const imageManagerPlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a[pluginId];
+      const imageManagerPlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a[pluginId];
       if (imageManagerPlugin && imageManagerPlugin.settings) {
         const pluginSettings = imageManagerPlugin.settings;
         Object.assign(pluginSettings, config);
         if (typeof imageManagerPlugin.saveSettings === "function") {
           await imageManagerPlugin.saveSettings();
-          console.debug("ImageManagerConfig: Successfully saved via plugin.saveSettings()");
+          console.debug(
+            "ImageManagerConfig: Successfully saved via plugin.saveSettings()",
+          );
           return;
         }
       }
@@ -444,7 +544,10 @@ var ImageManagerConfigurator = class {
       try {
         await this.saveConfigFallback(config);
       } catch (fallbackError) {
-        console.error("Failed to save Image Manager config via fallback:", fallbackError);
+        console.error(
+          "Failed to save Image Manager config via fallback:",
+          fallbackError,
+        );
       }
     }
   }
@@ -458,16 +561,22 @@ var ImageManagerConfigurator = class {
       try {
         existingData = JSON.parse(await this.app.vault.read(dataFile));
       } catch (error) {
-        console.warn("Failed to parse existing Image Manager data.json, starting fresh:", error);
+        console.warn(
+          "Failed to parse existing Image Manager data.json, starting fresh:",
+          error,
+        );
         existingData = {};
       }
     }
     const mergedData = {
       ...existingData,
-      ...config
+      ...config,
     };
     if (dataFile && dataFile instanceof import_obsidian.TFile) {
-      await this.app.vault.modify(dataFile, JSON.stringify(mergedData, null, 2));
+      await this.app.vault.modify(
+        dataFile,
+        JSON.stringify(mergedData, null, 2),
+      );
     } else {
       const pluginDir = `${configDir}/plugins/${pluginId}`;
       const pluginDirFile = this.app.vault.getAbstractFileByPath(pluginDir);
@@ -475,20 +584,37 @@ var ImageManagerConfigurator = class {
         try {
           await this.app.vault.createFolder(pluginDir);
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
-          if (errorMessage && !errorMessage.includes("already exists") && !errorMessage.includes("File already exists")) {
+          const errorMessage =
+            error instanceof Error ? error.message : String(error);
+          if (
+            errorMessage &&
+            !errorMessage.includes("already exists") &&
+            !errorMessage.includes("File already exists")
+          ) {
             throw error;
           }
         }
       }
       try {
-        await this.app.vault.create(pluginDataPath, JSON.stringify(mergedData, null, 2));
+        await this.app.vault.create(
+          pluginDataPath,
+          JSON.stringify(mergedData, null, 2),
+        );
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        if (errorMessage && (errorMessage.includes("already exists") || errorMessage.includes("File already exists"))) {
-          const retryFile = this.app.vault.getAbstractFileByPath(pluginDataPath);
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        if (
+          errorMessage &&
+          (errorMessage.includes("already exists") ||
+            errorMessage.includes("File already exists"))
+        ) {
+          const retryFile =
+            this.app.vault.getAbstractFileByPath(pluginDataPath);
           if (retryFile instanceof import_obsidian.TFile) {
-            await this.app.vault.modify(retryFile, JSON.stringify(mergedData, null, 2));
+            await this.app.vault.modify(
+              retryFile,
+              JSON.stringify(mergedData, null, 2),
+            );
           } else {
             throw error;
           }
@@ -507,12 +633,22 @@ var ImageManagerConfigurator = class {
     const frontmatterProperties = state.frontmatterProperties || {};
     const defaultTypeId = state.defaultContentTypeId;
     let resolvedImageProperty;
-    if (defaultTypeId && ((_a = frontmatterProperties[defaultTypeId]) == null ? void 0 : _a.imageProperty)) {
-      resolvedImageProperty = frontmatterProperties[defaultTypeId].imageProperty;
+    if (
+      defaultTypeId &&
+      ((_a = frontmatterProperties[defaultTypeId]) == null
+        ? void 0
+        : _a.imageProperty)
+    ) {
+      resolvedImageProperty =
+        frontmatterProperties[defaultTypeId].imageProperty;
     }
     if (!resolvedImageProperty) {
       for (const type of contentTypes) {
-        if ((_b = frontmatterProperties[type.id]) == null ? void 0 : _b.imageProperty) {
+        if (
+          (_b = frontmatterProperties[type.id]) == null
+            ? void 0
+            : _b.imageProperty
+        ) {
           resolvedImageProperty = frontmatterProperties[type.id].imageProperty;
           break;
         }
@@ -531,8 +667,8 @@ var ImageManagerConfigurator = class {
       } else {
         config.banner = {
           properties: {
-            imageProperty: resolvedImageProperty
-          }
+            imageProperty: resolvedImageProperty,
+          },
         };
       }
       await this.saveConfig(config);
@@ -543,17 +679,20 @@ var ImageManagerConfigurator = class {
             if (!state.imageManager.banner.properties) {
               state.imageManager.banner.properties = {};
             }
-            state.imageManager.banner.properties.imageProperty = resolvedImageProperty;
+            state.imageManager.banner.properties.imageProperty =
+              resolvedImageProperty;
           }
         } else {
           state.imageManager.banner = {
             properties: {
-              imageProperty: resolvedImageProperty
-            }
+              imageProperty: resolvedImageProperty,
+            },
           };
         }
       }
-      console.debug(`ImageManagerConfigurator: Synced image property "${resolvedImageProperty}" to Image Manager and state`);
+      console.debug(
+        `ImageManagerConfigurator: Synced image property "${resolvedImageProperty}" to Image Manager and state`,
+      );
     }
   }
 };
@@ -569,7 +708,10 @@ var HomeBaseConfigurator = class {
     const pluginId = "home-base";
     try {
       const plugins = this.app.plugins;
-      const homeBasePlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a[pluginId];
+      const homeBasePlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a[pluginId];
       if (homeBasePlugin && homeBasePlugin.settings) {
         return homeBasePlugin.settings;
       }
@@ -599,13 +741,18 @@ var HomeBaseConfigurator = class {
     const pluginId = "home-base";
     try {
       const plugins = this.app.plugins;
-      const homeBasePlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a[pluginId];
+      const homeBasePlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a[pluginId];
       if (homeBasePlugin && homeBasePlugin.settings) {
         const pluginSettings = homeBasePlugin.settings;
         Object.assign(pluginSettings, config);
         if (typeof homeBasePlugin.saveSettings === "function") {
           await homeBasePlugin.saveSettings();
-          console.debug("HomeBaseConfig: Successfully saved via plugin.saveSettings()");
+          console.debug(
+            "HomeBaseConfig: Successfully saved via plugin.saveSettings()",
+          );
           return;
         }
       }
@@ -615,7 +762,10 @@ var HomeBaseConfigurator = class {
       try {
         await this.saveConfigFallback(config);
       } catch (fallbackError) {
-        console.error("Failed to save Home Base config via fallback:", fallbackError);
+        console.error(
+          "Failed to save Home Base config via fallback:",
+          fallbackError,
+        );
       }
     }
   }
@@ -629,16 +779,22 @@ var HomeBaseConfigurator = class {
       try {
         existingData = JSON.parse(await this.app.vault.read(dataFile));
       } catch (error) {
-        console.warn("Failed to parse existing Home Base data.json, starting fresh:", error);
+        console.warn(
+          "Failed to parse existing Home Base data.json, starting fresh:",
+          error,
+        );
         existingData = {};
       }
     }
     const mergedData = {
       ...existingData,
-      ...config
+      ...config,
     };
     if (dataFile && dataFile instanceof import_obsidian2.TFile) {
-      await this.app.vault.modify(dataFile, JSON.stringify(mergedData, null, 2));
+      await this.app.vault.modify(
+        dataFile,
+        JSON.stringify(mergedData, null, 2),
+      );
     } else {
       const pluginDir = `${configDir}/plugins/${pluginId}`;
       const pluginDirFile = this.app.vault.getAbstractFileByPath(pluginDir);
@@ -646,20 +802,37 @@ var HomeBaseConfigurator = class {
         try {
           await this.app.vault.createFolder(pluginDir);
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
-          if (errorMessage && !errorMessage.includes("already exists") && !errorMessage.includes("File already exists")) {
+          const errorMessage =
+            error instanceof Error ? error.message : String(error);
+          if (
+            errorMessage &&
+            !errorMessage.includes("already exists") &&
+            !errorMessage.includes("File already exists")
+          ) {
             throw error;
           }
         }
       }
       try {
-        await this.app.vault.create(pluginDataPath, JSON.stringify(mergedData, null, 2));
+        await this.app.vault.create(
+          pluginDataPath,
+          JSON.stringify(mergedData, null, 2),
+        );
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        if (errorMessage && (errorMessage.includes("already exists") || errorMessage.includes("File already exists"))) {
-          const retryFile = this.app.vault.getAbstractFileByPath(pluginDataPath);
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        if (
+          errorMessage &&
+          (errorMessage.includes("already exists") ||
+            errorMessage.includes("File already exists"))
+        ) {
+          const retryFile =
+            this.app.vault.getAbstractFileByPath(pluginDataPath);
           if (retryFile instanceof import_obsidian2.TFile) {
-            await this.app.vault.modify(retryFile, JSON.stringify(mergedData, null, 2));
+            await this.app.vault.modify(
+              retryFile,
+              JSON.stringify(mergedData, null, 2),
+            );
           } else {
             throw error;
           }
@@ -682,7 +855,10 @@ var ExplorerFocusConfigurator = class {
     const pluginId = "explorer-focus";
     try {
       const plugins = this.app.plugins;
-      const explorerFocusPlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a[pluginId];
+      const explorerFocusPlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a[pluginId];
       if (explorerFocusPlugin && explorerFocusPlugin.settings) {
         console.debug("ExplorerFocusConfig: Using plugin.settings API");
         const settings = explorerFocusPlugin.settings;
@@ -691,11 +867,15 @@ var ExplorerFocusConfigurator = class {
         }
         if (typeof explorerFocusPlugin.saveSettings === "function") {
           await explorerFocusPlugin.saveSettings();
-          console.debug("ExplorerFocusConfig: Successfully saved via plugin.saveSettings()");
+          console.debug(
+            "ExplorerFocusConfig: Successfully saved via plugin.saveSettings()",
+          );
           return;
         }
       }
-      console.debug("ExplorerFocusConfig: Plugin API not available, using fallback file method");
+      console.debug(
+        "ExplorerFocusConfig: Plugin API not available, using fallback file method",
+      );
       await this.saveConfigFallback(config);
     } catch (error) {
       console.error("Failed to save Explorer Focus config:", error);
@@ -727,12 +907,15 @@ var ExplorerFocusConfigurator = class {
       try {
         existingData = JSON.parse(await this.app.vault.read(dataFile));
       } catch (error) {
-        console.warn("Failed to parse existing explorer-focus data.json:", error);
+        console.warn(
+          "Failed to parse existing explorer-focus data.json:",
+          error,
+        );
       }
     }
     const mergedData = {
       ...existingData,
-      ...config
+      ...config,
     };
     const pluginDir = `${configDir}/plugins/${pluginId}`;
     const pluginDirFile = this.app.vault.getAbstractFileByPath(pluginDir);
@@ -740,8 +923,14 @@ var ExplorerFocusConfigurator = class {
       try {
         await this.app.vault.createFolder(pluginDir);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        if (errorMessage && !errorMessage.includes("already exists") && !errorMessage.includes("File already exists") && !errorMessage.includes("Folder already exists")) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        if (
+          errorMessage &&
+          !errorMessage.includes("already exists") &&
+          !errorMessage.includes("File already exists") &&
+          !errorMessage.includes("Folder already exists")
+        ) {
           throw error;
         }
       }
@@ -752,7 +941,9 @@ var ExplorerFocusConfigurator = class {
     } else {
       await this.app.vault.create(pluginDataPath, content);
     }
-    console.debug("ExplorerFocusConfig: Successfully saved explorer-focus config via fallback");
+    console.debug(
+      "ExplorerFocusConfig: Successfully saved explorer-focus config via fallback",
+    );
   }
 };
 
@@ -767,55 +958,91 @@ var EditingToolbarConfigurator = class {
    */
   async toggleVisibility(app, enable) {
     var _a;
-    console.debug(`EditingToolbarConfig: toggleVisibility called with enable=${enable}`);
+    console.debug(
+      `EditingToolbarConfig: toggleVisibility called with enable=${enable}`,
+    );
     try {
       const plugins = app.plugins;
       if (!plugins) {
         console.warn("EditingToolbarConfig: Plugins API not available");
         return;
       }
-      const editingToolbarPlugin = (_a = plugins.plugins) == null ? void 0 : _a["editing-toolbar"];
+      const editingToolbarPlugin =
+        (_a = plugins.plugins) == null ? void 0 : _a["editing-toolbar"];
       if (!editingToolbarPlugin) {
         console.warn("EditingToolbarConfig: Editing Toolbar plugin not found");
         return;
       }
-      console.debug(`EditingToolbarConfig: Editing Toolbar plugin found, enabled=${editingToolbarPlugin.enabled}`);
-      console.debug(`EditingToolbarConfig: Plugin settings available:`, !!editingToolbarPlugin.settings);
+      console.debug(
+        `EditingToolbarConfig: Editing Toolbar plugin found, enabled=${editingToolbarPlugin.enabled}`,
+      );
+      console.debug(
+        `EditingToolbarConfig: Plugin settings available:`,
+        !!editingToolbarPlugin.settings,
+      );
       if (editingToolbarPlugin.settings) {
-        console.debug(`EditingToolbarConfig: Current cMenuVisibility:`, editingToolbarPlugin.settings.cMenuVisibility);
+        console.debug(
+          `EditingToolbarConfig: Current cMenuVisibility:`,
+          editingToolbarPlugin.settings.cMenuVisibility,
+        );
       }
-      if (editingToolbarPlugin.settings && typeof editingToolbarPlugin.saveSettings === "function") {
-        console.debug("EditingToolbarConfig: Using plugin.saveSettings() method");
+      if (
+        editingToolbarPlugin.settings &&
+        typeof editingToolbarPlugin.saveSettings === "function"
+      ) {
+        console.debug(
+          "EditingToolbarConfig: Using plugin.saveSettings() method",
+        );
         const oldValue = editingToolbarPlugin.settings.cMenuVisibility;
         editingToolbarPlugin.settings.cMenuVisibility = enable;
-        console.debug(`EditingToolbarConfig: Set cMenuVisibility from ${oldValue} to ${enable}`);
+        console.debug(
+          `EditingToolbarConfig: Set cMenuVisibility from ${oldValue} to ${enable}`,
+        );
         await editingToolbarPlugin.saveSettings();
-        console.debug("EditingToolbarConfig: Successfully saved editing-toolbar via plugin.saveSettings()");
-        console.debug("EditingToolbarConfig: Dispatching editingToolbar-NewCommand event");
+        console.debug(
+          "EditingToolbarConfig: Successfully saved editing-toolbar via plugin.saveSettings()",
+        );
+        console.debug(
+          "EditingToolbarConfig: Dispatching editingToolbar-NewCommand event",
+        );
         window.dispatchEvent(new Event("editingToolbar-NewCommand"));
         if (enable) {
-          console.debug("EditingToolbarConfig: Waiting for settings to persist...");
+          console.debug(
+            "EditingToolbarConfig: Waiting for settings to persist...",
+          );
           await new Promise((resolve11) => setTimeout(resolve11, 500));
           if (typeof editingToolbarPlugin.loadSettings === "function") {
-            console.debug("EditingToolbarConfig: Reloading editing toolbar plugin settings");
+            console.debug(
+              "EditingToolbarConfig: Reloading editing toolbar plugin settings",
+            );
             await editingToolbarPlugin.loadSettings();
           }
           if (typeof editingToolbarPlugin.refresh === "function") {
-            console.debug("EditingToolbarConfig: Refreshing editing toolbar plugin");
+            console.debug(
+              "EditingToolbarConfig: Refreshing editing toolbar plugin",
+            );
             editingToolbarPlugin.refresh();
           }
         }
         return;
       } else {
-        console.debug("EditingToolbarConfig: Plugin saveSettings not available, using fallback");
+        console.debug(
+          "EditingToolbarConfig: Plugin saveSettings not available, using fallback",
+        );
       }
       await this.toggleVisibilityFallback(app, enable);
     } catch (error) {
-      console.error("EditingToolbarConfig: Failed to toggle editing toolbar plugin:", error);
+      console.error(
+        "EditingToolbarConfig: Failed to toggle editing toolbar plugin:",
+        error,
+      );
       try {
         await this.toggleVisibilityFallback(app, enable);
       } catch (fallbackError) {
-        console.error("EditingToolbarConfig: Failed to toggle editing toolbar via fallback:", fallbackError);
+        console.error(
+          "EditingToolbarConfig: Failed to toggle editing toolbar via fallback:",
+          fallbackError,
+        );
       }
     }
   }
@@ -829,14 +1056,19 @@ var EditingToolbarConfigurator = class {
       try {
         existingData = JSON.parse(await app.vault.read(dataFile));
       } catch (error) {
-        console.warn("Failed to parse existing editing-toolbar data.json, starting fresh:", error);
+        console.warn(
+          "Failed to parse existing editing-toolbar data.json, starting fresh:",
+          error,
+        );
         existingData = {};
       }
     }
     existingData.cMenuVisibility = enable;
     if (dataFile instanceof import_obsidian4.TFile) {
       await app.vault.modify(dataFile, JSON.stringify(existingData, null, 2));
-      console.debug("EditingToolbarConfig: Successfully saved editing-toolbar via file modify");
+      console.debug(
+        "EditingToolbarConfig: Successfully saved editing-toolbar via file modify",
+      );
     } else {
       const pluginDir = `${configDir}/plugins/${pluginId}`;
       const pluginDirFile = app.vault.getAbstractFileByPath(pluginDir);
@@ -844,28 +1076,54 @@ var EditingToolbarConfigurator = class {
         try {
           await app.vault.createFolder(pluginDir);
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
-          if (errorMessage && !errorMessage.includes("already exists") && !errorMessage.includes("File already exists") && !errorMessage.includes("Folder already exists")) {
+          const errorMessage =
+            error instanceof Error ? error.message : String(error);
+          if (
+            errorMessage &&
+            !errorMessage.includes("already exists") &&
+            !errorMessage.includes("File already exists") &&
+            !errorMessage.includes("Folder already exists")
+          ) {
             throw error;
           }
         }
       }
       try {
-        await app.vault.create(pluginDataPath, JSON.stringify(existingData, null, 2));
-        console.debug("EditingToolbarConfig: Successfully created editing-toolbar data.json");
+        await app.vault.create(
+          pluginDataPath,
+          JSON.stringify(existingData, null, 2),
+        );
+        console.debug(
+          "EditingToolbarConfig: Successfully created editing-toolbar data.json",
+        );
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        if (errorMessage && (errorMessage.includes("already exists") || errorMessage.includes("File already exists"))) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        if (
+          errorMessage &&
+          (errorMessage.includes("already exists") ||
+            errorMessage.includes("File already exists"))
+        ) {
           const retryFile = app.vault.getAbstractFileByPath(pluginDataPath);
           if (retryFile instanceof import_obsidian4.TFile) {
-            await app.vault.modify(retryFile, JSON.stringify(existingData, null, 2));
-            console.debug("EditingToolbarConfig: Successfully saved editing-toolbar via retry modify");
+            await app.vault.modify(
+              retryFile,
+              JSON.stringify(existingData, null, 2),
+            );
+            console.debug(
+              "EditingToolbarConfig: Successfully saved editing-toolbar via retry modify",
+            );
           } else {
             await new Promise((resolve11) => setTimeout(resolve11, 200));
             const retryFile2 = app.vault.getAbstractFileByPath(pluginDataPath);
             if (retryFile2 instanceof import_obsidian4.TFile) {
-              await app.vault.modify(retryFile2, JSON.stringify(existingData, null, 2));
-              console.debug("EditingToolbarConfig: Successfully saved editing-toolbar via delayed retry modify");
+              await app.vault.modify(
+                retryFile2,
+                JSON.stringify(existingData, null, 2),
+              );
+              console.debug(
+                "EditingToolbarConfig: Successfully saved editing-toolbar via delayed retry modify",
+              );
             } else {
               throw error;
             }
@@ -883,8 +1141,13 @@ var EditingToolbarConfigurator = class {
     var _a;
     try {
       const plugins = app.plugins;
-      const editingToolbarPlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a["editing-toolbar"];
-      if (editingToolbarPlugin == null ? void 0 : editingToolbarPlugin.settings) {
+      const editingToolbarPlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a["editing-toolbar"];
+      if (
+        editingToolbarPlugin == null ? void 0 : editingToolbarPlugin.settings
+      ) {
         return editingToolbarPlugin.settings.cMenuVisibility;
       }
       const configDir = app.vault.configDir;
@@ -895,7 +1158,10 @@ var EditingToolbarConfigurator = class {
         return existingData.cMenuVisibility;
       }
     } catch (error) {
-      console.warn("EditingToolbarConfig: Failed to get editing toolbar visibility:", error);
+      console.warn(
+        "EditingToolbarConfig: Failed to get editing toolbar visibility:",
+        error,
+      );
     }
     return void 0;
   }
@@ -905,23 +1171,29 @@ var EditingToolbarConfigurator = class {
 var WizardStateManager = class {
   constructor(plugin) {
     this.plugin = plugin;
-    this.editingToolbarConfigurator = new EditingToolbarConfigurator(plugin.app);
+    this.editingToolbarConfigurator = new EditingToolbarConfigurator(
+      plugin.app,
+    );
     const settings = plugin.settings;
     this.state = this.initializeState(settings);
   }
   initializeState(settings) {
     var _a, _b, _c, _d;
-    const savedProjectDetection = settings.projectRoot && settings.configFilePath ? {
-      projectRoot: settings.projectRoot,
-      configFilePath: settings.configFilePath,
-      vaultLocation: "content"
-    } : void 0;
+    const savedProjectDetection =
+      settings.projectRoot && settings.configFilePath
+        ? {
+            projectRoot: settings.projectRoot,
+            configFilePath: settings.configFilePath,
+            vaultLocation: "content",
+          }
+        : void 0;
     let attachmentHandlingMode = settings.attachmentHandlingMode;
     let attachmentFolderName = settings.attachmentFolderName;
     if (!attachmentHandlingMode) {
       const vault = this.plugin.app.vault;
       const obsidianConfig = vault.config;
-      const folderPath = obsidianConfig == null ? void 0 : obsidianConfig.attachmentFolderPath;
+      const folderPath =
+        obsidianConfig == null ? void 0 : obsidianConfig.attachmentFolderPath;
       if (folderPath !== void 0) {
         if (folderPath === "" || folderPath === "./" || folderPath === ".") {
           attachmentHandlingMode = "same-folder";
@@ -943,11 +1215,18 @@ var WizardStateManager = class {
       defaultContentTypeId: settings.defaultContentTypeId,
       attachmentHandlingMode: attachmentHandlingMode || "subfolder",
       attachmentFolderName,
-      resolvePublicImages: (_a = settings.resolvePublicImages) != null ? _a : false,
+      resolvePublicImages:
+        (_a = settings.resolvePublicImages) != null ? _a : false,
       preset: settings.preset || "vanilla",
       presetName: settings.presetName || "",
       presetsRepo: settings.presetsRepo || "davidvkimball/vaultcms-presets",
-      enableEditingToolbar: (_c = (_b = settings.enableEditingToolbar) != null ? _b : settings.enableWYSIWYG) != null ? _c : false,
+      enableEditingToolbar:
+        (_c =
+          (_b = settings.enableEditingToolbar) != null
+            ? _b
+            : settings.enableWYSIWYG) != null
+          ? _c
+          : false,
       enableMdxSupport: settings.enableMdxSupport,
       enableExtendedFileTypes: settings.enableExtendedFileTypes,
       enabledPlugins: settings.enabledPlugins || [],
@@ -958,21 +1237,29 @@ var WizardStateManager = class {
         customContentTypes: [],
         defaultTemplate: "",
         configFilePath: "",
-        terminalProjectRootPath: ""
+        terminalProjectRootPath: "",
       },
       seoConfig: settings.seoConfig || {
         titleProperty: "title",
         scanDirectories: "",
         useFilenameAsTitle: false,
         useFilenameAsSlug: true,
-        enableMDXSupport: (_d = settings.enableMdxSupport) != null ? _d : false
+        enableMDXSupport: (_d = settings.enableMdxSupport) != null ? _d : false,
       },
-      propertyOverFileName: settings.propertyOverFileName || { propertyKey: "title" },
+      propertyOverFileName: settings.propertyOverFileName || {
+        propertyKey: "title",
+      },
       imageManager: settings.imageManager || {},
       homeBase: settings.homeBase || {},
       explorerFocus: settings.explorerFocus || {},
-      ignoreConfig: settings.ignoreConfig || { gitIgnoreConfigured: false, viteIgnoreConfigured: false },
-      gitConfig: settings.gitConfig || { enabled: false, autoConfigureObsidianGit: true }
+      ignoreConfig: settings.ignoreConfig || {
+        gitIgnoreConfigured: false,
+        viteIgnoreConfigured: false,
+      },
+      gitConfig: settings.gitConfig || {
+        enabled: false,
+        autoConfigureObsidianGit: true,
+      },
     };
   }
   getState() {
@@ -1002,7 +1289,7 @@ var WizardStateManager = class {
   }
   getProgress(totalSteps) {
     if (totalSteps === 0) return 0;
-    return (this.state.currentStep + 1) / totalSteps * 100;
+    return ((this.state.currentStep + 1) / totalSteps) * 100;
   }
   async refreshState() {
     var _a, _b, _c;
@@ -1011,7 +1298,7 @@ var WizardStateManager = class {
       this.state.projectDetection = {
         projectRoot: settings.projectRoot,
         configFilePath: settings.configFilePath,
-        vaultLocation: "content"
+        vaultLocation: "content",
       };
     } else {
       this.state.projectDetection = void 0;
@@ -1019,14 +1306,16 @@ var WizardStateManager = class {
     this.state.contentTypes = settings.contentTypes || [];
     this.state.frontmatterProperties = settings.frontmatterProperties || {};
     this.state.defaultContentTypeId = settings.defaultContentTypeId;
-    this.state.resolvePublicImages = (_a = settings.resolvePublicImages) != null ? _a : false;
+    this.state.resolvePublicImages =
+      (_a = settings.resolvePublicImages) != null ? _a : false;
     if (settings.attachmentHandlingMode) {
       this.state.attachmentHandlingMode = settings.attachmentHandlingMode;
       this.state.attachmentFolderName = settings.attachmentFolderName;
     } else {
       const vault = this.plugin.app.vault;
       const obsidianConfig = vault.config;
-      const folderPath = obsidianConfig == null ? void 0 : obsidianConfig.attachmentFolderPath;
+      const folderPath =
+        obsidianConfig == null ? void 0 : obsidianConfig.attachmentFolderPath;
       if (folderPath !== void 0) {
         if (folderPath === "" || folderPath === "./" || folderPath === ".") {
           this.state.attachmentHandlingMode = "same-folder";
@@ -1045,12 +1334,20 @@ var WizardStateManager = class {
     }
     this.state.preset = settings.preset || "vanilla";
     this.state.presetName = settings.presetName || "";
-    this.state.presetsRepo = settings.presetsRepo || "davidvkimball/vaultcms-presets";
-    const actualVisibility = await this.editingToolbarConfigurator.getVisibility(this.plugin.app);
+    this.state.presetsRepo =
+      settings.presetsRepo || "davidvkimball/vaultcms-presets";
+    const actualVisibility =
+      await this.editingToolbarConfigurator.getVisibility(this.plugin.app);
     if (actualVisibility !== void 0) {
       this.state.enableEditingToolbar = actualVisibility;
     } else {
-      this.state.enableEditingToolbar = (_c = (_b = settings.enableEditingToolbar) != null ? _b : settings.enableWYSIWYG) != null ? _c : false;
+      this.state.enableEditingToolbar =
+        (_c =
+          (_b = settings.enableEditingToolbar) != null
+            ? _b
+            : settings.enableWYSIWYG) != null
+          ? _c
+          : false;
     }
     this.state.enableMdxSupport = settings.enableMdxSupport;
     this.state.enableExtendedFileTypes = settings.enableExtendedFileTypes;
@@ -1062,19 +1359,26 @@ var WizardStateManager = class {
       customContentTypes: [],
       defaultTemplate: "",
       configFilePath: "",
-      terminalProjectRootPath: ""
+      terminalProjectRootPath: "",
     };
     this.state.seoConfig = settings.seoConfig || {
       titleProperty: "title",
       scanDirectories: "",
       useFilenameAsTitle: false,
-      useFilenameAsSlug: true
+      useFilenameAsSlug: true,
     };
-    this.state.propertyOverFileName = settings.propertyOverFileName || { propertyKey: "title" };
+    this.state.propertyOverFileName = settings.propertyOverFileName || {
+      propertyKey: "title",
+    };
     this.state.explorerFocus = settings.explorerFocus || {};
-    if (!this.state.imageManager || Object.keys(this.state.imageManager).length === 0) {
+    if (
+      !this.state.imageManager ||
+      Object.keys(this.state.imageManager).length === 0
+    ) {
       try {
-        const imageManagerConfigurator = new ImageManagerConfigurator(this.plugin.app);
+        const imageManagerConfigurator = new ImageManagerConfigurator(
+          this.plugin.app,
+        );
         const loadedConfig = await imageManagerConfigurator.loadConfig();
         if (loadedConfig && Object.keys(loadedConfig).length > 0) {
           this.state.imageManager = loadedConfig;
@@ -1082,7 +1386,10 @@ var WizardStateManager = class {
           this.state.imageManager = settings.imageManager || {};
         }
       } catch (error) {
-        console.warn("Failed to load Image Manager config during refresh:", error);
+        console.warn(
+          "Failed to load Image Manager config during refresh:",
+          error,
+        );
         this.state.imageManager = settings.imageManager || {};
       }
     } else {
@@ -1104,9 +1411,14 @@ var WizardStateManager = class {
     } else {
       this.state.homeBase = settings.homeBase || {};
     }
-    if (!this.state.explorerFocus || Object.keys(this.state.explorerFocus).length === 0) {
+    if (
+      !this.state.explorerFocus ||
+      Object.keys(this.state.explorerFocus).length === 0
+    ) {
       try {
-        const explorerFocusConfigurator = new ExplorerFocusConfigurator(this.plugin.app);
+        const explorerFocusConfigurator = new ExplorerFocusConfigurator(
+          this.plugin.app,
+        );
         const loadedConfig = await explorerFocusConfigurator.loadConfig();
         if (loadedConfig && Object.keys(loadedConfig).length > 0) {
           this.state.explorerFocus = loadedConfig;
@@ -1114,35 +1426,53 @@ var WizardStateManager = class {
           this.state.explorerFocus = settings.explorerFocus || {};
         }
       } catch (error) {
-        console.warn("Failed to load Explorer Focus config during refresh:", error);
+        console.warn(
+          "Failed to load Explorer Focus config during refresh:",
+          error,
+        );
         this.state.explorerFocus = settings.explorerFocus || {};
       }
     } else {
       this.state.explorerFocus = settings.explorerFocus || {};
     }
-    this.state.gitConfig = settings.gitConfig || { enabled: false, autoConfigureObsidianGit: true };
-    this.state.ignoreConfig = settings.ignoreConfig || { gitIgnoreConfigured: false, viteIgnoreConfigured: false };
+    this.state.gitConfig = settings.gitConfig || {
+      enabled: false,
+      autoConfigureObsidianGit: true,
+    };
+    this.state.ignoreConfig = settings.ignoreConfig || {
+      gitIgnoreConfigured: false,
+      viteIgnoreConfigured: false,
+    };
   }
   async buildFinalSettings() {
     var _a, _b, _c, _d, _e;
     const settings = this.plugin.settings;
-    settings.projectRoot = ((_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot) || "";
-    settings.configFilePath = ((_b = this.state.projectDetection) == null ? void 0 : _b.configFilePath) || "";
+    settings.projectRoot =
+      ((_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot) ||
+      "";
+    settings.configFilePath =
+      ((_b = this.state.projectDetection) == null
+        ? void 0
+        : _b.configFilePath) || "";
     settings.contentTypes = this.state.contentTypes;
     settings.frontmatterProperties = this.state.frontmatterProperties;
     settings.defaultContentTypeId = this.state.defaultContentTypeId;
     settings.attachmentHandlingMode = this.state.attachmentHandlingMode;
     settings.attachmentFolderName = this.state.attachmentFolderName;
-    settings.resolvePublicImages = (_c = this.state.resolvePublicImages) != null ? _c : false;
+    settings.resolvePublicImages =
+      (_c = this.state.resolvePublicImages) != null ? _c : false;
     settings.preset = this.state.preset;
     settings.presetName = this.state.presetName || "";
-    settings.presetsRepo = this.state.presetsRepo || "davidvkimball/vaultcms-presets";
+    settings.presetsRepo =
+      this.state.presetsRepo || "davidvkimball/vaultcms-presets";
     settings.enableEditingToolbar = this.state.enableEditingToolbar;
     if (settings.enableWYSIWYG !== void 0) {
       delete settings.enableWYSIWYG;
     }
-    settings.enableMdxSupport = (_d = this.state.enableMdxSupport) != null ? _d : false;
-    settings.enableExtendedFileTypes = (_e = this.state.enableExtendedFileTypes) != null ? _e : false;
+    settings.enableMdxSupport =
+      (_d = this.state.enableMdxSupport) != null ? _d : false;
+    settings.enableExtendedFileTypes =
+      (_e = this.state.enableExtendedFileTypes) != null ? _e : false;
     settings.enabledPlugins = this.state.enabledPlugins;
     settings.disabledPlugins = this.state.disabledPlugins;
     settings.theme = this.state.theme;
@@ -1169,10 +1499,15 @@ var WizardStateManager = class {
     settings.ignoreConfig = this.state.ignoreConfig;
     settings.gitConfig = { ...this.state.gitConfig };
     try {
-      const imageManagerConfigurator = new ImageManagerConfigurator(this.plugin.app);
+      const imageManagerConfigurator = new ImageManagerConfigurator(
+        this.plugin.app,
+      );
       await imageManagerConfigurator.resolveAndSyncImageProperty(this.state);
     } catch (error) {
-      console.warn("WizardStateManager: Failed to sync image property with Image Manager:", error);
+      console.warn(
+        "WizardStateManager: Failed to sync image property with Image Manager:",
+        error,
+      );
     }
   }
 };
@@ -1204,22 +1539,31 @@ var BaseWizardStep = class {
       return absolutePath;
     }
     const vaultNormalized = vaultPath.replace(/\\/g, "/").replace(/\/$/, "");
-    const absoluteNormalized = absolutePath.replace(/\\/g, "/").replace(/\/$/, "");
+    const absoluteNormalized = absolutePath
+      .replace(/\\/g, "/")
+      .replace(/\/$/, "");
     if (absoluteNormalized.startsWith(vaultNormalized)) {
       const relative7 = absoluteNormalized.slice(vaultNormalized.length);
-      const trimmedRelative = relative7.startsWith("/") ? relative7.slice(1) : relative7;
+      const trimmedRelative = relative7.startsWith("/")
+        ? relative7.slice(1)
+        : relative7;
       return trimmedRelative || ".";
     }
     try {
       const vaultParts = vaultNormalized.split("/").filter((p) => p);
       const absoluteParts = absoluteNormalized.split("/").filter((p) => p);
       let commonLength = 0;
-      while (commonLength < vaultParts.length && commonLength < absoluteParts.length && vaultParts[commonLength] === absoluteParts[commonLength]) {
+      while (
+        commonLength < vaultParts.length &&
+        commonLength < absoluteParts.length &&
+        vaultParts[commonLength] === absoluteParts[commonLength]
+      ) {
         commonLength++;
       }
       const upLevels = vaultParts.length - commonLength;
       const relativeParts = absoluteParts.slice(commonLength);
-      const relative7 = (upLevels > 0 ? "../".repeat(upLevels) : "") + relativeParts.join("/");
+      const relative7 =
+        (upLevels > 0 ? "../".repeat(upLevels) : "") + relativeParts.join("/");
       return relative7 || absolutePath;
     } catch (e) {
       return absolutePath;
@@ -1230,7 +1574,10 @@ var BaseWizardStep = class {
 // src/ui/wizard/WelcomeStep.ts
 function setCssProps(element, props) {
   for (const [key, value] of Object.entries(props)) {
-    element.style.setProperty(key.replace(/([A-Z])/g, "-$1").toLowerCase(), value);
+    element.style.setProperty(
+      key.replace(/([A-Z])/g, "-$1").toLowerCase(),
+      value,
+    );
   }
 }
 var WelcomeStep = class extends BaseWizardStep {
@@ -1239,7 +1586,7 @@ var WelcomeStep = class extends BaseWizardStep {
     containerEl.empty();
     containerEl.createEl("h2", { text: "Welcome to Vault CMS" });
     containerEl.createEl("p", {
-      text: "This wizard will help you configure Vault CMS for your project. We'll guide you through:"
+      text: "This wizard will help you configure Vault CMS for your project. We'll guide you through:",
     });
     const list = containerEl.createEl("ul");
     list.createEl("li", { text: "Detecting your Astro project structure" });
@@ -1249,29 +1596,32 @@ var WelcomeStep = class extends BaseWizardStep {
     list.createEl("li", { text: "Setting up Home Base content views" });
     list.createEl("li", { text: "Configuring Astro Composer and SEO plugins" });
     containerEl.createEl("p", {
-      text: "Choose an option to continue:"
+      text: "Choose an option to continue:",
     });
     const buttonContainer = containerEl.createDiv("wizard-welcome-buttons");
     setCssProps(buttonContainer, {
       display: "flex",
       gap: "10px",
-      marginTop: "20px"
+      marginTop: "20px",
     });
     const getStartedBtn = buttonContainer.createEl("button", {
       text: "Get started",
-      cls: "mod-button mod-cta"
+      cls: "mod-button mod-cta",
     });
     getStartedBtn.addEventListener("click", () => {
       this.onNext();
     });
     const selectPresetBtn = buttonContainer.createEl("button", {
       text: "Select preset",
-      cls: "mod-button"
+      cls: "mod-button",
     });
     selectPresetBtn.addEventListener("click", () => {
       this.onCancel();
       const appWithSetting = this.app;
-      if (appWithSetting.setting && typeof appWithSetting.setting.open === "function") {
+      if (
+        appWithSetting.setting &&
+        typeof appWithSetting.setting.open === "function"
+      ) {
         appWithSetting.setting.open();
         if (typeof appWithSetting.setting.openTabById === "function") {
           appWithSetting.setting.openTabById("vault-cms");
@@ -1312,13 +1662,22 @@ var ProjectDetector = class {
     if (!configResult) {
       return null;
     }
-    const vaultLocation = this.detectVaultLocation(vaultPath, configResult.projectRoot);
-    const relativeProjectRoot = this.toVaultRelative(configResult.projectRoot, vaultPath);
-    const relativeConfigFilePath = this.toVaultRelative(configResult.configFilePath, vaultPath);
+    const vaultLocation = this.detectVaultLocation(
+      vaultPath,
+      configResult.projectRoot,
+    );
+    const relativeProjectRoot = this.toVaultRelative(
+      configResult.projectRoot,
+      vaultPath,
+    );
+    const relativeConfigFilePath = this.toVaultRelative(
+      configResult.configFilePath,
+      vaultPath,
+    );
     return {
       projectRoot: relativeProjectRoot,
       configFilePath: relativeConfigFilePath,
-      vaultLocation
+      vaultLocation,
     };
   }
   /**
@@ -1342,7 +1701,7 @@ var ProjectDetector = class {
       "astro.config.mts",
       "astro.config.cjs",
       "astro.config.yml",
-      "astro.config.yaml"
+      "astro.config.yaml",
     ];
     const srcConfigFileName = "src/config.ts";
     let currentDir = path2.resolve(startPath);
@@ -1350,25 +1709,26 @@ var ProjectDetector = class {
     while (currentDir !== root) {
       const srcConfigPath = path2.join(currentDir, srcConfigFileName);
       try {
-        if (fs.existsSync(srcConfigPath) && fs.statSync(srcConfigPath).isFile()) {
+        if (
+          fs.existsSync(srcConfigPath) &&
+          fs.statSync(srcConfigPath).isFile()
+        ) {
           return {
             projectRoot: currentDir,
-            configFilePath: srcConfigPath
+            configFilePath: srcConfigPath,
           };
         }
-      } catch (e) {
-      }
+      } catch (e) {}
       for (const fileName of rootConfigFileNames) {
         const configPath = path2.join(currentDir, fileName);
         try {
           if (fs.existsSync(configPath) && fs.statSync(configPath).isFile()) {
             return {
               projectRoot: currentDir,
-              configFilePath: configPath
+              configFilePath: configPath,
             };
           }
-        } catch (e) {
-        }
+        } catch (e) {}
       }
       const parentDir = path2.dirname(currentDir);
       if (parentDir === currentDir) {
@@ -1387,16 +1747,25 @@ var ProjectDetector = class {
     if (!normalizedVaultPath.startsWith(normalizedProjectRoot)) {
       return "root";
     }
-    const relativePath = path2.relative(normalizedProjectRoot, normalizedVaultPath);
-    const pathParts = relativePath.split(path2.sep).filter((part) => part.length > 0);
-    const contentIndex = pathParts.findIndex((part) => part.toLowerCase() === "content");
+    const relativePath = path2.relative(
+      normalizedProjectRoot,
+      normalizedVaultPath,
+    );
+    const pathParts = relativePath
+      .split(path2.sep)
+      .filter((part) => part.length > 0);
+    const contentIndex = pathParts.findIndex(
+      (part) => part.toLowerCase() === "content",
+    );
     if (contentIndex > 0) {
       const parentIndex = contentIndex - 1;
       if (parentIndex >= 0 && pathParts[parentIndex].toLowerCase() === "src") {
         return "content";
       }
     }
-    const srcIndex = pathParts.findIndex((part) => part.toLowerCase() === "src");
+    const srcIndex = pathParts.findIndex(
+      (part) => part.toLowerCase() === "src",
+    );
     if (srcIndex >= 0 && srcIndex < pathParts.length - 1) {
       const nextPart = pathParts[srcIndex + 1];
       if (nextPart.toLowerCase() === "content") {
@@ -1421,9 +1790,11 @@ var MdxDetector = class {
    */
   detectMdxUsage(projectDetection, contentTypes) {
     console.debug("MdxDetector.detectMdxUsage: called with", {
-      projectRoot: projectDetection == null ? void 0 : projectDetection.projectRoot,
-      vaultLocation: projectDetection == null ? void 0 : projectDetection.vaultLocation,
-      contentTypesCount: contentTypes == null ? void 0 : contentTypes.length
+      projectRoot:
+        projectDetection == null ? void 0 : projectDetection.projectRoot,
+      vaultLocation:
+        projectDetection == null ? void 0 : projectDetection.vaultLocation,
+      contentTypesCount: contentTypes == null ? void 0 : contentTypes.length,
     });
     if (!projectDetection) {
       console.debug("MdxDetector: No projectDetection, returning false");
@@ -1452,8 +1823,14 @@ var MdxDetector = class {
       contentBasePath = path3.join(projectRootPath, "src", "content");
     }
     console.debug("MdxDetector: contentBasePath =", contentBasePath);
-    console.debug("MdxDetector: vaultLocation =", projectDetection.vaultLocation);
-    console.debug("MdxDetector: contentTypes to scan =", contentTypes.map((ct) => `${ct.name} (${ct.folder})`));
+    console.debug(
+      "MdxDetector: vaultLocation =",
+      projectDetection.vaultLocation,
+    );
+    console.debug(
+      "MdxDetector: contentTypes to scan =",
+      contentTypes.map((ct) => `${ct.name} (${ct.folder})`),
+    );
     for (const contentType of contentTypes) {
       let contentTypePath;
       if (contentType.folder.startsWith("src/content/")) {
@@ -1461,16 +1838,35 @@ var MdxDetector = class {
       } else {
         contentTypePath = path3.join(contentBasePath, contentType.folder);
       }
-      console.debug("MdxDetector: scanning", contentTypePath, "(enabled:", contentType.enabled, ")");
+      console.debug(
+        "MdxDetector: scanning",
+        contentTypePath,
+        "(enabled:",
+        contentType.enabled,
+        ")",
+      );
       try {
-        if (fs2.existsSync(contentTypePath) && fs2.statSync(contentTypePath).isDirectory()) {
+        if (
+          fs2.existsSync(contentTypePath) &&
+          fs2.statSync(contentTypePath).isDirectory()
+        ) {
           const foundMdx = this.scanDirectoryForMdx(contentTypePath);
-          console.debug("MdxDetector: found MDX in", contentTypePath, "=", foundMdx);
+          console.debug(
+            "MdxDetector: found MDX in",
+            contentTypePath,
+            "=",
+            foundMdx,
+          );
           if (foundMdx) {
             return true;
           }
         } else {
-          console.debug("MdxDetector: path does not exist or is not a directory:", contentTypePath, "exists:", fs2.existsSync(contentTypePath));
+          console.debug(
+            "MdxDetector: path does not exist or is not a directory:",
+            contentTypePath,
+            "exists:",
+            fs2.existsSync(contentTypePath),
+          );
         }
       } catch (error) {
         console.debug("MdxDetector: error scanning", contentTypePath, error);
@@ -1566,7 +1962,10 @@ var ContentTypeDetector = class {
       projectRoot = path4.resolve(vaultPath, projectDetection.projectRoot);
     }
     const expectedContentPath = path4.join(projectRoot, "src", "content");
-    if (!fs3.existsSync(expectedContentPath) || !fs3.statSync(expectedContentPath).isDirectory()) {
+    if (
+      !fs3.existsSync(expectedContentPath) ||
+      !fs3.statSync(expectedContentPath).isDirectory()
+    ) {
       return null;
     }
     const vaultRoot = this.app.vault.getRoot();
@@ -1576,9 +1975,14 @@ var ContentTypeDetector = class {
     const vaultNormalized = path4.resolve(vaultPath).toLowerCase();
     const contentNormalized = path4.resolve(expectedContentPath).toLowerCase();
     if (contentNormalized.startsWith(vaultNormalized)) {
-      const relativePath = path4.relative(path4.resolve(vaultPath), path4.resolve(expectedContentPath));
+      const relativePath = path4.relative(
+        path4.resolve(vaultPath),
+        path4.resolve(expectedContentPath),
+      );
       const normalizedRelativePath = relativePath.split(path4.sep).join("/");
-      const pathParts = normalizedRelativePath.split("/").filter((part) => part.length > 0);
+      const pathParts = normalizedRelativePath
+        .split("/")
+        .filter((part) => part.length > 0);
       if (pathParts.length === 0) {
         return vaultRoot;
       }
@@ -1587,7 +1991,9 @@ var ContentTypeDetector = class {
         if (!currentFolder.children) {
           return null;
         }
-        const child = currentFolder.children.find((c) => c instanceof import_obsidian5.TFolder && c.name === part);
+        const child = currentFolder.children.find(
+          (c) => c instanceof import_obsidian5.TFolder && c.name === part,
+        );
         if (!(child instanceof import_obsidian5.TFolder)) {
           return null;
         }
@@ -1605,7 +2011,17 @@ var ContentTypeDetector = class {
     for (const child of folder.children) {
       if (child instanceof import_obsidian5.TFolder) {
         const configDir = this.app.vault.configDir;
-        if (!child.name.startsWith(".") && child.name !== "bases" && child.name !== "_bases" && child.name !== "home" && child.name !== "_home" && child.name !== "base" && child.name !== "_base" && child.name !== "node_modules" && child.name !== configDir) {
+        if (
+          !child.name.startsWith(".") &&
+          child.name !== "bases" &&
+          child.name !== "_bases" &&
+          child.name !== "home" &&
+          child.name !== "_home" &&
+          child.name !== "base" &&
+          child.name !== "_base" &&
+          child.name !== "node_modules" &&
+          child.name !== configDir
+        ) {
           folders.push(child);
         }
       }
@@ -1622,7 +2038,7 @@ var ContentTypeDetector = class {
       fileOrganization: "file",
       enabled: true,
       // Enable all discovered content types by default
-      indexFileName: "index"
+      indexFileName: "index",
     };
   }
   capitalizeFirst(str) {
@@ -1634,7 +2050,10 @@ var ContentTypeDetector = class {
 init_VaultPathHelper();
 function setCssProps2(element, props) {
   for (const [key, value] of Object.entries(props)) {
-    element.style.setProperty(key.replace(/([A-Z])/g, "-$1").toLowerCase(), value);
+    element.style.setProperty(
+      key.replace(/([A-Z])/g, "-$1").toLowerCase(),
+      value,
+    );
   }
 }
 var ProjectDetectionStep = class extends BaseWizardStep {
@@ -1652,13 +2071,21 @@ var ProjectDetectionStep = class extends BaseWizardStep {
     console.debug("ProjectDetectionStep.display: called");
     const { containerEl } = this;
     containerEl.empty();
-    const hasSavedValues = ((_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot) && ((_b = this.state.projectDetection) == null ? void 0 : _b.configFilePath);
-    console.debug("ProjectDetectionStep.display: hasSavedValues =", hasSavedValues);
-    console.debug("ProjectDetectionStep.display: current enableMdxSupport =", this.state.enableMdxSupport);
+    const hasSavedValues =
+      ((_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot) &&
+      ((_b = this.state.projectDetection) == null ? void 0 : _b.configFilePath);
+    console.debug(
+      "ProjectDetectionStep.display: hasSavedValues =",
+      hasSavedValues,
+    );
+    console.debug(
+      "ProjectDetectionStep.display: current enableMdxSupport =",
+      this.state.enableMdxSupport,
+    );
     if (!hasSavedValues) {
       containerEl.createEl("h2", { text: "Project detection" });
       containerEl.createEl("p", {
-        text: "Detecting your Astro project structure..."
+        text: "Detecting your Astro project structure...",
       });
       const result = this.projectDetector.detectProject();
       console.debug("ProjectDetectionStep.display: detection result =", result);
@@ -1666,15 +2093,21 @@ var ProjectDetectionStep = class extends BaseWizardStep {
         this.state.projectDetection = {
           projectRoot: result.projectRoot,
           configFilePath: result.configFilePath,
-          vaultLocation: result.vaultLocation
+          vaultLocation: result.vaultLocation,
         };
-        console.debug("ProjectDetectionStep.display: set projectDetection =", this.state.projectDetection);
+        console.debug(
+          "ProjectDetectionStep.display: set projectDetection =",
+          this.state.projectDetection,
+        );
         this.detected = true;
       } else {
         this.detected = false;
       }
     } else {
-      console.debug("ProjectDetectionStep.display: using saved projectDetection =", this.state.projectDetection);
+      console.debug(
+        "ProjectDetectionStep.display: using saved projectDetection =",
+        this.state.projectDetection,
+      );
       this.detected = true;
     }
     if (this.state.projectDetection && (this.detected || hasSavedValues)) {
@@ -1682,70 +2115,143 @@ var ProjectDetectionStep = class extends BaseWizardStep {
       containerEl.empty();
       containerEl.createEl("h2", { text: "Project detected" });
       containerEl.createEl("p", {
-        text: 'Project structure detected successfully. You can modify the paths below if needed, then click "Next" to continue.'
+        text: 'Project structure detected successfully. You can modify the paths below if needed, then click "Next" to continue.',
       });
-      const projectRootSetting = new import_obsidian6.Setting(containerEl).setName("Project root").setDesc("Select the folder containing your Astro project root");
+      const projectRootSetting = new import_obsidian6.Setting(containerEl)
+        .setName("Project root")
+        .setDesc("Select the folder containing your Astro project root");
       this.projectRootDisplay = projectRootSetting.descEl.createDiv({
-        text: (_c = this.state.projectDetection.projectRoot) != null ? _c : "No folder selected",
-        cls: "vault-cms-path-display"
+        text:
+          (_c = this.state.projectDetection.projectRoot) != null
+            ? _c
+            : "No folder selected",
+        cls: "vault-cms-path-display",
       });
       setCssProps2(this.projectRootDisplay, { color: "var(--text-normal)" });
-      projectRootSetting.addButton((button) => button.setButtonText("Browse...").setCta().onClick(() => {
-        (() => {
-          const selectedPath = this.selectFolder();
-          if (selectedPath) {
-            this.state.projectDetection.projectRoot = toVaultRelative(this.app, selectedPath);
-            if (this.projectRootDisplay) {
-              this.projectRootDisplay.textContent = this.state.projectDetection.projectRoot;
-              setCssProps2(this.projectRootDisplay, { color: "var(--text-normal)" });
-            }
-            this.detected = false;
-          }
-        })();
-      }));
-      const configFileSetting = new import_obsidian6.Setting(containerEl).setName("Config file").setDesc("Select your Astro config file (astro.config.mjs, astro.config.js, src/config.ts, etc.)");
+      projectRootSetting.addButton((button) =>
+        button
+          .setButtonText("Browse...")
+          .setCta()
+          .onClick(() => {
+            (() => {
+              const selectedPath = this.selectFolder();
+              if (selectedPath) {
+                this.state.projectDetection.projectRoot = toVaultRelative(
+                  this.app,
+                  selectedPath,
+                );
+                if (this.projectRootDisplay) {
+                  this.projectRootDisplay.textContent =
+                    this.state.projectDetection.projectRoot;
+                  setCssProps2(this.projectRootDisplay, {
+                    color: "var(--text-normal)",
+                  });
+                }
+                this.detected = false;
+              }
+            })();
+          }),
+      );
+      const configFileSetting = new import_obsidian6.Setting(containerEl)
+        .setName("Config file")
+        .setDesc(
+          "Select your Astro config file (astro.config.mjs, astro.config.js, src/config.ts, etc.)",
+        );
       this.configFileDisplay = configFileSetting.descEl.createDiv({
-        text: (_d = this.state.projectDetection.configFilePath) != null ? _d : "No file selected",
-        cls: "vault-cms-path-display"
+        text:
+          (_d = this.state.projectDetection.configFilePath) != null
+            ? _d
+            : "No file selected",
+        cls: "vault-cms-path-display",
       });
       setCssProps2(this.configFileDisplay, { color: "var(--text-normal)" });
-      configFileSetting.addButton((button) => button.setButtonText("Browse...").setCta().onClick(() => {
-        (() => {
-          var _a2;
-          const vaultPath = getVaultPath(this.app);
-          const defaultPath = ((_a2 = this.state.projectDetection) == null ? void 0 : _a2.projectRoot) ? vaultPath ? path5.resolve(vaultPath, this.state.projectDetection.projectRoot) : void 0 : vaultPath != null ? vaultPath : void 0;
-          const selectedPath = this.selectConfigFile(defaultPath);
-          if (selectedPath) {
-            this.state.projectDetection.configFilePath = toVaultRelative(this.app, selectedPath);
-            if (this.configFileDisplay) {
-              this.configFileDisplay.textContent = this.state.projectDetection.configFilePath;
-              setCssProps2(this.configFileDisplay, { color: "var(--text-normal)" });
-            }
-            this.detected = false;
-          }
-        })();
-      }));
+      configFileSetting.addButton((button) =>
+        button
+          .setButtonText("Browse...")
+          .setCta()
+          .onClick(() => {
+            (() => {
+              var _a2;
+              const vaultPath = getVaultPath(this.app);
+              const defaultPath = (
+                (_a2 = this.state.projectDetection) == null
+                  ? void 0
+                  : _a2.projectRoot
+              )
+                ? vaultPath
+                  ? path5.resolve(
+                      vaultPath,
+                      this.state.projectDetection.projectRoot,
+                    )
+                  : void 0
+                : vaultPath != null
+                  ? vaultPath
+                  : void 0;
+              const selectedPath = this.selectConfigFile(defaultPath);
+              if (selectedPath) {
+                this.state.projectDetection.configFilePath = toVaultRelative(
+                  this.app,
+                  selectedPath,
+                );
+                if (this.configFileDisplay) {
+                  this.configFileDisplay.textContent =
+                    this.state.projectDetection.configFilePath;
+                  setCssProps2(this.configFileDisplay, {
+                    color: "var(--text-normal)",
+                  });
+                }
+                this.detected = false;
+              }
+            })();
+          }),
+      );
       let autoDetectedMdx = false;
       if (this.state.projectDetection) {
         try {
           console.debug("ProjectDetectionStep: Starting MDX detection");
-          console.debug("ProjectDetectionStep: projectDetection =", this.state.projectDetection);
-          console.debug("ProjectDetectionStep: existing contentTypes =", this.state.contentTypes.length);
+          console.debug(
+            "ProjectDetectionStep: projectDetection =",
+            this.state.projectDetection,
+          );
+          console.debug(
+            "ProjectDetectionStep: existing contentTypes =",
+            this.state.contentTypes.length,
+          );
           let contentTypesToUse = this.state.contentTypes;
           if (contentTypesToUse.length === 0) {
-            console.debug("ProjectDetectionStep: No content types in state, detecting now...");
-            contentTypesToUse = this.contentTypeDetector.detectContentTypes(this.state.projectDetection);
-            console.debug("ProjectDetectionStep: Detected content types =", contentTypesToUse.length, contentTypesToUse.map((ct) => `${ct.name} (${ct.folder}, enabled: ${ct.enabled})`));
+            console.debug(
+              "ProjectDetectionStep: No content types in state, detecting now...",
+            );
+            contentTypesToUse = this.contentTypeDetector.detectContentTypes(
+              this.state.projectDetection,
+            );
+            console.debug(
+              "ProjectDetectionStep: Detected content types =",
+              contentTypesToUse.length,
+              contentTypesToUse.map(
+                (ct) => `${ct.name} (${ct.folder}, enabled: ${ct.enabled})`,
+              ),
+            );
           } else {
-            console.debug("ProjectDetectionStep: Using existing content types =", contentTypesToUse.map((ct) => `${ct.name} (${ct.folder}, enabled: ${ct.enabled})`));
+            console.debug(
+              "ProjectDetectionStep: Using existing content types =",
+              contentTypesToUse.map(
+                (ct) => `${ct.name} (${ct.folder}, enabled: ${ct.enabled})`,
+              ),
+            );
           }
           if (contentTypesToUse.length > 0) {
-            console.debug("ProjectDetectionStep: Calling mdxDetector.detectMdxUsage...");
+            console.debug(
+              "ProjectDetectionStep: Calling mdxDetector.detectMdxUsage...",
+            );
             autoDetectedMdx = this.mdxDetector.detectMdxUsage(
               this.state.projectDetection,
-              contentTypesToUse
+              contentTypesToUse,
             );
-            console.debug("ProjectDetectionStep: MDX detection result =", autoDetectedMdx);
+            console.debug(
+              "ProjectDetectionStep: MDX detection result =",
+              autoDetectedMdx,
+            );
           } else {
             console.debug("ProjectDetectionStep: No content types to scan");
           }
@@ -1754,107 +2260,185 @@ var ProjectDetectionStep = class extends BaseWizardStep {
           autoDetectedMdx = false;
         }
       } else {
-        console.debug("ProjectDetectionStep: No projectDetection, skipping MDX detection");
+        console.debug(
+          "ProjectDetectionStep: No projectDetection, skipping MDX detection",
+        );
       }
       if (this.state.enableMdxSupport === void 0) {
         this.state.enableMdxSupport = autoDetectedMdx;
-        console.debug("ProjectDetectionStep: Set enableMdxSupport to", autoDetectedMdx, "based on auto-detection");
+        console.debug(
+          "ProjectDetectionStep: Set enableMdxSupport to",
+          autoDetectedMdx,
+          "based on auto-detection",
+        );
       } else {
-        console.debug("ProjectDetectionStep: enableMdxSupport already set to", this.state.enableMdxSupport, ", skipping auto-detection overwrite");
+        console.debug(
+          "ProjectDetectionStep: enableMdxSupport already set to",
+          this.state.enableMdxSupport,
+          ", skipping auto-detection overwrite",
+        );
       }
-      const mdxSetting = new import_obsidian6.Setting(containerEl).setName("MDX file support").setDesc("Enable MDX file support for Astro Composer, Property Over File Name, SEO, and UI Tweaker plugins.");
+      const mdxSetting = new import_obsidian6.Setting(containerEl)
+        .setName("MDX file support")
+        .setDesc(
+          "Enable MDX file support for Astro Composer, Property Over File Name, SEO, and UI Tweaker plugins.",
+        );
       mdxSetting.addToggle((toggle) => {
         var _a2;
-        toggle.setValue((_a2 = this.state.enableMdxSupport) != null ? _a2 : false).onChange((value) => {
-          this.state.enableMdxSupport = value;
-        });
+        toggle
+          .setValue((_a2 = this.state.enableMdxSupport) != null ? _a2 : false)
+          .onChange((value) => {
+            this.state.enableMdxSupport = value;
+          });
         if (autoDetectedMdx && this.state.enableMdxSupport) {
           const autoDetectMsg = mdxSetting.descEl.createDiv({
             text: "MDX files detected in content folders",
-            cls: "vault-cms-auto-detect-msg"
+            cls: "vault-cms-auto-detect-msg",
           });
           setCssProps2(autoDetectMsg, {
             color: "var(--text-muted)",
             fontSize: "0.9em",
-            marginTop: "4px"
+            marginTop: "4px",
           });
         }
       });
-      const extendedFileTypesSetting = new import_obsidian6.Setting(containerEl).setName("Extended file types").setDesc("Enable support to view, edit, and create .json and .astro files via the Data Files Editor plugin.");
+      const extendedFileTypesSetting = new import_obsidian6.Setting(containerEl)
+        .setName("Extended file types")
+        .setDesc(
+          "Enable support to view, edit, and create .json and .astro files via the Data Files Editor plugin.",
+        );
       extendedFileTypesSetting.addToggle((toggle) => {
         var _a2;
-        toggle.setValue((_a2 = this.state.enableExtendedFileTypes) != null ? _a2 : false).onChange((value) => {
-          this.state.enableExtendedFileTypes = value;
-        });
+        toggle
+          .setValue(
+            (_a2 = this.state.enableExtendedFileTypes) != null ? _a2 : false,
+          )
+          .onChange((value) => {
+            this.state.enableExtendedFileTypes = value;
+          });
       });
     } else {
       containerEl.empty();
       containerEl.createEl("h2", { text: "Project detection failed" });
       containerEl.createEl("p", {
-        text: "Could not detect Astro project structure. Please select your Astro project root and config file manually."
+        text: "Could not detect Astro project structure. Please select your Astro project root and config file manually.",
       });
       if (!this.state.projectDetection) {
         this.state.projectDetection = {
           projectRoot: "",
           configFilePath: "",
-          vaultLocation: "root"
+          vaultLocation: "root",
         };
       }
-      const projectRootSetting = new import_obsidian6.Setting(containerEl).setName("Project root").setDesc("Select the folder containing your Astro project root");
+      const projectRootSetting = new import_obsidian6.Setting(containerEl)
+        .setName("Project root")
+        .setDesc("Select the folder containing your Astro project root");
       this.projectRootDisplay = projectRootSetting.descEl.createDiv({
-        text: (_e = this.state.projectDetection.projectRoot) != null ? _e : "No folder selected",
-        cls: "vault-cms-path-display"
+        text:
+          (_e = this.state.projectDetection.projectRoot) != null
+            ? _e
+            : "No folder selected",
+        cls: "vault-cms-path-display",
       });
       if (this.state.projectDetection.projectRoot) {
         setCssProps2(this.projectRootDisplay, { color: "var(--text-normal)" });
       } else {
         setCssProps2(this.projectRootDisplay, { color: "var(--text-muted)" });
       }
-      projectRootSetting.addButton((button) => button.setButtonText("Browse...").setCta().onClick(() => {
-        (() => {
-          const selectedPath = this.selectFolder();
-          if (selectedPath) {
-            this.state.projectDetection.projectRoot = toVaultRelative(this.app, selectedPath);
-            if (this.projectRootDisplay) {
-              this.projectRootDisplay.textContent = this.state.projectDetection.projectRoot;
-              setCssProps2(this.projectRootDisplay, { color: "var(--text-normal)" });
-            }
-          }
-        })();
-      }));
-      const configFileSetting = new import_obsidian6.Setting(containerEl).setName("Config file").setDesc("Select your Astro config file (astro.config.mjs, astro.config.js, src/config.ts, etc.)");
+      projectRootSetting.addButton((button) =>
+        button
+          .setButtonText("Browse...")
+          .setCta()
+          .onClick(() => {
+            (() => {
+              const selectedPath = this.selectFolder();
+              if (selectedPath) {
+                this.state.projectDetection.projectRoot = toVaultRelative(
+                  this.app,
+                  selectedPath,
+                );
+                if (this.projectRootDisplay) {
+                  this.projectRootDisplay.textContent =
+                    this.state.projectDetection.projectRoot;
+                  setCssProps2(this.projectRootDisplay, {
+                    color: "var(--text-normal)",
+                  });
+                }
+              }
+            })();
+          }),
+      );
+      const configFileSetting = new import_obsidian6.Setting(containerEl)
+        .setName("Config file")
+        .setDesc(
+          "Select your Astro config file (astro.config.mjs, astro.config.js, src/config.ts, etc.)",
+        );
       this.configFileDisplay = configFileSetting.descEl.createDiv({
-        text: (_f = this.state.projectDetection.configFilePath) != null ? _f : "No file selected",
-        cls: "vault-cms-path-display"
+        text:
+          (_f = this.state.projectDetection.configFilePath) != null
+            ? _f
+            : "No file selected",
+        cls: "vault-cms-path-display",
       });
       if (this.state.projectDetection.configFilePath) {
         setCssProps2(this.configFileDisplay, { color: "var(--text-normal)" });
       } else {
         setCssProps2(this.configFileDisplay, { color: "var(--text-muted)" });
       }
-      configFileSetting.addButton((button) => button.setButtonText("Browse...").setCta().onClick(() => {
-        (() => {
-          var _a2;
-          const vaultPath = getVaultPath(this.app);
-          const defaultPath = ((_a2 = this.state.projectDetection) == null ? void 0 : _a2.projectRoot) ? vaultPath ? path5.resolve(vaultPath, this.state.projectDetection.projectRoot) : void 0 : vaultPath != null ? vaultPath : void 0;
-          const selectedPath = this.selectConfigFile(defaultPath);
-          if (selectedPath) {
-            this.state.projectDetection.configFilePath = toVaultRelative(this.app, selectedPath);
-            if (this.configFileDisplay) {
-              this.configFileDisplay.textContent = this.state.projectDetection.configFilePath;
-              setCssProps2(this.configFileDisplay, { color: "var(--text-normal)" });
-            }
-          }
-        })();
-      }));
+      configFileSetting.addButton((button) =>
+        button
+          .setButtonText("Browse...")
+          .setCta()
+          .onClick(() => {
+            (() => {
+              var _a2;
+              const vaultPath = getVaultPath(this.app);
+              const defaultPath = (
+                (_a2 = this.state.projectDetection) == null
+                  ? void 0
+                  : _a2.projectRoot
+              )
+                ? vaultPath
+                  ? path5.resolve(
+                      vaultPath,
+                      this.state.projectDetection.projectRoot,
+                    )
+                  : void 0
+                : vaultPath != null
+                  ? vaultPath
+                  : void 0;
+              const selectedPath = this.selectConfigFile(defaultPath);
+              if (selectedPath) {
+                this.state.projectDetection.configFilePath = toVaultRelative(
+                  this.app,
+                  selectedPath,
+                );
+                if (this.configFileDisplay) {
+                  this.configFileDisplay.textContent =
+                    this.state.projectDetection.configFilePath;
+                  setCssProps2(this.configFileDisplay, {
+                    color: "var(--text-normal)",
+                  });
+                }
+              }
+            })();
+          }),
+      );
       let autoDetectedMdx = false;
-      if (this.state.projectDetection && this.state.projectDetection.projectRoot && this.state.projectDetection.configFilePath) {
+      if (
+        this.state.projectDetection &&
+        this.state.projectDetection.projectRoot &&
+        this.state.projectDetection.configFilePath
+      ) {
         try {
-          const detectedContentTypes = this.contentTypeDetector.detectContentTypes(this.state.projectDetection);
+          const detectedContentTypes =
+            this.contentTypeDetector.detectContentTypes(
+              this.state.projectDetection,
+            );
           if (detectedContentTypes.length > 0) {
             autoDetectedMdx = this.mdxDetector.detectMdxUsage(
               this.state.projectDetection,
-              detectedContentTypes
+              detectedContentTypes,
             );
           }
         } catch (e) {
@@ -1863,34 +2447,56 @@ var ProjectDetectionStep = class extends BaseWizardStep {
       }
       if (this.state.enableMdxSupport === void 0) {
         this.state.enableMdxSupport = autoDetectedMdx;
-        console.debug("ProjectDetectionStep (manual): Set enableMdxSupport to", autoDetectedMdx, "based on auto-detection");
+        console.debug(
+          "ProjectDetectionStep (manual): Set enableMdxSupport to",
+          autoDetectedMdx,
+          "based on auto-detection",
+        );
       } else {
-        console.debug("ProjectDetectionStep (manual): enableMdxSupport already set to", this.state.enableMdxSupport, ", skipping auto-detection overwrite");
+        console.debug(
+          "ProjectDetectionStep (manual): enableMdxSupport already set to",
+          this.state.enableMdxSupport,
+          ", skipping auto-detection overwrite",
+        );
       }
-      const mdxSetting = new import_obsidian6.Setting(containerEl).setName("MDX file support").setDesc("Enable MDX file support for Astro Composer, Property Over File Name, SEO, and UI Tweaker plugins.");
+      const mdxSetting = new import_obsidian6.Setting(containerEl)
+        .setName("MDX file support")
+        .setDesc(
+          "Enable MDX file support for Astro Composer, Property Over File Name, SEO, and UI Tweaker plugins.",
+        );
       mdxSetting.addToggle((toggle) => {
         var _a2;
-        toggle.setValue((_a2 = this.state.enableMdxSupport) != null ? _a2 : false).onChange((value) => {
-          this.state.enableMdxSupport = value;
-        });
+        toggle
+          .setValue((_a2 = this.state.enableMdxSupport) != null ? _a2 : false)
+          .onChange((value) => {
+            this.state.enableMdxSupport = value;
+          });
         if (autoDetectedMdx && this.state.enableMdxSupport) {
           const autoDetectMsg = mdxSetting.descEl.createDiv({
             text: "MDX files detected in content folders",
-            cls: "vault-cms-auto-detect-msg"
+            cls: "vault-cms-auto-detect-msg",
           });
           setCssProps2(autoDetectMsg, {
             color: "var(--text-muted)",
             fontSize: "0.9em",
-            marginTop: "4px"
+            marginTop: "4px",
           });
         }
       });
-      const extendedFileTypesSetting = new import_obsidian6.Setting(containerEl).setName("Extended file types").setDesc("Enable support to view, edit, and create .json and .astro files via the Data Files Editor plugin.");
+      const extendedFileTypesSetting = new import_obsidian6.Setting(containerEl)
+        .setName("Extended file types")
+        .setDesc(
+          "Enable support to view, edit, and create .json and .astro files via the Data Files Editor plugin.",
+        );
       extendedFileTypesSetting.addToggle((toggle) => {
         var _a2;
-        toggle.setValue((_a2 = this.state.enableExtendedFileTypes) != null ? _a2 : false).onChange((value) => {
-          this.state.enableExtendedFileTypes = value;
-        });
+        toggle
+          .setValue(
+            (_a2 = this.state.enableExtendedFileTypes) != null ? _a2 : false,
+          )
+          .onChange((value) => {
+            this.state.enableExtendedFileTypes = value;
+          });
       });
     }
   }
@@ -1903,42 +2509,54 @@ var ProjectDetectionStep = class extends BaseWizardStep {
       let dialog = null;
       try {
         const electronRemote = require("@electron/remote");
-        dialog = (electronRemote == null ? void 0 : electronRemote.dialog) || null;
-      } catch (e) {
-      }
+        dialog =
+          (electronRemote == null ? void 0 : electronRemote.dialog) || null;
+      } catch (e) {}
       if (!dialog) {
         try {
-          const electron = ((_a = window.require) == null ? void 0 : _a.call(window, "electron")) || require("electron");
-          dialog = ((_b = electron == null ? void 0 : electron.remote) == null ? void 0 : _b.dialog) || null;
-        } catch (e) {
-        }
+          const electron =
+            ((_a = window.require) == null
+              ? void 0
+              : _a.call(window, "electron")) || require("electron");
+          dialog =
+            ((_b = electron == null ? void 0 : electron.remote) == null
+              ? void 0
+              : _b.dialog) || null;
+        } catch (e) {}
       }
       if (!dialog) {
         try {
           const electron = require("electron");
           dialog = (electron == null ? void 0 : electron.dialog) || null;
-        } catch (e) {
-        }
+        } catch (e) {}
       }
       if (!dialog || typeof dialog.showOpenDialogSync !== "function") {
         throw new Error("Electron dialog API not available");
       }
       const vaultPath = (_c = getVaultPath(this.app)) != null ? _c : "";
-      let defaultPath = ((_d = this.state.projectDetection) == null ? void 0 : _d.projectRoot) ? vaultPath ? path5.resolve(vaultPath, this.state.projectDetection.projectRoot) : this.state.projectDetection.projectRoot : vaultPath;
+      let defaultPath = (
+        (_d = this.state.projectDetection) == null ? void 0 : _d.projectRoot
+      )
+        ? vaultPath
+          ? path5.resolve(vaultPath, this.state.projectDetection.projectRoot)
+          : this.state.projectDetection.projectRoot
+        : vaultPath;
       if (defaultPath && !path5.isAbsolute(defaultPath)) {
         defaultPath = path5.resolve(vaultPath, defaultPath);
       }
       const result = dialog.showOpenDialogSync({
         title: "Select Astro Project Root Folder",
         defaultPath,
-        properties: ["openDirectory"]
+        properties: ["openDirectory"],
       });
       if (result && result.length > 0) {
         return path5.normalize(result[0]);
       }
     } catch (error) {
       console.error("Error opening folder picker:", error);
-      new import_obsidian6.Notice("Unable to open folder picker. Please ensure you are using Obsidian on desktop.");
+      new import_obsidian6.Notice(
+        "Unable to open folder picker. Please ensure you are using Obsidian on desktop.",
+      );
     }
     return null;
   }
@@ -1951,29 +2569,38 @@ var ProjectDetectionStep = class extends BaseWizardStep {
       let dialog = null;
       try {
         const electronRemote = require("@electron/remote");
-        dialog = (electronRemote == null ? void 0 : electronRemote.dialog) || null;
-      } catch (e) {
-      }
+        dialog =
+          (electronRemote == null ? void 0 : electronRemote.dialog) || null;
+      } catch (e) {}
       if (!dialog) {
         try {
-          const electron = ((_a = window.require) == null ? void 0 : _a.call(window, "electron")) || require("electron");
-          dialog = ((_b = electron == null ? void 0 : electron.remote) == null ? void 0 : _b.dialog) || null;
-        } catch (e) {
-        }
+          const electron =
+            ((_a = window.require) == null
+              ? void 0
+              : _a.call(window, "electron")) || require("electron");
+          dialog =
+            ((_b = electron == null ? void 0 : electron.remote) == null
+              ? void 0
+              : _b.dialog) || null;
+        } catch (e) {}
       }
       if (!dialog) {
         try {
           const electron = require("electron");
           dialog = (electron == null ? void 0 : electron.dialog) || null;
-        } catch (e) {
-        }
+        } catch (e) {}
       }
       if (!dialog || typeof dialog.showOpenDialogSync !== "function") {
         throw new Error("Electron dialog API not available");
       }
       const vaultPath = (_c = getVaultPath(this.app)) != null ? _c : "/";
       let startPath = defaultPath || vaultPath;
-      if (!defaultPath && ((_d = this.state.projectDetection) == null ? void 0 : _d.configFilePath)) {
+      if (
+        !defaultPath &&
+        ((_d = this.state.projectDetection) == null
+          ? void 0
+          : _d.configFilePath)
+      ) {
         const configPath = this.state.projectDetection.configFilePath;
         if (path5.isAbsolute(configPath)) {
           startPath = path5.dirname(configPath);
@@ -1996,17 +2623,22 @@ var ProjectDetectionStep = class extends BaseWizardStep {
         title: "Select Astro Config File",
         defaultPath: startPath,
         filters: [
-          { name: "Astro Config Files", extensions: ["ts", "mjs", "js", "mts", "cjs", "yml", "yaml"] },
-          { name: "All Files", extensions: ["*"] }
+          {
+            name: "Astro Config Files",
+            extensions: ["ts", "mjs", "js", "mts", "cjs", "yml", "yaml"],
+          },
+          { name: "All Files", extensions: ["*"] },
         ],
-        properties: ["openFile"]
+        properties: ["openFile"],
       });
       if (result && result.length > 0) {
         return path5.normalize(result[0]);
       }
     } catch (error) {
       console.error("Error opening file picker:", error);
-      new import_obsidian6.Notice("Unable to open file picker. Please ensure you are using Obsidian on desktop.");
+      new import_obsidian6.Notice(
+        "Unable to open file picker. Please ensure you are using Obsidian on desktop.",
+      );
     }
     return null;
   }
@@ -2015,20 +2647,32 @@ var ProjectDetectionStep = class extends BaseWizardStep {
     if (this.detected) {
       return true;
     }
-    const projectRoot = (_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot;
-    const configFilePath = (_b = this.state.projectDetection) == null ? void 0 : _b.configFilePath;
+    const projectRoot =
+      (_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot;
+    const configFilePath =
+      (_b = this.state.projectDetection) == null ? void 0 : _b.configFilePath;
     if (!projectRoot || !configFilePath) {
       return false;
     }
     try {
       const vaultPath = getVaultPath(this.app);
       if (!vaultPath) return false;
-      const resolvedProjectRoot = path5.isAbsolute(projectRoot) ? projectRoot : path5.resolve(vaultPath, projectRoot);
-      const resolvedConfigFilePath = path5.isAbsolute(configFilePath) ? configFilePath : path5.join(vaultPath, configFilePath);
-      if (!fs4.existsSync(resolvedProjectRoot) || !fs4.statSync(resolvedProjectRoot).isDirectory()) {
+      const resolvedProjectRoot = path5.isAbsolute(projectRoot)
+        ? projectRoot
+        : path5.resolve(vaultPath, projectRoot);
+      const resolvedConfigFilePath = path5.isAbsolute(configFilePath)
+        ? configFilePath
+        : path5.join(vaultPath, configFilePath);
+      if (
+        !fs4.existsSync(resolvedProjectRoot) ||
+        !fs4.statSync(resolvedProjectRoot).isDirectory()
+      ) {
         return false;
       }
-      if (!fs4.existsSync(resolvedConfigFilePath) || !fs4.statSync(resolvedConfigFilePath).isFile()) {
+      if (
+        !fs4.existsSync(resolvedConfigFilePath) ||
+        !fs4.statSync(resolvedConfigFilePath).isFile()
+      ) {
         return false;
       }
       return true;
@@ -2057,12 +2701,12 @@ var PathResolver = class {
   /**
    * Get the folder path from vault root to the content type folder.
    * This is used by Bases CMS filters and Astro Composer folder settings.
-   * 
+   *
    * Examples:
    * - Vault at src level, content type "docs": returns "content/docs"
    * - Vault at src/content level, content type "docs": returns "docs"
    * - Vault at src/content/post level, content type "docs": returns "../docs" (if accessible) or "docs" (if vault is the content type folder)
-   * 
+   *
    * @param folderName The content type folder name (e.g., "docs", "posts")
    * @param projectDetection Project detection result with project root and vault location
    * @returns Path from vault root to content type folder, or null if cannot be determined
@@ -2074,15 +2718,28 @@ var PathResolver = class {
       return folderName;
     }
     if (projectDetection && projectDetection.projectRoot && vaultPath) {
-      const projectRoot = path6.isAbsolute(projectDetection.projectRoot) ? projectDetection.projectRoot : path6.resolve(vaultPath, projectDetection.projectRoot);
+      const projectRoot = path6.isAbsolute(projectDetection.projectRoot)
+        ? projectDetection.projectRoot
+        : path6.resolve(vaultPath, projectDetection.projectRoot);
       let contentTypeAbsolutePath;
-      if (folderName.startsWith("src/content/") || folderName.includes("/src/content/")) {
+      if (
+        folderName.startsWith("src/content/") ||
+        folderName.includes("/src/content/")
+      ) {
         contentTypeAbsolutePath = path6.resolve(projectRoot, folderName);
       } else {
-        contentTypeAbsolutePath = path6.resolve(projectRoot, "src", "content", folderName);
+        contentTypeAbsolutePath = path6.resolve(
+          projectRoot,
+          "src",
+          "content",
+          folderName,
+        );
       }
       const vaultAbsolutePath = path6.resolve(vaultPath);
-      const relativePath = path6.relative(vaultAbsolutePath, contentTypeAbsolutePath);
+      const relativePath = path6.relative(
+        vaultAbsolutePath,
+        contentTypeAbsolutePath,
+      );
       if (!relativePath.startsWith("..") && !path6.isAbsolute(relativePath)) {
         return relativePath.split(path6.sep).join("/") || ".";
       }
@@ -2092,7 +2749,7 @@ var PathResolver = class {
   /**
    * Get the folder path from project root to the content type folder.
    * This is always "src/content/{folderName}" relative to project root.
-   * 
+   *
    * @param folderName The content type folder name (e.g., "docs", "posts")
    * @returns Path from project root (e.g., "src/content/docs")
    */
@@ -2102,7 +2759,7 @@ var PathResolver = class {
   /**
    * Get the folder path for Astro Composer, which needs the path relative to vault root
    * but should work correctly regardless of vault location.
-   * 
+   *
    * @param folderName The content type folder name
    * @param projectDetection Project detection result
    * @returns Path from vault root to content type folder
@@ -2113,7 +2770,7 @@ var PathResolver = class {
   /**
    * Get the folder path for Bases CMS filter, which needs to match files
    * in the content type folder regardless of vault location.
-   * 
+   *
    * @param folderName The content type folder name
    * @param projectDetection Project detection result
    * @returns Path from vault root to content type folder (for use in file.folder.startsWith filter)
@@ -2149,12 +2806,17 @@ var SafeConfigWriter = class {
   async createBackup(pluginId, originalFile) {
     try {
       const content = await this.app.vault.read(originalFile);
-      const timestamp2 = (/* @__PURE__ */ new Date()).toISOString().replace(/[:.]/g, "-");
+      const timestamp2 = /* @__PURE__ */ new Date()
+        .toISOString()
+        .replace(/[:.]/g, "-");
       const backupPath = `${this.app.vault.configDir}/plugins/${pluginId}/data.json.backup-${timestamp2}`;
       await this.app.vault.create(backupPath, content);
       console.debug(`SafeConfigWriter: Created backup at ${backupPath}`);
     } catch (error) {
-      console.warn(`SafeConfigWriter: Failed to create backup for ${pluginId}:`, error);
+      console.warn(
+        `SafeConfigWriter: Failed to create backup for ${pluginId}:`,
+        error,
+      );
     }
   }
   /**
@@ -2171,12 +2833,17 @@ var SafeConfigWriter = class {
       const content = await this.app.vault.read(dataFile);
       const parsed = JSON.parse(content);
       if (!this.validateJSON(parsed)) {
-        console.error(`SafeConfigWriter: Invalid JSON structure in ${pluginId} config`);
+        console.error(
+          `SafeConfigWriter: Invalid JSON structure in ${pluginId} config`,
+        );
         return null;
       }
       return parsed;
     } catch (error) {
-      console.error(`SafeConfigWriter: Failed to read/parse config for ${pluginId}:`, error);
+      console.error(
+        `SafeConfigWriter: Failed to read/parse config for ${pluginId}:`,
+        error,
+      );
       return null;
     }
   }
@@ -2189,7 +2856,9 @@ var SafeConfigWriter = class {
       const message = `Invalid configuration data for ${pluginId}`;
       console.error(`SafeConfigWriter: ${message}`);
       if (showNotice) {
-        new import_obsidian7.Notice(`Failed to save ${pluginId} settings: Invalid data`);
+        new import_obsidian7.Notice(
+          `Failed to save ${pluginId} settings: Invalid data`,
+        );
       }
       return false;
     }
@@ -2202,7 +2871,9 @@ var SafeConfigWriter = class {
         }
         const content = JSON.stringify(data, null, 2);
         await this.app.vault.modify(dataFile, content);
-        console.debug(`SafeConfigWriter: Successfully updated ${pluginId} config`);
+        console.debug(
+          `SafeConfigWriter: Successfully updated ${pluginId} config`,
+        );
       } else {
         const pluginDir = `${this.app.vault.configDir}/plugins/${pluginId}`;
         const pluginDirFile = this.app.vault.getAbstractFileByPath(pluginDir);
@@ -2211,14 +2882,21 @@ var SafeConfigWriter = class {
         }
         const content = JSON.stringify(data, null, 2);
         await this.app.vault.create(configPath, content);
-        console.debug(`SafeConfigWriter: Successfully created ${pluginId} config`);
+        console.debug(
+          `SafeConfigWriter: Successfully created ${pluginId} config`,
+        );
       }
       return true;
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      console.error(`SafeConfigWriter: Failed to write config for ${pluginId}:`, error);
+      console.error(
+        `SafeConfigWriter: Failed to write config for ${pluginId}:`,
+        error,
+      );
       if (showNotice) {
-        new import_obsidian7.Notice(`Failed to save ${pluginId} settings: ${message}`);
+        new import_obsidian7.Notice(
+          `Failed to save ${pluginId} settings: ${message}`,
+        );
       }
       return false;
     }
@@ -2227,7 +2905,7 @@ var SafeConfigWriter = class {
    * Safely merges new settings into existing plugin config
    */
   async mergeConfig(pluginId, updates, options = {}) {
-    const existingConfig = await this.readConfig(pluginId) || {};
+    const existingConfig = (await this.readConfig(pluginId)) || {};
     const mergedConfig = { ...existingConfig, ...updates };
     return this.writeConfig(pluginId, mergedConfig, options);
   }
@@ -2241,7 +2919,15 @@ var AstroComposerConfigurator = class {
     this.pathResolver = new PathResolver(app);
     this.safeWriter = new SafeConfigWriter(app);
   }
-  configureAstroComposer(contentTypes, frontmatterProperties, projectRoot, configFilePath, defaultContentTypeId, projectDetection, enableMdxSupport) {
+  configureAstroComposer(
+    contentTypes,
+    frontmatterProperties,
+    projectRoot,
+    configFilePath,
+    defaultContentTypeId,
+    projectDetection,
+    enableMdxSupport,
+  ) {
     this.frontmatterProperties = frontmatterProperties;
     this.contentTypes = contentTypes;
     const config = {
@@ -2249,42 +2935,63 @@ var AstroComposerConfigurator = class {
       defaultTemplate: "",
       configFilePath: this.relativePath(configFilePath),
       terminalProjectRootPath: this.relativePath(projectRoot),
-      showMdxFilesInExplorer: enableMdxSupport != null ? enableMdxSupport : false
+      showMdxFilesInExplorer:
+        enableMdxSupport != null ? enableMdxSupport : false,
     };
-    const defaultContentType = defaultContentTypeId ? contentTypes.find((ct) => ct.id === defaultContentTypeId && ct.enabled) : null;
-    const otherContentTypes = contentTypes.filter((ct) => ct.enabled && (!defaultContentTypeId || ct.id !== defaultContentTypeId));
+    const defaultContentType = defaultContentTypeId
+      ? contentTypes.find((ct) => ct.id === defaultContentTypeId && ct.enabled)
+      : null;
+    const otherContentTypes = contentTypes.filter(
+      (ct) =>
+        ct.enabled && (!defaultContentTypeId || ct.id !== defaultContentTypeId),
+    );
     if (defaultContentType) {
       const props = frontmatterProperties[defaultContentType.id];
       let linkBasePath = defaultContentType.linkBasePath;
       if (linkBasePath === void 0 || linkBasePath === "") {
-        const pathParts = defaultContentType.folder.split("/").filter((p) => p.length > 0);
-        const folderName = pathParts[pathParts.length - 1] || defaultContentType.folder;
+        const pathParts = defaultContentType.folder
+          .split("/")
+          .filter((p) => p.length > 0);
+        const folderName =
+          pathParts[pathParts.length - 1] || defaultContentType.folder;
         linkBasePath = `/${folderName}/`;
       }
-      const folderPath = this.pathResolver.getAstroComposerFolderPath(defaultContentType.folder, projectDetection);
+      const folderPath = this.pathResolver.getAstroComposerFolderPath(
+        defaultContentType.folder,
+        projectDetection,
+      );
       config.customContentTypes.push({
         id: defaultContentType.id,
         name: defaultContentType.name,
         folder: folderPath,
-        template: (props == null ? void 0 : props.template) || this.generateTemplate(props),
+        template:
+          (props == null ? void 0 : props.template) ||
+          this.generateTemplate(props),
         enabled: true,
         linkBasePath,
         creationMode: defaultContentType.fileOrganization,
-        indexFileName: defaultContentType.indexFileName || "index"
+        indexFileName: defaultContentType.indexFileName || "index",
       });
       config.postsFolder = folderPath;
       config.postsCreationMode = defaultContentType.fileOrganization;
       config.postsIndexFileName = defaultContentType.indexFileName || "index";
-      config.defaultTemplate = (props == null ? void 0 : props.template) || this.generateTemplate(props);
+      config.defaultTemplate =
+        (props == null ? void 0 : props.template) ||
+        this.generateTemplate(props);
     }
-    const defaultProps = defaultContentType ? frontmatterProperties[defaultContentType.id] : void 0;
+    const defaultProps = defaultContentType
+      ? frontmatterProperties[defaultContentType.id]
+      : void 0;
     if (defaultProps) {
       if (defaultProps.hasDraftStatus) {
         config.syncDraftDate = true;
         if (defaultProps.draftProperty) {
           config.draftDetectionMode = "property";
           config.draftProperty = defaultProps.draftProperty;
-          config.draftLogic = defaultProps.draftLogic === "false-draft" ? "false-is-draft" : "true-is-draft";
+          config.draftLogic =
+            defaultProps.draftLogic === "false-draft"
+              ? "false-is-draft"
+              : "true-is-draft";
         } else {
           config.draftDetectionMode = "underscore-prefix";
         }
@@ -2297,21 +3004,29 @@ var AstroComposerConfigurator = class {
       const props = frontmatterProperties[contentType.id];
       let linkBasePath = contentType.linkBasePath;
       if (linkBasePath === void 0 || linkBasePath === "") {
-        const pathParts = contentType.folder.split("/").filter((p) => p.length > 0);
-        const folderName = pathParts[pathParts.length - 1] || contentType.folder;
+        const pathParts = contentType.folder
+          .split("/")
+          .filter((p) => p.length > 0);
+        const folderName =
+          pathParts[pathParts.length - 1] || contentType.folder;
         linkBasePath = `/${folderName}/`;
       }
-      const folderPath = this.pathResolver.getAstroComposerFolderPath(contentType.folder, projectDetection);
+      const folderPath = this.pathResolver.getAstroComposerFolderPath(
+        contentType.folder,
+        projectDetection,
+      );
       config.customContentTypes.push({
         id: contentType.id,
         name: contentType.name,
         folder: folderPath,
         // Use template from props if available, otherwise generate
-        template: (props == null ? void 0 : props.template) || this.generateTemplate(props),
+        template:
+          (props == null ? void 0 : props.template) ||
+          this.generateTemplate(props),
         enabled: true,
         linkBasePath,
         creationMode: contentType.fileOrganization,
-        indexFileName: contentType.indexFileName || "index"
+        indexFileName: contentType.indexFileName || "index",
       });
     }
     return Promise.resolve(config);
@@ -2367,14 +3082,21 @@ var AstroComposerConfigurator = class {
     var _a, _b;
     try {
       const plugins = this.app.plugins;
-      const astroComposerPlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a["astro-composer"];
+      const astroComposerPlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a["astro-composer"];
       if (!astroComposerPlugin) {
-        console.warn("AstroComposerConfig: Astro Composer plugin not found, using fallback file method");
+        console.warn(
+          "AstroComposerConfig: Astro Composer plugin not found, using fallback file method",
+        );
         await this.saveConfigFallback(config);
         return;
       }
       if (!astroComposerPlugin.settings) {
-        console.warn("AstroComposerConfig: Astro Composer plugin settings not available, using fallback file method");
+        console.warn(
+          "AstroComposerConfig: Astro Composer plugin settings not available, using fallback file method",
+        );
         await this.saveConfigFallback(config);
         return;
       }
@@ -2435,17 +3157,30 @@ var AstroComposerConfigurator = class {
       }
       if (config.showMdxFilesInExplorer !== void 0) {
         pluginSettings.showMdxFilesInExplorer = config.showMdxFilesInExplorer;
-        console.debug("AstroComposerConfig: Set showMdxFilesInExplorer to", config.showMdxFilesInExplorer);
+        console.debug(
+          "AstroComposerConfig: Set showMdxFilesInExplorer to",
+          config.showMdxFilesInExplorer,
+        );
       } else {
-        console.debug("AstroComposerConfig: showMdxFilesInExplorer is undefined, not updating");
+        console.debug(
+          "AstroComposerConfig: showMdxFilesInExplorer is undefined, not updating",
+        );
       }
       if (!Array.isArray(pluginSettings.contentTypes)) {
         pluginSettings.contentTypes = [];
       }
       for (const newType of config.customContentTypes) {
-        const contentType = (_b = this.contentTypes) == null ? void 0 : _b.find((ct) => ct.id === newType.id);
-        const props = contentType && this.frontmatterProperties ? this.frontmatterProperties[contentType.id] : void 0;
-        const shouldEnableUnderscorePrefix = (props == null ? void 0 : props.hasDraftStatus) === true && !(props == null ? void 0 : props.draftProperty);
+        const contentType =
+          (_b = this.contentTypes) == null
+            ? void 0
+            : _b.find((ct) => ct.id === newType.id);
+        const props =
+          contentType && this.frontmatterProperties
+            ? this.frontmatterProperties[contentType.id]
+            : void 0;
+        const shouldEnableUnderscorePrefix =
+          (props == null ? void 0 : props.hasDraftStatus) === true &&
+          !(props == null ? void 0 : props.draftProperty);
         const contentTypes = pluginSettings.contentTypes || [];
         let existingIndex = -1;
         let matchedById = false;
@@ -2457,7 +3192,7 @@ var AstroComposerConfigurator = class {
         }
         if (existingIndex < 0) {
           existingIndex = contentTypes.findIndex(
-            (ct) => ct.name === newType.name && ct.folder === newType.folder
+            (ct) => ct.name === newType.name && ct.folder === newType.folder,
           );
         }
         if (existingIndex >= 0) {
@@ -2473,7 +3208,7 @@ var AstroComposerConfigurator = class {
             enabled: newType.enabled,
             creationMode: newType.creationMode,
             indexFileName: newType.indexFileName,
-            enableUnderscorePrefix: shouldEnableUnderscorePrefix
+            enableUnderscorePrefix: shouldEnableUnderscorePrefix,
           };
         } else {
           contentTypes.push({
@@ -2486,23 +3221,30 @@ var AstroComposerConfigurator = class {
             creationMode: newType.creationMode,
             indexFileName: newType.indexFileName,
             ignoreSubfolders: false,
-            enableUnderscorePrefix: shouldEnableUnderscorePrefix
+            enableUnderscorePrefix: shouldEnableUnderscorePrefix,
           });
         }
       }
       pluginSettings.customContentTypes = this.mergeCustomContentTypes(
         pluginSettings.customContentTypes || [],
-        config.customContentTypes || []
+        config.customContentTypes || [],
       );
       if (typeof astroComposerPlugin.saveSettings === "function") {
         await astroComposerPlugin.saveSettings();
-        console.debug("AstroComposerConfig: Successfully saved via plugin.saveSettings()");
+        console.debug(
+          "AstroComposerConfig: Successfully saved via plugin.saveSettings()",
+        );
       } else {
-        console.warn("AstroComposerConfig: Plugin saveSettings not available, using fallback");
+        console.warn(
+          "AstroComposerConfig: Plugin saveSettings not available, using fallback",
+        );
         await this.saveConfigFallback(config);
       }
     } catch (error) {
-      console.error("Failed to save Astro Composer config via plugin method:", error);
+      console.error(
+        "Failed to save Astro Composer config via plugin method:",
+        error,
+      );
       await this.saveConfigFallback(config);
     }
   }
@@ -2513,23 +3255,36 @@ var AstroComposerConfigurator = class {
     if (!existingData) {
       existingData = {};
     }
-    if (config.defaultTemplate) existingData.defaultTemplate = config.defaultTemplate;
+    if (config.defaultTemplate)
+      existingData.defaultTemplate = config.defaultTemplate;
     if (config.pageTemplate) existingData.pageTemplate = config.pageTemplate;
     if (config.postsFolder) existingData.postsFolder = config.postsFolder;
-    if (config.postsCreationMode) existingData.creationMode = config.postsCreationMode;
-    if (config.postsIndexFileName) existingData.indexFileName = config.postsIndexFileName;
-    if (config.enablePages !== void 0) existingData.enablePages = config.enablePages;
+    if (config.postsCreationMode)
+      existingData.creationMode = config.postsCreationMode;
+    if (config.postsIndexFileName)
+      existingData.indexFileName = config.postsIndexFileName;
+    if (config.enablePages !== void 0)
+      existingData.enablePages = config.enablePages;
     if (config.pagesFolder) existingData.pagesFolder = config.pagesFolder;
-    if (config.pagesCreationMode) existingData.pagesCreationMode = config.pagesCreationMode;
-    if (config.pagesIndexFileName) existingData.pagesIndexFileName = config.pagesIndexFileName;
-    if (config.configFilePath) existingData.configFilePath = config.configFilePath;
-    if (config.terminalProjectRootPath) existingData.terminalProjectRootPath = config.terminalProjectRootPath;
-    if (config.showMdxFilesInExplorer !== void 0) existingData.showMdxFilesInExplorer = config.showMdxFilesInExplorer;
-    if (config.syncDraftDate !== void 0) existingData.syncDraftDate = config.syncDraftDate;
-    if (config.draftDetectionMode) existingData.draftDetectionMode = config.draftDetectionMode;
-    if (config.draftProperty !== void 0) existingData.draftProperty = config.draftProperty;
+    if (config.pagesCreationMode)
+      existingData.pagesCreationMode = config.pagesCreationMode;
+    if (config.pagesIndexFileName)
+      existingData.pagesIndexFileName = config.pagesIndexFileName;
+    if (config.configFilePath)
+      existingData.configFilePath = config.configFilePath;
+    if (config.terminalProjectRootPath)
+      existingData.terminalProjectRootPath = config.terminalProjectRootPath;
+    if (config.showMdxFilesInExplorer !== void 0)
+      existingData.showMdxFilesInExplorer = config.showMdxFilesInExplorer;
+    if (config.syncDraftDate !== void 0)
+      existingData.syncDraftDate = config.syncDraftDate;
+    if (config.draftDetectionMode)
+      existingData.draftDetectionMode = config.draftDetectionMode;
+    if (config.draftProperty !== void 0)
+      existingData.draftProperty = config.draftProperty;
     if (config.draftLogic) existingData.draftLogic = config.draftLogic;
-    if (config.publishDateField) existingData.publishDateField = config.publishDateField;
+    if (config.publishDateField)
+      existingData.publishDateField = config.publishDateField;
     if (config.configFilePath && config.terminalProjectRootPath) {
       existingData.enableOpenTerminalCommand = true;
       existingData.enableOpenConfigFileCommand = true;
@@ -2540,9 +3295,17 @@ var AstroComposerConfigurator = class {
       existingData.contentTypes = [];
     }
     for (const newType of config.customContentTypes) {
-      const contentType = (_a = this.contentTypes) == null ? void 0 : _a.find((ct) => ct.id === newType.id);
-      const props = contentType && this.frontmatterProperties ? this.frontmatterProperties[contentType.id] : void 0;
-      const shouldEnableUnderscorePrefix = (props == null ? void 0 : props.hasDraftStatus) === true && !(props == null ? void 0 : props.draftProperty);
+      const contentType =
+        (_a = this.contentTypes) == null
+          ? void 0
+          : _a.find((ct) => ct.id === newType.id);
+      const props =
+        contentType && this.frontmatterProperties
+          ? this.frontmatterProperties[contentType.id]
+          : void 0;
+      const shouldEnableUnderscorePrefix =
+        (props == null ? void 0 : props.hasDraftStatus) === true &&
+        !(props == null ? void 0 : props.draftProperty);
       const contentTypes = existingData.contentTypes || [];
       let existingIndex = -1;
       let matchedById = false;
@@ -2554,7 +3317,7 @@ var AstroComposerConfigurator = class {
       }
       if (existingIndex < 0) {
         existingIndex = contentTypes.findIndex(
-          (ct) => ct.name === newType.name && ct.folder === newType.folder
+          (ct) => ct.name === newType.name && ct.folder === newType.folder,
         );
       }
       if (existingIndex >= 0) {
@@ -2570,7 +3333,7 @@ var AstroComposerConfigurator = class {
           enabled: newType.enabled,
           creationMode: newType.creationMode,
           indexFileName: newType.indexFileName,
-          enableUnderscorePrefix: shouldEnableUnderscorePrefix
+          enableUnderscorePrefix: shouldEnableUnderscorePrefix,
         };
       } else {
         contentTypes.push({
@@ -2583,17 +3346,17 @@ var AstroComposerConfigurator = class {
           creationMode: newType.creationMode,
           indexFileName: newType.indexFileName,
           ignoreSubfolders: false,
-          enableUnderscorePrefix: shouldEnableUnderscorePrefix
+          enableUnderscorePrefix: shouldEnableUnderscorePrefix,
         });
       }
     }
     existingData.customContentTypes = this.mergeCustomContentTypes(
       existingData.customContentTypes || [],
-      config.customContentTypes || []
+      config.customContentTypes || [],
     );
     const success = await this.safeWriter.writeConfig(pluginId, existingData, {
       showNotice: true,
-      createBackup: true
+      createBackup: true,
     });
     if (!success) {
       throw new Error("Failed to save Astro Composer configuration");
@@ -2616,7 +3379,10 @@ var AstroComposerConfigurator = class {
 // src/ui/wizard/ContentTypeStep.ts
 function setCssProps3(element, props) {
   for (const [key, value] of Object.entries(props)) {
-    element.style.setProperty(key.replace(/([A-Z])/g, "-$1").toLowerCase(), value);
+    element.style.setProperty(
+      key.replace(/([A-Z])/g, "-$1").toLowerCase(),
+      value,
+    );
   }
 }
 var FolderNameSuggest = class extends import_obsidian8.AbstractInputSuggest {
@@ -2637,7 +3403,10 @@ var FolderNameSuggest = class extends import_obsidian8.AbstractInputSuggest {
       for (const file of allFiles) {
         if (file instanceof import_obsidian8.TFolder) {
           const folderName = file.name;
-          if (folderName.toLowerCase().includes(lowerInput) && folderName !== "attachments") {
+          if (
+            folderName.toLowerCase().includes(lowerInput) &&
+            folderName !== "attachments"
+          ) {
             folderNames.add(folderName);
           }
         }
@@ -2684,24 +3453,48 @@ var ContentTypeStep = class extends BaseWizardStep {
       const plugins = this.app.plugins;
       console.debug("ContentTypeStep: Checking plugins API:", !!plugins);
       if (plugins) {
-        const astroComposerPlugin = (_a = plugins.plugins) == null ? void 0 : _a["astro-composer"];
-        console.debug("ContentTypeStep: Astro Composer plugin found:", !!astroComposerPlugin);
+        const astroComposerPlugin =
+          (_a = plugins.plugins) == null ? void 0 : _a["astro-composer"];
+        console.debug(
+          "ContentTypeStep: Astro Composer plugin found:",
+          !!astroComposerPlugin,
+        );
         if (astroComposerPlugin) {
-          console.debug("ContentTypeStep: Plugin settings available:", !!astroComposerPlugin.settings);
-          console.debug("ContentTypeStep: Plugin settings keys:", astroComposerPlugin.settings ? Object.keys(astroComposerPlugin.settings) : "none");
+          console.debug(
+            "ContentTypeStep: Plugin settings available:",
+            !!astroComposerPlugin.settings,
+          );
+          console.debug(
+            "ContentTypeStep: Plugin settings keys:",
+            astroComposerPlugin.settings
+              ? Object.keys(astroComposerPlugin.settings)
+              : "none",
+          );
           if (astroComposerPlugin.settings) {
             const contentTypes = astroComposerPlugin.settings.contentTypes;
-            console.debug("ContentTypeStep: contentTypes from plugin:", contentTypes ? `Array with ${contentTypes.length} items` : "not found");
+            console.debug(
+              "ContentTypeStep: contentTypes from plugin:",
+              contentTypes
+                ? `Array with ${contentTypes.length} items`
+                : "not found",
+            );
             if (Array.isArray(contentTypes) && contentTypes.length > 0) {
-              console.debug("ContentTypeStep: Importing", contentTypes.length, "content types from Astro Composer (via plugin API)");
+              console.debug(
+                "ContentTypeStep: Importing",
+                contentTypes.length,
+                "content types from Astro Composer (via plugin API)",
+              );
               const importedTypes2 = contentTypes.map((ct) => ({
-                id: ct.id || `content-type-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
+                id:
+                  ct.id ||
+                  `content-type-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
                 name: ct.name || this.capitalizeFirst(ct.folder),
                 folder: ct.folder,
-                fileOrganization: ct.creationMode === "folder" ? "folder" : "file",
+                fileOrganization:
+                  ct.creationMode === "folder" ? "folder" : "file",
                 indexFileName: ct.indexFileName || "index",
                 linkBasePath: ct.linkBasePath,
-                enabled: ct.enabled !== false
+                enabled: ct.enabled !== false,
                 // Default to enabled if not specified
               }));
               return importedTypes2;
@@ -2713,56 +3506,86 @@ var ContentTypeStep = class extends BaseWizardStep {
       const pluginDataPath = `${configDir}/plugins/astro-composer/data.json`;
       console.debug("ContentTypeStep: Trying to read file:", pluginDataPath);
       const dataFile = this.app.vault.getAbstractFileByPath(pluginDataPath);
-      console.debug("ContentTypeStep: File found:", !!dataFile, dataFile ? `Type: ${dataFile.constructor.name}` : "not found");
+      console.debug(
+        "ContentTypeStep: File found:",
+        !!dataFile,
+        dataFile ? `Type: ${dataFile.constructor.name}` : "not found",
+      );
       if (!dataFile || !(dataFile instanceof import_obsidian8.TFile)) {
         const altPaths = [
           `${configDir}/plugins/astro-composer/data.json`,
-          `obsidian/plugins/astro-composer/data.json`
+          `obsidian/plugins/astro-composer/data.json`,
         ];
         for (const altPath of altPaths) {
           const altFile = this.app.vault.getAbstractFileByPath(altPath);
           if (altFile && altFile instanceof import_obsidian8.TFile) {
-            console.debug("ContentTypeStep: Found file at alternative path:", altPath);
+            console.debug(
+              "ContentTypeStep: Found file at alternative path:",
+              altPath,
+            );
             const content2 = await this.app.vault.read(altFile);
             const data2 = JSON.parse(content2);
             if (data2.contentTypes && Array.isArray(data2.contentTypes)) {
-              console.debug("ContentTypeStep: Importing", data2.contentTypes.length, "content types from Astro Composer (via file at", altPath, ")");
+              console.debug(
+                "ContentTypeStep: Importing",
+                data2.contentTypes.length,
+                "content types from Astro Composer (via file at",
+                altPath,
+                ")",
+              );
               const importedTypes2 = data2.contentTypes.map((ct) => ({
-                id: ct.id || `content-type-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
+                id:
+                  ct.id ||
+                  `content-type-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
                 name: ct.name || this.capitalizeFirst(ct.folder),
                 folder: ct.folder,
-                fileOrganization: ct.creationMode === "folder" ? "folder" : "file",
+                fileOrganization:
+                  ct.creationMode === "folder" ? "folder" : "file",
                 indexFileName: ct.indexFileName || "index",
                 linkBasePath: ct.linkBasePath,
-                enabled: ct.enabled !== false
+                enabled: ct.enabled !== false,
               }));
               return importedTypes2;
             }
           }
         }
-        console.debug("ContentTypeStep: No Astro Composer data.json found, will scan folders");
+        console.debug(
+          "ContentTypeStep: No Astro Composer data.json found, will scan folders",
+        );
         return [];
       }
       const content = await this.app.vault.read(dataFile);
       const data = JSON.parse(content);
       if (!data.contentTypes || !Array.isArray(data.contentTypes)) {
-        console.debug("ContentTypeStep: Astro Composer data.json has no contentTypes array. Data keys:", Object.keys(data));
+        console.debug(
+          "ContentTypeStep: Astro Composer data.json has no contentTypes array. Data keys:",
+          Object.keys(data),
+        );
         return [];
       }
-      console.debug("ContentTypeStep: Importing", data.contentTypes.length, "content types from Astro Composer (via file)");
+      console.debug(
+        "ContentTypeStep: Importing",
+        data.contentTypes.length,
+        "content types from Astro Composer (via file)",
+      );
       const importedTypes = data.contentTypes.map((ct) => ({
-        id: ct.id || `content-type-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
+        id:
+          ct.id ||
+          `content-type-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
         name: ct.name || this.capitalizeFirst(ct.folder),
         folder: ct.folder,
         fileOrganization: ct.creationMode === "folder" ? "folder" : "file",
         indexFileName: ct.indexFileName || "index",
         linkBasePath: ct.linkBasePath,
-        enabled: ct.enabled !== false
+        enabled: ct.enabled !== false,
         // Default to enabled if not specified
       }));
       return importedTypes;
     } catch (error) {
-      console.error("ContentTypeStep: Failed to import from Astro Composer:", error);
+      console.error(
+        "ContentTypeStep: Failed to import from Astro Composer:",
+        error,
+      );
       return [];
     }
   }
@@ -2774,12 +3597,21 @@ var ContentTypeStep = class extends BaseWizardStep {
     while (el && el !== document.body) {
       const style = window.getComputedStyle(el);
       const oy = style.overflowY;
-      if (el.scrollHeight > el.clientHeight && (oy === "auto" || oy === "scroll" || style.overflow === "auto" || style.overflow === "scroll")) {
+      if (
+        el.scrollHeight > el.clientHeight &&
+        (oy === "auto" ||
+          oy === "scroll" ||
+          style.overflow === "auto" ||
+          style.overflow === "scroll")
+      ) {
         return el;
       }
       el = el.parentElement;
     }
-    return this.containerEl.closest(".modal-content") || this.containerEl.parentElement;
+    return (
+      this.containerEl.closest(".modal-content") ||
+      this.containerEl.parentElement
+    );
   }
   /**
    * Show or hide the optional "Attachment folder" row without re-rendering the whole step.
@@ -2790,12 +3622,20 @@ var ContentTypeStep = class extends BaseWizardStep {
     if (mode !== "specified-folder" && mode !== "subfolder") {
       return;
     }
-    const descText = mode === "specified-folder" ? 'Enter the exact path to the folder for attachments (e.g., "attachments" or "images/attachments"). Leave blank to use "attachments" as default.' : 'Enter the name of the subfolder for attachments (e.g., "attachments"). Leave blank to use "attachments" as default.';
-    const folderNameSetting = new import_obsidian8.Setting(slot).setName("Attachment folder").setDesc(descText);
+    const descText =
+      mode === "specified-folder"
+        ? 'Enter the exact path to the folder for attachments (e.g., "attachments" or "images/attachments"). Leave blank to use "attachments" as default.'
+        : 'Enter the name of the subfolder for attachments (e.g., "attachments"). Leave blank to use "attachments" as default.';
+    const folderNameSetting = new import_obsidian8.Setting(slot)
+      .setName("Attachment folder")
+      .setDesc(descText);
     folderNameSetting.addText((text) => {
-      text.setPlaceholder("attachments").setValue(this.state.attachmentFolderName || "").onChange((value) => {
-        this.state.attachmentFolderName = value || void 0;
-      });
+      text
+        .setPlaceholder("attachments")
+        .setValue(this.state.attachmentFolderName || "")
+        .onChange((value) => {
+          this.state.attachmentFolderName = value || void 0;
+        });
       new FolderNameSuggest(this.app, text.inputEl, mode);
     });
   }
@@ -2807,25 +3647,37 @@ var ContentTypeStep = class extends BaseWizardStep {
     if (contentType.fileOrganization !== "folder") {
       return;
     }
-    new import_obsidian8.Setting(slot).setName(`${contentType.name} - Index file name`).setDesc("Name of the index file in folder-based organization").addText(
-      (text) => text.setValue(contentType.indexFileName || "index").onChange((value) => {
-        contentType.indexFileName = value || "index";
-      })
-    );
+    new import_obsidian8.Setting(slot)
+      .setName(`${contentType.name} - Index file name`)
+      .setDesc("Name of the index file in folder-based organization")
+      .addText((text) =>
+        text
+          .setValue(contentType.indexFileName || "index")
+          .onChange((value) => {
+            contentType.indexFileName = value || "index";
+          }),
+      );
   }
   async display() {
     var _a;
     const { containerEl } = this;
     const scrollParent = this.findWizardScrollParent();
-    const savedScrollTop = (_a = scrollParent == null ? void 0 : scrollParent.scrollTop) != null ? _a : 0;
+    const savedScrollTop =
+      (_a = scrollParent == null ? void 0 : scrollParent.scrollTop) != null
+        ? _a
+        : 0;
     const activeEl = document.activeElement;
     if (activeEl instanceof HTMLElement && containerEl.contains(activeEl)) {
       activeEl.blur();
     }
-    let stepContentWrapper = containerEl.querySelector(".content-type-step-content");
+    let stepContentWrapper = containerEl.querySelector(
+      ".content-type-step-content",
+    );
     if (!stepContentWrapper) {
       containerEl.empty();
-      stepContentWrapper = containerEl.createDiv({ cls: "content-type-step-content" });
+      stepContentWrapper = containerEl.createDiv({
+        cls: "content-type-step-content",
+      });
     } else {
       stepContentWrapper.empty();
     }
@@ -2846,26 +3698,35 @@ var ContentTypeStep = class extends BaseWizardStep {
     };
     stepContentWrapper.createEl("h2", { text: "Content types" });
     stepContentWrapper.createEl("p", {
-      text: "Detecting content types in your vault..."
+      text: "Detecting content types in your vault...",
     });
     if (!this.detected) {
       const savedContentTypes = this.state.contentTypes || [];
-      const savedContentTypesMap = new Map(savedContentTypes.map((ct) => [ct.folder, ct]));
+      const savedContentTypesMap = new Map(
+        savedContentTypes.map((ct) => [ct.folder, ct]),
+      );
       const importedTypes = await this.importFromAstroComposer();
-      const scannedTypes = this.contentTypeDetector.detectContentTypes(this.state.projectDetection);
+      const scannedTypes = this.contentTypeDetector.detectContentTypes(
+        this.state.projectDetection,
+      );
       const allDetectedTypes = [];
       const imported = [...importedTypes];
       for (const scanned of scannedTypes) {
         const matchingImportedIndex = imported.findIndex(
-          (it) => scanned.folder === it.folder || scanned.folder.endsWith(`/${it.folder}`) || it.folder.endsWith(`/${scanned.folder}`)
+          (it) =>
+            scanned.folder === it.folder ||
+            scanned.folder.endsWith(`/${it.folder}`) ||
+            it.folder.endsWith(`/${scanned.folder}`),
         );
         if (matchingImportedIndex >= 0) {
           const importedType = imported[matchingImportedIndex];
           if (scanned.folder.length > importedType.folder.length) {
-            console.debug(`ContentTypeStep: Updating imported type "${importedType.name}" folder from "${importedType.folder}" to "${scanned.folder}"`);
+            console.debug(
+              `ContentTypeStep: Updating imported type "${importedType.name}" folder from "${importedType.folder}" to "${scanned.folder}"`,
+            );
             imported[matchingImportedIndex] = {
               ...importedType,
-              folder: scanned.folder
+              folder: scanned.folder,
             };
           }
         } else {
@@ -2873,12 +3734,14 @@ var ContentTypeStep = class extends BaseWizardStep {
         }
       }
       allDetectedTypes.push(...imported);
-      const detectedTypesMap = new Map(allDetectedTypes.map((ct) => [ct.folder, ct]));
+      const detectedTypesMap = new Map(
+        allDetectedTypes.map((ct) => [ct.folder, ct]),
+      );
       const mergedTypes = [];
       const processedFolders = /* @__PURE__ */ new Set();
       const allFolders = /* @__PURE__ */ new Set([
         ...savedContentTypes.map((ct) => ct.folder),
-        ...allDetectedTypes.map((ct) => ct.folder)
+        ...allDetectedTypes.map((ct) => ct.folder),
       ]);
       for (const folder of allFolders) {
         if (processedFolders.has(folder)) continue;
@@ -2886,13 +3749,18 @@ var ContentTypeStep = class extends BaseWizardStep {
         const detectedType = detectedTypesMap.get(folder);
         if (savedType && !detectedType) {
           const matchingDetected = allDetectedTypes.find(
-            (dt) => dt.folder.endsWith(`/${folder}`) || dt.folder === folder
+            (dt) => dt.folder.endsWith(`/${folder}`) || dt.folder === folder,
           );
-          if (matchingDetected && !processedFolders.has(matchingDetected.folder)) {
-            console.debug(`ContentTypeStep: Reconciling saved folder "${folder}" with detected folder "${matchingDetected.folder}"`);
+          if (
+            matchingDetected &&
+            !processedFolders.has(matchingDetected.folder)
+          ) {
+            console.debug(
+              `ContentTypeStep: Reconciling saved folder "${folder}" with detected folder "${matchingDetected.folder}"`,
+            );
             mergedTypes.push({
               ...savedType,
-              folder: matchingDetected.folder
+              folder: matchingDetected.folder,
             });
             processedFolders.add(folder);
             processedFolders.add(matchingDetected.folder);
@@ -2906,7 +3774,7 @@ var ContentTypeStep = class extends BaseWizardStep {
               // Preserve all saved settings (enabled, custom name, linkBasePath, etc.)
               // Always preserve saved folder and name (user may have customized the name)
               folder: savedType.folder,
-              name: savedType.name
+              name: savedType.name,
               // Always use saved name (may be customized)
             });
           } else {
@@ -2924,43 +3792,78 @@ var ContentTypeStep = class extends BaseWizardStep {
     stepContentWrapper.empty();
     stepContentWrapper.createEl("h2", { text: "Content types" });
     stepContentWrapper.createEl("p", {
-      text: "Select and configure your content types:"
+      text: "Select and configure your content types:",
     });
-    stepContentWrapper.createEl("h3", { text: "Attachment handling", cls: "vault-cms-section-header" });
+    stepContentWrapper.createEl("h3", {
+      text: "Attachment handling",
+      cls: "vault-cms-section-header",
+    });
     stepContentWrapper.createEl("p", {
       text: "How should attachments be stored globally?",
-      cls: "vault-cms-section-desc"
+      cls: "vault-cms-section-desc",
     });
     let attachmentExtraSlot;
-    new import_obsidian8.Setting(stepContentWrapper).setName("How are attachments handled?").setDesc("Choose how attachments are stored for all content types").addDropdown((dropdown) => dropdown.addOption("same-folder", "Same folder as current file").addOption("specified-folder", "In the specified folder").addOption("subfolder", "In subfolder under current folder").setValue(this.state.attachmentHandlingMode || "subfolder").onChange((value) => {
-      this.state.attachmentHandlingMode = value;
-      if (value === "same-folder") {
-        this.state.attachmentFolderName = void 0;
-      }
-      this.renderAttachmentExtraSlot(attachmentExtraSlot);
-    }));
-    attachmentExtraSlot = stepContentWrapper.createDiv({ cls: "vault-cms-attachment-extra-slot" });
-    this.renderAttachmentExtraSlot(attachmentExtraSlot);
-    new import_obsidian8.Setting(stepContentWrapper).setName("Resolve cover images from public folder").setDesc("Enable this if your theme uses absolute image paths (like /images/photo.jpg) that reference the Astro project's public/ folder. This lets banners and card thumbnails display correctly in Obsidian.").addToggle((toggle) => {
-      var _a2;
-      return toggle.setValue((_a2 = this.state.resolvePublicImages) != null ? _a2 : false).onChange((value) => {
-        this.state.resolvePublicImages = value;
-      });
+    new import_obsidian8.Setting(stepContentWrapper)
+      .setName("How are attachments handled?")
+      .setDesc("Choose how attachments are stored for all content types")
+      .addDropdown((dropdown) =>
+        dropdown
+          .addOption("same-folder", "Same folder as current file")
+          .addOption("specified-folder", "In the specified folder")
+          .addOption("subfolder", "In subfolder under current folder")
+          .setValue(this.state.attachmentHandlingMode || "subfolder")
+          .onChange((value) => {
+            this.state.attachmentHandlingMode = value;
+            if (value === "same-folder") {
+              this.state.attachmentFolderName = void 0;
+            }
+            this.renderAttachmentExtraSlot(attachmentExtraSlot);
+          }),
+      );
+    attachmentExtraSlot = stepContentWrapper.createDiv({
+      cls: "vault-cms-attachment-extra-slot",
     });
+    this.renderAttachmentExtraSlot(attachmentExtraSlot);
+    new import_obsidian8.Setting(stepContentWrapper)
+      .setName("Resolve cover images from public folder")
+      .setDesc(
+        "Enable this if your theme uses absolute image paths (like /images/photo.jpg) that reference the Astro project's public/ folder. This lets banners and card thumbnails display correctly in Obsidian.",
+      )
+      .addToggle((toggle) => {
+        var _a2;
+        return toggle
+          .setValue(
+            (_a2 = this.state.resolvePublicImages) != null ? _a2 : false,
+          )
+          .onChange((value) => {
+            this.state.resolvePublicImages = value;
+          });
+      });
     stepContentWrapper.createEl("hr", { cls: "vault-cms-divider" });
-    stepContentWrapper.createEl("h3", { text: "Content types", cls: "vault-cms-section-header" });
+    stepContentWrapper.createEl("h3", {
+      text: "Content types",
+      cls: "vault-cms-section-header",
+    });
     for (const contentType of this.state.contentTypes) {
       const block = stepContentWrapper.createDiv({ cls: "vault-cms-ct-block" });
       const setting = new import_obsidian8.Setting(block);
-      const nameContainer = setting.nameEl.createDiv({ cls: "vault-cms-editable-name" });
-      setCssProps3(nameContainer, { display: "flex", alignItems: "center", gap: "0.5rem" });
+      const nameContainer = setting.nameEl.createDiv({
+        cls: "vault-cms-editable-name",
+      });
+      setCssProps3(nameContainer, {
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+      });
       const createNameDisplay = (name) => {
         nameContainer.empty();
         const display = nameContainer.createSpan({
           text: name,
-          cls: "vault-cms-name-display"
+          cls: "vault-cms-name-display",
         });
-        const iconContainer = nameContainer.createDiv({ cls: "vault-cms-edit-icon" });
+        const iconContainer = nameContainer.createDiv({
+          cls: "vault-cms-edit-icon",
+        });
         setCssProps3(iconContainer, { opacity: "0.6" });
         (0, import_obsidian8.setIcon)(iconContainer, "lucide-pencil-line");
         const startEdit = () => {
@@ -2968,7 +3871,7 @@ var ContentTypeStep = class extends BaseWizardStep {
           nameContainer.empty();
           const nameInput = nameContainer.createEl("input", {
             type: "text",
-            value: currentName
+            value: currentName,
           });
           nameInput.addClass("mod-text-input");
           nameInput.focus();
@@ -3010,26 +3913,49 @@ var ContentTypeStep = class extends BaseWizardStep {
         return display;
       };
       createNameDisplay(contentType.name);
-      setting.setDesc(`Folder: ${contentType.folder}`).addToggle((toggle) => toggle.setValue(contentType.enabled).onChange((value) => {
-        contentType.enabled = value;
-      }));
+      setting.setDesc(`Folder: ${contentType.folder}`).addToggle((toggle) =>
+        toggle.setValue(contentType.enabled).onChange((value) => {
+          contentType.enabled = value;
+        }),
+      );
       let indexFileSlot;
-      new import_obsidian8.Setting(block).setName(`${contentType.name} - File organization`).setDesc("Choose how content is organized for this content type").addDropdown((dropdown) => dropdown.addOption("file", "File-based").addOption("folder", "Folder-based").setValue(contentType.fileOrganization || "file").onChange((value) => {
-        contentType.fileOrganization = value;
-        this.renderIndexFileSlot(contentType, indexFileSlot);
-      }));
+      new import_obsidian8.Setting(block)
+        .setName(`${contentType.name} - File organization`)
+        .setDesc("Choose how content is organized for this content type")
+        .addDropdown((dropdown) =>
+          dropdown
+            .addOption("file", "File-based")
+            .addOption("folder", "Folder-based")
+            .setValue(contentType.fileOrganization || "file")
+            .onChange((value) => {
+              contentType.fileOrganization = value;
+              this.renderIndexFileSlot(contentType, indexFileSlot);
+            }),
+        );
       indexFileSlot = block.createDiv({ cls: "vault-cms-index-file-slot" });
       this.renderIndexFileSlot(contentType, indexFileSlot);
-      const pathParts = contentType.folder.split("/").filter((p) => p.length > 0);
+      const pathParts = contentType.folder
+        .split("/")
+        .filter((p) => p.length > 0);
       const folderName = pathParts[pathParts.length - 1] || contentType.folder;
       const defaultLinkBasePath = `/${folderName}/`;
-      new import_obsidian8.Setting(block).setName(`${contentType.name} - Link base path`).setDesc(`URL path for this content type ("/posts/" or "/" for root). Leave blank to use default: ${defaultLinkBasePath}`).addText((text) => text.setPlaceholder(defaultLinkBasePath).setValue(contentType.linkBasePath || "").onChange((value) => {
-        contentType.linkBasePath = value || void 0;
-      }));
+      new import_obsidian8.Setting(block)
+        .setName(`${contentType.name} - Link base path`)
+        .setDesc(
+          `URL path for this content type ("/posts/" or "/" for root). Leave blank to use default: ${defaultLinkBasePath}`,
+        )
+        .addText((text) =>
+          text
+            .setPlaceholder(defaultLinkBasePath)
+            .setValue(contentType.linkBasePath || "")
+            .onChange((value) => {
+              contentType.linkBasePath = value || void 0;
+            }),
+        );
     }
     const addButton = stepContentWrapper.createEl("button", {
       text: "Add additional content type",
-      cls: "mod-cta"
+      cls: "mod-cta",
     });
     setCssProps3(addButton, { marginTop: "20px", marginBottom: "30px" });
     addButton.addEventListener("click", () => {
@@ -3039,9 +3965,13 @@ var ContentTypeStep = class extends BaseWizardStep {
           const vaultPath = this.getVaultPath();
           let folderPath = selectedFolder;
           if (selectedFolder.startsWith(vaultPath)) {
-            folderPath = selectedFolder.substring(vaultPath.length).replace(/^[/\\]+/, "");
+            folderPath = selectedFolder
+              .substring(vaultPath.length)
+              .replace(/^[/\\]+/, "");
           }
-          const pathParts = folderPath.split(/[/\\]/).filter((p) => p.length > 0);
+          const pathParts = folderPath
+            .split(/[/\\]/)
+            .filter((p) => p.length > 0);
           const leafFolderName = pathParts[pathParts.length - 1] || folderPath;
           const newType = {
             id: `content-type-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
@@ -3050,7 +3980,7 @@ var ContentTypeStep = class extends BaseWizardStep {
             fileOrganization: "file",
             enabled: true,
             // Enable by default so it shows up in Step 5
-            indexFileName: "index"
+            indexFileName: "index",
           };
           this.state.contentTypes.push(newType);
           await this.display();
@@ -3068,22 +3998,26 @@ var ContentTypeStep = class extends BaseWizardStep {
       let dialog = null;
       try {
         const electronRemote = require("@electron/remote");
-        dialog = (electronRemote == null ? void 0 : electronRemote.dialog) || null;
-      } catch (e) {
-      }
+        dialog =
+          (electronRemote == null ? void 0 : electronRemote.dialog) || null;
+      } catch (e) {}
       if (!dialog) {
         try {
-          const electron = ((_a = window.require) == null ? void 0 : _a.call(window, "electron")) || require("electron");
-          dialog = ((_b = electron == null ? void 0 : electron.remote) == null ? void 0 : _b.dialog) || null;
-        } catch (e) {
-        }
+          const electron =
+            ((_a = window.require) == null
+              ? void 0
+              : _a.call(window, "electron")) || require("electron");
+          dialog =
+            ((_b = electron == null ? void 0 : electron.remote) == null
+              ? void 0
+              : _b.dialog) || null;
+        } catch (e) {}
       }
       if (!dialog) {
         try {
           const electron = require("electron");
           dialog = (electron == null ? void 0 : electron.dialog) || null;
-        } catch (e) {
-        }
+        } catch (e) {}
       }
       if (!dialog || typeof dialog.showOpenDialogSync !== "function") {
         throw new Error("Electron dialog API not available");
@@ -3092,14 +4026,16 @@ var ContentTypeStep = class extends BaseWizardStep {
       const result = dialog.showOpenDialogSync({
         title: "Select Content Type Folder",
         defaultPath: vaultPath,
-        properties: ["openDirectory"]
+        properties: ["openDirectory"],
       });
       if (result && result.length > 0) {
         return result[0].replace(/\\/g, "/").replace(/\/$/, "");
       }
     } catch (error) {
       console.error("Error opening folder picker:", error);
-      new import_obsidian8.Notice("Unable to open folder picker. Please ensure you are using Obsidian on desktop.");
+      new import_obsidian8.Notice(
+        "Unable to open folder picker. Please ensure you are using Obsidian on desktop.",
+      );
     }
     return null;
   }
@@ -3148,12 +4084,18 @@ var PAIR = Symbol.for("yaml.pair");
 var SCALAR = Symbol.for("yaml.scalar");
 var SEQ = Symbol.for("yaml.seq");
 var NODE_TYPE = Symbol.for("yaml.node.type");
-var isAlias = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === ALIAS;
-var isDocument = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === DOC;
-var isMap = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === MAP;
-var isPair = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === PAIR;
-var isScalar = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === SCALAR;
-var isSeq = (node) => !!node && typeof node === "object" && node[NODE_TYPE] === SEQ;
+var isAlias = (node) =>
+  !!node && typeof node === "object" && node[NODE_TYPE] === ALIAS;
+var isDocument = (node) =>
+  !!node && typeof node === "object" && node[NODE_TYPE] === DOC;
+var isMap = (node) =>
+  !!node && typeof node === "object" && node[NODE_TYPE] === MAP;
+var isPair = (node) =>
+  !!node && typeof node === "object" && node[NODE_TYPE] === PAIR;
+var isScalar = (node) =>
+  !!node && typeof node === "object" && node[NODE_TYPE] === SCALAR;
+var isSeq = (node) =>
+  !!node && typeof node === "object" && node[NODE_TYPE] === SEQ;
 function isCollection(node) {
   if (node && typeof node === "object")
     switch (node[NODE_TYPE]) {
@@ -3174,7 +4116,8 @@ function isNode(node) {
     }
   return false;
 }
-var hasAnchor = (node) => (isScalar(node) || isCollection(node)) && !!node.anchor;
+var hasAnchor = (node) =>
+  (isScalar(node) || isCollection(node)) && !!node.anchor;
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/visit.js
 var BREAK = Symbol("break visit");
@@ -3184,10 +4127,8 @@ function visit(node, visitor) {
   const visitor_ = initVisitor(visitor);
   if (isDocument(node)) {
     const cd = visit_(null, node.contents, visitor_, Object.freeze([node]));
-    if (cd === REMOVE)
-      node.contents = null;
-  } else
-    visit_(null, node, visitor_, Object.freeze([]));
+    if (cd === REMOVE) node.contents = null;
+  } else visit_(null, node, visitor_, Object.freeze([]));
 }
 visit.BREAK = BREAK;
 visit.SKIP = SKIP;
@@ -3203,10 +4144,8 @@ function visit_(key, node, visitor, path13) {
       path13 = Object.freeze(path13.concat(node));
       for (let i = 0; i < node.items.length; ++i) {
         const ci = visit_(i, node.items[i], visitor, path13);
-        if (typeof ci === "number")
-          i = ci - 1;
-        else if (ci === BREAK)
-          return BREAK;
+        if (typeof ci === "number") i = ci - 1;
+        else if (ci === BREAK) return BREAK;
         else if (ci === REMOVE) {
           node.items.splice(i, 1);
           i -= 1;
@@ -3215,15 +4154,11 @@ function visit_(key, node, visitor, path13) {
     } else if (isPair(node)) {
       path13 = Object.freeze(path13.concat(node));
       const ck = visit_("key", node.key, visitor, path13);
-      if (ck === BREAK)
-        return BREAK;
-      else if (ck === REMOVE)
-        node.key = null;
+      if (ck === BREAK) return BREAK;
+      else if (ck === REMOVE) node.key = null;
       const cv = visit_("value", node.value, visitor, path13);
-      if (cv === BREAK)
-        return BREAK;
-      else if (cv === REMOVE)
-        node.value = null;
+      if (cv === BREAK) return BREAK;
+      else if (cv === REMOVE) node.value = null;
     }
   }
   return ctrl;
@@ -3231,11 +4166,14 @@ function visit_(key, node, visitor, path13) {
 async function visitAsync(node, visitor) {
   const visitor_ = initVisitor(visitor);
   if (isDocument(node)) {
-    const cd = await visitAsync_(null, node.contents, visitor_, Object.freeze([node]));
-    if (cd === REMOVE)
-      node.contents = null;
-  } else
-    await visitAsync_(null, node, visitor_, Object.freeze([]));
+    const cd = await visitAsync_(
+      null,
+      node.contents,
+      visitor_,
+      Object.freeze([node]),
+    );
+    if (cd === REMOVE) node.contents = null;
+  } else await visitAsync_(null, node, visitor_, Object.freeze([]));
 }
 visitAsync.BREAK = BREAK;
 visitAsync.SKIP = SKIP;
@@ -3251,10 +4189,8 @@ async function visitAsync_(key, node, visitor, path13) {
       path13 = Object.freeze(path13.concat(node));
       for (let i = 0; i < node.items.length; ++i) {
         const ci = await visitAsync_(i, node.items[i], visitor, path13);
-        if (typeof ci === "number")
-          i = ci - 1;
-        else if (ci === BREAK)
-          return BREAK;
+        if (typeof ci === "number") i = ci - 1;
+        else if (ci === BREAK) return BREAK;
         else if (ci === REMOVE) {
           node.items.splice(i, 1);
           i -= 1;
@@ -3263,51 +4199,64 @@ async function visitAsync_(key, node, visitor, path13) {
     } else if (isPair(node)) {
       path13 = Object.freeze(path13.concat(node));
       const ck = await visitAsync_("key", node.key, visitor, path13);
-      if (ck === BREAK)
-        return BREAK;
-      else if (ck === REMOVE)
-        node.key = null;
+      if (ck === BREAK) return BREAK;
+      else if (ck === REMOVE) node.key = null;
       const cv = await visitAsync_("value", node.value, visitor, path13);
-      if (cv === BREAK)
-        return BREAK;
-      else if (cv === REMOVE)
-        node.value = null;
+      if (cv === BREAK) return BREAK;
+      else if (cv === REMOVE) node.value = null;
     }
   }
   return ctrl;
 }
 function initVisitor(visitor) {
-  if (typeof visitor === "object" && (visitor.Collection || visitor.Node || visitor.Value)) {
-    return Object.assign({
-      Alias: visitor.Node,
-      Map: visitor.Node,
-      Scalar: visitor.Node,
-      Seq: visitor.Node
-    }, visitor.Value && {
-      Map: visitor.Value,
-      Scalar: visitor.Value,
-      Seq: visitor.Value
-    }, visitor.Collection && {
-      Map: visitor.Collection,
-      Seq: visitor.Collection
-    }, visitor);
+  if (
+    typeof visitor === "object" &&
+    (visitor.Collection || visitor.Node || visitor.Value)
+  ) {
+    return Object.assign(
+      {
+        Alias: visitor.Node,
+        Map: visitor.Node,
+        Scalar: visitor.Node,
+        Seq: visitor.Node,
+      },
+      visitor.Value && {
+        Map: visitor.Value,
+        Scalar: visitor.Value,
+        Seq: visitor.Value,
+      },
+      visitor.Collection && {
+        Map: visitor.Collection,
+        Seq: visitor.Collection,
+      },
+      visitor,
+    );
   }
   return visitor;
 }
 function callVisitor(key, node, visitor, path13) {
   var _a, _b, _c, _d, _e;
-  if (typeof visitor === "function")
-    return visitor(key, node, path13);
+  if (typeof visitor === "function") return visitor(key, node, path13);
   if (isMap(node))
-    return (_a = visitor.Map) == null ? void 0 : _a.call(visitor, key, node, path13);
+    return (_a = visitor.Map) == null
+      ? void 0
+      : _a.call(visitor, key, node, path13);
   if (isSeq(node))
-    return (_b = visitor.Seq) == null ? void 0 : _b.call(visitor, key, node, path13);
+    return (_b = visitor.Seq) == null
+      ? void 0
+      : _b.call(visitor, key, node, path13);
   if (isPair(node))
-    return (_c = visitor.Pair) == null ? void 0 : _c.call(visitor, key, node, path13);
+    return (_c = visitor.Pair) == null
+      ? void 0
+      : _c.call(visitor, key, node, path13);
   if (isScalar(node))
-    return (_d = visitor.Scalar) == null ? void 0 : _d.call(visitor, key, node, path13);
+    return (_d = visitor.Scalar) == null
+      ? void 0
+      : _d.call(visitor, key, node, path13);
   if (isAlias(node))
-    return (_e = visitor.Alias) == null ? void 0 : _e.call(visitor, key, node, path13);
+    return (_e = visitor.Alias) == null
+      ? void 0
+      : _e.call(visitor, key, node, path13);
   return void 0;
 }
 function replaceNode(key, path13, node) {
@@ -3315,10 +4264,8 @@ function replaceNode(key, path13, node) {
   if (isCollection(parent)) {
     parent.items[key] = node;
   } else if (isPair(parent)) {
-    if (key === "key")
-      parent.key = node;
-    else
-      parent.value = node;
+    if (key === "key") parent.key = node;
+    else parent.value = node;
   } else if (isDocument(parent)) {
     parent.contents = node;
   } else {
@@ -3334,7 +4281,7 @@ var escapeChars = {
   "[": "%5B",
   "]": "%5D",
   "{": "%7B",
-  "}": "%7D"
+  "}": "%7D",
 };
 var escapeTagName = (tn) => tn.replace(/[!,[\]{}]/g, (ch) => escapeChars[ch]);
 var Directives = class _Directives {
@@ -3363,7 +4310,7 @@ var Directives = class _Directives {
         this.atNextDocument = false;
         this.yaml = {
           explicit: _Directives.defaultYaml.explicit,
-          version: "1.2"
+          version: "1.2",
         };
         this.tags = Object.assign({}, _Directives.defaultTags);
         break;
@@ -3376,7 +4323,10 @@ var Directives = class _Directives {
    */
   add(line, onError) {
     if (this.atNextDocument) {
-      this.yaml = { explicit: _Directives.defaultYaml.explicit, version: "1.1" };
+      this.yaml = {
+        explicit: _Directives.defaultYaml.explicit,
+        version: "1.1",
+      };
       this.tags = Object.assign({}, _Directives.defaultTags);
       this.atNextDocument = false;
     }
@@ -3386,8 +4336,7 @@ var Directives = class _Directives {
       case "%TAG": {
         if (parts.length !== 2) {
           onError(0, "%TAG directive should contain exactly two parts");
-          if (parts.length < 2)
-            return false;
+          if (parts.length < 2) return false;
         }
         const [handle, prefix] = parts;
         this.tags[handle] = prefix;
@@ -3421,8 +4370,7 @@ var Directives = class _Directives {
    *   `'!local'` tag, or `null` if unresolvable.
    */
   tagName(source, onError) {
-    if (source === "!")
-      return "!";
+    if (source === "!") return "!";
     if (source[0] !== "!") {
       onError(`Not a valid tag: ${source}`);
       return null;
@@ -3438,8 +4386,7 @@ var Directives = class _Directives {
       return verbatim;
     }
     const [, handle, suffix] = source.match(/^(.*!)([^!]*)$/s);
-    if (!suffix)
-      onError(`The ${source} tag has no suffix`);
+    if (!suffix) onError(`The ${source} tag has no suffix`);
     const prefix = this.tags[handle];
     if (prefix) {
       try {
@@ -3449,8 +4396,7 @@ var Directives = class _Directives {
         return null;
       }
     }
-    if (handle === "!")
-      return source;
+    if (handle === "!") return source;
     onError(`Could not resolve tag: ${source}`);
     return null;
   }
@@ -3466,21 +4412,20 @@ var Directives = class _Directives {
     return tag[0] === "!" ? tag : `!<${tag}>`;
   }
   toString(doc) {
-    const lines = this.yaml.explicit ? [`%YAML ${this.yaml.version || "1.2"}`] : [];
+    const lines = this.yaml.explicit
+      ? [`%YAML ${this.yaml.version || "1.2"}`]
+      : [];
     const tagEntries = Object.entries(this.tags);
     let tagNames;
     if (doc && tagEntries.length > 0 && isNode(doc.contents)) {
       const tags = {};
       visit(doc.contents, (_key, node) => {
-        if (isNode(node) && node.tag)
-          tags[node.tag] = true;
+        if (isNode(node) && node.tag) tags[node.tag] = true;
       });
       tagNames = Object.keys(tags);
-    } else
-      tagNames = [];
+    } else tagNames = [];
     for (const [handle, prefix] of tagEntries) {
-      if (handle === "!!" && prefix === "tag:yaml.org,2002:")
-        continue;
+      if (handle === "!!" && prefix === "tag:yaml.org,2002:") continue;
       if (!doc || tagNames.some((tn) => tn.startsWith(prefix)))
         lines.push(`%TAG ${handle} ${prefix}`);
     }
@@ -3503,17 +4448,15 @@ function anchorNames(root) {
   const anchors = /* @__PURE__ */ new Set();
   visit(root, {
     Value(_key, node) {
-      if (node.anchor)
-        anchors.add(node.anchor);
-    }
+      if (node.anchor) anchors.add(node.anchor);
+    },
   });
   return anchors;
 }
 function findNewAnchor(prefix, exclude) {
   for (let i = 1; true; ++i) {
     const name = `${prefix}${i}`;
-    if (!exclude.has(name))
-      return name;
+    if (!exclude.has(name)) return name;
   }
 }
 function createNodeAnchors(doc, prefix) {
@@ -3523,7 +4466,7 @@ function createNodeAnchors(doc, prefix) {
   return {
     onAnchor: (source) => {
       aliasObjects.push(source);
-      prevAnchors != null ? prevAnchors : prevAnchors = anchorNames(doc);
+      prevAnchors != null ? prevAnchors : (prevAnchors = anchorNames(doc));
       const anchor = findNewAnchor(prefix, prevAnchors);
       prevAnchors.add(anchor);
       return anchor;
@@ -3536,16 +4479,22 @@ function createNodeAnchors(doc, prefix) {
     setAnchors: () => {
       for (const source of aliasObjects) {
         const ref = sourceObjects.get(source);
-        if (typeof ref === "object" && ref.anchor && (isScalar(ref.node) || isCollection(ref.node))) {
+        if (
+          typeof ref === "object" &&
+          ref.anchor &&
+          (isScalar(ref.node) || isCollection(ref.node))
+        ) {
           ref.node.anchor = ref.anchor;
         } else {
-          const error = new Error("Failed to resolve repeated object (this should not happen)");
+          const error = new Error(
+            "Failed to resolve repeated object (this should not happen)",
+          );
           error.source = source;
           throw error;
         }
       }
     },
-    sourceObjects
+    sourceObjects,
   };
 }
 
@@ -3556,25 +4505,20 @@ function applyReviver(reviver, obj, key, val) {
       for (let i = 0, len = val.length; i < len; ++i) {
         const v0 = val[i];
         const v1 = applyReviver(reviver, val, String(i), v0);
-        if (v1 === void 0)
-          delete val[i];
-        else if (v1 !== v0)
-          val[i] = v1;
+        if (v1 === void 0) delete val[i];
+        else if (v1 !== v0) val[i] = v1;
       }
     } else if (val instanceof Map) {
       for (const k of Array.from(val.keys())) {
         const v0 = val.get(k);
         const v1 = applyReviver(reviver, val, k, v0);
-        if (v1 === void 0)
-          val.delete(k);
-        else if (v1 !== v0)
-          val.set(k, v1);
+        if (v1 === void 0) val.delete(k);
+        else if (v1 !== v0) val.set(k, v1);
       }
     } else if (val instanceof Set) {
       for (const v0 of Array.from(val)) {
         const v1 = applyReviver(reviver, val, v0, v0);
-        if (v1 === void 0)
-          val.delete(v0);
+        if (v1 === void 0) val.delete(v0);
         else if (v1 !== v0) {
           val.delete(v0);
           val.add(v1);
@@ -3583,10 +4527,8 @@ function applyReviver(reviver, obj, key, val) {
     } else {
       for (const [k, v0] of Object.entries(val)) {
         const v1 = applyReviver(reviver, val, k, v0);
-        if (v1 === void 0)
-          delete val[k];
-        else if (v1 !== v0)
-          val[k] = v1;
+        if (v1 === void 0) delete val[k];
+        else if (v1 !== v0) val[k] = v1;
       }
     }
   }
@@ -3595,11 +4537,9 @@ function applyReviver(reviver, obj, key, val) {
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/nodes/toJS.js
 function toJS(value, arg, ctx) {
-  if (Array.isArray(value))
-    return value.map((v, i) => toJS(v, String(i), ctx));
+  if (Array.isArray(value)) return value.map((v, i) => toJS(v, String(i), ctx));
   if (value && typeof value.toJSON === "function") {
-    if (!ctx || !hasAnchor(value))
-      return value.toJSON(arg, ctx);
+    if (!ctx || !hasAnchor(value)) return value.toJSON(arg, ctx);
     const data = { aliasCount: 0, count: 1, res: void 0 };
     ctx.anchors.set(value, data);
     ctx.onCreate = (res2) => {
@@ -3607,8 +4547,7 @@ function toJS(value, arg, ctx) {
       delete ctx.onCreate;
     };
     const res = value.toJSON(arg, ctx);
-    if (ctx.onCreate)
-      ctx.onCreate(res);
+    if (ctx.onCreate) ctx.onCreate(res);
     return res;
   }
   if (typeof value === "bigint" && !(ctx == null ? void 0 : ctx.keep))
@@ -3623,9 +4562,11 @@ var NodeBase = class {
   }
   /** Create a copy of this node.  */
   clone() {
-    const copy = Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this));
-    if (this.range)
-      copy.range = this.range.slice();
+    const copy = Object.create(
+      Object.getPrototypeOf(this),
+      Object.getOwnPropertyDescriptors(this),
+    );
+    if (this.range) copy.range = this.range.slice();
     return copy;
   }
   /** A plain JavaScript representation of this node. */
@@ -3638,13 +4579,15 @@ var NodeBase = class {
       keep: true,
       mapAsMap: mapAsMap === true,
       mapKeyWarned: false,
-      maxAliasCount: typeof maxAliasCount === "number" ? maxAliasCount : 100
+      maxAliasCount: typeof maxAliasCount === "number" ? maxAliasCount : 100,
     };
     const res = toJS(this, "", ctx);
     if (typeof onAnchor === "function")
       for (const { count, res: res2 } of ctx.anchors.values())
         onAnchor(res2, count);
-    return typeof reviver === "function" ? applyReviver(reviver, { "": res }, "", res) : res;
+    return typeof reviver === "function"
+      ? applyReviver(reviver, { "": res }, "", res)
+      : res;
   }
 };
 
@@ -3656,7 +4599,7 @@ var Alias = class extends NodeBase {
     Object.defineProperty(this, "tag", {
       set() {
         throw new Error("Alias nodes cannot have tags");
-      }
+      },
     });
   }
   /**
@@ -3671,25 +4614,20 @@ var Alias = class extends NodeBase {
       nodes = [];
       visit(doc, {
         Node: (_key, node) => {
-          if (isAlias(node) || hasAnchor(node))
-            nodes.push(node);
-        }
+          if (isAlias(node) || hasAnchor(node)) nodes.push(node);
+        },
       });
-      if (ctx)
-        ctx.aliasResolveCache = nodes;
+      if (ctx) ctx.aliasResolveCache = nodes;
     }
     let found = void 0;
     for (const node of nodes) {
-      if (node === this)
-        break;
-      if (node.anchor === this.source)
-        found = node;
+      if (node === this) break;
+      if (node.anchor === this.source) found = node;
     }
     return found;
   }
   toJSON(_arg, ctx) {
-    if (!ctx)
-      return { source: this.source };
+    if (!ctx) return { source: this.source };
     const { anchors, doc, maxAliasCount } = ctx;
     const source = this.resolve(doc, ctx);
     if (!source) {
@@ -3710,7 +4648,8 @@ var Alias = class extends NodeBase {
       if (data.aliasCount === 0)
         data.aliasCount = getAliasCount(doc, source, anchors);
       if (data.count * data.aliasCount > maxAliasCount) {
-        const msg = "Excessive alias count indicates a resource exhaustion attack";
+        const msg =
+          "Excessive alias count indicates a resource exhaustion attack";
         throw new ReferenceError(msg);
       }
     }
@@ -3724,8 +4663,7 @@ var Alias = class extends NodeBase {
         const msg = `Unresolved alias (the anchor must be set before the alias): ${this.source}`;
         throw new Error(msg);
       }
-      if (ctx.implicitKey)
-        return `${src} `;
+      if (ctx.implicitKey) return `${src} `;
     }
     return src;
   }
@@ -3739,8 +4677,7 @@ function getAliasCount(doc, node, anchors) {
     let count = 0;
     for (const item of node.items) {
       const c = getAliasCount(doc, item, anchors);
-      if (c > count)
-        count = c;
+      if (c > count) count = c;
     }
     return count;
   } else if (isPair(node)) {
@@ -3752,14 +4689,17 @@ function getAliasCount(doc, node, anchors) {
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/nodes/Scalar.js
-var isScalarValue = (value) => !value || typeof value !== "function" && typeof value !== "object";
+var isScalarValue = (value) =>
+  !value || (typeof value !== "function" && typeof value !== "object");
 var Scalar = class extends NodeBase {
   constructor(value) {
     super(SCALAR);
     this.value = value;
   }
   toJSON(arg, ctx) {
-    return (ctx == null ? void 0 : ctx.keep) ? this.value : toJS(this.value, arg, ctx);
+    return (ctx == null ? void 0 : ctx.keep)
+      ? this.value
+      : toJS(this.value, arg, ctx);
   }
   toString() {
     return String(this.value);
@@ -3778,35 +4718,48 @@ function findTagObject(value, tagName, tags) {
   if (tagName) {
     const match = tags.filter((t) => t.tag === tagName);
     const tagObj = (_a = match.find((t) => !t.format)) != null ? _a : match[0];
-    if (!tagObj)
-      throw new Error(`Tag ${tagName} not found`);
+    if (!tagObj) throw new Error(`Tag ${tagName} not found`);
     return tagObj;
   }
   return tags.find((t) => {
     var _a2;
-    return ((_a2 = t.identify) == null ? void 0 : _a2.call(t, value)) && !t.format;
+    return (
+      ((_a2 = t.identify) == null ? void 0 : _a2.call(t, value)) && !t.format
+    );
   });
 }
 function createNode(value, tagName, ctx) {
   var _a, _b, _c, _d;
-  if (isDocument(value))
-    value = value.contents;
-  if (isNode(value))
-    return value;
+  if (isDocument(value)) value = value.contents;
+  if (isNode(value)) return value;
   if (isPair(value)) {
-    const map2 = (_b = (_a = ctx.schema[MAP]).createNode) == null ? void 0 : _b.call(_a, ctx.schema, null, ctx);
+    const map2 =
+      (_b = (_a = ctx.schema[MAP]).createNode) == null
+        ? void 0
+        : _b.call(_a, ctx.schema, null, ctx);
     map2.items.push(value);
     return map2;
   }
-  if (value instanceof String || value instanceof Number || value instanceof Boolean || typeof BigInt !== "undefined" && value instanceof BigInt) {
+  if (
+    value instanceof String ||
+    value instanceof Number ||
+    value instanceof Boolean ||
+    (typeof BigInt !== "undefined" && value instanceof BigInt)
+  ) {
     value = value.valueOf();
   }
-  const { aliasDuplicateObjects, onAnchor, onTagObj, schema: schema4, sourceObjects } = ctx;
+  const {
+    aliasDuplicateObjects,
+    onAnchor,
+    onTagObj,
+    schema: schema4,
+    sourceObjects,
+  } = ctx;
   let ref = void 0;
   if (aliasDuplicateObjects && value && typeof value === "object") {
     ref = sourceObjects.get(value);
     if (ref) {
-      (_c = ref.anchor) != null ? _c : ref.anchor = onAnchor(value);
+      (_c = ref.anchor) != null ? _c : (ref.anchor = onAnchor(value));
       return new Alias(ref.anchor);
     } else {
       ref = { anchor: null, node: null };
@@ -3822,23 +4775,30 @@ function createNode(value, tagName, ctx) {
     }
     if (!value || typeof value !== "object") {
       const node2 = new Scalar(value);
-      if (ref)
-        ref.node = node2;
+      if (ref) ref.node = node2;
       return node2;
     }
-    tagObj = value instanceof Map ? schema4[MAP] : Symbol.iterator in Object(value) ? schema4[SEQ] : schema4[MAP];
+    tagObj =
+      value instanceof Map
+        ? schema4[MAP]
+        : Symbol.iterator in Object(value)
+          ? schema4[SEQ]
+          : schema4[MAP];
   }
   if (onTagObj) {
     onTagObj(tagObj);
     delete ctx.onTagObj;
   }
-  const node = (tagObj == null ? void 0 : tagObj.createNode) ? tagObj.createNode(ctx.schema, value, ctx) : typeof ((_d = tagObj == null ? void 0 : tagObj.nodeClass) == null ? void 0 : _d.from) === "function" ? tagObj.nodeClass.from(ctx.schema, value, ctx) : new Scalar(value);
-  if (tagName)
-    node.tag = tagName;
-  else if (!tagObj.default)
-    node.tag = tagObj.tag;
-  if (ref)
-    ref.node = node;
+  const node = (tagObj == null ? void 0 : tagObj.createNode)
+    ? tagObj.createNode(ctx.schema, value, ctx)
+    : typeof ((_d = tagObj == null ? void 0 : tagObj.nodeClass) == null
+          ? void 0
+          : _d.from) === "function"
+      ? tagObj.nodeClass.from(ctx.schema, value, ctx)
+      : new Scalar(value);
+  if (tagName) node.tag = tagName;
+  else if (!tagObj.default) node.tag = tagObj.tag;
+  if (ref) ref.node = node;
   return node;
 }
 
@@ -3862,10 +4822,12 @@ function collectionFromPath(schema4, path13, value) {
       throw new Error("This should not happen, please report a bug.");
     },
     schema: schema4,
-    sourceObjects: /* @__PURE__ */ new Map()
+    sourceObjects: /* @__PURE__ */ new Map(),
   });
 }
-var isEmptyPath = (path13) => path13 == null || typeof path13 === "object" && !!path13[Symbol.iterator]().next().done;
+var isEmptyPath = (path13) =>
+  path13 == null ||
+  (typeof path13 === "object" && !!path13[Symbol.iterator]().next().done);
 var Collection = class extends NodeBase {
   constructor(type, schema4) {
     super(type);
@@ -3873,7 +4835,7 @@ var Collection = class extends NodeBase {
       value: schema4,
       configurable: true,
       enumerable: false,
-      writable: true
+      writable: true,
     });
   }
   /**
@@ -3882,12 +4844,15 @@ var Collection = class extends NodeBase {
    * @param schema - If defined, overwrites the original's schema
    */
   clone(schema4) {
-    const copy = Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this));
-    if (schema4)
-      copy.schema = schema4;
-    copy.items = copy.items.map((it) => isNode(it) || isPair(it) ? it.clone(schema4) : it);
-    if (this.range)
-      copy.range = this.range.slice();
+    const copy = Object.create(
+      Object.getPrototypeOf(this),
+      Object.getOwnPropertyDescriptors(this),
+    );
+    if (schema4) copy.schema = schema4;
+    copy.items = copy.items.map((it) =>
+      isNode(it) || isPair(it) ? it.clone(schema4) : it,
+    );
+    if (this.range) copy.range = this.range.slice();
     return copy;
   }
   /**
@@ -3896,17 +4861,17 @@ var Collection = class extends NodeBase {
    * that already exists in the map.
    */
   addIn(path13, value) {
-    if (isEmptyPath(path13))
-      this.add(value);
+    if (isEmptyPath(path13)) this.add(value);
     else {
       const [key, ...rest] = path13;
       const node = this.get(key, true);
-      if (isCollection(node))
-        node.addIn(rest, value);
+      if (isCollection(node)) node.addIn(rest, value);
       else if (node === void 0 && this.schema)
         this.set(key, collectionFromPath(this.schema, rest, value));
       else
-        throw new Error(`Expected YAML collection at ${key}. Remaining path: ${rest}`);
+        throw new Error(
+          `Expected YAML collection at ${key}. Remaining path: ${rest}`,
+        );
     }
   }
   /**
@@ -3915,13 +4880,13 @@ var Collection = class extends NodeBase {
    */
   deleteIn(path13) {
     const [key, ...rest] = path13;
-    if (rest.length === 0)
-      return this.delete(key);
+    if (rest.length === 0) return this.delete(key);
     const node = this.get(key, true);
-    if (isCollection(node))
-      return node.deleteIn(rest);
+    if (isCollection(node)) return node.deleteIn(rest);
     else
-      throw new Error(`Expected YAML collection at ${key}. Remaining path: ${rest}`);
+      throw new Error(
+        `Expected YAML collection at ${key}. Remaining path: ${rest}`,
+      );
   }
   /**
    * Returns item at `key`, or `undefined` if not found. By default unwraps
@@ -3933,15 +4898,21 @@ var Collection = class extends NodeBase {
     const node = this.get(key, true);
     if (rest.length === 0)
       return !keepScalar && isScalar(node) ? node.value : node;
-    else
-      return isCollection(node) ? node.getIn(rest, keepScalar) : void 0;
+    else return isCollection(node) ? node.getIn(rest, keepScalar) : void 0;
   }
   hasAllNullValues(allowScalar) {
     return this.items.every((node) => {
-      if (!isPair(node))
-        return false;
+      if (!isPair(node)) return false;
       const n = node.value;
-      return n == null || allowScalar && isScalar(n) && n.value == null && !n.commentBefore && !n.comment && !n.tag;
+      return (
+        n == null ||
+        (allowScalar &&
+          isScalar(n) &&
+          n.value == null &&
+          !n.commentBefore &&
+          !n.comment &&
+          !n.tag)
+      );
     });
   }
   /**
@@ -3949,8 +4920,7 @@ var Collection = class extends NodeBase {
    */
   hasIn(path13) {
     const [key, ...rest] = path13;
-    if (rest.length === 0)
-      return this.has(key);
+    if (rest.length === 0) return this.has(key);
     const node = this.get(key, true);
     return isCollection(node) ? node.hasIn(rest) : false;
   }
@@ -3964,12 +4934,13 @@ var Collection = class extends NodeBase {
       this.set(key, value);
     } else {
       const node = this.get(key, true);
-      if (isCollection(node))
-        node.setIn(rest, value);
+      if (isCollection(node)) node.setIn(rest, value);
       else if (node === void 0 && this.schema)
         this.set(key, collectionFromPath(this.schema, rest, value));
       else
-        throw new Error(`Expected YAML collection at ${key}. Remaining path: ${rest}`);
+        throw new Error(
+          `Expected YAML collection at ${key}. Remaining path: ${rest}`,
+        );
     }
   }
 };
@@ -3977,32 +4948,42 @@ var Collection = class extends NodeBase {
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/stringify/stringifyComment.js
 var stringifyComment = (str) => str.replace(/^(?!$)(?: $)?/gm, "#");
 function indentComment(comment, indent) {
-  if (/^\n+$/.test(comment))
-    return comment.substring(1);
+  if (/^\n+$/.test(comment)) return comment.substring(1);
   return indent ? comment.replace(/^(?! *$)/gm, indent) : comment;
 }
-var lineComment = (str, indent, comment) => str.endsWith("\n") ? indentComment(comment, indent) : comment.includes("\n") ? "\n" + indentComment(comment, indent) : (str.endsWith(" ") ? "" : " ") + comment;
+var lineComment = (str, indent, comment) =>
+  str.endsWith("\n")
+    ? indentComment(comment, indent)
+    : comment.includes("\n")
+      ? "\n" + indentComment(comment, indent)
+      : (str.endsWith(" ") ? "" : " ") + comment;
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/stringify/foldFlowLines.js
 var FOLD_FLOW = "flow";
 var FOLD_BLOCK = "block";
 var FOLD_QUOTED = "quoted";
-function foldFlowLines(text, indent, mode = "flow", { indentAtStart, lineWidth = 80, minContentWidth = 20, onFold, onOverflow } = {}) {
-  if (!lineWidth || lineWidth < 0)
-    return text;
-  if (lineWidth < minContentWidth)
-    minContentWidth = 0;
+function foldFlowLines(
+  text,
+  indent,
+  mode = "flow",
+  {
+    indentAtStart,
+    lineWidth = 80,
+    minContentWidth = 20,
+    onFold,
+    onOverflow,
+  } = {},
+) {
+  if (!lineWidth || lineWidth < 0) return text;
+  if (lineWidth < minContentWidth) minContentWidth = 0;
   const endStep = Math.max(1 + minContentWidth, 1 + lineWidth - indent.length);
-  if (text.length <= endStep)
-    return text;
+  if (text.length <= endStep) return text;
   const folds = [];
   const escapedFolds = {};
   let end = lineWidth - indent.length;
   if (typeof indentAtStart === "number") {
-    if (indentAtStart > lineWidth - Math.max(2, minContentWidth))
-      folds.push(0);
-    else
-      end = lineWidth - indentAtStart;
+    if (indentAtStart > lineWidth - Math.max(2, minContentWidth)) folds.push(0);
+    else end = lineWidth - indentAtStart;
   }
   let split = void 0;
   let prev = void 0;
@@ -4012,10 +4993,9 @@ function foldFlowLines(text, indent, mode = "flow", { indentAtStart, lineWidth =
   let escEnd = -1;
   if (mode === FOLD_BLOCK) {
     i = consumeMoreIndentedLines(text, i, indent.length);
-    if (i !== -1)
-      end = i + endStep;
+    if (i !== -1) end = i + endStep;
   }
-  for (let ch; ch = text[i += 1]; ) {
+  for (let ch; (ch = text[(i += 1)]); ) {
     if (mode === FOLD_QUOTED && ch === "\\") {
       escStart = i;
       switch (text[i + 1]) {
@@ -4041,8 +5021,7 @@ function foldFlowLines(text, indent, mode = "flow", { indentAtStart, lineWidth =
     } else {
       if (ch === " " && prev && prev !== " " && prev !== "\n" && prev !== "	") {
         const next = text[i + 1];
-        if (next && next !== " " && next !== "\n" && next !== "	")
-          split = i;
+        if (next && next !== " " && next !== "\n" && next !== "	") split = i;
       }
       if (i >= end) {
         if (split) {
@@ -4052,12 +5031,11 @@ function foldFlowLines(text, indent, mode = "flow", { indentAtStart, lineWidth =
         } else if (mode === FOLD_QUOTED) {
           while (prev === " " || prev === "	") {
             prev = ch;
-            ch = text[i += 1];
+            ch = text[(i += 1)];
             overflow = true;
           }
           const j = i > escEnd + 1 ? i - 2 : escStart - 1;
-          if (escapedFolds[j])
-            return text;
+          if (escapedFolds[j]) return text;
           folds.push(j);
           escapedFolds[j] = true;
           end = j + endStep;
@@ -4069,12 +5047,9 @@ function foldFlowLines(text, indent, mode = "flow", { indentAtStart, lineWidth =
     }
     prev = ch;
   }
-  if (overflow && onOverflow)
-    onOverflow();
-  if (folds.length === 0)
-    return text;
-  if (onFold)
-    onFold();
+  if (overflow && onOverflow) onOverflow();
+  if (folds.length === 0) return text;
+  if (onFold) onFold();
   let res = text.slice(0, folds[0]);
   for (let i2 = 0; i2 < folds.length; ++i2) {
     const fold = folds[i2];
@@ -4083,8 +5058,7 @@ function foldFlowLines(text, indent, mode = "flow", { indentAtStart, lineWidth =
       res = `
 ${indent}${text.slice(0, end2)}`;
     else {
-      if (mode === FOLD_QUOTED && escapedFolds[fold])
-        res += `${text[fold]}\\`;
+      if (mode === FOLD_QUOTED && escapedFolds[fold]) res += `${text[fold]}\\`;
       res += `
 ${indent}${text.slice(fold + 1, end2)}`;
     }
@@ -4114,31 +5088,26 @@ function consumeMoreIndentedLines(text, i, indent) {
 var getFoldOptions = (ctx, isBlock2) => ({
   indentAtStart: isBlock2 ? ctx.indent.length : ctx.indentAtStart,
   lineWidth: ctx.options.lineWidth,
-  minContentWidth: ctx.options.minContentWidth
+  minContentWidth: ctx.options.minContentWidth,
 });
 var containsDocumentMarker = (str) => /^(%|---|\.\.\.)/m.test(str);
 function lineLengthOverLimit(str, lineWidth, indentLength) {
-  if (!lineWidth || lineWidth < 0)
-    return false;
+  if (!lineWidth || lineWidth < 0) return false;
   const limit = lineWidth - indentLength;
   const strLen = str.length;
-  if (strLen <= limit)
-    return false;
+  if (strLen <= limit) return false;
   for (let i = 0, start = 0; i < strLen; ++i) {
     if (str[i] === "\n") {
-      if (i - start > limit)
-        return true;
+      if (i - start > limit) return true;
       start = i + 1;
-      if (strLen - start <= limit)
-        return false;
+      if (strLen - start <= limit) return false;
     }
   }
   return true;
 }
 function doubleQuotedString(value, ctx) {
   const json = JSON.stringify(value);
-  if (ctx.options.doubleQuotedAsJSON)
-    return json;
+  if (ctx.options.doubleQuotedAsJSON) return json;
   const { implicitKey } = ctx;
   const minMultiLineLength = ctx.options.doubleQuotedMinMultiLineLength;
   const indent = ctx.indent || (containsDocumentMarker(value) ? "  " : "");
@@ -4183,27 +5152,32 @@ function doubleQuotedString(value, ctx) {
                 str += "\\P";
                 break;
               default:
-                if (code.substr(0, 2) === "00")
-                  str += "\\x" + code.substr(2);
-                else
-                  str += json.substr(i, 6);
+                if (code.substr(0, 2) === "00") str += "\\x" + code.substr(2);
+                else str += json.substr(i, 6);
             }
             i += 5;
             start = i + 1;
           }
           break;
         case "n":
-          if (implicitKey || json[i + 2] === '"' || json.length < minMultiLineLength) {
+          if (
+            implicitKey ||
+            json[i + 2] === '"' ||
+            json.length < minMultiLineLength
+          ) {
             i += 1;
           } else {
             str += json.slice(start, i) + "\n\n";
-            while (json[i + 2] === "\\" && json[i + 3] === "n" && json[i + 4] !== '"') {
+            while (
+              json[i + 2] === "\\" &&
+              json[i + 3] === "n" &&
+              json[i + 4] !== '"'
+            ) {
               str += "\n";
               i += 2;
             }
             str += indent;
-            if (json[i + 2] === " ")
-              str += "\\";
+            if (json[i + 2] === " ") str += "\\";
             i += 1;
             start = i + 1;
           }
@@ -4213,30 +5187,40 @@ function doubleQuotedString(value, ctx) {
       }
   }
   str = start ? str + json.slice(start) : json;
-  return implicitKey ? str : foldFlowLines(str, indent, FOLD_QUOTED, getFoldOptions(ctx, false));
+  return implicitKey
+    ? str
+    : foldFlowLines(str, indent, FOLD_QUOTED, getFoldOptions(ctx, false));
 }
 function singleQuotedString(value, ctx) {
-  if (ctx.options.singleQuote === false || ctx.implicitKey && value.includes("\n") || /[ \t]\n|\n[ \t]/.test(value))
+  if (
+    ctx.options.singleQuote === false ||
+    (ctx.implicitKey && value.includes("\n")) ||
+    /[ \t]\n|\n[ \t]/.test(value)
+  )
     return doubleQuotedString(value, ctx);
   const indent = ctx.indent || (containsDocumentMarker(value) ? "  " : "");
-  const res = "'" + value.replace(/'/g, "''").replace(/\n+/g, `$&
-${indent}`) + "'";
-  return ctx.implicitKey ? res : foldFlowLines(res, indent, FOLD_FLOW, getFoldOptions(ctx, false));
+  const res =
+    "'" +
+    value.replace(/'/g, "''").replace(
+      /\n+/g,
+      `$&
+${indent}`,
+    ) +
+    "'";
+  return ctx.implicitKey
+    ? res
+    : foldFlowLines(res, indent, FOLD_FLOW, getFoldOptions(ctx, false));
 }
 function quotedString(value, ctx) {
   const { singleQuote } = ctx.options;
   let qs;
-  if (singleQuote === false)
-    qs = doubleQuotedString;
+  if (singleQuote === false) qs = doubleQuotedString;
   else {
     const hasDouble = value.includes('"');
     const hasSingle = value.includes("'");
-    if (hasDouble && !hasSingle)
-      qs = singleQuotedString;
-    else if (hasSingle && !hasDouble)
-      qs = doubleQuotedString;
-    else
-      qs = singleQuote ? singleQuotedString : doubleQuotedString;
+    if (hasDouble && !hasSingle) qs = singleQuotedString;
+    else if (hasSingle && !hasDouble) qs = doubleQuotedString;
+    else qs = singleQuote ? singleQuotedString : doubleQuotedString;
   }
   return qs(value, ctx);
 }
@@ -4251,16 +5235,23 @@ function blockString({ comment, type, value }, ctx, onComment, onChompKeep) {
   if (!blockQuote || /\n[\t ]+$/.test(value)) {
     return quotedString(value, ctx);
   }
-  const indent = ctx.indent || (ctx.forceBlockIndent || containsDocumentMarker(value) ? "  " : "");
-  const literal = blockQuote === "literal" ? true : blockQuote === "folded" || type === Scalar.BLOCK_FOLDED ? false : type === Scalar.BLOCK_LITERAL ? true : !lineLengthOverLimit(value, lineWidth, indent.length);
-  if (!value)
-    return literal ? "|\n" : ">\n";
+  const indent =
+    ctx.indent ||
+    (ctx.forceBlockIndent || containsDocumentMarker(value) ? "  " : "");
+  const literal =
+    blockQuote === "literal"
+      ? true
+      : blockQuote === "folded" || type === Scalar.BLOCK_FOLDED
+        ? false
+        : type === Scalar.BLOCK_LITERAL
+          ? true
+          : !lineLengthOverLimit(value, lineWidth, indent.length);
+  if (!value) return literal ? "|\n" : ">\n";
   let chomp;
   let endStart;
   for (endStart = value.length; endStart > 0; --endStart) {
     const ch = value[endStart - 1];
-    if (ch !== "\n" && ch !== "	" && ch !== " ")
-      break;
+    if (ch !== "\n" && ch !== "	" && ch !== " ") break;
   }
   let end = value.substring(endStart);
   const endNlPos = end.indexOf("\n");
@@ -4268,15 +5259,13 @@ function blockString({ comment, type, value }, ctx, onComment, onChompKeep) {
     chomp = "-";
   } else if (value === end || endNlPos !== end.length - 1) {
     chomp = "+";
-    if (onChompKeep)
-      onChompKeep();
+    if (onChompKeep) onChompKeep();
   } else {
     chomp = "";
   }
   if (end) {
     value = value.slice(0, -end.length);
-    if (end[end.length - 1] === "\n")
-      end = end.slice(0, -1);
+    if (end[end.length - 1] === "\n") end = end.slice(0, -1);
     end = end.replace(blockEndNewlines, `$&${indent}`);
   }
   let startWithSpace = false;
@@ -4284,14 +5273,14 @@ function blockString({ comment, type, value }, ctx, onComment, onChompKeep) {
   let startNlPos = -1;
   for (startEnd = 0; startEnd < value.length; ++startEnd) {
     const ch = value[startEnd];
-    if (ch === " ")
-      startWithSpace = true;
-    else if (ch === "\n")
-      startNlPos = startEnd;
-    else
-      break;
+    if (ch === " ") startWithSpace = true;
+    else if (ch === "\n") startNlPos = startEnd;
+    else break;
   }
-  let start = value.substring(0, startNlPos < startEnd ? startNlPos + 1 : startEnd);
+  let start = value.substring(
+    0,
+    startNlPos < startEnd ? startNlPos + 1 : startEnd,
+  );
   if (start) {
     value = value.substring(start.length);
     start = start.replace(/\n+/g, `$&${indent}`);
@@ -4300,11 +5289,13 @@ function blockString({ comment, type, value }, ctx, onComment, onChompKeep) {
   let header = (startWithSpace ? indentSize : "") + chomp;
   if (comment) {
     header += " " + commentString(comment.replace(/ ?[\r\n]+/g, " "));
-    if (onComment)
-      onComment();
+    if (onComment) onComment();
   }
   if (!literal) {
-    const foldedValue = value.replace(/\n+/g, "\n$&").replace(/(?:^|\n)([\t ].*)(?:([\n\t ]*)\n(?![\n\t ]))?/g, "$1$2").replace(/\n+/g, `$&${indent}`);
+    const foldedValue = value
+      .replace(/\n+/g, "\n$&")
+      .replace(/(?:^|\n)([\t ].*)(?:([\n\t ]*)\n(?![\n\t ]))?/g, "$1$2")
+      .replace(/\n+/g, `$&${indent}`);
     let literalFallback = false;
     const foldOptions = getFoldOptions(ctx, true);
     if (blockQuote !== "folded" && type !== Scalar.BLOCK_FOLDED) {
@@ -4312,7 +5303,12 @@ function blockString({ comment, type, value }, ctx, onComment, onChompKeep) {
         literalFallback = true;
       };
     }
-    const body = foldFlowLines(`${start}${foldedValue}${end}`, indent, FOLD_BLOCK, foldOptions);
+    const body = foldFlowLines(
+      `${start}${foldedValue}${end}`,
+      indent,
+      FOLD_BLOCK,
+      foldOptions,
+    );
     if (!literalFallback)
       return `>${header}
 ${indent}${body}`;
@@ -4324,13 +5320,27 @@ ${indent}${start}${value}${end}`;
 function plainString(item, ctx, onComment, onChompKeep) {
   const { type, value } = item;
   const { actualString, implicitKey, indent, indentStep, inFlow } = ctx;
-  if (implicitKey && value.includes("\n") || inFlow && /[[\]{},]/.test(value)) {
+  if (
+    (implicitKey && value.includes("\n")) ||
+    (inFlow && /[[\]{},]/.test(value))
+  ) {
     return quotedString(value, ctx);
   }
-  if (/^[\n\t ,[\]{}#&*!|>'"%@`]|^[?-]$|^[?-][ \t]|[\n:][ \t]|[ \t]\n|[\n\t ]#|[\n\t :]$/.test(value)) {
-    return implicitKey || inFlow || !value.includes("\n") ? quotedString(value, ctx) : blockString(item, ctx, onComment, onChompKeep);
+  if (
+    /^[\n\t ,[\]{}#&*!|>'"%@`]|^[?-]$|^[?-][ \t]|[\n:][ \t]|[ \t]\n|[\n\t ]#|[\n\t :]$/.test(
+      value,
+    )
+  ) {
+    return implicitKey || inFlow || !value.includes("\n")
+      ? quotedString(value, ctx)
+      : blockString(item, ctx, onComment, onChompKeep);
   }
-  if (!implicitKey && !inFlow && type !== Scalar.PLAIN && value.includes("\n")) {
+  if (
+    !implicitKey &&
+    !inFlow &&
+    type !== Scalar.PLAIN &&
+    value.includes("\n")
+  ) {
     return blockString(item, ctx, onComment, onChompKeep);
   }
   if (containsDocumentMarker(value)) {
@@ -4341,22 +5351,34 @@ function plainString(item, ctx, onComment, onChompKeep) {
       return quotedString(value, ctx);
     }
   }
-  const str = value.replace(/\n+/g, `$&
-${indent}`);
+  const str = value.replace(
+    /\n+/g,
+    `$&
+${indent}`,
+  );
   if (actualString) {
     const test = (tag) => {
       var _a;
-      return tag.default && tag.tag !== "tag:yaml.org,2002:str" && ((_a = tag.test) == null ? void 0 : _a.test(str));
+      return (
+        tag.default &&
+        tag.tag !== "tag:yaml.org,2002:str" &&
+        ((_a = tag.test) == null ? void 0 : _a.test(str))
+      );
     };
     const { compat, tags } = ctx.doc.schema;
     if (tags.some(test) || (compat == null ? void 0 : compat.some(test)))
       return quotedString(value, ctx);
   }
-  return implicitKey ? str : foldFlowLines(str, indent, FOLD_FLOW, getFoldOptions(ctx, false));
+  return implicitKey
+    ? str
+    : foldFlowLines(str, indent, FOLD_FLOW, getFoldOptions(ctx, false));
 }
 function stringifyString(item, ctx, onComment, onChompKeep) {
   const { implicitKey, inFlow } = ctx;
-  const ss = typeof item.value === "string" ? item : Object.assign({}, item, { value: String(item.value) });
+  const ss =
+    typeof item.value === "string"
+      ? item
+      : Object.assign({}, item, { value: String(item.value) });
   let { type } = item;
   if (type !== Scalar.QUOTE_DOUBLE) {
     if (/[\x00-\x08\x0b-\x1f\x7f-\x9f\u{D800}-\u{DFFF}]/u.test(ss.value))
@@ -4366,7 +5388,9 @@ function stringifyString(item, ctx, onComment, onChompKeep) {
     switch (_type) {
       case Scalar.BLOCK_FOLDED:
       case Scalar.BLOCK_LITERAL:
-        return implicitKey || inFlow ? quotedString(ss.value, ctx) : blockString(ss, ctx, onComment, onChompKeep);
+        return implicitKey || inFlow
+          ? quotedString(ss.value, ctx)
+          : blockString(ss, ctx, onComment, onChompKeep);
       case Scalar.QUOTE_DOUBLE:
         return doubleQuotedString(ss.value, ctx);
       case Scalar.QUOTE_SINGLE:
@@ -4380,35 +5404,38 @@ function stringifyString(item, ctx, onComment, onChompKeep) {
   let res = _stringify(type);
   if (res === null) {
     const { defaultKeyType, defaultStringType } = ctx.options;
-    const t = implicitKey && defaultKeyType || defaultStringType;
+    const t = (implicitKey && defaultKeyType) || defaultStringType;
     res = _stringify(t);
-    if (res === null)
-      throw new Error(`Unsupported default string type ${t}`);
+    if (res === null) throw new Error(`Unsupported default string type ${t}`);
   }
   return res;
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/stringify/stringify.js
 function createStringifyContext(doc, options) {
-  const opt = Object.assign({
-    blockQuote: true,
-    commentString: stringifyComment,
-    defaultKeyType: null,
-    defaultStringType: "PLAIN",
-    directives: null,
-    doubleQuotedAsJSON: false,
-    doubleQuotedMinMultiLineLength: 40,
-    falseStr: "false",
-    flowCollectionPadding: true,
-    indentSeq: true,
-    lineWidth: 80,
-    minContentWidth: 20,
-    nullStr: "null",
-    simpleKeys: false,
-    singleQuote: null,
-    trueStr: "true",
-    verifyAliasOrder: true
-  }, doc.schema.toStringOptions, options);
+  const opt = Object.assign(
+    {
+      blockQuote: true,
+      commentString: stringifyComment,
+      defaultKeyType: null,
+      defaultStringType: "PLAIN",
+      directives: null,
+      doubleQuotedAsJSON: false,
+      doubleQuotedMinMultiLineLength: 40,
+      falseStr: "false",
+      flowCollectionPadding: true,
+      indentSeq: true,
+      lineWidth: 80,
+      minContentWidth: 20,
+      nullStr: "null",
+      simpleKeys: false,
+      singleQuote: null,
+      trueStr: "true",
+      verifyAliasOrder: true,
+    },
+    doc.schema.toStringOptions,
+    options,
+  );
   let inFlow;
   switch (opt.collectionStyle) {
     case "block":
@@ -4427,7 +5454,7 @@ function createStringifyContext(doc, options) {
     indent: "",
     indentStep: typeof opt.indent === "number" ? " ".repeat(opt.indent) : "  ",
     inFlow,
-    options: opt
+    options: opt,
   };
 }
 function getTagObject(tags, item) {
@@ -4435,7 +5462,9 @@ function getTagObject(tags, item) {
   if (item.tag) {
     const match = tags.filter((t) => t.tag === item.tag);
     if (match.length > 0)
-      return (_a = match.find((t) => t.format === item.format)) != null ? _a : match[0];
+      return (_a = match.find((t) => t.format === item.format)) != null
+        ? _a
+        : match[0];
   }
   let tagObj = void 0;
   let obj;
@@ -4447,24 +5476,33 @@ function getTagObject(tags, item) {
     });
     if (match.length > 1) {
       const testMatch = match.filter((t) => t.test);
-      if (testMatch.length > 0)
-        match = testMatch;
+      if (testMatch.length > 0) match = testMatch;
     }
-    tagObj = (_b = match.find((t) => t.format === item.format)) != null ? _b : match.find((t) => !t.format);
+    tagObj =
+      (_b = match.find((t) => t.format === item.format)) != null
+        ? _b
+        : match.find((t) => !t.format);
   } else {
     obj = item;
     tagObj = tags.find((t) => t.nodeClass && obj instanceof t.nodeClass);
   }
   if (!tagObj) {
-    const name = (_d = (_c = obj == null ? void 0 : obj.constructor) == null ? void 0 : _c.name) != null ? _d : obj === null ? "null" : typeof obj;
+    const name =
+      (_d =
+        (_c = obj == null ? void 0 : obj.constructor) == null
+          ? void 0
+          : _c.name) != null
+        ? _d
+        : obj === null
+          ? "null"
+          : typeof obj;
     throw new Error(`Tag not resolved for ${name} value`);
   }
   return tagObj;
 }
 function stringifyProps(node, tagObj, { anchors, doc }) {
   var _a;
-  if (!doc.directives)
-    return "";
+  if (!doc.directives) return "";
   const props = [];
   const anchor = (isScalar(node) || isCollection(node)) && node.anchor;
   if (anchor && anchorIsValid(anchor)) {
@@ -4472,84 +5510,107 @@ function stringifyProps(node, tagObj, { anchors, doc }) {
     props.push(`&${anchor}`);
   }
   const tag = (_a = node.tag) != null ? _a : tagObj.default ? null : tagObj.tag;
-  if (tag)
-    props.push(doc.directives.tagString(tag));
+  if (tag) props.push(doc.directives.tagString(tag));
   return props.join(" ");
 }
 function stringify(item, ctx, onComment, onChompKeep) {
   var _a, _b;
-  if (isPair(item))
-    return item.toString(ctx, onComment, onChompKeep);
+  if (isPair(item)) return item.toString(ctx, onComment, onChompKeep);
   if (isAlias(item)) {
-    if (ctx.doc.directives)
-      return item.toString(ctx);
+    if (ctx.doc.directives) return item.toString(ctx);
     if ((_a = ctx.resolvedAliases) == null ? void 0 : _a.has(item)) {
-      throw new TypeError(`Cannot stringify circular structure without alias nodes`);
+      throw new TypeError(
+        `Cannot stringify circular structure without alias nodes`,
+      );
     } else {
-      if (ctx.resolvedAliases)
-        ctx.resolvedAliases.add(item);
-      else
-        ctx.resolvedAliases = /* @__PURE__ */ new Set([item]);
+      if (ctx.resolvedAliases) ctx.resolvedAliases.add(item);
+      else ctx.resolvedAliases = /* @__PURE__ */ new Set([item]);
       item = item.resolve(ctx.doc);
     }
   }
   let tagObj = void 0;
-  const node = isNode(item) ? item : ctx.doc.createNode(item, { onTagObj: (o) => tagObj = o });
-  tagObj != null ? tagObj : tagObj = getTagObject(ctx.doc.schema.tags, node);
+  const node = isNode(item)
+    ? item
+    : ctx.doc.createNode(item, { onTagObj: (o) => (tagObj = o) });
+  tagObj != null ? tagObj : (tagObj = getTagObject(ctx.doc.schema.tags, node));
   const props = stringifyProps(node, tagObj, ctx);
   if (props.length > 0)
-    ctx.indentAtStart = ((_b = ctx.indentAtStart) != null ? _b : 0) + props.length + 1;
-  const str = typeof tagObj.stringify === "function" ? tagObj.stringify(node, ctx, onComment, onChompKeep) : isScalar(node) ? stringifyString(node, ctx, onComment, onChompKeep) : node.toString(ctx, onComment, onChompKeep);
-  if (!props)
-    return str;
-  return isScalar(node) || str[0] === "{" || str[0] === "[" ? `${props} ${str}` : `${props}
+    ctx.indentAtStart =
+      ((_b = ctx.indentAtStart) != null ? _b : 0) + props.length + 1;
+  const str =
+    typeof tagObj.stringify === "function"
+      ? tagObj.stringify(node, ctx, onComment, onChompKeep)
+      : isScalar(node)
+        ? stringifyString(node, ctx, onComment, onChompKeep)
+        : node.toString(ctx, onComment, onChompKeep);
+  if (!props) return str;
+  return isScalar(node) || str[0] === "{" || str[0] === "["
+    ? `${props} ${str}`
+    : `${props}
 ${ctx.indent}${str}`;
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/stringify/stringifyPair.js
 function stringifyPair({ key, value }, ctx, onComment, onChompKeep) {
   var _a, _b;
-  const { allNullValues, doc, indent, indentStep, options: { commentString, indentSeq, simpleKeys } } = ctx;
-  let keyComment = isNode(key) && key.comment || null;
+  const {
+    allNullValues,
+    doc,
+    indent,
+    indentStep,
+    options: { commentString, indentSeq, simpleKeys },
+  } = ctx;
+  let keyComment = (isNode(key) && key.comment) || null;
   if (simpleKeys) {
     if (keyComment) {
       throw new Error("With simple keys, key nodes cannot have comments");
     }
-    if (isCollection(key) || !isNode(key) && typeof key === "object") {
+    if (isCollection(key) || (!isNode(key) && typeof key === "object")) {
       const msg = "With simple keys, collection cannot be used as a key value";
       throw new Error(msg);
     }
   }
-  let explicitKey = !simpleKeys && (!key || keyComment && value == null && !ctx.inFlow || isCollection(key) || (isScalar(key) ? key.type === Scalar.BLOCK_FOLDED || key.type === Scalar.BLOCK_LITERAL : typeof key === "object"));
+  let explicitKey =
+    !simpleKeys &&
+    (!key ||
+      (keyComment && value == null && !ctx.inFlow) ||
+      isCollection(key) ||
+      (isScalar(key)
+        ? key.type === Scalar.BLOCK_FOLDED || key.type === Scalar.BLOCK_LITERAL
+        : typeof key === "object"));
   ctx = Object.assign({}, ctx, {
     allNullValues: false,
     implicitKey: !explicitKey && (simpleKeys || !allNullValues),
-    indent: indent + indentStep
+    indent: indent + indentStep,
   });
   let keyCommentDone = false;
   let chompKeep = false;
-  let str = stringify(key, ctx, () => keyCommentDone = true, () => chompKeep = true);
+  let str = stringify(
+    key,
+    ctx,
+    () => (keyCommentDone = true),
+    () => (chompKeep = true),
+  );
   if (!explicitKey && !ctx.inFlow && str.length > 1024) {
     if (simpleKeys)
-      throw new Error("With simple keys, single line scalar must not span more than 1024 characters");
+      throw new Error(
+        "With simple keys, single line scalar must not span more than 1024 characters",
+      );
     explicitKey = true;
   }
   if (ctx.inFlow) {
     if (allNullValues || value == null) {
-      if (keyCommentDone && onComment)
-        onComment();
+      if (keyCommentDone && onComment) onComment();
       return str === "" ? "?" : explicitKey ? `? ${str}` : str;
     }
-  } else if (allNullValues && !simpleKeys || value == null && explicitKey) {
+  } else if ((allNullValues && !simpleKeys) || (value == null && explicitKey)) {
     str = `? ${str}`;
     if (keyComment && !keyCommentDone) {
       str += lineComment(str, ctx.indent, commentString(keyComment));
-    } else if (chompKeep && onChompKeep)
-      onChompKeep();
+    } else if (chompKeep && onChompKeep) onChompKeep();
     return str;
   }
-  if (keyCommentDone)
-    keyComment = null;
+  if (keyCommentDone) keyComment = null;
   if (explicitKey) {
     if (keyComment)
       str += lineComment(str, ctx.indent, commentString(keyComment));
@@ -4569,18 +5630,31 @@ ${indent}:`;
     vsb = false;
     vcb = null;
     valueComment = null;
-    if (value && typeof value === "object")
-      value = doc.createNode(value);
+    if (value && typeof value === "object") value = doc.createNode(value);
   }
   ctx.implicitKey = false;
   if (!explicitKey && !keyComment && isScalar(value))
     ctx.indentAtStart = str.length + 1;
   chompKeep = false;
-  if (!indentSeq && indentStep.length >= 2 && !ctx.inFlow && !explicitKey && isSeq(value) && !value.flow && !value.tag && !value.anchor) {
+  if (
+    !indentSeq &&
+    indentStep.length >= 2 &&
+    !ctx.inFlow &&
+    !explicitKey &&
+    isSeq(value) &&
+    !value.flow &&
+    !value.tag &&
+    !value.anchor
+  ) {
     ctx.indent = ctx.indent.substring(2);
   }
   let valueCommentDone = false;
-  const valueStr = stringify(value, ctx, () => valueCommentDone = true, () => chompKeep = true);
+  const valueStr = stringify(
+    value,
+    ctx,
+    () => (valueCommentDone = true),
+    () => (chompKeep = true),
+  );
   let ws = " ";
   if (keyComment || vsb || vcb) {
     ws = vsb ? "\n" : "";
@@ -4590,8 +5664,7 @@ ${indent}:`;
 ${indentComment(cs, ctx.indent)}`;
     }
     if (valueStr === "" && !ctx.inFlow) {
-      if (ws === "\n" && valueComment)
-        ws = "\n\n";
+      if (ws === "\n" && valueComment) ws = "\n\n";
     } else {
       ws += `
 ${ctx.indent}`;
@@ -4600,16 +5673,23 @@ ${ctx.indent}`;
     const vs0 = valueStr[0];
     const nl0 = valueStr.indexOf("\n");
     const hasNewline = nl0 !== -1;
-    const flow = (_b = (_a = ctx.inFlow) != null ? _a : value.flow) != null ? _b : value.items.length === 0;
+    const flow =
+      (_b = (_a = ctx.inFlow) != null ? _a : value.flow) != null
+        ? _b
+        : value.items.length === 0;
     if (hasNewline || !flow) {
       let hasPropsLine = false;
       if (hasNewline && (vs0 === "&" || vs0 === "!")) {
         let sp0 = valueStr.indexOf(" ");
-        if (vs0 === "&" && sp0 !== -1 && sp0 < nl0 && valueStr[sp0 + 1] === "!") {
+        if (
+          vs0 === "&" &&
+          sp0 !== -1 &&
+          sp0 < nl0 &&
+          valueStr[sp0 + 1] === "!"
+        ) {
           sp0 = valueStr.indexOf(" ", sp0 + 1);
         }
-        if (sp0 === -1 || nl0 < sp0)
-          hasPropsLine = true;
+        if (sp0 === -1 || nl0 < sp0) hasPropsLine = true;
       }
       if (!hasPropsLine)
         ws = `
@@ -4620,8 +5700,7 @@ ${ctx.indent}`;
   }
   str += ws + valueStr;
   if (ctx.inFlow) {
-    if (valueCommentDone && onComment)
-      onComment();
+    if (valueCommentDone && onComment) onComment();
   } else if (valueComment && !valueCommentDone) {
     str += lineComment(str, ctx.indent, commentString(valueComment));
   } else if (chompKeep && onChompKeep) {
@@ -4640,26 +5719,32 @@ function warn(logLevel, warning) {
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/yaml-1.1/merge.js
 var MERGE_KEY = "<<";
 var merge = {
-  identify: (value) => value === MERGE_KEY || typeof value === "symbol" && value.description === MERGE_KEY,
+  identify: (value) =>
+    value === MERGE_KEY ||
+    (typeof value === "symbol" && value.description === MERGE_KEY),
   default: "key",
   tag: "tag:yaml.org,2002:merge",
   test: /^<<$/,
-  resolve: () => Object.assign(new Scalar(Symbol(MERGE_KEY)), {
-    addToJSMap: addMergeToJSMap
-  }),
-  stringify: () => MERGE_KEY
+  resolve: () =>
+    Object.assign(new Scalar(Symbol(MERGE_KEY)), {
+      addToJSMap: addMergeToJSMap,
+    }),
+  stringify: () => MERGE_KEY,
 };
-var isMergeKey = (ctx, key) => (merge.identify(key) || isScalar(key) && (!key.type || key.type === Scalar.PLAIN) && merge.identify(key.value)) && (ctx == null ? void 0 : ctx.doc.schema.tags.some((tag) => tag.tag === merge.tag && tag.default));
+var isMergeKey = (ctx, key) =>
+  (merge.identify(key) ||
+    (isScalar(key) &&
+      (!key.type || key.type === Scalar.PLAIN) &&
+      merge.identify(key.value))) &&
+  (ctx == null
+    ? void 0
+    : ctx.doc.schema.tags.some((tag) => tag.tag === merge.tag && tag.default));
 function addMergeToJSMap(ctx, map2, value) {
   value = ctx && isAlias(value) ? value.resolve(ctx.doc) : value;
-  if (isSeq(value))
-    for (const it of value.items)
-      mergeValue(ctx, map2, it);
+  if (isSeq(value)) for (const it of value.items) mergeValue(ctx, map2, it);
   else if (Array.isArray(value))
-    for (const it of value)
-      mergeValue(ctx, map2, it);
-  else
-    mergeValue(ctx, map2, value);
+    for (const it of value) mergeValue(ctx, map2, it);
+  else mergeValue(ctx, map2, value);
 }
 function mergeValue(ctx, map2, value) {
   const source = ctx && isAlias(value) ? value.resolve(ctx.doc) : value;
@@ -4668,8 +5753,7 @@ function mergeValue(ctx, map2, value) {
   const srcMap = source.toJSON(null, ctx, Map);
   for (const [key, value2] of srcMap) {
     if (map2 instanceof Map) {
-      if (!map2.has(key))
-        map2.set(key, value2);
+      if (!map2.has(key)) map2.set(key, value2);
     } else if (map2 instanceof Set) {
       map2.add(key);
     } else if (!Object.prototype.hasOwnProperty.call(map2, key)) {
@@ -4677,7 +5761,7 @@ function mergeValue(ctx, map2, value) {
         value: value2,
         writable: true,
         enumerable: true,
-        configurable: true
+        configurable: true,
       });
     }
   }
@@ -4686,10 +5770,8 @@ function mergeValue(ctx, map2, value) {
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/nodes/addPairToJSMap.js
 function addPairToJSMap(ctx, map2, { key, value }) {
-  if (isNode(key) && key.addToJSMap)
-    key.addToJSMap(ctx, map2, value);
-  else if (isMergeKey(ctx, key))
-    addMergeToJSMap(ctx, map2, value);
+  if (isNode(key) && key.addToJSMap) key.addToJSMap(ctx, map2, value);
+  else if (isMergeKey(ctx, key)) addMergeToJSMap(ctx, map2, value);
   else {
     const jsKey = toJS(key, "", ctx);
     if (map2 instanceof Map) {
@@ -4704,32 +5786,30 @@ function addPairToJSMap(ctx, map2, { key, value }) {
           value: jsValue,
           writable: true,
           enumerable: true,
-          configurable: true
+          configurable: true,
         });
-      else
-        map2[stringKey] = jsValue;
+      else map2[stringKey] = jsValue;
     }
   }
   return map2;
 }
 function stringifyKey(key, jsKey, ctx) {
-  if (jsKey === null)
-    return "";
-  if (typeof jsKey !== "object")
-    return String(jsKey);
+  if (jsKey === null) return "";
+  if (typeof jsKey !== "object") return String(jsKey);
   if (isNode(key) && (ctx == null ? void 0 : ctx.doc)) {
     const strCtx = createStringifyContext(ctx.doc, {});
     strCtx.anchors = /* @__PURE__ */ new Set();
-    for (const node of ctx.anchors.keys())
-      strCtx.anchors.add(node.anchor);
+    for (const node of ctx.anchors.keys()) strCtx.anchors.add(node.anchor);
     strCtx.inFlow = true;
     strCtx.inStringifyKey = true;
     const strKey = key.toString(strCtx);
     if (!ctx.mapKeyWarned) {
       let jsonStr = JSON.stringify(strKey);
-      if (jsonStr.length > 40)
-        jsonStr = jsonStr.substring(0, 36) + '..."';
-      warn(ctx.doc.options.logLevel, `Keys with collection values will be stringified due to JS Object restrictions: ${jsonStr}. Set mapAsMap: true to use object keys.`);
+      if (jsonStr.length > 40) jsonStr = jsonStr.substring(0, 36) + '..."';
+      warn(
+        ctx.doc.options.logLevel,
+        `Keys with collection values will be stringified due to JS Object restrictions: ${jsonStr}. Set mapAsMap: true to use object keys.`,
+      );
       ctx.mapKeyWarned = true;
     }
     return strKey;
@@ -4751,18 +5831,20 @@ var Pair = class _Pair {
   }
   clone(schema4) {
     let { key, value } = this;
-    if (isNode(key))
-      key = key.clone(schema4);
-    if (isNode(value))
-      value = value.clone(schema4);
+    if (isNode(key)) key = key.clone(schema4);
+    if (isNode(value)) value = value.clone(schema4);
     return new _Pair(key, value);
   }
   toJSON(_, ctx) {
-    const pair = (ctx == null ? void 0 : ctx.mapAsMap) ? /* @__PURE__ */ new Map() : {};
+    const pair = (ctx == null ? void 0 : ctx.mapAsMap)
+      ? /* @__PURE__ */ new Map()
+      : {};
     return addPairToJSMap(ctx, pair, this);
   }
   toString(ctx, onComment, onChompKeep) {
-    return (ctx == null ? void 0 : ctx.doc) ? stringifyPair(this, ctx, onComment, onChompKeep) : JSON.stringify(this);
+    return (ctx == null ? void 0 : ctx.doc)
+      ? stringifyPair(this, ctx, onComment, onChompKeep)
+      : JSON.stringify(this);
   }
 };
 
@@ -4773,8 +5855,15 @@ function stringifyCollection(collection, ctx, options) {
   const stringify4 = flow ? stringifyFlowCollection : stringifyBlockCollection;
   return stringify4(collection, ctx, options);
 }
-function stringifyBlockCollection({ comment, items }, ctx, { blockItemPrefix, flowChars, itemIndent, onChompKeep, onComment }) {
-  const { indent, options: { commentString } } = ctx;
+function stringifyBlockCollection(
+  { comment, items },
+  ctx,
+  { blockItemPrefix, flowChars, itemIndent, onChompKeep, onComment },
+) {
+  const {
+    indent,
+    options: { commentString },
+  } = ctx;
   const itemCtx = Object.assign({}, ctx, { indent: itemIndent, type: null });
   let chompKeep = false;
   const lines = [];
@@ -4782,25 +5871,26 @@ function stringifyBlockCollection({ comment, items }, ctx, { blockItemPrefix, fl
     const item = items[i];
     let comment2 = null;
     if (isNode(item)) {
-      if (!chompKeep && item.spaceBefore)
-        lines.push("");
+      if (!chompKeep && item.spaceBefore) lines.push("");
       addCommentBefore(ctx, lines, item.commentBefore, chompKeep);
-      if (item.comment)
-        comment2 = item.comment;
+      if (item.comment) comment2 = item.comment;
     } else if (isPair(item)) {
       const ik = isNode(item.key) ? item.key : null;
       if (ik) {
-        if (!chompKeep && ik.spaceBefore)
-          lines.push("");
+        if (!chompKeep && ik.spaceBefore) lines.push("");
         addCommentBefore(ctx, lines, ik.commentBefore, chompKeep);
       }
     }
     chompKeep = false;
-    let str2 = stringify(item, itemCtx, () => comment2 = null, () => chompKeep = true);
+    let str2 = stringify(
+      item,
+      itemCtx,
+      () => (comment2 = null),
+      () => (chompKeep = true),
+    );
     if (comment2)
       str2 += lineComment(str2, itemIndent, commentString(comment2));
-    if (chompKeep && comment2)
-      chompKeep = false;
+    if (chompKeep && comment2) chompKeep = false;
     lines.push(blockItemPrefix + str2);
   }
   let str;
@@ -4810,25 +5900,30 @@ function stringifyBlockCollection({ comment, items }, ctx, { blockItemPrefix, fl
     str = lines[0];
     for (let i = 1; i < lines.length; ++i) {
       const line = lines[i];
-      str += line ? `
-${indent}${line}` : "\n";
+      str += line
+        ? `
+${indent}${line}`
+        : "\n";
     }
   }
   if (comment) {
     str += "\n" + indentComment(commentString(comment), indent);
-    if (onComment)
-      onComment();
-  } else if (chompKeep && onChompKeep)
-    onChompKeep();
+    if (onComment) onComment();
+  } else if (chompKeep && onChompKeep) onChompKeep();
   return str;
 }
 function stringifyFlowCollection({ items }, ctx, { flowChars, itemIndent }) {
-  const { indent, indentStep, flowCollectionPadding: fcPadding, options: { commentString } } = ctx;
+  const {
+    indent,
+    indentStep,
+    flowCollectionPadding: fcPadding,
+    options: { commentString },
+  } = ctx;
   itemIndent += indentStep;
   const itemCtx = Object.assign({}, ctx, {
     indent: itemIndent,
     inFlow: true,
-    type: null
+    type: null,
   });
   let reqNewline = false;
   let linesAtValue = 0;
@@ -4837,37 +5932,28 @@ function stringifyFlowCollection({ items }, ctx, { flowChars, itemIndent }) {
     const item = items[i];
     let comment = null;
     if (isNode(item)) {
-      if (item.spaceBefore)
-        lines.push("");
+      if (item.spaceBefore) lines.push("");
       addCommentBefore(ctx, lines, item.commentBefore, false);
-      if (item.comment)
-        comment = item.comment;
+      if (item.comment) comment = item.comment;
     } else if (isPair(item)) {
       const ik = isNode(item.key) ? item.key : null;
       if (ik) {
-        if (ik.spaceBefore)
-          lines.push("");
+        if (ik.spaceBefore) lines.push("");
         addCommentBefore(ctx, lines, ik.commentBefore, false);
-        if (ik.comment)
-          reqNewline = true;
+        if (ik.comment) reqNewline = true;
       }
       const iv = isNode(item.value) ? item.value : null;
       if (iv) {
-        if (iv.comment)
-          comment = iv.comment;
-        if (iv.commentBefore)
-          reqNewline = true;
+        if (iv.comment) comment = iv.comment;
+        if (iv.commentBefore) reqNewline = true;
       } else if (item.value == null && (ik == null ? void 0 : ik.comment)) {
         comment = ik.comment;
       }
     }
-    if (comment)
-      reqNewline = true;
-    let str = stringify(item, itemCtx, () => comment = null);
-    if (i < items.length - 1)
-      str += ",";
-    if (comment)
-      str += lineComment(str, itemIndent, commentString(comment));
+    if (comment) reqNewline = true;
+    let str = stringify(item, itemCtx, () => (comment = null));
+    if (i < items.length - 1) str += ",";
+    if (comment) str += lineComment(str, itemIndent, commentString(comment));
     if (!reqNewline && (lines.length > linesAtValue || str.includes("\n")))
       reqNewline = true;
     lines.push(str);
@@ -4884,8 +5970,10 @@ function stringifyFlowCollection({ items }, ctx, { flowChars, itemIndent }) {
     if (reqNewline) {
       let str = start;
       for (const line of lines)
-        str += line ? `
-${indentStep}${indent}${line}` : "\n";
+        str += line
+          ? `
+${indentStep}${indent}${line}`
+          : "\n";
       return `${str}
 ${indent}${end}`;
     } else {
@@ -4893,9 +5981,13 @@ ${indent}${end}`;
     }
   }
 }
-function addCommentBefore({ indent, options: { commentString } }, lines, comment, chompKeep) {
-  if (comment && chompKeep)
-    comment = comment.replace(/^\n+/, "");
+function addCommentBefore(
+  { indent, options: { commentString } },
+  lines,
+  comment,
+  chompKeep,
+) {
+  if (comment && chompKeep) comment = comment.replace(/^\n+/, "");
   if (comment) {
     const ic = indentComment(commentString(comment), indent);
     lines.push(ic.trimStart());
@@ -4907,10 +5999,8 @@ function findPair(items, key) {
   const k = isScalar(key) ? key.value : key;
   for (const it of items) {
     if (isPair(it)) {
-      if (it.key === key || it.key === k)
-        return it;
-      if (isScalar(it.key) && it.key.value === k)
-        return it;
+      if (it.key === key || it.key === k) return it;
+      if (isScalar(it.key) && it.key.value === k) return it;
     }
   }
   return void 0;
@@ -4933,17 +6023,14 @@ var YAMLMap = class extends Collection {
     const add = (key, value) => {
       if (typeof replacer === "function")
         value = replacer.call(obj, key, value);
-      else if (Array.isArray(replacer) && !replacer.includes(key))
-        return;
+      else if (Array.isArray(replacer) && !replacer.includes(key)) return;
       if (value !== void 0 || keepUndefined)
         map2.items.push(createPair(key, value, ctx));
     };
     if (obj instanceof Map) {
-      for (const [key, value] of obj)
-        add(key, value);
+      for (const [key, value] of obj) add(key, value);
     } else if (obj && typeof obj === "object") {
-      for (const key of Object.keys(obj))
-        add(key, obj[key]);
+      for (const key of Object.keys(obj)) add(key, obj[key]);
     }
     if (typeof schema4.sortMapEntries === "function") {
       map2.items.sort(schema4.sortMapEntries);
@@ -4959,35 +6046,28 @@ var YAMLMap = class extends Collection {
   add(pair, overwrite) {
     var _a;
     let _pair;
-    if (isPair(pair))
-      _pair = pair;
+    if (isPair(pair)) _pair = pair;
     else if (!pair || typeof pair !== "object" || !("key" in pair)) {
       _pair = new Pair(pair, pair == null ? void 0 : pair.value);
-    } else
-      _pair = new Pair(pair.key, pair.value);
+    } else _pair = new Pair(pair.key, pair.value);
     const prev = findPair(this.items, _pair.key);
     const sortEntries = (_a = this.schema) == null ? void 0 : _a.sortMapEntries;
     if (prev) {
-      if (!overwrite)
-        throw new Error(`Key ${_pair.key} already set`);
+      if (!overwrite) throw new Error(`Key ${_pair.key} already set`);
       if (isScalar(prev.value) && isScalarValue(_pair.value))
         prev.value.value = _pair.value;
-      else
-        prev.value = _pair.value;
+      else prev.value = _pair.value;
     } else if (sortEntries) {
       const i = this.items.findIndex((item) => sortEntries(_pair, item) < 0);
-      if (i === -1)
-        this.items.push(_pair);
-      else
-        this.items.splice(i, 0, _pair);
+      if (i === -1) this.items.push(_pair);
+      else this.items.splice(i, 0, _pair);
     } else {
       this.items.push(_pair);
     }
   }
   delete(key) {
     const it = findPair(this.items, key);
-    if (!it)
-      return false;
+    if (!it) return false;
     const del = this.items.splice(this.items.indexOf(it), 1);
     return del.length > 0;
   }
@@ -4995,7 +6075,9 @@ var YAMLMap = class extends Collection {
     var _a;
     const it = findPair(this.items, key);
     const node = it == null ? void 0 : it.value;
-    return (_a = !keepScalar && isScalar(node) ? node.value : node) != null ? _a : void 0;
+    return (_a = !keepScalar && isScalar(node) ? node.value : node) != null
+      ? _a
+      : void 0;
   }
   has(key) {
     return !!findPair(this.items, key);
@@ -5009,19 +6091,22 @@ var YAMLMap = class extends Collection {
    * @returns Instance of Type, Map, or Object
    */
   toJSON(_, ctx, Type) {
-    const map2 = Type ? new Type() : (ctx == null ? void 0 : ctx.mapAsMap) ? /* @__PURE__ */ new Map() : {};
-    if (ctx == null ? void 0 : ctx.onCreate)
-      ctx.onCreate(map2);
-    for (const item of this.items)
-      addPairToJSMap(ctx, map2, item);
+    const map2 = Type
+      ? new Type()
+      : (ctx == null ? void 0 : ctx.mapAsMap)
+        ? /* @__PURE__ */ new Map()
+        : {};
+    if (ctx == null ? void 0 : ctx.onCreate) ctx.onCreate(map2);
+    for (const item of this.items) addPairToJSMap(ctx, map2, item);
     return map2;
   }
   toString(ctx, onComment, onChompKeep) {
-    if (!ctx)
-      return JSON.stringify(this);
+    if (!ctx) return JSON.stringify(this);
     for (const item of this.items) {
       if (!isPair(item))
-        throw new Error(`Map items must all be pairs; found ${JSON.stringify(item)} instead`);
+        throw new Error(
+          `Map items must all be pairs; found ${JSON.stringify(item)} instead`,
+        );
     }
     if (!ctx.allNullValues && this.hasAllNullValues(false))
       ctx = Object.assign({}, ctx, { allNullValues: true });
@@ -5030,7 +6115,7 @@ var YAMLMap = class extends Collection {
       flowChars: { start: "{", end: "}" },
       itemIndent: ctx.indent || "",
       onChompKeep,
-      onComment
+      onComment,
     });
   }
 };
@@ -5042,11 +6127,10 @@ var map = {
   nodeClass: YAMLMap,
   tag: "tag:yaml.org,2002:map",
   resolve(map2, onError) {
-    if (!isMap(map2))
-      onError("Expected a mapping for this tag");
+    if (!isMap(map2)) onError("Expected a mapping for this tag");
     return map2;
   },
-  createNode: (schema4, obj, ctx) => YAMLMap.from(schema4, obj, ctx)
+  createNode: (schema4, obj, ctx) => YAMLMap.from(schema4, obj, ctx),
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/nodes/YAMLSeq.js
@@ -5071,15 +6155,13 @@ var YAMLSeq = class extends Collection {
    */
   delete(key) {
     const idx = asItemIndex(key);
-    if (typeof idx !== "number")
-      return false;
+    if (typeof idx !== "number") return false;
     const del = this.items.splice(idx, 1);
     return del.length > 0;
   }
   get(key, keepScalar) {
     const idx = asItemIndex(key);
-    if (typeof idx !== "number")
-      return void 0;
+    if (typeof idx !== "number") return void 0;
     const it = this.items[idx];
     return !keepScalar && isScalar(it) ? it.value : it;
   }
@@ -5105,29 +6187,24 @@ var YAMLSeq = class extends Collection {
     if (typeof idx !== "number")
       throw new Error(`Expected a valid index, not ${key}.`);
     const prev = this.items[idx];
-    if (isScalar(prev) && isScalarValue(value))
-      prev.value = value;
-    else
-      this.items[idx] = value;
+    if (isScalar(prev) && isScalarValue(value)) prev.value = value;
+    else this.items[idx] = value;
   }
   toJSON(_, ctx) {
     const seq2 = [];
-    if (ctx == null ? void 0 : ctx.onCreate)
-      ctx.onCreate(seq2);
+    if (ctx == null ? void 0 : ctx.onCreate) ctx.onCreate(seq2);
     let i = 0;
-    for (const item of this.items)
-      seq2.push(toJS(item, String(i++), ctx));
+    for (const item of this.items) seq2.push(toJS(item, String(i++), ctx));
     return seq2;
   }
   toString(ctx, onComment, onChompKeep) {
-    if (!ctx)
-      return JSON.stringify(this);
+    if (!ctx) return JSON.stringify(this);
     return stringifyCollection(this, ctx, {
       blockItemPrefix: "- ",
       flowChars: { start: "[", end: "]" },
       itemIndent: (ctx.indent || "") + "  ",
       onChompKeep,
-      onComment
+      onComment,
     });
   }
   static from(schema4, obj, ctx) {
@@ -5148,9 +6225,10 @@ var YAMLSeq = class extends Collection {
 };
 function asItemIndex(key) {
   let idx = isScalar(key) ? key.value : key;
-  if (idx && typeof idx === "string")
-    idx = Number(idx);
-  return typeof idx === "number" && Number.isInteger(idx) && idx >= 0 ? idx : null;
+  if (idx && typeof idx === "string") idx = Number(idx);
+  return typeof idx === "number" && Number.isInteger(idx) && idx >= 0
+    ? idx
+    : null;
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/common/seq.js
@@ -5160,11 +6238,10 @@ var seq = {
   nodeClass: YAMLSeq,
   tag: "tag:yaml.org,2002:seq",
   resolve(seq2, onError) {
-    if (!isSeq(seq2))
-      onError("Expected a sequence for this tag");
+    if (!isSeq(seq2)) onError("Expected a sequence for this tag");
     return seq2;
   },
-  createNode: (schema4, obj, ctx) => YAMLSeq.from(schema4, obj, ctx)
+  createNode: (schema4, obj, ctx) => YAMLSeq.from(schema4, obj, ctx),
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/common/string.js
@@ -5176,7 +6253,7 @@ var string = {
   stringify(item, ctx, onComment, onChompKeep) {
     ctx = Object.assign({ actualString: true }, ctx);
     return stringifyString(item, ctx, onComment, onChompKeep);
-  }
+  },
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/common/null.js
@@ -5187,7 +6264,10 @@ var nullTag = {
   tag: "tag:yaml.org,2002:null",
   test: /^(?:~|[Nn]ull|NULL)?$/,
   resolve: () => new Scalar(null),
-  stringify: ({ source }, ctx) => typeof source === "string" && nullTag.test.test(source) ? source : ctx.options.nullStr
+  stringify: ({ source }, ctx) =>
+    typeof source === "string" && nullTag.test.test(source)
+      ? source
+      : ctx.options.nullStr,
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/core/bool.js
@@ -5200,30 +6280,31 @@ var boolTag = {
   stringify({ source, value }, ctx) {
     if (source && boolTag.test.test(source)) {
       const sv = source[0] === "t" || source[0] === "T";
-      if (value === sv)
-        return source;
+      if (value === sv) return source;
     }
     return value ? ctx.options.trueStr : ctx.options.falseStr;
-  }
+  },
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/stringify/stringifyNumber.js
 function stringifyNumber({ format, minFractionDigits, tag, value }) {
-  if (typeof value === "bigint")
-    return String(value);
+  if (typeof value === "bigint") return String(value);
   const num = typeof value === "number" ? value : Number(value);
-  if (!isFinite(num))
-    return isNaN(num) ? ".nan" : num < 0 ? "-.inf" : ".inf";
+  if (!isFinite(num)) return isNaN(num) ? ".nan" : num < 0 ? "-.inf" : ".inf";
   let n = Object.is(value, -0) ? "-0" : JSON.stringify(value);
-  if (!format && minFractionDigits && (!tag || tag === "tag:yaml.org,2002:float") && /^\d/.test(n)) {
+  if (
+    !format &&
+    minFractionDigits &&
+    (!tag || tag === "tag:yaml.org,2002:float") &&
+    /^\d/.test(n)
+  ) {
     let i = n.indexOf(".");
     if (i < 0) {
       i = n.length;
       n += ".";
     }
     let d = minFractionDigits - (n.length - i - 1);
-    while (d-- > 0)
-      n += "0";
+    while (d-- > 0) n += "0";
   }
   return n;
 }
@@ -5234,8 +6315,13 @@ var floatNaN = {
   default: true,
   tag: "tag:yaml.org,2002:float",
   test: /^(?:[-+]?\.(?:inf|Inf|INF)|\.nan|\.NaN|\.NAN)$/,
-  resolve: (str) => str.slice(-3).toLowerCase() === "nan" ? NaN : str[0] === "-" ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY,
-  stringify: stringifyNumber
+  resolve: (str) =>
+    str.slice(-3).toLowerCase() === "nan"
+      ? NaN
+      : str[0] === "-"
+        ? Number.NEGATIVE_INFINITY
+        : Number.POSITIVE_INFINITY,
+  stringify: stringifyNumber,
 };
 var floatExp = {
   identify: (value) => typeof value === "number",
@@ -5247,7 +6333,7 @@ var floatExp = {
   stringify(node) {
     const num = Number(node.value);
     return isFinite(num) ? num.toExponential() : stringifyNumber(node);
-  }
+  },
 };
 var float = {
   identify: (value) => typeof value === "number",
@@ -5261,16 +6347,17 @@ var float = {
       node.minFractionDigits = str.length - dot - 1;
     return node;
   },
-  stringify: stringifyNumber
+  stringify: stringifyNumber,
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/core/int.js
-var intIdentify = (value) => typeof value === "bigint" || Number.isInteger(value);
-var intResolve = (str, offset, radix, { intAsBigInt }) => intAsBigInt ? BigInt(str) : parseInt(str.substring(offset), radix);
+var intIdentify = (value) =>
+  typeof value === "bigint" || Number.isInteger(value);
+var intResolve = (str, offset, radix, { intAsBigInt }) =>
+  intAsBigInt ? BigInt(str) : parseInt(str.substring(offset), radix);
 function intStringify(node, radix, prefix) {
   const { value } = node;
-  if (intIdentify(value) && value >= 0)
-    return prefix + value.toString(radix);
+  if (intIdentify(value) && value >= 0) return prefix + value.toString(radix);
   return stringifyNumber(node);
 }
 var intOct = {
@@ -5280,7 +6367,7 @@ var intOct = {
   format: "OCT",
   test: /^0o[0-7]+$/,
   resolve: (str, _onError, opt) => intResolve(str, 2, 8, opt),
-  stringify: (node) => intStringify(node, 8, "0o")
+  stringify: (node) => intStringify(node, 8, "0o"),
 };
 var int = {
   identify: intIdentify,
@@ -5288,7 +6375,7 @@ var int = {
   tag: "tag:yaml.org,2002:int",
   test: /^[-+]?[0-9]+$/,
   resolve: (str, _onError, opt) => intResolve(str, 0, 10, opt),
-  stringify: stringifyNumber
+  stringify: stringifyNumber,
 };
 var intHex = {
   identify: (value) => intIdentify(value) && value >= 0,
@@ -5297,7 +6384,7 @@ var intHex = {
   format: "HEX",
   test: /^0x[0-9a-fA-F]+$/,
   resolve: (str, _onError, opt) => intResolve(str, 2, 16, opt),
-  stringify: (node) => intStringify(node, 16, "0x")
+  stringify: (node) => intStringify(node, 16, "0x"),
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/core/schema.js
@@ -5312,7 +6399,7 @@ var schema = [
   intHex,
   floatNaN,
   floatExp,
-  float
+  float,
 ];
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/json/schema.js
@@ -5326,7 +6413,7 @@ var jsonScalars = [
     default: true,
     tag: "tag:yaml.org,2002:str",
     resolve: (str) => str,
-    stringify: stringifyJSON
+    stringify: stringifyJSON,
   },
   {
     identify: (value) => value == null,
@@ -5335,7 +6422,7 @@ var jsonScalars = [
     tag: "tag:yaml.org,2002:null",
     test: /^null$/,
     resolve: () => null,
-    stringify: stringifyJSON
+    stringify: stringifyJSON,
   },
   {
     identify: (value) => typeof value === "boolean",
@@ -5343,15 +6430,17 @@ var jsonScalars = [
     tag: "tag:yaml.org,2002:bool",
     test: /^true$|^false$/,
     resolve: (str) => str === "true",
-    stringify: stringifyJSON
+    stringify: stringifyJSON,
   },
   {
     identify: intIdentify2,
     default: true,
     tag: "tag:yaml.org,2002:int",
     test: /^-?(?:0|[1-9][0-9]*)$/,
-    resolve: (str, _onError, { intAsBigInt }) => intAsBigInt ? BigInt(str) : parseInt(str, 10),
-    stringify: ({ value }) => intIdentify2(value) ? value.toString() : JSON.stringify(value)
+    resolve: (str, _onError, { intAsBigInt }) =>
+      intAsBigInt ? BigInt(str) : parseInt(str, 10),
+    stringify: ({ value }) =>
+      intIdentify2(value) ? value.toString() : JSON.stringify(value),
   },
   {
     identify: (value) => typeof value === "number",
@@ -5359,8 +6448,8 @@ var jsonScalars = [
     tag: "tag:yaml.org,2002:float",
     test: /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]*)?(?:[eE][-+]?[0-9]+)?$/,
     resolve: (str) => parseFloat(str),
-    stringify: stringifyJSON
-  }
+    stringify: stringifyJSON,
+  },
 ];
 var jsonError = {
   default: true,
@@ -5369,7 +6458,7 @@ var jsonError = {
   resolve(str, onError) {
     onError(`Unresolved plain scalar ${JSON.stringify(str)}`);
     return str;
-  }
+  },
 };
 var schema2 = [map, seq].concat(jsonScalars, jsonError);
 
@@ -5391,30 +6480,34 @@ var binary = {
     if (typeof atob === "function") {
       const str = atob(src.replace(/[\n\r]/g, ""));
       const buffer = new Uint8Array(str.length);
-      for (let i = 0; i < str.length; ++i)
-        buffer[i] = str.charCodeAt(i);
+      for (let i = 0; i < str.length; ++i) buffer[i] = str.charCodeAt(i);
       return buffer;
     } else {
-      onError("This environment does not support reading binary tags; either Buffer or atob is required");
+      onError(
+        "This environment does not support reading binary tags; either Buffer or atob is required",
+      );
       return src;
     }
   },
   stringify({ comment, type, value }, ctx, onComment, onChompKeep) {
-    if (!value)
-      return "";
+    if (!value) return "";
     const buf = value;
     let str;
     if (typeof btoa === "function") {
       let s = "";
-      for (let i = 0; i < buf.length; ++i)
-        s += String.fromCharCode(buf[i]);
+      for (let i = 0; i < buf.length; ++i) s += String.fromCharCode(buf[i]);
       str = btoa(s);
     } else {
-      throw new Error("This environment does not support writing binary tags; either Buffer or btoa is required");
+      throw new Error(
+        "This environment does not support writing binary tags; either Buffer or btoa is required",
+      );
     }
-    type != null ? type : type = Scalar.BLOCK_LITERAL;
+    type != null ? type : (type = Scalar.BLOCK_LITERAL);
     if (type !== Scalar.QUOTE_DOUBLE) {
-      const lineWidth = Math.max(ctx.options.lineWidth - ctx.indent.length, ctx.options.minContentWidth);
+      const lineWidth = Math.max(
+        ctx.options.lineWidth - ctx.indent.length,
+        ctx.options.minContentWidth,
+      );
       const n = Math.ceil(str.length / lineWidth);
       const lines = new Array(n);
       for (let i = 0, o = 0; i < n; ++i, o += lineWidth) {
@@ -5422,8 +6515,13 @@ var binary = {
       }
       str = lines.join(type === Scalar.BLOCK_LITERAL ? "\n" : " ");
     }
-    return stringifyString({ comment, type, value: str }, ctx, onComment, onChompKeep);
-  }
+    return stringifyString(
+      { comment, type, value: str },
+      ctx,
+      onComment,
+      onChompKeep,
+    );
+  },
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/yaml-1.1/pairs.js
@@ -5432,26 +6530,28 @@ function resolvePairs(seq2, onError) {
   if (isSeq(seq2)) {
     for (let i = 0; i < seq2.items.length; ++i) {
       let item = seq2.items[i];
-      if (isPair(item))
-        continue;
+      if (isPair(item)) continue;
       else if (isMap(item)) {
         if (item.items.length > 1)
           onError("Each pair must have its own sequence indicator");
         const pair = item.items[0] || new Pair(new Scalar(null));
         if (item.commentBefore)
-          pair.key.commentBefore = pair.key.commentBefore ? `${item.commentBefore}
-${pair.key.commentBefore}` : item.commentBefore;
+          pair.key.commentBefore = pair.key.commentBefore
+            ? `${item.commentBefore}
+${pair.key.commentBefore}`
+            : item.commentBefore;
         if (item.comment) {
           const cn = (_a = pair.value) != null ? _a : pair.key;
-          cn.comment = cn.comment ? `${item.comment}
-${cn.comment}` : item.comment;
+          cn.comment = cn.comment
+            ? `${item.comment}
+${cn.comment}`
+            : item.comment;
         }
         item = pair;
       }
       seq2.items[i] = isPair(item) ? item : new Pair(item);
     }
-  } else
-    onError("Expected a sequence for this tag");
+  } else onError("Expected a sequence for this tag");
   return seq2;
 }
 function createPairs(schema4, iterable, ctx) {
@@ -5468,15 +6568,16 @@ function createPairs(schema4, iterable, ctx) {
         if (it.length === 2) {
           key = it[0];
           value = it[1];
-        } else
-          throw new TypeError(`Expected [key, value] tuple: ${it}`);
+        } else throw new TypeError(`Expected [key, value] tuple: ${it}`);
       } else if (it && it instanceof Object) {
         const keys = Object.keys(it);
         if (keys.length === 1) {
           key = keys[0];
           value = it[key];
         } else {
-          throw new TypeError(`Expected tuple with one key, not ${keys.length} keys`);
+          throw new TypeError(
+            `Expected tuple with one key, not ${keys.length} keys`,
+          );
         }
       } else {
         key = it;
@@ -5490,7 +6591,7 @@ var pairs = {
   default: false,
   tag: "tag:yaml.org,2002:pairs",
   resolve: resolvePairs,
-  createNode: createPairs
+  createNode: createPairs,
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/yaml-1.1/omap.js
@@ -5509,11 +6610,9 @@ var YAMLOMap = class _YAMLOMap extends YAMLSeq {
    * but TypeScript won't allow widening the signature of a child method.
    */
   toJSON(_, ctx) {
-    if (!ctx)
-      return super.toJSON(_);
+    if (!ctx) return super.toJSON(_);
     const map2 = /* @__PURE__ */ new Map();
-    if (ctx == null ? void 0 : ctx.onCreate)
-      ctx.onCreate(map2);
+    if (ctx == null ? void 0 : ctx.onCreate) ctx.onCreate(map2);
     for (const pair of this.items) {
       let key, value;
       if (isPair(pair)) {
@@ -5556,14 +6655,13 @@ var omap = {
     }
     return Object.assign(new YAMLOMap(), pairs2);
   },
-  createNode: (schema4, iterable, ctx) => YAMLOMap.from(schema4, iterable, ctx)
+  createNode: (schema4, iterable, ctx) => YAMLOMap.from(schema4, iterable, ctx),
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/yaml-1.1/bool.js
 function boolStringify({ value, source }, ctx) {
   const boolObj = value ? trueTag : falseTag;
-  if (source && boolObj.test.test(source))
-    return source;
+  if (source && boolObj.test.test(source)) return source;
   return value ? ctx.options.trueStr : ctx.options.falseStr;
 }
 var trueTag = {
@@ -5572,7 +6670,7 @@ var trueTag = {
   tag: "tag:yaml.org,2002:bool",
   test: /^(?:Y|y|[Yy]es|YES|[Tt]rue|TRUE|[Oo]n|ON)$/,
   resolve: () => new Scalar(true),
-  stringify: boolStringify
+  stringify: boolStringify,
 };
 var falseTag = {
   identify: (value) => value === false,
@@ -5580,7 +6678,7 @@ var falseTag = {
   tag: "tag:yaml.org,2002:bool",
   test: /^(?:N|n|[Nn]o|NO|[Ff]alse|FALSE|[Oo]ff|OFF)$/,
   resolve: () => new Scalar(false),
-  stringify: boolStringify
+  stringify: boolStringify,
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/yaml-1.1/float.js
@@ -5589,8 +6687,13 @@ var floatNaN2 = {
   default: true,
   tag: "tag:yaml.org,2002:float",
   test: /^(?:[-+]?\.(?:inf|Inf|INF)|\.nan|\.NaN|\.NAN)$/,
-  resolve: (str) => str.slice(-3).toLowerCase() === "nan" ? NaN : str[0] === "-" ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY,
-  stringify: stringifyNumber
+  resolve: (str) =>
+    str.slice(-3).toLowerCase() === "nan"
+      ? NaN
+      : str[0] === "-"
+        ? Number.NEGATIVE_INFINITY
+        : Number.POSITIVE_INFINITY,
+  stringify: stringifyNumber,
 };
 var floatExp2 = {
   identify: (value) => typeof value === "number",
@@ -5602,7 +6705,7 @@ var floatExp2 = {
   stringify(node) {
     const num = Number(node.value);
     return isFinite(num) ? num.toExponential() : stringifyNumber(node);
-  }
+  },
 };
 var float2 = {
   identify: (value) => typeof value === "number",
@@ -5614,20 +6717,19 @@ var float2 = {
     const dot = str.indexOf(".");
     if (dot !== -1) {
       const f = str.substring(dot + 1).replace(/_/g, "");
-      if (f[f.length - 1] === "0")
-        node.minFractionDigits = f.length;
+      if (f[f.length - 1] === "0") node.minFractionDigits = f.length;
     }
     return node;
   },
-  stringify: stringifyNumber
+  stringify: stringifyNumber,
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/yaml-1.1/int.js
-var intIdentify3 = (value) => typeof value === "bigint" || Number.isInteger(value);
+var intIdentify3 = (value) =>
+  typeof value === "bigint" || Number.isInteger(value);
 function intResolve2(str, offset, radix, { intAsBigInt }) {
   const sign = str[0];
-  if (sign === "-" || sign === "+")
-    offset += 1;
+  if (sign === "-" || sign === "+") offset += 1;
   str = str.substring(offset).replace(/_/g, "");
   if (intAsBigInt) {
     switch (radix) {
@@ -5662,7 +6764,7 @@ var intBin = {
   format: "BIN",
   test: /^[-+]?0b[0-1_]+$/,
   resolve: (str, _onError, opt) => intResolve2(str, 2, 2, opt),
-  stringify: (node) => intStringify2(node, 2, "0b")
+  stringify: (node) => intStringify2(node, 2, "0b"),
 };
 var intOct2 = {
   identify: intIdentify3,
@@ -5671,7 +6773,7 @@ var intOct2 = {
   format: "OCT",
   test: /^[-+]?0[0-7_]+$/,
   resolve: (str, _onError, opt) => intResolve2(str, 1, 8, opt),
-  stringify: (node) => intStringify2(node, 8, "0")
+  stringify: (node) => intStringify2(node, 8, "0"),
 };
 var int2 = {
   identify: intIdentify3,
@@ -5679,7 +6781,7 @@ var int2 = {
   tag: "tag:yaml.org,2002:int",
   test: /^[-+]?[0-9][0-9_]*$/,
   resolve: (str, _onError, opt) => intResolve2(str, 0, 10, opt),
-  stringify: stringifyNumber
+  stringify: stringifyNumber,
 };
 var intHex2 = {
   identify: intIdentify3,
@@ -5688,7 +6790,7 @@ var intHex2 = {
   format: "HEX",
   test: /^[-+]?0x[0-9a-fA-F_]+$/,
   resolve: (str, _onError, opt) => intResolve2(str, 2, 16, opt),
-  stringify: (node) => intStringify2(node, 16, "0x")
+  stringify: (node) => intStringify2(node, 16, "0x"),
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/yaml-1.1/set.js
@@ -5699,15 +6801,18 @@ var YAMLSet = class _YAMLSet extends YAMLMap {
   }
   add(key) {
     let pair;
-    if (isPair(key))
-      pair = key;
-    else if (key && typeof key === "object" && "key" in key && "value" in key && key.value === null)
+    if (isPair(key)) pair = key;
+    else if (
+      key &&
+      typeof key === "object" &&
+      "key" in key &&
+      "value" in key &&
+      key.value === null
+    )
       pair = new Pair(key.key, null);
-    else
-      pair = new Pair(key, null);
+    else pair = new Pair(key, null);
     const prev = findPair(this.items, pair.key);
-    if (!prev)
-      this.items.push(pair);
+    if (!prev) this.items.push(pair);
   }
   /**
    * If `keepPair` is `true`, returns the Pair matching `key`.
@@ -5715,11 +6820,17 @@ var YAMLSet = class _YAMLSet extends YAMLMap {
    */
   get(key, keepPair) {
     const pair = findPair(this.items, key);
-    return !keepPair && isPair(pair) ? isScalar(pair.key) ? pair.key.value : pair.key : pair;
+    return !keepPair && isPair(pair)
+      ? isScalar(pair.key)
+        ? pair.key.value
+        : pair.key
+      : pair;
   }
   set(key, value) {
     if (typeof value !== "boolean")
-      throw new Error(`Expected boolean value for set(key, value) in a YAML set, not ${typeof value}`);
+      throw new Error(
+        `Expected boolean value for set(key, value) in a YAML set, not ${typeof value}`,
+      );
     const prev = findPair(this.items, key);
     if (prev && !value) {
       this.items.splice(this.items.indexOf(prev), 1);
@@ -5731,12 +6842,14 @@ var YAMLSet = class _YAMLSet extends YAMLMap {
     return super.toJSON(_, ctx, Set);
   }
   toString(ctx, onComment, onChompKeep) {
-    if (!ctx)
-      return JSON.stringify(this);
+    if (!ctx) return JSON.stringify(this);
     if (this.hasAllNullValues(true))
-      return super.toString(Object.assign({}, ctx, { allNullValues: true }), onComment, onChompKeep);
-    else
-      throw new Error("Set items must all have null values");
+      return super.toString(
+        Object.assign({}, ctx, { allNullValues: true }),
+        onComment,
+        onChompKeep,
+      );
+    else throw new Error("Set items must all have null values");
   }
   static from(schema4, iterable, ctx) {
     const { replacer } = ctx;
@@ -5762,29 +6875,28 @@ var set = {
     if (isMap(map2)) {
       if (map2.hasAllNullValues(true))
         return Object.assign(new YAMLSet(), map2);
-      else
-        onError("Set items must all have null values");
-    } else
-      onError("Expected a mapping for this tag");
+      else onError("Set items must all have null values");
+    } else onError("Expected a mapping for this tag");
     return map2;
-  }
+  },
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/yaml-1.1/timestamp.js
 function parseSexagesimal(str, asBigInt) {
   const sign = str[0];
   const parts = sign === "-" || sign === "+" ? str.substring(1) : str;
-  const num = (n) => asBigInt ? BigInt(n) : Number(n);
-  const res = parts.replace(/_/g, "").split(":").reduce((res2, p) => res2 * num(60) + num(p), num(0));
+  const num = (n) => (asBigInt ? BigInt(n) : Number(n));
+  const res = parts
+    .replace(/_/g, "")
+    .split(":")
+    .reduce((res2, p) => res2 * num(60) + num(p), num(0));
   return sign === "-" ? num(-1) * res : res;
 }
 function stringifySexagesimal(node) {
   let { value } = node;
   let num = (n) => n;
-  if (typeof value === "bigint")
-    num = (n) => BigInt(n);
-  else if (isNaN(value) || !isFinite(value))
-    return stringifyNumber(node);
+  if (typeof value === "bigint") num = (n) => BigInt(n);
+  else if (isNaN(value) || !isFinite(value)) return stringifyNumber(node);
   let sign = "";
   if (value < 0) {
     sign = "-";
@@ -5802,7 +6914,13 @@ function stringifySexagesimal(node) {
       parts.unshift(value);
     }
   }
-  return sign + parts.map((n) => String(n).padStart(2, "0")).join(":").replace(/000000\d*$/, "");
+  return (
+    sign +
+    parts
+      .map((n) => String(n).padStart(2, "0"))
+      .join(":")
+      .replace(/000000\d*$/, "")
+  );
 }
 var intTime = {
   identify: (value) => typeof value === "bigint" || Number.isInteger(value),
@@ -5810,8 +6928,9 @@ var intTime = {
   tag: "tag:yaml.org,2002:int",
   format: "TIME",
   test: /^[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+$/,
-  resolve: (str, _onError, { intAsBigInt }) => parseSexagesimal(str, intAsBigInt),
-  stringify: stringifySexagesimal
+  resolve: (str, _onError, { intAsBigInt }) =>
+    parseSexagesimal(str, intAsBigInt),
+  stringify: stringifySexagesimal,
 };
 var floatTime = {
   identify: (value) => typeof value === "number",
@@ -5820,7 +6939,7 @@ var floatTime = {
   format: "TIME",
   test: /^[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\.[0-9_]*$/,
   resolve: (str) => parseSexagesimal(str, false),
-  stringify: stringifySexagesimal
+  stringify: stringifySexagesimal,
 };
 var timestamp = {
   identify: (value) => value instanceof Date,
@@ -5829,27 +6948,41 @@ var timestamp = {
   // If the time zone is omitted, the timestamp is assumed to be specified in UTC. The time part
   // may be omitted altogether, resulting in a date format. In such a case, the time part is
   // assumed to be 00:00:00Z (start of day, UTC).
-  test: RegExp("^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})(?:(?:t|T|[ \\t]+)([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}(\\.[0-9]+)?)(?:[ \\t]*(Z|[-+][012]?[0-9](?::[0-9]{2})?))?)?$"),
+  test: RegExp(
+    "^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})(?:(?:t|T|[ \\t]+)([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}(\\.[0-9]+)?)(?:[ \\t]*(Z|[-+][012]?[0-9](?::[0-9]{2})?))?)?$",
+  ),
   resolve(str) {
     const match = str.match(timestamp.test);
     if (!match)
       throw new Error("!!timestamp expects a date, starting with yyyy-mm-dd");
     const [, year, month, day, hour, minute, second] = match.map(Number);
     const millisec = match[7] ? Number((match[7] + "00").substr(1, 3)) : 0;
-    let date = Date.UTC(year, month - 1, day, hour || 0, minute || 0, second || 0, millisec);
+    let date = Date.UTC(
+      year,
+      month - 1,
+      day,
+      hour || 0,
+      minute || 0,
+      second || 0,
+      millisec,
+    );
     const tz = match[8];
     if (tz && tz !== "Z") {
       let d = parseSexagesimal(tz, false);
-      if (Math.abs(d) < 30)
-        d *= 60;
+      if (Math.abs(d) < 30) d *= 60;
       date -= 6e4 * d;
     }
     return new Date(date);
   },
   stringify: ({ value }) => {
     var _a;
-    return (_a = value == null ? void 0 : value.toISOString().replace(/(T00:00:00)?\.000Z$/, "")) != null ? _a : "";
-  }
+    return (_a =
+      value == null
+        ? void 0
+        : value.toISOString().replace(/(T00:00:00)?\.000Z$/, "")) != null
+      ? _a
+      : "";
+  },
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/yaml-1.1/schema.js
@@ -5874,7 +7007,7 @@ var schema3 = [
   set,
   intTime,
   floatTime,
-  timestamp
+  timestamp,
 ];
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/tags.js
@@ -5883,7 +7016,7 @@ var schemas = /* @__PURE__ */ new Map([
   ["failsafe", [map, seq, string]],
   ["json", schema2],
   ["yaml11", schema3],
-  ["yaml-1.1", schema3]
+  ["yaml-1.1", schema3],
 ]);
 var tagsByName = {
   binary,
@@ -5903,7 +7036,7 @@ var tagsByName = {
   pairs,
   seq,
   set,
-  timestamp
+  timestamp,
 };
 var coreKnownTags = {
   "tag:yaml.org,2002:binary": binary,
@@ -5911,59 +7044,85 @@ var coreKnownTags = {
   "tag:yaml.org,2002:omap": omap,
   "tag:yaml.org,2002:pairs": pairs,
   "tag:yaml.org,2002:set": set,
-  "tag:yaml.org,2002:timestamp": timestamp
+  "tag:yaml.org,2002:timestamp": timestamp,
 };
 function getTags(customTags, schemaName, addMergeTag) {
   const schemaTags = schemas.get(schemaName);
   if (schemaTags && !customTags) {
-    return addMergeTag && !schemaTags.includes(merge) ? schemaTags.concat(merge) : schemaTags.slice();
+    return addMergeTag && !schemaTags.includes(merge)
+      ? schemaTags.concat(merge)
+      : schemaTags.slice();
   }
   let tags = schemaTags;
   if (!tags) {
-    if (Array.isArray(customTags))
-      tags = [];
+    if (Array.isArray(customTags)) tags = [];
     else {
-      const keys = Array.from(schemas.keys()).filter((key) => key !== "yaml11").map((key) => JSON.stringify(key)).join(", ");
-      throw new Error(`Unknown schema "${schemaName}"; use one of ${keys} or define customTags array`);
+      const keys = Array.from(schemas.keys())
+        .filter((key) => key !== "yaml11")
+        .map((key) => JSON.stringify(key))
+        .join(", ");
+      throw new Error(
+        `Unknown schema "${schemaName}"; use one of ${keys} or define customTags array`,
+      );
     }
   }
   if (Array.isArray(customTags)) {
-    for (const tag of customTags)
-      tags = tags.concat(tag);
+    for (const tag of customTags) tags = tags.concat(tag);
   } else if (typeof customTags === "function") {
     tags = customTags(tags.slice());
   }
-  if (addMergeTag)
-    tags = tags.concat(merge);
+  if (addMergeTag) tags = tags.concat(merge);
   return tags.reduce((tags2, tag) => {
     const tagObj = typeof tag === "string" ? tagsByName[tag] : tag;
     if (!tagObj) {
       const tagName = JSON.stringify(tag);
-      const keys = Object.keys(tagsByName).map((key) => JSON.stringify(key)).join(", ");
+      const keys = Object.keys(tagsByName)
+        .map((key) => JSON.stringify(key))
+        .join(", ");
       throw new Error(`Unknown custom tag ${tagName}; use one of ${keys}`);
     }
-    if (!tags2.includes(tagObj))
-      tags2.push(tagObj);
+    if (!tags2.includes(tagObj)) tags2.push(tagObj);
     return tags2;
   }, []);
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/schema/Schema.js
-var sortMapEntriesByKey = (a, b) => a.key < b.key ? -1 : a.key > b.key ? 1 : 0;
+var sortMapEntriesByKey = (a, b) =>
+  a.key < b.key ? -1 : a.key > b.key ? 1 : 0;
 var Schema = class _Schema {
-  constructor({ compat, customTags, merge: merge2, resolveKnownTags, schema: schema4, sortMapEntries, toStringDefaults }) {
-    this.compat = Array.isArray(compat) ? getTags(compat, "compat") : compat ? getTags(null, compat) : null;
-    this.name = typeof schema4 === "string" && schema4 || "core";
+  constructor({
+    compat,
+    customTags,
+    merge: merge2,
+    resolveKnownTags,
+    schema: schema4,
+    sortMapEntries,
+    toStringDefaults,
+  }) {
+    this.compat = Array.isArray(compat)
+      ? getTags(compat, "compat")
+      : compat
+        ? getTags(null, compat)
+        : null;
+    this.name = (typeof schema4 === "string" && schema4) || "core";
     this.knownTags = resolveKnownTags ? coreKnownTags : {};
     this.tags = getTags(customTags, this.name, merge2);
     this.toStringOptions = toStringDefaults != null ? toStringDefaults : null;
     Object.defineProperty(this, MAP, { value: map });
     Object.defineProperty(this, SCALAR, { value: string });
     Object.defineProperty(this, SEQ, { value: seq });
-    this.sortMapEntries = typeof sortMapEntries === "function" ? sortMapEntries : sortMapEntries === true ? sortMapEntriesByKey : null;
+    this.sortMapEntries =
+      typeof sortMapEntries === "function"
+        ? sortMapEntries
+        : sortMapEntries === true
+          ? sortMapEntriesByKey
+          : null;
   }
   clone() {
-    const copy = Object.create(_Schema.prototype, Object.getOwnPropertyDescriptors(this));
+    const copy = Object.create(
+      _Schema.prototype,
+      Object.getOwnPropertyDescriptors(this),
+    );
     copy.tags = this.tags.slice();
     return copy;
   }
@@ -5979,16 +7138,13 @@ function stringifyDocument(doc, options) {
     if (dir) {
       lines.push(dir);
       hasDirectives = true;
-    } else if (doc.directives.docStart)
-      hasDirectives = true;
+    } else if (doc.directives.docStart) hasDirectives = true;
   }
-  if (hasDirectives)
-    lines.push("---");
+  if (hasDirectives) lines.push("---");
   const ctx = createStringifyContext(doc, options);
   const { commentString } = ctx.options;
   if (doc.commentBefore) {
-    if (lines.length !== 1)
-      lines.unshift("");
+    if (lines.length !== 1) lines.unshift("");
     const cs = commentString(doc.commentBefore);
     lines.unshift(indentComment(cs, ""));
   }
@@ -5996,8 +7152,7 @@ function stringifyDocument(doc, options) {
   let contentComment = null;
   if (doc.contents) {
     if (isNode(doc.contents)) {
-      if (doc.contents.spaceBefore && hasDirectives)
-        lines.push("");
+      if (doc.contents.spaceBefore && hasDirectives) lines.push("");
       if (doc.contents.commentBefore) {
         const cs = commentString(doc.contents.commentBefore);
         lines.push(indentComment(cs, ""));
@@ -6005,14 +7160,21 @@ function stringifyDocument(doc, options) {
       ctx.forceBlockIndent = !!doc.comment;
       contentComment = doc.contents.comment;
     }
-    const onChompKeep = contentComment ? void 0 : () => chompKeep = true;
-    let body = stringify(doc.contents, ctx, () => contentComment = null, onChompKeep);
+    const onChompKeep = contentComment ? void 0 : () => (chompKeep = true);
+    let body = stringify(
+      doc.contents,
+      ctx,
+      () => (contentComment = null),
+      onChompKeep,
+    );
     if (contentComment)
       body += lineComment(body, "", commentString(contentComment));
-    if ((body[0] === "|" || body[0] === ">") && lines[lines.length - 1] === "---") {
+    if (
+      (body[0] === "|" || body[0] === ">") &&
+      lines[lines.length - 1] === "---"
+    ) {
       lines[lines.length - 1] = `--- ${body}`;
-    } else
-      lines.push(body);
+    } else lines.push(body);
   } else {
     lines.push(stringify(doc.contents, ctx));
   }
@@ -6030,8 +7192,7 @@ function stringifyDocument(doc, options) {
     }
   } else {
     let dc = doc.comment;
-    if (dc && chompKeep)
-      dc = dc.replace(/^\n+/, "");
+    if (dc && chompKeep) dc = dc.replace(/^\n+/, "");
     if (dc) {
       if ((!chompKeep || contentComment) && lines[lines.length - 1] !== "")
         lines.push("");
@@ -6056,26 +7217,28 @@ var Document = class _Document {
       options = replacer;
       replacer = void 0;
     }
-    const opt = Object.assign({
-      intAsBigInt: false,
-      keepSourceTokens: false,
-      logLevel: "warn",
-      prettyErrors: true,
-      strict: true,
-      stringKeys: false,
-      uniqueKeys: true,
-      version: "1.2"
-    }, options);
+    const opt = Object.assign(
+      {
+        intAsBigInt: false,
+        keepSourceTokens: false,
+        logLevel: "warn",
+        prettyErrors: true,
+        strict: true,
+        stringKeys: false,
+        uniqueKeys: true,
+        version: "1.2",
+      },
+      options,
+    );
     this.options = opt;
     let { version } = opt;
     if (options == null ? void 0 : options._directives) {
       this.directives = options._directives.atDocument();
-      if (this.directives.yaml.explicit)
-        version = this.directives.yaml.version;
-    } else
-      this.directives = new Directives({ version });
+      if (this.directives.yaml.explicit) version = this.directives.yaml.version;
+    } else this.directives = new Directives({ version });
     this.setSchema(version, options);
-    this.contents = value === void 0 ? null : this.createNode(value, _replacer, options);
+    this.contents =
+      value === void 0 ? null : this.createNode(value, _replacer, options);
   }
   /**
    * Create a deep copy of this Document and its contents.
@@ -6084,30 +7247,28 @@ var Document = class _Document {
    */
   clone() {
     const copy = Object.create(_Document.prototype, {
-      [NODE_TYPE]: { value: DOC }
+      [NODE_TYPE]: { value: DOC },
     });
     copy.commentBefore = this.commentBefore;
     copy.comment = this.comment;
     copy.errors = this.errors.slice();
     copy.warnings = this.warnings.slice();
     copy.options = Object.assign({}, this.options);
-    if (this.directives)
-      copy.directives = this.directives.clone();
+    if (this.directives) copy.directives = this.directives.clone();
     copy.schema = this.schema.clone();
-    copy.contents = isNode(this.contents) ? this.contents.clone(copy.schema) : this.contents;
-    if (this.range)
-      copy.range = this.range.slice();
+    copy.contents = isNode(this.contents)
+      ? this.contents.clone(copy.schema)
+      : this.contents;
+    if (this.range) copy.range = this.range.slice();
     return copy;
   }
   /** Adds a value to the document. */
   add(value) {
-    if (assertCollection(this.contents))
-      this.contents.add(value);
+    if (assertCollection(this.contents)) this.contents.add(value);
   }
   /** Adds a value to the document. */
   addIn(path13, value) {
-    if (assertCollection(this.contents))
-      this.contents.addIn(path13, value);
+    if (assertCollection(this.contents)) this.contents.addIn(path13, value);
   }
   /**
    * Create a new `Alias` node, ensuring that the target `node` has the required anchor.
@@ -6122,7 +7283,7 @@ var Document = class _Document {
     if (!node.anchor) {
       const prev = anchorNames(this);
       node.anchor = // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      !name || prev.has(name) ? findNewAnchor(name || "a", prev) : name;
+        !name || prev.has(name) ? findNewAnchor(name || "a", prev) : name;
     }
     return new Alias(node.anchor);
   }
@@ -6132,33 +7293,40 @@ var Document = class _Document {
       value = replacer.call({ "": value }, "", value);
       _replacer = replacer;
     } else if (Array.isArray(replacer)) {
-      const keyToStr = (v) => typeof v === "number" || v instanceof String || v instanceof Number;
+      const keyToStr = (v) =>
+        typeof v === "number" || v instanceof String || v instanceof Number;
       const asStr = replacer.filter(keyToStr).map(String);
-      if (asStr.length > 0)
-        replacer = replacer.concat(asStr);
+      if (asStr.length > 0) replacer = replacer.concat(asStr);
       _replacer = replacer;
     } else if (options === void 0 && replacer) {
       options = replacer;
       replacer = void 0;
     }
-    const { aliasDuplicateObjects, anchorPrefix, flow, keepUndefined, onTagObj, tag } = options != null ? options : {};
+    const {
+      aliasDuplicateObjects,
+      anchorPrefix,
+      flow,
+      keepUndefined,
+      onTagObj,
+      tag,
+    } = options != null ? options : {};
     const { onAnchor, setAnchors, sourceObjects } = createNodeAnchors(
       this,
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      anchorPrefix || "a"
+      anchorPrefix || "a",
     );
     const ctx = {
-      aliasDuplicateObjects: aliasDuplicateObjects != null ? aliasDuplicateObjects : true,
+      aliasDuplicateObjects:
+        aliasDuplicateObjects != null ? aliasDuplicateObjects : true,
       keepUndefined: keepUndefined != null ? keepUndefined : false,
       onAnchor,
       onTagObj,
       replacer: _replacer,
       schema: this.schema,
-      sourceObjects
+      sourceObjects,
     };
     const node = createNode(value, tag, ctx);
-    if (flow && isCollection(node))
-      node.flow = true;
+    if (flow && isCollection(node)) node.flow = true;
     setAnchors();
     return node;
   }
@@ -6184,12 +7352,13 @@ var Document = class _Document {
    */
   deleteIn(path13) {
     if (isEmptyPath(path13)) {
-      if (this.contents == null)
-        return false;
+      if (this.contents == null) return false;
       this.contents = null;
       return true;
     }
-    return assertCollection(this.contents) ? this.contents.deleteIn(path13) : false;
+    return assertCollection(this.contents)
+      ? this.contents.deleteIn(path13)
+      : false;
   }
   /**
    * Returns item at `key`, or `undefined` if not found. By default unwraps
@@ -6197,7 +7366,9 @@ var Document = class _Document {
    * `true` (collections are always returned intact).
    */
   get(key, keepScalar) {
-    return isCollection(this.contents) ? this.contents.get(key, keepScalar) : void 0;
+    return isCollection(this.contents)
+      ? this.contents.get(key, keepScalar)
+      : void 0;
   }
   /**
    * Returns item at `path`, or `undefined` if not found. By default unwraps
@@ -6206,8 +7377,12 @@ var Document = class _Document {
    */
   getIn(path13, keepScalar) {
     if (isEmptyPath(path13))
-      return !keepScalar && isScalar(this.contents) ? this.contents.value : this.contents;
-    return isCollection(this.contents) ? this.contents.getIn(path13, keepScalar) : void 0;
+      return !keepScalar && isScalar(this.contents)
+        ? this.contents.value
+        : this.contents;
+    return isCollection(this.contents)
+      ? this.contents.getIn(path13, keepScalar)
+      : void 0;
   }
   /**
    * Checks if the document includes a value with the key `key`.
@@ -6219,8 +7394,7 @@ var Document = class _Document {
    * Checks if the document includes a value at `path`.
    */
   hasIn(path13) {
-    if (isEmptyPath(path13))
-      return this.contents !== void 0;
+    if (isEmptyPath(path13)) return this.contents !== void 0;
     return isCollection(this.contents) ? this.contents.hasIn(path13) : false;
   }
   /**
@@ -6242,7 +7416,11 @@ var Document = class _Document {
     if (isEmptyPath(path13)) {
       this.contents = value;
     } else if (this.contents == null) {
-      this.contents = collectionFromPath(this.schema, Array.from(path13), value);
+      this.contents = collectionFromPath(
+        this.schema,
+        Array.from(path13),
+        value,
+      );
     } else if (assertCollection(this.contents)) {
       this.contents.setIn(path13, value);
     }
@@ -6255,41 +7433,37 @@ var Document = class _Document {
    * Overrides all previously set schema options.
    */
   setSchema(version, options = {}) {
-    if (typeof version === "number")
-      version = String(version);
+    if (typeof version === "number") version = String(version);
     let opt;
     switch (version) {
       case "1.1":
-        if (this.directives)
-          this.directives.yaml.version = "1.1";
-        else
-          this.directives = new Directives({ version: "1.1" });
+        if (this.directives) this.directives.yaml.version = "1.1";
+        else this.directives = new Directives({ version: "1.1" });
         opt = { resolveKnownTags: false, schema: "yaml-1.1" };
         break;
       case "1.2":
       case "next":
-        if (this.directives)
-          this.directives.yaml.version = version;
-        else
-          this.directives = new Directives({ version });
+        if (this.directives) this.directives.yaml.version = version;
+        else this.directives = new Directives({ version });
         opt = { resolveKnownTags: true, schema: "core" };
         break;
       case null:
-        if (this.directives)
-          delete this.directives;
+        if (this.directives) delete this.directives;
         opt = null;
         break;
       default: {
         const sv = JSON.stringify(version);
-        throw new Error(`Expected '1.1', '1.2' or null as first argument, but found: ${sv}`);
+        throw new Error(
+          `Expected '1.1', '1.2' or null as first argument, but found: ${sv}`,
+        );
       }
     }
-    if (options.schema instanceof Object)
-      this.schema = options.schema;
-    else if (opt)
-      this.schema = new Schema(Object.assign(opt, options));
+    if (options.schema instanceof Object) this.schema = options.schema;
+    else if (opt) this.schema = new Schema(Object.assign(opt, options));
     else
-      throw new Error(`With a null YAML version, the { schema: Schema } option is required`);
+      throw new Error(
+        `With a null YAML version, the { schema: Schema } option is required`,
+      );
   }
   // json & jsonArg are only used from toJSON()
   toJS({ json, jsonArg, mapAsMap, maxAliasCount, onAnchor, reviver } = {}) {
@@ -6299,13 +7473,15 @@ var Document = class _Document {
       keep: !json,
       mapAsMap: mapAsMap === true,
       mapKeyWarned: false,
-      maxAliasCount: typeof maxAliasCount === "number" ? maxAliasCount : 100
+      maxAliasCount: typeof maxAliasCount === "number" ? maxAliasCount : 100,
     };
     const res = toJS(this.contents, jsonArg != null ? jsonArg : "", ctx);
     if (typeof onAnchor === "function")
       for (const { count, res: res2 } of ctx.anchors.values())
         onAnchor(res2, count);
-    return typeof reviver === "function" ? applyReviver(reviver, { "": res }, "", res) : res;
+    return typeof reviver === "function"
+      ? applyReviver(reviver, { "": res }, "", res)
+      : res;
   }
   /**
    * A JSON representation of the document `contents`.
@@ -6320,7 +7496,10 @@ var Document = class _Document {
   toString(options = {}) {
     if (this.errors.length > 0)
       throw new Error("Document with errors cannot be stringified");
-    if ("indent" in options && (!Number.isInteger(options.indent) || Number(options.indent) <= 0)) {
+    if (
+      "indent" in options &&
+      (!Number.isInteger(options.indent) || Number(options.indent) <= 0)
+    ) {
       const s = JSON.stringify(options.indent);
       throw new Error(`"indent" option must be a positive integer, not ${s}`);
     }
@@ -6328,8 +7507,7 @@ var Document = class _Document {
   }
 };
 function assertCollection(contents) {
-  if (isCollection(contents))
-    return true;
+  if (isCollection(contents)) return true;
   throw new Error("Expected a YAML collection as document contents");
 }
 
@@ -6354,24 +7532,23 @@ var YAMLWarning = class extends YAMLError {
   }
 };
 var prettifyError = (src, lc) => (error) => {
-  if (error.pos[0] === -1)
-    return;
+  if (error.pos[0] === -1) return;
   error.linePos = error.pos.map((pos) => lc.linePos(pos));
   const { line, col } = error.linePos[0];
   error.message += ` at line ${line}, column ${col}`;
   let ci = col - 1;
-  let lineStr = src.substring(lc.lineStarts[line - 1], lc.lineStarts[line]).replace(/[\n\r]+$/, "");
+  let lineStr = src
+    .substring(lc.lineStarts[line - 1], lc.lineStarts[line])
+    .replace(/[\n\r]+$/, "");
   if (ci >= 60 && lineStr.length > 80) {
     const trimStart = Math.min(ci - 39, lineStr.length - 79);
     lineStr = "\u2026" + lineStr.substring(trimStart);
     ci -= trimStart - 1;
   }
-  if (lineStr.length > 80)
-    lineStr = lineStr.substring(0, 79) + "\u2026";
+  if (lineStr.length > 80) lineStr = lineStr.substring(0, 79) + "\u2026";
   if (line > 1 && /^ *$/.test(lineStr.substring(0, ci))) {
     let prev = src.substring(lc.lineStarts[line - 2], lc.lineStarts[line - 1]);
-    if (prev.length > 80)
-      prev = prev.substring(0, 79) + "\u2026\n";
+    if (prev.length > 80) prev = prev.substring(0, 79) + "\u2026\n";
     lineStr = prev + lineStr;
   }
   if (/[^ ]/.test(lineStr)) {
@@ -6390,7 +7567,10 @@ ${pointer}
 };
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/resolve-props.js
-function resolveProps(tokens, { flow, indicator, next, offset, onError, parentIndent, startOnNewline }) {
+function resolveProps(
+  tokens,
+  { flow, indicator, next, offset, onError, parentIndent, startOnNewline },
+) {
   let spaceBefore = false;
   let atNewline = startOnNewline;
   let hasSpace = startOnNewline;
@@ -6407,8 +7587,16 @@ function resolveProps(tokens, { flow, indicator, next, offset, onError, parentIn
   let start = null;
   for (const token of tokens) {
     if (reqSpace) {
-      if (token.type !== "space" && token.type !== "newline" && token.type !== "comma")
-        onError(token.offset, "MISSING_CHAR", "Tags and anchors must be separated from the next token by white space");
+      if (
+        token.type !== "space" &&
+        token.type !== "newline" &&
+        token.type !== "comma"
+      )
+        onError(
+          token.offset,
+          "MISSING_CHAR",
+          "Tags and anchors must be separated from the next token by white space",
+        );
       reqSpace = false;
     }
     if (tab) {
@@ -6419,44 +7607,56 @@ function resolveProps(tokens, { flow, indicator, next, offset, onError, parentIn
     }
     switch (token.type) {
       case "space":
-        if (!flow && (indicator !== "doc-start" || (next == null ? void 0 : next.type) !== "flow-collection") && token.source.includes("	")) {
+        if (
+          !flow &&
+          (indicator !== "doc-start" ||
+            (next == null ? void 0 : next.type) !== "flow-collection") &&
+          token.source.includes("	")
+        ) {
           tab = token;
         }
         hasSpace = true;
         break;
       case "comment": {
         if (!hasSpace)
-          onError(token, "MISSING_CHAR", "Comments must be separated from other tokens by white space characters");
+          onError(
+            token,
+            "MISSING_CHAR",
+            "Comments must be separated from other tokens by white space characters",
+          );
         const cb = token.source.substring(1) || " ";
-        if (!comment)
-          comment = cb;
-        else
-          comment += commentSep + cb;
+        if (!comment) comment = cb;
+        else comment += commentSep + cb;
         commentSep = "";
         atNewline = false;
         break;
       }
       case "newline":
         if (atNewline) {
-          if (comment)
-            comment += token.source;
-          else if (!found || indicator !== "seq-item-ind")
-            spaceBefore = true;
-        } else
-          commentSep += token.source;
+          if (comment) comment += token.source;
+          else if (!found || indicator !== "seq-item-ind") spaceBefore = true;
+        } else commentSep += token.source;
         atNewline = true;
         hasNewline = true;
-        if (anchor || tag)
-          newlineAfterProp = token;
+        if (anchor || tag) newlineAfterProp = token;
         hasSpace = true;
         break;
       case "anchor":
         if (anchor)
-          onError(token, "MULTIPLE_ANCHORS", "A node can have at most one anchor");
+          onError(
+            token,
+            "MULTIPLE_ANCHORS",
+            "A node can have at most one anchor",
+          );
         if (token.source.endsWith(":"))
-          onError(token.offset + token.source.length - 1, "BAD_ALIAS", "Anchor ending in : is ambiguous", true);
+          onError(
+            token.offset + token.source.length - 1,
+            "BAD_ALIAS",
+            "Anchor ending in : is ambiguous",
+            true,
+          );
         anchor = token;
-        start != null ? start : start = token.offset;
+        start != null ? start : (start = token.offset);
         atNewline = false;
         hasSpace = false;
         reqSpace = true;
@@ -6465,7 +7665,7 @@ function resolveProps(tokens, { flow, indicator, next, offset, onError, parentIn
         if (tag)
           onError(token, "MULTIPLE_TAGS", "A node can have at most one tag");
         tag = token;
-        start != null ? start : start = token.offset;
+        start != null ? start : (start = token.offset);
         atNewline = false;
         hasSpace = false;
         reqSpace = true;
@@ -6473,11 +7673,20 @@ function resolveProps(tokens, { flow, indicator, next, offset, onError, parentIn
       }
       case indicator:
         if (anchor || tag)
-          onError(token, "BAD_PROP_ORDER", `Anchors and tags must be after the ${token.source} indicator`);
+          onError(
+            token,
+            "BAD_PROP_ORDER",
+            `Anchors and tags must be after the ${token.source} indicator`,
+          );
         if (found)
-          onError(token, "UNEXPECTED_TOKEN", `Unexpected ${token.source} in ${flow != null ? flow : "collection"}`);
+          onError(
+            token,
+            "UNEXPECTED_TOKEN",
+            `Unexpected ${token.source} in ${flow != null ? flow : "collection"}`,
+          );
         found = token;
-        atNewline = indicator === "seq-item-ind" || indicator === "explicit-key-ind";
+        atNewline =
+          indicator === "seq-item-ind" || indicator === "explicit-key-ind";
         hasSpace = false;
         break;
       case "comma":
@@ -6498,10 +7707,26 @@ function resolveProps(tokens, { flow, indicator, next, offset, onError, parentIn
   }
   const last = tokens[tokens.length - 1];
   const end = last ? last.offset + last.source.length : offset;
-  if (reqSpace && next && next.type !== "space" && next.type !== "newline" && next.type !== "comma" && (next.type !== "scalar" || next.source !== "")) {
-    onError(next.offset, "MISSING_CHAR", "Tags and anchors must be separated from the next token by white space");
+  if (
+    reqSpace &&
+    next &&
+    next.type !== "space" &&
+    next.type !== "newline" &&
+    next.type !== "comma" &&
+    (next.type !== "scalar" || next.source !== "")
+  ) {
+    onError(
+      next.offset,
+      "MISSING_CHAR",
+      "Tags and anchors must be separated from the next token by white space",
+    );
   }
-  if (tab && (atNewline && tab.indent <= parentIndent || (next == null ? void 0 : next.type) === "block-map" || (next == null ? void 0 : next.type) === "block-seq"))
+  if (
+    tab &&
+    ((atNewline && tab.indent <= parentIndent) ||
+      (next == null ? void 0 : next.type) === "block-map" ||
+      (next == null ? void 0 : next.type) === "block-seq")
+  )
     onError(tab, "TAB_AS_INDENT", "Tabs are not allowed as indentation");
   return {
     comma,
@@ -6513,39 +7738,30 @@ function resolveProps(tokens, { flow, indicator, next, offset, onError, parentIn
     tag,
     newlineAfterProp,
     end,
-    start: start != null ? start : end
+    start: start != null ? start : end,
   };
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/util-contains-newline.js
 function containsNewline(key) {
-  if (!key)
-    return null;
+  if (!key) return null;
   switch (key.type) {
     case "alias":
     case "scalar":
     case "double-quoted-scalar":
     case "single-quoted-scalar":
-      if (key.source.includes("\n"))
-        return true;
+      if (key.source.includes("\n")) return true;
       if (key.end) {
-        for (const st of key.end)
-          if (st.type === "newline")
-            return true;
+        for (const st of key.end) if (st.type === "newline") return true;
       }
       return false;
     case "flow-collection":
       for (const it of key.items) {
-        for (const st of it.start)
-          if (st.type === "newline")
-            return true;
+        for (const st of it.start) if (st.type === "newline") return true;
         if (it.sep) {
-          for (const st of it.sep)
-            if (st.type === "newline")
-              return true;
+          for (const st of it.sep) if (st.type === "newline") return true;
         }
-        if (containsNewline(it.key) || containsNewline(it.value))
-          return true;
+        if (containsNewline(it.key) || containsNewline(it.value)) return true;
       }
       return false;
     default:
@@ -6557,7 +7773,11 @@ function containsNewline(key) {
 function flowIndentCheck(indent, fc, onError) {
   if ((fc == null ? void 0 : fc.type) === "flow-collection") {
     const end = fc.end[0];
-    if (end.indent === indent && (end.source === "]" || end.source === "}") && containsNewline(fc)) {
+    if (
+      end.indent === indent &&
+      (end.source === "]" || end.source === "}") &&
+      containsNewline(fc)
+    ) {
       const msg = "Flow end indicator should be more indented than parent";
       onError(end, "BAD_INDENT", msg, true);
     }
@@ -6567,20 +7787,29 @@ function flowIndentCheck(indent, fc, onError) {
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/util-map-includes.js
 function mapIncludes(ctx, items, search) {
   const { uniqueKeys } = ctx.options;
-  if (uniqueKeys === false)
-    return false;
-  const isEqual = typeof uniqueKeys === "function" ? uniqueKeys : (a, b) => a === b || isScalar(a) && isScalar(b) && a.value === b.value;
+  if (uniqueKeys === false) return false;
+  const isEqual =
+    typeof uniqueKeys === "function"
+      ? uniqueKeys
+      : (a, b) =>
+          a === b || (isScalar(a) && isScalar(b) && a.value === b.value);
   return items.some((pair) => isEqual(pair.key, search));
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/resolve-block-map.js
 var startColMsg = "All mapping items must start at the same column";
-function resolveBlockMap({ composeNode: composeNode2, composeEmptyNode: composeEmptyNode2 }, ctx, bm, onError, tag) {
+function resolveBlockMap(
+  { composeNode: composeNode2, composeEmptyNode: composeEmptyNode2 },
+  ctx,
+  bm,
+  onError,
+  tag,
+) {
   var _a, _b;
-  const NodeClass = (_a = tag == null ? void 0 : tag.nodeClass) != null ? _a : YAMLMap;
+  const NodeClass =
+    (_a = tag == null ? void 0 : tag.nodeClass) != null ? _a : YAMLMap;
   const map2 = new NodeClass(ctx.schema);
-  if (ctx.atRoot)
-    ctx.atRoot = false;
+  if (ctx.atRoot) ctx.atRoot = false;
   let offset = bm.offset;
   let commentEnd = null;
   for (const collItem of bm.items) {
@@ -6591,37 +7820,46 @@ function resolveBlockMap({ composeNode: composeNode2, composeEmptyNode: composeE
       offset,
       onError,
       parentIndent: bm.indent,
-      startOnNewline: true
+      startOnNewline: true,
     });
     const implicitKey = !keyProps.found;
     if (implicitKey) {
       if (key) {
         if (key.type === "block-seq")
-          onError(offset, "BLOCK_AS_IMPLICIT_KEY", "A block sequence may not be used as an implicit map key");
+          onError(
+            offset,
+            "BLOCK_AS_IMPLICIT_KEY",
+            "A block sequence may not be used as an implicit map key",
+          );
         else if ("indent" in key && key.indent !== bm.indent)
           onError(offset, "BAD_INDENT", startColMsg);
       }
       if (!keyProps.anchor && !keyProps.tag && !sep6) {
         commentEnd = keyProps.end;
         if (keyProps.comment) {
-          if (map2.comment)
-            map2.comment += "\n" + keyProps.comment;
-          else
-            map2.comment = keyProps.comment;
+          if (map2.comment) map2.comment += "\n" + keyProps.comment;
+          else map2.comment = keyProps.comment;
         }
         continue;
       }
       if (keyProps.newlineAfterProp || containsNewline(key)) {
-        onError(key != null ? key : start[start.length - 1], "MULTILINE_IMPLICIT_KEY", "Implicit keys need to be on a single line");
+        onError(
+          key != null ? key : start[start.length - 1],
+          "MULTILINE_IMPLICIT_KEY",
+          "Implicit keys need to be on a single line",
+        );
       }
-    } else if (((_b = keyProps.found) == null ? void 0 : _b.indent) !== bm.indent) {
+    } else if (
+      ((_b = keyProps.found) == null ? void 0 : _b.indent) !== bm.indent
+    ) {
       onError(offset, "BAD_INDENT", startColMsg);
     }
     ctx.atKey = true;
     const keyStart = keyProps.end;
-    const keyNode = key ? composeNode2(ctx, key, keyProps, onError) : composeEmptyNode2(ctx, keyStart, start, null, keyProps, onError);
-    if (ctx.schema.compat)
-      flowIndentCheck(bm.indent, key, onError);
+    const keyNode = key
+      ? composeNode2(ctx, key, keyProps, onError)
+      : composeEmptyNode2(ctx, keyStart, start, null, keyProps, onError);
+    if (ctx.schema.compat) flowIndentCheck(bm.indent, key, onError);
     ctx.atKey = false;
     if (mapIncludes(ctx, map2.items, keyNode))
       onError(keyStart, "DUPLICATE_KEY", "Map keys must be unique");
@@ -6631,36 +7869,51 @@ function resolveBlockMap({ composeNode: composeNode2, composeEmptyNode: composeE
       offset: keyNode.range[2],
       onError,
       parentIndent: bm.indent,
-      startOnNewline: !key || key.type === "block-scalar"
+      startOnNewline: !key || key.type === "block-scalar",
     });
     offset = valueProps.end;
     if (valueProps.found) {
       if (implicitKey) {
-        if ((value == null ? void 0 : value.type) === "block-map" && !valueProps.hasNewline)
-          onError(offset, "BLOCK_AS_IMPLICIT_KEY", "Nested mappings are not allowed in compact mappings");
-        if (ctx.options.strict && keyProps.start < valueProps.found.offset - 1024)
-          onError(keyNode.range, "KEY_OVER_1024_CHARS", "The : indicator must be at most 1024 chars after the start of an implicit block mapping key");
+        if (
+          (value == null ? void 0 : value.type) === "block-map" &&
+          !valueProps.hasNewline
+        )
+          onError(
+            offset,
+            "BLOCK_AS_IMPLICIT_KEY",
+            "Nested mappings are not allowed in compact mappings",
+          );
+        if (
+          ctx.options.strict &&
+          keyProps.start < valueProps.found.offset - 1024
+        )
+          onError(
+            keyNode.range,
+            "KEY_OVER_1024_CHARS",
+            "The : indicator must be at most 1024 chars after the start of an implicit block mapping key",
+          );
       }
-      const valueNode = value ? composeNode2(ctx, value, valueProps, onError) : composeEmptyNode2(ctx, offset, sep6, null, valueProps, onError);
-      if (ctx.schema.compat)
-        flowIndentCheck(bm.indent, value, onError);
+      const valueNode = value
+        ? composeNode2(ctx, value, valueProps, onError)
+        : composeEmptyNode2(ctx, offset, sep6, null, valueProps, onError);
+      if (ctx.schema.compat) flowIndentCheck(bm.indent, value, onError);
       offset = valueNode.range[2];
       const pair = new Pair(keyNode, valueNode);
-      if (ctx.options.keepSourceTokens)
-        pair.srcToken = collItem;
+      if (ctx.options.keepSourceTokens) pair.srcToken = collItem;
       map2.items.push(pair);
     } else {
       if (implicitKey)
-        onError(keyNode.range, "MISSING_CHAR", "Implicit map keys need to be followed by map values");
+        onError(
+          keyNode.range,
+          "MISSING_CHAR",
+          "Implicit map keys need to be followed by map values",
+        );
       if (valueProps.comment) {
-        if (keyNode.comment)
-          keyNode.comment += "\n" + valueProps.comment;
-        else
-          keyNode.comment = valueProps.comment;
+        if (keyNode.comment) keyNode.comment += "\n" + valueProps.comment;
+        else keyNode.comment = valueProps.comment;
       }
       const pair = new Pair(keyNode);
-      if (ctx.options.keepSourceTokens)
-        pair.srcToken = collItem;
+      if (ctx.options.keepSourceTokens) pair.srcToken = collItem;
       map2.items.push(pair);
     }
   }
@@ -6671,14 +7924,19 @@ function resolveBlockMap({ composeNode: composeNode2, composeEmptyNode: composeE
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/resolve-block-seq.js
-function resolveBlockSeq({ composeNode: composeNode2, composeEmptyNode: composeEmptyNode2 }, ctx, bs, onError, tag) {
+function resolveBlockSeq(
+  { composeNode: composeNode2, composeEmptyNode: composeEmptyNode2 },
+  ctx,
+  bs,
+  onError,
+  tag,
+) {
   var _a;
-  const NodeClass = (_a = tag == null ? void 0 : tag.nodeClass) != null ? _a : YAMLSeq;
+  const NodeClass =
+    (_a = tag == null ? void 0 : tag.nodeClass) != null ? _a : YAMLSeq;
   const seq2 = new NodeClass(ctx.schema);
-  if (ctx.atRoot)
-    ctx.atRoot = false;
-  if (ctx.atKey)
-    ctx.atKey = false;
+  if (ctx.atRoot) ctx.atRoot = false;
+  if (ctx.atKey) ctx.atKey = false;
   let offset = bs.offset;
   let commentEnd = null;
   for (const { start, value } of bs.items) {
@@ -6688,24 +7946,28 @@ function resolveBlockSeq({ composeNode: composeNode2, composeEmptyNode: composeE
       offset,
       onError,
       parentIndent: bs.indent,
-      startOnNewline: true
+      startOnNewline: true,
     });
     if (!props.found) {
       if (props.anchor || props.tag || value) {
         if ((value == null ? void 0 : value.type) === "block-seq")
-          onError(props.end, "BAD_INDENT", "All sequence items must start at the same column");
+          onError(
+            props.end,
+            "BAD_INDENT",
+            "All sequence items must start at the same column",
+          );
         else
           onError(offset, "MISSING_CHAR", "Sequence item without - indicator");
       } else {
         commentEnd = props.end;
-        if (props.comment)
-          seq2.comment = props.comment;
+        if (props.comment) seq2.comment = props.comment;
         continue;
       }
     }
-    const node = value ? composeNode2(ctx, value, props, onError) : composeEmptyNode2(ctx, props.end, start, null, props, onError);
-    if (ctx.schema.compat)
-      flowIndentCheck(bs.indent, value, onError);
+    const node = value
+      ? composeNode2(ctx, value, props, onError)
+      : composeEmptyNode2(ctx, props.end, start, null, props, onError);
+    if (ctx.schema.compat) flowIndentCheck(bs.indent, value, onError);
     offset = node.range[2];
     seq2.items.push(node);
   }
@@ -6727,18 +7989,19 @@ function resolveEnd(end, offset, reqSpace, onError) {
           break;
         case "comment": {
           if (reqSpace && !hasSpace)
-            onError(token, "MISSING_CHAR", "Comments must be separated from other tokens by white space characters");
+            onError(
+              token,
+              "MISSING_CHAR",
+              "Comments must be separated from other tokens by white space characters",
+            );
           const cb = source.substring(1) || " ";
-          if (!comment)
-            comment = cb;
-          else
-            comment += sep6 + cb;
+          if (!comment) comment = cb;
+          else comment += sep6 + cb;
           sep6 = "";
           break;
         }
         case "newline":
-          if (comment)
-            sep6 += source;
+          if (comment) sep6 += source;
           hasSpace = true;
           break;
         default:
@@ -6752,19 +8015,29 @@ function resolveEnd(end, offset, reqSpace, onError) {
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/resolve-flow-collection.js
 var blockMsg = "Block collections are not allowed within flow collections";
-var isBlock = (token) => token && (token.type === "block-map" || token.type === "block-seq");
-function resolveFlowCollection({ composeNode: composeNode2, composeEmptyNode: composeEmptyNode2 }, ctx, fc, onError, tag) {
+var isBlock = (token) =>
+  token && (token.type === "block-map" || token.type === "block-seq");
+function resolveFlowCollection(
+  { composeNode: composeNode2, composeEmptyNode: composeEmptyNode2 },
+  ctx,
+  fc,
+  onError,
+  tag,
+) {
   var _a, _b, _c;
   const isMap2 = fc.start.source === "{";
   const fcName = isMap2 ? "flow map" : "flow sequence";
-  const NodeClass = (_a = tag == null ? void 0 : tag.nodeClass) != null ? _a : isMap2 ? YAMLMap : YAMLSeq;
+  const NodeClass =
+    (_a = tag == null ? void 0 : tag.nodeClass) != null
+      ? _a
+      : isMap2
+        ? YAMLMap
+        : YAMLSeq;
   const coll = new NodeClass(ctx.schema);
   coll.flow = true;
   const atRoot = ctx.atRoot;
-  if (atRoot)
-    ctx.atRoot = false;
-  if (ctx.atKey)
-    ctx.atKey = false;
+  if (atRoot) ctx.atRoot = false;
+  if (ctx.atKey) ctx.atKey = false;
   let offset = fc.offset + fc.start.source.length;
   for (let i = 0; i < fc.items.length; ++i) {
     const collItem = fc.items[i];
@@ -6776,19 +8049,21 @@ function resolveFlowCollection({ composeNode: composeNode2, composeEmptyNode: co
       offset,
       onError,
       parentIndent: fc.indent,
-      startOnNewline: false
+      startOnNewline: false,
     });
     if (!props.found) {
       if (!props.anchor && !props.tag && !sep6 && !value) {
         if (i === 0 && props.comma)
           onError(props.comma, "UNEXPECTED_TOKEN", `Unexpected , in ${fcName}`);
         else if (i < fc.items.length - 1)
-          onError(props.start, "UNEXPECTED_TOKEN", `Unexpected empty item in ${fcName}`);
+          onError(
+            props.start,
+            "UNEXPECTED_TOKEN",
+            `Unexpected empty item in ${fcName}`,
+          );
         if (props.comment) {
-          if (coll.comment)
-            coll.comment += "\n" + props.comment;
-          else
-            coll.comment = props.comment;
+          if (coll.comment) coll.comment += "\n" + props.comment;
+          else coll.comment = props.comment;
         }
         offset = props.end;
         continue;
@@ -6798,7 +8073,7 @@ function resolveFlowCollection({ composeNode: composeNode2, composeEmptyNode: co
           key,
           // checked by containsNewline()
           "MULTILINE_IMPLICIT_KEY",
-          "Implicit keys of flow sequence pairs need to be on a single line"
+          "Implicit keys of flow sequence pairs need to be on a single line",
         );
     }
     if (i === 0) {
@@ -6806,7 +8081,11 @@ function resolveFlowCollection({ composeNode: composeNode2, composeEmptyNode: co
         onError(props.comma, "UNEXPECTED_TOKEN", `Unexpected , in ${fcName}`);
     } else {
       if (!props.comma)
-        onError(props.start, "MISSING_CHAR", `Missing , between ${fcName} items`);
+        onError(
+          props.start,
+          "MISSING_CHAR",
+          `Missing , between ${fcName} items`,
+        );
       if (props.comment) {
         let prevItemComment = "";
         loop: for (const st of start) {
@@ -6823,28 +8102,27 @@ function resolveFlowCollection({ composeNode: composeNode2, composeEmptyNode: co
         }
         if (prevItemComment) {
           let prev = coll.items[coll.items.length - 1];
-          if (isPair(prev))
-            prev = (_b = prev.value) != null ? _b : prev.key;
-          if (prev.comment)
-            prev.comment += "\n" + prevItemComment;
-          else
-            prev.comment = prevItemComment;
+          if (isPair(prev)) prev = (_b = prev.value) != null ? _b : prev.key;
+          if (prev.comment) prev.comment += "\n" + prevItemComment;
+          else prev.comment = prevItemComment;
           props.comment = props.comment.substring(prevItemComment.length + 1);
         }
       }
     }
     if (!isMap2 && !sep6 && !props.found) {
-      const valueNode = value ? composeNode2(ctx, value, props, onError) : composeEmptyNode2(ctx, props.end, sep6, null, props, onError);
+      const valueNode = value
+        ? composeNode2(ctx, value, props, onError)
+        : composeEmptyNode2(ctx, props.end, sep6, null, props, onError);
       coll.items.push(valueNode);
       offset = valueNode.range[2];
-      if (isBlock(value))
-        onError(valueNode.range, "BLOCK_IN_FLOW", blockMsg);
+      if (isBlock(value)) onError(valueNode.range, "BLOCK_IN_FLOW", blockMsg);
     } else {
       ctx.atKey = true;
       const keyStart = props.end;
-      const keyNode = key ? composeNode2(ctx, key, props, onError) : composeEmptyNode2(ctx, keyStart, start, null, props, onError);
-      if (isBlock(key))
-        onError(keyNode.range, "BLOCK_IN_FLOW", blockMsg);
+      const keyNode = key
+        ? composeNode2(ctx, key, props, onError)
+        : composeEmptyNode2(ctx, keyStart, start, null, props, onError);
+      if (isBlock(key)) onError(keyNode.range, "BLOCK_IN_FLOW", blockMsg);
       ctx.atKey = false;
       const valueProps = resolveProps(sep6 != null ? sep6 : [], {
         flow: fcName,
@@ -6853,41 +8131,62 @@ function resolveFlowCollection({ composeNode: composeNode2, composeEmptyNode: co
         offset: keyNode.range[2],
         onError,
         parentIndent: fc.indent,
-        startOnNewline: false
+        startOnNewline: false,
       });
       if (valueProps.found) {
         if (!isMap2 && !props.found && ctx.options.strict) {
           if (sep6)
             for (const st of sep6) {
-              if (st === valueProps.found)
-                break;
+              if (st === valueProps.found) break;
               if (st.type === "newline") {
-                onError(st, "MULTILINE_IMPLICIT_KEY", "Implicit keys of flow sequence pairs need to be on a single line");
+                onError(
+                  st,
+                  "MULTILINE_IMPLICIT_KEY",
+                  "Implicit keys of flow sequence pairs need to be on a single line",
+                );
                 break;
               }
             }
           if (props.start < valueProps.found.offset - 1024)
-            onError(valueProps.found, "KEY_OVER_1024_CHARS", "The : indicator must be at most 1024 chars after the start of an implicit flow sequence key");
+            onError(
+              valueProps.found,
+              "KEY_OVER_1024_CHARS",
+              "The : indicator must be at most 1024 chars after the start of an implicit flow sequence key",
+            );
         }
       } else if (value) {
-        if ("source" in value && ((_c = value.source) == null ? void 0 : _c[0]) === ":")
+        if (
+          "source" in value &&
+          ((_c = value.source) == null ? void 0 : _c[0]) === ":"
+        )
           onError(value, "MISSING_CHAR", `Missing space after : in ${fcName}`);
         else
-          onError(valueProps.start, "MISSING_CHAR", `Missing , or : between ${fcName} items`);
+          onError(
+            valueProps.start,
+            "MISSING_CHAR",
+            `Missing , or : between ${fcName} items`,
+          );
       }
-      const valueNode = value ? composeNode2(ctx, value, valueProps, onError) : valueProps.found ? composeEmptyNode2(ctx, valueProps.end, sep6, null, valueProps, onError) : null;
+      const valueNode = value
+        ? composeNode2(ctx, value, valueProps, onError)
+        : valueProps.found
+          ? composeEmptyNode2(
+              ctx,
+              valueProps.end,
+              sep6,
+              null,
+              valueProps,
+              onError,
+            )
+          : null;
       if (valueNode) {
-        if (isBlock(value))
-          onError(valueNode.range, "BLOCK_IN_FLOW", blockMsg);
+        if (isBlock(value)) onError(valueNode.range, "BLOCK_IN_FLOW", blockMsg);
       } else if (valueProps.comment) {
-        if (keyNode.comment)
-          keyNode.comment += "\n" + valueProps.comment;
-        else
-          keyNode.comment = valueProps.comment;
+        if (keyNode.comment) keyNode.comment += "\n" + valueProps.comment;
+        else keyNode.comment = valueProps.comment;
       }
       const pair = new Pair(keyNode, valueNode);
-      if (ctx.options.keepSourceTokens)
-        pair.srcToken = collItem;
+      if (ctx.options.keepSourceTokens) pair.srcToken = collItem;
       if (isMap2) {
         const map2 = coll;
         if (mapIncludes(ctx, map2.items, keyNode))
@@ -6911,18 +8210,17 @@ function resolveFlowCollection({ composeNode: composeNode2, composeEmptyNode: co
     cePos = ce.offset + ce.source.length;
   else {
     const name = fcName[0].toUpperCase() + fcName.substring(1);
-    const msg = atRoot ? `${name} must end with a ${expectedEnd}` : `${name} in block collection must be sufficiently indented and end with a ${expectedEnd}`;
+    const msg = atRoot
+      ? `${name} must end with a ${expectedEnd}`
+      : `${name} in block collection must be sufficiently indented and end with a ${expectedEnd}`;
     onError(offset, atRoot ? "MISSING_CHAR" : "BAD_INDENT", msg);
-    if (ce && ce.source.length !== 1)
-      ee.unshift(ce);
+    if (ce && ce.source.length !== 1) ee.unshift(ce);
   }
   if (ee.length > 0) {
     const end = resolveEnd(ee, cePos, ctx.options.strict, onError);
     if (end.comment) {
-      if (coll.comment)
-        coll.comment += "\n" + end.comment;
-      else
-        coll.comment = end.comment;
+      if (coll.comment) coll.comment += "\n" + end.comment;
+      else coll.comment = end.comment;
     }
     coll.range = [fc.offset, cePos, end.offset];
   } else {
@@ -6933,33 +8231,63 @@ function resolveFlowCollection({ composeNode: composeNode2, composeEmptyNode: co
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/compose-collection.js
 function resolveCollection(CN2, ctx, token, onError, tagName, tag) {
-  const coll = token.type === "block-map" ? resolveBlockMap(CN2, ctx, token, onError, tag) : token.type === "block-seq" ? resolveBlockSeq(CN2, ctx, token, onError, tag) : resolveFlowCollection(CN2, ctx, token, onError, tag);
+  const coll =
+    token.type === "block-map"
+      ? resolveBlockMap(CN2, ctx, token, onError, tag)
+      : token.type === "block-seq"
+        ? resolveBlockSeq(CN2, ctx, token, onError, tag)
+        : resolveFlowCollection(CN2, ctx, token, onError, tag);
   const Coll = coll.constructor;
   if (tagName === "!" || tagName === Coll.tagName) {
     coll.tag = Coll.tagName;
     return coll;
   }
-  if (tagName)
-    coll.tag = tagName;
+  if (tagName) coll.tag = tagName;
   return coll;
 }
 function composeCollection(CN2, ctx, token, props, onError) {
   var _a, _b, _c;
   const tagToken = props.tag;
-  const tagName = !tagToken ? null : ctx.directives.tagName(tagToken.source, (msg) => onError(tagToken, "TAG_RESOLVE_FAILED", msg));
+  const tagName = !tagToken
+    ? null
+    : ctx.directives.tagName(tagToken.source, (msg) =>
+        onError(tagToken, "TAG_RESOLVE_FAILED", msg),
+      );
   if (token.type === "block-seq") {
     const { anchor, newlineAfterProp: nl } = props;
-    const lastProp = anchor && tagToken ? anchor.offset > tagToken.offset ? anchor : tagToken : anchor != null ? anchor : tagToken;
+    const lastProp =
+      anchor && tagToken
+        ? anchor.offset > tagToken.offset
+          ? anchor
+          : tagToken
+        : anchor != null
+          ? anchor
+          : tagToken;
     if (lastProp && (!nl || nl.offset < lastProp.offset)) {
       const message = "Missing newline after block sequence props";
       onError(lastProp, "MISSING_CHAR", message);
     }
   }
-  const expType = token.type === "block-map" ? "map" : token.type === "block-seq" ? "seq" : token.start.source === "{" ? "map" : "seq";
-  if (!tagToken || !tagName || tagName === "!" || tagName === YAMLMap.tagName && expType === "map" || tagName === YAMLSeq.tagName && expType === "seq") {
+  const expType =
+    token.type === "block-map"
+      ? "map"
+      : token.type === "block-seq"
+        ? "seq"
+        : token.start.source === "{"
+          ? "map"
+          : "seq";
+  if (
+    !tagToken ||
+    !tagName ||
+    tagName === "!" ||
+    (tagName === YAMLMap.tagName && expType === "map") ||
+    (tagName === YAMLSeq.tagName && expType === "seq")
+  ) {
     return resolveCollection(CN2, ctx, token, onError, tagName);
   }
-  let tag = ctx.schema.tags.find((t) => t.tag === tagName && t.collection === expType);
+  let tag = ctx.schema.tags.find(
+    (t) => t.tag === tagName && t.collection === expType,
+  );
   if (!tag) {
     const kt = ctx.schema.knownTags[tagName];
     if ((kt == null ? void 0 : kt.collection) === expType) {
@@ -6967,20 +8295,40 @@ function composeCollection(CN2, ctx, token, props, onError) {
       tag = kt;
     } else {
       if (kt) {
-        onError(tagToken, "BAD_COLLECTION_TYPE", `${kt.tag} used for ${expType} collection, but expects ${(_a = kt.collection) != null ? _a : "scalar"}`, true);
+        onError(
+          tagToken,
+          "BAD_COLLECTION_TYPE",
+          `${kt.tag} used for ${expType} collection, but expects ${(_a = kt.collection) != null ? _a : "scalar"}`,
+          true,
+        );
       } else {
-        onError(tagToken, "TAG_RESOLVE_FAILED", `Unresolved tag: ${tagName}`, true);
+        onError(
+          tagToken,
+          "TAG_RESOLVE_FAILED",
+          `Unresolved tag: ${tagName}`,
+          true,
+        );
       }
       return resolveCollection(CN2, ctx, token, onError, tagName);
     }
   }
   const coll = resolveCollection(CN2, ctx, token, onError, tagName, tag);
-  const res = (_c = (_b = tag.resolve) == null ? void 0 : _b.call(tag, coll, (msg) => onError(tagToken, "TAG_RESOLVE_FAILED", msg), ctx.options)) != null ? _c : coll;
+  const res =
+    (_c =
+      (_b = tag.resolve) == null
+        ? void 0
+        : _b.call(
+            tag,
+            coll,
+            (msg) => onError(tagToken, "TAG_RESOLVE_FAILED", msg),
+            ctx.options,
+          )) != null
+      ? _c
+      : coll;
   const node = isNode(res) ? res : new Scalar(res);
   node.range = coll.range;
   node.tag = tagName;
-  if (tag == null ? void 0 : tag.format)
-    node.format = tag.format;
+  if (tag == null ? void 0 : tag.format) node.format = tag.format;
   return node;
 }
 
@@ -6995,17 +8343,22 @@ function resolveBlockScalar(ctx, scalar, onError) {
   let chompStart = lines.length;
   for (let i = lines.length - 1; i >= 0; --i) {
     const content = lines[i][1];
-    if (content === "" || content === "\r")
-      chompStart = i;
-    else
-      break;
+    if (content === "" || content === "\r") chompStart = i;
+    else break;
   }
   if (chompStart === 0) {
-    const value2 = header.chomp === "+" && lines.length > 0 ? "\n".repeat(Math.max(1, lines.length - 1)) : "";
+    const value2 =
+      header.chomp === "+" && lines.length > 0
+        ? "\n".repeat(Math.max(1, lines.length - 1))
+        : "";
     let end2 = start + header.length;
-    if (scalar.source)
-      end2 += scalar.source.length;
-    return { value: value2, type, comment: header.comment, range: [start, end2, end2] };
+    if (scalar.source) end2 += scalar.source.length;
+    return {
+      value: value2,
+      type,
+      comment: header.comment,
+      range: [start, end2, end2],
+    };
   }
   let trimIndent = scalar.indent + header.indent;
   let offset = scalar.offset + header.length;
@@ -7017,11 +8370,11 @@ function resolveBlockScalar(ctx, scalar, onError) {
         trimIndent = indent.length;
     } else {
       if (indent.length < trimIndent) {
-        const message = "Block scalars with more-indented leading empty lines must use an explicit indentation indicator";
+        const message =
+          "Block scalars with more-indented leading empty lines must use an explicit indentation indicator";
         onError(offset + indent.length, "MISSING_CHAR", message);
       }
-      if (header.indent === 0)
-        trimIndent = indent.length;
+      if (header.indent === 0) trimIndent = indent.length;
       contentStart = i;
       if (trimIndent === 0 && !ctx.atRoot) {
         const message = "Block scalar values in collections must be indented";
@@ -7032,8 +8385,7 @@ function resolveBlockScalar(ctx, scalar, onError) {
     offset += indent.length + content.length + 1;
   }
   for (let i = lines.length - 1; i >= chompStart; --i) {
-    if (lines[i][0].length > trimIndent)
-      chompStart = i + 1;
+    if (lines[i][0].length > trimIndent) chompStart = i + 1;
   }
   let value = "";
   let sep6 = "";
@@ -7044,10 +8396,11 @@ function resolveBlockScalar(ctx, scalar, onError) {
     let [indent, content] = lines[i];
     offset += indent.length + content.length + 1;
     const crlf = content[content.length - 1] === "\r";
-    if (crlf)
-      content = content.slice(0, -1);
+    if (crlf) content = content.slice(0, -1);
     if (content && indent.length < trimIndent) {
-      const src = header.indent ? "explicit indentation indicator" : "first line";
+      const src = header.indent
+        ? "explicit indentation indicator"
+        : "first line";
       const message = `Block scalar lines must not be less indented than their ${src}`;
       onError(offset - content.length - (crlf ? 2 : 1), "BAD_INDENT", message);
       indent = "";
@@ -7056,18 +8409,14 @@ function resolveBlockScalar(ctx, scalar, onError) {
       value += sep6 + indent.slice(trimIndent) + content;
       sep6 = "\n";
     } else if (indent.length > trimIndent || content[0] === "	") {
-      if (sep6 === " ")
-        sep6 = "\n";
-      else if (!prevMoreIndented && sep6 === "\n")
-        sep6 = "\n\n";
+      if (sep6 === " ") sep6 = "\n";
+      else if (!prevMoreIndented && sep6 === "\n") sep6 = "\n\n";
       value += sep6 + indent.slice(trimIndent) + content;
       sep6 = "\n";
       prevMoreIndented = true;
     } else if (content === "") {
-      if (sep6 === "\n")
-        value += "\n";
-      else
-        sep6 = "\n";
+      if (sep6 === "\n") value += "\n";
+      else sep6 = "\n";
     } else {
       value += sep6 + content;
       sep6 = " ";
@@ -7080,8 +8429,7 @@ function resolveBlockScalar(ctx, scalar, onError) {
     case "+":
       for (let i = chompStart; i < lines.length; ++i)
         value += "\n" + lines[i][0].slice(trimIndent);
-      if (value[value.length - 1] !== "\n")
-        value += "\n";
+      if (value[value.length - 1] !== "\n") value += "\n";
       break;
     default:
       value += "\n";
@@ -7101,18 +8449,19 @@ function parseBlockScalarHeader({ offset, props }, strict, onError) {
   let error = -1;
   for (let i = 1; i < source.length; ++i) {
     const ch = source[i];
-    if (!chomp && (ch === "-" || ch === "+"))
-      chomp = ch;
+    if (!chomp && (ch === "-" || ch === "+")) chomp = ch;
     else {
       const n = Number(ch);
-      if (!indent && n)
-        indent = n;
-      else if (error === -1)
-        error = offset + i;
+      if (!indent && n) indent = n;
+      else if (error === -1) error = offset + i;
     }
   }
   if (error !== -1)
-    onError(error, "UNEXPECTED_TOKEN", `Block scalar header includes extra characters: ${source}`);
+    onError(
+      error,
+      "UNEXPECTED_TOKEN",
+      `Block scalar header includes extra characters: ${source}`,
+    );
   let hasSpace = false;
   let comment = "";
   let length = source.length;
@@ -7127,7 +8476,8 @@ function parseBlockScalarHeader({ offset, props }, strict, onError) {
         break;
       case "comment":
         if (strict && !hasSpace) {
-          const message = "Comments must be separated from other tokens by white space characters";
+          const message =
+            "Comments must be separated from other tokens by white space characters";
           onError(token, "MISSING_CHAR", message);
         }
         length += token.source.length;
@@ -7142,8 +8492,7 @@ function parseBlockScalarHeader({ offset, props }, strict, onError) {
         const message = `Unexpected token in block scalar header: ${token.type}`;
         onError(token, "UNEXPECTED_TOKEN", message);
         const ts = token.source;
-        if (ts && typeof ts === "string")
-          length += ts.length;
+        if (ts && typeof ts === "string") length += ts.length;
       }
     }
   }
@@ -7153,7 +8502,9 @@ function splitLines(source) {
   const split = source.split(/\n( *)/);
   const first = split[0];
   const m = first.match(/^( *)/);
-  const line0 = (m == null ? void 0 : m[1]) ? [m[1], first.slice(m[1].length)] : ["", first];
+  const line0 = (m == null ? void 0 : m[1])
+    ? [m[1], first.slice(m[1].length)]
+    : ["", first];
   const lines = [line0];
   for (let i = 1; i < split.length; i += 2)
     lines.push([split[i], split[i + 1]]);
@@ -7181,12 +8532,16 @@ function resolveFlowScalar(scalar, strict, onError) {
       break;
     /* istanbul ignore next should not happen */
     default:
-      onError(scalar, "UNEXPECTED_TOKEN", `Expected a flow scalar value, but found: ${type}`);
+      onError(
+        scalar,
+        "UNEXPECTED_TOKEN",
+        `Expected a flow scalar value, but found: ${type}`,
+      );
       return {
         value: "",
         type: null,
         comment: "",
-        range: [offset, offset + source.length, offset + source.length]
+        range: [offset, offset + source.length, offset + source.length],
       };
   }
   const valueEnd = offset + source.length;
@@ -7195,7 +8550,7 @@ function resolveFlowScalar(scalar, strict, onError) {
     value,
     type: _type,
     comment: re.comment,
-    range: [offset, valueEnd, re.offset]
+    range: [offset, valueEnd, re.offset],
   };
 }
 function plainValue(source, onError) {
@@ -7242,18 +8597,15 @@ function foldLines(source) {
     line = /[ \t]*(.*?)[ \t]*\r?\n/sy;
   }
   let match = first.exec(source);
-  if (!match)
-    return source;
+  if (!match) return source;
   let res = match[1];
   let sep6 = " ";
   let pos = first.lastIndex;
   line.lastIndex = pos;
-  while (match = line.exec(source)) {
+  while ((match = line.exec(source))) {
     if (match[1] === "") {
-      if (sep6 === "\n")
-        res += sep6;
-      else
-        sep6 = "\n";
+      if (sep6 === "\n") res += sep6;
+      else sep6 = "\n";
     } else {
       res += sep6 + match[1];
       sep6 = " ";
@@ -7263,14 +8615,15 @@ function foldLines(source) {
   const last = /[ \t]*(.*)/sy;
   last.lastIndex = pos;
   match = last.exec(source);
-  return res + sep6 + ((_a = match == null ? void 0 : match[1]) != null ? _a : "");
+  return (
+    res + sep6 + ((_a = match == null ? void 0 : match[1]) != null ? _a : "")
+  );
 }
 function doubleQuotedValue(source, onError) {
   let res = "";
   for (let i = 1; i < source.length - 1; ++i) {
     const ch = source[i];
-    if (ch === "\r" && source[i + 1] === "\n")
-      continue;
+    if (ch === "\r" && source[i + 1] === "\n") continue;
     if (ch === "\n") {
       const { fold, offset } = foldNewline(source, i);
       res += fold;
@@ -7278,16 +8631,13 @@ function doubleQuotedValue(source, onError) {
     } else if (ch === "\\") {
       let next = source[++i];
       const cc = escapeCodes[next];
-      if (cc)
-        res += cc;
+      if (cc) res += cc;
       else if (next === "\n") {
         next = source[i + 1];
-        while (next === " " || next === "	")
-          next = source[++i + 1];
+        while (next === " " || next === "	") next = source[++i + 1];
       } else if (next === "\r" && source[i + 1] === "\n") {
         next = source[++i + 1];
-        while (next === " " || next === "	")
-          next = source[++i + 1];
+        while (next === " " || next === "	") next = source[++i + 1];
       } else if (next === "x" || next === "u" || next === "U") {
         const length = { x: 2, u: 4, U: 8 }[next];
         res += parseCharCode(source, i + 1, length, onError);
@@ -7300,8 +8650,7 @@ function doubleQuotedValue(source, onError) {
     } else if (ch === " " || ch === "	") {
       const wsStart = i;
       let next = source[i + 1];
-      while (next === " " || next === "	")
-        next = source[++i + 1];
+      while (next === " " || next === "	") next = source[++i + 1];
       if (next !== "\n" && !(next === "\r" && source[i + 2] === "\n"))
         res += i > wsStart ? source.slice(wsStart, i + 1) : ch;
     } else {
@@ -7316,19 +8665,16 @@ function foldNewline(source, offset) {
   let fold = "";
   let ch = source[offset + 1];
   while (ch === " " || ch === "	" || ch === "\n" || ch === "\r") {
-    if (ch === "\r" && source[offset + 2] !== "\n")
-      break;
-    if (ch === "\n")
-      fold += "\n";
+    if (ch === "\r" && source[offset + 2] !== "\n") break;
+    if (ch === "\n") fold += "\n";
     offset += 1;
     ch = source[offset + 1];
   }
-  if (!fold)
-    fold = " ";
+  if (!fold) fold = " ";
   return { fold, offset };
 }
 var escapeCodes = {
-  "0": "\0",
+  0: "\0",
   // null character
   a: "\x07",
   // bell character
@@ -7358,7 +8704,7 @@ var escapeCodes = {
   '"': '"',
   "/": "/",
   "\\": "\\",
-  "	": "	"
+  "	": "	",
 };
 function parseCharCode(source, offset, length, onError) {
   const cc = source.substr(offset, length);
@@ -7374,8 +8720,15 @@ function parseCharCode(source, offset, length, onError) {
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/compose-scalar.js
 function composeScalar(ctx, token, tagToken, onError) {
-  const { value, type, comment, range } = token.type === "block-scalar" ? resolveBlockScalar(ctx, token, onError) : resolveFlowScalar(token, ctx.options.strict, onError);
-  const tagName = tagToken ? ctx.directives.tagName(tagToken.source, (msg) => onError(tagToken, "TAG_RESOLVE_FAILED", msg)) : null;
+  const { value, type, comment, range } =
+    token.type === "block-scalar"
+      ? resolveBlockScalar(ctx, token, onError)
+      : resolveFlowScalar(token, ctx.options.strict, onError);
+  const tagName = tagToken
+    ? ctx.directives.tagName(tagToken.source, (msg) =>
+        onError(tagToken, "TAG_RESOLVE_FAILED", msg),
+      )
+    : null;
   let tag;
   if (ctx.options.stringKeys && ctx.atKey) {
     tag = ctx.schema[SCALAR];
@@ -7383,11 +8736,15 @@ function composeScalar(ctx, token, tagToken, onError) {
     tag = findScalarTagByName(ctx.schema, value, tagName, tagToken, onError);
   else if (token.type === "scalar")
     tag = findScalarTagByTest(ctx, value, token, onError);
-  else
-    tag = ctx.schema[SCALAR];
+  else tag = ctx.schema[SCALAR];
   let scalar;
   try {
-    const res = tag.resolve(value, (msg) => onError(tagToken != null ? tagToken : token, "TAG_RESOLVE_FAILED", msg), ctx.options);
+    const res = tag.resolve(
+      value,
+      (msg) =>
+        onError(tagToken != null ? tagToken : token, "TAG_RESOLVE_FAILED", msg),
+      ctx.options,
+    );
     scalar = isScalar(res) ? res : new Scalar(res);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -7396,51 +8753,62 @@ function composeScalar(ctx, token, tagToken, onError) {
   }
   scalar.range = range;
   scalar.source = value;
-  if (type)
-    scalar.type = type;
-  if (tagName)
-    scalar.tag = tagName;
-  if (tag.format)
-    scalar.format = tag.format;
-  if (comment)
-    scalar.comment = comment;
+  if (type) scalar.type = type;
+  if (tagName) scalar.tag = tagName;
+  if (tag.format) scalar.format = tag.format;
+  if (comment) scalar.comment = comment;
   return scalar;
 }
 function findScalarTagByName(schema4, value, tagName, tagToken, onError) {
   var _a;
-  if (tagName === "!")
-    return schema4[SCALAR];
+  if (tagName === "!") return schema4[SCALAR];
   const matchWithTest = [];
   for (const tag of schema4.tags) {
     if (!tag.collection && tag.tag === tagName) {
-      if (tag.default && tag.test)
-        matchWithTest.push(tag);
-      else
-        return tag;
+      if (tag.default && tag.test) matchWithTest.push(tag);
+      else return tag;
     }
   }
   for (const tag of matchWithTest)
-    if ((_a = tag.test) == null ? void 0 : _a.test(value))
-      return tag;
+    if ((_a = tag.test) == null ? void 0 : _a.test(value)) return tag;
   const kt = schema4.knownTags[tagName];
   if (kt && !kt.collection) {
     schema4.tags.push(Object.assign({}, kt, { default: false, test: void 0 }));
     return kt;
   }
-  onError(tagToken, "TAG_RESOLVE_FAILED", `Unresolved tag: ${tagName}`, tagName !== "tag:yaml.org,2002:str");
+  onError(
+    tagToken,
+    "TAG_RESOLVE_FAILED",
+    `Unresolved tag: ${tagName}`,
+    tagName !== "tag:yaml.org,2002:str",
+  );
   return schema4[SCALAR];
 }
-function findScalarTagByTest({ atKey, directives, schema: schema4 }, value, token, onError) {
+function findScalarTagByTest(
+  { atKey, directives, schema: schema4 },
+  value,
+  token,
+  onError,
+) {
   var _a;
-  const tag = schema4.tags.find((tag2) => {
-    var _a2;
-    return (tag2.default === true || atKey && tag2.default === "key") && ((_a2 = tag2.test) == null ? void 0 : _a2.test(value));
-  }) || schema4[SCALAR];
-  if (schema4.compat) {
-    const compat = (_a = schema4.compat.find((tag2) => {
+  const tag =
+    schema4.tags.find((tag2) => {
       var _a2;
-      return tag2.default && ((_a2 = tag2.test) == null ? void 0 : _a2.test(value));
-    })) != null ? _a : schema4[SCALAR];
+      return (
+        (tag2.default === true || (atKey && tag2.default === "key")) &&
+        ((_a2 = tag2.test) == null ? void 0 : _a2.test(value))
+      );
+    }) || schema4[SCALAR];
+  if (schema4.compat) {
+    const compat =
+      (_a = schema4.compat.find((tag2) => {
+        var _a2;
+        return (
+          tag2.default && ((_a2 = tag2.test) == null ? void 0 : _a2.test(value))
+        );
+      })) != null
+        ? _a
+        : schema4[SCALAR];
     if (tag.tag !== compat.tag) {
       const ts = directives.tagString(tag.tag);
       const cs = directives.tagString(compat.tag);
@@ -7454,7 +8822,7 @@ function findScalarTagByTest({ atKey, directives, schema: schema4 }, value, toke
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/util-empty-scalar-position.js
 function emptyScalarPosition(offset, before, pos) {
   if (before) {
-    pos != null ? pos : pos = before.length;
+    pos != null ? pos : (pos = before.length);
     for (let i = pos - 1; i >= 0; --i) {
       let st = before[i];
       switch (st.type) {
@@ -7486,25 +8854,30 @@ function composeNode(ctx, token, props, onError) {
     case "alias":
       node = composeAlias(ctx, token, onError);
       if (anchor || tag)
-        onError(token, "ALIAS_PROPS", "An alias node must not specify any properties");
+        onError(
+          token,
+          "ALIAS_PROPS",
+          "An alias node must not specify any properties",
+        );
       break;
     case "scalar":
     case "single-quoted-scalar":
     case "double-quoted-scalar":
     case "block-scalar":
       node = composeScalar(ctx, token, tag, onError);
-      if (anchor)
-        node.anchor = anchor.source.substring(1);
+      if (anchor) node.anchor = anchor.source.substring(1);
       break;
     case "block-map":
     case "block-seq":
     case "flow-collection":
       node = composeCollection(CN, ctx, token, props, onError);
-      if (anchor)
-        node.anchor = anchor.source.substring(1);
+      if (anchor) node.anchor = anchor.source.substring(1);
       break;
     default: {
-      const message = token.type === "error" ? token.message : `Unsupported token (type: ${token.type})`;
+      const message =
+        token.type === "error"
+          ? token.message
+          : `Unsupported token (type: ${token.type})`;
       onError(token, "UNEXPECTED_TOKEN", message);
       node = composeEmptyNode(ctx, token.offset, void 0, null, props, onError);
       isSrcToken = false;
@@ -7512,28 +8885,37 @@ function composeNode(ctx, token, props, onError) {
   }
   if (anchor && node.anchor === "")
     onError(anchor, "BAD_ALIAS", "Anchor cannot be an empty string");
-  if (atKey && ctx.options.stringKeys && (!isScalar(node) || typeof node.value !== "string" || node.tag && node.tag !== "tag:yaml.org,2002:str")) {
+  if (
+    atKey &&
+    ctx.options.stringKeys &&
+    (!isScalar(node) ||
+      typeof node.value !== "string" ||
+      (node.tag && node.tag !== "tag:yaml.org,2002:str"))
+  ) {
     const msg = "With stringKeys, all keys must be strings";
     onError(tag != null ? tag : token, "NON_STRING_KEY", msg);
   }
-  if (spaceBefore)
-    node.spaceBefore = true;
+  if (spaceBefore) node.spaceBefore = true;
   if (comment) {
-    if (token.type === "scalar" && token.source === "")
-      node.comment = comment;
-    else
-      node.commentBefore = comment;
+    if (token.type === "scalar" && token.source === "") node.comment = comment;
+    else node.commentBefore = comment;
   }
-  if (ctx.options.keepSourceTokens && isSrcToken)
-    node.srcToken = token;
+  if (ctx.options.keepSourceTokens && isSrcToken) node.srcToken = token;
   return node;
 }
-function composeEmptyNode(ctx, offset, before, pos, { spaceBefore, comment, anchor, tag, end }, onError) {
+function composeEmptyNode(
+  ctx,
+  offset,
+  before,
+  pos,
+  { spaceBefore, comment, anchor, tag, end },
+  onError,
+) {
   const token = {
     type: "scalar",
     offset: emptyScalarPosition(offset, before, pos),
     indent: -1,
-    source: ""
+    source: "",
   };
   const node = composeScalar(ctx, token, tag, onError);
   if (anchor) {
@@ -7541,8 +8923,7 @@ function composeEmptyNode(ctx, offset, before, pos, { spaceBefore, comment, anch
     if (node.anchor === "")
       onError(anchor, "BAD_ALIAS", "Anchor cannot be an empty string");
   }
-  if (spaceBefore)
-    node.spaceBefore = true;
+  if (spaceBefore) node.spaceBefore = true;
   if (comment) {
     node.comment = comment;
     node.range[2] = end;
@@ -7554,17 +8935,26 @@ function composeAlias({ options }, { offset, source, end }, onError) {
   if (alias.source === "")
     onError(offset, "BAD_ALIAS", "Alias cannot be an empty string");
   if (alias.source.endsWith(":"))
-    onError(offset + source.length - 1, "BAD_ALIAS", "Alias ending in : is ambiguous", true);
+    onError(
+      offset + source.length - 1,
+      "BAD_ALIAS",
+      "Alias ending in : is ambiguous",
+      true,
+    );
   const valueEnd = offset + source.length;
   const re = resolveEnd(end, valueEnd, options.strict, onError);
   alias.range = [offset, valueEnd, re.offset];
-  if (re.comment)
-    alias.comment = re.comment;
+  if (re.comment) alias.comment = re.comment;
   return alias;
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/compose-doc.js
-function composeDoc(options, directives, { offset, start, value, end }, onError) {
+function composeDoc(
+  options,
+  directives,
+  { offset, start, value, end },
+  onError,
+) {
   const opts = Object.assign({ _directives: directives }, options);
   const doc = new Document(void 0, opts);
   const ctx = {
@@ -7572,7 +8962,7 @@ function composeDoc(options, directives, { offset, start, value, end }, onError)
     atRoot: true,
     directives: doc.directives,
     options: doc.options,
-    schema: doc.schema
+    schema: doc.schema,
   };
   const props = resolveProps(start, {
     indicator: "doc-start",
@@ -7580,28 +8970,35 @@ function composeDoc(options, directives, { offset, start, value, end }, onError)
     offset,
     onError,
     parentIndent: 0,
-    startOnNewline: true
+    startOnNewline: true,
   });
   if (props.found) {
     doc.directives.docStart = true;
-    if (value && (value.type === "block-map" || value.type === "block-seq") && !props.hasNewline)
-      onError(props.end, "MISSING_CHAR", "Block collection cannot start on same line with directives-end marker");
+    if (
+      value &&
+      (value.type === "block-map" || value.type === "block-seq") &&
+      !props.hasNewline
+    )
+      onError(
+        props.end,
+        "MISSING_CHAR",
+        "Block collection cannot start on same line with directives-end marker",
+      );
   }
-  doc.contents = value ? composeNode(ctx, value, props, onError) : composeEmptyNode(ctx, props.end, start, null, props, onError);
+  doc.contents = value
+    ? composeNode(ctx, value, props, onError)
+    : composeEmptyNode(ctx, props.end, start, null, props, onError);
   const contentEnd = doc.contents.range[2];
   const re = resolveEnd(end, contentEnd, false, onError);
-  if (re.comment)
-    doc.comment = re.comment;
+  if (re.comment) doc.comment = re.comment;
   doc.range = [offset, contentEnd, re.offset];
   return doc;
 }
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/compose/composer.js
 function getErrorPos(src) {
-  if (typeof src === "number")
-    return [src, src + 1];
-  if (Array.isArray(src))
-    return src.length === 2 ? src : [src[0], src[1]];
+  if (typeof src === "number") return [src, src + 1];
+  if (Array.isArray(src)) return src.length === 2 ? src : [src[0], src[1]];
   const { offset, source } = src;
   return [offset, offset + (typeof source === "string" ? source.length : 1)];
 }
@@ -7614,18 +9011,18 @@ function parsePrelude(prelude) {
     const source = prelude[i];
     switch (source[0]) {
       case "#":
-        comment += (comment === "" ? "" : afterEmptyLine ? "\n\n" : "\n") + (source.substring(1) || " ");
+        comment +=
+          (comment === "" ? "" : afterEmptyLine ? "\n\n" : "\n") +
+          (source.substring(1) || " ");
         atComment = true;
         afterEmptyLine = false;
         break;
       case "%":
-        if (((_a = prelude[i + 1]) == null ? void 0 : _a[0]) !== "#")
-          i += 1;
+        if (((_a = prelude[i + 1]) == null ? void 0 : _a[0]) !== "#") i += 1;
         atComment = false;
         break;
       default:
-        if (!atComment)
-          afterEmptyLine = true;
+        if (!atComment) afterEmptyLine = true;
         atComment = false;
     }
   }
@@ -7640,10 +9037,8 @@ var Composer = class {
     this.warnings = [];
     this.onError = (source, code, message, warning) => {
       const pos = getErrorPos(source);
-      if (warning)
-        this.warnings.push(new YAMLWarning(pos, code, message));
-      else
-        this.errors.push(new YAMLParseError(pos, code, message));
+      if (warning) this.warnings.push(new YAMLWarning(pos, code, message));
+      else this.errors.push(new YAMLParseError(pos, code, message));
     };
     this.directives = new Directives({ version: options.version || "1.2" });
     this.options = options;
@@ -7653,21 +9048,26 @@ var Composer = class {
     if (comment) {
       const dc = doc.contents;
       if (afterDoc) {
-        doc.comment = doc.comment ? `${doc.comment}
-${comment}` : comment;
+        doc.comment = doc.comment
+          ? `${doc.comment}
+${comment}`
+          : comment;
       } else if (afterEmptyLine || doc.directives.docStart || !dc) {
         doc.commentBefore = comment;
       } else if (isCollection(dc) && !dc.flow && dc.items.length > 0) {
         let it = dc.items[0];
-        if (isPair(it))
-          it = it.key;
+        if (isPair(it)) it = it.key;
         const cb = it.commentBefore;
-        it.commentBefore = cb ? `${comment}
-${cb}` : comment;
+        it.commentBefore = cb
+          ? `${comment}
+${cb}`
+          : comment;
       } else {
         const cb = dc.commentBefore;
-        dc.commentBefore = cb ? `${comment}
-${cb}` : comment;
+        dc.commentBefore = cb
+          ? `${comment}
+${cb}`
+          : comment;
       }
     }
     if (afterDoc) {
@@ -7691,7 +9091,7 @@ ${cb}` : comment;
       comment: parsePrelude(this.prelude).comment,
       directives: this.directives,
       errors: this.errors,
-      warnings: this.warnings
+      warnings: this.warnings,
     };
   }
   /**
@@ -7701,8 +9101,7 @@ ${cb}` : comment;
    * @param endOffset - Should be set if `forceDoc` is also set, to set the document range end and to indicate errors correctly.
    */
   *compose(tokens, forceDoc = false, endOffset = -1) {
-    for (const token of tokens)
-      yield* this.next(token);
+    for (const token of tokens) yield* this.next(token);
     yield* this.end(forceDoc, endOffset);
   }
   /** Advance the composer by one CST token. */
@@ -7718,12 +9117,20 @@ ${cb}` : comment;
         this.atDirectives = true;
         break;
       case "document": {
-        const doc = composeDoc(this.options, this.directives, token, this.onError);
+        const doc = composeDoc(
+          this.options,
+          this.directives,
+          token,
+          this.onError,
+        );
         if (this.atDirectives && !doc.directives.docStart)
-          this.onError(token, "MISSING_CHAR", "Missing directives-end/doc-start indicator line");
+          this.onError(
+            token,
+            "MISSING_CHAR",
+            "Missing directives-end/doc-start indicator line",
+          );
         this.decorate(doc, false);
-        if (this.doc)
-          yield this.doc;
+        if (this.doc) yield this.doc;
         this.doc = doc;
         this.atDirectives = false;
         break;
@@ -7736,33 +9143,52 @@ ${cb}` : comment;
         this.prelude.push(token.source);
         break;
       case "error": {
-        const msg = token.source ? `${token.message}: ${JSON.stringify(token.source)}` : token.message;
-        const error = new YAMLParseError(getErrorPos(token), "UNEXPECTED_TOKEN", msg);
-        if (this.atDirectives || !this.doc)
-          this.errors.push(error);
-        else
-          this.doc.errors.push(error);
+        const msg = token.source
+          ? `${token.message}: ${JSON.stringify(token.source)}`
+          : token.message;
+        const error = new YAMLParseError(
+          getErrorPos(token),
+          "UNEXPECTED_TOKEN",
+          msg,
+        );
+        if (this.atDirectives || !this.doc) this.errors.push(error);
+        else this.doc.errors.push(error);
         break;
       }
       case "doc-end": {
         if (!this.doc) {
           const msg = "Unexpected doc-end without preceding document";
-          this.errors.push(new YAMLParseError(getErrorPos(token), "UNEXPECTED_TOKEN", msg));
+          this.errors.push(
+            new YAMLParseError(getErrorPos(token), "UNEXPECTED_TOKEN", msg),
+          );
           break;
         }
         this.doc.directives.docEnd = true;
-        const end = resolveEnd(token.end, token.offset + token.source.length, this.doc.options.strict, this.onError);
+        const end = resolveEnd(
+          token.end,
+          token.offset + token.source.length,
+          this.doc.options.strict,
+          this.onError,
+        );
         this.decorate(this.doc, true);
         if (end.comment) {
           const dc = this.doc.comment;
-          this.doc.comment = dc ? `${dc}
-${end.comment}` : end.comment;
+          this.doc.comment = dc
+            ? `${dc}
+${end.comment}`
+            : end.comment;
         }
         this.doc.range[2] = end.offset;
         break;
       }
       default:
-        this.errors.push(new YAMLParseError(getErrorPos(token), "UNEXPECTED_TOKEN", `Unsupported token ${token.type}`));
+        this.errors.push(
+          new YAMLParseError(
+            getErrorPos(token),
+            "UNEXPECTED_TOKEN",
+            `Unsupported token ${token.type}`,
+          ),
+        );
     }
   }
   /**
@@ -7777,10 +9203,17 @@ ${end.comment}` : end.comment;
       yield this.doc;
       this.doc = null;
     } else if (forceDoc) {
-      const opts = Object.assign({ _directives: this.directives }, this.options);
+      const opts = Object.assign(
+        { _directives: this.directives },
+        this.options,
+      );
       const doc = new Document(void 0, opts);
       if (this.atDirectives)
-        this.onError(endOffset, "MISSING_CHAR", "Missing directives-end indicator line");
+        this.onError(
+          endOffset,
+          "MISSING_CHAR",
+          "Missing directives-end indicator line",
+        );
       doc.range = [0, endOffset, endOffset];
       this.decorate(doc, false);
       yield doc;
@@ -7806,8 +9239,7 @@ visit2.itemAtPath = (cst, path13) => {
     const tok = item == null ? void 0 : item[field];
     if (tok && "items" in tok) {
       item = tok.items[index];
-    } else
-      return void 0;
+    } else return void 0;
   }
   return item;
 };
@@ -7815,23 +9247,23 @@ visit2.parentCollection = (cst, path13) => {
   const parent = visit2.itemAtPath(cst, path13.slice(0, -1));
   const field = path13[path13.length - 1][0];
   const coll = parent == null ? void 0 : parent[field];
-  if (coll && "items" in coll)
-    return coll;
+  if (coll && "items" in coll) return coll;
   throw new Error("Parent collection not found");
 };
 function _visit(path13, item, visitor) {
   let ctrl = visitor(item, path13);
-  if (typeof ctrl === "symbol")
-    return ctrl;
+  if (typeof ctrl === "symbol") return ctrl;
   for (const field of ["key", "value"]) {
     const token = item[field];
     if (token && "items" in token) {
       for (let i = 0; i < token.items.length; ++i) {
-        const ci = _visit(Object.freeze(path13.concat([[field, i]])), token.items[i], visitor);
-        if (typeof ci === "number")
-          i = ci - 1;
-        else if (ci === BREAK2)
-          return BREAK2;
+        const ci = _visit(
+          Object.freeze(path13.concat([[field, i]])),
+          token.items[i],
+          visitor,
+        );
+        if (typeof ci === "number") i = ci - 1;
+        else if (ci === BREAK2) return BREAK2;
         else if (ci === REMOVE2) {
           token.items.splice(i, 1);
           i -= 1;
@@ -7923,7 +9355,9 @@ function isEmpty(ch) {
   }
 }
 var hexDigits = new Set("0123456789ABCDEFabcdef");
-var tagChars = new Set("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-#;/?:@&=+$_.!~*'()");
+var tagChars = new Set(
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-#;/?:@&=+$_.!~*'()",
+);
 var flowIndicatorChars = new Set(",[]{}");
 var invalidAnchorChars = new Set(" ,[]{}\n\r	");
 var isNotAnchorChar = (ch) => !ch || invalidAnchorChars.has(ch);
@@ -7950,8 +9384,7 @@ var Lexer = class {
   *lex(source, incomplete = false) {
     var _a;
     if (source) {
-      if (typeof source !== "string")
-        throw TypeError("source is not a string");
+      if (typeof source !== "string") throw TypeError("source is not a string");
       this.buffer = this.buffer ? this.buffer + source : source;
       this.lineEndPos = null;
     }
@@ -7963,12 +9396,9 @@ var Lexer = class {
   atLineEnd() {
     let i = this.pos;
     let ch = this.buffer[i];
-    while (ch === " " || ch === "	")
-      ch = this.buffer[++i];
-    if (!ch || ch === "#" || ch === "\n")
-      return true;
-    if (ch === "\r")
-      return this.buffer[i + 1] === "\n";
+    while (ch === " " || ch === "	") ch = this.buffer[++i];
+    if (!ch || ch === "#" || ch === "\n") return true;
+    if (ch === "\r") return this.buffer[i + 1] === "\n";
     return false;
   }
   charAt(n) {
@@ -7978,14 +9408,14 @@ var Lexer = class {
     let ch = this.buffer[offset];
     if (this.indentNext > 0) {
       let indent = 0;
-      while (ch === " ")
-        ch = this.buffer[++indent + offset];
+      while (ch === " ") ch = this.buffer[++indent + offset];
       if (ch === "\r") {
         const next = this.buffer[indent + offset + 1];
-        if (next === "\n" || !next && !this.atEnd)
-          return offset + indent + 1;
+        if (next === "\n" || (!next && !this.atEnd)) return offset + indent + 1;
       }
-      return ch === "\n" || indent >= this.indentNext || !ch && !this.atEnd ? offset + indent : -1;
+      return ch === "\n" || indent >= this.indentNext || (!ch && !this.atEnd)
+        ? offset + indent
+        : -1;
     }
     if (ch === "-" || ch === ".") {
       const dt = this.buffer.substr(offset, 3);
@@ -7996,14 +9426,12 @@ var Lexer = class {
   }
   getLine() {
     let end = this.lineEndPos;
-    if (typeof end !== "number" || end !== -1 && end < this.pos) {
+    if (typeof end !== "number" || (end !== -1 && end < this.pos)) {
       end = this.buffer.indexOf("\n", this.pos);
       this.lineEndPos = end;
     }
-    if (end === -1)
-      return this.atEnd ? this.buffer.substring(this.pos) : null;
-    if (this.buffer[end - 1] === "\r")
-      end -= 1;
+    if (end === -1) return this.atEnd ? this.buffer.substring(this.pos) : null;
+    if (this.buffer[end - 1] === "\r") end -= 1;
     return this.buffer.substring(this.pos, end);
   }
   hasChars(n) {
@@ -8041,8 +9469,7 @@ var Lexer = class {
   }
   *parseStream() {
     let line = this.getLine();
-    if (line === null)
-      return this.setNext("stream");
+    if (line === null) return this.setNext("stream");
     if (line[0] === BOM) {
       yield* this.pushCount(1);
       line = line.substring(1);
@@ -8061,12 +9488,11 @@ var Lexer = class {
       }
       while (true) {
         const ch = line[dirEnd - 1];
-        if (ch === " " || ch === "	")
-          dirEnd -= 1;
-        else
-          break;
+        if (ch === " " || ch === "	") dirEnd -= 1;
+        else break;
       }
-      const n = (yield* this.pushCount(dirEnd)) + (yield* this.pushSpaces(true));
+      const n =
+        (yield* this.pushCount(dirEnd)) + (yield* this.pushSpaces(true));
       yield* this.pushCount(line.length - n);
       this.pushNewline();
       return "stream";
@@ -8082,11 +9508,9 @@ var Lexer = class {
   }
   *parseLineStart() {
     const ch = this.charAt(0);
-    if (!ch && !this.atEnd)
-      return this.setNext("line-start");
+    if (!ch && !this.atEnd) return this.setNext("line-start");
     if (ch === "-" || ch === ".") {
-      if (!this.atEnd && !this.hasChars(4))
-        return this.setNext("line-start");
+      if (!this.atEnd && !this.hasChars(4)) return this.setNext("line-start");
       const s = this.peek(3);
       if ((s === "---" || s === "...") && isEmpty(this.charAt(3))) {
         yield* this.pushCount(3);
@@ -8102,8 +9526,7 @@ var Lexer = class {
   }
   *parseBlockStart() {
     const [ch0, ch1] = this.peek(2);
-    if (!ch1 && !this.atEnd)
-      return this.setNext("block-start");
+    if (!ch1 && !this.atEnd) return this.setNext("block-start");
     if ((ch0 === "-" || ch0 === "?" || ch0 === ":") && isEmpty(ch1)) {
       const n = (yield* this.pushCount(1)) + (yield* this.pushSpaces(true));
       this.indentNext = this.indentValue + 1;
@@ -8115,8 +9538,7 @@ var Lexer = class {
   *parseDocument() {
     yield* this.pushSpaces(true);
     const line = this.getLine();
-    if (line === null)
-      return this.setNext("doc");
+    if (line === null) return this.setNext("doc");
     let n = yield* this.pushIndicators();
     switch (line[n]) {
       case "#":
@@ -8166,10 +9588,17 @@ var Lexer = class {
       sp += yield* this.pushSpaces(true);
     } while (nl + sp > 0);
     const line = this.getLine();
-    if (line === null)
-      return this.setNext("flow");
-    if (indent !== -1 && indent < this.indentNext && line[0] !== "#" || indent === 0 && (line.startsWith("---") || line.startsWith("...")) && isEmpty(line[3])) {
-      const atFlowEndMarker = indent === this.indentNext - 1 && this.flowLevel === 1 && (line[0] === "]" || line[0] === "}");
+    if (line === null) return this.setNext("flow");
+    if (
+      (indent !== -1 && indent < this.indentNext && line[0] !== "#") ||
+      (indent === 0 &&
+        (line.startsWith("---") || line.startsWith("...")) &&
+        isEmpty(line[3]))
+    ) {
+      const atFlowEndMarker =
+        indent === this.indentNext - 1 &&
+        this.flowLevel === 1 &&
+        (line[0] === "]" || line[0] === "}");
       if (!atFlowEndMarker) {
         this.flowLevel = 0;
         yield FLOW_END;
@@ -8232,10 +9661,8 @@ var Lexer = class {
     } else {
       while (end !== -1) {
         let n = 0;
-        while (this.buffer[end - 1 - n] === "\\")
-          n += 1;
-        if (n % 2 === 0)
-          break;
+        while (this.buffer[end - 1 - n] === "\\") n += 1;
+        if (n % 2 === 0) break;
         end = this.buffer.indexOf('"', end + 1);
       }
     }
@@ -8244,8 +9671,7 @@ var Lexer = class {
     if (nl !== -1) {
       while (nl !== -1) {
         const cs = this.continueScalar(nl + 1);
-        if (cs === -1)
-          break;
+        if (cs === -1) break;
         nl = qb.indexOf("\n", cs);
       }
       if (nl !== -1) {
@@ -8253,8 +9679,7 @@ var Lexer = class {
       }
     }
     if (end === -1) {
-      if (!this.atEnd)
-        return this.setNext("quoted-scalar");
+      if (!this.atEnd) return this.setNext("quoted-scalar");
       end = this.buffer.length;
     }
     yield* this.pushToIndex(end + 1, false);
@@ -8266,12 +9691,9 @@ var Lexer = class {
     let i = this.pos;
     while (true) {
       const ch = this.buffer[++i];
-      if (ch === "+")
-        this.blockScalarKeep = true;
-      else if (ch > "0" && ch <= "9")
-        this.blockScalarIndent = Number(ch) - 1;
-      else if (ch !== "-")
-        break;
+      if (ch === "+") this.blockScalarKeep = true;
+      else if (ch > "0" && ch <= "9") this.blockScalarIndent = Number(ch) - 1;
+      else if (ch !== "-") break;
     }
     return yield* this.pushUntil((ch) => isEmpty(ch) || ch === "#");
   }
@@ -8279,7 +9701,7 @@ var Lexer = class {
     let nl = this.pos - 1;
     let indent = 0;
     let ch;
-    loop: for (let i2 = this.pos; ch = this.buffer[i2]; ++i2) {
+    loop: for (let i2 = this.pos; (ch = this.buffer[i2]); ++i2) {
       switch (ch) {
         case " ":
           indent += 1;
@@ -8290,40 +9712,35 @@ var Lexer = class {
           break;
         case "\r": {
           const next = this.buffer[i2 + 1];
-          if (!next && !this.atEnd)
-            return this.setNext("block-scalar");
-          if (next === "\n")
-            break;
+          if (!next && !this.atEnd) return this.setNext("block-scalar");
+          if (next === "\n") break;
         }
         // fallthrough
         default:
           break loop;
       }
     }
-    if (!ch && !this.atEnd)
-      return this.setNext("block-scalar");
+    if (!ch && !this.atEnd) return this.setNext("block-scalar");
     if (indent >= this.indentNext) {
-      if (this.blockScalarIndent === -1)
-        this.indentNext = indent;
+      if (this.blockScalarIndent === -1) this.indentNext = indent;
       else {
-        this.indentNext = this.blockScalarIndent + (this.indentNext === 0 ? 1 : this.indentNext);
+        this.indentNext =
+          this.blockScalarIndent +
+          (this.indentNext === 0 ? 1 : this.indentNext);
       }
       do {
         const cs = this.continueScalar(nl + 1);
-        if (cs === -1)
-          break;
+        if (cs === -1) break;
         nl = this.buffer.indexOf("\n", cs);
       } while (nl !== -1);
       if (nl === -1) {
-        if (!this.atEnd)
-          return this.setNext("block-scalar");
+        if (!this.atEnd) return this.setNext("block-scalar");
         nl = this.buffer.length;
       }
     }
     let i = nl + 1;
     ch = this.buffer[i];
-    while (ch === " ")
-      ch = this.buffer[++i];
+    while (ch === " ") ch = this.buffer[++i];
     if (ch === "	") {
       while (ch === "	" || ch === " " || ch === "\r" || ch === "\n")
         ch = this.buffer[++i];
@@ -8332,15 +9749,12 @@ var Lexer = class {
       do {
         let i2 = nl - 1;
         let ch2 = this.buffer[i2];
-        if (ch2 === "\r")
-          ch2 = this.buffer[--i2];
+        if (ch2 === "\r") ch2 = this.buffer[--i2];
         const lastChar = i2;
-        while (ch2 === " ")
-          ch2 = this.buffer[--i2];
+        while (ch2 === " ") ch2 = this.buffer[--i2];
         if (ch2 === "\n" && i2 >= this.pos && i2 + 1 + indent > lastChar)
           nl = i2;
-        else
-          break;
+        else break;
       } while (true);
     }
     yield SCALAR2;
@@ -8352,11 +9766,10 @@ var Lexer = class {
     let end = this.pos - 1;
     let i = this.pos - 1;
     let ch;
-    while (ch = this.buffer[++i]) {
+    while ((ch = this.buffer[++i])) {
       if (ch === ":") {
         const next = this.buffer[i + 1];
-        if (isEmpty(next) || inFlow && flowIndicatorChars.has(next))
-          break;
+        if (isEmpty(next) || (inFlow && flowIndicatorChars.has(next))) break;
         end = i;
       } else if (isEmpty(ch)) {
         let next = this.buffer[i + 1];
@@ -8365,25 +9778,20 @@ var Lexer = class {
             i += 1;
             ch = "\n";
             next = this.buffer[i + 1];
-          } else
-            end = i;
+          } else end = i;
         }
-        if (next === "#" || inFlow && flowIndicatorChars.has(next))
-          break;
+        if (next === "#" || (inFlow && flowIndicatorChars.has(next))) break;
         if (ch === "\n") {
           const cs = this.continueScalar(i + 1);
-          if (cs === -1)
-            break;
+          if (cs === -1) break;
           i = Math.max(i, cs - 2);
         }
       } else {
-        if (inFlow && flowIndicatorChars.has(ch))
-          break;
+        if (inFlow && flowIndicatorChars.has(ch)) break;
         end = i;
       }
     }
-    if (!ch && !this.atEnd)
-      return this.setNext("plain-scalar");
+    if (!ch && !this.atEnd) return this.setNext("plain-scalar");
     yield SCALAR2;
     yield* this.pushToIndex(end + 1, true);
     return inFlow ? "flow" : "doc";
@@ -8402,16 +9810,23 @@ var Lexer = class {
       yield s;
       this.pos += s.length;
       return s.length;
-    } else if (allowEmpty)
-      yield "";
+    } else if (allowEmpty) yield "";
     return 0;
   }
   *pushIndicators() {
     switch (this.charAt(0)) {
       case "!":
-        return (yield* this.pushTag()) + (yield* this.pushSpaces(true)) + (yield* this.pushIndicators());
+        return (
+          (yield* this.pushTag()) +
+          (yield* this.pushSpaces(true)) +
+          (yield* this.pushIndicators())
+        );
       case "&":
-        return (yield* this.pushUntil(isNotAnchorChar)) + (yield* this.pushSpaces(true)) + (yield* this.pushIndicators());
+        return (
+          (yield* this.pushUntil(isNotAnchorChar)) +
+          (yield* this.pushSpaces(true)) +
+          (yield* this.pushIndicators())
+        );
       case "-":
       // this is an error
       case "?":
@@ -8419,12 +9834,14 @@ var Lexer = class {
       case ":": {
         const inFlow = this.flowLevel > 0;
         const ch1 = this.charAt(1);
-        if (isEmpty(ch1) || inFlow && flowIndicatorChars.has(ch1)) {
-          if (!inFlow)
-            this.indentNext = this.indentValue + 1;
-          else if (this.flowKey)
-            this.flowKey = false;
-          return (yield* this.pushCount(1)) + (yield* this.pushSpaces(true)) + (yield* this.pushIndicators());
+        if (isEmpty(ch1) || (inFlow && flowIndicatorChars.has(ch1))) {
+          if (!inFlow) this.indentNext = this.indentValue + 1;
+          else if (this.flowKey) this.flowKey = false;
+          return (
+            (yield* this.pushCount(1)) +
+            (yield* this.pushSpaces(true)) +
+            (yield* this.pushIndicators())
+          );
         }
       }
     }
@@ -8434,38 +9851,37 @@ var Lexer = class {
     if (this.charAt(1) === "<") {
       let i = this.pos + 2;
       let ch = this.buffer[i];
-      while (!isEmpty(ch) && ch !== ">")
-        ch = this.buffer[++i];
+      while (!isEmpty(ch) && ch !== ">") ch = this.buffer[++i];
       return yield* this.pushToIndex(ch === ">" ? i + 1 : i, false);
     } else {
       let i = this.pos + 1;
       let ch = this.buffer[i];
       while (ch) {
-        if (tagChars.has(ch))
-          ch = this.buffer[++i];
-        else if (ch === "%" && hexDigits.has(this.buffer[i + 1]) && hexDigits.has(this.buffer[i + 2])) {
-          ch = this.buffer[i += 3];
-        } else
-          break;
+        if (tagChars.has(ch)) ch = this.buffer[++i];
+        else if (
+          ch === "%" &&
+          hexDigits.has(this.buffer[i + 1]) &&
+          hexDigits.has(this.buffer[i + 2])
+        ) {
+          ch = this.buffer[(i += 3)];
+        } else break;
       }
       return yield* this.pushToIndex(i, false);
     }
   }
   *pushNewline() {
     const ch = this.buffer[this.pos];
-    if (ch === "\n")
-      return yield* this.pushCount(1);
+    if (ch === "\n") return yield* this.pushCount(1);
     else if (ch === "\r" && this.charAt(1) === "\n")
       return yield* this.pushCount(2);
-    else
-      return 0;
+    else return 0;
   }
   *pushSpaces(allowTabs) {
     let i = this.pos - 1;
     let ch;
     do {
       ch = this.buffer[++i];
-    } while (ch === " " || allowTabs && ch === "	");
+    } while (ch === " " || (allowTabs && ch === "	"));
     const n = i - this.pos;
     if (n > 0) {
       yield this.buffer.substr(this.pos, n);
@@ -8476,8 +9892,7 @@ var Lexer = class {
   *pushUntil(test) {
     let i = this.pos;
     let ch = this.buffer[i];
-    while (!test(ch))
-      ch = this.buffer[++i];
+    while (!test(ch)) ch = this.buffer[++i];
     return yield* this.pushToIndex(i, false);
   }
 };
@@ -8491,16 +9906,12 @@ var LineCounter = class {
       let low = 0;
       let high = this.lineStarts.length;
       while (low < high) {
-        const mid = low + high >> 1;
-        if (this.lineStarts[mid] < offset)
-          low = mid + 1;
-        else
-          high = mid;
+        const mid = (low + high) >> 1;
+        if (this.lineStarts[mid] < offset) low = mid + 1;
+        else high = mid;
       }
-      if (this.lineStarts[low] === offset)
-        return { line: low + 1, col: 1 };
-      if (low === 0)
-        return { line: 0, col: offset };
+      if (this.lineStarts[low] === offset) return { line: low + 1, col: 1 };
+      if (low === 0) return { line: 0, col: offset };
       const start = this.lineStarts[low - 1];
       return { line: low, col: offset - start + 1 };
     };
@@ -8509,9 +9920,7 @@ var LineCounter = class {
 
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/parse/parser.js
 function includesToken(list, type) {
-  for (let i = 0; i < list.length; ++i)
-    if (list[i].type === type)
-      return true;
+  for (let i = 0; i < list.length; ++i) if (list[i].type === type) return true;
   return false;
 }
 function findNonEmptyIndex(list) {
@@ -8557,8 +9966,7 @@ function getPrevProps(parent) {
 }
 function getFirstKeyStartProps(prev) {
   var _a;
-  if (prev.length === 0)
-    return [];
+  if (prev.length === 0) return [];
   let i = prev.length;
   loop: while (--i >= 0) {
     switch (prev[i].type) {
@@ -8570,24 +9978,24 @@ function getFirstKeyStartProps(prev) {
         break loop;
     }
   }
-  while (((_a = prev[++i]) == null ? void 0 : _a.type) === "space") {
-  }
+  while (((_a = prev[++i]) == null ? void 0 : _a.type) === "space") {}
   return prev.splice(i, prev.length);
 }
 function fixFlowSeqItems(fc) {
   if (fc.start.type === "flow-seq-start") {
     for (const it of fc.items) {
-      if (it.sep && !it.value && !includesToken(it.start, "explicit-key-ind") && !includesToken(it.sep, "map-value-ind")) {
-        if (it.key)
-          it.value = it.key;
+      if (
+        it.sep &&
+        !it.value &&
+        !includesToken(it.start, "explicit-key-ind") &&
+        !includesToken(it.sep, "map-value-ind")
+      ) {
+        if (it.key) it.value = it.key;
         delete it.key;
         if (isFlowToken(it.value)) {
-          if (it.value.end)
-            Array.prototype.push.apply(it.value.end, it.sep);
-          else
-            it.value.end = it.sep;
-        } else
-          Array.prototype.push.apply(it.start, it.sep);
+          if (it.value.end) Array.prototype.push.apply(it.value.end, it.sep);
+          else it.value.end = it.sep;
+        } else Array.prototype.push.apply(it.start, it.sep);
         delete it.sep;
       }
     }
@@ -8619,12 +10027,10 @@ var Parser = class {
    * @returns A generator of tokens representing each directive, document, and other structure.
    */
   *parse(source, incomplete = false) {
-    if (this.onNewLine && this.offset === 0)
-      this.onNewLine(0);
+    if (this.onNewLine && this.offset === 0) this.onNewLine(0);
     for (const lexeme of this.lexer.lex(source, incomplete))
       yield* this.next(lexeme);
-    if (!incomplete)
-      yield* this.end();
+    if (!incomplete) yield* this.end();
   }
   /**
    * Advance the parser by the `source` of one lexical token.
@@ -8653,18 +10059,15 @@ var Parser = class {
         case "newline":
           this.atNewLine = true;
           this.indent = 0;
-          if (this.onNewLine)
-            this.onNewLine(this.offset + source.length);
+          if (this.onNewLine) this.onNewLine(this.offset + source.length);
           break;
         case "space":
-          if (this.atNewLine && source[0] === " ")
-            this.indent += source.length;
+          if (this.atNewLine && source[0] === " ") this.indent += source.length;
           break;
         case "explicit-key-ind":
         case "map-value-ind":
         case "seq-item-ind":
-          if (this.atNewLine)
-            this.indent += source.length;
+          if (this.atNewLine) this.indent += source.length;
           break;
         case "doc-mode":
         case "flow-error-end":
@@ -8677,32 +10080,32 @@ var Parser = class {
   }
   /** Call at end of input to push out any remaining constructions */
   *end() {
-    while (this.stack.length > 0)
-      yield* this.pop();
+    while (this.stack.length > 0) yield* this.pop();
   }
   get sourceToken() {
     const st = {
       type: this.type,
       offset: this.offset,
       indent: this.indent,
-      source: this.source
+      source: this.source,
     };
     return st;
   }
   *step() {
     const top = this.peek(1);
-    if (this.type === "doc-end" && (top == null ? void 0 : top.type) !== "doc-end") {
-      while (this.stack.length > 0)
-        yield* this.pop();
+    if (
+      this.type === "doc-end" &&
+      (top == null ? void 0 : top.type) !== "doc-end"
+    ) {
+      while (this.stack.length > 0) yield* this.pop();
       this.stack.push({
         type: "doc-end",
         offset: this.offset,
-        source: this.source
+        source: this.source,
       });
       return;
     }
-    if (!top)
-      return yield* this.stream();
+    if (!top) return yield* this.stream();
     switch (top.type) {
       case "document":
         return yield* this.document(top);
@@ -8741,8 +10144,7 @@ var Parser = class {
       } else if (token.type === "flow-collection" && top.type === "document") {
         token.indent = 0;
       }
-      if (token.type === "flow-collection")
-        fixFlowSeqItems(token);
+      if (token.type === "flow-collection") fixFlowSeqItems(token);
       switch (top.type) {
         case "document":
           top.value = token;
@@ -8767,20 +10169,16 @@ var Parser = class {
         }
         case "block-seq": {
           const it = top.items[top.items.length - 1];
-          if (it.value)
-            top.items.push({ start: [], value: token });
-          else
-            it.value = token;
+          if (it.value) top.items.push({ start: [], value: token });
+          else it.value = token;
           break;
         }
         case "flow-collection": {
           const it = top.items[top.items.length - 1];
           if (!it || it.value)
             top.items.push({ start: [], key: token, sep: [] });
-          else if (it.sep)
-            it.value = token;
-          else
-            Object.assign(it, { key: token, sep: [] });
+          else if (it.sep) it.value = token;
+          else Object.assign(it, { key: token, sep: [] });
           return;
         }
         /* istanbul ignore next should not happen */
@@ -8788,13 +10186,26 @@ var Parser = class {
           yield* this.pop();
           yield* this.pop(token);
       }
-      if ((top.type === "document" || top.type === "block-map" || top.type === "block-seq") && (token.type === "block-map" || token.type === "block-seq")) {
+      if (
+        (top.type === "document" ||
+          top.type === "block-map" ||
+          top.type === "block-seq") &&
+        (token.type === "block-map" || token.type === "block-seq")
+      ) {
         const last = token.items[token.items.length - 1];
-        if (last && !last.sep && !last.value && last.start.length > 0 && findNonEmptyIndex(last.start) === -1 && (token.indent === 0 || last.start.every((st) => st.type !== "comment" || st.indent < token.indent))) {
-          if (top.type === "document")
-            top.end = last.start;
-          else
-            top.items.push({ start: last.start });
+        if (
+          last &&
+          !last.sep &&
+          !last.value &&
+          last.start.length > 0 &&
+          findNonEmptyIndex(last.start) === -1 &&
+          (token.indent === 0 ||
+            last.start.every(
+              (st) => st.type !== "comment" || st.indent < token.indent,
+            ))
+        ) {
+          if (top.type === "document") top.end = last.start;
+          else top.items.push({ start: last.start });
           token.items.splice(-1, 1);
         }
       }
@@ -8816,10 +10227,9 @@ var Parser = class {
         const doc = {
           type: "document",
           offset: this.offset,
-          start: []
+          start: [],
         };
-        if (this.type === "doc-start")
-          doc.start.push(this.sourceToken);
+        if (this.type === "doc-start") doc.start.push(this.sourceToken);
         this.stack.push(doc);
         return;
       }
@@ -8828,19 +10238,17 @@ var Parser = class {
       type: "error",
       offset: this.offset,
       message: `Unexpected ${this.type} token in YAML stream`,
-      source: this.source
+      source: this.source,
     };
   }
   *document(doc) {
-    if (doc.value)
-      return yield* this.lineEnd(doc);
+    if (doc.value) return yield* this.lineEnd(doc);
     switch (this.type) {
       case "doc-start": {
         if (findNonEmptyIndex(doc.start) !== -1) {
           yield* this.pop();
           yield* this.step();
-        } else
-          doc.start.push(this.sourceToken);
+        } else doc.start.push(this.sourceToken);
         return;
       }
       case "anchor":
@@ -8852,14 +10260,13 @@ var Parser = class {
         return;
     }
     const bv = this.startBlockValue(doc);
-    if (bv)
-      this.stack.push(bv);
+    if (bv) this.stack.push(bv);
     else {
       yield {
         type: "error",
         offset: this.offset,
         message: `Unexpected ${this.type} token in YAML document`,
-        source: this.source
+        source: this.source,
       };
     }
   }
@@ -8872,18 +10279,16 @@ var Parser = class {
         sep6 = scalar.end;
         sep6.push(this.sourceToken);
         delete scalar.end;
-      } else
-        sep6 = [this.sourceToken];
+      } else sep6 = [this.sourceToken];
       const map2 = {
         type: "block-map",
         offset: scalar.offset,
         indent: scalar.indent,
-        items: [{ start, key: scalar, sep: sep6 }]
+        items: [{ start, key: scalar, sep: sep6 }],
       };
       this.onKeyLine = true;
       this.stack[this.stack.length - 1] = map2;
-    } else
-      yield* this.lineEnd(scalar);
+    } else yield* this.lineEnd(scalar);
   }
   *blockScalar(scalar) {
     switch (this.type) {
@@ -8922,8 +10327,7 @@ var Parser = class {
           const last = Array.isArray(end) ? end[end.length - 1] : void 0;
           if ((last == null ? void 0 : last.type) === "comment")
             end == null ? void 0 : end.push(this.sourceToken);
-          else
-            map2.items.push({ start: [this.sourceToken] });
+          else map2.items.push({ start: [this.sourceToken] });
         } else if (it.sep) {
           it.sep.push(this.sourceToken);
         } else {
@@ -8939,7 +10343,10 @@ var Parser = class {
         } else {
           if (this.atIndentedComment(it.start, map2.indent)) {
             const prev = map2.items[map2.items.length - 2];
-            const end = (_a = prev == null ? void 0 : prev.value) == null ? void 0 : _a.end;
+            const end =
+              (_a = prev == null ? void 0 : prev.value) == null
+                ? void 0
+                : _a.end;
             if (Array.isArray(end)) {
               Array.prototype.push.apply(end, it.start);
               end.push(this.sourceToken);
@@ -8953,7 +10360,10 @@ var Parser = class {
     }
     if (this.indent >= map2.indent) {
       const atMapIndent = !this.onKeyLine && this.indent === map2.indent;
-      const atNextItem = atMapIndent && (it.sep || it.explicitKey) && this.type !== "seq-item-ind";
+      const atNextItem =
+        atMapIndent &&
+        (it.sep || it.explicitKey) &&
+        this.type !== "seq-item-ind";
       let start = [];
       if (atNextItem && it.sep && !it.value) {
         const nl = [];
@@ -8966,15 +10376,13 @@ var Parser = class {
             case "space":
               break;
             case "comment":
-              if (st.indent > map2.indent)
-                nl.length = 0;
+              if (st.indent > map2.indent) nl.length = 0;
               break;
             default:
               nl.length = 0;
           }
         }
-        if (nl.length >= 2)
-          start = it.sep.splice(nl[1]);
+        if (nl.length >= 2) start = it.sep.splice(nl[1]);
       }
       switch (this.type) {
         case "anchor":
@@ -9001,7 +10409,7 @@ var Parser = class {
               type: "block-map",
               offset: this.offset,
               indent: this.indent,
-              items: [{ start: [this.sourceToken], explicitKey: true }]
+              items: [{ start: [this.sourceToken], explicitKey: true }],
             });
           }
           this.onKeyLine = true;
@@ -9017,19 +10425,28 @@ var Parser = class {
                   type: "block-map",
                   offset: this.offset,
                   indent: this.indent,
-                  items: [{ start: start2, key: null, sep: [this.sourceToken] }]
+                  items: [
+                    { start: start2, key: null, sep: [this.sourceToken] },
+                  ],
                 });
               }
             } else if (it.value) {
-              map2.items.push({ start: [], key: null, sep: [this.sourceToken] });
+              map2.items.push({
+                start: [],
+                key: null,
+                sep: [this.sourceToken],
+              });
             } else if (includesToken(it.sep, "map-value-ind")) {
               this.stack.push({
                 type: "block-map",
                 offset: this.offset,
                 indent: this.indent,
-                items: [{ start, key: null, sep: [this.sourceToken] }]
+                items: [{ start, key: null, sep: [this.sourceToken] }],
               });
-            } else if (isFlowToken(it.key) && !includesToken(it.sep, "newline")) {
+            } else if (
+              isFlowToken(it.key) &&
+              !includesToken(it.sep, "newline")
+            ) {
               const start2 = getFirstKeyStartProps(it.start);
               const key = it.key;
               const sep6 = it.sep;
@@ -9040,7 +10457,7 @@ var Parser = class {
                 type: "block-map",
                 offset: this.offset,
                 indent: this.indent,
-                items: [{ start: start2, key, sep: sep6 }]
+                items: [{ start: start2, key, sep: sep6 }],
               });
             } else if (start.length > 0) {
               it.sep = it.sep.concat(start, this.sourceToken);
@@ -9057,7 +10474,7 @@ var Parser = class {
                 type: "block-map",
                 offset: this.offset,
                 indent: this.indent,
-                items: [{ start: [], key: null, sep: [this.sourceToken] }]
+                items: [{ start: [], key: null, sep: [this.sourceToken] }],
               });
             } else {
               it.sep.push(this.sourceToken);
@@ -9085,12 +10502,16 @@ var Parser = class {
           const bv = this.startBlockValue(map2);
           if (bv) {
             if (bv.type === "block-seq") {
-              if (!it.explicitKey && it.sep && !includesToken(it.sep, "newline")) {
+              if (
+                !it.explicitKey &&
+                it.sep &&
+                !includesToken(it.sep, "newline")
+              ) {
                 yield* this.pop({
                   type: "error",
                   offset: this.offset,
                   message: "Unexpected block-seq-ind on same line with key",
-                  source: this.source
+                  source: this.source,
                 });
                 return;
               }
@@ -9116,19 +10537,19 @@ var Parser = class {
           const last = Array.isArray(end) ? end[end.length - 1] : void 0;
           if ((last == null ? void 0 : last.type) === "comment")
             end == null ? void 0 : end.push(this.sourceToken);
-          else
-            seq2.items.push({ start: [this.sourceToken] });
-        } else
-          it.start.push(this.sourceToken);
+          else seq2.items.push({ start: [this.sourceToken] });
+        } else it.start.push(this.sourceToken);
         return;
       case "space":
       case "comment":
-        if (it.value)
-          seq2.items.push({ start: [this.sourceToken] });
+        if (it.value) seq2.items.push({ start: [this.sourceToken] });
         else {
           if (this.atIndentedComment(it.start, seq2.indent)) {
             const prev = seq2.items[seq2.items.length - 2];
-            const end = (_a = prev == null ? void 0 : prev.value) == null ? void 0 : _a.end;
+            const end =
+              (_a = prev == null ? void 0 : prev.value) == null
+                ? void 0
+                : _a.end;
             if (Array.isArray(end)) {
               Array.prototype.push.apply(end, it.start);
               end.push(this.sourceToken);
@@ -9141,17 +10562,14 @@ var Parser = class {
         return;
       case "anchor":
       case "tag":
-        if (it.value || this.indent <= seq2.indent)
-          break;
+        if (it.value || this.indent <= seq2.indent) break;
         it.start.push(this.sourceToken);
         return;
       case "seq-item-ind":
-        if (this.indent !== seq2.indent)
-          break;
+        if (this.indent !== seq2.indent) break;
         if (it.value || includesToken(it.start, "seq-item-ind"))
           seq2.items.push({ start: [this.sourceToken] });
-        else
-          it.start.push(this.sourceToken);
+        else it.start.push(this.sourceToken);
         return;
     }
     if (this.indent > seq2.indent) {
@@ -9176,42 +10594,32 @@ var Parser = class {
       switch (this.type) {
         case "comma":
         case "explicit-key-ind":
-          if (!it || it.sep)
-            fc.items.push({ start: [this.sourceToken] });
-          else
-            it.start.push(this.sourceToken);
+          if (!it || it.sep) fc.items.push({ start: [this.sourceToken] });
+          else it.start.push(this.sourceToken);
           return;
         case "map-value-ind":
           if (!it || it.value)
             fc.items.push({ start: [], key: null, sep: [this.sourceToken] });
-          else if (it.sep)
-            it.sep.push(this.sourceToken);
-          else
-            Object.assign(it, { key: null, sep: [this.sourceToken] });
+          else if (it.sep) it.sep.push(this.sourceToken);
+          else Object.assign(it, { key: null, sep: [this.sourceToken] });
           return;
         case "space":
         case "comment":
         case "newline":
         case "anchor":
         case "tag":
-          if (!it || it.value)
-            fc.items.push({ start: [this.sourceToken] });
-          else if (it.sep)
-            it.sep.push(this.sourceToken);
-          else
-            it.start.push(this.sourceToken);
+          if (!it || it.value) fc.items.push({ start: [this.sourceToken] });
+          else if (it.sep) it.sep.push(this.sourceToken);
+          else it.start.push(this.sourceToken);
           return;
         case "alias":
         case "scalar":
         case "single-quoted-scalar":
         case "double-quoted-scalar": {
           const fs7 = this.flowScalar(this.type);
-          if (!it || it.value)
-            fc.items.push({ start: [], key: fs7, sep: [] });
-          else if (it.sep)
-            this.stack.push(fs7);
-          else
-            Object.assign(it, { key: fs7, sep: [] });
+          if (!it || it.value) fc.items.push({ start: [], key: fs7, sep: [] });
+          else if (it.sep) this.stack.push(fs7);
+          else Object.assign(it, { key: fs7, sep: [] });
           return;
         }
         case "flow-map-end":
@@ -9220,18 +10628,25 @@ var Parser = class {
           return;
       }
       const bv = this.startBlockValue(fc);
-      if (bv)
-        this.stack.push(bv);
+      if (bv) this.stack.push(bv);
       else {
         yield* this.pop();
         yield* this.step();
       }
     } else {
       const parent = this.peek(2);
-      if (parent.type === "block-map" && (this.type === "map-value-ind" && parent.indent === fc.indent || this.type === "newline" && !parent.items[parent.items.length - 1].sep)) {
+      if (
+        parent.type === "block-map" &&
+        ((this.type === "map-value-ind" && parent.indent === fc.indent) ||
+          (this.type === "newline" &&
+            !parent.items[parent.items.length - 1].sep))
+      ) {
         yield* this.pop();
         yield* this.step();
-      } else if (this.type === "map-value-ind" && parent.type !== "flow-collection") {
+      } else if (
+        this.type === "map-value-ind" &&
+        parent.type !== "flow-collection"
+      ) {
         const prev = getPrevProps(parent);
         const start = getFirstKeyStartProps(prev);
         fixFlowSeqItems(fc);
@@ -9241,7 +10656,7 @@ var Parser = class {
           type: "block-map",
           offset: fc.offset,
           indent: fc.indent,
-          items: [{ start, key: fc, sep: sep6 }]
+          items: [{ start, key: fc, sep: sep6 }],
         };
         this.onKeyLine = true;
         this.stack[this.stack.length - 1] = map2;
@@ -9262,7 +10677,7 @@ var Parser = class {
       type,
       offset: this.offset,
       indent: this.indent,
-      source: this.source
+      source: this.source,
     };
   }
   startBlockValue(parent) {
@@ -9278,7 +10693,7 @@ var Parser = class {
           offset: this.offset,
           indent: this.indent,
           props: [this.sourceToken],
-          source: ""
+          source: "",
         };
       case "flow-map-start":
       case "flow-seq-start":
@@ -9288,14 +10703,14 @@ var Parser = class {
           indent: this.indent,
           start: this.sourceToken,
           items: [],
-          end: []
+          end: [],
         };
       case "seq-item-ind":
         return {
           type: "block-seq",
           offset: this.offset,
           indent: this.indent,
-          items: [{ start: [this.sourceToken] }]
+          items: [{ start: [this.sourceToken] }],
         };
       case "explicit-key-ind": {
         this.onKeyLine = true;
@@ -9306,7 +10721,7 @@ var Parser = class {
           type: "block-map",
           offset: this.offset,
           indent: this.indent,
-          items: [{ start, explicitKey: true }]
+          items: [{ start, explicitKey: true }],
         };
       }
       case "map-value-ind": {
@@ -9317,27 +10732,22 @@ var Parser = class {
           type: "block-map",
           offset: this.offset,
           indent: this.indent,
-          items: [{ start, key: null, sep: [this.sourceToken] }]
+          items: [{ start, key: null, sep: [this.sourceToken] }],
         };
       }
     }
     return null;
   }
   atIndentedComment(start, indent) {
-    if (this.type !== "comment")
-      return false;
-    if (this.indent <= indent)
-      return false;
+    if (this.type !== "comment") return false;
+    if (this.indent <= indent) return false;
     return start.every((st) => st.type === "newline" || st.type === "space");
   }
   *documentEnd(docEnd) {
     if (this.type !== "doc-mode") {
-      if (docEnd.end)
-        docEnd.end.push(this.sourceToken);
-      else
-        docEnd.end = [this.sourceToken];
-      if (this.type === "newline")
-        yield* this.pop();
+      if (docEnd.end) docEnd.end.push(this.sourceToken);
+      else docEnd.end = [this.sourceToken];
+      if (this.type === "newline") yield* this.pop();
     }
   }
   *lineEnd(token) {
@@ -9357,12 +10767,9 @@ var Parser = class {
       case "space":
       case "comment":
       default:
-        if (token.end)
-          token.end.push(this.sourceToken);
-        else
-          token.end = [this.sourceToken];
-        if (this.type === "newline")
-          yield* this.pop();
+        if (token.end) token.end.push(this.sourceToken);
+        else token.end = [this.sourceToken];
+        if (this.type === "newline") yield* this.pop();
     }
   }
 };
@@ -9370,19 +10777,31 @@ var Parser = class {
 // node_modules/.pnpm/yaml@2.8.2/node_modules/yaml/browser/dist/public-api.js
 function parseOptions(options) {
   const prettyErrors = options.prettyErrors !== false;
-  const lineCounter = options.lineCounter || prettyErrors && new LineCounter() || null;
+  const lineCounter =
+    options.lineCounter || (prettyErrors && new LineCounter()) || null;
   return { lineCounter, prettyErrors };
 }
 function parseDocument(source, options = {}) {
   const { lineCounter, prettyErrors } = parseOptions(options);
-  const parser = new Parser(lineCounter == null ? void 0 : lineCounter.addNewLine);
+  const parser = new Parser(
+    lineCounter == null ? void 0 : lineCounter.addNewLine,
+  );
   const composer = new Composer(options);
   let doc = null;
-  for (const _doc of composer.compose(parser.parse(source), true, source.length)) {
-    if (!doc)
-      doc = _doc;
+  for (const _doc of composer.compose(
+    parser.parse(source),
+    true,
+    source.length,
+  )) {
+    if (!doc) doc = _doc;
     else if (doc.options.logLevel !== "silent") {
-      doc.errors.push(new YAMLParseError(_doc.range.slice(0, 2), "MULTIPLE_DOCS", "Source contains multiple documents; please use YAML.parseAllDocuments()"));
+      doc.errors.push(
+        new YAMLParseError(
+          _doc.range.slice(0, 2),
+          "MULTIPLE_DOCS",
+          "Source contains multiple documents; please use YAML.parseAllDocuments()",
+        ),
+      );
       break;
     }
   }
@@ -9400,14 +10819,11 @@ function parse2(src, reviver, options) {
     options = reviver;
   }
   const doc = parseDocument(src, options);
-  if (!doc)
-    return null;
+  if (!doc) return null;
   doc.warnings.forEach((warning) => warn(doc.options.logLevel, warning));
   if (doc.errors.length > 0) {
-    if (doc.options.logLevel !== "silent")
-      throw doc.errors[0];
-    else
-      doc.errors = [];
+    if (doc.options.logLevel !== "silent") throw doc.errors[0];
+    else doc.errors = [];
   }
   return doc.toJS(Object.assign({ reviver: _reviver }, options));
 }
@@ -9424,7 +10840,7 @@ var FrontmatterAnalyzer = class {
     }
     if (folder instanceof import_obsidian9.TFile) {
       const ext = folder.extension;
-      if (ext === "md" || includeMdx && ext === "mdx") {
+      if (ext === "md" || (includeMdx && ext === "mdx")) {
         return await this.parseFrontmatter(folder);
       }
       return null;
@@ -9445,11 +10861,15 @@ var FrontmatterAnalyzer = class {
     const isLikelySectionConfig = (f) => {
       if (!f.parent) return false;
       const mdSiblings = f.parent.children.filter(
-        (c) => c instanceof import_obsidian9.TFile && c.path !== f.path && (c.extension === "md" || c.extension === "mdx")
+        (c) =>
+          c instanceof import_obsidian9.TFile &&
+          c.path !== f.path &&
+          (c.extension === "md" || c.extension === "mdx"),
       );
       if (mdSiblings.length === 0) return false;
       const name = f.basename.toLowerCase();
-      if (name === "index" || name === "-index" || name === "_index") return true;
+      if (name === "index" || name === "-index" || name === "_index")
+        return true;
       return false;
     };
     if (files.length > 1) {
@@ -9459,7 +10879,8 @@ var FrontmatterAnalyzer = class {
         if (!example) continue;
         let score = 0;
         if (!isLikelySectionConfig(file)) score += 100;
-        if (example.frontmatter) score += Object.keys(example.frontmatter).length;
+        if (example.frontmatter)
+          score += Object.keys(example.frontmatter).length;
         candidates.push({ file, example, score });
       }
       candidates.sort((a, b) => b.score - a.score);
@@ -9488,10 +10909,12 @@ var FrontmatterAnalyzer = class {
       let keys = [];
       if (file.extension === "md") {
         const cache = this.app.metadataCache.getFileCache(file);
-        if (cache == null ? void 0 : cache.frontmatter) keys = Object.keys(cache.frontmatter);
+        if (cache == null ? void 0 : cache.frontmatter)
+          keys = Object.keys(cache.frontmatter);
       } else if (includeMdx && file.extension === "mdx") {
         const parsed = await this.parseFrontmatter(file);
-        if (parsed == null ? void 0 : parsed.frontmatter) keys = Object.keys(parsed.frontmatter);
+        if (parsed == null ? void 0 : parsed.frontmatter)
+          keys = Object.keys(parsed.frontmatter);
       }
       if (keys.length > 0) fileKeys.set(file.path, new Set(keys));
     }
@@ -9507,7 +10930,10 @@ var FrontmatterAnalyzer = class {
     const isSectionConfig = (f) => {
       if (!f.parent) return false;
       const mdSiblings = f.parent.children.filter(
-        (c) => c instanceof import_obsidian9.TFile && c.path !== f.path && (c.extension === "md" || c.extension === "mdx")
+        (c) =>
+          c instanceof import_obsidian9.TFile &&
+          c.path !== f.path &&
+          (c.extension === "md" || c.extension === "mdx"),
       );
       if (mdSiblings.length === 0) return false;
       const keys = fileKeys.get(f.path);
@@ -9553,7 +10979,13 @@ var FrontmatterAnalyzer = class {
     const files = this.getMarkdownFiles(folder, true);
     return Promise.resolve(files.some((file) => file.name.startsWith("_")));
   }
-  getMarkdownFiles(folder, recursive = true, maxDepth, currentDepth = 0, includeMdx = false) {
+  getMarkdownFiles(
+    folder,
+    recursive = true,
+    maxDepth,
+    currentDepth = 0,
+    includeMdx = false,
+  ) {
     const files = [];
     if (!folder.children) {
       return files;
@@ -9563,11 +10995,26 @@ var FrontmatterAnalyzer = class {
     }
     for (const child of folder.children) {
       if (child instanceof import_obsidian9.TFile) {
-        if (child.extension === "md" || includeMdx && child.extension === "mdx") {
+        if (
+          child.extension === "md" ||
+          (includeMdx && child.extension === "mdx")
+        ) {
           files.push(child);
         }
-      } else if (recursive && child instanceof import_obsidian9.TFolder && child.children) {
-        files.push(...this.getMarkdownFiles(child, recursive, maxDepth, currentDepth + 1, includeMdx));
+      } else if (
+        recursive &&
+        child instanceof import_obsidian9.TFolder &&
+        child.children
+      ) {
+        files.push(
+          ...this.getMarkdownFiles(
+            child,
+            recursive,
+            maxDepth,
+            currentDepth + 1,
+            includeMdx,
+          ),
+        );
       }
     }
     return files;
@@ -9588,7 +11035,7 @@ var FrontmatterAnalyzer = class {
       return {
         file: file.path,
         frontmatter,
-        rawYaml: yamlContent
+        rawYaml: yamlContent,
       };
     } catch (e) {
       return null;
@@ -9604,14 +11051,25 @@ var FrontmatterAnalyzer = class {
     return null;
   }
   autoDetectDateProperty(frontmatter) {
-    const dateProperties = ["date", "pubDate", "publishedDate", "publishDate", "created", "modified", "updated"];
+    const dateProperties = [
+      "date",
+      "pubDate",
+      "publishedDate",
+      "publishDate",
+      "created",
+      "modified",
+      "updated",
+    ];
     for (const prop of dateProperties) {
       if (frontmatter.hasOwnProperty(prop)) {
         return prop;
       }
     }
     for (const prop in frontmatter) {
-      if (prop.toLowerCase().includes("date") && this.looksLikeDate(frontmatter[prop])) {
+      if (
+        prop.toLowerCase().includes("date") &&
+        this.looksLikeDate(frontmatter[prop])
+      ) {
         return prop;
       }
     }
@@ -9628,7 +11086,14 @@ var FrontmatterAnalyzer = class {
     return false;
   }
   autoDetectDescriptionProperty(frontmatter, exampleFrontmatter) {
-    const descKeywords = ["description", "summary", "excerpt", "intro", "snippet", "blurb"];
+    const descKeywords = [
+      "description",
+      "summary",
+      "excerpt",
+      "intro",
+      "snippet",
+      "blurb",
+    ];
     const findMatch = (keys) => {
       for (const kw of descKeywords) {
         if (keys.includes(kw)) return kw;
@@ -9674,7 +11139,14 @@ var FrontmatterAnalyzer = class {
     return null;
   }
   autoDetectImageProperty(frontmatter) {
-    const imageProperties = ["image", "cover", "coverImage", "thumbnail", "featuredImage", "heroImage"];
+    const imageProperties = [
+      "image",
+      "cover",
+      "coverImage",
+      "thumbnail",
+      "featuredImage",
+      "heroImage",
+    ];
     for (const prop of imageProperties) {
       if (frontmatter.hasOwnProperty(prop)) {
         return prop;
@@ -9687,7 +11159,10 @@ var FrontmatterAnalyzer = class {
 // src/ui/wizard/FrontmatterPropertiesStep.ts
 function setCssProps4(element, props) {
   for (const [key, value] of Object.entries(props)) {
-    element.style.setProperty(key.replace(/([A-Z])/g, "-$1").toLowerCase(), value);
+    element.style.setProperty(
+      key.replace(/([A-Z])/g, "-$1").toLowerCase(),
+      value,
+    );
   }
 }
 var FrontmatterPropertiesStep = class extends BaseWizardStep {
@@ -9698,38 +11173,56 @@ var FrontmatterPropertiesStep = class extends BaseWizardStep {
   }
   async display() {
     const { containerEl } = this;
-    const existingWrapper = containerEl.querySelector(".frontmatter-step-content");
+    const existingWrapper = containerEl.querySelector(
+      ".frontmatter-step-content",
+    );
     if (existingWrapper) {
       existingWrapper.remove();
     }
-    const stepContentWrapper = containerEl.createDiv({ cls: "frontmatter-step-content" });
+    const stepContentWrapper = containerEl.createDiv({
+      cls: "frontmatter-step-content",
+    });
     stepContentWrapper.createEl("h2", { text: "Frontmatter properties" });
     stepContentWrapper.createEl("p", {
-      text: "Map properties for each content type. We'll find example files to help you."
+      text: "Map properties for each content type. We'll find example files to help you.",
     });
     for (const contentType of this.state.contentTypes) {
       if (!contentType.enabled) {
         continue;
       }
-      const contentTypeWrapper = stepContentWrapper.createDiv({ cls: "content-type-settings" });
+      const contentTypeWrapper = stepContentWrapper.createDiv({
+        cls: "content-type-settings",
+      });
       const pathResolver = new PathResolver(this.app);
-      const folderPath = pathResolver.getFolderPathFromVaultRoot(contentType.folder, this.state.projectDetection);
+      const folderPath = pathResolver.getFolderPathFromVaultRoot(
+        contentType.folder,
+        this.state.projectDetection,
+      );
       if (!this.examples[contentType.id]) {
-        const example2 = await this.frontmatterAnalyzer.findExampleFile(folderPath, this.state.enableMdxSupport);
+        const example2 = await this.frontmatterAnalyzer.findExampleFile(
+          folderPath,
+          this.state.enableMdxSupport,
+        );
         if (example2) {
           this.examples[contentType.id] = example2;
         }
       }
       const example = this.examples[contentType.id];
-      const aggregateProps = await this.frontmatterAnalyzer.getPropertiesInFolder(folderPath, this.state.enableMdxSupport);
+      const aggregateProps =
+        await this.frontmatterAnalyzer.getPropertiesInFolder(
+          folderPath,
+          this.state.enableMdxSupport,
+        );
       const dummyFrontmatter = {};
-      aggregateProps.forEach((key) => dummyFrontmatter[key] = null);
+      aggregateProps.forEach((key) => (dummyFrontmatter[key] = null));
       contentTypeWrapper.createEl("h3", { text: contentType.name });
       if (example) {
-        contentTypeWrapper.createEl("p", { text: `Example file: ${example.file}` });
+        contentTypeWrapper.createEl("p", {
+          text: `Example file: ${example.file}`,
+        });
         const preEl = contentTypeWrapper.createEl("pre", {
           text: example.rawYaml,
-          cls: "frontmatter-example"
+          cls: "frontmatter-example",
         });
         setCssProps4(preEl, {
           fontFamily: "var(--font-monospace)",
@@ -9740,104 +11233,219 @@ var FrontmatterPropertiesStep = class extends BaseWizardStep {
           padding: "10px",
           backgroundColor: "var(--background-secondary)",
           borderRadius: "4px",
-          border: "1px solid var(--background-modifier-border)"
+          border: "1px solid var(--background-modifier-border)",
         });
       }
-      const hasUnderscoreFiles = await this.frontmatterAnalyzer.hasUnderscoreFiles(folderPath);
+      const hasUnderscoreFiles =
+        await this.frontmatterAnalyzer.hasUnderscoreFiles(folderPath);
       if (!this.state.frontmatterProperties[contentType.id]) {
-        const detectedDraft = this.frontmatterAnalyzer.autoDetectDraftProperty(dummyFrontmatter);
-        const detectedTags = this.frontmatterAnalyzer.autoDetectTagsProperty(dummyFrontmatter);
-        const detectedImage = this.frontmatterAnalyzer.autoDetectImageProperty(dummyFrontmatter);
-        const detectedDesc = this.frontmatterAnalyzer.autoDetectDescriptionProperty(dummyFrontmatter, example == null ? void 0 : example.frontmatter);
-        const detectedTitle = this.frontmatterAnalyzer.autoDetectTitleProperty(dummyFrontmatter);
-        const detectedDate = this.frontmatterAnalyzer.autoDetectDateProperty(dummyFrontmatter);
-        const useDraftProperty = hasUnderscoreFiles ? void 0 : detectedDraft == null ? void 0 : detectedDraft.property;
+        const detectedDraft =
+          this.frontmatterAnalyzer.autoDetectDraftProperty(dummyFrontmatter);
+        const detectedTags =
+          this.frontmatterAnalyzer.autoDetectTagsProperty(dummyFrontmatter);
+        const detectedImage =
+          this.frontmatterAnalyzer.autoDetectImageProperty(dummyFrontmatter);
+        const detectedDesc =
+          this.frontmatterAnalyzer.autoDetectDescriptionProperty(
+            dummyFrontmatter,
+            example == null ? void 0 : example.frontmatter,
+          );
+        const detectedTitle =
+          this.frontmatterAnalyzer.autoDetectTitleProperty(dummyFrontmatter);
+        const detectedDate =
+          this.frontmatterAnalyzer.autoDetectDateProperty(dummyFrontmatter);
+        const useDraftProperty = hasUnderscoreFiles
+          ? void 0
+          : detectedDraft == null
+            ? void 0
+            : detectedDraft.property;
         this.state.frontmatterProperties[contentType.id] = {
           titleProperty: detectedTitle || void 0,
           dateProperty: detectedDate || void 0,
           descriptionProperty: detectedDesc || void 0,
           tagsProperty: detectedTags || void 0,
           draftProperty: useDraftProperty,
-          draftLogic: useDraftProperty === "published" ? "false-draft" : useDraftProperty ? "true-draft" : void 0,
+          draftLogic:
+            useDraftProperty === "published"
+              ? "false-draft"
+              : useDraftProperty
+                ? "true-draft"
+                : void 0,
           hasDraftStatus: !!useDraftProperty || hasUnderscoreFiles,
-          imageProperty: detectedImage || void 0
+          imageProperty: detectedImage || void 0,
         };
       }
       const props = this.state.frontmatterProperties[contentType.id];
-      new import_obsidian10.Setting(contentTypeWrapper).setName("Title property").setDesc("The property that contains the title (like title, name, heading). Leave blank to use full file name instead.").addText((text) => {
-        const detected = "title";
-        text.setPlaceholder(detected).setValue(props.titleProperty || "").onChange((value) => {
-          props.titleProperty = value.trim() || void 0;
-        });
-      });
-      new import_obsidian10.Setting(contentTypeWrapper).setName("Date property").setDesc("The property that contains the date (like date, pubDate, publishedDate, publishDate). Leave blank to use file created date instead.").addText((text) => {
-        const detected = example ? this.frontmatterAnalyzer.autoDetectDateProperty(example.frontmatter) : null;
-        text.setPlaceholder(detected || "date").setValue(props.dateProperty || "").onChange((value) => {
-          props.dateProperty = value.trim() || void 0;
-        });
-      });
-      const descSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Has description/summary?").setDesc("Does this content type have a description or summary field?");
-      let descTextSetting = null;
-      descSetting.addToggle((toggle) => toggle.setValue(!!props.descriptionProperty).onChange((value) => {
-        if (value && !props.descriptionProperty) {
-          props.descriptionProperty = example ? this.frontmatterAnalyzer.autoDetectDescriptionProperty(example.frontmatter) || "description" : "description";
-          if (!descTextSetting) {
-            descTextSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Description property").setDesc("The property that contains the description (like description, summary, excerpt, intro, snippet, blurb)").addText((text) => text.setValue(props.descriptionProperty || "").onChange((value2) => {
-              props.descriptionProperty = value2.trim() || void 0;
-            }));
-            descTextSetting.settingEl.remove();
-            descSetting.settingEl.insertAdjacentElement("afterend", descTextSetting.settingEl);
-          }
-        } else if (!value) {
-          props.descriptionProperty = void 0;
-          if (descTextSetting) {
-            descTextSetting.settingEl.remove();
-            descTextSetting = null;
-          }
-        }
-      }));
-      if (props.descriptionProperty) {
-        descTextSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Description property").setDesc("The property that contains the description (like description, summary, excerpt, intro, snippet, blurb)").addText((text) => text.setValue(props.descriptionProperty || "").onChange((value) => {
-          props.descriptionProperty = value.trim() || void 0;
-        }));
-        descTextSetting.settingEl.remove();
-        descSetting.settingEl.insertAdjacentElement("afterend", descTextSetting.settingEl);
-      }
-      const tagsSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Has tags?").setDesc("Does this content type have tags?");
-      let tagsTextSetting = null;
-      tagsSetting.addToggle((toggle) => toggle.setValue(!!props.tagsProperty).onChange((value) => {
-        if (value && !props.tagsProperty) {
-          const detected = example ? this.frontmatterAnalyzer.autoDetectTagsProperty(example.frontmatter) : null;
-          props.tagsProperty = detected || "tags";
-          if (!tagsTextSetting) {
-            tagsTextSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Tags property").setDesc("The property that contains tags (like tags, tag, categories, category). Leave blank if not applicable.").addText((text) => {
-              const detected2 = example ? this.frontmatterAnalyzer.autoDetectTagsProperty(example.frontmatter) : null;
-              text.setPlaceholder(detected2 || "tags").setValue(props.tagsProperty || "").onChange((value2) => {
-                props.tagsProperty = value2.trim() || void 0;
-              });
+      new import_obsidian10.Setting(contentTypeWrapper)
+        .setName("Title property")
+        .setDesc(
+          "The property that contains the title (like title, name, heading). Leave blank to use full file name instead.",
+        )
+        .addText((text) => {
+          const detected = "title";
+          text
+            .setPlaceholder(detected)
+            .setValue(props.titleProperty || "")
+            .onChange((value) => {
+              props.titleProperty = value.trim() || void 0;
             });
-            tagsTextSetting.settingEl.remove();
-            tagsSetting.settingEl.insertAdjacentElement("afterend", tagsTextSetting.settingEl);
-          }
-        } else if (!value) {
-          props.tagsProperty = void 0;
-          if (tagsTextSetting) {
-            tagsTextSetting.settingEl.remove();
-            tagsTextSetting = null;
-          }
-        }
-      }));
-      if (props.tagsProperty) {
-        tagsTextSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Tags property").setDesc("The property that contains tags (like tags, tag, categories, category). Leave blank if not applicable.").addText((text) => {
-          const detected = example ? this.frontmatterAnalyzer.autoDetectTagsProperty(example.frontmatter) : null;
-          text.setPlaceholder(detected || "tags").setValue(props.tagsProperty || "").onChange((value) => {
-            props.tagsProperty = value.trim() || void 0;
-          });
         });
-        tagsTextSetting.settingEl.remove();
-        tagsSetting.settingEl.insertAdjacentElement("afterend", tagsTextSetting.settingEl);
+      new import_obsidian10.Setting(contentTypeWrapper)
+        .setName("Date property")
+        .setDesc(
+          "The property that contains the date (like date, pubDate, publishedDate, publishDate). Leave blank to use file created date instead.",
+        )
+        .addText((text) => {
+          const detected = example
+            ? this.frontmatterAnalyzer.autoDetectDateProperty(
+                example.frontmatter,
+              )
+            : null;
+          text
+            .setPlaceholder(detected || "date")
+            .setValue(props.dateProperty || "")
+            .onChange((value) => {
+              props.dateProperty = value.trim() || void 0;
+            });
+        });
+      const descSetting = new import_obsidian10.Setting(contentTypeWrapper)
+        .setName("Has description/summary?")
+        .setDesc("Does this content type have a description or summary field?");
+      let descTextSetting = null;
+      descSetting.addToggle((toggle) =>
+        toggle.setValue(!!props.descriptionProperty).onChange((value) => {
+          if (value && !props.descriptionProperty) {
+            props.descriptionProperty = example
+              ? this.frontmatterAnalyzer.autoDetectDescriptionProperty(
+                  example.frontmatter,
+                ) || "description"
+              : "description";
+            if (!descTextSetting) {
+              descTextSetting = new import_obsidian10.Setting(
+                contentTypeWrapper,
+              )
+                .setName("Description property")
+                .setDesc(
+                  "The property that contains the description (like description, summary, excerpt, intro, snippet, blurb)",
+                )
+                .addText((text) =>
+                  text
+                    .setValue(props.descriptionProperty || "")
+                    .onChange((value2) => {
+                      props.descriptionProperty = value2.trim() || void 0;
+                    }),
+                );
+              descTextSetting.settingEl.remove();
+              descSetting.settingEl.insertAdjacentElement(
+                "afterend",
+                descTextSetting.settingEl,
+              );
+            }
+          } else if (!value) {
+            props.descriptionProperty = void 0;
+            if (descTextSetting) {
+              descTextSetting.settingEl.remove();
+              descTextSetting = null;
+            }
+          }
+        }),
+      );
+      if (props.descriptionProperty) {
+        descTextSetting = new import_obsidian10.Setting(contentTypeWrapper)
+          .setName("Description property")
+          .setDesc(
+            "The property that contains the description (like description, summary, excerpt, intro, snippet, blurb)",
+          )
+          .addText((text) =>
+            text.setValue(props.descriptionProperty || "").onChange((value) => {
+              props.descriptionProperty = value.trim() || void 0;
+            }),
+          );
+        descTextSetting.settingEl.remove();
+        descSetting.settingEl.insertAdjacentElement(
+          "afterend",
+          descTextSetting.settingEl,
+        );
       }
-      const draftSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Enable draft status").setDesc("Property-based drafts use a property key (like draft). Underscore-only drafts use file prefix (_post.md) with no property.");
+      const tagsSetting = new import_obsidian10.Setting(contentTypeWrapper)
+        .setName("Has tags?")
+        .setDesc("Does this content type have tags?");
+      let tagsTextSetting = null;
+      tagsSetting.addToggle((toggle) =>
+        toggle.setValue(!!props.tagsProperty).onChange((value) => {
+          if (value && !props.tagsProperty) {
+            const detected = example
+              ? this.frontmatterAnalyzer.autoDetectTagsProperty(
+                  example.frontmatter,
+                )
+              : null;
+            props.tagsProperty = detected || "tags";
+            if (!tagsTextSetting) {
+              tagsTextSetting = new import_obsidian10.Setting(
+                contentTypeWrapper,
+              )
+                .setName("Tags property")
+                .setDesc(
+                  "The property that contains tags (like tags, tag, categories, category). Leave blank if not applicable.",
+                )
+                .addText((text) => {
+                  const detected2 = example
+                    ? this.frontmatterAnalyzer.autoDetectTagsProperty(
+                        example.frontmatter,
+                      )
+                    : null;
+                  text
+                    .setPlaceholder(detected2 || "tags")
+                    .setValue(props.tagsProperty || "")
+                    .onChange((value2) => {
+                      props.tagsProperty = value2.trim() || void 0;
+                    });
+                });
+              tagsTextSetting.settingEl.remove();
+              tagsSetting.settingEl.insertAdjacentElement(
+                "afterend",
+                tagsTextSetting.settingEl,
+              );
+            }
+          } else if (!value) {
+            props.tagsProperty = void 0;
+            if (tagsTextSetting) {
+              tagsTextSetting.settingEl.remove();
+              tagsTextSetting = null;
+            }
+          }
+        }),
+      );
+      if (props.tagsProperty) {
+        tagsTextSetting = new import_obsidian10.Setting(contentTypeWrapper)
+          .setName("Tags property")
+          .setDesc(
+            "The property that contains tags (like tags, tag, categories, category). Leave blank if not applicable.",
+          )
+          .addText((text) => {
+            const detected = example
+              ? this.frontmatterAnalyzer.autoDetectTagsProperty(
+                  example.frontmatter,
+                )
+              : null;
+            text
+              .setPlaceholder(detected || "tags")
+              .setValue(props.tagsProperty || "")
+              .onChange((value) => {
+                props.tagsProperty = value.trim() || void 0;
+              });
+          });
+        tagsTextSetting.settingEl.remove();
+        tagsSetting.settingEl.insertAdjacentElement(
+          "afterend",
+          tagsTextSetting.settingEl,
+        );
+      }
+      const draftSetting = new import_obsidian10.Setting(contentTypeWrapper)
+        .setName("Enable draft status")
+        .setDesc(
+          "Property-based drafts use a property key (like draft). Underscore-only drafts use file prefix (_post.md) with no property.",
+        );
       let draftPropertySetting = null;
       let draftLogicSetting = null;
       if (props.hasDraftStatus === void 0) {
@@ -9845,156 +11453,310 @@ var FrontmatterPropertiesStep = class extends BaseWizardStep {
       }
       draftSetting.addToggle((toggle) => {
         var _a;
-        return toggle.setValue((_a = props.hasDraftStatus) != null ? _a : !!props.draftProperty).onChange((value) => {
-          props.hasDraftStatus = value;
-          if (value && !props.draftProperty) {
-            const detectedDraft = !hasUnderscoreFiles && example ? this.frontmatterAnalyzer.autoDetectDraftProperty(example.frontmatter) : null;
-            props.draftProperty = detectedDraft == null ? void 0 : detectedDraft.property;
-            if (props.draftProperty) {
-              if (props.draftProperty === "published") {
-                props.draftLogic = "false-draft";
-              } else {
-                props.draftLogic = "true-draft";
+        return toggle
+          .setValue(
+            (_a = props.hasDraftStatus) != null ? _a : !!props.draftProperty,
+          )
+          .onChange((value) => {
+            props.hasDraftStatus = value;
+            if (value && !props.draftProperty) {
+              const detectedDraft =
+                !hasUnderscoreFiles && example
+                  ? this.frontmatterAnalyzer.autoDetectDraftProperty(
+                      example.frontmatter,
+                    )
+                  : null;
+              props.draftProperty =
+                detectedDraft == null ? void 0 : detectedDraft.property;
+              if (props.draftProperty) {
+                if (props.draftProperty === "published") {
+                  props.draftLogic = "false-draft";
+                } else {
+                  props.draftLogic = "true-draft";
+                }
               }
-            }
-            if (!draftPropertySetting) {
-              draftPropertySetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Draft property").setDesc("The frontmatter property that contains draft status. Leave blank to use an underscore prefix instead.").addText((text) => {
-                const detected = example ? this.frontmatterAnalyzer.autoDetectDraftProperty(example.frontmatter) : null;
-                text.setPlaceholder((detected == null ? void 0 : detected.property) || "draft").setValue(props.draftProperty || "").onChange((value2) => {
-                  props.draftProperty = value2.trim() || void 0;
-                  if (value2 === "published") {
-                    props.draftLogic = "false-draft";
-                  } else if (value2) {
-                    props.draftLogic = "true-draft";
-                  }
-                  if (value2 && !draftLogicSetting) {
-                    draftLogicSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Draft logic").setDesc("How draft status is represented").addDropdown((dropdown) => dropdown.addOption("true-draft", "true = draft").addOption("false-draft", "false = draft").setValue(props.draftLogic || "true-draft").onChange((dropdownValue) => {
-                      props.draftLogic = dropdownValue;
-                    }));
-                    draftLogicSetting.settingEl.remove();
-                    if (draftPropertySetting) {
-                      draftPropertySetting.settingEl.insertAdjacentElement("afterend", draftLogicSetting.settingEl);
-                    }
-                  } else if (!value2 && draftLogicSetting) {
-                    draftLogicSetting.settingEl.remove();
-                    draftLogicSetting = null;
-                  }
-                });
-              });
-              draftPropertySetting.settingEl.remove();
-              draftSetting.settingEl.insertAdjacentElement("afterend", draftPropertySetting.settingEl);
-            }
-            if (props.draftProperty && !draftLogicSetting) {
-              draftLogicSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Draft logic").setDesc("How draft status is represented").addDropdown((dropdown) => dropdown.addOption("true-draft", "true = draft").addOption("false-draft", "false = draft").setValue(props.draftLogic || "true-draft").onChange((value2) => {
-                props.draftLogic = value2;
-              }));
-              draftLogicSetting.settingEl.remove();
-              if (draftPropertySetting !== null) {
-                draftPropertySetting.settingEl.insertAdjacentElement("afterend", draftLogicSetting.settingEl);
+              if (!draftPropertySetting) {
+                draftPropertySetting = new import_obsidian10.Setting(
+                  contentTypeWrapper,
+                )
+                  .setName("Draft property")
+                  .setDesc(
+                    "The frontmatter property that contains draft status. Leave blank to use an underscore prefix instead.",
+                  )
+                  .addText((text) => {
+                    const detected = example
+                      ? this.frontmatterAnalyzer.autoDetectDraftProperty(
+                          example.frontmatter,
+                        )
+                      : null;
+                    text
+                      .setPlaceholder(
+                        (detected == null ? void 0 : detected.property) ||
+                          "draft",
+                      )
+                      .setValue(props.draftProperty || "")
+                      .onChange((value2) => {
+                        props.draftProperty = value2.trim() || void 0;
+                        if (value2 === "published") {
+                          props.draftLogic = "false-draft";
+                        } else if (value2) {
+                          props.draftLogic = "true-draft";
+                        }
+                        if (value2 && !draftLogicSetting) {
+                          draftLogicSetting = new import_obsidian10.Setting(
+                            contentTypeWrapper,
+                          )
+                            .setName("Draft logic")
+                            .setDesc("How draft status is represented")
+                            .addDropdown((dropdown) =>
+                              dropdown
+                                .addOption("true-draft", "true = draft")
+                                .addOption("false-draft", "false = draft")
+                                .setValue(props.draftLogic || "true-draft")
+                                .onChange((dropdownValue) => {
+                                  props.draftLogic = dropdownValue;
+                                }),
+                            );
+                          draftLogicSetting.settingEl.remove();
+                          if (draftPropertySetting) {
+                            draftPropertySetting.settingEl.insertAdjacentElement(
+                              "afterend",
+                              draftLogicSetting.settingEl,
+                            );
+                          }
+                        } else if (!value2 && draftLogicSetting) {
+                          draftLogicSetting.settingEl.remove();
+                          draftLogicSetting = null;
+                        }
+                      });
+                  });
+                draftPropertySetting.settingEl.remove();
+                draftSetting.settingEl.insertAdjacentElement(
+                  "afterend",
+                  draftPropertySetting.settingEl,
+                );
               }
-            }
-          } else if (!value) {
-            props.draftProperty = void 0;
-            props.draftLogic = void 0;
-            props.hasDraftStatus = false;
-            if (draftPropertySetting) {
-              draftPropertySetting.settingEl.remove();
-              draftPropertySetting = null;
-            }
-            if (draftLogicSetting) {
-              draftLogicSetting.settingEl.remove();
-              draftLogicSetting = null;
-            }
-          }
-        });
-      });
-      if (props.hasDraftStatus) {
-        draftPropertySetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Draft property").setDesc("The frontmatter property that contains draft status. Leave blank to use an underscore prefix instead.").addText((text) => {
-          const detected = example ? this.frontmatterAnalyzer.autoDetectDraftProperty(example.frontmatter) : null;
-          text.setPlaceholder((detected == null ? void 0 : detected.property) || "draft").setValue(props.draftProperty || "").onChange((value) => {
-            props.draftProperty = value.trim() || void 0;
-            if (value === "published") {
-              props.draftLogic = "false-draft";
-            } else if (value) {
-              props.draftLogic = "true-draft";
-            }
-            if (value && !draftLogicSetting) {
-              draftLogicSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Draft logic").setDesc("How draft status is represented").addDropdown((dropdown) => dropdown.addOption("true-draft", "true = draft").addOption("false-draft", "false = draft").setValue(props.draftLogic || "true-draft").onChange((dropdownValue) => {
-                props.draftLogic = dropdownValue;
-              }));
-              draftLogicSetting.settingEl.remove();
+              if (props.draftProperty && !draftLogicSetting) {
+                draftLogicSetting = new import_obsidian10.Setting(
+                  contentTypeWrapper,
+                )
+                  .setName("Draft logic")
+                  .setDesc("How draft status is represented")
+                  .addDropdown((dropdown) =>
+                    dropdown
+                      .addOption("true-draft", "true = draft")
+                      .addOption("false-draft", "false = draft")
+                      .setValue(props.draftLogic || "true-draft")
+                      .onChange((value2) => {
+                        props.draftLogic = value2;
+                      }),
+                  );
+                draftLogicSetting.settingEl.remove();
+                if (draftPropertySetting !== null) {
+                  draftPropertySetting.settingEl.insertAdjacentElement(
+                    "afterend",
+                    draftLogicSetting.settingEl,
+                  );
+                }
+              }
+            } else if (!value) {
+              props.draftProperty = void 0;
+              props.draftLogic = void 0;
+              props.hasDraftStatus = false;
               if (draftPropertySetting) {
-                draftPropertySetting.settingEl.insertAdjacentElement("afterend", draftLogicSetting.settingEl);
+                draftPropertySetting.settingEl.remove();
+                draftPropertySetting = null;
               }
-            } else if (!value && draftLogicSetting) {
-              draftLogicSetting.settingEl.remove();
-              draftLogicSetting = null;
+              if (draftLogicSetting) {
+                draftLogicSetting.settingEl.remove();
+                draftLogicSetting = null;
+              }
             }
           });
-        });
+      });
+      if (props.hasDraftStatus) {
+        draftPropertySetting = new import_obsidian10.Setting(contentTypeWrapper)
+          .setName("Draft property")
+          .setDesc(
+            "The frontmatter property that contains draft status. Leave blank to use an underscore prefix instead.",
+          )
+          .addText((text) => {
+            const detected = example
+              ? this.frontmatterAnalyzer.autoDetectDraftProperty(
+                  example.frontmatter,
+                )
+              : null;
+            text
+              .setPlaceholder(
+                (detected == null ? void 0 : detected.property) || "draft",
+              )
+              .setValue(props.draftProperty || "")
+              .onChange((value) => {
+                props.draftProperty = value.trim() || void 0;
+                if (value === "published") {
+                  props.draftLogic = "false-draft";
+                } else if (value) {
+                  props.draftLogic = "true-draft";
+                }
+                if (value && !draftLogicSetting) {
+                  draftLogicSetting = new import_obsidian10.Setting(
+                    contentTypeWrapper,
+                  )
+                    .setName("Draft logic")
+                    .setDesc("How draft status is represented")
+                    .addDropdown((dropdown) =>
+                      dropdown
+                        .addOption("true-draft", "true = draft")
+                        .addOption("false-draft", "false = draft")
+                        .setValue(props.draftLogic || "true-draft")
+                        .onChange((dropdownValue) => {
+                          props.draftLogic = dropdownValue;
+                        }),
+                    );
+                  draftLogicSetting.settingEl.remove();
+                  if (draftPropertySetting) {
+                    draftPropertySetting.settingEl.insertAdjacentElement(
+                      "afterend",
+                      draftLogicSetting.settingEl,
+                    );
+                  }
+                } else if (!value && draftLogicSetting) {
+                  draftLogicSetting.settingEl.remove();
+                  draftLogicSetting = null;
+                }
+              });
+          });
         draftPropertySetting.settingEl.remove();
-        draftSetting.settingEl.insertAdjacentElement("afterend", draftPropertySetting.settingEl);
+        draftSetting.settingEl.insertAdjacentElement(
+          "afterend",
+          draftPropertySetting.settingEl,
+        );
         if (props.draftProperty) {
-          draftLogicSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Draft logic").setDesc("How draft status is represented").addDropdown((dropdown) => dropdown.addOption("true-draft", "true = draft").addOption("false-draft", "false = draft").setValue(props.draftLogic || "true-draft").onChange((value) => {
-            props.draftLogic = value;
-          }));
+          draftLogicSetting = new import_obsidian10.Setting(contentTypeWrapper)
+            .setName("Draft logic")
+            .setDesc("How draft status is represented")
+            .addDropdown((dropdown) =>
+              dropdown
+                .addOption("true-draft", "true = draft")
+                .addOption("false-draft", "false = draft")
+                .setValue(props.draftLogic || "true-draft")
+                .onChange((value) => {
+                  props.draftLogic = value;
+                }),
+            );
           draftLogicSetting.settingEl.remove();
           if (draftPropertySetting !== null) {
-            draftPropertySetting.settingEl.insertAdjacentElement("afterend", draftLogicSetting.settingEl);
+            draftPropertySetting.settingEl.insertAdjacentElement(
+              "afterend",
+              draftLogicSetting.settingEl,
+            );
           }
         }
       }
-      const imageSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Has image/cover property?").setDesc("Does this content type have an image or cover property? Used for Bases CMS cover images and Image Manager.");
+      const imageSetting = new import_obsidian10.Setting(contentTypeWrapper)
+        .setName("Has image/cover property?")
+        .setDesc(
+          "Does this content type have an image or cover property? Used for Bases CMS cover images and Image Manager.",
+        );
       let imageTextSetting = null;
-      imageSetting.addToggle((toggle) => toggle.setValue(!!props.imageProperty).onChange((value) => {
-        if (value && !props.imageProperty) {
-          const detected = example ? this.frontmatterAnalyzer.autoDetectImageProperty(example.frontmatter) : null;
-          props.imageProperty = detected || "image";
-          if (!imageTextSetting) {
-            imageTextSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Image property").setDesc("The property that contains the image/cover (like image, cover, coverImage, thumbnail, featuredImage). Leave blank if not applicable.").addText((text) => {
-              const detected2 = example ? this.frontmatterAnalyzer.autoDetectImageProperty(example.frontmatter) : null;
-              text.setPlaceholder(detected2 || "image").setValue(props.imageProperty || "").onChange((value2) => {
-                props.imageProperty = value2.trim() || void 0;
-              });
-            });
-            imageTextSetting.settingEl.remove();
-            imageSetting.settingEl.insertAdjacentElement("afterend", imageTextSetting.settingEl);
+      imageSetting.addToggle((toggle) =>
+        toggle.setValue(!!props.imageProperty).onChange((value) => {
+          if (value && !props.imageProperty) {
+            const detected = example
+              ? this.frontmatterAnalyzer.autoDetectImageProperty(
+                  example.frontmatter,
+                )
+              : null;
+            props.imageProperty = detected || "image";
+            if (!imageTextSetting) {
+              imageTextSetting = new import_obsidian10.Setting(
+                contentTypeWrapper,
+              )
+                .setName("Image property")
+                .setDesc(
+                  "The property that contains the image/cover (like image, cover, coverImage, thumbnail, featuredImage). Leave blank if not applicable.",
+                )
+                .addText((text) => {
+                  const detected2 = example
+                    ? this.frontmatterAnalyzer.autoDetectImageProperty(
+                        example.frontmatter,
+                      )
+                    : null;
+                  text
+                    .setPlaceholder(detected2 || "image")
+                    .setValue(props.imageProperty || "")
+                    .onChange((value2) => {
+                      props.imageProperty = value2.trim() || void 0;
+                    });
+                });
+              imageTextSetting.settingEl.remove();
+              imageSetting.settingEl.insertAdjacentElement(
+                "afterend",
+                imageTextSetting.settingEl,
+              );
+            }
+          } else if (!value) {
+            props.imageProperty = void 0;
+            if (imageTextSetting) {
+              imageTextSetting.settingEl.remove();
+              imageTextSetting = null;
+            }
           }
-        } else if (!value) {
-          props.imageProperty = void 0;
-          if (imageTextSetting) {
-            imageTextSetting.settingEl.remove();
-            imageTextSetting = null;
-          }
-        }
-      }));
+        }),
+      );
       if (props.imageProperty) {
-        imageTextSetting = new import_obsidian10.Setting(contentTypeWrapper).setName("Image property").setDesc("The property that contains the image/cover (like image, cover, coverImage, thumbnail, featuredImage). Leave blank if not applicable.").addText((text) => {
-          const detected = example ? this.frontmatterAnalyzer.autoDetectImageProperty(example.frontmatter) : null;
-          text.setPlaceholder(detected || "image").setValue(props.imageProperty || "").onChange((value) => {
-            props.imageProperty = value.trim() || void 0;
+        imageTextSetting = new import_obsidian10.Setting(contentTypeWrapper)
+          .setName("Image property")
+          .setDesc(
+            "The property that contains the image/cover (like image, cover, coverImage, thumbnail, featuredImage). Leave blank if not applicable.",
+          )
+          .addText((text) => {
+            const detected = example
+              ? this.frontmatterAnalyzer.autoDetectImageProperty(
+                  example.frontmatter,
+                )
+              : null;
+            text
+              .setPlaceholder(detected || "image")
+              .setValue(props.imageProperty || "")
+              .onChange((value) => {
+                props.imageProperty = value.trim() || void 0;
+              });
           });
-        });
         imageTextSetting.settingEl.remove();
-        imageSetting.settingEl.insertAdjacentElement("afterend", imageTextSetting.settingEl);
+        imageSetting.settingEl.insertAdjacentElement(
+          "afterend",
+          imageTextSetting.settingEl,
+        );
       }
       contentTypeWrapper.createEl("h4", { text: "Template" });
       contentTypeWrapper.createEl("p", {
-        text: 'Edit the template that will be used when creating new files of this content type. Use {{title}} and {{date}} as variables. Note: {{title}} should be in quotes (like title: "{{title}}"), while {{date}} should not be in quotes (like date: {{date}}).'
+        text: 'Edit the template that will be used when creating new files of this content type. Use {{title}} and {{date}} as variables. Note: {{title}} should be in quotes (like title: "{{title}}"), while {{date}} should not be in quotes (like date: {{date}}).',
       });
       {
         const pathResolver2 = new PathResolver(this.app);
-        const folderPath2 = pathResolver2.getFolderPathFromVaultRoot(contentType.folder, this.state.projectDetection);
-        const aggregateProps2 = await this.frontmatterAnalyzer.getPropertiesInFolder(folderPath2, this.state.enableMdxSupport);
-        props.template = this.generateDefaultTemplate(props, example, aggregateProps2);
+        const folderPath2 = pathResolver2.getFolderPathFromVaultRoot(
+          contentType.folder,
+          this.state.projectDetection,
+        );
+        const aggregateProps2 =
+          await this.frontmatterAnalyzer.getPropertiesInFolder(
+            folderPath2,
+            this.state.enableMdxSupport,
+          );
+        props.template = this.generateDefaultTemplate(
+          props,
+          example,
+          aggregateProps2,
+        );
       }
       const templateTextArea = contentTypeWrapper.createEl("textarea", {
         cls: "template-editor",
         attr: {
           rows: "10",
           style: "width: 100%; font-family: monospace;",
-          spellcheck: "false"
-        }
+          spellcheck: "false",
+        },
       });
       templateTextArea.value = props.template || "";
       templateTextArea.addEventListener("input", (e) => {
@@ -10007,7 +11769,13 @@ var FrontmatterPropertiesStep = class extends BaseWizardStep {
     let template = "---\n";
     if (example && example.rawYaml) {
       const lines = example.rawYaml.split("\n");
-      const topLevelLines = lines.filter((line) => line.length > 0 && !line.startsWith(" ") && !line.startsWith("	") && !line.startsWith("#"));
+      const topLevelLines = lines.filter(
+        (line) =>
+          line.length > 0 &&
+          !line.startsWith(" ") &&
+          !line.startsWith("	") &&
+          !line.startsWith("#"),
+      );
       const processedProps = /* @__PURE__ */ new Set();
       let titleAdded = false;
       if (props.titleProperty) {
@@ -10070,13 +11838,17 @@ var FrontmatterPropertiesStep = class extends BaseWizardStep {
             continue;
           }
           if (prop === props.draftProperty && props.draftProperty) {
-            const draftValue = props.draftLogic === "false-draft" ? "false" : "true";
+            const draftValue =
+              props.draftLogic === "false-draft" ? "false" : "true";
             template += `${prop}: ${draftValue}
 `;
             processedProps.add(prop);
             continue;
           }
-          if ((prop === "draft" || prop === "published" || prop === "visible") && !props.draftProperty) {
+          if (
+            (prop === "draft" || prop === "published" || prop === "visible") &&
+            !props.draftProperty
+          ) {
             processedProps.add(prop);
             continue;
           }
@@ -10103,10 +11875,23 @@ var FrontmatterPropertiesStep = class extends BaseWizardStep {
           processedProps.add(prop);
         }
       }
-      const descVariants = /* @__PURE__ */ new Set(["description", "summary", "excerpt", "intro", "snippet", "blurb", "metaDescription", "meta_description"]);
+      const descVariants = /* @__PURE__ */ new Set([
+        "description",
+        "summary",
+        "excerpt",
+        "intro",
+        "snippet",
+        "blurb",
+        "metaDescription",
+        "meta_description",
+      ]);
       for (const prop of aggregateProps) {
         if (processedProps.has(prop)) continue;
-        if (props.descriptionProperty && prop !== props.descriptionProperty && descVariants.has(prop)) {
+        if (
+          props.descriptionProperty &&
+          prop !== props.descriptionProperty &&
+          descVariants.has(prop)
+        ) {
           continue;
         }
         if (prop === props.titleProperty) {
@@ -10125,10 +11910,14 @@ var FrontmatterPropertiesStep = class extends BaseWizardStep {
           template += `${prop}: ""
 `;
         } else if (prop === props.draftProperty) {
-          const draftValue = props.draftLogic === "false-draft" ? "false" : "true";
+          const draftValue =
+            props.draftLogic === "false-draft" ? "false" : "true";
           template += `${prop}: ${draftValue}
 `;
-        } else if ((prop === "draft" || prop === "published" || prop === "visible") && !props.draftProperty) {
+        } else if (
+          (prop === "draft" || prop === "published" || prop === "visible") &&
+          !props.draftProperty
+        ) {
         } else {
           template += `${prop}: ""
 `;
@@ -10153,7 +11942,8 @@ var FrontmatterPropertiesStep = class extends BaseWizardStep {
 `;
       }
       if (props.draftProperty) {
-        const draftValue = props.draftLogic === "false-draft" ? "false" : "true";
+        const draftValue =
+          props.draftLogic === "false-draft" ? "false" : "true";
         template += `${props.draftProperty}: ${draftValue}
 `;
       }
@@ -10176,7 +11966,10 @@ var FrontmatterPropertiesStep = class extends BaseWizardStep {
 var import_obsidian11 = require("obsidian");
 function setCssProps5(element, props) {
   for (const [key, value] of Object.entries(props)) {
-    element.style.setProperty(key.replace(/([A-Z])/g, "-$1").toLowerCase(), value);
+    element.style.setProperty(
+      key.replace(/([A-Z])/g, "-$1").toLowerCase(),
+      value,
+    );
   }
 }
 var PluginConfigurationStep = class extends BaseWizardStep {
@@ -10186,51 +11979,79 @@ var PluginConfigurationStep = class extends BaseWizardStep {
     containerEl.empty();
     containerEl.createEl("h2", { text: "Plugin Configuration" });
     containerEl.createEl("p", {
-      text: "Your plugins will be automatically configured using your mapped properties. Review the settings below."
+      text: "Your plugins will be automatically configured using your mapped properties. Review the settings below.",
     });
     const enabledTypes = this.state.contentTypes.filter((ct) => ct.enabled);
     if (enabledTypes.length === 0) {
       containerEl.createEl("p", {
-        text: "No content types enabled. Please go back and enable at least one content type."
+        text: "No content types enabled. Please go back and enable at least one content type.",
       });
       return;
     }
-    const basesCMSDiv = containerEl.createDiv({ cls: "plugin-config-section", attr: { style: "margin-bottom: 2rem;" } });
-    basesCMSDiv.createEl("b", { text: "Base views to be created:", attr: { style: "display: block; margin-bottom: 0.5rem;" } });
-    const basesList = basesCMSDiv.createEl("ul", { attr: { style: "margin-top: 0;" } });
+    const basesCMSDiv = containerEl.createDiv({
+      cls: "plugin-config-section",
+      attr: { style: "margin-bottom: 2rem;" },
+    });
+    basesCMSDiv.createEl("b", {
+      text: "Base views to be created:",
+      attr: { style: "display: block; margin-bottom: 0.5rem;" },
+    });
+    const basesList = basesCMSDiv.createEl("ul", {
+      attr: { style: "margin-top: 0;" },
+    });
     for (const contentType of enabledTypes) {
       const props = this.state.frontmatterProperties[contentType.id];
       if (props) {
         const properties = [];
         if (props.titleProperty) properties.push(props.titleProperty);
         if (props.dateProperty) properties.push(props.dateProperty);
-        if (props.descriptionProperty) properties.push(props.descriptionProperty);
+        if (props.descriptionProperty)
+          properties.push(props.descriptionProperty);
         if (props.tagsProperty) properties.push(props.tagsProperty);
         if (props.imageProperty) properties.push(props.imageProperty);
         if (props.draftProperty) properties.push(props.draftProperty);
-        const propertiesText = properties.length > 0 ? properties.join(", ") : "default properties";
+        const propertiesText =
+          properties.length > 0 ? properties.join(", ") : "default properties";
         basesList.createEl("li", {
-          text: `${contentType.name}: ${propertiesText}`
+          text: `${contentType.name}: ${propertiesText}`,
         });
       }
     }
-    const astroComposerDiv = containerEl.createDiv({ cls: "plugin-config-section", attr: { style: "margin-bottom: 2rem;" } });
-    astroComposerDiv.createEl("b", { text: "Creation logic:", attr: { style: "display: block; margin-bottom: 0.5rem;" } });
-    const astroList = astroComposerDiv.createEl("ul", { attr: { style: "margin-top: 0;" } });
+    const astroComposerDiv = containerEl.createDiv({
+      cls: "plugin-config-section",
+      attr: { style: "margin-bottom: 2rem;" },
+    });
+    astroComposerDiv.createEl("b", {
+      text: "Creation logic:",
+      attr: { style: "display: block; margin-bottom: 0.5rem;" },
+    });
+    const astroList = astroComposerDiv.createEl("ul", {
+      attr: { style: "margin-top: 0;" },
+    });
     for (const contentType of enabledTypes) {
-      const modeLabel = contentType.fileOrganization === "folder" ? "folder-based" : "file-based";
+      const modeLabel =
+        contentType.fileOrganization === "folder"
+          ? "folder-based"
+          : "file-based";
       astroList.createEl("li", {
-        text: `${contentType.name} (${contentType.folder}): ${modeLabel}`
+        text: `${contentType.name} (${contentType.folder}): ${modeLabel}`,
       });
     }
-    const configDiv = containerEl.createDiv({ cls: "plugin-config-section", attr: { style: "border-top: 1px solid var(--background-modifier-border); padding-top: 1rem;" } });
+    const configDiv = containerEl.createDiv({
+      cls: "plugin-config-section",
+      attr: {
+        style:
+          "border-top: 1px solid var(--background-modifier-border); padding-top: 1rem;",
+      },
+    });
     const titleProperties = /* @__PURE__ */ new Set();
     const descriptionProperties = /* @__PURE__ */ new Set();
     for (const contentType of enabledTypes) {
       const props = this.state.frontmatterProperties[contentType.id];
       if (props) {
         if (props.titleProperty) titleProperties.add(props.titleProperty);
-        if (props.descriptionProperty) descriptionProperties.add(props.descriptionProperty);
+        if (props.descriptionProperty)
+          descriptionProperties.add(props.descriptionProperty);
       }
     }
     if (titleProperties.size > 1 || descriptionProperties.size > 1) {
@@ -10239,35 +12060,62 @@ var PluginConfigurationStep = class extends BaseWizardStep {
         padding: "10px",
         backgroundColor: "var(--background-modifier-border)",
         borderLeft: "3px solid var(--text-warning)",
-        marginBottom: "15px"
+        marginBottom: "15px",
       });
       warningDiv.createEl("p", {
         text: "\u26A0\uFE0F Warning: Different content types use different properties for title or description. SEO will use the default content type's properties.",
-        attr: { style: "margin: 0; font-size: 0.9em;" }
+        attr: { style: "margin: 0; font-size: 0.9em;" },
       });
     }
-    new import_obsidian11.Setting(configDiv).setName("Default content type").setDesc("Choose the default content type for new notes and Home base").addDropdown((dropdown) => {
-      var _a2;
-      enabledTypes.forEach((ct) => {
-        dropdown.addOption(ct.id, ct.name);
+    new import_obsidian11.Setting(configDiv)
+      .setName("Default content type")
+      .setDesc("Choose the default content type for new notes and Home base")
+      .addDropdown((dropdown) => {
+        var _a2;
+        enabledTypes.forEach((ct) => {
+          dropdown.addOption(ct.id, ct.name);
+        });
+        dropdown.setValue(
+          this.state.defaultContentTypeId ||
+            ((_a2 = enabledTypes[0]) == null ? void 0 : _a2.id) ||
+            "",
+        );
+        dropdown.onChange((value) => {
+          this.state.defaultContentTypeId = value;
+        });
       });
-      dropdown.setValue(this.state.defaultContentTypeId || (((_a2 = enabledTypes[0]) == null ? void 0 : _a2.id) || ""));
-      dropdown.onChange((value) => {
-        this.state.defaultContentTypeId = value;
-      });
-    });
     const pathResolver = new PathResolver(this.app);
-    const defaultScanDirs = this.state.contentTypes.filter((ct) => ct.enabled).map((ct) => pathResolver.getFolderPathFromVaultRoot(ct.folder, this.state.projectDetection)).join(",");
-    const savedScanDirs = (_a = this.state.seoConfig) == null ? void 0 : _a.scanDirectories;
-    const initialScanDirs = savedScanDirs && savedScanDirs.trim() ? savedScanDirs : defaultScanDirs;
-    if (!this.state.seoConfig.scanDirectories || !this.state.seoConfig.scanDirectories.trim()) {
+    const defaultScanDirs = this.state.contentTypes
+      .filter((ct) => ct.enabled)
+      .map((ct) =>
+        pathResolver.getFolderPathFromVaultRoot(
+          ct.folder,
+          this.state.projectDetection,
+        ),
+      )
+      .join(",");
+    const savedScanDirs =
+      (_a = this.state.seoConfig) == null ? void 0 : _a.scanDirectories;
+    const initialScanDirs =
+      savedScanDirs && savedScanDirs.trim() ? savedScanDirs : defaultScanDirs;
+    if (
+      !this.state.seoConfig.scanDirectories ||
+      !this.state.seoConfig.scanDirectories.trim()
+    ) {
       this.state.seoConfig.scanDirectories = initialScanDirs;
     }
-    new import_obsidian11.Setting(configDiv).setName("SEO Scan directories").setDesc("Comma-separated list of directories to scan").addText((text) => text.setValue(this.state.seoConfig.scanDirectories).onChange((value) => {
-      if (this.state.seoConfig) {
-        this.state.seoConfig.scanDirectories = value;
-      }
-    }));
+    new import_obsidian11.Setting(configDiv)
+      .setName("SEO Scan directories")
+      .setDesc("Comma-separated list of directories to scan")
+      .addText((text) =>
+        text
+          .setValue(this.state.seoConfig.scanDirectories)
+          .onChange((value) => {
+            if (this.state.seoConfig) {
+              this.state.seoConfig.scanDirectories = value;
+            }
+          }),
+      );
   }
   validate() {
     return this.state.contentTypes.some((ct) => ct.enabled);
@@ -10296,7 +12144,9 @@ var PluginManager = class {
     }
     const plugin = (_a = plugins.plugins) == null ? void 0 : _a[pluginId];
     if (plugin && !plugin.enabled) {
-      await ((_b = plugins.enablePlugin) == null ? void 0 : _b.call(plugins, pluginId));
+      await ((_b = plugins.enablePlugin) == null
+        ? void 0
+        : _b.call(plugins, pluginId));
     }
   }
   async disablePlugin(pluginId) {
@@ -10307,7 +12157,9 @@ var PluginManager = class {
     }
     const plugin = (_a = plugins.plugins) == null ? void 0 : _a[pluginId];
     if (plugin && plugin.enabled) {
-      await ((_b = plugins.disablePlugin) == null ? void 0 : _b.call(plugins, pluginId));
+      await ((_b = plugins.disablePlugin) == null
+        ? void 0
+        : _b.call(plugins, pluginId));
     }
   }
   async setPluginStates(enabled, disabled) {
@@ -10334,7 +12186,7 @@ var PluginManager = class {
       "zenmode",
       "cmdr",
       "simple-focus",
-      "tag-wrangler"
+      "tag-wrangler",
     ];
     const optionalPlugins = [
       "editing-toolbar",
@@ -10347,26 +12199,26 @@ var PluginManager = class {
       "disable-tabs",
       "obsidian-style-settings",
       "mdx-as-md-obsidian",
-      "explorer-focus"
+      "explorer-focus",
     ];
-    const opinionatedPlugins = [
-      "obsidian-oxygen",
-      "obsidian-style-settings"
-    ];
+    const opinionatedPlugins = ["obsidian-oxygen", "obsidian-style-settings"];
     if (preset === "vanilla") {
       return {
-        enabled: [...corePlugins, ...optionalPlugins.filter((p) => !opinionatedPlugins.includes(p))],
-        disabled: opinionatedPlugins
+        enabled: [
+          ...corePlugins,
+          ...optionalPlugins.filter((p) => !opinionatedPlugins.includes(p)),
+        ],
+        disabled: opinionatedPlugins,
       };
     } else if (preset === "opinionated") {
       return {
         enabled: [...corePlugins, ...optionalPlugins],
-        disabled: []
+        disabled: [],
       };
     } else {
       return {
         enabled: [],
-        disabled: []
+        disabled: [],
       };
     }
   }
@@ -10375,7 +12227,10 @@ var PluginManager = class {
 // src/ui/wizard/OptionalPluginsStep.ts
 function setCssProps6(element, props) {
   for (const [key, value] of Object.entries(props)) {
-    element.style.setProperty(key.replace(/([A-Z])/g, "-$1").toLowerCase(), value);
+    element.style.setProperty(
+      key.replace(/([A-Z])/g, "-$1").toLowerCase(),
+      value,
+    );
   }
 }
 var OptionalPluginsStep = class extends BaseWizardStep {
@@ -10388,59 +12243,214 @@ var OptionalPluginsStep = class extends BaseWizardStep {
     containerEl.empty();
     containerEl.createEl("h2", { text: "Plugin detection" });
     containerEl.createEl("p", {
-      text: "Review and configure your installed plugins. Essential plugins are recommended for the core Vault CMS experience."
+      text: "Review and configure your installed plugins. Essential plugins are recommended for the core Vault CMS experience.",
     });
     const allPlugins = [
-      { id: "astro-composer", name: "Astro Composer", category: "essential", source: "brat", repo: "davidvkimball/obsidian-astro-composer" },
-      { id: "bases-cms", name: "Bases CMS", category: "essential", source: "brat", repo: "davidvkimball/obsidian-bases-cms" },
-      { id: "new-tab-default-page", name: "Default New Tab Page", category: "essential", source: "community" },
-      { id: "editing-toolbar", name: "Editing Toolbar", category: "essential", source: "community" },
-      { id: "home-base", name: "Home Base", category: "essential", source: "brat", repo: "davidvkimball/obsidian-home-base" },
-      { id: "homepage", name: "Homepage", category: "essential", source: "community" },
-      { id: "image-manager", name: "Image Manager", category: "essential", source: "brat", repo: "davidvkimball/obsidian-image-manager" },
-      { id: "obsidian-paste-image-rename", name: "Paste Image Rename", category: "essential", source: "community" },
-      { id: "property-over-file-name", name: "Property Over File Name", category: "essential", source: "brat", repo: "davidvkimball/obsidian-property-over-file-name" },
-      { id: "seo", name: "SEO", category: "essential", source: "brat", repo: "davidvkimball/obsidian-seo" },
-      { id: "ui-tweaker", name: "UI Tweaker", category: "essential", source: "brat", repo: "davidvkimball/obsidian-ui-tweaker" },
-      { id: "simple-focus", name: "Simple Focus", category: "essential", source: "community" },
-      { id: "statusbar-organizer", name: "Status Bar Organizer", category: "essential", source: "community" },
-      { id: "omnisearch", name: "Omnisearch", category: "nice-to-have", source: "community" },
-      { id: "file-name-history", name: "File Name History", category: "nice-to-have", source: "brat", repo: "davidvkimball/obsidian-file-name-history" },
-      { id: "data-files-editor", name: "Data Files Editor", category: "nice-to-have", source: "brat", repo: "davidvkimball/obsidian-data-files-editor" },
-      { id: "iconic", name: "Iconic", category: "nice-to-have", source: "community" },
-      { id: "paste-image-into-property", name: "Paste Image Into Property", category: "nice-to-have", source: "community" },
-      { id: "settings-search", name: "Settings Search", category: "nice-to-have", source: "community" },
-      { id: "tag-wrangler", name: "Tag Wrangler", category: "nice-to-have", source: "community" },
-      { id: "zenmode", name: "Zen Mode", category: "nice-to-have", source: "brat", repo: "davidvkimball/obsidian-zenmode" },
-      { id: "explorer-focus", name: "Explorer Focus", category: "nice-to-have", source: "brat", repo: "davidvkimball/obsidian-explorer-focus" }
+      {
+        id: "astro-composer",
+        name: "Astro Composer",
+        category: "essential",
+        source: "brat",
+        repo: "davidvkimball/obsidian-astro-composer",
+      },
+      {
+        id: "bases-cms",
+        name: "Bases CMS",
+        category: "essential",
+        source: "brat",
+        repo: "davidvkimball/obsidian-bases-cms",
+      },
+      {
+        id: "new-tab-default-page",
+        name: "Default New Tab Page",
+        category: "essential",
+        source: "community",
+      },
+      {
+        id: "editing-toolbar",
+        name: "Editing Toolbar",
+        category: "essential",
+        source: "community",
+      },
+      {
+        id: "home-base",
+        name: "Home Base",
+        category: "essential",
+        source: "brat",
+        repo: "davidvkimball/obsidian-home-base",
+      },
+      {
+        id: "homepage",
+        name: "Homepage",
+        category: "essential",
+        source: "community",
+      },
+      {
+        id: "image-manager",
+        name: "Image Manager",
+        category: "essential",
+        source: "brat",
+        repo: "davidvkimball/obsidian-image-manager",
+      },
+      {
+        id: "obsidian-paste-image-rename",
+        name: "Paste Image Rename",
+        category: "essential",
+        source: "community",
+      },
+      {
+        id: "property-over-file-name",
+        name: "Property Over File Name",
+        category: "essential",
+        source: "brat",
+        repo: "davidvkimball/obsidian-property-over-file-name",
+      },
+      {
+        id: "seo",
+        name: "SEO",
+        category: "essential",
+        source: "brat",
+        repo: "davidvkimball/obsidian-seo",
+      },
+      {
+        id: "ui-tweaker",
+        name: "UI Tweaker",
+        category: "essential",
+        source: "brat",
+        repo: "davidvkimball/obsidian-ui-tweaker",
+      },
+      {
+        id: "simple-focus",
+        name: "Simple Focus",
+        category: "essential",
+        source: "community",
+      },
+      {
+        id: "statusbar-organizer",
+        name: "Status Bar Organizer",
+        category: "essential",
+        source: "community",
+      },
+      {
+        id: "omnisearch",
+        name: "Omnisearch",
+        category: "nice-to-have",
+        source: "community",
+      },
+      {
+        id: "file-name-history",
+        name: "File Name History",
+        category: "nice-to-have",
+        source: "brat",
+        repo: "davidvkimball/obsidian-file-name-history",
+      },
+      {
+        id: "data-files-editor",
+        name: "Data Files Editor",
+        category: "nice-to-have",
+        source: "brat",
+        repo: "davidvkimball/obsidian-data-files-editor",
+      },
+      {
+        id: "iconic",
+        name: "Iconic",
+        category: "nice-to-have",
+        source: "community",
+      },
+      {
+        id: "paste-image-into-property",
+        name: "Paste Image Into Property",
+        category: "nice-to-have",
+        source: "community",
+      },
+      {
+        id: "settings-search",
+        name: "Settings Search",
+        category: "nice-to-have",
+        source: "community",
+      },
+      {
+        id: "tag-wrangler",
+        name: "Tag Wrangler",
+        category: "nice-to-have",
+        source: "community",
+      },
+      {
+        id: "zenmode",
+        name: "Zen Mode",
+        category: "nice-to-have",
+        source: "brat",
+        repo: "davidvkimball/obsidian-zenmode",
+      },
+      {
+        id: "explorer-focus",
+        name: "Explorer Focus",
+        category: "nice-to-have",
+        source: "brat",
+        repo: "davidvkimball/obsidian-explorer-focus",
+      },
     ];
     const plugins = this.app.plugins;
-    const installedPluginIds = (plugins == null ? void 0 : plugins.plugins) ? Object.keys(plugins.plugins) : [];
-    const ignoredPlugins = ["obsidian42-brat", "astro-modular-settings", "folder-notes", "disable-tabs", "vault-cms"];
+    const installedPluginIds = (plugins == null ? void 0 : plugins.plugins)
+      ? Object.keys(plugins.plugins)
+      : [];
+    const ignoredPlugins = [
+      "obsidian42-brat",
+      "astro-modular-settings",
+      "folder-notes",
+      "disable-tabs",
+      "vault-cms",
+    ];
     const essentialPlugins = allPlugins.filter(
-      (p) => p.category === "essential" && installedPluginIds.includes(p.id) && !ignoredPlugins.includes(p.id)
+      (p) =>
+        p.category === "essential" &&
+        installedPluginIds.includes(p.id) &&
+        !ignoredPlugins.includes(p.id),
     );
-    const niceToHavePlugins = allPlugins.filter(
-      (p) => p.category === "nice-to-have" && installedPluginIds.includes(p.id) && !ignoredPlugins.includes(p.id)
-    ).sort((a, b) => a.name.localeCompare(b.name));
+    const niceToHavePlugins = allPlugins
+      .filter(
+        (p) =>
+          p.category === "nice-to-have" &&
+          installedPluginIds.includes(p.id) &&
+          !ignoredPlugins.includes(p.id),
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
     if (essentialPlugins.length > 0) {
-      const details = containerEl.createEl("details", { attr: { style: "margin-bottom: 1rem;" } });
+      const details = containerEl.createEl("details", {
+        attr: { style: "margin-bottom: 1rem;" },
+      });
       details.createEl("summary", {
         text: `Essential plugins (${essentialPlugins.length} found)`,
-        attr: { style: "font-weight: bold; cursor: pointer; padding: 0.5rem 0;" }
+        attr: {
+          style: "font-weight: bold; cursor: pointer; padding: 0.5rem 0;",
+        },
       });
-      const content = details.createDiv({ attr: { style: "padding: 0.5rem 0.5rem 0.5rem 1.5rem; border-left: 2px solid var(--background-modifier-border);" } });
+      const content = details.createDiv({
+        attr: {
+          style:
+            "padding: 0.5rem 0.5rem 0.5rem 1.5rem; border-left: 2px solid var(--background-modifier-border);",
+        },
+      });
       for (const plugin of essentialPlugins) {
         this.renderPluginStatus(content, plugin, plugins);
       }
     }
     if (niceToHavePlugins.length > 0) {
-      const details = containerEl.createEl("details", { attr: { style: "margin-bottom: 2rem;" } });
+      const details = containerEl.createEl("details", {
+        attr: { style: "margin-bottom: 2rem;" },
+      });
       details.createEl("summary", {
         text: `Nice to have plugins (${niceToHavePlugins.length} found)`,
-        attr: { style: "font-weight: bold; cursor: pointer; padding: 0.5rem 0;" }
+        attr: {
+          style: "font-weight: bold; cursor: pointer; padding: 0.5rem 0;",
+        },
       });
-      const content = details.createDiv({ attr: { style: "padding: 0.5rem 0.5rem 0.5rem 1.5rem; border-left: 2px solid var(--background-modifier-border);" } });
+      const content = details.createDiv({
+        attr: {
+          style:
+            "padding: 0.5rem 0.5rem 0.5rem 1.5rem; border-left: 2px solid var(--background-modifier-border);",
+        },
+      });
       for (const plugin of niceToHavePlugins) {
         this.renderPluginStatus(content, plugin, plugins);
       }
@@ -10449,62 +12459,123 @@ var OptionalPluginsStep = class extends BaseWizardStep {
       containerEl.createEl("p", { text: "No Vault CMS plugins detected." });
     }
     const missingPlugins = allPlugins.filter(
-      (p) => !installedPluginIds.includes(p.id) && !ignoredPlugins.includes(p.id)
+      (p) =>
+        !installedPluginIds.includes(p.id) && !ignoredPlugins.includes(p.id),
     );
     if (missingPlugins.length > 0) {
-      const missingEssential = missingPlugins.filter((p) => p.category === "essential");
-      const missingNiceToHave = missingPlugins.filter((p) => p.category === "nice-to-have");
+      const missingEssential = missingPlugins.filter(
+        (p) => p.category === "essential",
+      );
+      const missingNiceToHave = missingPlugins.filter(
+        (p) => p.category === "nice-to-have",
+      );
       if (missingEssential.length > 0 || missingNiceToHave.length > 0) {
-        const details = containerEl.createEl("details", { attr: { style: "margin-bottom: 1rem;" } });
+        const details = containerEl.createEl("details", {
+          attr: { style: "margin-bottom: 1rem;" },
+        });
         details.createEl("summary", {
           text: `Not installed (${missingPlugins.length})`,
-          attr: { style: "font-weight: bold; cursor: pointer; padding: 0.5rem 0; color: var(--text-muted);" }
+          attr: {
+            style:
+              "font-weight: bold; cursor: pointer; padding: 0.5rem 0; color: var(--text-muted);",
+          },
         });
-        const content = details.createDiv({ attr: { style: "padding: 0.5rem 0.5rem 0.5rem 1.5rem; border-left: 2px solid var(--background-modifier-border);" } });
+        const content = details.createDiv({
+          attr: {
+            style:
+              "padding: 0.5rem 0.5rem 0.5rem 1.5rem; border-left: 2px solid var(--background-modifier-border);",
+          },
+        });
         for (const plugin of [...missingEssential, ...missingNiceToHave]) {
-          const setting = new import_obsidian12.Setting(content).setName(plugin.name).setDesc(plugin.category === "essential" ? "Recommended" : "Optional");
+          const setting = new import_obsidian12.Setting(content)
+            .setName(plugin.name)
+            .setDesc(
+              plugin.category === "essential" ? "Recommended" : "Optional",
+            );
           setting.nameEl.style.fontSize = "0.9em";
           setting.descEl.style.fontSize = "0.8em";
           if (plugin.source === "community") {
-            setting.addButton((btn) => btn.setButtonText("Install").setCta().onClick(() => {
-              window.open(`obsidian://show-plugin?id=${plugin.id}`);
-            }));
+            setting.addButton((btn) =>
+              btn
+                .setButtonText("Install")
+                .setCta()
+                .onClick(() => {
+                  window.open(`obsidian://show-plugin?id=${plugin.id}`);
+                }),
+            );
           } else if (plugin.source === "brat" && plugin.repo) {
-            setting.addButton((btn) => btn.setButtonText("GitHub").onClick(() => {
-              window.open(`https://github.com/${plugin.repo}`);
-            }));
+            setting.addButton((btn) =>
+              btn.setButtonText("GitHub").onClick(() => {
+                window.open(`https://github.com/${plugin.repo}`);
+              }),
+            );
           }
         }
       }
     }
     const toolbarDiv = containerEl.createDiv({
-      attr: { style: "margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--background-modifier-border);" }
+      attr: {
+        style:
+          "margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--background-modifier-border);",
+      },
     });
-    new import_obsidian12.Setting(toolbarDiv).setName("Enable Editing Toolbar").setDesc("Show the visual editing toolbar for formatting text").addToggle((toggle) => toggle.setValue(this.state.enableEditingToolbar).onChange((value) => {
-      this.state.enableEditingToolbar = value;
-    }));
+    new import_obsidian12.Setting(toolbarDiv)
+      .setName("Enable Editing Toolbar")
+      .setDesc("Show the visual editing toolbar for formatting text")
+      .addToggle((toggle) =>
+        toggle.setValue(this.state.enableEditingToolbar).onChange((value) => {
+          this.state.enableEditingToolbar = value;
+        }),
+      );
   }
   renderPluginStatus(container, plugin, plugins) {
     var _a, _b, _c, _d, _e;
-    const pluginInstance = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a[plugin.id];
+    const pluginInstance =
+      (_a = plugins == null ? void 0 : plugins.plugins) == null
+        ? void 0
+        : _a[plugin.id];
     const isInstalled = !!pluginInstance;
     const pluginInstanceTyped = pluginInstance;
-    const isCurrentlyEnabled = (_e = (_d = (_c = (_b = plugins == null ? void 0 : plugins.enabledPlugins) == null ? void 0 : _b.has) == null ? void 0 : _c.call(_b, plugin.id)) != null ? _d : pluginInstanceTyped == null ? void 0 : pluginInstanceTyped.enabled) != null ? _e : false;
+    const isCurrentlyEnabled =
+      (_e =
+        (_d =
+          (_c =
+            (_b = plugins == null ? void 0 : plugins.enabledPlugins) == null
+              ? void 0
+              : _b.has) == null
+            ? void 0
+            : _c.call(_b, plugin.id)) != null
+          ? _d
+          : pluginInstanceTyped == null
+            ? void 0
+            : pluginInstanceTyped.enabled) != null
+        ? _e
+        : false;
     if (isInstalled && isCurrentlyEnabled) {
       if (!this.state.enabledPlugins.includes(plugin.id)) {
         this.state.enabledPlugins.push(plugin.id);
       }
-      this.state.disabledPlugins = this.state.disabledPlugins.filter((p) => p !== plugin.id);
+      this.state.disabledPlugins = this.state.disabledPlugins.filter(
+        (p) => p !== plugin.id,
+      );
     } else if (isInstalled && !isCurrentlyEnabled) {
-      this.state.enabledPlugins = this.state.enabledPlugins.filter((p) => p !== plugin.id);
+      this.state.enabledPlugins = this.state.enabledPlugins.filter(
+        (p) => p !== plugin.id,
+      );
       if (!this.state.disabledPlugins.includes(plugin.id)) {
         this.state.disabledPlugins.push(plugin.id);
       }
     }
-    const setting = new import_obsidian12.Setting(container).setName(plugin.name).setDesc(isCurrentlyEnabled ? "Installed and enabled" : "Installed but disabled");
+    const setting = new import_obsidian12.Setting(container)
+      .setName(plugin.name)
+      .setDesc(
+        isCurrentlyEnabled ? "Installed and enabled" : "Installed but disabled",
+      );
     setting.nameEl.style.fontSize = "0.9em";
     setting.descEl.style.fontSize = "0.8em";
-    const iconContainer = setting.controlEl.createDiv({ cls: "vault-cms-plugin-status" });
+    const iconContainer = setting.controlEl.createDiv({
+      cls: "vault-cms-plugin-status",
+    });
     if (isCurrentlyEnabled) {
       (0, import_obsidian12.setIcon)(iconContainer, "lucide-check-circle-2");
       setCssProps6(iconContainer, { color: "var(--text-success)" });
@@ -10535,7 +12606,10 @@ init_VaultPathHelper();
 init_ProjectRootResolver();
 function setCssProps7(element, props) {
   for (const [key, value] of Object.entries(props)) {
-    element.style.setProperty(key.replace(/([A-Z])/g, "-$1").toLowerCase(), value);
+    element.style.setProperty(
+      key.replace(/([A-Z])/g, "-$1").toLowerCase(),
+      value,
+    );
   }
 }
 var ProjectOptimizer = class {
@@ -10546,14 +12620,17 @@ var ProjectOptimizer = class {
   resolveProjectRoot() {
     var _a;
     const vaultPath = getVaultPath(this.app);
-    return resolveProjectRootFromVaultPath(vaultPath != null ? vaultPath : "", (_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot);
+    return resolveProjectRootFromVaultPath(
+      vaultPath != null ? vaultPath : "",
+      (_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot,
+    );
   }
   async getStatus() {
     var _a;
     const status = {
       gitIgnoreStatus: "not-configured",
       viteIgnoreStatus: "not-configured",
-      gitHooksStatus: "none"
+      gitHooksStatus: "none",
     };
     const projectRoot = this.resolveProjectRoot();
     if (!projectRoot) {
@@ -10561,19 +12638,38 @@ var ProjectOptimizer = class {
       return status;
     }
     const configDir = this.app.vault.configDir;
-    console.debug("[Vault CMS] ProjectOptimizer: Checking status for root:", projectRoot, "configDir:", configDir);
+    console.debug(
+      "[Vault CMS] ProjectOptimizer: Checking status for root:",
+      projectRoot,
+      "configDir:",
+      configDir,
+    );
     const gitIgnorePath = path8.join(projectRoot, ".gitignore");
     if (fs5.existsSync(gitIgnorePath)) {
       const content = fs5.readFileSync(gitIgnorePath, "utf8");
-      const isConfigured = content.includes(`${configDir}/workspace.json`) || content.includes(`**/${configDir}/workspace.json`);
-      console.debug("[Vault CMS] ProjectOptimizer: .gitignore exists, configured:", isConfigured);
+      const isConfigured =
+        content.includes(`${configDir}/workspace.json`) ||
+        content.includes(`**/${configDir}/workspace.json`);
+      console.debug(
+        "[Vault CMS] ProjectOptimizer: .gitignore exists, configured:",
+        isConfigured,
+      );
       if (isConfigured) {
         status.gitIgnoreStatus = "configured";
       }
     } else {
-      console.debug("[Vault CMS] ProjectOptimizer: .gitignore NOT found at:", gitIgnorePath);
+      console.debug(
+        "[Vault CMS] ProjectOptimizer: .gitignore NOT found at:",
+        gitIgnorePath,
+      );
     }
-    const astroConfigNames = ["astro.config.ts", "astro.config.mjs", "astro.config.js", "astro.config.mts", "astro.config.cjs"];
+    const astroConfigNames = [
+      "astro.config.ts",
+      "astro.config.mjs",
+      "astro.config.js",
+      "astro.config.mts",
+      "astro.config.cjs",
+    ];
     let resolvedViteConfigPath = "";
     for (const name of astroConfigNames) {
       const p = path8.join(projectRoot, name);
@@ -10582,24 +12678,49 @@ var ProjectOptimizer = class {
         break;
       }
     }
-    if (!resolvedViteConfigPath && ((_a = this.state.projectDetection) == null ? void 0 : _a.configFilePath)) {
+    if (
+      !resolvedViteConfigPath &&
+      ((_a = this.state.projectDetection) == null ? void 0 : _a.configFilePath)
+    ) {
       const adapter = this.app.vault.adapter;
       const vaultPath = adapter.basePath || adapter.path || "";
-      resolvedViteConfigPath = path8.resolve(vaultPath, this.state.projectDetection.configFilePath);
+      resolvedViteConfigPath = path8.resolve(
+        vaultPath,
+        this.state.projectDetection.configFilePath,
+      );
     }
     if (resolvedViteConfigPath && fs5.existsSync(resolvedViteConfigPath)) {
-      console.debug("[Vault CMS] ProjectOptimizer: Checking Vite config at:", resolvedViteConfigPath);
+      console.debug(
+        "[Vault CMS] ProjectOptimizer: Checking Vite config at:",
+        resolvedViteConfigPath,
+      );
       const content = fs5.readFileSync(resolvedViteConfigPath, "utf8");
-      const hasWatchIgnored = content.includes("server.watch.ignored") || content.includes("ignored:");
+      const hasWatchIgnored =
+        content.includes("server.watch.ignored") ||
+        content.includes("ignored:");
       const hasAssetsInclude = content.includes("assetsInclude:");
       const hasConfigDir = content.includes(configDir);
-      const hasBasesPattern = content.includes("bases") || content.includes("home") || content.includes("base");
-      console.debug("[Vault CMS] ProjectOptimizer: Vite config has patterns:", { hasWatchIgnored, hasAssetsInclude, hasConfigDir, hasBasesPattern });
-      if (hasWatchIgnored && hasAssetsInclude && (hasConfigDir || hasBasesPattern)) {
+      const hasBasesPattern =
+        content.includes("bases") ||
+        content.includes("home") ||
+        content.includes("base");
+      console.debug("[Vault CMS] ProjectOptimizer: Vite config has patterns:", {
+        hasWatchIgnored,
+        hasAssetsInclude,
+        hasConfigDir,
+        hasBasesPattern,
+      });
+      if (
+        hasWatchIgnored &&
+        hasAssetsInclude &&
+        (hasConfigDir || hasBasesPattern)
+      ) {
         status.viteIgnoreStatus = "configured";
       }
     } else {
-      console.debug("[Vault CMS] ProjectOptimizer: No valid Astro config found to check");
+      console.debug(
+        "[Vault CMS] ProjectOptimizer: No valid Astro config found to check",
+      );
     }
     status.gitHooksStatus = this.detectGitHooks(projectRoot);
     return status;
@@ -10613,16 +12734,25 @@ var ProjectOptimizer = class {
     const huskyCommitMsg = path8.join(projectRoot, ".husky", "commit-msg");
     const lefthookYml = path8.join(projectRoot, "lefthook.yml");
     const simpleGitHooksInPkg = this.packageJsonHasHookTools(projectRoot);
-    const hasHooks = fs5.existsSync(huskyPreCommit) || fs5.existsSync(huskyCommitMsg) || fs5.existsSync(lefthookYml) || simpleGitHooksInPkg;
+    const hasHooks =
+      fs5.existsSync(huskyPreCommit) ||
+      fs5.existsSync(huskyCommitMsg) ||
+      fs5.existsSync(lefthookYml) ||
+      simpleGitHooksInPkg;
     if (!hasHooks) return "none";
-    const isNeutralized = this.isHookNeutralized(huskyPreCommit) && this.isHookNeutralized(huskyCommitMsg);
-    if (isNeutralized && !fs5.existsSync(lefthookYml) && !simpleGitHooksInPkg) return "neutralized";
+    const isNeutralized =
+      this.isHookNeutralized(huskyPreCommit) &&
+      this.isHookNeutralized(huskyCommitMsg);
+    if (isNeutralized && !fs5.existsSync(lefthookYml) && !simpleGitHooksInPkg)
+      return "neutralized";
     return "detected";
   }
   isHookNeutralized(hookPath) {
     if (!fs5.existsSync(hookPath)) return true;
     const content = fs5.readFileSync(hookPath, "utf8").trim();
-    return content === "exit 0" || content === "" || content === "#!/bin/sh\nexit 0";
+    return (
+      content === "exit 0" || content === "" || content === "#!/bin/sh\nexit 0"
+    );
   }
   packageJsonHasHookTools(projectRoot) {
     const pkgPath = path8.join(projectRoot, "package.json");
@@ -10661,9 +12791,16 @@ var ProjectOptimizer = class {
       try {
         const pkgContent = fs5.readFileSync(pkgPath, "utf8");
         const pkg = JSON.parse(pkgContent);
-        if (((_a = pkg.scripts) == null ? void 0 : _a.prepare) && /husky|simple-git-hooks|lefthook/.test(pkg.scripts.prepare)) {
+        if (
+          ((_a = pkg.scripts) == null ? void 0 : _a.prepare) &&
+          /husky|simple-git-hooks|lefthook/.test(pkg.scripts.prepare)
+        ) {
           delete pkg.scripts.prepare;
-          fs5.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n", "utf8");
+          fs5.writeFileSync(
+            pkgPath,
+            JSON.stringify(pkg, null, 2) + "\n",
+            "utf8",
+          );
           changed = true;
         }
       } catch (e) {
@@ -10684,7 +12821,9 @@ var ProjectOptimizer = class {
   async configureGitIgnore() {
     const projectRoot = this.resolveProjectRoot();
     if (!projectRoot) {
-      console.error("[Vault CMS] ProjectOptimizer: No projectRoot for Git configuration");
+      console.error(
+        "[Vault CMS] ProjectOptimizer: No projectRoot for Git configuration",
+      );
       return false;
     }
     const configDir = this.app.vault.configDir;
@@ -10694,23 +12833,42 @@ var ProjectOptimizer = class {
 **/${configDir}/workspace.json
 **/${configDir}/workspace-mobile.json
 `;
-    console.debug("[Vault CMS] ProjectOptimizer: Configuring Git ignore at:", gitIgnorePath);
+    console.debug(
+      "[Vault CMS] ProjectOptimizer: Configuring Git ignore at:",
+      gitIgnorePath,
+    );
     try {
       if (fs5.existsSync(gitIgnorePath)) {
         let content = fs5.readFileSync(gitIgnorePath, "utf8");
-        const hasNewPattern = content.includes(`**/${configDir}/workspace.json`);
-        const hasOldPattern = content.includes(`*/${configDir}/workspace.json`) || content.includes(`${configDir}/workspace.json`);
+        const hasNewPattern = content.includes(
+          `**/${configDir}/workspace.json`,
+        );
+        const hasOldPattern =
+          content.includes(`*/${configDir}/workspace.json`) ||
+          content.includes(`${configDir}/workspace.json`);
         if (hasOldPattern && !hasNewPattern) {
-          console.debug("[Vault CMS] ProjectOptimizer: Updating old Git patterns");
-          content = content.replace(new RegExp(`\\*?/?${configDir}/workspace\\.json`, "g"), `**/${configDir}/workspace.json`);
-          content = content.replace(new RegExp(`\\*?/?${configDir}/workspace-mobile\\.json`, "g"), `**/${configDir}/workspace-mobile.json`);
+          console.debug(
+            "[Vault CMS] ProjectOptimizer: Updating old Git patterns",
+          );
+          content = content.replace(
+            new RegExp(`\\*?/?${configDir}/workspace\\.json`, "g"),
+            `**/${configDir}/workspace.json`,
+          );
+          content = content.replace(
+            new RegExp(`\\*?/?${configDir}/workspace-mobile\\.json`, "g"),
+            `**/${configDir}/workspace-mobile.json`,
+          );
           fs5.writeFileSync(gitIgnorePath, content, "utf8");
         } else if (!hasNewPattern) {
-          console.debug("[Vault CMS] ProjectOptimizer: Adding new Git patterns");
+          console.debug(
+            "[Vault CMS] ProjectOptimizer: Adding new Git patterns",
+          );
           content += rules;
           fs5.writeFileSync(gitIgnorePath, content, "utf8");
         } else {
-          console.debug("[Vault CMS] ProjectOptimizer: Git patterns already present");
+          console.debug(
+            "[Vault CMS] ProjectOptimizer: Git patterns already present",
+          );
         }
       } else {
         console.debug("[Vault CMS] ProjectOptimizer: Creating new .gitignore");
@@ -10727,7 +12885,13 @@ var ProjectOptimizer = class {
     const projectRoot = this.resolveProjectRoot();
     if (!projectRoot) return false;
     const configDir = this.app.vault.configDir;
-    const astroConfigNames = ["astro.config.ts", "astro.config.mjs", "astro.config.js", "astro.config.mts", "astro.config.cjs"];
+    const astroConfigNames = [
+      "astro.config.ts",
+      "astro.config.mjs",
+      "astro.config.js",
+      "astro.config.mts",
+      "astro.config.cjs",
+    ];
     let resolvedConfigPath = "";
     let configFileName = "";
     for (const name of astroConfigNames) {
@@ -10738,20 +12902,35 @@ var ProjectOptimizer = class {
         break;
       }
     }
-    if (!resolvedConfigPath && ((_a = this.state.projectDetection) == null ? void 0 : _a.configFilePath)) {
+    if (
+      !resolvedConfigPath &&
+      ((_a = this.state.projectDetection) == null ? void 0 : _a.configFilePath)
+    ) {
       const adapter = this.app.vault.adapter;
       const vaultPath = adapter.basePath || adapter.path || "";
-      resolvedConfigPath = path8.resolve(vaultPath, this.state.projectDetection.configFilePath);
+      resolvedConfigPath = path8.resolve(
+        vaultPath,
+        this.state.projectDetection.configFilePath,
+      );
       configFileName = path8.basename(resolvedConfigPath);
     }
     if (!resolvedConfigPath || !fs5.existsSync(resolvedConfigPath)) {
-      console.error("[Vault CMS] ProjectOptimizer: Vite config NOT found in:", projectRoot);
+      console.error(
+        "[Vault CMS] ProjectOptimizer: Vite config NOT found in:",
+        projectRoot,
+      );
       throw new Error(`Astro config file not found in: ${projectRoot}`);
     }
-    console.debug("[Vault CMS] ProjectOptimizer: Configuring Vite ignore at:", resolvedConfigPath);
+    console.debug(
+      "[Vault CMS] ProjectOptimizer: Configuring Vite ignore at:",
+      resolvedConfigPath,
+    );
     try {
       const content = fs5.readFileSync(resolvedConfigPath, "utf8");
-      if (content.includes("server.watch.ignored") && content.includes(configDir)) {
+      if (
+        content.includes("server.watch.ignored") &&
+        content.includes(configDir)
+      ) {
         return true;
       }
       const exportIdx = content.lastIndexOf("export default");
@@ -10776,49 +12955,69 @@ var ProjectOptimizer = class {
           }
         }
       }
-      if (!configBody && (content.includes("vite:") || content.includes("server:"))) {
+      if (
+        !configBody &&
+        (content.includes("vite:") || content.includes("server:"))
+      ) {
         configBody = content;
         isWholeFile = true;
       }
       if (configBody) {
         if (configBody.includes("vite:")) {
           if (!configBody.includes("assetsInclude:")) {
-            configBody = configBody.replace(/vite:\s*\{/, `vite: {
-    assetsInclude: ['**/*.base', '**/.obsidian/**', '**/_bases/**'],`);
+            configBody = configBody.replace(
+              /vite:\s*\{/,
+              `vite: {
+    assetsInclude: ['**/*.base', '**/.obsidian/**', '**/_bases/**'],`,
+            );
           }
           if (configBody.includes("server:")) {
             if (configBody.includes("watch:")) {
               if (configBody.includes("ignored:")) {
                 if (!configBody.includes(configDir)) {
                   const ignorePatterns = `'**/${configDir}/**', '**/_bases/**', '**/bases/**', '**/_home/**', '**/home/**', '**/_base/**', '**/base/**'`;
-                  configBody = configBody.replace(/ignored:\s*\[([^\]]*)\]/, (_m, p1) => {
-                    const existing = p1.trim();
-                    const separator = existing ? ", " : "";
-                    return `ignored: [${existing}${separator}${ignorePatterns}]`;
-                  });
+                  configBody = configBody.replace(
+                    /ignored:\s*\[([^\]]*)\]/,
+                    (_m, p1) => {
+                      const existing = p1.trim();
+                      const separator = existing ? ", " : "";
+                      return `ignored: [${existing}${separator}${ignorePatterns}]`;
+                    },
+                  );
                 }
               } else {
-                configBody = configBody.replace(/watch:\s*\{/, `watch: {
-      ignored: ['**/${configDir}/**', '**/_bases/**', '**/bases/**', '**/_home/**', '**/home/**', '**/_base/**', '**/base/**'],`);
+                configBody = configBody.replace(
+                  /watch:\s*\{/,
+                  `watch: {
+      ignored: ['**/${configDir}/**', '**/_bases/**', '**/bases/**', '**/_home/**', '**/home/**', '**/_base/**', '**/base/**'],`,
+                );
               }
             } else {
-              configBody = configBody.replace(/server:\s*\{/, `server: {
+              configBody = configBody.replace(
+                /server:\s*\{/,
+                `server: {
     watch: {
       ignored: ['**/${configDir}/**', '**/_bases/**', '**/bases/**', '**/_home/**', '**/home/**', '**/_base/**', '**/base/**']
-    },`);
+    },`,
+              );
             }
           } else {
-            configBody = configBody.replace(/vite:\s*\{/, `vite: {
+            configBody = configBody.replace(
+              /vite:\s*\{/,
+              `vite: {
     server: {
       watch: {
         ignored: ['**/${configDir}/**', '**/_bases/**', '**/bases/**', '**/_home/**', '**/home/**', '**/_base/**', '**/base/**']
       }
-    },`);
+    },`,
+            );
           }
         } else {
           if (isWholeFile) {
             if (content.includes("defineConfig")) {
-              configBody = configBody.replace(/defineConfig\s*\(\s*\{/, `defineConfig({
+              configBody = configBody.replace(
+                /defineConfig\s*\(\s*\{/,
+                `defineConfig({
   vite: {
     assetsInclude: ['**/*.base', '**/.obsidian/**', '**/_bases/**'],
     server: {
@@ -10826,12 +13025,16 @@ var ProjectOptimizer = class {
         ignored: ['**/${configDir}/**', '**/_bases/**', '**/bases/**', '**/_home/**', '**/home/**', '**/_base/**', '**/base/**']
       }
     }
-  },`);
+  },`,
+              );
             } else {
-              throw new Error(`Could not find a clear place to insert Vite config in ${configFileName}.`);
+              throw new Error(
+                `Could not find a clear place to insert Vite config in ${configFileName}.`,
+              );
             }
           } else {
-            configBody = `
+            configBody =
+              `
   vite: {
     assetsInclude: ['**/*.base', '**/.obsidian/**', '**/_bases/**'],
     server: {
@@ -10842,14 +13045,21 @@ var ProjectOptimizer = class {
   },` + configBody;
           }
         }
-        const updatedContent = isWholeFile ? configBody : content.substring(0, startIndex + 1) + configBody + content.substring(endIndex);
+        const updatedContent = isWholeFile
+          ? configBody
+          : content.substring(0, startIndex + 1) +
+            configBody +
+            content.substring(endIndex);
         fs5.writeFileSync(resolvedConfigPath, updatedContent, "utf8");
         return true;
       } else {
         throw new Error(`Could not parse configuration in ${configFileName}.`);
       }
     } catch (error) {
-      console.error(`ProjectOptimizer: Error updating ${configFileName}:`, error);
+      console.error(
+        `ProjectOptimizer: Error updating ${configFileName}:`,
+        error,
+      );
       throw error;
     }
   }
@@ -10875,11 +13085,13 @@ var IgnoreStep = class extends BaseWizardStep {
     const { containerEl } = this;
     containerEl.empty();
     const status = await this.optimizer.getStatus();
-    this.state.ignoreConfig.gitIgnoreConfigured = status.gitIgnoreStatus === "configured";
-    this.state.ignoreConfig.viteIgnoreConfigured = status.viteIgnoreStatus === "configured";
+    this.state.ignoreConfig.gitIgnoreConfigured =
+      status.gitIgnoreStatus === "configured";
+    this.state.ignoreConfig.viteIgnoreConfigured =
+      status.viteIgnoreStatus === "configured";
     containerEl.createEl("h2", { text: "Project optimization (optional)" });
     containerEl.createEl("p", {
-      text: "Optimize your project by ignoring Obsidian-specific files in Git and Vite."
+      text: "Optimize your project by ignoring Obsidian-specific files in Git and Vite.",
     });
     this.gitSetting = new import_obsidian14.Setting(containerEl);
     this.updateGitSetting(status.gitIgnoreStatus);
@@ -10892,56 +13104,85 @@ var IgnoreStep = class extends BaseWizardStep {
     return Promise.resolve();
   }
   updateGitSetting(status) {
-    this.gitSetting.setName("Ignore workspace files in Git").setDesc("Add Obsidian workspace files to .gitignore to prevent them from being tracked.").clear();
+    this.gitSetting
+      .setName("Ignore workspace files in Git")
+      .setDesc(
+        "Add Obsidian workspace files to .gitignore to prevent them from being tracked.",
+      )
+      .clear();
     this.gitSetting.addButton((button) => {
-      button.setButtonText(status === "configured" ? "Re-configure" : "Configure").onClick(async () => {
-        try {
-          await this.optimizer.configureGitIgnore();
-          this.state.ignoreConfig.gitIgnoreConfigured = true;
-          new import_obsidian14.Notice(".gitignore updated");
-          const newStatus = await this.optimizer.getStatus();
-          this.updateGitSetting(newStatus.gitIgnoreStatus);
-        } catch (error) {
-          new import_obsidian14.Notice(`Failed to update .gitignore: ${error instanceof Error ? error.message : String(error)}`);
-        }
-      });
+      button
+        .setButtonText(status === "configured" ? "Re-configure" : "Configure")
+        .onClick(async () => {
+          try {
+            await this.optimizer.configureGitIgnore();
+            this.state.ignoreConfig.gitIgnoreConfigured = true;
+            new import_obsidian14.Notice(".gitignore updated");
+            const newStatus = await this.optimizer.getStatus();
+            this.updateGitSetting(newStatus.gitIgnoreStatus);
+          } catch (error) {
+            new import_obsidian14.Notice(
+              `Failed to update .gitignore: ${error instanceof Error ? error.message : String(error)}`,
+            );
+          }
+        });
     });
     this.optimizer.renderStatus(this.gitSetting.controlEl, status);
   }
   updateViteSetting(status) {
-    this.viteSetting.setName("Ignore workspace and Home Base folders in Vite").setDesc("Configure Vite to ignore Obsidian and Home Base folders.").clear();
+    this.viteSetting
+      .setName("Ignore workspace and Home Base folders in Vite")
+      .setDesc("Configure Vite to ignore Obsidian and Home Base folders.")
+      .clear();
     this.viteSetting.addButton((button) => {
-      button.setButtonText(status === "configured" ? "Re-configure" : "Configure").onClick(async () => {
-        try {
-          await this.optimizer.configureViteIgnore();
-          this.state.ignoreConfig.viteIgnoreConfigured = true;
-          new import_obsidian14.Notice("Vite optimization applied");
-          const newStatus = await this.optimizer.getStatus();
-          this.updateViteSetting(newStatus.viteIgnoreStatus);
-        } catch (error) {
-          new import_obsidian14.Notice(`Failed to update Vite config: ${error instanceof Error ? error.message : String(error)}`);
-        }
-      });
+      button
+        .setButtonText(status === "configured" ? "Re-configure" : "Configure")
+        .onClick(async () => {
+          try {
+            await this.optimizer.configureViteIgnore();
+            this.state.ignoreConfig.viteIgnoreConfigured = true;
+            new import_obsidian14.Notice("Vite optimization applied");
+            const newStatus = await this.optimizer.getStatus();
+            this.updateViteSetting(newStatus.viteIgnoreStatus);
+          } catch (error) {
+            new import_obsidian14.Notice(
+              `Failed to update Vite config: ${error instanceof Error ? error.message : String(error)}`,
+            );
+          }
+        });
     });
     this.optimizer.renderStatus(this.viteSetting.controlEl, status);
   }
   updateHooksSetting(status) {
-    this.hooksSetting.setName("Neutralize developer git hooks").setDesc("This project has git hooks (like husky or commitlint) that can block publishing from Obsidian. Disable so commits can happen easily from Obsidian.").clear();
+    this.hooksSetting
+      .setName("Neutralize developer git hooks")
+      .setDesc(
+        "This project has git hooks (like husky or commitlint) that can block publishing from Obsidian. Disable so commits can happen easily from Obsidian.",
+      )
+      .clear();
     if (status === "detected") {
       this.hooksSetting.addButton((button) => {
-        button.setButtonText("Neutralize").setCta().onClick(async () => {
-          try {
-            this.optimizer.neutralizeGitHooks();
-            new import_obsidian14.Notice("Git hooks neutralized");
-            const newStatus = await this.optimizer.getStatus();
-            this.updateHooksSetting(newStatus.gitHooksStatus);
-          } catch (error) {
-            new import_obsidian14.Notice(`Failed to neutralize git hooks: ${error instanceof Error ? error.message : String(error)}`);
-          }
-        });
+        button
+          .setButtonText("Neutralize")
+          .setCta()
+          .onClick(async () => {
+            try {
+              this.optimizer.neutralizeGitHooks();
+              new import_obsidian14.Notice("Git hooks neutralized");
+              const newStatus = await this.optimizer.getStatus();
+              this.updateHooksSetting(newStatus.gitHooksStatus);
+            } catch (error) {
+              new import_obsidian14.Notice(
+                `Failed to neutralize git hooks: ${error instanceof Error ? error.message : String(error)}`,
+              );
+            }
+          });
       });
     }
-    this.optimizer.renderStatus(this.hooksSetting.controlEl, status === "neutralized" ? "configured" : "not-configured");
+    this.optimizer.renderStatus(
+      this.hooksSetting.controlEl,
+      status === "neutralized" ? "configured" : "not-configured",
+    );
   }
   validate() {
     return true;
@@ -10966,7 +13207,14 @@ var BasesCMSConfigurator = class {
     this.pathResolver = new PathResolver(app);
   }
   async resolveBaseFilePath() {
-    const candidateFolders = ["_bases", "bases", "_home", "home", "_base", "base"];
+    const candidateFolders = [
+      "_bases",
+      "bases",
+      "_home",
+      "home",
+      "_base",
+      "base",
+    ];
     const candidateFiles = ["Home.base", "home.base", "index.base"];
     for (const folder of candidateFolders) {
       for (const file of candidateFiles) {
@@ -10983,7 +13231,13 @@ var BasesCMSConfigurator = class {
     }
     return "_bases/Home.base";
   }
-  async createOrUpdateBaseFile(contentTypes, frontmatterProperties, defaultContentTypeId, projectDetection, enableMdxSupport) {
+  async createOrUpdateBaseFile(
+    contentTypes,
+    frontmatterProperties,
+    defaultContentTypeId,
+    projectDetection,
+    enableMdxSupport,
+  ) {
     const baseFilePath = await this.resolveBaseFilePath();
     const folderPath = baseFilePath.split("/")[0];
     const basesFolder = this.app.vault.getAbstractFileByPath(folderPath);
@@ -10991,37 +13245,73 @@ var BasesCMSConfigurator = class {
       try {
         await this.app.vault.createFolder(folderPath);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
         if (!errorMessage || !errorMessage.includes("already exists")) {
-          console.warn(`BasesCMSConfig: Could not create ${folderPath} folder:`, error);
+          console.warn(
+            `BasesCMSConfig: Could not create ${folderPath} folder:`,
+            error,
+          );
         }
       }
     }
     const baseFileAbstract = this.app.vault.getAbstractFileByPath(baseFilePath);
-    let baseFile = baseFileAbstract instanceof import_obsidian16.TFile ? baseFileAbstract : null;
+    let baseFile =
+      baseFileAbstract instanceof import_obsidian16.TFile
+        ? baseFileAbstract
+        : null;
     let existingBase = null;
     if (baseFile) {
       try {
         const content = await this.app.vault.read(baseFile);
         existingBase = parse2(content);
       } catch (error) {
-        console.error("BasesCMSConfig: Failed to parse existing base file:", error);
+        console.error(
+          "BasesCMSConfig: Failed to parse existing base file:",
+          error,
+        );
       }
     }
     const enabledTypes = contentTypes.filter((ct) => ct.enabled);
-    console.debug("BasesCMSConfig: Generating base content for", contentTypes.length, "content types");
-    console.debug("BasesCMSConfig: Enabled content types:", enabledTypes.map((ct) => ct.name));
-    const baseContent = this.generateBaseContent(contentTypes, frontmatterProperties, defaultContentTypeId, existingBase, projectDetection, enableMdxSupport);
-    const viewMatches = baseContent.match(/^\s*-\s+type:\s+(?:cms|bases-cms)/gm);
+    console.debug(
+      "BasesCMSConfig: Generating base content for",
+      contentTypes.length,
+      "content types",
+    );
+    console.debug(
+      "BasesCMSConfig: Enabled content types:",
+      enabledTypes.map((ct) => ct.name),
+    );
+    const baseContent = this.generateBaseContent(
+      contentTypes,
+      frontmatterProperties,
+      defaultContentTypeId,
+      existingBase,
+      projectDetection,
+      enableMdxSupport,
+    );
+    const viewMatches = baseContent.match(
+      /^\s*-\s+type:\s+(?:cms|bases-cms)/gm,
+    );
     const viewCount = viewMatches ? viewMatches.length : 0;
-    console.debug("BasesCMSConfig: Generated", viewCount, "views in base content");
-    const baseFileAbstract2 = this.app.vault.getAbstractFileByPath(baseFilePath);
-    baseFile = baseFileAbstract2 instanceof import_obsidian16.TFile ? baseFileAbstract2 : null;
+    console.debug(
+      "BasesCMSConfig: Generated",
+      viewCount,
+      "views in base content",
+    );
+    const baseFileAbstract2 =
+      this.app.vault.getAbstractFileByPath(baseFilePath);
+    baseFile =
+      baseFileAbstract2 instanceof import_obsidian16.TFile
+        ? baseFileAbstract2
+        : null;
     if (baseFile) {
       console.debug(`BasesCMSConfig: Modifying existing ${baseFilePath} file`);
       try {
         await this.app.vault.modify(baseFile, baseContent);
-        console.debug(`BasesCMSConfig: Successfully modified ${baseFilePath} file`);
+        console.debug(
+          `BasesCMSConfig: Successfully modified ${baseFilePath} file`,
+        );
         return;
       } catch (error) {
         console.error("BasesCMSConfig: Failed to modify file:", error);
@@ -11031,33 +13321,59 @@ var BasesCMSConfigurator = class {
     console.debug(`BasesCMSConfig: Creating new ${baseFilePath} file`);
     try {
       await this.app.vault.create(baseFilePath, baseContent);
-      console.debug(`BasesCMSConfig: Successfully created ${baseFilePath} file`);
+      console.debug(
+        `BasesCMSConfig: Successfully created ${baseFilePath} file`,
+      );
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      if (errorMessage && (errorMessage.includes("already exists") || errorMessage.includes("File already exists"))) {
-        console.debug("BasesCMSConfig: File existed, attempting direct modify via path");
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      if (
+        errorMessage &&
+        (errorMessage.includes("already exists") ||
+          errorMessage.includes("File already exists"))
+      ) {
+        console.debug(
+          "BasesCMSConfig: File existed, attempting direct modify via path",
+        );
         try {
           const adapter = this.app.vault.adapter;
           if (adapter && typeof adapter.write === "function") {
             await adapter.write(baseFilePath, baseContent);
-            console.debug("BasesCMSConfig: Successfully wrote Home.base file via adapter");
+            console.debug(
+              "BasesCMSConfig: Successfully wrote Home.base file via adapter",
+            );
           } else {
-            console.debug("BasesCMSConfig: Adapter write not available, retrying getAbstractFileByPath");
+            console.debug(
+              "BasesCMSConfig: Adapter write not available, retrying getAbstractFileByPath",
+            );
             for (let i = 0; i < 10; i++) {
               await new Promise((resolve11) => setTimeout(resolve11, 200));
-              const retryFileAbstract = this.app.vault.getAbstractFileByPath(baseFilePath);
-              const retryFile = retryFileAbstract instanceof import_obsidian16.TFile ? retryFileAbstract : null;
+              const retryFileAbstract =
+                this.app.vault.getAbstractFileByPath(baseFilePath);
+              const retryFile =
+                retryFileAbstract instanceof import_obsidian16.TFile
+                  ? retryFileAbstract
+                  : null;
               if (retryFile) {
                 await this.app.vault.modify(retryFile, baseContent);
-                console.debug(`BasesCMSConfig: Successfully modified Home.base file on retry ${i + 1}`);
+                console.debug(
+                  `BasesCMSConfig: Successfully modified Home.base file on retry ${i + 1}`,
+                );
                 return;
               }
             }
-            console.error("BasesCMSConfig: File exists but cannot be found after all retries");
-            throw new Error(`File exists but cannot be accessed. Please try again or manually edit ${baseFilePath}`);
+            console.error(
+              "BasesCMSConfig: File exists but cannot be found after all retries",
+            );
+            throw new Error(
+              `File exists but cannot be accessed. Please try again or manually edit ${baseFilePath}`,
+            );
           }
         } catch (writeError) {
-          console.error("BasesCMSConfig: Failed to write file via adapter:", writeError);
+          console.error(
+            "BasesCMSConfig: Failed to write file via adapter:",
+            writeError,
+          );
           throw writeError;
         }
       } else {
@@ -11066,9 +13382,18 @@ var BasesCMSConfigurator = class {
       }
     }
   }
-  generateBaseContent(contentTypes, frontmatterProperties, defaultContentTypeId, existingBase, projectDetection, enableMdxSupport) {
+  generateBaseContent(
+    contentTypes,
+    frontmatterProperties,
+    defaultContentTypeId,
+    existingBase,
+    projectDetection,
+    enableMdxSupport,
+  ) {
     const lines = [];
-    const defaultContentType = defaultContentTypeId ? contentTypes.find((ct) => ct.id === defaultContentTypeId && ct.enabled) : null;
+    const defaultContentType = defaultContentTypeId
+      ? contentTypes.find((ct) => ct.id === defaultContentTypeId && ct.enabled)
+      : null;
     if (defaultContentType) {
       lines.push(`defaultView: "${defaultContentType.name}"`);
     }
@@ -11099,12 +13424,16 @@ var BasesCMSConfigurator = class {
     for (const contentType of contentTypes) {
       const props = frontmatterProperties[contentType.id];
       if (props) {
-        if (props.titleProperty) allProperties.add(`note.${props.titleProperty}`);
+        if (props.titleProperty)
+          allProperties.add(`note.${props.titleProperty}`);
         if (props.dateProperty) allProperties.add(`note.${props.dateProperty}`);
-        if (props.descriptionProperty) allProperties.add(`note.${props.descriptionProperty}`);
+        if (props.descriptionProperty)
+          allProperties.add(`note.${props.descriptionProperty}`);
         if (props.tagsProperty) allProperties.add(`note.${props.tagsProperty}`);
-        if (props.draftProperty) allProperties.add(`note.${props.draftProperty}`);
-        if (props.imageProperty) allProperties.add(`note.${props.imageProperty}`);
+        if (props.draftProperty)
+          allProperties.add(`note.${props.draftProperty}`);
+        if (props.imageProperty)
+          allProperties.add(`note.${props.imageProperty}`);
       }
     }
     allProperties.add("note.title");
@@ -11122,7 +13451,8 @@ var BasesCMSConfigurator = class {
     }
     if (allProperties.size > 0) {
       lines.push("properties:");
-      const existingProps = (existingBase == null ? void 0 : existingBase.properties) || {};
+      const existingProps =
+        (existingBase == null ? void 0 : existingBase.properties) || {};
       for (const prop of Array.from(allProperties).sort()) {
         lines.push(`  ${prop}:`);
         const existingProp = existingProps[prop];
@@ -11138,7 +13468,8 @@ var BasesCMSConfigurator = class {
       lines.push("");
     }
     lines.push("views:");
-    const existingViews = (existingBase == null ? void 0 : existingBase.views) || [];
+    const existingViews =
+      (existingBase == null ? void 0 : existingBase.views) || [];
     const viewsByName = /* @__PURE__ */ new Map();
     for (const view of existingViews) {
       if (view.name) viewsByName.set(view.name, view);
@@ -11146,7 +13477,9 @@ var BasesCMSConfigurator = class {
     const finalViews = [];
     const processedViewNames = /* @__PURE__ */ new Set();
     const enabledTypes = contentTypes.filter((ct) => ct.enabled);
-    const defaultType = defaultContentTypeId ? enabledTypes.find((ct) => ct.id === defaultContentTypeId) : null;
+    const defaultType = defaultContentTypeId
+      ? enabledTypes.find((ct) => ct.id === defaultContentTypeId)
+      : null;
     const otherTypes = enabledTypes.filter((ct) => ct !== defaultType);
     const processType = (ct) => {
       const props = frontmatterProperties[ct.id];
@@ -11156,7 +13489,11 @@ var BasesCMSConfigurator = class {
         finalViews.push(existingView);
         processedViewNames.add(ct.name);
       } else {
-        const generatedView = this.generateViewForContentType(ct, props, projectDetection);
+        const generatedView = this.generateViewForContentType(
+          ct,
+          props,
+          projectDetection,
+        );
         finalViews.push(generatedView);
         processedViewNames.add(ct.name);
       }
@@ -11164,10 +13501,16 @@ var BasesCMSConfigurator = class {
     if (defaultType) processType(defaultType);
     for (const ct of otherTypes) processType(ct);
     for (const view of existingViews) {
-      if (view.name === "Vault CMS Guide" || view.name === "Guide" || processedViewNames.has(view.name)) continue;
+      if (
+        view.name === "Vault CMS Guide" ||
+        view.name === "Guide" ||
+        processedViewNames.has(view.name)
+      )
+        continue;
       finalViews.push(view);
     }
-    let guideView = viewsByName.get("Vault CMS Guide") || viewsByName.get("Guide");
+    let guideView =
+      viewsByName.get("Vault CMS Guide") || viewsByName.get("Guide");
     if (guideView) {
       guideView = { ...guideView, name: "Vault CMS Guide" };
       finalViews.push(guideView);
@@ -11178,14 +13521,19 @@ var BasesCMSConfigurator = class {
     return lines.join("\n");
   }
   generateViewForContentType(contentType, props, projectDetection) {
-    const folderPath = this.pathResolver.getBasesCMSFolderPath(contentType.folder, projectDetection);
+    const folderPath = this.pathResolver.getBasesCMSFolderPath(
+      contentType.folder,
+      projectDetection,
+    );
     const view = {
       type: "cms",
       name: contentType.name,
       filters: {
         and: [
-          folderPath === "" || folderPath === "." ? 'file.folder == "/"' : `file.folder.startsWith("${folderPath}")`
-        ]
+          folderPath === "" || folderPath === "."
+            ? 'file.folder == "/"'
+            : `file.folder.startsWith("${folderPath}")`,
+        ],
       },
       imageFormat: "cover",
       showDate: true,
@@ -11197,10 +13545,12 @@ var BasesCMSConfigurator = class {
       propertyLabels: "above",
       sort: [
         {
-          property: props.dateProperty ? `note.${props.dateProperty}` : "file.ctime",
-          direction: "DESC"
-        }
-      ]
+          property: props.dateProperty
+            ? `note.${props.dateProperty}`
+            : "file.ctime",
+          direction: "DESC",
+        },
+      ],
     };
     if (props.titleProperty) {
       view.titleProperty = `note.${props.titleProperty}`;
@@ -11255,7 +13605,8 @@ var BasesCMSConfigurator = class {
               viewLines.push(`        - ${filter}`);
             } else if (typeof filter === "object") {
               for (const [key, value] of Object.entries(filter)) {
-                const valueStr = typeof value === "string" ? `"${value}"` : String(value);
+                const valueStr =
+                  typeof value === "string" ? `"${value}"` : String(value);
                 viewLines.push(`        - ${key}: ${valueStr}`);
               }
             }
@@ -11266,8 +13617,10 @@ var BasesCMSConfigurator = class {
     if (view.groupBy) {
       viewLines.push("    groupBy:");
       if (typeof view.groupBy === "object") {
-        if (view.groupBy.property) viewLines.push(`      property: ${view.groupBy.property}`);
-        if (view.groupBy.direction) viewLines.push(`      direction: ${view.groupBy.direction}`);
+        if (view.groupBy.property)
+          viewLines.push(`      property: ${view.groupBy.property}`);
+        if (view.groupBy.direction)
+          viewLines.push(`      direction: ${view.groupBy.direction}`);
       } else if (typeof view.groupBy === "string") {
         viewLines.push(`      ${view.groupBy}`);
       }
@@ -11312,7 +13665,9 @@ var BasesCMSConfigurator = class {
           viewLines.push(`    ${prop}: ""`);
           continue;
         }
-        const isPropertyRef = (prop.includes("Property") || prop.startsWith("propertyDisplay")) && (value.startsWith("note.") || value.startsWith("file."));
+        const isPropertyRef =
+          (prop.includes("Property") || prop.startsWith("propertyDisplay")) &&
+          (value.startsWith("note.") || value.startsWith("file."));
         if (isPropertyRef) {
           viewLines.push(`    ${prop}: ${value}`);
         } else if (prop === "newNoteLocation") {
@@ -11333,23 +13688,47 @@ var SEOConfigurator = class {
     this.pathResolver = new PathResolver(app);
     this.safeWriter = new SafeConfigWriter(app);
   }
-  generateSEOConfig(contentTypes, frontmatterProperties, projectDetection, enableMdxSupport, defaultContentTypeId) {
-    const defaultType = defaultContentTypeId ? contentTypes.find((ct) => ct.id === defaultContentTypeId && ct.enabled) : void 0;
+  generateSEOConfig(
+    contentTypes,
+    frontmatterProperties,
+    projectDetection,
+    enableMdxSupport,
+    defaultContentTypeId,
+  ) {
+    const defaultType = defaultContentTypeId
+      ? contentTypes.find((ct) => ct.id === defaultContentTypeId && ct.enabled)
+      : void 0;
     const firstType = defaultType || contentTypes.find((ct) => ct.enabled);
     const firstProps = firstType ? frontmatterProperties[firstType.id] : void 0;
-    const scanDirectories = contentTypes.filter((ct) => ct.enabled).map((ct) => this.pathResolver.getFolderPathFromVaultRoot(ct.folder, projectDetection)).join(",");
+    const scanDirectories = contentTypes
+      .filter((ct) => ct.enabled)
+      .map((ct) =>
+        this.pathResolver.getFolderPathFromVaultRoot(
+          ct.folder,
+          projectDetection,
+        ),
+      )
+      .join(",");
     const config = {
       // Only set titleProperty if it exists (not blank) - this comes from the wizard
-      titleProperty: (firstProps == null ? void 0 : firstProps.titleProperty) && firstProps.titleProperty.trim() !== "" ? firstProps.titleProperty : "title",
+      titleProperty:
+        (firstProps == null ? void 0 : firstProps.titleProperty) &&
+        firstProps.titleProperty.trim() !== ""
+          ? firstProps.titleProperty
+          : "title",
       // Default fallback
       // Only set descriptionProperty if it exists (not blank) - this comes from the wizard
-      descriptionProperty: (firstProps == null ? void 0 : firstProps.descriptionProperty) && firstProps.descriptionProperty.trim() !== "" ? firstProps.descriptionProperty : void 0,
+      descriptionProperty:
+        (firstProps == null ? void 0 : firstProps.descriptionProperty) &&
+        firstProps.descriptionProperty.trim() !== ""
+          ? firstProps.descriptionProperty
+          : void 0,
       scanDirectories,
       // Don't set these - we don't collect them in the wizard
       keywordProperty: void 0,
       useFilenameAsTitle: false,
       useFilenameAsSlug: true,
-      enableMDXSupport: enableMdxSupport != null ? enableMdxSupport : false
+      enableMDXSupport: enableMdxSupport != null ? enableMdxSupport : false,
     };
     return config;
   }
@@ -11357,7 +13736,10 @@ var SEOConfigurator = class {
     var _a;
     try {
       const plugins = this.app.plugins;
-      const seoPlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a["seo"];
+      const seoPlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a["seo"];
       if (seoPlugin && seoPlugin.settings) {
         const pluginSettings = seoPlugin.settings;
         if (config.scanDirectories) {
@@ -11374,7 +13756,9 @@ var SEOConfigurator = class {
         }
         if (typeof seoPlugin.saveSettings === "function") {
           await seoPlugin.saveSettings();
-          console.debug("SEOConfig: Successfully saved via plugin.saveSettings()");
+          console.debug(
+            "SEOConfig: Successfully saved via plugin.saveSettings()",
+          );
           return;
         }
       }
@@ -11396,17 +13780,23 @@ var SEOConfigurator = class {
         // Always update scanDirectories
         scanDirectories: config.scanDirectories,
         // Update titleProperty if provided (from wizard)
-        ...config.titleProperty !== void 0 && { titleProperty: config.titleProperty },
+        ...(config.titleProperty !== void 0 && {
+          titleProperty: config.titleProperty,
+        }),
         // Update descriptionProperty if provided (from wizard)
-        ...config.descriptionProperty !== void 0 && { descriptionProperty: config.descriptionProperty },
+        ...(config.descriptionProperty !== void 0 && {
+          descriptionProperty: config.descriptionProperty,
+        }),
         // Update enableMDXSupport if provided (from wizard)
-        ...config.enableMDXSupport !== void 0 && { enableMDXSupport: config.enableMDXSupport }
+        ...(config.enableMDXSupport !== void 0 && {
+          enableMDXSupport: config.enableMDXSupport,
+        }),
         // All other properties (keywordProperty, useFilenameAsTitle, useFilenameAsSlug, etc.)
         // are preserved from existingData - we don't collect them in the wizard
       };
       const success = await this.safeWriter.writeConfig(pluginId, mergedData, {
         showNotice: true,
-        createBackup: true
+        createBackup: true,
       });
       if (!success) {
         throw new Error("Failed to save SEO configuration");
@@ -11429,33 +13819,55 @@ var PropertyOverFileNameConfigurator = class {
     var _a;
     try {
       const plugins = this.app.plugins;
-      const propertyOverFileNamePlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a["property-over-file-name"];
+      const propertyOverFileNamePlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a["property-over-file-name"];
       if (propertyOverFileNamePlugin && propertyOverFileNamePlugin.settings) {
         const pluginSettings = propertyOverFileNamePlugin.settings;
-        console.debug("PropertyOverFileNameConfig: Using plugin.saveSettings() method");
-        console.debug("PropertyOverFileNameConfig: Input config.enableMdxSupport =", config.enableMdxSupport);
+        console.debug(
+          "PropertyOverFileNameConfig: Using plugin.saveSettings() method",
+        );
+        console.debug(
+          "PropertyOverFileNameConfig: Input config.enableMdxSupport =",
+          config.enableMdxSupport,
+        );
         if (config.propertyKey) {
           pluginSettings.propertyKey = config.propertyKey;
         }
         if (config.enableMdxSupport !== void 0) {
           pluginSettings.enableMdxSupport = config.enableMdxSupport;
-          console.debug("PropertyOverFileNameConfig: Set pluginSettings.enableMdxSupport to", config.enableMdxSupport);
+          console.debug(
+            "PropertyOverFileNameConfig: Set pluginSettings.enableMdxSupport to",
+            config.enableMdxSupport,
+          );
         } else {
-          console.warn("PropertyOverFileNameConfig: config.enableMdxSupport is undefined!");
+          console.warn(
+            "PropertyOverFileNameConfig: config.enableMdxSupport is undefined!",
+          );
         }
         if (typeof propertyOverFileNamePlugin.saveSettings === "function") {
           await propertyOverFileNamePlugin.saveSettings();
-          console.debug("PropertyOverFileNameConfig: Successfully saved via plugin.saveSettings()");
+          console.debug(
+            "PropertyOverFileNameConfig: Successfully saved via plugin.saveSettings()",
+          );
           return;
         } else {
-          console.warn("PropertyOverFileNameConfig: Plugin saveSettings not available, using fallback");
+          console.warn(
+            "PropertyOverFileNameConfig: Plugin saveSettings not available, using fallback",
+          );
         }
       } else {
-        console.warn("PropertyOverFileNameConfig: Plugin not found or settings not available, using fallback");
+        console.warn(
+          "PropertyOverFileNameConfig: Plugin not found or settings not available, using fallback",
+        );
       }
       await this.saveConfigFallback(config);
     } catch (error) {
-      console.error("Failed to save Property Over File Name config via plugin method:", error);
+      console.error(
+        "Failed to save Property Over File Name config via plugin method:",
+        error,
+      );
       await this.saveConfigFallback(config);
     }
   }
@@ -11470,23 +13882,46 @@ var PropertyOverFileNameConfigurator = class {
         existingData = JSON.parse(await this.app.vault.read(dataFile));
       }
       console.debug("PropertyOverFileNameConfig: Using fallback file method");
-      console.debug("PropertyOverFileNameConfig: Input config =", JSON.stringify(config));
-      console.debug("PropertyOverFileNameConfig: Input config.enableMdxSupport =", config.enableMdxSupport);
-      console.debug("PropertyOverFileNameConfig: Existing data =", JSON.stringify(existingData));
+      console.debug(
+        "PropertyOverFileNameConfig: Input config =",
+        JSON.stringify(config),
+      );
+      console.debug(
+        "PropertyOverFileNameConfig: Input config.enableMdxSupport =",
+        config.enableMdxSupport,
+      );
+      console.debug(
+        "PropertyOverFileNameConfig: Existing data =",
+        JSON.stringify(existingData),
+      );
       const mergedData = {
         ...existingData,
-        ...config
+        ...config,
       };
       if (config.enableMdxSupport !== void 0) {
         mergedData.enableMdxSupport = config.enableMdxSupport;
-        console.debug("PropertyOverFileNameConfig: Explicitly set enableMdxSupport to", config.enableMdxSupport);
+        console.debug(
+          "PropertyOverFileNameConfig: Explicitly set enableMdxSupport to",
+          config.enableMdxSupport,
+        );
       } else {
-        console.warn("PropertyOverFileNameConfig: config.enableMdxSupport is undefined!");
+        console.warn(
+          "PropertyOverFileNameConfig: config.enableMdxSupport is undefined!",
+        );
       }
-      console.debug("PropertyOverFileNameConfig: Final mergedData.enableMdxSupport =", mergedData.enableMdxSupport);
-      console.debug("PropertyOverFileNameConfig: Final mergedData =", JSON.stringify(mergedData));
+      console.debug(
+        "PropertyOverFileNameConfig: Final mergedData.enableMdxSupport =",
+        mergedData.enableMdxSupport,
+      );
+      console.debug(
+        "PropertyOverFileNameConfig: Final mergedData =",
+        JSON.stringify(mergedData),
+      );
       if (dataFile instanceof import_obsidian17.TFile) {
-        await this.app.vault.modify(dataFile, JSON.stringify(mergedData, null, 2));
+        await this.app.vault.modify(
+          dataFile,
+          JSON.stringify(mergedData, null, 2),
+        );
       } else {
         const pluginDir = `${configDir}/plugins/${pluginId}`;
         const pluginDirFile = this.app.vault.getAbstractFileByPath(pluginDir);
@@ -11494,15 +13929,24 @@ var PropertyOverFileNameConfigurator = class {
           try {
             await this.app.vault.createFolder(pluginDir);
           } catch (error) {
-            if (error instanceof Error && !error.message.includes("already exists")) {
+            if (
+              error instanceof Error &&
+              !error.message.includes("already exists")
+            ) {
               throw error;
             }
           }
         }
-        await this.app.vault.create(pluginDataPath, JSON.stringify(mergedData, null, 2));
+        await this.app.vault.create(
+          pluginDataPath,
+          JSON.stringify(mergedData, null, 2),
+        );
       }
     } catch (error) {
-      console.error("Failed to save Property Over File Name config (fallback):", error);
+      console.error(
+        "Failed to save Property Over File Name config (fallback):",
+        error,
+      );
       throw error;
     }
   }
@@ -11519,18 +13963,25 @@ var UITweakerConfigurator = class {
     const pluginId = "ui-tweaker";
     try {
       const plugins = this.app.plugins;
-      const uiTweakerPlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a[pluginId];
+      const uiTweakerPlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a[pluginId];
       if (uiTweakerPlugin && uiTweakerPlugin.settings) {
         console.debug("UITweakerConfig: Using plugin.settings API");
         const settings = uiTweakerPlugin.settings;
         this.forceMdxUpdate(settings, enableMdxSupport);
         if (typeof uiTweakerPlugin.saveSettings === "function") {
           await uiTweakerPlugin.saveSettings();
-          console.debug("UITweakerConfig: Successfully saved via plugin.saveSettings()");
+          console.debug(
+            "UITweakerConfig: Successfully saved via plugin.saveSettings()",
+          );
           return;
         }
       }
-      console.debug("UITweakerConfig: Plugin API not available, using fallback file method");
+      console.debug(
+        "UITweakerConfig: Plugin API not available, using fallback file method",
+      );
       await this.saveConfigFallback(enableMdxSupport);
     } catch (error) {
       console.error("Failed to save UI Tweaker config:", error);
@@ -11543,24 +13994,30 @@ var UITweakerConfigurator = class {
       settings.tabBarCommands = [];
     }
     const tabBarCommands = settings.tabBarCommands;
-    const toolbarCommandIndex = tabBarCommands.findIndex((cmd) => cmd.id === "editing-toolbar:hide-show-menu");
+    const toolbarCommandIndex = tabBarCommands.findIndex(
+      (cmd) => cmd.id === "editing-toolbar:hide-show-menu",
+    );
     if (toolbarCommandIndex !== -1) {
       tabBarCommands[toolbarCommandIndex] = {
         ...tabBarCommands[toolbarCommandIndex],
-        "showOnFileTypes": mdxFileTypes
+        showOnFileTypes: mdxFileTypes,
       };
-      console.debug(`UITweakerConfig: Updated existing toolbar command showOnFileTypes to ${mdxFileTypes}`);
+      console.debug(
+        `UITweakerConfig: Updated existing toolbar command showOnFileTypes to ${mdxFileTypes}`,
+      );
     } else {
       tabBarCommands.push({
-        "id": "editing-toolbar:hide-show-menu",
-        "icon": "lucide-panel-top-open",
-        "name": "Toggle editing toolbar",
-        "displayName": "Editing Toolbar: Hide/Show ",
-        "mode": "desktop",
-        "toggleIcon": "lucide-panel-top-close",
-        "showOnFileTypes": mdxFileTypes
+        id: "editing-toolbar:hide-show-menu",
+        icon: "lucide-panel-top-open",
+        name: "Toggle editing toolbar",
+        displayName: "Editing Toolbar: Hide/Show ",
+        mode: "desktop",
+        toggleIcon: "lucide-panel-top-close",
+        showOnFileTypes: mdxFileTypes,
       });
-      console.debug(`UITweakerConfig: Added missing toolbar command with showOnFileTypes=${mdxFileTypes}`);
+      console.debug(
+        `UITweakerConfig: Added missing toolbar command with showOnFileTypes=${mdxFileTypes}`,
+      );
     }
   }
   async saveConfigFallback(enableMdxSupport) {
@@ -11583,8 +14040,14 @@ var UITweakerConfigurator = class {
       try {
         await this.app.vault.createFolder(pluginDir);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        if (errorMessage && !errorMessage.includes("already exists") && !errorMessage.includes("File already exists") && !errorMessage.includes("Folder already exists")) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        if (
+          errorMessage &&
+          !errorMessage.includes("already exists") &&
+          !errorMessage.includes("File already exists") &&
+          !errorMessage.includes("Folder already exists")
+        ) {
           throw error;
         }
       }
@@ -11595,7 +14058,9 @@ var UITweakerConfigurator = class {
     } else {
       await this.app.vault.create(pluginDataPath, content);
     }
-    console.debug("UITweakerConfig: Successfully saved ui-tweaker config via fallback");
+    console.debug(
+      "UITweakerConfig: Successfully saved ui-tweaker config via fallback",
+    );
   }
 };
 
@@ -11610,18 +14075,25 @@ var DataFilesEditorConfigurator = class {
     const pluginId = "data-files-editor";
     try {
       const plugins = this.app.plugins;
-      const plugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a[pluginId];
+      const plugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a[pluginId];
       if (plugin && plugin.settings) {
         console.debug("DataFilesEditorConfig: Using plugin.settings API");
         const settings = plugin.settings;
         this.applySettings(settings, enabled);
         if (typeof plugin.saveSettings === "function") {
           await plugin.saveSettings();
-          console.debug("DataFilesEditorConfig: Successfully saved via plugin.saveSettings()");
+          console.debug(
+            "DataFilesEditorConfig: Successfully saved via plugin.saveSettings()",
+          );
           return;
         }
       }
-      console.debug("DataFilesEditorConfig: Plugin API not available or settings not loaded, using fallback file method");
+      console.debug(
+        "DataFilesEditorConfig: Plugin API not available or settings not loaded, using fallback file method",
+      );
       await this.saveConfigFallback(enabled);
     } catch (error) {
       console.error("Failed to save Data Files Editor config:", error);
@@ -11662,7 +14134,10 @@ var DataFilesEditorConfigurator = class {
       try {
         existingData = JSON.parse(await this.app.vault.read(dataFile));
       } catch (error) {
-        console.warn("Failed to parse existing data-files-editor data.json:", error);
+        console.warn(
+          "Failed to parse existing data-files-editor data.json:",
+          error,
+        );
       }
     }
     this.applySettings(existingData, enabled);
@@ -11672,8 +14147,14 @@ var DataFilesEditorConfigurator = class {
       try {
         await this.app.vault.createFolder(pluginDir);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        if (errorMessage && !errorMessage.includes("already exists") && !errorMessage.includes("File already exists") && !errorMessage.includes("Folder already exists")) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        if (
+          errorMessage &&
+          !errorMessage.includes("already exists") &&
+          !errorMessage.includes("File already exists") &&
+          !errorMessage.includes("Folder already exists")
+        ) {
           throw error;
         }
       }
@@ -11684,7 +14165,9 @@ var DataFilesEditorConfigurator = class {
     } else {
       await this.app.vault.create(pluginDataPath, content);
     }
-    console.debug("DataFilesEditorConfig: Successfully saved data-files-editor config via fallback");
+    console.debug(
+      "DataFilesEditorConfig: Successfully saved data-files-editor config via fallback",
+    );
   }
 };
 
@@ -11699,18 +14182,28 @@ var FileNameHistoryConfigurator = class {
     const configPath = `${this.app.vault.configDir}/plugins/${PLUGIN_ID}/data.json`;
     try {
       const plugins = this.app.plugins;
-      const plugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a[PLUGIN_ID];
+      const plugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a[PLUGIN_ID];
       if (plugin == null ? void 0 : plugin.settings) {
-        plugin.settings.fileExtensions = enableMdxSupport ? ["md", "mdx"] : ["md"];
+        plugin.settings.fileExtensions = enableMdxSupport
+          ? ["md", "mdx"]
+          : ["md"];
         if (typeof plugin.saveSettings === "function") {
           await plugin.saveSettings();
         }
         return;
       }
-      const data = await this.app.vault.adapter.read(configPath).catch(() => "{}");
+      const data = await this.app.vault.adapter
+        .read(configPath)
+        .catch(() => "{}");
       const parsed = JSON.parse(data || "{}");
       parsed.fileExtensions = enableMdxSupport ? ["md", "mdx"] : ["md"];
-      await this.app.vault.adapter.write(configPath, JSON.stringify(parsed, null, 2) + "\n");
+      await this.app.vault.adapter.write(
+        configPath,
+        JSON.stringify(parsed, null, 2) + "\n",
+      );
     } catch (error) {
       console.warn("[Vault CMS] Could not configure File Name History:", error);
     }
@@ -11724,7 +14217,8 @@ var ConfigFlushService = class {
     this.basesCMSConfigurator = new BasesCMSConfigurator(app);
     this.astroComposerConfigurator = new AstroComposerConfigurator(app);
     this.seoConfigurator = new SEOConfigurator(app);
-    this.propertyOverFileNameConfigurator = new PropertyOverFileNameConfigurator(app);
+    this.propertyOverFileNameConfigurator =
+      new PropertyOverFileNameConfigurator(app);
     this.uiTweakerConfigurator = new UITweakerConfigurator(app);
     this.imageManagerConfigurator = new ImageManagerConfigurator(app);
     this.homeBaseConfigurator = new HomeBaseConfigurator(app);
@@ -11746,20 +14240,25 @@ var ConfigFlushService = class {
       state.frontmatterProperties,
       state.defaultContentTypeId,
       state.projectDetection,
-      state.enableMdxSupport === true
+      state.enableMdxSupport === true,
     );
     const baseFilePath = await this.basesCMSConfigurator.resolveBaseFilePath();
-    state.homeBase = { ...state.homeBase, homeBaseType: "File", homeBaseValue: baseFilePath };
+    state.homeBase = {
+      ...state.homeBase,
+      homeBaseType: "File",
+      homeBaseValue: baseFilePath,
+    };
     if (state.projectDetection) {
-      const astroConfig = await this.astroComposerConfigurator.configureAstroComposer(
-        state.contentTypes,
-        state.frontmatterProperties,
-        state.projectDetection.projectRoot,
-        state.projectDetection.configFilePath,
-        state.defaultContentTypeId,
-        state.projectDetection,
-        state.enableMdxSupport
-      );
+      const astroConfig =
+        await this.astroComposerConfigurator.configureAstroComposer(
+          state.contentTypes,
+          state.frontmatterProperties,
+          state.projectDetection.projectRoot,
+          state.projectDetection.configFilePath,
+          state.defaultContentTypeId,
+          state.projectDetection,
+          state.enableMdxSupport,
+        );
       state.astroComposerConfig = astroConfig;
       await this.astroComposerConfigurator.saveConfig(astroConfig);
     }
@@ -11768,33 +14267,55 @@ var ConfigFlushService = class {
       state.frontmatterProperties,
       state.projectDetection,
       state.enableMdxSupport,
-      state.defaultContentTypeId
+      state.defaultContentTypeId,
     );
-    const userScanDirs = (_b = (_a = state.seoConfig) == null ? void 0 : _a.scanDirectories) == null ? void 0 : _b.trim();
+    const userScanDirs =
+      (_b = (_a = state.seoConfig) == null ? void 0 : _a.scanDirectories) ==
+      null
+        ? void 0
+        : _b.trim();
     state.seoConfig = {
       ...generatedSeo,
-      scanDirectories: userScanDirs || generatedSeo.scanDirectories
+      scanDirectories: userScanDirs || generatedSeo.scanDirectories,
     };
     await this.seoConfigurator.saveConfig(state.seoConfig);
     const firstType = state.contentTypes.find((ct) => ct.enabled);
-    const firstProps = firstType ? state.frontmatterProperties[firstType.id] : void 0;
+    const firstProps = firstType
+      ? state.frontmatterProperties[firstType.id]
+      : void 0;
     if (firstProps && firstProps.titleProperty) {
       state.propertyOverFileName.propertyKey = firstProps.titleProperty;
     }
-    state.propertyOverFileName.enableMdxSupport = state.enableMdxSupport === true;
-    await this.propertyOverFileNameConfigurator.saveConfig(state.propertyOverFileName);
-    await this.uiTweakerConfigurator.saveConfig(state.enableMdxSupport === true);
+    state.propertyOverFileName.enableMdxSupport =
+      state.enableMdxSupport === true;
+    await this.propertyOverFileNameConfigurator.saveConfig(
+      state.propertyOverFileName,
+    );
+    await this.uiTweakerConfigurator.saveConfig(
+      state.enableMdxSupport === true,
+    );
     if (state.enabledPlugins.includes("file-name-history")) {
-      await this.fileNameHistoryConfigurator.saveConfig(state.enableMdxSupport === true);
+      await this.fileNameHistoryConfigurator.saveConfig(
+        state.enableMdxSupport === true,
+      );
     }
-    if (state.enabledPlugins.includes("image-manager") || Object.keys(state.imageManager).length > 0) {
+    if (
+      state.enabledPlugins.includes("image-manager") ||
+      Object.keys(state.imageManager).length > 0
+    ) {
       await this.imageManagerConfigurator.resolveAndSyncImageProperty(state);
       await this.imageManagerConfigurator.saveConfig(state.imageManager);
     }
-    if (state.enabledPlugins.includes("home-base") || Object.keys(state.homeBase).length > 0) {
+    if (
+      state.enabledPlugins.includes("home-base") ||
+      Object.keys(state.homeBase).length > 0
+    ) {
       await this.homeBaseConfigurator.saveConfig(state.homeBase);
     }
-    if (state.projectDetection && (!state.explorerFocus || Object.keys(state.explorerFocus).length === 0)) {
+    if (
+      state.projectDetection &&
+      (!state.explorerFocus || Object.keys(state.explorerFocus).length === 0)
+    ) {
       const vaultLocation = state.projectDetection.vaultLocation;
       if (vaultLocation === "root") {
         state.explorerFocus = {
@@ -11802,24 +14323,36 @@ var ConfigFlushService = class {
           showFileExplorerIcon: true,
           focusLevel: "custom",
           customFolderPath: "src/content",
-          hideAncestorFolders: false
+          hideAncestorFolders: false,
         };
-        console.debug("ConfigFlushService: Auto-configured Explorer Focus for root install (custom: src/content)");
+        console.debug(
+          "ConfigFlushService: Auto-configured Explorer Focus for root install (custom: src/content)",
+        );
       } else {
         state.explorerFocus = {
           showRightClickMenu: true,
           showFileExplorerIcon: true,
           focusLevel: "parent",
-          hideAncestorFolders: false
+          hideAncestorFolders: false,
         };
-        console.debug("ConfigFlushService: Auto-configured Explorer Focus for content install (parent)");
+        console.debug(
+          "ConfigFlushService: Auto-configured Explorer Focus for content install (parent)",
+        );
       }
     }
-    if (state.enabledPlugins.includes("explorer-focus") || Object.keys(state.explorerFocus).length > 0) {
+    if (
+      state.enabledPlugins.includes("explorer-focus") ||
+      Object.keys(state.explorerFocus).length > 0
+    ) {
       await this.explorerFocusConfigurator.saveConfig(state.explorerFocus);
     }
-    await this.editingToolbarConfigurator.toggleVisibility(this.app, state.enableEditingToolbar);
-    await this.dataFilesEditorConfigurator.saveConfig(state.enableExtendedFileTypes === true);
+    await this.editingToolbarConfigurator.toggleVisibility(
+      this.app,
+      state.enableEditingToolbar,
+    );
+    await this.dataFilesEditorConfigurator.saveConfig(
+      state.enableExtendedFileTypes === true,
+    );
     console.debug("ConfigFlushService: Configuration flush complete");
   }
 };
@@ -11841,7 +14374,10 @@ var DeploymentStep = class extends BaseWizardStep {
   }
   getAbsoluteProjectRoot() {
     var _a;
-    return resolveProjectRoot2(this.app, (_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot);
+    return resolveProjectRoot2(
+      this.app,
+      (_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot,
+    );
   }
   getProjectName() {
     const projectRoot = this.getAbsoluteProjectRoot();
@@ -11855,23 +14391,27 @@ var DeploymentStep = class extends BaseWizardStep {
       {
         id: "netlify",
         name: "Netlify",
-        description: "Fast and reliable hosting with a great developer experience.",
+        description:
+          "Fast and reliable hosting with a great developer experience.",
         url: "https://app.netlify.com/start",
         configFile: "netlify.toml",
-        configContent: () => [
-          "[build]",
-          '  command = "pnpm run build"',
-          '  publish = "dist"',
-          ""
-        ].join("\n")
+        configContent: () =>
+          [
+            "[build]",
+            '  command = "pnpm run build"',
+            '  publish = "dist"',
+            "",
+          ].join("\n"),
       },
       {
         id: "vercel",
         name: "Vercel",
-        description: "Optimized for frontend frameworks with zero-config deployment.",
+        description:
+          "Optimized for frontend frameworks with zero-config deployment.",
         url: "https://vercel.com/new/import",
         configFile: "vercel.json",
-        configContent: () => JSON.stringify({ framework: "astro" }, null, 2) + "\n"
+        configContent: () =>
+          JSON.stringify({ framework: "astro" }, null, 2) + "\n",
       },
       {
         id: "cloudflare",
@@ -11880,7 +14420,7 @@ var DeploymentStep = class extends BaseWizardStep {
         url: "https://dash.cloudflare.com/",
         configFile: "wrangler.toml",
         configContent: () => {
-          const today = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+          const today = /* @__PURE__ */ new Date().toISOString().split("T")[0];
           const projectName = this.getProjectName();
           return [
             `name = "${projectName}"`,
@@ -11889,16 +14429,17 @@ var DeploymentStep = class extends BaseWizardStep {
             "[assets]",
             '  directory = "./dist"',
             '  not_found_handling = "404-page"',
-            ""
+            "",
           ].join("\n");
-        }
+        },
       },
       {
         id: "github-pages",
         name: "GitHub Pages",
-        description: "Host directly from your GitHub repository. Requires a public repo for free accounts.",
-        url: "https://github.com/features/pages"
-      }
+        description:
+          "Host directly from your GitHub repository. Requires a public repo for free accounts.",
+        url: "https://github.com/features/pages",
+      },
     ];
   }
   async display() {
@@ -11906,7 +14447,7 @@ var DeploymentStep = class extends BaseWizardStep {
     containerEl.empty();
     containerEl.createEl("h2", { text: "Deployment" });
     containerEl.createEl("p", {
-      text: "Choose where you want to host your site. A config file will be created for your chosen platform."
+      text: "Choose where you want to host your site. A config file will be created for your chosen platform.",
     });
     this.selectedPlatform = this.state.deploymentPlatform || "";
     const platforms = this.getPlatforms();
@@ -11923,7 +14464,10 @@ var DeploymentStep = class extends BaseWizardStep {
           this.selectedPlatform = platform.id;
           this.state.deploymentPlatform = platform.id;
           if (platform.configFile && platform.configContent) {
-            await this.generateConfigFile(platform.configFile, platform.configContent());
+            await this.generateConfigFile(
+              platform.configFile,
+              platform.configContent(),
+            );
           }
           await this.display();
         });
@@ -11941,8 +14485,7 @@ var DeploymentStep = class extends BaseWizardStep {
       }
       fs7.writeFileSync(filePath, content, "utf-8");
       new import_obsidian20.Notice(`Created ${filename}`);
-    } catch (e) {
-    }
+    } catch (e) {}
   }
   /**
    * Returns the deploy URL for the selected platform.
@@ -12001,7 +14544,13 @@ var GitSetupStep = class extends BaseWizardStep {
   }
   getAbsoluteProjectRoot() {
     var _a, _b;
-    return (_b = resolveProjectRoot2(this.app, ((_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot) || ".")) != null ? _b : null;
+    return (_b = resolveProjectRoot2(
+      this.app,
+      ((_a = this.state.projectDetection) == null ? void 0 : _a.projectRoot) ||
+        ".",
+    )) != null
+      ? _b
+      : null;
   }
   async display() {
     var _a, _b;
@@ -12010,17 +14559,26 @@ var GitSetupStep = class extends BaseWizardStep {
     containerEl.createEl("h2", { text: "Git Integration" });
     containerEl.createEl("p", {
       text: 'Connect your project to GitHub to enable sync and deployment. Click "Skip" to set this up later.',
-      attr: { style: "font-style: italic; opacity: 0.8; margin-bottom: 2rem;" }
+      attr: { style: "font-style: italic; opacity: 0.8; margin-bottom: 2rem;" },
     });
     const projectRoot = (_a = this.getAbsoluteProjectRoot()) != null ? _a : "";
-    const rootInfo = containerEl.createDiv({ cls: "git-root-info", attr: { style: "margin-bottom: 1rem;" } });
+    const rootInfo = containerEl.createDiv({
+      cls: "git-root-info",
+      attr: { style: "margin-bottom: 1rem;" },
+    });
     rootInfo.createEl("b", { text: "Project Root: " });
     rootInfo.createSpan({ text: projectRoot || "(not set)" });
     const statusEl = containerEl.createDiv({
       cls: "git-status-message",
-      attr: { style: "margin-bottom: 2rem; padding: 1rem; border: 1px solid var(--background-modifier-border); border-radius: 4px; min-height: 50px;" }
+      attr: {
+        style:
+          "margin-bottom: 2rem; padding: 1rem; border: 1px solid var(--background-modifier-border); border-radius: 4px; min-height: 50px;",
+      },
     });
-    statusEl.createEl("i", { text: "Checking Git status...", attr: { style: "opacity: 0.5;" } });
+    statusEl.createEl("i", {
+      text: "Checking Git status...",
+      attr: { style: "opacity: 0.5;" },
+    });
     let isRepo = false;
     let remoteUrl = null;
     if (projectRoot) {
@@ -12034,10 +14592,12 @@ var GitSetupStep = class extends BaseWizardStep {
       statusEl.createEl("b", { text: "Status: " });
       statusEl.createSpan({
         text: "Git is already initialized.",
-        attr: { style: "color: var(--text-success); font-weight: bold;" }
+        attr: { style: "color: var(--text-success); font-weight: bold;" },
       });
       if (remoteUrl) {
-        const remoteEl = statusEl.createDiv({ attr: { style: "margin-top: 0.5rem;" } });
+        const remoteEl = statusEl.createDiv({
+          attr: { style: "margin-top: 0.5rem;" },
+        });
         remoteEl.createEl("b", { text: "Remote: " });
         remoteEl.createSpan({ text: remoteUrl });
       }
@@ -12045,72 +14605,124 @@ var GitSetupStep = class extends BaseWizardStep {
       statusEl.createEl("b", { text: "Status: " });
       statusEl.createSpan({ text: "Not a Git repository." });
     }
-    const configContainer = containerEl.createDiv({ cls: "git-config-container" });
+    const configContainer = containerEl.createDiv({
+      cls: "git-config-container",
+    });
     let setupContent = configContainer;
     if (isRepo) {
-      const details = configContainer.createEl("details", { attr: { style: "margin-bottom: 2rem;" } });
+      const details = configContainer.createEl("details", {
+        attr: { style: "margin-bottom: 2rem;" },
+      });
       details.createEl("summary", {
         text: "Update Settings",
-        attr: { style: "font-weight: bold; cursor: pointer; padding: 0.5rem 0; opacity: 0.8;" }
+        attr: {
+          style:
+            "font-weight: bold; cursor: pointer; padding: 0.5rem 0; opacity: 0.8;",
+        },
       });
-      setupContent = details.createDiv({ attr: { style: "padding: 1rem; border-left: 2px solid var(--background-modifier-border);" } });
+      setupContent = details.createDiv({
+        attr: {
+          style:
+            "padding: 1rem; border-left: 2px solid var(--background-modifier-border);",
+        },
+      });
     }
     const instructions = setupContent.createDiv({ cls: "git-instructions" });
     instructions.createEl("p", {
-      text: 'Connect your project to GitHub to publish your site. Click "Skip" to skip Git setup now and set it up later.'
+      text: 'Connect your project to GitHub to publish your site. Click "Skip" to skip Git setup now and set it up later.',
     });
     const gitDownload = instructions.createEl("p");
     gitDownload.createSpan({ text: "1. " });
     gitDownload.createEl("a", {
       text: "Download and install Git",
-      href: "https://git-scm.com/"
+      href: "https://git-scm.com/",
     });
     const tokenLink = instructions.createEl("p");
     tokenLink.createSpan({ text: "2. " });
     tokenLink.createEl("a", {
       text: "Generate a new GitHub Personal access token",
-      href: `https://github.com/settings/tokens/new?scopes=repo&description=${encodeURIComponent((this.state.gitConfig.repoName || "Project") + " (Vault CMS)")}`
+      href: `https://github.com/settings/tokens/new?scopes=repo&description=${encodeURIComponent((this.state.gitConfig.repoName || "Project") + " (Vault CMS)")}`,
     });
     const tokenHelp = instructions.createEl("ul");
-    tokenHelp.createEl("li", { text: `Set a Note (like "${this.state.gitConfig.repoName || "Project"} (Vault CMS)")` });
+    tokenHelp.createEl("li", {
+      text: `Set a Note (like "${this.state.gitConfig.repoName || "Project"} (Vault CMS)")`,
+    });
     tokenHelp.createEl("li", { text: 'Set Expiration to "No expiration"' });
-    tokenHelp.createEl("li", { text: 'Check the "repo" box (so all top options are selected)' });
-    tokenHelp.createEl("li", { text: 'Click "Generate token" at the bottom, copy it, and paste it below.' });
+    tokenHelp.createEl("li", {
+      text: 'Check the "repo" box (so all top options are selected)',
+    });
+    tokenHelp.createEl("li", {
+      text: 'Click "Generate token" at the bottom, copy it, and paste it below.',
+    });
     if (!remoteUrl) {
-      setupContent.createEl("h3", { text: isRepo ? "Connect to GitHub" : "Create New Repository" });
+      setupContent.createEl("h3", {
+        text: isRepo ? "Connect to GitHub" : "Create New Repository",
+      });
     } else {
       setupContent.createEl("h3", { text: "Update GitHub Connection" });
     }
-    const patSetting = new import_obsidian21.Setting(setupContent).setName("GitHub Personal Access Token").setDesc("Stored securely in Obsidian Secrets.").addExtraButton((btn) => {
-      btn.setIcon("link").setTooltip("Generate a new Personal access token on GitHub").onClick(() => {
-        const description = encodeURIComponent((this.state.gitConfig.repoName || "Project") + " (Vault CMS)");
-        window.open(`https://github.com/settings/tokens/new?scopes=repo&description=${description}`);
+    const patSetting = new import_obsidian21.Setting(setupContent)
+      .setName("GitHub Personal Access Token")
+      .setDesc("Stored securely in Obsidian Secrets.")
+      .addExtraButton((btn) => {
+        btn
+          .setIcon("link")
+          .setTooltip("Generate a new Personal access token on GitHub")
+          .onClick(() => {
+            const description = encodeURIComponent(
+              (this.state.gitConfig.repoName || "Project") + " (Vault CMS)",
+            );
+            window.open(
+              `https://github.com/settings/tokens/new?scopes=repo&description=${description}`,
+            );
+          });
       });
-    });
     const secretId = "vault-cms-github-pat";
-    let secretValue = (_b = this.app.secretStorage) == null ? void 0 : _b.getSecret(secretId);
+    let secretValue =
+      (_b = this.app.secretStorage) == null ? void 0 : _b.getSecret(secretId);
     if (secretValue && !this.pendingPat) {
     }
     patSetting.addText((text) => {
-      text.setPlaceholder("ghp_xxxxxxxxxxxx").setValue(secretValue ? "********" : "").onChange((value) => {
-        this.pendingPat = value.trim();
-      });
+      text
+        .setPlaceholder("ghp_xxxxxxxxxxxx")
+        .setValue(secretValue ? "********" : "")
+        .onChange((value) => {
+          this.pendingPat = value.trim();
+        });
       text.inputEl.type = "password";
     });
-    const patStatus = setupContent.createDiv({ cls: "pat-status-info", attr: { style: "margin-bottom: 1rem; font-size: 0.9em; color: var(--text-muted);" } });
+    const patStatus = setupContent.createDiv({
+      cls: "pat-status-info",
+      attr: {
+        style:
+          "margin-bottom: 1rem; font-size: 0.9em; color: var(--text-muted);",
+      },
+    });
     if (secretValue) {
-      patStatus.createSpan({ text: "\u2713 Linked to Obsidian Secret: ", attr: { style: "color: var(--text-success); font-weight: bold;" } });
+      patStatus.createSpan({
+        text: "\u2713 Linked to Obsidian Secret: ",
+        attr: { style: "color: var(--text-success); font-weight: bold;" },
+      });
       patStatus.createSpan({ text: secretId });
     }
     patSetting.addButton((button) => {
       button.setButtonText("Verify Token").onClick(async () => {
         var _a2;
         let token = this.pendingPat;
-        if (!token || token === "********" || token === "vault-cms-github-pat") {
-          token = (_a2 = this.app.secretStorage) == null ? void 0 : _a2.getSecret("vault-cms-github-pat");
+        if (
+          !token ||
+          token === "********" ||
+          token === "vault-cms-github-pat"
+        ) {
+          token =
+            (_a2 = this.app.secretStorage) == null
+              ? void 0
+              : _a2.getSecret("vault-cms-github-pat");
         }
         if (!token) {
-          new import_obsidian21.Notice("Please enter or paste your GitHub Personal Access Token.");
+          new import_obsidian21.Notice(
+            "Please enter or paste your GitHub Personal Access Token.",
+          );
           return;
         }
         button.setDisabled(true);
@@ -12119,11 +14731,19 @@ var GitSetupStep = class extends BaseWizardStep {
         try {
           const username = await this.gitManager.verifyToken(token);
           if (username) {
-            new import_obsidian21.Notice(`Token verified successfully as ${username}!`);
-            patStatus.createSpan({ text: `\u2713 Verified as `, attr: { style: "color: var(--text-success);" } });
+            new import_obsidian21.Notice(
+              `Token verified successfully as ${username}!`,
+            );
+            patStatus.createSpan({
+              text: `\u2713 Verified as `,
+              attr: { style: "color: var(--text-success);" },
+            });
             patStatus.createEl("b", { text: username });
             if (this.app.secretStorage) {
-              await this.app.secretStorage.setSecret("vault-cms-github-pat", token);
+              await this.app.secretStorage.setSecret(
+                "vault-cms-github-pat",
+                token,
+              );
             }
             try {
               this.app.saveLocalStorage("obsidian-git:username", username);
@@ -12136,76 +14756,136 @@ var GitSetupStep = class extends BaseWizardStep {
             button.buttonEl.style.color = "var(--text-on-accent)";
           } else {
             new import_obsidian21.Notice("Invalid token or GitHub API error.");
-            patStatus.createSpan({ text: "\u2717 Invalid token or GitHub API error.", attr: { style: "color: var(--text-error);" } });
+            patStatus.createSpan({
+              text: "\u2717 Invalid token or GitHub API error.",
+              attr: { style: "color: var(--text-error);" },
+            });
             button.setButtonText("Verify Token");
             button.setDisabled(false);
           }
         } catch (e) {
-          new import_obsidian21.Notice("Verification failed. Check your connection.");
-          patStatus.createSpan({ text: "\u2717 Verification failed. Check your connection.", attr: { style: "color: var(--text-error);" } });
+          new import_obsidian21.Notice(
+            "Verification failed. Check your connection.",
+          );
+          patStatus.createSpan({
+            text: "\u2717 Verification failed. Check your connection.",
+            attr: { style: "color: var(--text-error);" },
+          });
           button.setButtonText("Verify Token");
           button.setDisabled(false);
         }
       });
     });
-    new import_obsidian21.Setting(setupContent).setName(remoteUrl ? "New Repository Name" : "Repository Name").setDesc("The name of your GitHub repository.").addText((text) => {
-      const defaultName = projectRoot ? projectRoot.split(/[\\/]/).pop() : "";
-      const initialValue = this.state.gitConfig.repoName || defaultName || "";
-      if (!this.state.gitConfig.repoName) {
-        this.state.gitConfig.repoName = initialValue;
-      }
-      text.setPlaceholder("my-blog").setValue(initialValue).onChange((value) => {
-        this.state.gitConfig.repoName = value.trim();
+    new import_obsidian21.Setting(setupContent)
+      .setName(remoteUrl ? "New Repository Name" : "Repository Name")
+      .setDesc("The name of your GitHub repository.")
+      .addText((text) => {
+        const defaultName = projectRoot ? projectRoot.split(/[\\/]/).pop() : "";
+        const initialValue = this.state.gitConfig.repoName || defaultName || "";
+        if (!this.state.gitConfig.repoName) {
+          this.state.gitConfig.repoName = initialValue;
+        }
+        text
+          .setPlaceholder("my-blog")
+          .setValue(initialValue)
+          .onChange((value) => {
+            this.state.gitConfig.repoName = value.trim();
+          });
       });
-    });
-    new import_obsidian21.Setting(setupContent).setName("Description").setDesc("A short description for your repository.").addText((text) => {
-      text.setPlaceholder("My personal blog").setValue(this.state.gitConfig.repoDescription || "").onChange((value) => {
-        this.state.gitConfig.repoDescription = value.trim();
+    new import_obsidian21.Setting(setupContent)
+      .setName("Description")
+      .setDesc("A short description for your repository.")
+      .addText((text) => {
+        text
+          .setPlaceholder("My personal blog")
+          .setValue(this.state.gitConfig.repoDescription || "")
+          .onChange((value) => {
+            this.state.gitConfig.repoDescription = value.trim();
+          });
       });
-    });
-    new import_obsidian21.Setting(setupContent).setName("Private Repository").setDesc("Keep this repository private and hidden from the public.").addToggle((toggle) => {
-      toggle.setValue(this.state.gitConfig.isPrivate).onChange((value) => {
-        this.state.gitConfig.isPrivate = value;
+    new import_obsidian21.Setting(setupContent)
+      .setName("Private Repository")
+      .setDesc("Keep this repository private and hidden from the public.")
+      .addToggle((toggle) => {
+        toggle.setValue(this.state.gitConfig.isPrivate).onChange((value) => {
+          this.state.gitConfig.isPrivate = value;
+        });
       });
-    });
-    new import_obsidian21.Setting(setupContent).setName("Default Branch").setDesc('The name of the initial branch ("main" or "master").').addText((text) => {
-      const initialBranch = this.state.gitConfig.branchName || "main";
-      if (!this.state.gitConfig.branchName) {
-        this.state.gitConfig.branchName = initialBranch;
-      }
-      text.setPlaceholder("main").setValue(initialBranch).onChange((value) => {
-        this.state.gitConfig.branchName = value.trim() || "main";
+    new import_obsidian21.Setting(setupContent)
+      .setName("Default Branch")
+      .setDesc('The name of the initial branch ("main" or "master").')
+      .addText((text) => {
+        const initialBranch = this.state.gitConfig.branchName || "main";
+        if (!this.state.gitConfig.branchName) {
+          this.state.gitConfig.branchName = initialBranch;
+        }
+        text
+          .setPlaceholder("main")
+          .setValue(initialBranch)
+          .onChange((value) => {
+            this.state.gitConfig.branchName = value.trim() || "main";
+          });
       });
-    });
-    new import_obsidian21.Setting(setupContent).setName("Auto-configure Git plugin").setDesc('Automatically set up the "Git" plugin to work with this project.').addToggle((toggle) => {
-      toggle.setValue(this.state.gitConfig.autoConfigureObsidianGit).onChange((value) => {
-        this.state.gitConfig.autoConfigureObsidianGit = value;
+    new import_obsidian21.Setting(setupContent)
+      .setName("Auto-configure Git plugin")
+      .setDesc(
+        'Automatically set up the "Git" plugin to work with this project.',
+      )
+      .addToggle((toggle) => {
+        toggle
+          .setValue(this.state.gitConfig.autoConfigureObsidianGit)
+          .onChange((value) => {
+            this.state.gitConfig.autoConfigureObsidianGit = value;
+          });
       });
+    const actionContainer = setupContent.createDiv({
+      cls: "git-action-container",
+      attr: { style: "margin-top: 2rem;" },
     });
-    const actionContainer = setupContent.createDiv({ cls: "git-action-container", attr: { style: "margin-top: 2rem;" } });
-    let buttonText = isRepo ? remoteUrl ? "Update Remote & Push" : "Connect to GitHub" : "Initialize & Push to GitHub";
-    const createBtn = new import_obsidian21.ButtonComponent(actionContainer).setButtonText(buttonText).setCta().onClick(async () => {
-      await this.handleGitSetup(createBtn, isRepo, !!remoteUrl);
-    });
+    let buttonText = isRepo
+      ? remoteUrl
+        ? "Update Remote & Push"
+        : "Connect to GitHub"
+      : "Initialize & Push to GitHub";
+    const createBtn = new import_obsidian21.ButtonComponent(actionContainer)
+      .setButtonText(buttonText)
+      .setCta()
+      .onClick(async () => {
+        await this.handleGitSetup(createBtn, isRepo, !!remoteUrl);
+      });
     configContainer.createEl("p", {
       cls: "git-skip-info",
-      attr: { style: "font-size: 0.8em; color: var(--text-muted); margin-top: 1rem; border-top: 1px solid var(--background-modifier-border); padding-top: 1rem;" },
-      text: 'Click "Skip" to skip Git setup.'
+      attr: {
+        style:
+          "font-size: 0.8em; color: var(--text-muted); margin-top: 1rem; border-top: 1px solid var(--background-modifier-border); padding-top: 1rem;",
+      },
+      text: 'Click "Skip" to skip Git setup.',
     });
   }
   async handleGitSetup(button, alreadyRepo, alreadyHasRemote) {
     var _a;
     if (this.hasAdvanced) return;
     let pat = this.pendingPat;
-    const { repoName, repoDescription, isPrivate, branchName } = this.state.gitConfig;
+    const { repoName, repoDescription, isPrivate, branchName } =
+      this.state.gitConfig;
     const projectRoot = this.getAbsoluteProjectRoot();
     const branch = branchName || "main";
     if (!pat || pat === "********" || pat === "vault-cms-github-pat") {
-      pat = ((_a = this.app.secretStorage) == null ? void 0 : _a.getSecret("vault-cms-github-pat")) || pat;
+      pat =
+        ((_a = this.app.secretStorage) == null
+          ? void 0
+          : _a.getSecret("vault-cms-github-pat")) || pat;
     }
     const token = pat;
-    if (!token || token === "********" || token === "vault-cms-github-pat" || !projectRoot) {
-      new import_obsidian21.Notice("Please provide a valid Token and ensure project root is detected.");
+    if (
+      !token ||
+      token === "********" ||
+      token === "vault-cms-github-pat" ||
+      !projectRoot
+    ) {
+      new import_obsidian21.Notice(
+        "Please provide a valid Token and ensure project root is detected.",
+      );
       button.setDisabled(false);
       return;
     }
@@ -12221,22 +14901,43 @@ var GitSetupStep = class extends BaseWizardStep {
         await this.gitManager.initRepo(projectRoot);
         new import_obsidian21.Notice("Local Git repository initialized.");
       }
-      new import_obsidian21.Notice(alreadyHasRemote ? "Creating new GitHub repository..." : "Creating GitHub repository...");
-      const repoInfo = await this.gitManager.createGitHubRepo(token, repoName, repoDescription || "", isPrivate);
+      new import_obsidian21.Notice(
+        alreadyHasRemote
+          ? "Creating new GitHub repository..."
+          : "Creating GitHub repository...",
+      );
+      const repoInfo = await this.gitManager.createGitHubRepo(
+        token,
+        repoName,
+        repoDescription || "",
+        isPrivate,
+      );
       await this.gitManager.setRemote(projectRoot, repoInfo.clone_url);
-      new import_obsidian21.Notice(`Successfully ${alreadyHasRemote ? "updated" : "connected"} to ${repoInfo.html_url}`);
+      new import_obsidian21.Notice(
+        `Successfully ${alreadyHasRemote ? "updated" : "connected"} to ${repoInfo.html_url}`,
+      );
       try {
         await this.configFlushService.flush(this.state);
         console.debug("GitSetupStep: Early configuration flush successful");
       } catch (flushError) {
-        console.warn("GitSetupStep: Early configuration flush failed, but continuing with sync:", flushError);
+        console.warn(
+          "GitSetupStep: Early configuration flush failed, but continuing with sync:",
+          flushError,
+        );
       }
       try {
-        await this.gitManager.initialCommitAndPush(projectRoot, branch, "origin", token);
+        await this.gitManager.initialCommitAndPush(
+          projectRoot,
+          branch,
+          "origin",
+          token,
+        );
         new import_obsidian21.Notice("Successfully synced with GitHub!");
       } catch (pushError) {
         console.error("Sync failed:", pushError);
-        new import_obsidian21.Notice("Initial sync failed. Please ensure you have Git configured locally and your credentials are set up (like Git Credential Manager).");
+        new import_obsidian21.Notice(
+          "Initial sync failed. Please ensure you have Git configured locally and your credentials are set up (like Git Credential Manager).",
+        );
       }
       if (this.state.gitConfig.autoConfigureObsidianGit) {
         await this.configureObsidianGit(token, projectRoot, branch);
@@ -12253,11 +14954,23 @@ var GitSetupStep = class extends BaseWizardStep {
         const platformName = DeploymentStep.getPlatformName(selectedPlatform);
         const deployUrl = DeploymentStep.getDeployUrl(selectedPlatform);
         if (platformName && deployUrl) {
-          const deployContainer = this.containerEl.createDiv({ attr: { style: "margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--interactive-accent); border-radius: 8px; text-align: center;" } });
-          deployContainer.createEl("p", { text: `Your code has been pushed. Connect your repo to ${platformName} to go live.` });
-          new import_obsidian21.Setting(deployContainer).addButton((btn) => btn.setButtonText(`Deploy on ${platformName}`).setCta().onClick(() => {
-            window.open(deployUrl);
-          }));
+          const deployContainer = this.containerEl.createDiv({
+            attr: {
+              style:
+                "margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--interactive-accent); border-radius: 8px; text-align: center;",
+            },
+          });
+          deployContainer.createEl("p", {
+            text: `Your code has been pushed. Connect your repo to ${platformName} to go live.`,
+          });
+          new import_obsidian21.Setting(deployContainer).addButton((btn) =>
+            btn
+              .setButtonText(`Deploy on ${platformName}`)
+              .setCta()
+              .onClick(() => {
+                window.open(deployUrl);
+              }),
+          );
         }
       }
       if (!this.hasAdvanced) {
@@ -12268,10 +14981,15 @@ var GitSetupStep = class extends BaseWizardStep {
       }
     } catch (error) {
       console.error("Git integration failed:", error);
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       new import_obsidian21.Notice(`Setup failed: ${errorMessage}`);
       button.setDisabled(false);
-      button.setButtonText(alreadyHasRemote ? "Update Settings & Sync" : "Initialize & Push to GitHub");
+      button.setButtonText(
+        alreadyHasRemote
+          ? "Update Settings & Sync"
+          : "Initialize & Push to GitHub",
+      );
     }
   }
   async configureObsidianGit(pat, projectRoot, branch) {
@@ -12285,8 +15003,12 @@ var GitSetupStep = class extends BaseWizardStep {
     const adapter = this.app.vault.adapter;
     const vaultRoot = adapter.getBasePath ? adapter.getBasePath() : "";
     if (vaultRoot && projectRoot) {
-      const absoluteProjectRoot = path11.isAbsolute(projectRoot) ? projectRoot : path11.resolve(vaultRoot, projectRoot);
-      const relativePath = path11.relative(vaultRoot, absoluteProjectRoot).replace(/\\/g, "/");
+      const absoluteProjectRoot = path11.isAbsolute(projectRoot)
+        ? projectRoot
+        : path11.resolve(vaultRoot, projectRoot);
+      const relativePath = path11
+        .relative(vaultRoot, absoluteProjectRoot)
+        .replace(/\\/g, "/");
       const configUpdates = {
         basePath: relativePath || "",
         gitRemote: "origin",
@@ -12295,14 +15017,17 @@ var GitSetupStep = class extends BaseWizardStep {
         mainBranch: branch,
         branch,
         // Some versions use this
-        currentRemote: "origin"
+        currentRemote: "origin",
       };
-      const gitPlugin = (_a = this.app.plugins) == null ? void 0 : _a.getPlugin("obsidian-git");
+      const gitPlugin =
+        (_a = this.app.plugins) == null ? void 0 : _a.getPlugin("obsidian-git");
       if (gitPlugin) {
-        console.debug("GitSetupStep: Found running Obsidian Git plugin, updating in-memory settings");
+        console.debug(
+          "GitSetupStep: Found running Obsidian Git plugin, updating in-memory settings",
+        );
         gitPlugin.settings = {
           ...gitPlugin.settings,
-          ...configUpdates
+          ...configUpdates,
         };
         if (typeof gitPlugin.saveSettings === "function") {
           await gitPlugin.saveSettings();
@@ -12341,18 +15066,28 @@ var FinalizeStep = class extends BaseWizardStep {
     containerEl.empty();
     containerEl.createEl("h2", { text: "Finalize configuration" });
     containerEl.createEl("p", {
-      text: 'Review your configuration and click "Apply and restart" below to save and apply all settings.'
+      text: 'Review your configuration and click "Apply and restart" below to save and apply all settings.',
     });
     const summary = containerEl.createEl("div", { cls: "finalize-summary" });
     summary.createEl("h3", { text: "Summary" });
-    const enabledContentTypes = this.state.contentTypes.filter((ct) => ct.enabled);
-    summary.createEl("p", { text: `Content Types: ${enabledContentTypes.length}` });
-    summary.createEl("p", { text: `Editing Toolbar: ${this.state.enableEditingToolbar ? "Enabled" : "Disabled"}` });
+    const enabledContentTypes = this.state.contentTypes.filter(
+      (ct) => ct.enabled,
+    );
+    summary.createEl("p", {
+      text: `Content Types: ${enabledContentTypes.length}`,
+    });
+    summary.createEl("p", {
+      text: `Editing Toolbar: ${this.state.enableEditingToolbar ? "Enabled" : "Disabled"}`,
+    });
     const basesViewsCount = enabledContentTypes.length;
-    summary.createEl("p", { text: `Bases CMS Views: ${basesViewsCount} new view${basesViewsCount !== 1 ? "s" : ""} to be created` });
+    summary.createEl("p", {
+      text: `Bases CMS Views: ${basesViewsCount} new view${basesViewsCount !== 1 ? "s" : ""} to be created`,
+    });
     const seoDirectories = enabledContentTypes.map((ct) => ct.folder);
     const seoDirectoriesCount = seoDirectories.length;
-    summary.createEl("p", { text: `SEO Scan Directories: ${seoDirectoriesCount} director${seoDirectoriesCount !== 1 ? "ies" : "y"} (${seoDirectories.join(", ")})` });
+    summary.createEl("p", {
+      text: `SEO Scan Directories: ${seoDirectoriesCount} director${seoDirectoriesCount !== 1 ? "ies" : "y"} (${seoDirectories.join(", ")})`,
+    });
   }
   async applyConfiguration(shouldRestart = false) {
     return this.applyConfigurationInternal(shouldRestart);
@@ -12364,26 +15099,45 @@ var FinalizeStep = class extends BaseWizardStep {
     }
     try {
       console.debug("FinalizeStep: Starting configuration application");
-      console.debug("FinalizeStep: Enabled content types:", this.state.contentTypes.filter((ct) => ct.enabled).map((ct) => ct.name));
+      console.debug(
+        "FinalizeStep: Enabled content types:",
+        this.state.contentTypes.filter((ct) => ct.enabled).map((ct) => ct.name),
+      );
       console.debug("FinalizeStep: Configuring plugin states");
       if (this.state.enableExtendedFileTypes) {
         const pluginId = "data-files-editor";
         if (!this.state.enabledPlugins.includes(pluginId)) {
-          console.debug(`FinalizeStep: Enabling ${pluginId} because Extended File Types is toggle on`);
+          console.debug(
+            `FinalizeStep: Enabling ${pluginId} because Extended File Types is toggle on`,
+          );
           this.state.enabledPlugins.push(pluginId);
         }
-        this.state.disabledPlugins = this.state.disabledPlugins.filter((p) => p !== pluginId);
+        this.state.disabledPlugins = this.state.disabledPlugins.filter(
+          (p) => p !== pluginId,
+        );
       }
-      await this.pluginManager.setPluginStates(this.state.enabledPlugins, this.state.disabledPlugins);
+      await this.pluginManager.setPluginStates(
+        this.state.enabledPlugins,
+        this.state.disabledPlugins,
+      );
       await this.configFlushService.flush(this.state);
-      const defaultTypeId = this.state.defaultContentTypeId || ((_a = this.state.contentTypes.find((ct) => ct.enabled)) == null ? void 0 : _a.id);
+      const defaultTypeId =
+        this.state.defaultContentTypeId ||
+        ((_a = this.state.contentTypes.find((ct) => ct.enabled)) == null
+          ? void 0
+          : _a.id);
       if (defaultTypeId && !this.state.defaultContentTypeId) {
         this.state.defaultContentTypeId = defaultTypeId;
       }
       if (defaultTypeId) {
-        const defaultType = this.state.contentTypes.find((ct) => ct.id === defaultTypeId);
+        const defaultType = this.state.contentTypes.find(
+          (ct) => ct.id === defaultTypeId,
+        );
         if (defaultType) {
-          console.debug("FinalizeStep: Configuring Obsidian settings for default content type:", defaultType.name);
+          console.debug(
+            "FinalizeStep: Configuring Obsidian settings for default content type:",
+            defaultType.name,
+          );
           const app = this.app;
           let targetPath = "./";
           if (this.state.attachmentHandlingMode === "same-folder") {
@@ -12403,7 +15157,9 @@ var FinalizeStep = class extends BaseWizardStep {
             await app.setting.set("newLinkFormat", "relative");
             if (typeof app.setting.save === "function") {
               await app.setting.save();
-              console.debug("FinalizeStep: Obsidian settings saved via app.setting.save()");
+              console.debug(
+                "FinalizeStep: Obsidian settings saved via app.setting.save()",
+              );
             }
           } else {
             console.debug("FinalizeStep: Using vault.config API");
@@ -12418,9 +15174,13 @@ var FinalizeStep = class extends BaseWizardStep {
               obsidianSettings.newLinkFormat = "relative";
               if (typeof vault.saveConfig === "function") {
                 await vault.saveConfig();
-                console.debug("FinalizeStep: Obsidian settings saved via vault.saveConfig()");
+                console.debug(
+                  "FinalizeStep: Obsidian settings saved via vault.saveConfig()",
+                );
               } else {
-                console.error("FinalizeStep: vault.saveConfig() is not available");
+                console.error(
+                  "FinalizeStep: vault.saveConfig() is not available",
+                );
               }
             }
           }
@@ -12428,13 +15188,22 @@ var FinalizeStep = class extends BaseWizardStep {
       }
       this.applied = true;
       if (shouldRestart) {
-        new import_obsidian22.Notice("Configuration applied. Obsidian will now restart...", 3e3);
+        new import_obsidian22.Notice(
+          "Configuration applied. Obsidian will now restart...",
+          3e3,
+        );
       } else {
-        new import_obsidian22.Notice("Configuration applied successfully! You may need to restart Obsidian to see all changes.", 8e3);
+        new import_obsidian22.Notice(
+          "Configuration applied successfully! You may need to restart Obsidian to see all changes.",
+          8e3,
+        );
       }
     } catch (error) {
       console.error("Failed to apply configuration:", error);
-      new import_obsidian22.Notice("Failed to apply configuration. Please check the console for details.", 6e3);
+      new import_obsidian22.Notice(
+        "Failed to apply configuration. Please check the console for details.",
+        6e3,
+      );
     }
   }
   /**
@@ -12448,10 +15217,16 @@ var FinalizeStep = class extends BaseWizardStep {
     this.app.workspace.iterateAllLeaves((leaf) => {
       var _a;
       const viewType = leaf.view.getViewType();
-      if (viewType === "bases" || viewType === "bases-cms" || viewType === "cms") {
+      if (
+        viewType === "bases" ||
+        viewType === "bases-cms" ||
+        viewType === "cms"
+      ) {
         const state = leaf.getViewState();
         if (((_a = state.state) == null ? void 0 : _a.file) === baseFilePath) {
-          console.debug(`FinalizeStep: Found Bases leaf to update (type: ${viewType})`);
+          console.debug(
+            `FinalizeStep: Found Bases leaf to update (type: ${viewType})`,
+          );
           leavesToUpdate.push({ leaf, state });
         }
       }
@@ -12463,8 +15238,8 @@ var FinalizeStep = class extends BaseWizardStep {
         state: {
           ...state.state,
           view: defaultViewName,
-          viewName: defaultViewName
-        }
+          viewName: defaultViewName,
+        },
       });
       updated = true;
     }
@@ -12477,8 +15252,8 @@ var FinalizeStep = class extends BaseWizardStep {
         state: {
           file: baseFilePath,
           view: defaultViewName,
-          viewName: defaultViewName
-        }
+          viewName: defaultViewName,
+        },
       });
       this.app.workspace.setActiveLeaf(leaf, { focus: true });
       updated = true;
@@ -12489,7 +15264,9 @@ var FinalizeStep = class extends BaseWizardStep {
         const configDir = this.app.vault.configDir;
         const workspacePath = `${configDir}/workspace.json`;
         if (await adapter.exists(workspacePath)) {
-          console.debug("FinalizeStep: Attempting direct workspace.json modification");
+          console.debug(
+            "FinalizeStep: Attempting direct workspace.json modification",
+          );
           const content = await adapter.read(workspacePath);
           const workspace = JSON.parse(content);
           let modified = false;
@@ -12497,8 +15274,16 @@ var FinalizeStep = class extends BaseWizardStep {
             var _a;
             if (!node) return;
             if (node.type === "leaf" && node.state) {
-              if ((node.state.type === "bases" || node.state.type === "bases-cms" || node.state.type === "cms") && ((_a = node.state.state) == null ? void 0 : _a.file) === baseFilePath) {
-                console.debug(`FinalizeStep: Found Bases leaf in workspace.json, updating to ${defaultViewName}`);
+              if (
+                (node.state.type === "bases" ||
+                  node.state.type === "bases-cms" ||
+                  node.state.type === "cms") &&
+                ((_a = node.state.state) == null ? void 0 : _a.file) ===
+                  baseFilePath
+              ) {
+                console.debug(
+                  `FinalizeStep: Found Bases leaf in workspace.json, updating to ${defaultViewName}`,
+                );
                 if (node.state.state) {
                   node.state.state.view = defaultViewName;
                   node.state.state.viewName = defaultViewName;
@@ -12518,12 +15303,18 @@ var FinalizeStep = class extends BaseWizardStep {
           updateNode(workspace.left);
           updateNode(workspace.right);
           if (modified) {
-            await adapter.write(workspacePath, JSON.stringify(workspace, null, 2));
+            await adapter.write(
+              workspacePath,
+              JSON.stringify(workspace, null, 2),
+            );
             console.debug("FinalizeStep: Successfully modified workspace.json");
           }
         }
       } catch (error) {
-        console.warn("FinalizeStep: Failed to modify workspace.json directly:", error);
+        console.warn(
+          "FinalizeStep: Failed to modify workspace.json directly:",
+          error,
+        );
       }
     }
   }
@@ -12548,7 +15339,7 @@ var WizardStateMachine = class {
       ["content-types", 2],
       ["frontmatter", 3],
       ["plugins", 4],
-      ["complete", 9]
+      ["complete", 9],
     ]);
     // Reverse mapping: step index to state
     this.stepStateMap = /* @__PURE__ */ new Map([
@@ -12566,7 +15357,7 @@ var WizardStateMachine = class {
       // GitSetupStep
       [8, "plugins"],
       // DeploymentStep
-      [9, "complete"]
+      [9, "complete"],
       // FinalizeStep
     ]);
     // State transition rules
@@ -12576,7 +15367,7 @@ var WizardStateMachine = class {
       ["content-types", ["frontmatter"]],
       ["frontmatter", ["plugins"]],
       ["plugins", ["complete"]],
-      ["complete", []]
+      ["complete", []],
       // Terminal state
     ]);
     this.currentState = "welcome";
@@ -12591,7 +15382,7 @@ var WizardStateMachine = class {
       IgnoreStep,
       GitSetupStep,
       DeploymentStep,
-      FinalizeStep
+      FinalizeStep,
     ];
   }
   /**
@@ -12636,25 +15427,32 @@ var WizardStateMachine = class {
    */
   next() {
     if (!this.canGoNext()) {
-      console.warn("WizardStateMachine: Cannot go to next step - already at final step");
+      console.warn(
+        "WizardStateMachine: Cannot go to next step - already at final step",
+      );
       return;
     }
     const nextStepIndex = this.stepIndex + 1;
     const nextState = this.stepStateMap.get(nextStepIndex);
     if (!nextState) {
-      console.error(`WizardStateMachine: No state mapping for step index ${nextStepIndex}`);
+      console.error(
+        `WizardStateMachine: No state mapping for step index ${nextStepIndex}`,
+      );
       return;
     }
     const allowedTransitions = this.transitions.get(this.currentState) || [];
-    if (!allowedTransitions.includes(nextState) && nextState !== this.currentState) {
+    if (
+      !allowedTransitions.includes(nextState) &&
+      nextState !== this.currentState
+    ) {
       console.warn(
-        `WizardStateMachine: Invalid transition from ${this.currentState} to ${nextState}`
+        `WizardStateMachine: Invalid transition from ${this.currentState} to ${nextState}`,
       );
     }
     this.stepIndex = nextStepIndex;
     this.currentState = nextState;
     console.debug(
-      `WizardStateMachine: Transitioned to step ${this.stepIndex} (state: ${this.currentState})`
+      `WizardStateMachine: Transitioned to step ${this.stepIndex} (state: ${this.currentState})`,
     );
   }
   /**
@@ -12663,19 +15461,23 @@ var WizardStateMachine = class {
    */
   previous() {
     if (!this.canGoBack()) {
-      console.warn("WizardStateMachine: Cannot go to previous step - already at first step");
+      console.warn(
+        "WizardStateMachine: Cannot go to previous step - already at first step",
+      );
       return;
     }
     const prevStepIndex = this.stepIndex - 1;
     const prevState = this.stepStateMap.get(prevStepIndex);
     if (!prevState) {
-      console.error(`WizardStateMachine: No state mapping for step index ${prevStepIndex}`);
+      console.error(
+        `WizardStateMachine: No state mapping for step index ${prevStepIndex}`,
+      );
       return;
     }
     this.stepIndex = prevStepIndex;
     this.currentState = prevState;
     console.debug(
-      `WizardStateMachine: Went back to step ${this.stepIndex} (state: ${this.currentState})`
+      `WizardStateMachine: Went back to step ${this.stepIndex} (state: ${this.currentState})`,
     );
   }
   /**
@@ -12686,13 +15488,15 @@ var WizardStateMachine = class {
     const clampedIndex = Math.max(0, Math.min(index, this.steps.length - 1));
     const state = this.stepStateMap.get(clampedIndex);
     if (!state) {
-      console.error(`WizardStateMachine: No state mapping for step index ${clampedIndex}`);
+      console.error(
+        `WizardStateMachine: No state mapping for step index ${clampedIndex}`,
+      );
       return;
     }
     this.stepIndex = clampedIndex;
     this.currentState = state;
     console.debug(
-      `WizardStateMachine: Jumped to step ${this.stepIndex} (state: ${this.currentState})`
+      `WizardStateMachine: Jumped to step ${this.stepIndex} (state: ${this.currentState})`,
     );
   }
   /**
@@ -12712,7 +15516,7 @@ var WizardStateMachine = class {
    */
   getProgress() {
     if (this.steps.length === 0) return 0;
-    return (this.stepIndex + 1) / this.steps.length * 100;
+    return ((this.stepIndex + 1) / this.steps.length) * 100;
   }
   /**
    * Get a human-readable description of the current state
@@ -12761,7 +15565,11 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
     this.lastSavedStepIndex = -1;
     // Track the last step where "Next" was clicked
     this.navigatingBack = false;
-    this.plugin = pluginInstance || ((_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["vault-cms"]);
+    this.plugin =
+      pluginInstance ||
+      ((_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null
+        ? void 0
+        : _b["vault-cms"]);
     if (!this.plugin) {
       throw new Error("VaultCMSPlugin instance is required");
     }
@@ -12770,13 +15578,24 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
       this.stateManager.updateState(initialState);
       if (initialState.currentStep && initialState.currentStep > 1) {
         const currentState = this.stateManager.getState();
-        if (!((_c = currentState.projectDetection) == null ? void 0 : _c.projectRoot) && this.plugin.settings.projectRoot) {
+        if (
+          !((_c = currentState.projectDetection) == null
+            ? void 0
+            : _c.projectRoot) &&
+          this.plugin.settings.projectRoot
+        ) {
           this.stateManager.updateState({
             projectDetection: {
               projectRoot: this.plugin.settings.projectRoot,
-              configFilePath: ((_d = currentState.projectDetection) == null ? void 0 : _d.configFilePath) || "",
-              vaultLocation: ((_e = currentState.projectDetection) == null ? void 0 : _e.vaultLocation) || "root"
-            }
+              configFilePath:
+                ((_d = currentState.projectDetection) == null
+                  ? void 0
+                  : _d.configFilePath) || "",
+              vaultLocation:
+                ((_e = currentState.projectDetection) == null
+                  ? void 0
+                  : _e.vaultLocation) || "root",
+            },
           });
         }
       }
@@ -12791,10 +15610,13 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
       IgnoreStep,
       DeploymentStep,
       GitSetupStep,
-      FinalizeStep
+      FinalizeStep,
     ];
     this.stateMachine = new WizardStateMachine(this.steps);
-    console.debug("SetupWizardModal: State machine initialized -", this.stateMachine.getDebugInfo());
+    console.debug(
+      "SetupWizardModal: State machine initialized -",
+      this.stateMachine.getDebugInfo(),
+    );
   }
   async onOpen() {
     const { contentEl } = this;
@@ -12814,7 +15636,13 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
     let scrollableParent = contentEl;
     while (scrollableParent && scrollableParent !== document.body) {
       const style = window.getComputedStyle(scrollableParent);
-      if (scrollableParent.scrollHeight > scrollableParent.clientHeight && (style.overflowY === "auto" || style.overflowY === "scroll" || style.overflow === "auto" || style.overflow === "scroll")) {
+      if (
+        scrollableParent.scrollHeight > scrollableParent.clientHeight &&
+        (style.overflowY === "auto" ||
+          style.overflowY === "scroll" ||
+          style.overflow === "auto" ||
+          style.overflow === "scroll")
+      ) {
         scrollableParent.scrollTop = 0;
         break;
       }
@@ -12841,24 +15669,25 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
         this.app,
         tempDiv,
         state,
-        () => {
-        },
+        () => {},
         // Temporary handlers
-        () => {
-        },
-        () => {
-        }
+        () => {},
+        () => {},
       );
       if (await stepInstance.shouldSkip()) {
         if (this.navigatingBack) {
-          console.debug(`SetupWizardModal: Step ${StepClass.name} requested skip (going back)...`);
+          console.debug(
+            `SetupWizardModal: Step ${StepClass.name} requested skip (going back)...`,
+          );
           if (this.stateManager.canGoPrevious()) {
             this.stateManager.previousStep();
           } else {
             this.navigatingBack = false;
           }
         } else {
-          console.debug(`SetupWizardModal: Step ${StepClass.name} requested skip. Advancing...`);
+          console.debug(
+            `SetupWizardModal: Step ${StepClass.name} requested skip. Advancing...`,
+          );
           this.stateManager.nextStep(this.steps.length);
           this.stateMachine.next();
         }
@@ -12884,14 +15713,16 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
       const state = this.stateManager.getState();
       const totalSteps = this.steps.length;
       if (!state || !this.stateMachine) {
-        console.error("SetupWizardModal: state or stateMachine is missing in renderProgress");
+        console.error(
+          "SetupWizardModal: state or stateMachine is missing in renderProgress",
+        );
         return;
       }
       const progress = container.createDiv("wizard-progress");
       this.stateMachine.jumpToStep(state.currentStep);
       const progressBar = progress.createDiv("progress-bar");
       const progressFill = progressBar.createDiv("progress-fill");
-      const progressPercent = (state.currentStep + 1) / totalSteps * 100;
+      const progressPercent = ((state.currentStep + 1) / totalSteps) * 100;
       progressFill.style.width = `${progressPercent}%`;
       const progressText = progress.createDiv("progress-text");
       progressText.textContent = `Step ${state.currentStep + 1} of ${totalSteps} - ${this.stateMachine.getStateDescription()}`;
@@ -12907,7 +15738,7 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
       const stepName = StepClass.name || "Unknown";
       console.debug(
         `SetupWizardModal: Displaying step ${stepIndex + 1}/${this.steps.length}: ${stepName}`,
-        `[${this.stateMachine.getDebugInfo()}]`
+        `[${this.stateMachine.getDebugInfo()}]`,
       );
       this.currentStepInstance = new StepClass(
         this.app,
@@ -12915,11 +15746,17 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
         state,
         () => {
           void (async () => {
-            if (this.currentStepInstance && this.currentStepInstance.validate()) {
+            if (
+              this.currentStepInstance &&
+              this.currentStepInstance.validate()
+            ) {
               await this.saveCurrentStepToWizardState();
               this.stateManager.nextStep(this.steps.length);
               this.stateMachine.next();
-              console.debug("SetupWizardModal: Advanced to next step -", this.stateMachine.getDebugInfo());
+              console.debug(
+                "SetupWizardModal: Advanced to next step -",
+                this.stateMachine.getDebugInfo(),
+              );
               await this.renderCurrentStep();
             }
           })();
@@ -12928,10 +15765,13 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
           this.discardCurrentStepChanges();
           this.stateManager.previousStep();
           this.stateMachine.previous();
-          console.debug("SetupWizardModal: Went back to previous step -", this.stateMachine.getDebugInfo());
+          console.debug(
+            "SetupWizardModal: Went back to previous step -",
+            this.stateMachine.getDebugInfo(),
+          );
           void this.renderCurrentStep();
         },
-        () => this.close()
+        () => this.close(),
       );
       await this.currentStepInstance.display();
     }
@@ -12939,15 +15779,23 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
   renderFooter(container) {
     var _a;
     const footer = container.createDiv("wizard-footer");
-    setCssProps8(footer, { display: "flex", justifyContent: "space-between", alignItems: "center" });
+    setCssProps8(footer, {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+    });
     if (this.stateManager.getState().currentStep === 0) {
       const startupSetting = footer.createDiv("wizard-startup-setting-footer");
-      const label = startupSetting.createEl("label", { cls: "wizard-checkbox-label" });
+      const label = startupSetting.createEl("label", {
+        cls: "wizard-checkbox-label",
+      });
       setCssProps8(label, { cursor: "default" });
       const checkbox = label.createEl("input", { type: "checkbox" });
       setCssProps8(checkbox, { cursor: "default" });
       checkbox.checked = !this.plugin.settings.runWizardOnStartup;
-      label.createSpan({ text: " I've already set up my vault, don't show on startup" });
+      label.createSpan({
+        text: " I've already set up my vault, don't show on startup",
+      });
       checkbox.addEventListener("change", () => {
         this.plugin.settings.runWizardOnStartup = !checkbox.checked;
         void this.plugin.saveSettings();
@@ -12960,7 +15808,7 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
     if (this.stateManager.canGoPrevious()) {
       const prevBtn = buttons.createEl("button", {
         text: "Previous",
-        cls: "mod-button"
+        cls: "mod-button",
       });
       prevBtn.addEventListener("click", () => {
         this.discardCurrentStepChanges();
@@ -12970,16 +15818,25 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
       });
     }
     if (this.stateManager.canGoNext(this.steps.length)) {
-      if (this.stateManager.getState().currentStep !== 0 && ((_a = this.currentStepInstance) == null ? void 0 : _a.showNextButton) !== false) {
+      if (
+        this.stateManager.getState().currentStep !== 0 &&
+        ((_a = this.currentStepInstance) == null
+          ? void 0
+          : _a.showNextButton) !== false
+      ) {
         const nextBtn = buttons.createEl("button", {
           text: "Next",
-          cls: "mod-button mod-cta"
+          cls: "mod-button mod-cta",
         });
         nextBtn.addEventListener("click", () => {
           void (async () => {
-            if (this.currentStepInstance && this.currentStepInstance.validate()) {
+            if (
+              this.currentStepInstance &&
+              this.currentStepInstance.validate()
+            ) {
               await this.saveCurrentStepToWizardState();
-              this.lastSavedStepIndex = this.stateManager.getState().currentStep;
+              this.lastSavedStepIndex =
+                this.stateManager.getState().currentStep;
               this.stateManager.nextStep(this.steps.length);
               await this.renderCurrentStep();
             }
@@ -12990,14 +15847,14 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
       if (this.currentStepInstance instanceof FinalizeStep) {
         const applyBtn = buttons.createEl("button", {
           text: "Apply",
-          cls: "mod-button"
+          cls: "mod-button",
         });
         applyBtn.addEventListener("click", () => {
           void this.handleComplete(false);
         });
         const applyRestartBtn = buttons.createEl("button", {
           text: "Apply and restart",
-          cls: "mod-button mod-cta"
+          cls: "mod-button mod-cta",
         });
         applyRestartBtn.addEventListener("click", () => {
           void this.handleComplete(true);
@@ -13005,7 +15862,7 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
       } else {
         const completeBtn = buttons.createEl("button", {
           text: "Complete setup",
-          cls: "mod-button mod-cta"
+          cls: "mod-button mod-cta",
         });
         completeBtn.addEventListener("click", () => {
           void this.handleComplete(false);
@@ -13016,7 +15873,7 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
       if (this.stateManager.getState().currentStep !== 0) {
         const skipBtn = buttons.createEl("button", {
           text: "Skip",
-          cls: "mod-button"
+          cls: "mod-button",
         });
         skipBtn.addClass("wizard-skip-button");
         setCssProps8(skipBtn, { opacity: "0.6" });
@@ -13051,7 +15908,9 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
       }
     } catch (error) {
       console.error("Error completing wizard:", error);
-      new import_obsidian23.Notice("Failed to complete setup. Please check the console for details.");
+      new import_obsidian23.Notice(
+        "Failed to complete setup. Please check the console for details.",
+      );
     } finally {
       this.isCompleting = false;
     }
@@ -13083,43 +15942,78 @@ var SetupWizardModal = class extends import_obsidian23.Modal {
     } catch (error) {
       console.error("Error saving wizard state to data.json:", error);
       if (showNotification) {
-        new import_obsidian23.Notice(`Failed to save configuration: ${error instanceof Error ? error.message : String(error)}`);
+        new import_obsidian23.Notice(
+          `Failed to save configuration: ${error instanceof Error ? error.message : String(error)}`,
+        );
       }
     }
   }
   createSettingsSnapshot() {
     const state = this.stateManager.getState();
-    return JSON.parse(JSON.stringify({
-      projectDetection: state.projectDetection,
-      contentTypes: state.contentTypes,
-      frontmatterProperties: state.frontmatterProperties,
-      defaultContentTypeId: state.defaultContentTypeId,
-      preset: state.preset,
-      enableEditingToolbar: state.enableEditingToolbar,
-      enabledPlugins: state.enabledPlugins,
-      disabledPlugins: state.disabledPlugins,
-      theme: state.theme,
-      basesCMSConfig: state.basesCMSConfig,
-      astroComposerConfig: state.astroComposerConfig,
-      seoConfig: state.seoConfig,
-      propertyOverFileName: state.propertyOverFileName,
-      imageManager: state.imageManager,
-      homeBase: state.homeBase
-    }));
+    return JSON.parse(
+      JSON.stringify({
+        projectDetection: state.projectDetection,
+        contentTypes: state.contentTypes,
+        frontmatterProperties: state.frontmatterProperties,
+        defaultContentTypeId: state.defaultContentTypeId,
+        preset: state.preset,
+        enableEditingToolbar: state.enableEditingToolbar,
+        enabledPlugins: state.enabledPlugins,
+        disabledPlugins: state.disabledPlugins,
+        theme: state.theme,
+        basesCMSConfig: state.basesCMSConfig,
+        astroComposerConfig: state.astroComposerConfig,
+        seoConfig: state.seoConfig,
+        propertyOverFileName: state.propertyOverFileName,
+        imageManager: state.imageManager,
+        homeBase: state.homeBase,
+      }),
+    );
   }
   hasSettingsChanged() {
     if (!this.initialSettingsSnapshot) {
       return false;
     }
     const currentSnapshot = this.createSettingsSnapshot();
-    return JSON.stringify(currentSnapshot.projectDetection) !== JSON.stringify(this.initialSettingsSnapshot.projectDetection) || JSON.stringify(currentSnapshot.contentTypes) !== JSON.stringify(this.initialSettingsSnapshot.contentTypes) || JSON.stringify(currentSnapshot.frontmatterProperties) !== JSON.stringify(this.initialSettingsSnapshot.frontmatterProperties) || currentSnapshot.defaultContentTypeId !== this.initialSettingsSnapshot.defaultContentTypeId || currentSnapshot.preset !== this.initialSettingsSnapshot.preset || currentSnapshot.enableEditingToolbar !== this.initialSettingsSnapshot.enableEditingToolbar || JSON.stringify(currentSnapshot.enabledPlugins) !== JSON.stringify(this.initialSettingsSnapshot.enabledPlugins) || JSON.stringify(currentSnapshot.disabledPlugins) !== JSON.stringify(this.initialSettingsSnapshot.disabledPlugins) || currentSnapshot.theme !== this.initialSettingsSnapshot.theme || JSON.stringify(currentSnapshot.basesCMSConfig) !== JSON.stringify(this.initialSettingsSnapshot.basesCMSConfig) || JSON.stringify(currentSnapshot.astroComposerConfig) !== JSON.stringify(this.initialSettingsSnapshot.astroComposerConfig) || JSON.stringify(currentSnapshot.seoConfig) !== JSON.stringify(this.initialSettingsSnapshot.seoConfig) || JSON.stringify(currentSnapshot.propertyOverFileName) !== JSON.stringify(this.initialSettingsSnapshot.propertyOverFileName) || JSON.stringify(currentSnapshot.imageManager) !== JSON.stringify(this.initialSettingsSnapshot.imageManager) || JSON.stringify(currentSnapshot.homeBase) !== JSON.stringify(this.initialSettingsSnapshot.homeBase);
+    return (
+      JSON.stringify(currentSnapshot.projectDetection) !==
+        JSON.stringify(this.initialSettingsSnapshot.projectDetection) ||
+      JSON.stringify(currentSnapshot.contentTypes) !==
+        JSON.stringify(this.initialSettingsSnapshot.contentTypes) ||
+      JSON.stringify(currentSnapshot.frontmatterProperties) !==
+        JSON.stringify(this.initialSettingsSnapshot.frontmatterProperties) ||
+      currentSnapshot.defaultContentTypeId !==
+        this.initialSettingsSnapshot.defaultContentTypeId ||
+      currentSnapshot.preset !== this.initialSettingsSnapshot.preset ||
+      currentSnapshot.enableEditingToolbar !==
+        this.initialSettingsSnapshot.enableEditingToolbar ||
+      JSON.stringify(currentSnapshot.enabledPlugins) !==
+        JSON.stringify(this.initialSettingsSnapshot.enabledPlugins) ||
+      JSON.stringify(currentSnapshot.disabledPlugins) !==
+        JSON.stringify(this.initialSettingsSnapshot.disabledPlugins) ||
+      currentSnapshot.theme !== this.initialSettingsSnapshot.theme ||
+      JSON.stringify(currentSnapshot.basesCMSConfig) !==
+        JSON.stringify(this.initialSettingsSnapshot.basesCMSConfig) ||
+      JSON.stringify(currentSnapshot.astroComposerConfig) !==
+        JSON.stringify(this.initialSettingsSnapshot.astroComposerConfig) ||
+      JSON.stringify(currentSnapshot.seoConfig) !==
+        JSON.stringify(this.initialSettingsSnapshot.seoConfig) ||
+      JSON.stringify(currentSnapshot.propertyOverFileName) !==
+        JSON.stringify(this.initialSettingsSnapshot.propertyOverFileName) ||
+      JSON.stringify(currentSnapshot.imageManager) !==
+        JSON.stringify(this.initialSettingsSnapshot.imageManager) ||
+      JSON.stringify(currentSnapshot.homeBase) !==
+        JSON.stringify(this.initialSettingsSnapshot.homeBase)
+    );
   }
   getState() {
     return this.stateManager.getState();
   }
   // Callback to save state to plugin settings (kept for backward compatibility)
   setSaveCallback(callback) {
-    console.warn("setSaveCallback is deprecated - state is now managed automatically");
+    console.warn(
+      "setSaveCallback is deprecated - state is now managed automatically",
+    );
   }
 };
 
@@ -13142,7 +16036,7 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
     const footer = contentEl.createDiv({ cls: "health-check-footer" });
     const closeBtn = footer.createEl("button", {
       text: "Close",
-      cls: "mod-cta"
+      cls: "mod-cta",
     });
     closeBtn.addEventListener("click", () => this.close());
   }
@@ -13160,20 +16054,21 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
       { id: "astro-composer", name: "Astro Composer" },
       { id: "bases-cms", name: "Bases CMS" },
       { id: "home-base", name: "Home Base" },
-      { id: "seo", name: "SEO" }
+      { id: "seo", name: "SEO" },
     ];
     const optionalPlugins = [
       { id: "property-over-file-name", name: "Property Over File Name" },
-      { id: "image-manager", name: "Image Manager" }
+      { id: "image-manager", name: "Image Manager" },
     ];
     const checks = [];
-    const plugins = ((_a = this.app.plugins) == null ? void 0 : _a.plugins) || {};
+    const plugins =
+      ((_a = this.app.plugins) == null ? void 0 : _a.plugins) || {};
     for (const plugin of requiredPlugins) {
       const isInstalled = !!plugins[plugin.id];
       checks.push({
         name: `${plugin.name} installed`,
         status: isInstalled ? "pass" : "fail",
-        message: isInstalled ? void 0 : "Plugin not installed"
+        message: isInstalled ? void 0 : "Plugin not installed",
       });
     }
     for (const plugin of optionalPlugins) {
@@ -13181,12 +16076,12 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
       checks.push({
         name: `${plugin.name} installed`,
         status: isInstalled ? "pass" : "warning",
-        message: isInstalled ? void 0 : "Optional plugin not installed"
+        message: isInstalled ? void 0 : "Optional plugin not installed",
       });
     }
     this.results.push({
       category: "Plugin Installation",
-      checks
+      checks,
     });
   }
   async checkCompanionPluginsEnabled() {
@@ -13194,22 +16089,24 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
       { id: "astro-composer", name: "Astro Composer" },
       { id: "bases-cms", name: "Bases CMS" },
       { id: "home-base", name: "Home Base" },
-      { id: "seo", name: "SEO" }
+      { id: "seo", name: "SEO" },
     ];
     const checks = [];
     const pluginsAPI = this.app.plugins;
-    const enabledPlugins = (pluginsAPI == null ? void 0 : pluginsAPI.enabledPlugins) || /* @__PURE__ */ new Set();
+    const enabledPlugins =
+      (pluginsAPI == null ? void 0 : pluginsAPI.enabledPlugins) ||
+      /* @__PURE__ */ new Set();
     for (const plugin of requiredPlugins) {
       const isEnabled = enabledPlugins.has(plugin.id);
       checks.push({
         name: `${plugin.name} enabled`,
         status: isEnabled ? "pass" : "fail",
-        message: isEnabled ? void 0 : "Plugin is installed but not enabled"
+        message: isEnabled ? void 0 : "Plugin is installed but not enabled",
       });
     }
     this.results.push({
       category: "Plugin Status",
-      checks
+      checks,
     });
   }
   async checkAstroProjectDetection() {
@@ -13219,12 +16116,16 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
     checks.push({
       name: "Project root configured",
       status: hasProjectRoot ? "pass" : "fail",
-      message: hasProjectRoot ? this.plugin.settings.projectRoot : "Project root not set"
+      message: hasProjectRoot
+        ? this.plugin.settings.projectRoot
+        : "Project root not set",
     });
     checks.push({
       name: "Config file detected",
       status: hasConfigFile ? "pass" : "fail",
-      message: hasConfigFile ? this.plugin.settings.configFilePath : "Config file not found"
+      message: hasConfigFile
+        ? this.plugin.settings.configFilePath
+        : "Config file not found",
     });
     if (hasProjectRoot && hasConfigFile) {
       const detector = new ProjectDetector(this.app);
@@ -13233,25 +16134,31 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
         checks.push({
           name: "Project structure valid",
           status: detection ? "pass" : "warning",
-          message: detection ? `Found ${detection.configFilePath}` : "Could not validate project structure"
+          message: detection
+            ? `Found ${detection.configFilePath}`
+            : "Could not validate project structure",
         });
       } catch (error) {
         checks.push({
           name: "Project structure valid",
           status: "warning",
-          message: `Error: ${error instanceof Error ? error.message : String(error)}`
+          message: `Error: ${error instanceof Error ? error.message : String(error)}`,
         });
       }
     }
-    const hasContentTypes = this.plugin.settings.contentTypes && this.plugin.settings.contentTypes.length > 0;
+    const hasContentTypes =
+      this.plugin.settings.contentTypes &&
+      this.plugin.settings.contentTypes.length > 0;
     checks.push({
       name: "Content types configured",
       status: hasContentTypes ? "pass" : "warning",
-      message: hasContentTypes ? `${this.plugin.settings.contentTypes.length} content type(s) configured` : "No content types configured"
+      message: hasContentTypes
+        ? `${this.plugin.settings.contentTypes.length} content type(s) configured`
+        : "No content types configured",
     });
     this.results.push({
       category: "Astro Project",
-      checks
+      checks,
     });
   }
   async checkPluginConfiguration() {
@@ -13261,24 +16168,39 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
     let astroComposerContentTypes = 0;
     try {
       const plugins = this.app.plugins;
-      const astroComposerPlugin = (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a["astro-composer"];
-      if ((_b = astroComposerPlugin == null ? void 0 : astroComposerPlugin.settings) == null ? void 0 : _b.contentTypes) {
-        astroComposerContentTypes = astroComposerPlugin.settings.contentTypes.length;
+      const astroComposerPlugin =
+        (_a = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _a["astro-composer"];
+      if (
+        (_b =
+          astroComposerPlugin == null
+            ? void 0
+            : astroComposerPlugin.settings) == null
+          ? void 0
+          : _b.contentTypes
+      ) {
+        astroComposerContentTypes =
+          astroComposerPlugin.settings.contentTypes.length;
       } else {
         const astroComposerPath = `${configDir}/plugins/astro-composer/data.json`;
-        const astroFile = this.app.vault.getAbstractFileByPath(astroComposerPath);
+        const astroFile =
+          this.app.vault.getAbstractFileByPath(astroComposerPath);
         if (astroFile instanceof import_obsidian24.TFile) {
           const content = await this.app.vault.read(astroFile);
           const data = JSON.parse(content);
-          astroComposerContentTypes = ((_c = data.contentTypes) == null ? void 0 : _c.length) || 0;
+          astroComposerContentTypes =
+            ((_c = data.contentTypes) == null ? void 0 : _c.length) || 0;
         }
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     checks.push({
       name: "Astro Composer configured",
       status: astroComposerContentTypes > 0 ? "pass" : "warning",
-      message: astroComposerContentTypes > 0 ? `${astroComposerContentTypes} content type(s)` : "No content types configured"
+      message:
+        astroComposerContentTypes > 0
+          ? `${astroComposerContentTypes} content type(s)`
+          : "No content types configured",
     });
     let basesConfigured = false;
     let basesMessage = "No base file found";
@@ -13289,18 +16211,24 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
         basesConfigured = true;
         basesMessage = `${baseFilePath} found`;
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     checks.push({
       name: "Bases CMS configured",
       status: basesConfigured ? "pass" : "warning",
-      message: basesMessage
+      message: basesMessage,
     });
     let seoScanDirs = "";
     try {
       const plugins = this.app.plugins;
-      const seoPlugin = (_d = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _d["seo"];
-      if ((_e = seoPlugin == null ? void 0 : seoPlugin.settings) == null ? void 0 : _e.scanDirectories) {
+      const seoPlugin =
+        (_d = plugins == null ? void 0 : plugins.plugins) == null
+          ? void 0
+          : _d["seo"];
+      if (
+        (_e = seoPlugin == null ? void 0 : seoPlugin.settings) == null
+          ? void 0
+          : _e.scanDirectories
+      ) {
         seoScanDirs = seoPlugin.settings.scanDirectories;
       } else {
         const seoPath = `${configDir}/plugins/seo/data.json`;
@@ -13311,37 +16239,52 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
           seoScanDirs = data.scanDirectories || "";
         }
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     checks.push({
       name: "SEO plugin configured",
       status: seoScanDirs.length > 0 ? "pass" : "warning",
-      message: seoScanDirs.length > 0 ? `Scanning: ${seoScanDirs}` : "No scan directories configured"
+      message:
+        seoScanDirs.length > 0
+          ? `Scanning: ${seoScanDirs}`
+          : "No scan directories configured",
     });
     const hasDefaultContentType = !!this.plugin.settings.defaultContentTypeId;
-    let defaultContentTypeName = this.plugin.settings.defaultContentTypeId || "";
+    let defaultContentTypeName =
+      this.plugin.settings.defaultContentTypeId || "";
     if (hasDefaultContentType) {
       try {
         const plugins = this.app.plugins;
-        const astroComposerPlugin = (_f = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _f["astro-composer"];
-        const contentTypes = (_g = astroComposerPlugin == null ? void 0 : astroComposerPlugin.settings) == null ? void 0 : _g.contentTypes;
+        const astroComposerPlugin =
+          (_f = plugins == null ? void 0 : plugins.plugins) == null
+            ? void 0
+            : _f["astro-composer"];
+        const contentTypes =
+          (_g =
+            astroComposerPlugin == null
+              ? void 0
+              : astroComposerPlugin.settings) == null
+            ? void 0
+            : _g.contentTypes;
         if (contentTypes) {
-          const matchingType = contentTypes.find((ct) => ct.id === this.plugin.settings.defaultContentTypeId);
+          const matchingType = contentTypes.find(
+            (ct) => ct.id === this.plugin.settings.defaultContentTypeId,
+          );
           if (matchingType == null ? void 0 : matchingType.name) {
             defaultContentTypeName = matchingType.name;
           }
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     checks.push({
       name: "Default content type set",
       status: hasDefaultContentType ? "pass" : "warning",
-      message: hasDefaultContentType ? defaultContentTypeName : "No default content type"
+      message: hasDefaultContentType
+        ? defaultContentTypeName
+        : "No default content type",
     });
     this.results.push({
       category: "Plugin Configuration",
-      checks
+      checks,
     });
   }
   async checkGitIntegration() {
@@ -13350,28 +16293,41 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
     const { gitConfig, projectRoot: relativeRoot } = this.plugin.settings;
     const projectRoot = resolveProjectRoot2(this.app, relativeRoot);
     if (projectRoot) {
-      const { GitManager: GitManager2 } = await Promise.resolve().then(() => (init_GitManager(), GitManager_exports));
+      const { GitManager: GitManager2 } = await Promise.resolve().then(
+        () => (init_GitManager(), GitManager_exports),
+      );
       const isRepo = await GitManager2.isRepo(projectRoot);
-      const remoteUrl = isRepo ? await GitManager2.getRemoteUrl(projectRoot) : null;
+      const remoteUrl = isRepo
+        ? await GitManager2.getRemoteUrl(projectRoot)
+        : null;
       checks.push({
         name: "Git repository initialized",
         status: isRepo ? "pass" : "fail",
-        message: isRepo ? "Repository detected at project root" : "No repository found at project root"
+        message: isRepo
+          ? "Repository detected at project root"
+          : "No repository found at project root",
       });
       if (isRepo) {
         const isConfigured = gitConfig.enabled || !!remoteUrl;
         checks.push({
           name: "Git integration status",
           status: isConfigured ? "pass" : "warning",
-          message: remoteUrl ? `Connected to ${remoteUrl}` : gitConfig.enabled ? "Integration active" : "Not configured (Optional)"
+          message: remoteUrl
+            ? `Connected to ${remoteUrl}`
+            : gitConfig.enabled
+              ? "Integration active"
+              : "Not configured (Optional)",
         });
-        const savedSecret = (_a = this.app.secretStorage) == null ? void 0 : _a.getSecret("vault-cms-github-pat");
+        const savedSecret =
+          (_a = this.app.secretStorage) == null
+            ? void 0
+            : _a.getSecret("vault-cms-github-pat");
         const hasPat = !!savedSecret;
         if (gitConfig.enabled) {
           checks.push({
             name: "GitHub PAT configured",
             status: hasPat ? "pass" : "warning",
-            message: hasPat ? "Token present" : "No token found in settings"
+            message: hasPat ? "Token present" : "No token found in settings",
           });
         }
       }
@@ -13379,20 +16335,28 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
       checks.push({
         name: "Git repository check",
         status: "fail",
-        message: relativeRoot ? "Project root path could not be resolved" : "Project root not configured"
+        message: relativeRoot
+          ? "Project root path could not be resolved"
+          : "Project root not configured",
       });
     }
     this.results.push({
       category: "Git Integration",
-      checks
+      checks,
     });
   }
   displayResults(container) {
-    const resultsContainer = container.createDiv({ cls: "health-check-results" });
+    const resultsContainer = container.createDiv({
+      cls: "health-check-results",
+    });
     for (const result of this.results) {
-      const categorySection = resultsContainer.createDiv({ cls: "health-check-category" });
+      const categorySection = resultsContainer.createDiv({
+        cls: "health-check-category",
+      });
       categorySection.createEl("h3", { text: result.category });
-      const checksList = categorySection.createDiv({ cls: "health-check-list" });
+      const checksList = categorySection.createDiv({
+        cls: "health-check-list",
+      });
       for (const check of result.checks) {
         const checkItem = checksList.createDiv({ cls: "health-check-item" });
         const statusIcon = checkItem.createSpan({ cls: "health-check-icon" });
@@ -13408,12 +16372,12 @@ var HealthCheckModal = class extends import_obsidian24.Modal {
         }
         const checkName = checkItem.createSpan({
           text: check.name,
-          cls: "health-check-name"
+          cls: "health-check-name",
         });
         if (check.message) {
           const checkMessage = checkItem.createDiv({
             text: check.message,
-            cls: "health-check-message"
+            cls: "health-check-message",
           });
         }
       }
@@ -13531,16 +16495,35 @@ var ApplyPresetModal = class extends import_obsidian25.Modal {
     const { contentEl } = this;
     contentEl.empty();
     contentEl.createEl("h2", { text: "Preset applied successfully" });
-    contentEl.createEl("p", { text: "The preset has been applied successfully. You need to reload Obsidian for all changes to take effect." });
-    contentEl.createEl("p", { text: `A backup of your original configuration folder was created at: ${this.backupPath}` });
-    new import_obsidian25.Setting(contentEl).setName("Delete backup and reload").setDesc('Remove the backup folder and reload Obsidian. This is the recommended "clean" option.').addButton((button) => button.setButtonText("Delete and reload").setCta().onClick(() => {
-      this.close();
-      this.onConfirm(true);
-    }));
-    new import_obsidian25.Setting(contentEl).setName("Keep backup and reload").setDesc("Keep the backup folder for safety and reload Obsidian.").addButton((button) => button.setButtonText("Keep and reload").onClick(() => {
-      this.close();
-      this.onConfirm(false);
-    }));
+    contentEl.createEl("p", {
+      text: "The preset has been applied successfully. You need to reload Obsidian for all changes to take effect.",
+    });
+    contentEl.createEl("p", {
+      text: `A backup of your original configuration folder was created at: ${this.backupPath}`,
+    });
+    new import_obsidian25.Setting(contentEl)
+      .setName("Delete backup and reload")
+      .setDesc(
+        'Remove the backup folder and reload Obsidian. This is the recommended "clean" option.',
+      )
+      .addButton((button) =>
+        button
+          .setButtonText("Delete and reload")
+          .setCta()
+          .onClick(() => {
+            this.close();
+            this.onConfirm(true);
+          }),
+      );
+    new import_obsidian25.Setting(contentEl)
+      .setName("Keep backup and reload")
+      .setDesc("Keep the backup folder for safety and reload Obsidian.")
+      .addButton((button) =>
+        button.setButtonText("Keep and reload").onClick(() => {
+          this.close();
+          this.onConfirm(false);
+        }),
+      );
   }
   onClose() {
     const { contentEl } = this;
@@ -13555,19 +16538,27 @@ var PresetManager = class {
   }
   async applyPreset(repo, presetName) {
     if (!repo || !presetName) {
-      new import_obsidian26.Notice("Please configure both repository and preset name in settings.");
+      new import_obsidian26.Notice(
+        "Please configure both repository and preset name in settings.",
+      );
       return;
     }
     try {
-      new import_obsidian26.Notice(`Fetching preset "${presetName}" from ${repo}...`);
+      new import_obsidian26.Notice(
+        `Fetching preset "${presetName}" from ${repo}...`,
+      );
       const files = await this.fetchPresetFilesRecursive(repo, presetName);
       if (files.length === 0) {
-        new import_obsidian26.Notice(`No files found for preset "${presetName}" in repo ${repo}.`);
+        new import_obsidian26.Notice(
+          `No files found for preset "${presetName}" in repo ${repo}.`,
+        );
         return;
       }
       new import_obsidian26.Notice("Backing up configuration folder...");
       const backupPath = await this.backupObsidianFolder();
-      new import_obsidian26.Notice(`Downloading and applying ${files.length} files...`);
+      new import_obsidian26.Notice(
+        `Downloading and applying ${files.length} files...`,
+      );
       let successCount = 0;
       for (const file of files) {
         if (file.download_url) {
@@ -13589,11 +16580,16 @@ var PresetManager = class {
               new import_obsidian26.Notice("Backup deleted.");
             } catch (e) {
               console.error("Failed to delete backup:", e);
-              new import_obsidian26.Notice("Failed to delete backup folder. You may need to remove it manually.");
+              new import_obsidian26.Notice(
+                "Failed to delete backup folder. You may need to remove it manually.",
+              );
             }
           }
           const appWithCommands = this.app;
-          if (appWithCommands.commands && typeof appWithCommands.commands.executeCommandById === "function") {
+          if (
+            appWithCommands.commands &&
+            typeof appWithCommands.commands.executeCommandById === "function"
+          ) {
             appWithCommands.commands.executeCommandById("app:reload");
           }
         })();
@@ -13615,7 +16611,10 @@ var PresetManager = class {
       let allFiles = [];
       for (const item of items) {
         if (item.type === "dir") {
-          const subFiles = await this.fetchPresetFilesRecursive(repo, item.path);
+          const subFiles = await this.fetchPresetFilesRecursive(
+            repo,
+            item.path,
+          );
           allFiles = allFiles.concat(subFiles);
         } else if (item.type === "file") {
           allFiles.push(item);
@@ -13624,13 +16623,21 @@ var PresetManager = class {
       return allFiles;
     } catch (e) {
       if (e && typeof e === "object" && "status" in e && e.status === 404) {
-        throw new Error(`Preset folder "${path13}" not found in repository "${repo}".`);
+        throw new Error(
+          `Preset folder "${path13}" not found in repository "${repo}".`,
+        );
       }
       throw e;
     }
   }
   async backupObsidianFolder() {
-    const timestamp2 = (/* @__PURE__ */ new Date()).toISOString().replace(/[:.]/g, "-").split("T")[0] + "-" + Math.floor(Date.now() / 1e3);
+    const timestamp2 =
+      /* @__PURE__ */ new Date()
+        .toISOString()
+        .replace(/[:.]/g, "-")
+        .split("T")[0] +
+      "-" +
+      Math.floor(Date.now() / 1e3);
     const configDir = this.app.vault.configDir;
     const backupPath = `${configDir}_backup_${timestamp2}`;
     const adapter = this.app.vault.adapter;
@@ -13640,11 +16647,11 @@ var PresetManager = class {
   }
   async copyRecursive(source, destination) {
     const adapter = this.app.vault.adapter;
-    if (!await adapter.exists(source)) {
+    if (!(await adapter.exists(source))) {
       return;
     }
     const stats = await adapter.list(source);
-    if (!await adapter.exists(destination)) {
+    if (!(await adapter.exists(destination))) {
       await adapter.mkdir(destination);
     }
     for (const file of stats.files) {
@@ -13676,7 +16683,7 @@ var PresetManager = class {
     if (parts.length > 1) {
       for (let i = 1; i < parts.length; i++) {
         const dir = parts.slice(0, i).join("/");
-        if (!await adapter.exists(dir)) {
+        if (!(await adapter.exists(dir))) {
           await adapter.mkdir(dir);
         }
       }
@@ -13703,81 +16710,148 @@ var SettingsTab = class extends import_obsidian27.PluginSettingTab {
     this.contentEl.empty();
     const generalGroup = new import_obsidian27.SettingGroup(this.contentEl);
     generalGroup.addSetting((setting) => {
-      setting.setName("Open setup wizard").setDesc("Launch the setup wizard").addButton((button) => {
-        button.setButtonText("Open wizard").setCta().onClick(() => {
-          new SetupWizardModal(this.app, this.plugin.settings, this.plugin).open();
+      setting
+        .setName("Open setup wizard")
+        .setDesc("Launch the setup wizard")
+        .addButton((button) => {
+          button
+            .setButtonText("Open wizard")
+            .setCta()
+            .onClick(() => {
+              new SetupWizardModal(
+                this.app,
+                this.plugin.settings,
+                this.plugin,
+              ).open();
+            });
         });
-      });
     });
     generalGroup.addSetting((setting) => {
-      setting.setName("Run wizard on startup").setDesc("Automatically open the wizard when the plugin loads").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.runWizardOnStartup).onChange(async (value) => {
-          this.plugin.settings.runWizardOnStartup = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Run wizard on startup")
+        .setDesc("Automatically open the wizard when the plugin loads")
+        .addToggle((toggle) => {
+          toggle
+            .setValue(this.plugin.settings.runWizardOnStartup)
+            .onChange(async (value) => {
+              this.plugin.settings.runWizardOnStartup = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     generalGroup.addSetting((setting) => {
-      setting.setName("Health check").setDesc("Check plugin installation and configuration status").addButton((button) => {
-        button.setButtonText("Run health check").onClick(() => {
-          new HealthCheckModal(this.app, this.plugin).open();
+      setting
+        .setName("Health check")
+        .setDesc("Check plugin installation and configuration status")
+        .addButton((button) => {
+          button.setButtonText("Run health check").onClick(() => {
+            new HealthCheckModal(this.app, this.plugin).open();
+          });
         });
-      });
     });
-    const presetGroup = new import_obsidian27.SettingGroup(this.contentEl).setHeading("Preset configuration");
+    const presetGroup = new import_obsidian27.SettingGroup(
+      this.contentEl,
+    ).setHeading("Preset configuration");
     presetGroup.addSetting((setting) => {
-      setting.setName("Preset folder name").setDesc("Folder name in the repository").addText((text) => {
-        text.setPlaceholder("Example: starlight").setValue(this.plugin.settings.presetName).onChange(async (value) => {
-          this.plugin.settings.presetName = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Preset folder name")
+        .setDesc("Folder name in the repository")
+        .addText((text) => {
+          text
+            .setPlaceholder("Example: starlight")
+            .setValue(this.plugin.settings.presetName)
+            .onChange(async (value) => {
+              this.plugin.settings.presetName = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     presetGroup.addSetting((setting) => {
-      setting.setName("Presets repository").setDesc("GitHub repository containing the presets").addText((text) => {
-        text.setPlaceholder("Example: owner/repo").setValue(this.plugin.settings.presetsRepo).onChange(async (value) => {
-          this.plugin.settings.presetsRepo = value;
-          await this.plugin.saveSettings();
+      setting
+        .setName("Presets repository")
+        .setDesc("GitHub repository containing the presets")
+        .addText((text) => {
+          text
+            .setPlaceholder("Example: owner/repo")
+            .setValue(this.plugin.settings.presetsRepo)
+            .onChange(async (value) => {
+              this.plugin.settings.presetsRepo = value;
+              await this.plugin.saveSettings();
+            });
         });
-      });
     });
     presetGroup.addSetting((setting) => {
-      setting.setName("Download and apply preset").setDesc("Download the specified preset and apply it to your vault").addButton((button) => {
-        button.setButtonText("Apply preset").onClick(async () => {
-          const manager = new PresetManager(this.app);
-          await manager.applyPreset(this.plugin.settings.presetsRepo, this.plugin.settings.presetName);
+      setting
+        .setName("Download and apply preset")
+        .setDesc("Download the specified preset and apply it to your vault")
+        .addButton((button) => {
+          button.setButtonText("Apply preset").onClick(async () => {
+            const manager = new PresetManager(this.app);
+            await manager.applyPreset(
+              this.plugin.settings.presetsRepo,
+              this.plugin.settings.presetName,
+            );
+          });
         });
-      });
     });
-    const gitGroup = new import_obsidian27.SettingGroup(this.contentEl).setHeading("Git configuration");
+    const gitGroup = new import_obsidian27.SettingGroup(
+      this.contentEl,
+    ).setHeading("Git configuration");
     let isFullyConfigured = false;
-    if (this.plugin.settings.projectRoot && this.plugin.settings.projectRoot.trim() !== "") {
+    if (
+      this.plugin.settings.projectRoot &&
+      this.plugin.settings.projectRoot.trim() !== ""
+    ) {
       try {
-        const { GitManager: GitManager2 } = await Promise.resolve().then(() => (init_GitManager(), GitManager_exports));
-        const { resolveProjectRoot: resolveProjectRoot3 } = await Promise.resolve().then(() => (init_ProjectRootResolver(), ProjectRootResolver_exports));
-        const projectRoot = resolveProjectRoot3(this.app, this.plugin.settings.projectRoot);
+        const { GitManager: GitManager2 } = await Promise.resolve().then(
+          () => (init_GitManager(), GitManager_exports),
+        );
+        const { resolveProjectRoot: resolveProjectRoot3 } =
+          await Promise.resolve().then(
+            () => (init_ProjectRootResolver(), ProjectRootResolver_exports),
+          );
+        const projectRoot = resolveProjectRoot3(
+          this.app,
+          this.plugin.settings.projectRoot,
+        );
         if (!projectRoot) throw new Error("Could not resolve project root");
         const isRepo = await GitManager2.isRepo(projectRoot);
-        const remoteUrl = isRepo ? await GitManager2.getRemoteUrl(projectRoot) : null;
+        const remoteUrl = isRepo
+          ? await GitManager2.getRemoteUrl(projectRoot)
+          : null;
         isFullyConfigured = isRepo && !!remoteUrl;
         gitGroup.addSetting((setting) => {
-          setting.setName("Local repository status").setDesc(isRepo ? "Git is initialized at project root." : "Git is NOT initialized at project root.");
+          setting
+            .setName("Local repository status")
+            .setDesc(
+              isRepo
+                ? "Git is initialized at project root."
+                : "Git is NOT initialized at project root.",
+            );
           const statusIcon = setting.controlEl.createSpan({
             cls: isRepo ? "git-status-icon-ok" : "git-status-icon-warn",
-            attr: { style: `margin-left: 10px; color: ${isRepo ? "var(--text-success)" : "var(--text-warning)"};` }
+            attr: {
+              style: `margin-left: 10px; color: ${isRepo ? "var(--text-success)" : "var(--text-warning)"};`,
+            },
           });
           statusIcon.setText(isRepo ? "\u2713 Detected" : "\u26A0 Missing");
         });
         gitGroup.addSetting((setting) => {
-          setting.setName("Project root path").setDesc("Direct path being checked for Git").addText((text) => {
-            text.setValue(projectRoot).setDisabled(true);
-          });
+          setting
+            .setName("Project root path")
+            .setDesc("Direct path being checked for Git")
+            .addText((text) => {
+              text.setValue(projectRoot).setDisabled(true);
+            });
         });
         if (remoteUrl) {
           gitGroup.addSetting((setting) => {
-            setting.setName("Remote URL").setDesc("Connected GitHub repository").addText((text) => {
-              text.setValue(remoteUrl).setDisabled(true);
-            });
+            setting
+              .setName("Remote URL")
+              .setDesc("Connected GitHub repository")
+              .addText((text) => {
+                text.setValue(remoteUrl).setDisabled(true);
+              });
           });
         }
       } catch (error) {
@@ -13786,18 +16860,31 @@ var SettingsTab = class extends import_obsidian27.PluginSettingTab {
     }
     if (!isFullyConfigured) {
       gitGroup.addSetting((setting) => {
-        setting.setName("Deployment and Git setup").setDesc("Choose a deployment platform and connect to GitHub.").addButton((button) => {
-          button.setButtonText("Setup...").onClick(() => {
-            const modal = new SetupWizardModal(this.app, { currentStep: 7 }, this.plugin);
-            modal.open();
+        setting
+          .setName("Deployment and Git setup")
+          .setDesc("Choose a deployment platform and connect to GitHub.")
+          .addButton((button) => {
+            button.setButtonText("Setup...").onClick(() => {
+              const modal = new SetupWizardModal(
+                this.app,
+                { currentStep: 7 },
+                this.plugin,
+              );
+              modal.open();
+            });
           });
-        });
       });
     }
-    const optimizationGroup = new import_obsidian27.SettingGroup(this.contentEl).setHeading("Project optimization (optional)");
+    const optimizationGroup = new import_obsidian27.SettingGroup(
+      this.contentEl,
+    ).setHeading("Project optimization (optional)");
     if (!this.plugin.settings.projectRoot) {
       optimizationGroup.addSetting((setting) => {
-        setting.setName("Project not detected").setDesc("Complete the setup wizard first to detect your Astro project before configuring optimizations.");
+        setting
+          .setName("Project not detected")
+          .setDesc(
+            "Complete the setup wizard first to detect your Astro project before configuring optimizations.",
+          );
       });
       return;
     }
@@ -13807,8 +16894,8 @@ var SettingsTab = class extends import_obsidian27.PluginSettingTab {
       projectDetection: {
         projectRoot: this.plugin.settings.projectRoot,
         configFilePath: this.plugin.settings.configFilePath,
-        vaultLocation: "content"
-      }
+        vaultLocation: "content",
+      },
     };
     this.optimizer = new ProjectOptimizer(this.app, wizardState);
     const status = await this.optimizer.getStatus();
@@ -13828,66 +16915,97 @@ var SettingsTab = class extends import_obsidian27.PluginSettingTab {
     }
   }
   updateGitSetting(status) {
-    this.gitSetting.setName("Ignore in Git").setDesc("Add workspace files to Git ignore").clear();
+    this.gitSetting
+      .setName("Ignore in Git")
+      .setDesc("Add workspace files to Git ignore")
+      .clear();
     this.gitSetting.addButton((button) => {
-      button.setButtonText(status === "configured" ? "Re-configure" : "Configure").onClick(async () => {
-        try {
-          const success = await this.optimizer.configureGitIgnore();
-          if (success) {
-            this.plugin.settings.ignoreConfig.gitIgnoreConfigured = true;
-            await this.plugin.saveSettings();
-            new import_obsidian27.Notice("Git ignore updated");
-          } else {
-            new import_obsidian27.Notice("Could not configure Git ignore: project root not detected");
+      button
+        .setButtonText(status === "configured" ? "Re-configure" : "Configure")
+        .onClick(async () => {
+          try {
+            const success = await this.optimizer.configureGitIgnore();
+            if (success) {
+              this.plugin.settings.ignoreConfig.gitIgnoreConfigured = true;
+              await this.plugin.saveSettings();
+              new import_obsidian27.Notice("Git ignore updated");
+            } else {
+              new import_obsidian27.Notice(
+                "Could not configure Git ignore: project root not detected",
+              );
+            }
+            const newStatus = await this.optimizer.getStatus();
+            this.updateGitSetting(newStatus.gitIgnoreStatus);
+          } catch (error) {
+            new import_obsidian27.Notice(
+              `Failed to update Git ignore: ${error instanceof Error ? error.message : String(error)}`,
+            );
           }
-          const newStatus = await this.optimizer.getStatus();
-          this.updateGitSetting(newStatus.gitIgnoreStatus);
-        } catch (error) {
-          new import_obsidian27.Notice(`Failed to update Git ignore: ${error instanceof Error ? error.message : String(error)}`);
-        }
-      });
+        });
     });
     this.optimizer.renderStatus(this.gitSetting.controlEl, status);
   }
   updateViteSetting(status) {
-    this.viteSetting.setName("Ignore workspace and Home Base folders in Vite").setDesc("Configure Vite to ignore Obsidian and Home Base folders.").clear();
+    this.viteSetting
+      .setName("Ignore workspace and Home Base folders in Vite")
+      .setDesc("Configure Vite to ignore Obsidian and Home Base folders.")
+      .clear();
     this.viteSetting.addButton((button) => {
-      button.setButtonText(status === "configured" ? "Re-configure" : "Configure").onClick(async () => {
-        try {
-          const success = await this.optimizer.configureViteIgnore();
-          if (success) {
-            this.plugin.settings.ignoreConfig.viteIgnoreConfigured = true;
-            await this.plugin.saveSettings();
-            new import_obsidian27.Notice("Vite optimization applied");
-          } else {
-            new import_obsidian27.Notice("Could not configure Vite: project root not detected");
+      button
+        .setButtonText(status === "configured" ? "Re-configure" : "Configure")
+        .onClick(async () => {
+          try {
+            const success = await this.optimizer.configureViteIgnore();
+            if (success) {
+              this.plugin.settings.ignoreConfig.viteIgnoreConfigured = true;
+              await this.plugin.saveSettings();
+              new import_obsidian27.Notice("Vite optimization applied");
+            } else {
+              new import_obsidian27.Notice(
+                "Could not configure Vite: project root not detected",
+              );
+            }
+            const newStatus = await this.optimizer.getStatus();
+            this.updateViteSetting(newStatus.viteIgnoreStatus);
+          } catch (error) {
+            new import_obsidian27.Notice(
+              `Failed to update Vite config: ${error instanceof Error ? error.message : String(error)}`,
+            );
           }
-          const newStatus = await this.optimizer.getStatus();
-          this.updateViteSetting(newStatus.viteIgnoreStatus);
-        } catch (error) {
-          new import_obsidian27.Notice(`Failed to update Vite config: ${error instanceof Error ? error.message : String(error)}`);
-        }
-      });
+        });
     });
     this.optimizer.renderStatus(this.viteSetting.controlEl, status);
   }
   updateHooksSetting(status) {
-    this.hooksSetting.setName("Neutralize developer git hooks").setDesc("This project has git hooks (like husky or commitlint) that can block publishing from Obsidian. Disable so commits can happen easily from Obsidian.").clear();
+    this.hooksSetting
+      .setName("Neutralize developer git hooks")
+      .setDesc(
+        "This project has git hooks (like husky or commitlint) that can block publishing from Obsidian. Disable so commits can happen easily from Obsidian.",
+      )
+      .clear();
     if (status === "detected") {
       this.hooksSetting.addButton((button) => {
-        button.setButtonText("Neutralize").setCta().onClick(async () => {
-          try {
-            this.optimizer.neutralizeGitHooks();
-            new import_obsidian27.Notice("Git hooks neutralized");
-            const newStatus = await this.optimizer.getStatus();
-            this.updateHooksSetting(newStatus.gitHooksStatus);
-          } catch (error) {
-            new import_obsidian27.Notice(`Failed to neutralize git hooks: ${error instanceof Error ? error.message : String(error)}`);
-          }
-        });
+        button
+          .setButtonText("Neutralize")
+          .setCta()
+          .onClick(async () => {
+            try {
+              this.optimizer.neutralizeGitHooks();
+              new import_obsidian27.Notice("Git hooks neutralized");
+              const newStatus = await this.optimizer.getStatus();
+              this.updateHooksSetting(newStatus.gitHooksStatus);
+            } catch (error) {
+              new import_obsidian27.Notice(
+                `Failed to neutralize git hooks: ${error instanceof Error ? error.message : String(error)}`,
+              );
+            }
+          });
       });
     }
-    this.optimizer.renderStatus(this.hooksSetting.controlEl, status === "neutralized" ? "configured" : "not-configured");
+    this.optimizer.renderStatus(
+      this.hooksSetting.controlEl,
+      status === "neutralized" ? "configured" : "not-configured",
+    );
   }
 };
 
@@ -13899,7 +17017,7 @@ function registerCommands(plugin) {
     callback: () => {
       const wizard = new SetupWizardModal(plugin.app, plugin.settings, plugin);
       wizard.open();
-    }
+    },
   });
   plugin.addCommand({
     id: "health-check",
@@ -13907,15 +17025,18 @@ function registerCommands(plugin) {
     callback: () => {
       const healthCheck = new HealthCheckModal(plugin.app, plugin);
       healthCheck.open();
-    }
+    },
   });
   plugin.addCommand({
     id: "download-apply-preset",
     name: "Download and apply preset",
     callback: async () => {
       const manager = new PresetManager(plugin.app);
-      await manager.applyPreset(plugin.settings.presetsRepo, plugin.settings.presetName);
-    }
+      await manager.applyPreset(
+        plugin.settings.presetsRepo,
+        plugin.settings.presetName,
+      );
+    },
   });
 }
 
@@ -13924,16 +17045,35 @@ var path12 = __toESM(require("path"), 1);
 var VaultCMSPlugin = class extends import_obsidian28.Plugin {
   async onload() {
     await this.loadSettings();
-    if (this.settings.projectRoot && path12.isAbsolute(this.settings.projectRoot)) {
-      const { getVaultPath: getVaultPath2 } = await Promise.resolve().then(() => (init_VaultPathHelper(), VaultPathHelper_exports));
+    if (
+      this.settings.projectRoot &&
+      path12.isAbsolute(this.settings.projectRoot)
+    ) {
+      const { getVaultPath: getVaultPath2 } = await Promise.resolve().then(
+        () => (init_VaultPathHelper(), VaultPathHelper_exports),
+      );
       const vaultPath = getVaultPath2(this.app);
       if (vaultPath) {
-        const relativePath = path12.relative(vaultPath, this.settings.projectRoot).split(path12.sep).join("/") || ".";
-        console.debug(`[Vault CMS] Migrating absolute projectRoot to relative: ${this.settings.projectRoot} -> ${relativePath}`);
+        const relativePath =
+          path12
+            .relative(vaultPath, this.settings.projectRoot)
+            .split(path12.sep)
+            .join("/") || ".";
+        console.debug(
+          `[Vault CMS] Migrating absolute projectRoot to relative: ${this.settings.projectRoot} -> ${relativePath}`,
+        );
         this.settings.projectRoot = relativePath;
-        if (this.settings.configFilePath && path12.isAbsolute(this.settings.configFilePath)) {
-          const relativeConfig = path12.relative(vaultPath, this.settings.configFilePath).split(path12.sep).join("/");
-          console.debug(`[Vault CMS] Migrating absolute configFilePath to relative: ${this.settings.configFilePath} -> ${relativeConfig}`);
+        if (
+          this.settings.configFilePath &&
+          path12.isAbsolute(this.settings.configFilePath)
+        ) {
+          const relativeConfig = path12
+            .relative(vaultPath, this.settings.configFilePath)
+            .split(path12.sep)
+            .join("/");
+          console.debug(
+            `[Vault CMS] Migrating absolute configFilePath to relative: ${this.settings.configFilePath} -> ${relativeConfig}`,
+          );
           this.settings.configFilePath = relativeConfig;
         }
         await this.saveSettings();
@@ -13974,7 +17114,8 @@ var VaultCMSPlugin = class extends import_obsidian28.Plugin {
    *   app.plugins.plugins['vault-cms']?.resolvePublicPath('/images/blog/1.jpg')
    */
   resolvePublicPath(absolutePath) {
-    if (!this.settings.resolvePublicImages || !this.settings.projectRoot) return null;
+    if (!this.settings.resolvePublicImages || !this.settings.projectRoot)
+      return null;
     if (!absolutePath.startsWith("/")) return null;
     try {
       const fs7 = require("fs");
@@ -13983,13 +17124,16 @@ var VaultCMSPlugin = class extends import_obsidian28.Plugin {
       const adapter = this.app.vault.adapter;
       const vaultPath = String(adapter.basePath || adapter.path || "");
       if (!vaultPath) return null;
-      const projectRoot = pathModule.resolve(vaultPath, this.settings.projectRoot);
+      const projectRoot = pathModule.resolve(
+        vaultPath,
+        this.settings.projectRoot,
+      );
       const relativePath = absolutePath.slice(1);
       const candidates = [
         pathModule.join(projectRoot, "public", relativePath),
         pathModule.join(projectRoot, "src", "assets", relativePath),
         pathModule.join(projectRoot, "static", relativePath),
-        pathModule.join(projectRoot, "assets", relativePath)
+        pathModule.join(projectRoot, "assets", relativePath),
       ];
       for (const candidate of candidates) {
         if (fs7.existsSync(candidate)) {

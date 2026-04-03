@@ -28,27 +28,34 @@
 }
 
 /* Property-based display indicator - SCOPED to plugin only */
-.property-over-filename-suggestion .suggestion-content .suggestion-title[data-custom-display="true"] {
+.property-over-filename-suggestion
+  .suggestion-content
+  .suggestion-title[data-custom-display="true"] {
   color: var(--interactive-accent);
   font-weight: 600;
 }
 
 /* Recent files styling - SCOPED to plugin only */
-.property-over-filename-suggestion .suggestion-content[data-recent="true"] .suggestion-title {
+.property-over-filename-suggestion
+  .suggestion-content[data-recent="true"]
+  .suggestion-title {
   color: var(--text-accent);
 }
 
 /* New note creation styling - SCOPED to plugin only */
-.property-over-filename-suggestion .suggestion-content[data-new-note="true"] .suggestion-title {
+.property-over-filename-suggestion
+  .suggestion-content[data-new-note="true"]
+  .suggestion-title {
   color: var(--interactive-accent);
   font-style: italic;
 }
 
-.property-over-filename-suggestion .suggestion-content[data-new-note="true"] .suggestion-title::before {
+.property-over-filename-suggestion
+  .suggestion-content[data-new-note="true"]
+  .suggestion-title::before {
   content: "📝 ";
   margin-right: 4px;
 }
-
 
 /* Remove duplicate prompt instructions - use the ones below */
 
@@ -114,11 +121,15 @@
   background-color: var(--interactive-accent-hover);
 }
 
-.property-over-filename-settings .setting-item .setting-button.setting-button-warning {
+.property-over-filename-settings
+  .setting-item
+  .setting-button.setting-button-warning {
   background-color: var(--text-error);
 }
 
-.property-over-filename-settings .setting-item .setting-button.setting-button-warning:hover {
+.property-over-filename-settings
+  .setting-item
+  .setting-button.setting-button-warning:hover {
   background-color: var(--text-error-hover);
 }
 
@@ -132,11 +143,11 @@
   .property-over-filename-suggestion .suggestion-content {
     padding: 4px 0;
   }
-  
+
   .property-over-filename-suggestion .suggestion-title {
     font-size: 0.95em;
   }
-  
+
   .property-over-filename-suggestion .suggestion-note {
     font-size: 0.8em;
   }
@@ -191,12 +202,21 @@
   color: var(--text-normal);
 }
 
-.theme-dark .property-over-filename-modal .suggestion-item.is-selected .suggestion-title,
-.theme-dark .property-over-filename-modal .suggestion-item.is-selected .suggestion-note {
+.theme-dark
+  .property-over-filename-modal
+  .suggestion-item.is-selected
+  .suggestion-title,
+.theme-dark
+  .property-over-filename-modal
+  .suggestion-item.is-selected
+  .suggestion-note {
   color: var(--text-normal);
 }
 
-.theme-dark .property-over-filename-modal .suggestion-item.is-selected .suggestion-flair {
+.theme-dark
+  .property-over-filename-modal
+  .suggestion-item.is-selected
+  .suggestion-flair {
   color: var(--text-muted);
 }
 
@@ -226,7 +246,9 @@
   min-height: 40px;
 }
 
-.property-over-filename-suggestion .suggestion-item.mod-complex .suggestion-content {
+.property-over-filename-suggestion
+  .suggestion-item.mod-complex
+  .suggestion-content {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -234,14 +256,18 @@
   gap: 2px;
 }
 
-.property-over-filename-suggestion .suggestion-item.mod-complex .suggestion-aux {
+.property-over-filename-suggestion
+  .suggestion-item.mod-complex
+  .suggestion-aux {
   flex-shrink: 0;
   margin-left: 8px;
   display: flex;
   align-items: center;
 }
 
-.property-over-filename-suggestion .suggestion-item.mod-complex .suggestion-flair {
+.property-over-filename-suggestion
+  .suggestion-item.mod-complex
+  .suggestion-flair {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -251,7 +277,10 @@
   opacity: 0.6;
 }
 
-.property-over-filename-suggestion .suggestion-item.mod-complex .suggestion-flair svg {
+.property-over-filename-suggestion
+  .suggestion-item.mod-complex
+  .suggestion-flair
+  svg {
   width: 16px;
   height: 16px;
 }
@@ -280,18 +309,24 @@
 }
 
 /* Improve contrast for unselected items */
-.property-over-filename-modal .suggestion-item:not(.is-selected) .suggestion-title {
+.property-over-filename-modal
+  .suggestion-item:not(.is-selected)
+  .suggestion-title {
   color: var(--text-normal);
   font-weight: 500;
 }
 
-.property-over-filename-modal .suggestion-item:not(.is-selected) .suggestion-note {
+.property-over-filename-modal
+  .suggestion-item:not(.is-selected)
+  .suggestion-note {
   color: var(--text-muted);
   opacity: 0.8;
 }
 
 /* Improve contrast for unselected item icons */
-.property-over-filename-modal .suggestion-item:not(.is-selected) .suggestion-flair {
+.property-over-filename-modal
+  .suggestion-item:not(.is-selected)
+  .suggestion-flair {
   color: var(--text-muted);
   opacity: 0.7;
 }
@@ -299,20 +334,20 @@
 /* Group settings compatibility styling for older Obsidian builds (< 1.11.0) */
 /* Base styling for setting-group-heading - drop default border */
 .setting-group-heading h3 {
-	margin: 1.5rem 0 0.75rem;
-	padding-bottom: 0.5rem;
-	font-size: 1rem;
-	font-weight: 600;
-	border-bottom: none !important;
+  margin: 1.5rem 0 0.75rem;
+  padding-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-bottom: none !important;
 }
 
 .setting-group-heading:first-child h3 {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 /* Only reintroduce border-bottom if heading is NOT immediately followed by a setting-item */
 /* This prevents double divider lines in older Obsidian builds where the first .setting-item */
 /* already has a border-top, creating a double line with the heading's border-bottom */
 .setting-group-heading:not(:has(+ .setting-item)) h3 {
-	border-bottom: 1px solid var(--background-modifier-border) !important;
+  border-bottom: 1px solid var(--background-modifier-border) !important;
 }

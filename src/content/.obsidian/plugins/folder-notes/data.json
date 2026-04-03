@@ -32,10 +32,7 @@
     "title": "{{folderName}} overview",
     "showTitle": false,
     "depth": 3,
-    "includeTypes": [
-      "folder",
-      "markdown"
-    ],
+    "includeTypes": ["folder", "markdown"],
     "style": "list",
     "disableFileTag": false,
     "sortBy": "name",
@@ -63,11 +60,7 @@
     "path": true
   },
   "settingsTab": "general",
-  "supportedFileTypes": [
-    "md",
-    "canvas",
-    "base"
-  ],
+  "supportedFileTypes": ["md", "canvas", "base"],
   "boldName": false,
   "boldNameInPath": false,
   "cursiveName": false,

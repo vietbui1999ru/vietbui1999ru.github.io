@@ -547,7 +547,5 @@
   "lineNumberColorActiveLight": "",
   "lineNumberColorActiveDark": "",
   "dashedUnderlineInternal": false,
-  "_migrationVersions": [
-    "minimal-to-oxygen-prefix-v1"
-  ]
+  "_migrationVersions": ["minimal-to-oxygen-prefix-v1"]
 }

@@ -8,22 +8,27 @@ var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
+var __esm = (fn, res) =>
+  function __init() {
+    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res);
+  };
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/utils/mdx-frontmatter.ts
 function isMdxFile(file) {
@@ -35,7 +40,7 @@ function parseMdxFrontmatter(content) {
   if (!match) {
     return {
       frontmatter: {},
-      body: content
+      body: content,
     };
   }
   const frontmatterText = match[1];
@@ -45,13 +50,13 @@ function parseMdxFrontmatter(content) {
     const frontmatter = parsed && typeof parsed === "object" ? parsed : {};
     return {
       frontmatter,
-      body: bodyContent
+      body: bodyContent,
     };
   } catch (e) {
     console.error("Error parsing MDX properties:", e);
     return {
       frontmatter: {},
-      body: bodyContent
+      body: bodyContent,
     };
   }
 }
@@ -80,7 +85,9 @@ async function processMdxFrontMatter(app, file, callback) {
     }
     const frontmatter = { ...parsed.frontmatter };
     callback(frontmatter);
-    const newFrontmatterText = (0, import_obsidian4.stringifyYaml)(frontmatter).trim();
+    const newFrontmatterText = (0, import_obsidian4.stringifyYaml)(
+      frontmatter,
+    ).trim();
     const newContent = `---
 ${newFrontmatterText}
 ---
@@ -96,7 +103,7 @@ var init_mdx_frontmatter = __esm({
   "src/utils/mdx-frontmatter.ts"() {
     "use strict";
     import_obsidian4 = require("obsidian");
-  }
+  },
 });
 
 // src/utils/frontmatter-helper.ts
@@ -119,20 +126,45 @@ var init_frontmatter_helper = __esm({
   "src/utils/frontmatter-helper.ts"() {
     "use strict";
     init_mdx_frontmatter();
-  }
+  },
 });
 
 // src/shared/settings-schema.ts
 var settings_schema_exports = {};
 __export(settings_schema_exports, {
   getCMSViewOptions: () => getCMSViewOptions,
-  readCMSSettings: () => readCMSSettings
+  readCMSSettings: () => readCMSSettings,
 });
 function readCMSSettings(config, pluginSettings) {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x;
+  var _a,
+    _b,
+    _c,
+    _d,
+    _e,
+    _f,
+    _g,
+    _h,
+    _i,
+    _j,
+    _k,
+    _l,
+    _m,
+    _n,
+    _o,
+    _p,
+    _q,
+    _r,
+    _s,
+    _t,
+    _u,
+    _v,
+    _w,
+    _x;
   const getConfig = (key) => {
     var _a2;
-    return (_a2 = config == null ? void 0 : config.get) == null ? void 0 : _a2.call(config, key);
+    return (_a2 = config == null ? void 0 : config.get) == null
+      ? void 0
+      : _a2.call(config, key);
   };
   return {
     titleProperty: getConfig("titleProperty") || "note.title",
@@ -144,10 +176,14 @@ function readCMSSettings(config, pluginSettings) {
     dateProperty: getConfig("dateProperty") || "",
     dateIncludeTime: (_b = getConfig("dateIncludeTime")) != null ? _b : false,
     showTextPreview: (_c = getConfig("showTextPreview")) != null ? _c : true,
-    fallbackToContent: (_d = getConfig("fallbackToContent")) != null ? _d : true,
-    truncatePreviewProperty: (_e = getConfig("truncatePreviewProperty")) != null ? _e : false,
-    descriptionMaxLength: (_f = getConfig("descriptionMaxLength")) != null ? _f : 500,
-    descriptionMaxLines: (_g = getConfig("descriptionMaxLines")) != null ? _g : 5,
+    fallbackToContent:
+      (_d = getConfig("fallbackToContent")) != null ? _d : true,
+    truncatePreviewProperty:
+      (_e = getConfig("truncatePreviewProperty")) != null ? _e : false,
+    descriptionMaxLength:
+      (_f = getConfig("descriptionMaxLength")) != null ? _f : 500,
+    descriptionMaxLines:
+      (_g = getConfig("descriptionMaxLines")) != null ? _g : 5,
     fallbackToEmbeds: (() => {
       const value = getConfig("fallbackToEmbeds");
       if (value === "always" || value === "if-empty" || value === "never") {
@@ -169,13 +205,20 @@ function readCMSSettings(config, pluginSettings) {
     propertyDisplay12: getConfig("propertyDisplay12") || "",
     propertyDisplay13: getConfig("propertyDisplay13") || "",
     propertyDisplay14: getConfig("propertyDisplay14") || "",
-    propertyLayout12SideBySide: (_h = getConfig("propertyLayout12SideBySide")) != null ? _h : false,
-    propertyLayout34SideBySide: (_i = getConfig("propertyLayout34SideBySide")) != null ? _i : false,
-    propertyLayout56SideBySide: (_j = getConfig("propertyLayout56SideBySide")) != null ? _j : false,
-    propertyLayout78SideBySide: (_k = getConfig("propertyLayout78SideBySide")) != null ? _k : false,
-    propertyLayout910SideBySide: (_l = getConfig("propertyLayout910SideBySide")) != null ? _l : false,
-    propertyLayout1112SideBySide: (_m = getConfig("propertyLayout1112SideBySide")) != null ? _m : false,
-    propertyLayout1314SideBySide: (_n = getConfig("propertyLayout1314SideBySide")) != null ? _n : false,
+    propertyLayout12SideBySide:
+      (_h = getConfig("propertyLayout12SideBySide")) != null ? _h : false,
+    propertyLayout34SideBySide:
+      (_i = getConfig("propertyLayout34SideBySide")) != null ? _i : false,
+    propertyLayout56SideBySide:
+      (_j = getConfig("propertyLayout56SideBySide")) != null ? _j : false,
+    propertyLayout78SideBySide:
+      (_k = getConfig("propertyLayout78SideBySide")) != null ? _k : false,
+    propertyLayout910SideBySide:
+      (_l = getConfig("propertyLayout910SideBySide")) != null ? _l : false,
+    propertyLayout1112SideBySide:
+      (_m = getConfig("propertyLayout1112SideBySide")) != null ? _m : false,
+    propertyLayout1314SideBySide:
+      (_n = getConfig("propertyLayout1314SideBySide")) != null ? _n : false,
     propertyGroup1Position: getConfig("propertyGroup1Position") || "bottom",
     propertyGroup2Position: getConfig("propertyGroup2Position") || "bottom",
     propertyGroup3Position: getConfig("propertyGroup3Position") || "bottom",
@@ -186,19 +229,24 @@ function readCMSSettings(config, pluginSettings) {
     imageFormat: getConfig("imageFormat") || "thumbnail",
     imagePosition: getConfig("imagePosition") || "right",
     propertyLabels: getConfig("propertyLabels") || "hide",
-    propertyDisplayMaxLength: (_o = getConfig("propertyDisplayMaxLength")) != null ? _o : 0,
+    propertyDisplayMaxLength:
+      (_o = getConfig("propertyDisplayMaxLength")) != null ? _o : 0,
     showDraftStatus: (_p = getConfig("showDraftStatus")) != null ? _p : false,
     draftStatusProperty: getConfig("draftStatusProperty") || "",
-    draftStatusReverse: (_q = getConfig("draftStatusReverse")) != null ? _q : false,
-    draftStatusUseFilenamePrefix: (_r = getConfig("draftStatusUseFilenamePrefix")) != null ? _r : false,
+    draftStatusReverse:
+      (_q = getConfig("draftStatusReverse")) != null ? _q : false,
+    draftStatusUseFilenamePrefix:
+      (_r = getConfig("draftStatusUseFilenamePrefix")) != null ? _r : false,
     showTags: (_s = getConfig("showTags")) != null ? _s : false,
     tagsProperty: getConfig("tagsProperty") || "",
     maxTagsToShow: (_t = getConfig("maxTagsToShow")) != null ? _t : 3,
-    customizeNewButton: (_u = getConfig("customizeNewButton")) != null ? _u : false,
+    customizeNewButton:
+      (_u = getConfig("customizeNewButton")) != null ? _u : false,
     newNoteLocation: getConfig("newNoteLocation") || "",
-    hideQuickEditIcon: (_v = getConfig("hideQuickEditIcon")) != null ? _v : false,
+    hideQuickEditIcon:
+      (_v = getConfig("hideQuickEditIcon")) != null ? _v : false,
     cardSize: (_w = getConfig("cardSize")) != null ? _w : 250,
-    imageAspectRatio: (_x = getConfig("imageAspectRatio")) != null ? _x : 0.55
+    imageAspectRatio: (_x = getConfig("imageAspectRatio")) != null ? _x : 0.55,
   };
 }
 function getCMSViewOptions() {
@@ -211,7 +259,7 @@ function getCMSViewOptions() {
       min: 50,
       max: 1e3,
       step: 10,
-      default: 250
+      default: 250,
     },
     // Title group
     {
@@ -223,9 +271,9 @@ function getCMSViewOptions() {
           displayName: "Title property",
           key: "titleProperty",
           placeholder: "Select property",
-          default: ""
-        }
-      ]
+          default: "",
+        },
+      ],
     },
     // Text preview group
     {
@@ -236,26 +284,26 @@ function getCMSViewOptions() {
           type: "toggle",
           displayName: "Show text preview",
           key: "showTextPreview",
-          default: true
+          default: true,
         },
         {
           type: "property",
           displayName: "Text preview property",
           key: "descriptionProperty",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Use note content if text preview property unavailable",
           key: "fallbackToContent",
-          default: true
+          default: true,
         },
         {
           type: "toggle",
           displayName: "Truncate preview property",
           key: "truncatePreviewProperty",
-          default: false
+          default: false,
         },
         {
           type: "slider",
@@ -265,7 +313,7 @@ function getCMSViewOptions() {
           max: 2e3,
           step: 50,
           default: 500,
-          showWhen: { key: "truncatePreviewProperty", value: true }
+          showWhen: { key: "truncatePreviewProperty", value: true },
         },
         {
           type: "slider",
@@ -274,9 +322,9 @@ function getCMSViewOptions() {
           min: 1,
           max: 20,
           step: 1,
-          default: 5
-        }
-      ]
+          default: 5,
+        },
+      ],
     },
     // Image group
     {
@@ -288,29 +336,29 @@ function getCMSViewOptions() {
           displayName: "Image format",
           key: "imageFormat",
           options: {
-            "none": "No image",
-            "thumbnail": "Thumbnail",
-            "cover": "Cover"
+            none: "No image",
+            thumbnail: "Thumbnail",
+            cover: "Cover",
           },
-          default: "thumbnail"
+          default: "thumbnail",
         },
         {
           type: "property",
           displayName: "Image property",
           key: "imageProperty",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "dropdown",
           displayName: "Show image embeds",
           key: "fallbackToEmbeds",
           options: {
-            "always": "Always",
+            always: "Always",
             "if-empty": "If image property missing or empty",
-            "never": "Never"
+            never: "Never",
           },
-          default: "if-empty"
+          default: "if-empty",
         },
         {
           type: "slider",
@@ -322,10 +370,10 @@ function getCMSViewOptions() {
           default: 0.55,
           showWhen: {
             key: "imageFormat",
-            value: "cover"
-          }
-        }
-      ]
+            value: "cover",
+          },
+        },
+      ],
     },
     // Date group
     {
@@ -336,23 +384,24 @@ function getCMSViewOptions() {
           type: "toggle",
           displayName: "Show date",
           key: "showDate",
-          default: false
+          default: false,
         },
         {
           type: "property",
           displayName: "Date property",
           key: "dateProperty",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Include time",
-          description: "When enabled, displays both date and time using your system locale settings",
+          description:
+            "When enabled, displays both date and time using your system locale settings",
           key: "dateIncludeTime",
-          default: false
-        }
-      ]
+          default: false,
+        },
+      ],
     },
     // Draft status group
     {
@@ -363,28 +412,28 @@ function getCMSViewOptions() {
           type: "toggle",
           displayName: "Show draft status",
           key: "showDraftStatus",
-          default: false
+          default: false,
         },
         {
           type: "property",
           displayName: "Draft status property",
           key: "draftStatusProperty",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Reverse logic",
           key: "draftStatusReverse",
-          default: false
+          default: false,
         },
         {
           type: "toggle",
           displayName: "File name underscore prefix as draft indicator",
           key: "draftStatusUseFilenamePrefix",
-          default: false
-        }
-      ]
+          default: false,
+        },
+      ],
     },
     // Tags group
     {
@@ -395,14 +444,14 @@ function getCMSViewOptions() {
           type: "toggle",
           displayName: "Show tags",
           key: "showTags",
-          default: false
+          default: false,
         },
         {
           type: "property",
           displayName: "Tags property",
           key: "tagsProperty",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "slider",
@@ -414,10 +463,10 @@ function getCMSViewOptions() {
           default: 3,
           showWhen: {
             key: "showTags",
-            value: true
-          }
-        }
-      ]
+            value: true,
+          },
+        },
+      ],
     },
     // Properties group
     {
@@ -429,11 +478,11 @@ function getCMSViewOptions() {
           displayName: "Show property labels",
           key: "propertyLabels",
           options: {
-            "hide": "Hide",
-            "inline": "Inline",
-            "above": "On top"
+            hide: "Hide",
+            inline: "Inline",
+            above: "On top",
           },
-          default: "hide"
+          default: "hide",
         },
         {
           type: "slider",
@@ -442,9 +491,9 @@ function getCMSViewOptions() {
           min: 0,
           max: 500,
           step: 10,
-          default: 0
-        }
-      ]
+          default: 0,
+        },
+      ],
     },
     // Property group 1
     {
@@ -456,32 +505,32 @@ function getCMSViewOptions() {
           displayName: "First property",
           key: "propertyDisplay1",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "property",
           displayName: "Second property",
           key: "propertyDisplay2",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Show side-by-side",
           key: "propertyLayout12SideBySide",
-          default: false
+          default: false,
         },
         {
           type: "dropdown",
           displayName: "Position",
           key: "propertyGroup1Position",
           options: {
-            "top": "Top",
-            "bottom": "Bottom"
+            top: "Top",
+            bottom: "Bottom",
           },
-          default: "bottom"
-        }
-      ]
+          default: "bottom",
+        },
+      ],
     },
     // Property group 2
     {
@@ -493,32 +542,32 @@ function getCMSViewOptions() {
           displayName: "Third property",
           key: "propertyDisplay3",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "property",
           displayName: "Fourth property",
           key: "propertyDisplay4",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Show side-by-side",
           key: "propertyLayout34SideBySide",
-          default: false
+          default: false,
         },
         {
           type: "dropdown",
           displayName: "Position",
           key: "propertyGroup2Position",
           options: {
-            "top": "Top",
-            "bottom": "Bottom"
+            top: "Top",
+            bottom: "Bottom",
           },
-          default: "bottom"
-        }
-      ]
+          default: "bottom",
+        },
+      ],
     },
     // Property group 3
     {
@@ -530,32 +579,32 @@ function getCMSViewOptions() {
           displayName: "First property",
           key: "propertyDisplay5",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "property",
           displayName: "Second property",
           key: "propertyDisplay6",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Show side-by-side",
           key: "propertyLayout56SideBySide",
-          default: false
+          default: false,
         },
         {
           type: "dropdown",
           displayName: "Position",
           key: "propertyGroup3Position",
           options: {
-            "top": "Top",
-            "bottom": "Bottom"
+            top: "Top",
+            bottom: "Bottom",
           },
-          default: "bottom"
-        }
-      ]
+          default: "bottom",
+        },
+      ],
     },
     // Property group 4
     {
@@ -567,32 +616,32 @@ function getCMSViewOptions() {
           displayName: "First property",
           key: "propertyDisplay7",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "property",
           displayName: "Second property",
           key: "propertyDisplay8",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Show side-by-side",
           key: "propertyLayout78SideBySide",
-          default: false
+          default: false,
         },
         {
           type: "dropdown",
           displayName: "Position",
           key: "propertyGroup4Position",
           options: {
-            "top": "Top",
-            "bottom": "Bottom"
+            top: "Top",
+            bottom: "Bottom",
           },
-          default: "bottom"
-        }
-      ]
+          default: "bottom",
+        },
+      ],
     },
     // Property group 5
     {
@@ -604,32 +653,32 @@ function getCMSViewOptions() {
           displayName: "First property",
           key: "propertyDisplay9",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "property",
           displayName: "Second property",
           key: "propertyDisplay10",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Show side-by-side",
           key: "propertyLayout910SideBySide",
-          default: false
+          default: false,
         },
         {
           type: "dropdown",
           displayName: "Position",
           key: "propertyGroup5Position",
           options: {
-            "top": "Top",
-            "bottom": "Bottom"
+            top: "Top",
+            bottom: "Bottom",
           },
-          default: "bottom"
-        }
-      ]
+          default: "bottom",
+        },
+      ],
     },
     // Property group 6
     {
@@ -641,32 +690,32 @@ function getCMSViewOptions() {
           displayName: "First property",
           key: "propertyDisplay11",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "property",
           displayName: "Second property",
           key: "propertyDisplay12",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Show side-by-side",
           key: "propertyLayout1112SideBySide",
-          default: false
+          default: false,
         },
         {
           type: "dropdown",
           displayName: "Position",
           key: "propertyGroup6Position",
           options: {
-            "top": "Top",
-            "bottom": "Bottom"
+            top: "Top",
+            bottom: "Bottom",
           },
-          default: "bottom"
-        }
-      ]
+          default: "bottom",
+        },
+      ],
     },
     // Property group 7
     {
@@ -678,32 +727,32 @@ function getCMSViewOptions() {
           displayName: "First property",
           key: "propertyDisplay13",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "property",
           displayName: "Second property",
           key: "propertyDisplay14",
           placeholder: "Select property",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Show side-by-side",
           key: "propertyLayout1314SideBySide",
-          default: false
+          default: false,
         },
         {
           type: "dropdown",
           displayName: "Position",
           key: "propertyGroup7Position",
           options: {
-            "top": "Top",
-            "bottom": "Bottom"
+            top: "Top",
+            bottom: "Bottom",
           },
-          default: "bottom"
-        }
-      ]
+          default: "bottom",
+        },
+      ],
     },
     // Behavior group
     {
@@ -713,33 +762,35 @@ function getCMSViewOptions() {
         {
           type: "toggle",
           displayName: "Open new notes directly",
-          description: "Skip the Bases modal and create notes directly (like the file explorer). When disabled, uses normal Bases behavior with the property popup.",
+          description:
+            "Skip the Bases modal and create notes directly (like the file explorer). When disabled, uses normal Bases behavior with the property popup.",
           key: "customizeNewButton",
-          default: false
+          default: false,
         },
         {
           type: "text",
           displayName: "Location for new notes",
-          description: 'Folder path where new notes will be created. Use / for vault root, or specify a folder path. Works independently of "Open new notes directly".',
+          description:
+            'Folder path where new notes will be created. Use / for vault root, or specify a folder path. Works independently of "Open new notes directly".',
           key: "newNoteLocation",
           placeholder: "Simply use / for vault folder",
-          default: ""
+          default: "",
         },
         {
           type: "toggle",
           displayName: "Hide quick edit icon",
           key: "hideQuickEditIcon",
-          default: false
-        }
-      ]
-    }
+          default: false,
+        },
+      ],
+    },
   ];
   return options;
 }
 var init_settings_schema = __esm({
   "src/shared/settings-schema.ts"() {
     "use strict";
-  }
+  },
 });
 
 // src/utils/attachment-detection.ts
@@ -752,7 +803,10 @@ async function getAttachmentsInNote(app, file) {
       const metadata = app.metadataCache.getFileCache(content);
       const embeds = (metadata == null ? void 0 : metadata.embeds) || [];
       for (const embed of embeds) {
-        const embedFile = app.metadataCache.getFirstLinkpathDest(embed.link, file.path);
+        const embedFile = app.metadataCache.getFirstLinkpathDest(
+          embed.link,
+          file.path,
+        );
         if (embedFile instanceof import_obsidian16.TFile) {
           attachments.push(embedFile);
         }
@@ -761,22 +815,41 @@ async function getAttachmentsInNote(app, file) {
     const frontmatter = await getFileFrontmatter(app, file);
     if (frontmatter) {
       const imagePropertyNames = ["image", "imageOG", "cover", "thumbnail"];
-      const validImageExtensions = ["avif", "bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
+      const validImageExtensions = [
+        "avif",
+        "bmp",
+        "gif",
+        "jpeg",
+        "jpg",
+        "png",
+        "svg",
+        "webp",
+      ];
       for (const propName of imagePropertyNames) {
         const propValue = frontmatter[propName];
         if (!propValue) continue;
         const imagePaths = Array.isArray(propValue) ? propValue : [propValue];
         for (const imagePath of imagePaths) {
           if (typeof imagePath !== "string") continue;
-          const cleanPath = imagePath.replace(/^!?\[\[([^\]]+)\]\]$/, "$1").trim();
+          const cleanPath = imagePath
+            .replace(/^!?\[\[([^\]]+)\]\]$/, "$1")
+            .trim();
           if (!cleanPath) continue;
-          if (cleanPath.startsWith("http://") || cleanPath.startsWith("https://")) {
+          if (
+            cleanPath.startsWith("http://") ||
+            cleanPath.startsWith("https://")
+          ) {
             continue;
           }
-          let imageFile = app.metadataCache.getFirstLinkpathDest(cleanPath, file.path);
+          let imageFile = app.metadataCache.getFirstLinkpathDest(
+            cleanPath,
+            file.path,
+          );
           if (!imageFile && cleanPath.startsWith("./")) {
             const relativePath = cleanPath.substring(2);
-            const fullPath = ((_a = file.parent) == null ? void 0 : _a.path) ? `${file.parent.path}/${relativePath}` : relativePath;
+            const fullPath = ((_a = file.parent) == null ? void 0 : _a.path)
+              ? `${file.parent.path}/${relativePath}`
+              : relativePath;
             const resolvedFile = app.vault.getAbstractFileByPath(fullPath);
             if (resolvedFile instanceof import_obsidian16.TFile) {
               imageFile = resolvedFile;
@@ -800,18 +873,26 @@ async function getAttachmentsInNote(app, file) {
 async function getAttachmentsInFolder(app, folder) {
   const attachments = [];
   for (const child of folder.children) {
-    if (child instanceof import_obsidian16.TFile && (child.extension === "md" || child.extension === "mdx")) {
-      attachments.push(...await getAttachmentsInNote(app, child));
+    if (
+      child instanceof import_obsidian16.TFile &&
+      (child.extension === "md" || child.extension === "mdx")
+    ) {
+      attachments.push(...(await getAttachmentsInNote(app, child)));
     } else if (child instanceof import_obsidian16.TFolder) {
-      attachments.push(...await getAttachmentsInFolder(app, child));
+      attachments.push(...(await getAttachmentsInFolder(app, child)));
     }
   }
   return attachments;
 }
-async function isAttachmentUsedInOtherNotes(app, attachment, excludedNote, excludedFolder) {
-  const allNotes = app.vault.getMarkdownFiles().filter(
-    (file) => file.path !== excludedNote.path
-  );
+async function isAttachmentUsedInOtherNotes(
+  app,
+  attachment,
+  excludedNote,
+  excludedFolder,
+) {
+  const allNotes = app.vault
+    .getMarkdownFiles()
+    .filter((file) => file.path !== excludedNote.path);
   const attachmentPath = attachment.path;
   const attachmentName = attachment.name;
   const attachmentBasename = attachment.basename;
@@ -820,7 +901,15 @@ async function isAttachmentUsedInOtherNotes(app, attachment, excludedNote, exclu
       continue;
     }
     const content = await app.vault.read(note);
-    if (content.includes(attachmentPath) || content.includes(attachmentName) || content.includes(attachmentBasename) || content.includes(`![[${attachmentName}]]`) || content.includes(`[[${attachmentName}]]`) || content.includes(`(${attachmentName})`) || content.includes(`(${attachmentPath})`)) {
+    if (
+      content.includes(attachmentPath) ||
+      content.includes(attachmentName) ||
+      content.includes(attachmentBasename) ||
+      content.includes(`![[${attachmentName}]]`) ||
+      content.includes(`[[${attachmentName}]]`) ||
+      content.includes(`(${attachmentName})`) ||
+      content.includes(`(${attachmentPath})`)
+    ) {
       return true;
     }
   }
@@ -828,18 +917,20 @@ async function isAttachmentUsedInOtherNotes(app, attachment, excludedNote, exclu
 }
 async function findUniqueAttachments(app, deletedNote, deletedFolder) {
   const attachments = [];
-  attachments.push(...await getAttachmentsInNote(app, deletedNote));
+  attachments.push(...(await getAttachmentsInNote(app, deletedNote)));
   if (deletedFolder) {
-    attachments.push(...await getAttachmentsInFolder(app, deletedFolder));
+    attachments.push(...(await getAttachmentsInFolder(app, deletedFolder)));
   }
-  const uniqueAttachments = Array.from(new Set(attachments.map((a) => a.path))).map((path) => app.vault.getAbstractFileByPath(path)).filter((file) => file instanceof import_obsidian16.TFile);
+  const uniqueAttachments = Array.from(new Set(attachments.map((a) => a.path)))
+    .map((path) => app.vault.getAbstractFileByPath(path))
+    .filter((file) => file instanceof import_obsidian16.TFile);
   const result = [];
   for (const attachment of uniqueAttachments) {
     const isUsedElsewhere = await isAttachmentUsedInOtherNotes(
       app,
       attachment,
       deletedNote,
-      deletedFolder
+      deletedFolder,
     );
     if (!isUsedElsewhere) {
       result.push(attachment);
@@ -853,7 +944,7 @@ var init_attachment_detection = __esm({
     "use strict";
     import_obsidian16 = require("obsidian");
     init_frontmatter_helper();
-  }
+  },
 });
 
 // src/utils/smart-deletion.ts
@@ -862,7 +953,7 @@ __export(smart_deletion_exports, {
   executeSmartDeletion: () => executeSmartDeletion,
   isFolderBasedContent: () => isFolderBasedContent,
   prepareDeletionPreview: () => prepareDeletionPreview,
-  shouldDeleteParentFolder: () => shouldDeleteParentFolder
+  shouldDeleteParentFolder: () => shouldDeleteParentFolder,
 });
 function isFolderBasedContent(file, config) {
   const configuredFilename = config.deleteParentFolderFilename || "index";
@@ -883,7 +974,7 @@ async function prepareDeletionPreview(app, files, config) {
       if (parentFolder && !foldersToDelete.includes(parentFolder)) {
         foldersToDelete.push(parentFolder);
         const folderFiles = parentFolder.children.filter(
-          (child) => child instanceof import_obsidian17.TFile
+          (child) => child instanceof import_obsidian17.TFile,
         );
         filesToDelete.push(...folderFiles);
       }
@@ -891,21 +982,29 @@ async function prepareDeletionPreview(app, files, config) {
       filesToDelete.push(file);
     }
     if (config.deleteUniqueAttachments) {
-      const parentFolder = shouldDeleteParentFolder(file, config) ? file.parent || void 0 : void 0;
+      const parentFolder = shouldDeleteParentFolder(file, config)
+        ? file.parent || void 0
+        : void 0;
       const uniqueAttachments2 = await findUniqueAttachments(
         app,
         file,
-        parentFolder
+        parentFolder,
       );
       attachmentsToDelete.push(...uniqueAttachments2);
     }
   }
-  const uniqueFiles = Array.from(new Set(filesToDelete.map((f) => f.path))).map((path) => app.vault.getAbstractFileByPath(path)).filter((file) => file instanceof import_obsidian17.TFile);
-  const uniqueAttachments = Array.from(new Set(attachmentsToDelete.map((a) => a.path))).map((path) => app.vault.getAbstractFileByPath(path)).filter((file) => file instanceof import_obsidian17.TFile);
+  const uniqueFiles = Array.from(new Set(filesToDelete.map((f) => f.path)))
+    .map((path) => app.vault.getAbstractFileByPath(path))
+    .filter((file) => file instanceof import_obsidian17.TFile);
+  const uniqueAttachments = Array.from(
+    new Set(attachmentsToDelete.map((a) => a.path)),
+  )
+    .map((path) => app.vault.getAbstractFileByPath(path))
+    .filter((file) => file instanceof import_obsidian17.TFile);
   return {
     filesToDelete: uniqueFiles,
     foldersToDelete: Array.from(new Set(foldersToDelete)),
-    attachmentsToDelete: uniqueAttachments
+    attachmentsToDelete: uniqueAttachments,
   };
 }
 async function executeSmartDeletion(app, preview) {
@@ -939,9 +1038,13 @@ async function executeSmartDeletion(app, preview) {
     }
   }
   if (errorCount > 0) {
-    new import_obsidian17.Notice(`Deleted ${deletedCount} items, ${errorCount} errors occurred`);
+    new import_obsidian17.Notice(
+      `Deleted ${deletedCount} items, ${errorCount} errors occurred`,
+    );
   } else {
-    new import_obsidian17.Notice(`Successfully deleted ${deletedCount} item${deletedCount !== 1 ? "s" : ""}`);
+    new import_obsidian17.Notice(
+      `Successfully deleted ${deletedCount} item${deletedCount !== 1 ? "s" : ""}`,
+    );
   }
 }
 var import_obsidian17;
@@ -950,13 +1053,13 @@ var init_smart_deletion = __esm({
     "use strict";
     import_obsidian17 = require("obsidian");
     init_attachment_detection();
-  }
+  },
 });
 
 // src/components/deletion-preview.ts
 var deletion_preview_exports = {};
 __export(deletion_preview_exports, {
-  DeletionPreviewModal: () => DeletionPreviewModal
+  DeletionPreviewModal: () => DeletionPreviewModal,
 });
 var import_obsidian18, DeletionPreviewModal;
 var init_deletion_preview = __esm({
@@ -973,48 +1076,65 @@ var init_deletion_preview = __esm({
       onOpen() {
         const { contentEl } = this;
         contentEl.empty();
-        new import_obsidian18.Setting(contentEl).setName("Confirm deletion").setHeading();
+        new import_obsidian18.Setting(contentEl)
+          .setName("Confirm deletion")
+          .setHeading();
         contentEl.createEl("p", {
           text: "The following items will be deleted:",
-          cls: "bases-cms-deletion-warning"
+          cls: "bases-cms-deletion-warning",
         });
         if (this.preview.filesToDelete.length > 0) {
-          contentEl.createEl("h3", { text: `Files (${this.preview.filesToDelete.length})` });
-          const filesList = contentEl.createEl("ul", { cls: "bases-cms-deletion-list" });
+          contentEl.createEl("h3", {
+            text: `Files (${this.preview.filesToDelete.length})`,
+          });
+          const filesList = contentEl.createEl("ul", {
+            cls: "bases-cms-deletion-list",
+          });
           for (const file of this.preview.filesToDelete.slice(0, 20)) {
             const li = filesList.createEl("li");
             li.setText(file.path);
           }
           if (this.preview.filesToDelete.length > 20) {
             filesList.createEl("li", {
-              text: `... and ${this.preview.filesToDelete.length - 20} more files`
+              text: `... and ${this.preview.filesToDelete.length - 20} more files`,
             });
           }
         }
         if (this.preview.foldersToDelete.length > 0) {
-          contentEl.createEl("h3", { text: `Folders (${this.preview.foldersToDelete.length})` });
-          const foldersList = contentEl.createEl("ul", { cls: "bases-cms-deletion-list" });
+          contentEl.createEl("h3", {
+            text: `Folders (${this.preview.foldersToDelete.length})`,
+          });
+          const foldersList = contentEl.createEl("ul", {
+            cls: "bases-cms-deletion-list",
+          });
           for (const folder of this.preview.foldersToDelete) {
             const li = foldersList.createEl("li");
             li.setText(folder.path);
           }
         }
         if (this.preview.attachmentsToDelete.length > 0) {
-          contentEl.createEl("h3", { text: `Attachments (${this.preview.attachmentsToDelete.length})` });
-          const attachmentsList = contentEl.createEl("ul", { cls: "bases-cms-deletion-list" });
-          for (const attachment of this.preview.attachmentsToDelete.slice(0, 20)) {
+          contentEl.createEl("h3", {
+            text: `Attachments (${this.preview.attachmentsToDelete.length})`,
+          });
+          const attachmentsList = contentEl.createEl("ul", {
+            cls: "bases-cms-deletion-list",
+          });
+          for (const attachment of this.preview.attachmentsToDelete.slice(
+            0,
+            20,
+          )) {
             const li = attachmentsList.createEl("li");
             li.setText(attachment.path);
           }
           if (this.preview.attachmentsToDelete.length > 20) {
             attachmentsList.createEl("li", {
-              text: `... and ${this.preview.attachmentsToDelete.length - 20} more attachments`
+              text: `... and ${this.preview.attachmentsToDelete.length - 20} more attachments`,
             });
           }
         }
         contentEl.createEl("p", {
           text: "This action cannot be undone.",
-          cls: "bases-cms-deletion-warning"
+          cls: "bases-cms-deletion-warning",
         });
         const buttonContainer = contentEl.createDiv();
         buttonContainer.addClass("bases-cms-modal-button-container");
@@ -1038,13 +1158,13 @@ var init_deletion_preview = __esm({
         contentEl.empty();
       }
     };
-  }
+  },
 });
 
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => BasesCMSPlugin
+  default: () => BasesCMSPlugin,
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian24 = require("obsidian");
@@ -1066,26 +1186,40 @@ var CommandPickerModal = class extends import_obsidian.FuzzySuggestModal {
       try {
         const commands = commandRegistry.listCommands();
         for (const command of commands) {
-          if (command && command.id && command.name && !commandMap.has(command.id)) {
+          if (
+            command &&
+            command.id &&
+            command.name &&
+            !commandMap.has(command.id)
+          ) {
             commandMap.set(command.id, {
               id: command.id,
-              name: command.name
+              name: command.name,
             });
           }
         }
       } catch (e) {
-        console.warn("[Bases CMS] Error getting commands via listCommands():", e);
+        console.warn(
+          "[Bases CMS] Error getting commands via listCommands():",
+          e,
+        );
       }
     }
     try {
-      const registry = commandRegistry == null ? void 0 : commandRegistry.commands;
+      const registry =
+        commandRegistry == null ? void 0 : commandRegistry.commands;
       if (registry && typeof registry === "object") {
         const allCommands = Object.values(registry);
         for (const command of allCommands) {
-          if (command && command.id && command.name && !commandMap.has(command.id)) {
+          if (
+            command &&
+            command.id &&
+            command.name &&
+            !commandMap.has(command.id)
+          ) {
             commandMap.set(command.id, {
               id: command.id,
-              name: command.name
+              name: command.name,
             });
           }
         }
@@ -1094,20 +1228,29 @@ var CommandPickerModal = class extends import_obsidian.FuzzySuggestModal {
       console.warn("[Bases CMS] Error getting commands via registry:", e);
     }
     try {
-      const internalRegistry = commandRegistry == null ? void 0 : commandRegistry.commandRegistry;
+      const internalRegistry =
+        commandRegistry == null ? void 0 : commandRegistry.commandRegistry;
       if (internalRegistry && typeof internalRegistry === "object") {
         const allCommands = Object.values(internalRegistry);
         for (const command of allCommands) {
-          if (command && command.id && command.name && !commandMap.has(command.id)) {
+          if (
+            command &&
+            command.id &&
+            command.name &&
+            !commandMap.has(command.id)
+          ) {
             commandMap.set(command.id, {
               id: command.id,
-              name: command.name
+              name: command.name,
             });
           }
         }
       }
     } catch (e) {
-      console.warn("[Bases CMS] Error getting commands via internal registry:", e);
+      console.warn(
+        "[Bases CMS] Error getting commands via internal registry:",
+        e,
+      );
     }
     const commandOptions = Array.from(commandMap.values());
     commandOptions.sort((a, b) => a.name.localeCompare(b.name));
@@ -1129,7 +1272,11 @@ var CommandPickerModal = class extends import_obsidian.FuzzySuggestModal {
 // src/components/icon-picker-modal.ts
 var import_obsidian2 = require("obsidian");
 var getIconList = () => {
-  if (import_obsidian2.requireApiVersion && (0, import_obsidian2.requireApiVersion)("1.7.3") && import_obsidian2.getIconIds) {
+  if (
+    import_obsidian2.requireApiVersion &&
+    (0, import_obsidian2.requireApiVersion)("1.7.3") &&
+    import_obsidian2.getIconIds
+  ) {
     try {
       return (0, import_obsidian2.getIconIds)();
     } catch (e) {
@@ -1293,13 +1440,18 @@ var getIconList = () => {
     "banknote",
     "pencil-line",
     "edit-2",
-    "edit-3"
+    "edit-3",
   ];
 };
-var LUCIDE_ICONS = getIconList().map((id) => ({
-  id,
-  name: id.replace(/^lucide-/, "").replace(/-/g, " ").replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase())
-})).sort((a, b) => a.name.localeCompare(b.name));
+var LUCIDE_ICONS = getIconList()
+  .map((id) => ({
+    id,
+    name: id
+      .replace(/^lucide-/, "")
+      .replace(/-/g, " ")
+      .replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase()),
+  }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 var IconPickerModal = class extends import_obsidian2.FuzzySuggestModal {
   constructor(app, onSelect) {
     super(app);
@@ -1321,7 +1473,10 @@ var IconPickerModal = class extends import_obsidian2.FuzzySuggestModal {
     const content = el.createDiv({ cls: "suggestion-content" });
     content.createDiv({ cls: "suggestion-title", text: item.name });
     const aux = el.createDiv({ cls: "suggestion-aux" });
-    (0, import_obsidian2.setIcon)(aux.createSpan({ cls: "suggestion-flair" }), item.id);
+    (0, import_obsidian2.setIcon)(
+      aux.createSpan({ cls: "suggestion-flair" }),
+      item.id,
+    );
   }
 };
 
@@ -1337,305 +1492,457 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
    */
   refreshActiveToolbars() {
     const pluginWithMethod = this.plugin;
-    if (pluginWithMethod && typeof pluginWithMethod.refreshAllToolbars === "function") {
+    if (
+      pluginWithMethod &&
+      typeof pluginWithMethod.refreshAllToolbars === "function"
+    ) {
       pluginWithMethod.refreshAllToolbars();
     }
   }
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    new import_obsidian3.Setting(containerEl).setName("Confirm bulk operations").setDesc("Show confirmation dialogs before performing bulk operations.").addToggle((toggle) => toggle.setValue(this.plugin.settings.confirmBulkOperations).onChange((value) => {
-      void (async () => {
-        this.plugin.settings.confirmBulkOperations = value;
-        await this.plugin.saveData(this.plugin.settings);
-      })();
-    }));
-    const toolbarButtonsGroup = new import_obsidian3.SettingGroup(containerEl).setHeading("Toolbar buttons");
+    new import_obsidian3.Setting(containerEl)
+      .setName("Confirm bulk operations")
+      .setDesc("Show confirmation dialogs before performing bulk operations.")
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.confirmBulkOperations)
+          .onChange((value) => {
+            void (async () => {
+              this.plugin.settings.confirmBulkOperations = value;
+              await this.plugin.saveData(this.plugin.settings);
+            })();
+          }),
+      );
+    const toolbarButtonsGroup = new import_obsidian3.SettingGroup(
+      containerEl,
+    ).setHeading("Toolbar buttons");
     toolbarButtonsGroup.addSetting((setting) => {
-      setting.setName("Show select all button").setDesc("Display the select all button in the CMS toolbar.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showToolbarSelectAll);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.showToolbarSelectAll = value;
-          await this.plugin.saveData(this.plugin.settings);
-          this.refreshActiveToolbars();
+      setting
+        .setName("Show select all button")
+        .setDesc("Display the select all button in the CMS toolbar.")
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.showToolbarSelectAll);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.showToolbarSelectAll = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.refreshActiveToolbars();
+          });
         });
-      });
     });
     toolbarButtonsGroup.addSetting((setting) => {
-      setting.setName("Show clear button").setDesc("Display the clear selection button in the CMS toolbar.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showToolbarClear);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.showToolbarClear = value;
-          await this.plugin.saveData(this.plugin.settings);
-          this.refreshActiveToolbars();
+      setting
+        .setName("Show clear button")
+        .setDesc("Display the clear selection button in the CMS toolbar.")
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.showToolbarClear);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.showToolbarClear = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.refreshActiveToolbars();
+          });
         });
-      });
     });
     toolbarButtonsGroup.addSetting((setting) => {
-      setting.setName("Show publish button").setDesc("Display the publish button in the CMS toolbar.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showToolbarPublish);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.showToolbarPublish = value;
-          await this.plugin.saveData(this.plugin.settings);
-          this.refreshActiveToolbars();
+      setting
+        .setName("Show publish button")
+        .setDesc("Display the publish button in the CMS toolbar.")
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.showToolbarPublish);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.showToolbarPublish = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.refreshActiveToolbars();
+          });
         });
-      });
     });
     toolbarButtonsGroup.addSetting((setting) => {
-      setting.setName("Show draft button").setDesc("Display the draft button in the CMS toolbar.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showToolbarDraft);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.showToolbarDraft = value;
-          await this.plugin.saveData(this.plugin.settings);
-          this.refreshActiveToolbars();
+      setting
+        .setName("Show draft button")
+        .setDesc("Display the draft button in the CMS toolbar.")
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.showToolbarDraft);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.showToolbarDraft = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.refreshActiveToolbars();
+          });
         });
-      });
     });
     toolbarButtonsGroup.addSetting((setting) => {
-      setting.setName("Show tags button").setDesc("Display the tags button in the CMS toolbar.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showToolbarTags);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.showToolbarTags = value;
-          await this.plugin.saveData(this.plugin.settings);
-          this.refreshActiveToolbars();
+      setting
+        .setName("Show tags button")
+        .setDesc("Display the tags button in the CMS toolbar.")
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.showToolbarTags);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.showToolbarTags = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.refreshActiveToolbars();
+          });
         });
-      });
     });
     toolbarButtonsGroup.addSetting((setting) => {
-      setting.setName("Show set button").setDesc("Display the set property button in the CMS toolbar.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showToolbarSet);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.showToolbarSet = value;
-          await this.plugin.saveData(this.plugin.settings);
-          this.refreshActiveToolbars();
+      setting
+        .setName("Show set button")
+        .setDesc("Display the set property button in the CMS toolbar.")
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.showToolbarSet);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.showToolbarSet = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.refreshActiveToolbars();
+          });
         });
-      });
     });
     toolbarButtonsGroup.addSetting((setting) => {
-      setting.setName("Show remove button").setDesc("Display the remove property button in the CMS toolbar.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showToolbarRemove);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.showToolbarRemove = value;
-          await this.plugin.saveData(this.plugin.settings);
-          this.refreshActiveToolbars();
+      setting
+        .setName("Show remove button")
+        .setDesc("Display the remove property button in the CMS toolbar.")
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.showToolbarRemove);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.showToolbarRemove = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.refreshActiveToolbars();
+          });
         });
-      });
     });
     toolbarButtonsGroup.addSetting((setting) => {
-      setting.setName("Show delete button").setDesc("Display the delete button in the CMS toolbar.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.showToolbarDelete);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.showToolbarDelete = value;
-          await this.plugin.saveData(this.plugin.settings);
-          this.refreshActiveToolbars();
+      setting
+        .setName("Show delete button")
+        .setDesc("Display the delete button in the CMS toolbar.")
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.showToolbarDelete);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.showToolbarDelete = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.refreshActiveToolbars();
+          });
         });
-      });
     });
-    const deletionsGroup = new import_obsidian3.SettingGroup(containerEl).setHeading("Deletions");
+    const deletionsGroup = new import_obsidian3.SettingGroup(
+      containerEl,
+    ).setHeading("Deletions");
     deletionsGroup.addSetting((setting) => {
-      setting.setName("Delete parent folder for specific file name").setDesc("When enabled, deleting a note will delete its parent folder and all its contents if the note file name matches the specified name.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.deleteParentFolder);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.deleteParentFolder = value;
-          await this.plugin.saveData(this.plugin.settings);
+      setting
+        .setName("Delete parent folder for specific file name")
+        .setDesc(
+          "When enabled, deleting a note will delete its parent folder and all its contents if the note file name matches the specified name.",
+        )
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.deleteParentFolder);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.deleteParentFolder = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
         });
-      });
     });
     deletionsGroup.addSetting((setting) => {
-      setting.setName("Folder deletion file name").setDesc("File name that triggers parent folder deletion.").addText((text) => {
-        text.setPlaceholder("index");
-        text.setValue(this.plugin.settings.deleteParentFolderFilename);
-        text.onChange(async (value) => {
-          this.plugin.settings.deleteParentFolderFilename = value;
-          await this.plugin.saveData(this.plugin.settings);
-        });
-      }).setDisabled(!this.plugin.settings.deleteParentFolder);
+      setting
+        .setName("Folder deletion file name")
+        .setDesc("File name that triggers parent folder deletion.")
+        .addText((text) => {
+          text.setPlaceholder("index");
+          text.setValue(this.plugin.settings.deleteParentFolderFilename);
+          text.onChange(async (value) => {
+            this.plugin.settings.deleteParentFolderFilename = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
+        })
+        .setDisabled(!this.plugin.settings.deleteParentFolder);
     });
     deletionsGroup.addSetting((setting) => {
-      setting.setName("Delete associated unique attachments").setDesc("When deleting a note, automatically delete attachments that are only used by that note. Attachments used by other notes will be preserved.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.deleteUniqueAttachments);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.deleteUniqueAttachments = value;
-          await this.plugin.saveData(this.plugin.settings);
+      setting
+        .setName("Delete associated unique attachments")
+        .setDesc(
+          "When deleting a note, automatically delete attachments that are only used by that note. Attachments used by other notes will be preserved.",
+        )
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.deleteUniqueAttachments);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.deleteUniqueAttachments = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
         });
-      });
     });
     deletionsGroup.addSetting((setting) => {
-      setting.setName("Confirm deletions").setDesc("Show confirmation dialog before deleting files.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.confirmDeletions);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.confirmDeletions = value;
-          await this.plugin.saveData(this.plugin.settings);
+      setting
+        .setName("Confirm deletions")
+        .setDesc("Show confirmation dialog before deleting files.")
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.confirmDeletions);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.confirmDeletions = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
         });
-      });
     });
-    const appearanceGroup = new import_obsidian3.SettingGroup(containerEl).setHeading("Appearance");
+    const appearanceGroup = new import_obsidian3.SettingGroup(
+      containerEl,
+    ).setHeading("Appearance");
     appearanceGroup.addSetting((setting) => {
-      setting.setName("Use home icon for CMS view").setDesc("Use the home icon instead of blocks icon for the CMS view in the Bases view selector. Restart Obsidian for this change to take effect.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.useHomeIcon);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.useHomeIcon = value;
-          await this.plugin.saveData(this.plugin.settings);
+      setting
+        .setName("Use home icon for CMS view")
+        .setDesc(
+          "Use the home icon instead of blocks icon for the CMS view in the Bases view selector. Restart Obsidian for this change to take effect.",
+        )
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.useHomeIcon);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.useHomeIcon = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
         });
-      });
     });
     appearanceGroup.addSetting((setting) => {
-      setting.setName("Force static image for animated GIFs").setDesc("When enabled, animated GIFs will display only the first frame when used as card covers or thumbnails.").addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.forceStaticGifImages);
-        toggle.onChange(async (value) => {
-          this.plugin.settings.forceStaticGifImages = value;
-          await this.plugin.saveData(this.plugin.settings);
-          const pluginWithMethod = this.plugin;
-          if (pluginWithMethod.activeViews) {
-            pluginWithMethod.activeViews.forEach((view) => {
-              if (view.onDataUpdated) {
-                view.onDataUpdated();
-              }
-            });
-          }
+      setting
+        .setName("Force static image for animated GIFs")
+        .setDesc(
+          "When enabled, animated GIFs will display only the first frame when used as card covers or thumbnails.",
+        )
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings.forceStaticGifImages);
+          toggle.onChange(async (value) => {
+            this.plugin.settings.forceStaticGifImages = value;
+            await this.plugin.saveData(this.plugin.settings);
+            const pluginWithMethod = this.plugin;
+            if (pluginWithMethod.activeViews) {
+              pluginWithMethod.activeViews.forEach((view) => {
+                if (view.onDataUpdated) {
+                  view.onDataUpdated();
+                }
+              });
+            }
+          });
         });
-      });
     });
-    const performanceGroup = new import_obsidian3.SettingGroup(containerEl).setHeading("Performance");
+    const performanceGroup = new import_obsidian3.SettingGroup(
+      containerEl,
+    ).setHeading("Performance");
     performanceGroup.addSetting((setting) => {
-      setting.setName("Embedded view refresh debounce (ms)").setDesc("Delay in milliseconds before refreshing embedded views when switching files. Higher values reduce CPU usage but may make views feel less responsive. Range: 50-500ms.").addSlider((slider) => {
-        slider.setLimits(50, 500, 25);
-        slider.setValue(this.plugin.settings.embeddedViewRefreshDebounceMs);
-        slider.setDynamicTooltip();
-        slider.onChange(async (value) => {
-          this.plugin.settings.embeddedViewRefreshDebounceMs = value;
-          await this.plugin.saveData(this.plugin.settings);
+      setting
+        .setName("Embedded view refresh debounce (ms)")
+        .setDesc(
+          "Delay in milliseconds before refreshing embedded views when switching files. Higher values reduce CPU usage but may make views feel less responsive. Range: 50-500ms.",
+        )
+        .addSlider((slider) => {
+          slider.setLimits(50, 500, 25);
+          slider.setValue(this.plugin.settings.embeddedViewRefreshDebounceMs);
+          slider.setDynamicTooltip();
+          slider.onChange(async (value) => {
+            this.plugin.settings.embeddedViewRefreshDebounceMs = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
         });
-      });
     });
     performanceGroup.addSetting((setting) => {
-      setting.setName("Virtual scrolling threshold").setDesc("Number of cards above which virtual scrolling is enabled. Virtual scrolling only renders cards in the viewport, improving performance for large collections. Set to 0 to always enable, or a high value to disable.").addSlider((slider) => {
-        slider.setLimits(0, 500, 25);
-        slider.setValue(this.plugin.settings.virtualScrollThreshold);
-        slider.setDynamicTooltip();
-        slider.onChange(async (value) => {
-          this.plugin.settings.virtualScrollThreshold = value;
-          await this.plugin.saveData(this.plugin.settings);
+      setting
+        .setName("Virtual scrolling threshold")
+        .setDesc(
+          "Number of cards above which virtual scrolling is enabled. Virtual scrolling only renders cards in the viewport, improving performance for large collections. Set to 0 to always enable, or a high value to disable.",
+        )
+        .addSlider((slider) => {
+          slider.setLimits(0, 500, 25);
+          slider.setValue(this.plugin.settings.virtualScrollThreshold);
+          slider.setDynamicTooltip();
+          slider.onChange(async (value) => {
+            this.plugin.settings.virtualScrollThreshold = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
         });
-      });
     });
     performanceGroup.addSetting((setting) => {
-      setting.setName("Virtual scroll buffer").setDesc("Number of cards to render above and below the visible viewport when virtual scrolling is active. Higher values reduce visual glitches when scrolling fast but use more memory.").addSlider((slider) => {
-        slider.setLimits(5, 50, 5);
-        slider.setValue(this.plugin.settings.virtualScrollBuffer);
-        slider.setDynamicTooltip();
-        slider.onChange(async (value) => {
-          this.plugin.settings.virtualScrollBuffer = value;
-          await this.plugin.saveData(this.plugin.settings);
+      setting
+        .setName("Virtual scroll buffer")
+        .setDesc(
+          "Number of cards to render above and below the visible viewport when virtual scrolling is active. Higher values reduce visual glitches when scrolling fast but use more memory.",
+        )
+        .addSlider((slider) => {
+          slider.setLimits(5, 50, 5);
+          slider.setValue(this.plugin.settings.virtualScrollBuffer);
+          slider.setDynamicTooltip();
+          slider.onChange(async (value) => {
+            this.plugin.settings.virtualScrollBuffer = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
         });
-      });
     });
-    const quickEditGroup = new import_obsidian3.SettingGroup(containerEl).setHeading("Quick edit");
+    const quickEditGroup = new import_obsidian3.SettingGroup(
+      containerEl,
+    ).setHeading("Quick edit");
     let quickEditCommandSetting;
     let quickEditIconSetting;
     let quickEditOpenFileSetting;
     quickEditGroup.addSetting((setting) => {
-      setting.setName("Enable quick edit").setDesc("Show an icon on card titles that launches a command when clicked.").addToggle((toggle) => toggle.setValue(this.plugin.settings.enableQuickEdit).onChange((value) => {
-        void (async () => {
-          this.plugin.settings.enableQuickEdit = value;
-          await this.plugin.saveData(this.plugin.settings);
-          const shouldHide = !value;
-          const commandEl = quickEditCommandSetting == null ? void 0 : quickEditCommandSetting.settingEl;
-          const iconEl = quickEditIconSetting == null ? void 0 : quickEditIconSetting.settingEl;
-          const openFileEl = quickEditOpenFileSetting == null ? void 0 : quickEditOpenFileSetting.settingEl;
-          if (commandEl) {
-            commandEl.toggleClass("bases-cms-setting-hidden", shouldHide);
-          }
-          if (iconEl) {
-            iconEl.toggleClass("bases-cms-setting-hidden", shouldHide);
-          }
-          if (openFileEl) {
-            openFileEl.toggleClass("bases-cms-setting-hidden", shouldHide);
-          }
-        })();
-      }));
+      setting
+        .setName("Enable quick edit")
+        .setDesc(
+          "Show an icon on card titles that launches a command when clicked.",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.enableQuickEdit)
+            .onChange((value) => {
+              void (async () => {
+                this.plugin.settings.enableQuickEdit = value;
+                await this.plugin.saveData(this.plugin.settings);
+                const shouldHide = !value;
+                const commandEl =
+                  quickEditCommandSetting == null
+                    ? void 0
+                    : quickEditCommandSetting.settingEl;
+                const iconEl =
+                  quickEditIconSetting == null
+                    ? void 0
+                    : quickEditIconSetting.settingEl;
+                const openFileEl =
+                  quickEditOpenFileSetting == null
+                    ? void 0
+                    : quickEditOpenFileSetting.settingEl;
+                if (commandEl) {
+                  commandEl.toggleClass("bases-cms-setting-hidden", shouldHide);
+                }
+                if (iconEl) {
+                  iconEl.toggleClass("bases-cms-setting-hidden", shouldHide);
+                }
+                if (openFileEl) {
+                  openFileEl.toggleClass(
+                    "bases-cms-setting-hidden",
+                    shouldHide,
+                  );
+                }
+              })();
+            }),
+        );
     });
     quickEditGroup.addSetting((setting) => {
       quickEditCommandSetting = setting;
-      setting.setName("Quick edit command").setDesc("The command to execute when clicking the quick edit icon on a card title.").addButton((button) => {
-        var _a;
-        const currentCommandName = this.plugin.settings.quickEditCommandName || (this.plugin.settings.quickEditCommand ? "Select command..." : "No command selected");
-        button.setButtonText(currentCommandName).onClick(() => {
-          const modal = new CommandPickerModal(this.app, (commandId) => {
-            void (async () => {
-              const commandRegistry = this.app.commands;
-              let commandName = "";
-              if (commandRegistry) {
-                if (typeof commandRegistry.listCommands === "function") {
-                  const commands = commandRegistry.listCommands();
-                  const command = commands.find((cmd) => cmd.id === commandId);
-                  if (command) {
-                    commandName = command.name;
+      setting
+        .setName("Quick edit command")
+        .setDesc(
+          "The command to execute when clicking the quick edit icon on a card title.",
+        )
+        .addButton((button) => {
+          var _a;
+          const currentCommandName =
+            this.plugin.settings.quickEditCommandName ||
+            (this.plugin.settings.quickEditCommand
+              ? "Select command..."
+              : "No command selected");
+          button.setButtonText(currentCommandName).onClick(() => {
+            const modal = new CommandPickerModal(this.app, (commandId) => {
+              void (async () => {
+                const commandRegistry = this.app.commands;
+                let commandName = "";
+                if (commandRegistry) {
+                  if (typeof commandRegistry.listCommands === "function") {
+                    const commands = commandRegistry.listCommands();
+                    const command = commands.find(
+                      (cmd) => cmd.id === commandId,
+                    );
+                    if (command) {
+                      commandName = command.name;
+                    }
+                  }
+                  if (!commandName) {
+                    const registry = commandRegistry.commands;
+                    if (registry && registry[commandId]) {
+                      commandName = registry[commandId].name || "";
+                    }
                   }
                 }
-                if (!commandName) {
-                  const registry = commandRegistry.commands;
-                  if (registry && registry[commandId]) {
-                    commandName = registry[commandId].name || "";
-                  }
-                }
-              }
-              this.plugin.settings.quickEditCommand = commandId;
-              this.plugin.settings.quickEditCommandName = commandName;
-              await this.plugin.saveData(this.plugin.settings);
-              this.display();
-            })();
+                this.plugin.settings.quickEditCommand = commandId;
+                this.plugin.settings.quickEditCommandName = commandName;
+                await this.plugin.saveData(this.plugin.settings);
+                this.display();
+              })();
+            });
+            modal.open();
           });
-          modal.open();
+          if (this.plugin.settings.quickEditCommand) {
+            const clearButton =
+              (_a = button.buttonEl.parentElement) == null
+                ? void 0
+                : _a.createEl("button", {
+                    text: "Clear",
+                    attr: { style: "margin-left: 8px;" },
+                  });
+            clearButton == null
+              ? void 0
+              : clearButton.addEventListener("click", () => {
+                  void (async () => {
+                    this.plugin.settings.quickEditCommand = "";
+                    this.plugin.settings.quickEditCommandName = "";
+                    await this.plugin.saveData(this.plugin.settings);
+                    this.display();
+                  })();
+                });
+          }
         });
-        if (this.plugin.settings.quickEditCommand) {
-          const clearButton = (_a = button.buttonEl.parentElement) == null ? void 0 : _a.createEl("button", {
-            text: "Clear",
-            attr: { style: "margin-left: 8px;" }
-          });
-          clearButton == null ? void 0 : clearButton.addEventListener("click", () => {
-            void (async () => {
-              this.plugin.settings.quickEditCommand = "";
-              this.plugin.settings.quickEditCommandName = "";
-              await this.plugin.saveData(this.plugin.settings);
-              this.display();
-            })();
-          });
-        }
-      });
-      setting.settingEl.toggleClass("bases-cms-setting-hidden", !this.plugin.settings.enableQuickEdit);
+      setting.settingEl.toggleClass(
+        "bases-cms-setting-hidden",
+        !this.plugin.settings.enableQuickEdit,
+      );
     });
     quickEditGroup.addSetting((setting) => {
       quickEditIconSetting = setting;
-      setting.setName("Quick edit icon").setDesc("Select the icon to display for the quick edit button on card titles.").addButton((button) => {
-        const iconName = this.getIconName(this.plugin.settings.quickEditIcon || "pencil-line");
-        button.setButtonText(iconName || "Select icon...").onClick(() => {
-          const modal = new IconPickerModal(this.app, (iconId) => {
-            void (async () => {
-              this.plugin.settings.quickEditIcon = iconId;
-              await this.plugin.saveData(this.plugin.settings);
-              this.display();
-            })();
+      setting
+        .setName("Quick edit icon")
+        .setDesc(
+          "Select the icon to display for the quick edit button on card titles.",
+        )
+        .addButton((button) => {
+          const iconName = this.getIconName(
+            this.plugin.settings.quickEditIcon || "pencil-line",
+          );
+          button.setButtonText(iconName || "Select icon...").onClick(() => {
+            const modal = new IconPickerModal(this.app, (iconId) => {
+              void (async () => {
+                this.plugin.settings.quickEditIcon = iconId;
+                await this.plugin.saveData(this.plugin.settings);
+                this.display();
+              })();
+            });
+            modal.open();
           });
-          modal.open();
         });
-      });
-      setting.settingEl.toggleClass("bases-cms-setting-hidden", !this.plugin.settings.enableQuickEdit);
+      setting.settingEl.toggleClass(
+        "bases-cms-setting-hidden",
+        !this.plugin.settings.enableQuickEdit,
+      );
     });
     quickEditGroup.addSetting((setting) => {
       quickEditOpenFileSetting = setting;
-      setting.setName("Attempt to open file and execute quick edit command").setDesc("For commands that don't have special handling, attempt to open the file and execute the command. Some commands may not work properly this way.").addToggle((toggle) => toggle.setValue(this.plugin.settings.quickEditOpenFile).onChange((value) => {
-        void (async () => {
-          this.plugin.settings.quickEditOpenFile = value;
-          await this.plugin.saveData(this.plugin.settings);
-        })();
-      }));
-      setting.settingEl.toggleClass("bases-cms-setting-hidden", !this.plugin.settings.enableQuickEdit);
+      setting
+        .setName("Attempt to open file and execute quick edit command")
+        .setDesc(
+          "For commands that don't have special handling, attempt to open the file and execute the command. Some commands may not work properly this way.",
+        )
+        .addToggle((toggle) =>
+          toggle
+            .setValue(this.plugin.settings.quickEditOpenFile)
+            .onChange((value) => {
+              void (async () => {
+                this.plugin.settings.quickEditOpenFile = value;
+                await this.plugin.saveData(this.plugin.settings);
+              })();
+            }),
+        );
+      setting.settingEl.toggleClass(
+        "bases-cms-setting-hidden",
+        !this.plugin.settings.enableQuickEdit,
+      );
     });
   }
   getIconName(iconId) {
     if (!iconId) return "";
-    return iconId.replace(/^lucide-/, "").split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+    return iconId
+      .replace(/^lucide-/, "")
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   }
 };
 
@@ -1662,11 +1969,17 @@ var import_obsidian5 = require("obsidian");
 init_frontmatter_helper();
 async function getFirstBasesPropertyValue(entry, propertyString, app) {
   if (!propertyString || !propertyString.trim()) return null;
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  const properties = propertyString
+    .split(",")
+    .map((p) => p.trim())
+    .filter((p) => p);
   for (const prop of properties) {
     const value = entry.getValue(prop);
     const valueObj = value;
-    const propertyExists = valueObj && ("date" in valueObj && valueObj.date instanceof Date || "data" in valueObj && valueObj.data != null);
+    const propertyExists =
+      valueObj &&
+      (("date" in valueObj && valueObj.date instanceof Date) ||
+        ("data" in valueObj && valueObj.data != null));
     if (propertyExists) {
       return value;
     }
@@ -1732,11 +2045,14 @@ function getPropertyLabel(propertyName, app, basesConfig, basesController) {
     if (typeof configWithDisplayName.getDisplayName === "function") {
       try {
         const displayName = configWithDisplayName.getDisplayName(propertyName);
-        if (displayName && typeof displayName === "string" && displayName.trim() !== "") {
+        if (
+          displayName &&
+          typeof displayName === "string" &&
+          displayName.trim() !== ""
+        ) {
           return displayName;
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
   }
   return propertyName;
@@ -1748,18 +2064,24 @@ function hasBodyClass(className) {
 }
 function getListSeparator() {
   let value = getComputedStyle(document.body).getPropertyValue(
-    "--bases-cms-list-separator"
+    "--bases-cms-list-separator",
   );
-  if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
     value = value.slice(1, -1);
   }
   return value || ", ";
 }
 function getEmptyValueMarker() {
   let value = getComputedStyle(document.body).getPropertyValue(
-    "--bases-cms-empty-value-marker"
+    "--bases-cms-empty-value-marker",
   );
-  if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
     value = value.slice(1, -1);
   }
   return value || "\u2014";
@@ -1810,16 +2132,32 @@ function removeDuplication(str) {
   }
   return str;
 }
-async function basesEntryToCardData(entry, settings, sortMethod, isShuffled, snippet, imageUrl, hasImageAvailable, app, mdxFrontmatterCache) {
+async function basesEntryToCardData(
+  entry,
+  settings,
+  sortMethod,
+  isShuffled,
+  snippet,
+  imageUrl,
+  hasImageAvailable,
+  app,
+  mdxFrontmatterCache,
+) {
   var _a;
   const fileName = entry.file.basename || entry.file.name;
   let titleValue = null;
   if (app) {
     const file = app.vault.getAbstractFileByPath(entry.file.path);
-    if (file instanceof import_obsidian6.TFile && file.extension === "mdx" && mdxFrontmatterCache) {
+    if (
+      file instanceof import_obsidian6.TFile &&
+      file.extension === "mdx" &&
+      mdxFrontmatterCache
+    ) {
       const frontmatter = mdxFrontmatterCache[entry.file.path];
       if (frontmatter) {
-        const cleanProp = settings.titleProperty.startsWith("note.") ? settings.titleProperty.substring(5) : settings.titleProperty;
+        const cleanProp = settings.titleProperty.startsWith("note.")
+          ? settings.titleProperty.substring(5)
+          : settings.titleProperty;
         const frontmatterValue = frontmatter[cleanProp];
         if (frontmatterValue != null) {
           titleValue = { data: frontmatterValue };
@@ -1828,18 +2166,24 @@ async function basesEntryToCardData(entry, settings, sortMethod, isShuffled, sni
     }
   }
   if (!titleValue) {
-    titleValue = await getFirstBasesPropertyValue(entry, settings.titleProperty, app);
+    titleValue = await getFirstBasesPropertyValue(
+      entry,
+      settings.titleProperty,
+      app,
+    );
   }
   const titleData = titleValue == null ? void 0 : titleValue.data;
   let title;
   if (titleData != null && titleData !== "") {
     if (Array.isArray(titleData)) {
-      const items = titleData.map((item) => {
-        if (item && typeof item === "object" && "data" in item) {
-          return String(item.data);
-        }
-        return String(item);
-      }).filter((s) => s.trim().length > 0);
+      const items = titleData
+        .map((item) => {
+          if (item && typeof item === "object" && "data" in item) {
+            return String(item.data);
+          }
+          return String(item);
+        })
+        .filter((s) => s.trim().length > 0);
       title = items.length > 0 ? items.join(", ") : fileName;
     } else if (typeof titleData === "string" || typeof titleData === "number") {
       title = String(titleData);
@@ -1856,65 +2200,93 @@ async function basesEntryToCardData(entry, settings, sortMethod, isShuffled, sni
   if (!yamlTagsValue && app) {
     const file = app.vault.getAbstractFileByPath(entry.file.path);
     if (file instanceof import_obsidian6.TFile && file.extension === "mdx") {
-      let frontmatter = (_a = mdxFrontmatterCache == null ? void 0 : mdxFrontmatterCache[entry.file.path]) != null ? _a : null;
+      let frontmatter =
+        (_a =
+          mdxFrontmatterCache == null
+            ? void 0
+            : mdxFrontmatterCache[entry.file.path]) != null
+          ? _a
+          : null;
       if (frontmatter === void 0) {
         frontmatter = await getFileFrontmatter(app, file);
       }
       if (frontmatter == null ? void 0 : frontmatter.tags) {
         const tagData = frontmatter.tags;
-        const rawTags = Array.isArray(tagData) ? tagData.map((t) => {
-          if (t && typeof t === "object" && t !== null) {
-            return JSON.stringify(t);
-          }
-          if (typeof t === "string" || typeof t === "number") {
-            return String(t);
-          }
-          return t ? JSON.stringify(t) : "";
-        }) : (() => {
-          if (tagData && typeof tagData === "object" && tagData !== null) {
-            return [JSON.stringify(tagData)];
-          }
-          if (typeof tagData === "string" || typeof tagData === "number") {
-            return [String(tagData)];
-          }
-          return tagData ? [JSON.stringify(tagData)] : [""];
-        })();
+        const rawTags = Array.isArray(tagData)
+          ? tagData.map((t) => {
+              if (t && typeof t === "object" && t !== null) {
+                return JSON.stringify(t);
+              }
+              if (typeof t === "string" || typeof t === "number") {
+                return String(t);
+              }
+              return t ? JSON.stringify(t) : "";
+            })
+          : (() => {
+              if (tagData && typeof tagData === "object" && tagData !== null) {
+                return [JSON.stringify(tagData)];
+              }
+              if (typeof tagData === "string" || typeof tagData === "number") {
+                return [String(tagData)];
+              }
+              return tagData ? [JSON.stringify(tagData)] : [""];
+            })();
         yamlTags = rawTags.map((tag) => tag.replace(/^#/, ""));
       }
     }
   }
   if (yamlTagsValue && yamlTagsValue.data != null) {
     const tagData = yamlTagsValue.data;
-    const rawTags = Array.isArray(tagData) ? tagData.map((t) => {
-      if (t && typeof t === "object" && "data" in t) {
-        return String(t.data);
-      }
-      return typeof t === "string" || typeof t === "number" ? String(t) : "";
-    }).filter((t) => t) : typeof tagData === "string" || typeof tagData === "number" ? [String(tagData)] : [];
+    const rawTags = Array.isArray(tagData)
+      ? tagData
+          .map((t) => {
+            if (t && typeof t === "object" && "data" in t) {
+              return String(t.data);
+            }
+            return typeof t === "string" || typeof t === "number"
+              ? String(t)
+              : "";
+          })
+          .filter((t) => t)
+      : typeof tagData === "string" || typeof tagData === "number"
+        ? [String(tagData)]
+        : [];
     yamlTags = rawTags.map((tag) => tag.replace(/^#/, ""));
   }
   let allTagsValue = entry.getValue("file.tags");
   let tags = [];
   if (allTagsValue && allTagsValue.data != null) {
     const tagData = allTagsValue.data;
-    const rawTags = Array.isArray(tagData) ? tagData.map((t) => {
-      if (t && typeof t === "object" && t !== null && "data" in t) {
-        const itemData = t.data;
-        if (itemData && typeof itemData === "object" && itemData !== null) {
-          return JSON.stringify(itemData);
-        }
-        return String(itemData);
-      }
-      if (t && typeof t === "object" && t !== null) {
-        return JSON.stringify(t);
-      }
-      return typeof t === "string" || typeof t === "number" ? String(t) : "";
-    }).filter((t) => typeof t === "string" && t.length > 0) : (() => {
-      if (tagData && typeof tagData === "object" && tagData !== null) {
-        return [JSON.stringify(tagData)];
-      }
-      return typeof tagData === "string" || typeof tagData === "number" ? [String(tagData)] : [];
-    })();
+    const rawTags = Array.isArray(tagData)
+      ? tagData
+          .map((t) => {
+            if (t && typeof t === "object" && t !== null && "data" in t) {
+              const itemData = t.data;
+              if (
+                itemData &&
+                typeof itemData === "object" &&
+                itemData !== null
+              ) {
+                return JSON.stringify(itemData);
+              }
+              return String(itemData);
+            }
+            if (t && typeof t === "object" && t !== null) {
+              return JSON.stringify(t);
+            }
+            return typeof t === "string" || typeof t === "number"
+              ? String(t)
+              : "";
+          })
+          .filter((t) => typeof t === "string" && t.length > 0)
+      : (() => {
+          if (tagData && typeof tagData === "object" && tagData !== null) {
+            return [JSON.stringify(tagData)];
+          }
+          return typeof tagData === "string" || typeof tagData === "number"
+            ? [String(tagData)]
+            : [];
+        })();
     tags = rawTags.map((tag) => tag.replace(/^#/, ""));
   } else if (!allTagsValue && app) {
     const file = app.vault.getAbstractFileByPath(entry.file.path);
@@ -1926,16 +2298,24 @@ async function basesEntryToCardData(entry, settings, sortMethod, isShuffled, sni
   const mtime = entry.file.stat.mtime;
   let displayTags = [];
   if (settings.showTags && settings.tagsProperty) {
-    const tagsValue = await getFirstBasesPropertyValue(entry, settings.tagsProperty, app);
+    const tagsValue = await getFirstBasesPropertyValue(
+      entry,
+      settings.tagsProperty,
+      app,
+    );
     if (tagsValue && tagsValue.data != null) {
       const tagData = tagsValue.data;
       if (Array.isArray(tagData)) {
-        displayTags = tagData.map((t) => {
-          if (t && typeof t === "object" && "data" in t) {
-            return String(t.data);
-          }
-          return typeof t === "string" || typeof t === "number" ? String(t) : "";
-        }).filter((t) => typeof t === "string" && t.length > 0);
+        displayTags = tagData
+          .map((t) => {
+            if (t && typeof t === "object" && "data" in t) {
+              return String(t.data);
+            }
+            return typeof t === "string" || typeof t === "number"
+              ? String(t)
+              : "";
+          })
+          .filter((t) => typeof t === "string" && t.length > 0);
       } else if (typeof tagData === "string" || typeof tagData === "number") {
         displayTags = [String(tagData)];
       }
@@ -1953,7 +2333,7 @@ async function basesEntryToCardData(entry, settings, sortMethod, isShuffled, sni
     snippet,
     imageUrl,
     hasImageAvailable: hasImageAvailable || false,
-    displayTags: displayTags.length > 0 ? displayTags : void 0
+    displayTags: displayTags.length > 0 ? displayTags : void 0,
   };
   const props = [
     settings.propertyDisplay1,
@@ -1969,7 +2349,7 @@ async function basesEntryToCardData(entry, settings, sortMethod, isShuffled, sni
     settings.propertyDisplay11,
     settings.propertyDisplay12,
     settings.propertyDisplay13,
-    settings.propertyDisplay14
+    settings.propertyDisplay14,
   ];
   const seen = /* @__PURE__ */ new Set();
   const effectiveProps = props.map((prop) => {
@@ -1992,36 +2372,183 @@ async function basesEntryToCardData(entry, settings, sortMethod, isShuffled, sni
   cardData.propertyName12 = effectiveProps[11] || void 0;
   cardData.propertyName13 = effectiveProps[12] || void 0;
   cardData.propertyName14 = effectiveProps[13] || void 0;
-  cardData.property1 = effectiveProps[0] ? await resolveBasesPropertyAsync(effectiveProps[0], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property2 = effectiveProps[1] ? await resolveBasesPropertyAsync(effectiveProps[1], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property3 = effectiveProps[2] ? await resolveBasesPropertyAsync(effectiveProps[2], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property4 = effectiveProps[3] ? await resolveBasesPropertyAsync(effectiveProps[3], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property5 = effectiveProps[4] ? await resolveBasesPropertyAsync(effectiveProps[4], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property6 = effectiveProps[5] ? await resolveBasesPropertyAsync(effectiveProps[5], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property7 = effectiveProps[6] ? await resolveBasesPropertyAsync(effectiveProps[6], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property8 = effectiveProps[7] ? await resolveBasesPropertyAsync(effectiveProps[7], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property9 = effectiveProps[8] ? await resolveBasesPropertyAsync(effectiveProps[8], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property10 = effectiveProps[9] ? await resolveBasesPropertyAsync(effectiveProps[9], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property11 = effectiveProps[10] ? await resolveBasesPropertyAsync(effectiveProps[10], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property12 = effectiveProps[11] ? await resolveBasesPropertyAsync(effectiveProps[11], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property13 = effectiveProps[12] ? await resolveBasesPropertyAsync(effectiveProps[12], entry, cardData, settings, app, mdxFrontmatterCache) : null;
-  cardData.property14 = effectiveProps[13] ? await resolveBasesPropertyAsync(effectiveProps[13], entry, cardData, settings, app, mdxFrontmatterCache) : null;
+  cardData.property1 = effectiveProps[0]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[0],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property2 = effectiveProps[1]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[1],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property3 = effectiveProps[2]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[2],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property4 = effectiveProps[3]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[3],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property5 = effectiveProps[4]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[4],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property6 = effectiveProps[5]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[5],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property7 = effectiveProps[6]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[6],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property8 = effectiveProps[7]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[7],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property9 = effectiveProps[8]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[8],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property10 = effectiveProps[9]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[9],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property11 = effectiveProps[10]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[10],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property12 = effectiveProps[11]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[11],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property13 = effectiveProps[12]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[12],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
+  cardData.property14 = effectiveProps[13]
+    ? await resolveBasesPropertyAsync(
+        effectiveProps[13],
+        entry,
+        cardData,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      )
+    : null;
   return cardData;
 }
-async function transformBasesEntries(entries, settings, sortMethod, isShuffled, snippets, images, hasImageAvailable, app, mdxFrontmatterCache) {
-  return Promise.all(entries.map((entry) => basesEntryToCardData(
-    entry,
-    settings,
-    sortMethod,
-    isShuffled,
-    snippets[entry.file.path],
-    images[entry.file.path],
-    hasImageAvailable[entry.file.path],
-    app,
-    mdxFrontmatterCache
-  )));
+async function transformBasesEntries(
+  entries,
+  settings,
+  sortMethod,
+  isShuffled,
+  snippets,
+  images,
+  hasImageAvailable,
+  app,
+  mdxFrontmatterCache,
+) {
+  return Promise.all(
+    entries.map((entry) =>
+      basesEntryToCardData(
+        entry,
+        settings,
+        sortMethod,
+        isShuffled,
+        snippets[entry.file.path],
+        images[entry.file.path],
+        hasImageAvailable[entry.file.path],
+        app,
+        mdxFrontmatterCache,
+      ),
+    ),
+  );
 }
-async function resolveBasesPropertyAsync(propertyName, entry, cardData, settings, app, mdxFrontmatterCache) {
+async function resolveBasesPropertyAsync(
+  propertyName,
+  entry,
+  cardData,
+  settings,
+  app,
+  mdxFrontmatterCache,
+) {
   if (!propertyName || propertyName === "") {
     return null;
   }
@@ -2043,10 +2570,16 @@ async function resolveBasesPropertyAsync(propertyName, entry, cardData, settings
   let value = null;
   if (app) {
     const file = app.vault.getAbstractFileByPath(entry.file.path);
-    if (file instanceof import_obsidian6.TFile && file.extension === "mdx" && mdxFrontmatterCache) {
+    if (
+      file instanceof import_obsidian6.TFile &&
+      file.extension === "mdx" &&
+      mdxFrontmatterCache
+    ) {
       const frontmatter = mdxFrontmatterCache[entry.file.path];
       if (frontmatter) {
-        const cleanProp = propertyName.startsWith("note.") ? propertyName.substring(5) : propertyName;
+        const cleanProp = propertyName.startsWith("note.")
+          ? propertyName.substring(5)
+          : propertyName;
         const frontmatterValue = frontmatter[cleanProp];
         if (frontmatterValue != null) {
           value = { data: frontmatterValue };
@@ -2087,7 +2620,12 @@ async function resolveBasesPropertyAsync(propertyName, entry, cardData, settings
       let str;
       if (item && typeof item === "object" && "data" in item) {
         const itemData = item.data;
-        if (itemData && typeof itemData === "object" && !Array.isArray(itemData) && "data" in itemData) {
+        if (
+          itemData &&
+          typeof itemData === "object" &&
+          !Array.isArray(itemData) &&
+          "data" in itemData
+        ) {
           str = String(itemData.data);
         } else {
           str = String(itemData);
@@ -2100,7 +2638,11 @@ async function resolveBasesPropertyAsync(propertyName, entry, cardData, settings
       const trimmed = str.trim();
       if (trimmed && trimmed !== "") {
         const deduplicated = removeDuplication(trimmed);
-        if (deduplicated && deduplicated !== "" && !uniqueItems.has(deduplicated)) {
+        if (
+          deduplicated &&
+          deduplicated !== "" &&
+          !uniqueItems.has(deduplicated)
+        ) {
           uniqueItems.add(deduplicated);
           result.push(deduplicated);
         }
@@ -2162,8 +2704,8 @@ async function processImagePaths(imagePaths) {
       }
     }
   }
-  const validationPromises = externalUrlCandidates.map(
-    (url) => validateImageUrl(url).then((isValid) => isValid ? url : null)
+  const validationPromises = externalUrlCandidates.map((url) =>
+    validateImageUrl(url).then((isValid) => (isValid ? url : null)),
   );
   const validatedUrls = await Promise.all(validationPromises);
   const externalUrls = validatedUrls.filter((url) => url !== null);
@@ -2171,15 +2713,29 @@ async function processImagePaths(imagePaths) {
 }
 function resolveInternalImagePaths(internalPaths, sourcePath, app) {
   var _a, _b, _c;
-  const validImageExtensions = ["avif", "bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
+  const validImageExtensions = [
+    "avif",
+    "bmp",
+    "gif",
+    "jpeg",
+    "jpg",
+    "png",
+    "svg",
+    "webp",
+  ];
   const resourcePaths = [];
   for (const propPath of internalPaths) {
-    let imageFile = app.metadataCache.getFirstLinkpathDest(propPath, sourcePath);
+    let imageFile = app.metadataCache.getFirstLinkpathDest(
+      propPath,
+      sourcePath,
+    );
     if (!imageFile && propPath.startsWith("./")) {
       const sourceFile = app.vault.getAbstractFileByPath(sourcePath);
       if (sourceFile && sourceFile.parent) {
         const relativePath = propPath.substring(2);
-        const fullPath = sourceFile.parent.path ? `${sourceFile.parent.path}/${relativePath}` : relativePath;
+        const fullPath = sourceFile.parent.path
+          ? `${sourceFile.parent.path}/${relativePath}`
+          : relativePath;
         const resolvedFile = app.vault.getAbstractFileByPath(fullPath);
         if (resolvedFile instanceof import_obsidian7.TFile) {
           imageFile = resolvedFile;
@@ -2196,8 +2752,14 @@ function resolveInternalImagePaths(internalPaths, sourcePath, app) {
       const resourcePath = app.vault.getResourcePath(imageFile);
       resourcePaths.push(resourcePath);
     } else if (propPath.startsWith("/") && !propPath.startsWith("//")) {
-      const vaultCms = (_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["vault-cms"];
-      const resolved = (_c = vaultCms == null ? void 0 : vaultCms.resolvePublicPath) == null ? void 0 : _c.call(vaultCms, propPath);
+      const vaultCms =
+        (_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null
+          ? void 0
+          : _b["vault-cms"];
+      const resolved =
+        (_c = vaultCms == null ? void 0 : vaultCms.resolvePublicPath) == null
+          ? void 0
+          : _c.call(vaultCms, propPath);
       if (resolved) {
         resourcePaths.push(resolved);
       }
@@ -2206,7 +2768,16 @@ function resolveInternalImagePaths(internalPaths, sourcePath, app) {
   return resourcePaths;
 }
 async function extractEmbedImages(file, app) {
-  const validImageExtensions = ["avif", "bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
+  const validImageExtensions = [
+    "avif",
+    "bmp",
+    "gif",
+    "jpeg",
+    "jpg",
+    "png",
+    "svg",
+    "webp",
+  ];
   const metadata = app.metadataCache.getFileCache(file);
   const bodyResourcePaths = [];
   const bodyExternalUrlCandidates = /* @__PURE__ */ new Set();
@@ -2218,7 +2789,10 @@ async function extractEmbedImages(file, app) {
           bodyExternalUrlCandidates.add(embedLink);
         }
       } else {
-        const targetFile = app.metadataCache.getFirstLinkpathDest(embedLink, file.path);
+        const targetFile = app.metadataCache.getFirstLinkpathDest(
+          embedLink,
+          file.path,
+        );
         if (targetFile && validImageExtensions.includes(targetFile.extension)) {
           const resourcePath = app.vault.getResourcePath(targetFile);
           bodyResourcePaths.push(resourcePath);
@@ -2234,7 +2808,10 @@ async function extractEmbedImages(file, app) {
       while ((match = markdownImageRegex.exec(content)) !== null) {
         const url = match[2].trim();
         const cleanUrl = url.replace(/["')\s]+$/, "");
-        if (isExternalUrl(cleanUrl) && (hasValidImageExtension(cleanUrl) || !cleanUrl.includes("."))) {
+        if (
+          isExternalUrl(cleanUrl) &&
+          (hasValidImageExtension(cleanUrl) || !cleanUrl.includes("."))
+        ) {
           bodyExternalUrlCandidates.add(cleanUrl);
         }
       }
@@ -2242,17 +2819,23 @@ async function extractEmbedImages(file, app) {
       while ((match = htmlImgRegex.exec(content)) !== null) {
         const url = match[1].trim();
         const cleanUrl = url.replace(/["'\s>]+$/, "");
-        if (isExternalUrl(cleanUrl) && (hasValidImageExtension(cleanUrl) || !cleanUrl.includes("."))) {
+        if (
+          isExternalUrl(cleanUrl) &&
+          (hasValidImageExtension(cleanUrl) || !cleanUrl.includes("."))
+        ) {
           bodyExternalUrlCandidates.add(cleanUrl);
         }
       }
     } catch (error) {
-      console.warn(`Failed to read file content for image extraction: ${file.path}`, error);
+      console.warn(
+        `Failed to read file content for image extraction: ${file.path}`,
+        error,
+      );
     }
   }
   const externalUrlArray = Array.from(bodyExternalUrlCandidates);
-  const validationPromises = externalUrlArray.map(
-    (url) => validateImageUrl(url).then((isValid) => isValid ? url : null)
+  const validationPromises = externalUrlArray.map((url) =>
+    validateImageUrl(url).then((isValid) => (isValid ? url : null)),
   );
   const validatedUrls = await Promise.all(validationPromises);
   const bodyExternalUrls = validatedUrls.filter((url) => url !== null);
@@ -2323,7 +2906,7 @@ var markdownPatterns = [
   /\[\^[^\]]+]/g,
   /^\s*\[\^[^\]]+]:.*$/gm,
   /<([a-z][a-z0-9]*)\b[^>]*>(.*?)<\/\1>/gi,
-  /<[^>]+>/g
+  /<[^>]+>/g,
 ];
 function protectEscapedChars(text) {
   const map = /* @__PURE__ */ new Map();
@@ -2354,7 +2937,10 @@ function removeCodeBlocks(text) {
     const fenceLength = openMatch[1].length;
     const openIndex = openMatch.index;
     const escapedChar = fenceChar.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const closePattern = new RegExp(`^${escapedChar}{${fenceLength}}\\s*$`, "m");
+    const closePattern = new RegExp(
+      `^${escapedChar}{${fenceLength}}\\s*$`,
+      "m",
+    );
     const afterOpen = result.substring(openIndex + openMatch[1].length);
     const closeMatch = afterOpen.match(closePattern);
     if (closeMatch) {
@@ -2378,7 +2964,8 @@ function stripMarkdownSyntax(text) {
   if (!text || text.trim().length === 0) return "";
   text = text.replace(/^>\s*\[![\w-]+\][+-]?.*$/gm, "");
   text = text.replace(/^>\s?/gm, "");
-  const { text: protectedText, map: escapedCharsMap } = protectEscapedChars(text);
+  const { text: protectedText, map: escapedCharsMap } =
+    protectEscapedChars(text);
   let result = removeCodeBlocks(protectedText);
   markdownPatterns.forEach((pattern) => {
     result = result.replace(pattern, (match, ...groups) => {
@@ -2398,15 +2985,33 @@ function stripMarkdownSyntax(text) {
   result = restoreEscapedChars(result, escapedCharsMap);
   return result;
 }
-function sanitizeForPreview(content, omitFirstLine = false, filename, titleValue) {
+function sanitizeForPreview(
+  content,
+  omitFirstLine = false,
+  filename,
+  titleValue,
+) {
   const cleaned = content.replace(/^---[\s\S]*?---/, "").trim();
   let stripped = stripMarkdownSyntax(cleaned);
   const firstLineEnd = stripped.indexOf("\n");
-  const firstLine = (firstLineEnd !== -1 ? stripped.substring(0, firstLineEnd) : stripped).trim();
-  if (omitFirstLine || filename && firstLine === filename || titleValue && firstLine === titleValue) {
-    stripped = firstLineEnd !== -1 ? stripped.substring(firstLineEnd + 1).trim() : "";
+  const firstLine = (
+    firstLineEnd !== -1 ? stripped.substring(0, firstLineEnd) : stripped
+  ).trim();
+  if (
+    omitFirstLine ||
+    (filename && firstLine === filename) ||
+    (titleValue && firstLine === titleValue)
+  ) {
+    stripped =
+      firstLineEnd !== -1 ? stripped.substring(firstLineEnd + 1).trim() : "";
   }
-  const normalized = stripped.replace(/\^[a-zA-Z0-9-]+/g, "").split(/\s+/).filter((word) => word).join(" ").trim().replace(/\.{2,}/g, (match) => match.replace(/\./g, "\u2024"));
+  const normalized = stripped
+    .replace(/\^[a-zA-Z0-9-]+/g, "")
+    .split(/\s+/)
+    .filter((word) => word)
+    .join(" ")
+    .trim()
+    .replace(/\.{2,}/g, (match) => match.replace(/\./g, "\u2024"));
   const wasTruncated = normalized.length > 500;
   let preview = normalized.substring(0, 500);
   if (wasTruncated) {
@@ -2414,19 +3019,31 @@ function sanitizeForPreview(content, omitFirstLine = false, filename, titleValue
   }
   return preview;
 }
-async function loadFilePreview(file, app, propertyValue, settings, fileName, titleValue) {
+async function loadFilePreview(
+  file,
+  app,
+  propertyValue,
+  settings,
+  fileName,
+  titleValue,
+) {
   var _a;
   let result = null;
   if (propertyValue != null) {
     if (Array.isArray(propertyValue)) {
-      const items = propertyValue.map((item) => {
-        if (item && typeof item === "object" && "data" in item) {
-          return String(item.data);
-        }
-        return String(item);
-      }).filter((s) => s.trim().length > 0);
+      const items = propertyValue
+        .map((item) => {
+          if (item && typeof item === "object" && "data" in item) {
+            return String(item.data);
+          }
+          return String(item);
+        })
+        .filter((s) => s.trim().length > 0);
       result = items.length > 0 ? items.join(", ") : null;
-    } else if (typeof propertyValue === "string" || typeof propertyValue === "number") {
+    } else if (
+      typeof propertyValue === "string" ||
+      typeof propertyValue === "number"
+    ) {
       const str = String(propertyValue).trim();
       result = str.length > 0 ? str : null;
     }
@@ -2448,16 +3065,30 @@ async function loadFilePreview(file, app, propertyValue, settings, fileName, tit
       content,
       settings.omitFirstLine,
       fileName,
-      titleValue
+      titleValue,
     );
   }
   return "";
 }
 
 // src/shared/content-loader.ts
-async function loadImageForEntry(path, file, app, imagePropertyValues, fallbackToEmbeds, imageCache, hasImageCache) {
-  const hasPropertyValues = imagePropertyValues && Array.isArray(imagePropertyValues) && imagePropertyValues.length > 0;
-  const shouldFallback = fallbackToEmbeds === true || fallbackToEmbeds === "always" || fallbackToEmbeds === "if-empty" && !hasPropertyValues;
+async function loadImageForEntry(
+  path,
+  file,
+  app,
+  imagePropertyValues,
+  fallbackToEmbeds,
+  imageCache,
+  hasImageCache,
+) {
+  const hasPropertyValues =
+    imagePropertyValues &&
+    Array.isArray(imagePropertyValues) &&
+    imagePropertyValues.length > 0;
+  const shouldFallback =
+    fallbackToEmbeds === true ||
+    fallbackToEmbeds === "always" ||
+    (fallbackToEmbeds === "if-empty" && !hasPropertyValues);
   if (!shouldFallback && path in imageCache) {
     delete imageCache[path];
     delete hasImageCache[path];
@@ -2466,10 +3097,11 @@ async function loadImageForEntry(path, file, app, imagePropertyValues, fallbackT
     return;
   }
   try {
-    const { internalPaths, externalUrls } = await processImagePaths(imagePropertyValues);
+    const { internalPaths, externalUrls } =
+      await processImagePaths(imagePropertyValues);
     let validImages = [
       ...resolveInternalImagePaths(internalPaths, path, app),
-      ...externalUrls
+      ...externalUrls,
       // External URLs already validated by processImagePaths
     ];
     if (validImages.length === 0 && !hasPropertyValues && shouldFallback) {
@@ -2489,9 +3121,18 @@ async function loadImageForEntry(path, file, app, imagePropertyValues, fallbackT
     console.error(`Failed to load image for ${path}:`, error);
   }
 }
-async function loadImagesForEntries(entries, fallbackToEmbeds, app, imageCache, hasImageCache) {
+async function loadImagesForEntries(
+  entries,
+  fallbackToEmbeds,
+  app,
+  imageCache,
+  hasImageCache,
+) {
   const entriesToProcess = entries.filter((entry) => {
-    const hasPropertyValues = entry.imagePropertyValues && Array.isArray(entry.imagePropertyValues) && entry.imagePropertyValues.length > 0;
+    const hasPropertyValues =
+      entry.imagePropertyValues &&
+      Array.isArray(entry.imagePropertyValues) &&
+      entry.imagePropertyValues.length > 0;
     return !(entry.path in imageCache) || hasPropertyValues;
   });
   const BATCH_SIZE = 50;
@@ -2506,13 +3147,21 @@ async function loadImagesForEntries(entries, fallbackToEmbeds, app, imageCache, 
           entry.imagePropertyValues,
           fallbackToEmbeds,
           imageCache,
-          hasImageCache
+          hasImageCache,
         );
-      })
+      }),
     );
   }
 }
-async function loadSnippetsForEntries(entries, fallbackToContent, omitFirstLine, app, snippetCache, truncatePreviewProperty, descriptionMaxLength) {
+async function loadSnippetsForEntries(
+  entries,
+  fallbackToContent,
+  omitFirstLine,
+  app,
+  snippetCache,
+  truncatePreviewProperty,
+  descriptionMaxLength,
+) {
   await Promise.all(
     entries.map(async (entry) => {
       if (entry.path in snippetCache) {
@@ -2528,10 +3177,10 @@ async function loadSnippetsForEntries(entries, fallbackToContent, omitFirstLine,
               fallbackToContent,
               omitFirstLine,
               truncatePreviewProperty,
-              descriptionMaxLength
+              descriptionMaxLength,
             },
             entry.fileName,
-            entry.titleString
+            entry.titleString,
           );
         } else {
           snippetCache[entry.path] = "";
@@ -2540,7 +3189,7 @@ async function loadSnippetsForEntries(entries, fallbackToContent, omitFirstLine,
         console.error(`Failed to load snippet for ${entry.path}:`, error);
         snippetCache[entry.path] = "";
       }
-    })
+    }),
   );
 }
 
@@ -2550,7 +3199,12 @@ var import_obsidian11 = require("obsidian");
 // src/utils/draft-status-badge.ts
 var import_obsidian8 = require("obsidian");
 init_frontmatter_helper();
-async function calculateDraftStatusAsync(entry, settings, app, mdxFrontmatterCache) {
+async function calculateDraftStatusAsync(
+  entry,
+  settings,
+  app,
+  mdxFrontmatterCache,
+) {
   var _a;
   let booleanValue = null;
   let isDraft = false;
@@ -2561,7 +3215,11 @@ async function calculateDraftStatusAsync(entry, settings, app, mdxFrontmatterCac
     isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
   } else if (settings.draftStatusProperty) {
     const draftValue = entry.getValue(settings.draftStatusProperty);
-    if (draftValue && "data" in draftValue && typeof draftValue.data === "boolean") {
+    if (
+      draftValue &&
+      "data" in draftValue &&
+      typeof draftValue.data === "boolean"
+    ) {
       booleanValue = draftValue.data;
       isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
     } else {
@@ -2569,17 +3227,22 @@ async function calculateDraftStatusAsync(entry, settings, app, mdxFrontmatterCac
       if (file instanceof import_obsidian8.TFile && file.extension === "mdx") {
         let frontmatter = null;
         if (mdxFrontmatterCache) {
-          frontmatter = (_a = mdxFrontmatterCache[entry.file.path]) != null ? _a : null;
+          frontmatter =
+            (_a = mdxFrontmatterCache[entry.file.path]) != null ? _a : null;
         }
         if (frontmatter === void 0) {
           frontmatter = await getFileFrontmatter(app, file);
         }
         if (frontmatter) {
-          const cleanProp = settings.draftStatusProperty.startsWith("note.") ? settings.draftStatusProperty.substring(5) : settings.draftStatusProperty;
+          const cleanProp = settings.draftStatusProperty.startsWith("note.")
+            ? settings.draftStatusProperty.substring(5)
+            : settings.draftStatusProperty;
           const frontmatterValue = frontmatter[cleanProp];
           if (typeof frontmatterValue === "boolean") {
             booleanValue = frontmatterValue;
-            isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
+            isDraft = settings.draftStatusReverse
+              ? !booleanValue
+              : booleanValue;
           }
         }
       }
@@ -2597,44 +3260,102 @@ function calculateDraftStatus(entry, settings) {
     isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
   } else if (settings.draftStatusProperty) {
     const draftValue = entry.getValue(settings.draftStatusProperty);
-    if (draftValue && "data" in draftValue && typeof draftValue.data === "boolean") {
+    if (
+      draftValue &&
+      "data" in draftValue &&
+      typeof draftValue.data === "boolean"
+    ) {
       booleanValue = draftValue.data;
       isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
     }
   }
   return { booleanValue, isDraft };
 }
-function renderDraftStatusBadge(container, entry, cardPath, settings, onPropertyToggle, app, mdxFrontmatterCache) {
+function renderDraftStatusBadge(
+  container,
+  entry,
+  cardPath,
+  settings,
+  onPropertyToggle,
+  app,
+  mdxFrontmatterCache,
+) {
   if (!settings.showDraftStatus) {
     return;
   }
-  const { booleanValue: syncValue, isDraft: syncIsDraft } = calculateDraftStatus(entry, settings);
+  const { booleanValue: syncValue, isDraft: syncIsDraft } =
+    calculateDraftStatus(entry, settings);
   if (syncValue !== null) {
-    renderBadge(container, syncValue, syncIsDraft, onPropertyToggle, cardPath, settings, app);
+    renderBadge(
+      container,
+      syncValue,
+      syncIsDraft,
+      onPropertyToggle,
+      cardPath,
+      settings,
+      app,
+    );
   } else if (app) {
     const file = app.vault.getAbstractFileByPath(entry.file.path);
-    if (file instanceof import_obsidian8.TFile && file.extension === "mdx" && mdxFrontmatterCache) {
+    if (
+      file instanceof import_obsidian8.TFile &&
+      file.extension === "mdx" &&
+      mdxFrontmatterCache
+    ) {
       const frontmatter = mdxFrontmatterCache[entry.file.path];
       if (frontmatter && settings.draftStatusProperty) {
-        const cleanProp = settings.draftStatusProperty.startsWith("note.") ? settings.draftStatusProperty.substring(5) : settings.draftStatusProperty;
+        const cleanProp = settings.draftStatusProperty.startsWith("note.")
+          ? settings.draftStatusProperty.substring(5)
+          : settings.draftStatusProperty;
         const frontmatterValue = frontmatter[cleanProp];
         if (typeof frontmatterValue === "boolean") {
           const booleanValue = frontmatterValue;
-          const isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
-          renderBadge(container, booleanValue, isDraft, onPropertyToggle, cardPath, settings, app);
+          const isDraft = settings.draftStatusReverse
+            ? !booleanValue
+            : booleanValue;
+          renderBadge(
+            container,
+            booleanValue,
+            isDraft,
+            onPropertyToggle,
+            cardPath,
+            settings,
+            app,
+          );
           return;
         }
       }
     }
     void (async () => {
-      const { booleanValue, isDraft } = await calculateDraftStatusAsync(entry, settings, app, mdxFrontmatterCache);
+      const { booleanValue, isDraft } = await calculateDraftStatusAsync(
+        entry,
+        settings,
+        app,
+        mdxFrontmatterCache,
+      );
       if (booleanValue !== null && container.isConnected) {
-        renderBadge(container, booleanValue, isDraft, onPropertyToggle, cardPath, settings, app);
+        renderBadge(
+          container,
+          booleanValue,
+          isDraft,
+          onPropertyToggle,
+          cardPath,
+          settings,
+          app,
+        );
       }
     })();
   }
 }
-function renderBadge(container, booleanValue, isDraft, onPropertyToggle, cardPath, settings, app) {
+function renderBadge(
+  container,
+  booleanValue,
+  isDraft,
+  onPropertyToggle,
+  cardPath,
+  settings,
+  app,
+) {
   if (container.querySelector(".card-status-badge")) {
     return;
   }
@@ -2646,7 +3367,8 @@ function renderBadge(container, booleanValue, isDraft, onPropertyToggle, cardPat
     statusBadge.addClass("status-published");
     statusBadge.appendText("Published");
   }
-  const isUnderscoreMode = settings == null ? void 0 : settings.draftStatusUseFilenamePrefix;
+  const isUnderscoreMode =
+    settings == null ? void 0 : settings.draftStatusUseFilenamePrefix;
   if (isUnderscoreMode && app) {
     statusBadge.addClass("bases-cms-cursor-pointer");
     statusBadge.addEventListener("click", (e) => {
@@ -2682,22 +3404,24 @@ function showRenameDialog(app, file) {
   modal.titleEl.setText("Rename file");
   const inputContainer = modal.contentEl.createDiv();
   setCssProps(inputContainer, {
-    width: "100%"
+    width: "100%",
   });
   const input = new import_obsidian9.TextComponent(inputContainer);
   input.setValue(file.basename);
   setCssProps(input.inputEl, {
     width: "100%",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   });
   input.inputEl.focus();
   input.inputEl.select();
-  const buttonContainer = modal.contentEl.createDiv({ cls: "modal-button-container" });
+  const buttonContainer = modal.contentEl.createDiv({
+    cls: "modal-button-container",
+  });
   const cancelButton = buttonContainer.createEl("button", { text: "Cancel" });
   cancelButton.addEventListener("click", () => modal.close());
   const renameButton = buttonContainer.createEl("button", {
     text: "Rename",
-    cls: "mod-cta"
+    cls: "mod-cta",
   });
   const handleRename = async () => {
     const newName = input.getValue().trim();
@@ -2706,7 +3430,8 @@ function showRenameDialog(app, file) {
       return;
     }
     const pathParts = file.path.split("/");
-    pathParts[pathParts.length - 1] = newName + (file.extension ? `.${file.extension}` : "");
+    pathParts[pathParts.length - 1] =
+      newName + (file.extension ? `.${file.extension}` : "");
     const newPath = pathParts.join("/");
     try {
       await app.fileManager.renameFile(file, newPath);
@@ -2732,7 +3457,14 @@ function showRenameDialog(app, file) {
 }
 function isObsidianRenameCommand(commandId) {
   const lowerId = commandId.toLowerCase();
-  return commandId === "file-explorer:rename-file" || commandId === "rename-file" || commandId === "file:rename-file" || lowerId.includes("rename") && lowerId.includes("file") && !lowerId.includes(":");
+  return (
+    commandId === "file-explorer:rename-file" ||
+    commandId === "rename-file" ||
+    commandId === "file:rename-file" ||
+    (lowerId.includes("rename") &&
+      lowerId.includes("file") &&
+      !lowerId.includes(":"))
+  );
 }
 function isProblematicCommand(commandId, commandName) {
   const lowerId = commandId.toLowerCase();
@@ -2743,137 +3475,204 @@ function isProblematicCommand(commandId, commandName) {
     "insert-template",
     "insert-template",
     "editor:",
-    "markdown:"
+    "markdown:",
   ];
   return problematicPatterns.some(
-    (pattern) => lowerId.includes(pattern) || lowerName.includes(pattern)
+    (pattern) => lowerId.includes(pattern) || lowerName.includes(pattern),
   );
 }
 function setupQuickEditIcon(app, plugin, titleEl, cardEl, cardPath, settings) {
-  if (!plugin.settings.enableQuickEdit || !plugin.settings.quickEditCommand || plugin.settings.quickEditCommand === "" || settings.hideQuickEditIcon) {
+  if (
+    !plugin.settings.enableQuickEdit ||
+    !plugin.settings.quickEditCommand ||
+    plugin.settings.quickEditCommand === "" ||
+    settings.hideQuickEditIcon
+  ) {
     return;
   }
   const quickEditIcon = titleEl.createSpan("bases-cms-quick-edit-icon");
   quickEditIcon.addClass("bases-cms-cursor-default");
-  (0, import_obsidian9.setIcon)(quickEditIcon, plugin.settings.quickEditIcon || "pencil-line");
-  titleEl.addEventListener("click", (e) => {
-    if (quickEditIcon.contains(e.target)) {
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-    }
-  }, true);
-  cardEl.addEventListener("click", (e) => {
-    void (async () => {
-      var _a, _b, _c, _d;
-      const target = e.target;
-      if (!quickEditIcon.contains(target) && !target.closest(".bases-cms-quick-edit-icon")) {
-        return;
+  (0, import_obsidian9.setIcon)(
+    quickEditIcon,
+    plugin.settings.quickEditIcon || "pencil-line",
+  );
+  titleEl.addEventListener(
+    "click",
+    (e) => {
+      if (quickEditIcon.contains(e.target)) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
       }
+    },
+    true,
+  );
+  cardEl.addEventListener(
+    "click",
+    (e) => {
+      void (async () => {
+        var _a, _b, _c, _d;
+        const target = e.target;
+        if (
+          !quickEditIcon.contains(target) &&
+          !target.closest(".bases-cms-quick-edit-icon")
+        ) {
+          return;
+        }
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        const file = app.vault.getAbstractFileByPath(cardPath);
+        if (file instanceof import_obsidian9.TFile) {
+          const commandId = plugin.settings.quickEditCommand;
+          const commandRegistry = app.commands;
+          const command =
+            (_a =
+              commandRegistry == null ? void 0 : commandRegistry.commands) ==
+            null
+              ? void 0
+              : _a[commandId];
+          const commandName = (command == null ? void 0 : command.name) || "";
+          const lowerCommandName = commandName.toLowerCase();
+          if (
+            isObsidianRenameCommand(commandId) ||
+            (lowerCommandName.includes("rename") &&
+              lowerCommandName.includes("file"))
+          ) {
+            showRenameDialog(app, file);
+            return;
+          }
+          if (isProblematicCommand(commandId, commandName)) {
+            if (plugin.settings.quickEditOpenFile) {
+            } else {
+              new import_obsidian9.Notice(
+                `The "${commandName}" command requires the file to be open in an editor. Enable "Attempt to open file and execute quick edit command" in settings to try anyway.`,
+                5e3,
+              );
+              return;
+            }
+          }
+          let helperCalled = false;
+          try {
+            let pluginId = null;
+            let baseCommandId = commandId;
+            if (commandId.includes(":")) {
+              const parts = commandId.split(":");
+              pluginId = parts[0];
+              baseCommandId = parts.slice(1).join(":");
+            } else {
+              const appWithCommands = app;
+              const commandRegistry2 = appWithCommands.commands;
+              const command2 =
+                (_b =
+                  commandRegistry2 == null
+                    ? void 0
+                    : commandRegistry2.commands) == null
+                  ? void 0
+                  : _b[commandId];
+              if (command2) {
+                const sourcePlugin = command2.plugin || command2.sourcePlugin;
+                if (sourcePlugin) {
+                  pluginId =
+                    ((_c = sourcePlugin.manifest) == null ? void 0 : _c.id) ||
+                    sourcePlugin.pluginId ||
+                    null;
+                }
+              }
+            }
+            if (pluginId) {
+              const plugins = app.plugins;
+              const sourcePlugin =
+                (_d = plugins == null ? void 0 : plugins.plugins) == null
+                  ? void 0
+                  : _d[pluginId];
+              if (sourcePlugin) {
+                const methodName =
+                  baseCommandId
+                    .split("-")
+                    .map((part, index) =>
+                      index === 0
+                        ? part
+                        : part.charAt(0).toUpperCase() + part.slice(1),
+                    )
+                    .join("") + "ByPath";
+                if (
+                  sourcePlugin &&
+                  typeof sourcePlugin[methodName] === "function"
+                ) {
+                  await sourcePlugin[methodName](cardPath);
+                  helperCalled = true;
+                  return;
+                }
+              }
+            }
+          } catch (e2) {}
+          if (!helperCalled) {
+            if (!plugin.settings.quickEditOpenFile) {
+              new import_obsidian9.Notice(
+                `This command doesn't have special handling. Enable "Attempt to open file and execute quick edit command" in settings to try executing it.`,
+                5e3,
+              );
+              return;
+            }
+            const leaf = app.workspace.getLeaf(false);
+            await leaf.openFile(file);
+            app.workspace.setActiveLeaf(leaf, { focus: true });
+            let attempts = 0;
+            const maxAttempts = 30;
+            const executeCommand = () => {
+              const finalActiveFile = app.workspace.getActiveFile();
+              if (finalActiveFile === file) {
+                void (async () => {
+                  var _a2, _b2;
+                  try {
+                    await ((_b2 =
+                      (_a2 = app.commands) == null
+                        ? void 0
+                        : _a2.executeCommandById) == null
+                      ? void 0
+                      : _b2.call(_a2, plugin.settings.quickEditCommand));
+                  } catch (e2) {}
+                })();
+              }
+            };
+            const checkEditorReady = () => {
+              const view = leaf.view;
+              const viewWithEditor = view;
+              const activeFile = app.workspace.getActiveFile();
+              if (
+                view &&
+                "editor" in view &&
+                viewWithEditor.editor &&
+                activeFile === file
+              ) {
+                requestAnimationFrame(() => {
+                  requestAnimationFrame(() => {
+                    setTimeout(() => {
+                      executeCommand();
+                    }, 200);
+                  });
+                });
+              } else if (attempts < maxAttempts) {
+                attempts++;
+                setTimeout(checkEditorReady, 50);
+              }
+            };
+            checkEditorReady();
+          }
+        }
+      })();
+    },
+    true,
+  );
+  quickEditIcon.addEventListener(
+    "mousedown",
+    (e) => {
       e.stopPropagation();
       e.stopImmediatePropagation();
       e.preventDefault();
-      const file = app.vault.getAbstractFileByPath(cardPath);
-      if (file instanceof import_obsidian9.TFile) {
-        const commandId = plugin.settings.quickEditCommand;
-        const commandRegistry = app.commands;
-        const command = (_a = commandRegistry == null ? void 0 : commandRegistry.commands) == null ? void 0 : _a[commandId];
-        const commandName = (command == null ? void 0 : command.name) || "";
-        const lowerCommandName = commandName.toLowerCase();
-        if (isObsidianRenameCommand(commandId) || lowerCommandName.includes("rename") && lowerCommandName.includes("file")) {
-          showRenameDialog(app, file);
-          return;
-        }
-        if (isProblematicCommand(commandId, commandName)) {
-          if (plugin.settings.quickEditOpenFile) {
-          } else {
-            new import_obsidian9.Notice(`The "${commandName}" command requires the file to be open in an editor. Enable "Attempt to open file and execute quick edit command" in settings to try anyway.`, 5e3);
-            return;
-          }
-        }
-        let helperCalled = false;
-        try {
-          let pluginId = null;
-          let baseCommandId = commandId;
-          if (commandId.includes(":")) {
-            const parts = commandId.split(":");
-            pluginId = parts[0];
-            baseCommandId = parts.slice(1).join(":");
-          } else {
-            const appWithCommands = app;
-            const commandRegistry2 = appWithCommands.commands;
-            const command2 = (_b = commandRegistry2 == null ? void 0 : commandRegistry2.commands) == null ? void 0 : _b[commandId];
-            if (command2) {
-              const sourcePlugin = command2.plugin || command2.sourcePlugin;
-              if (sourcePlugin) {
-                pluginId = ((_c = sourcePlugin.manifest) == null ? void 0 : _c.id) || sourcePlugin.pluginId || null;
-              }
-            }
-          }
-          if (pluginId) {
-            const plugins = app.plugins;
-            const sourcePlugin = (_d = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _d[pluginId];
-            if (sourcePlugin) {
-              const methodName = baseCommandId.split("-").map(
-                (part, index) => index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1)
-              ).join("") + "ByPath";
-              if (sourcePlugin && typeof sourcePlugin[methodName] === "function") {
-                await sourcePlugin[methodName](cardPath);
-                helperCalled = true;
-                return;
-              }
-            }
-          }
-        } catch (e2) {
-        }
-        if (!helperCalled) {
-          if (!plugin.settings.quickEditOpenFile) {
-            new import_obsidian9.Notice(`This command doesn't have special handling. Enable "Attempt to open file and execute quick edit command" in settings to try executing it.`, 5e3);
-            return;
-          }
-          const leaf = app.workspace.getLeaf(false);
-          await leaf.openFile(file);
-          app.workspace.setActiveLeaf(leaf, { focus: true });
-          let attempts = 0;
-          const maxAttempts = 30;
-          const executeCommand = () => {
-            const finalActiveFile = app.workspace.getActiveFile();
-            if (finalActiveFile === file) {
-              void (async () => {
-                var _a2, _b2;
-                try {
-                  await ((_b2 = (_a2 = app.commands) == null ? void 0 : _a2.executeCommandById) == null ? void 0 : _b2.call(_a2, plugin.settings.quickEditCommand));
-                } catch (e2) {
-                }
-              })();
-            }
-          };
-          const checkEditorReady = () => {
-            const view = leaf.view;
-            const viewWithEditor = view;
-            const activeFile = app.workspace.getActiveFile();
-            if (view && "editor" in view && viewWithEditor.editor && activeFile === file) {
-              requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                  setTimeout(() => {
-                    executeCommand();
-                  }, 200);
-                });
-              });
-            } else if (attempts < maxAttempts) {
-              attempts++;
-              setTimeout(checkEditorReady, 50);
-            }
-          };
-          checkEditorReady();
-        }
-      }
-    })();
-  }, true);
-  quickEditIcon.addEventListener("mousedown", (e) => {
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-    e.preventDefault();
-  }, true);
+    },
+    true,
+  );
 }
 
 // src/utils/property-renderer.ts
@@ -2904,7 +3703,7 @@ var PropertyRenderer = class {
       settings.propertyDisplay11,
       settings.propertyDisplay12,
       settings.propertyDisplay13,
-      settings.propertyDisplay14
+      settings.propertyDisplay14,
     ];
     const seen = /* @__PURE__ */ new Set();
     const effectiveProps = props.map((prop) => {
@@ -2929,70 +3728,90 @@ var PropertyRenderer = class {
         if ("data" in value && value.data != null) {
           const data = value.data;
           if (Array.isArray(data)) {
-            return data.map((item) => {
-              if (item && typeof item === "object" && item !== null && !Array.isArray(item)) {
-                return JSON.stringify(item);
-              }
-              return String(item);
-            }).join(", ");
+            return data
+              .map((item) => {
+                if (
+                  item &&
+                  typeof item === "object" &&
+                  item !== null &&
+                  !Array.isArray(item)
+                ) {
+                  return JSON.stringify(item);
+                }
+                return String(item);
+              })
+              .join(", ");
           }
-          if (data && typeof data === "object" && data !== null && !Array.isArray(data)) {
+          if (
+            data &&
+            typeof data === "object" &&
+            data !== null &&
+            !Array.isArray(data)
+          ) {
             return JSON.stringify(data);
           }
-          if (typeof data === "string" || typeof data === "number" || typeof data === "boolean") {
+          if (
+            typeof data === "string" ||
+            typeof data === "number" ||
+            typeof data === "boolean"
+          ) {
             return String(data);
           }
           return data ? JSON.stringify(data) : "";
         }
-      } catch (e) {
-      }
+      } catch (e) {}
       return null;
     });
     const maxLen = (_a = settings.propertyDisplayMaxLength) != null ? _a : 0;
-    const displayValues = maxLen > 0 ? values.map((v) => v != null && v.length > maxLen ? v.slice(0, maxLen) + "\u2026" : v) : values;
+    const displayValues =
+      maxLen > 0
+        ? values.map((v) =>
+            v != null && v.length > maxLen ? v.slice(0, maxLen) + "\u2026" : v,
+          )
+        : values;
     const propertyGroups = [
       {
         props: [effectiveProps[0], effectiveProps[1]],
         values: [displayValues[0], displayValues[1]],
         sideBySide: settings.propertyLayout12SideBySide,
-        position: settings.propertyGroup1Position
+        position: settings.propertyGroup1Position,
       },
       {
         props: [effectiveProps[2], effectiveProps[3]],
         values: [displayValues[2], displayValues[3]],
         sideBySide: settings.propertyLayout34SideBySide,
-        position: settings.propertyGroup2Position
+        position: settings.propertyGroup2Position,
       },
       {
         props: [effectiveProps[4], effectiveProps[5]],
         values: [displayValues[4], displayValues[5]],
         sideBySide: settings.propertyLayout56SideBySide,
-        position: settings.propertyGroup3Position
+        position: settings.propertyGroup3Position,
       },
       {
         props: [effectiveProps[6], effectiveProps[7]],
         values: [values[6], values[7]],
         sideBySide: settings.propertyLayout78SideBySide,
-        position: settings.propertyGroup4Position
+        position: settings.propertyGroup4Position,
       },
       {
         props: [effectiveProps[8], effectiveProps[9]],
         values: [displayValues[8], displayValues[9]],
         sideBySide: settings.propertyLayout910SideBySide,
-        position: settings.propertyGroup5Position
+        position: settings.propertyGroup5Position,
       },
       {
         props: [effectiveProps[10], effectiveProps[11]],
         values: [displayValues[10], displayValues[11]],
         sideBySide: settings.propertyLayout1112SideBySide,
-        position: settings.propertyGroup6Position
+        position: settings.propertyGroup6Position,
       },
       {
         props: [effectiveProps[12], effectiveProps[13]],
         values: [displayValues[12], displayValues[13]],
         sideBySide: settings.propertyLayout1314SideBySide,
-        position: settings.propertyGroup7Position
-      }
+        position: settings.propertyGroup7Position,
+      },
     ];
     const topGroups = [];
     const bottomGroups = [];
@@ -3009,11 +3828,21 @@ var PropertyRenderer = class {
     const shouldHideProperty = (propName, propValue) => {
       var _a2, _b, _c;
       if (!propName || propName === "") return true;
-      const isEmptyValue = propValue === null || propValue === "" || typeof propValue === "string" && propValue.trim() === "";
+      const isEmptyValue =
+        propValue === null ||
+        propValue === "" ||
+        (typeof propValue === "string" && propValue.trim() === "");
       let propertyExists = false;
       try {
-        const filePath = (_a2 = entry == null ? void 0 : entry.file) == null ? void 0 : _a2.path;
-        if (filePath && ((_b = this.app) == null ? void 0 : _b.vault) && ((_c = this.app) == null ? void 0 : _c.metadataCache)) {
+        const filePath =
+          (_a2 = entry == null ? void 0 : entry.file) == null
+            ? void 0
+            : _a2.path;
+        if (
+          filePath &&
+          ((_b = this.app) == null ? void 0 : _b.vault) &&
+          ((_c = this.app) == null ? void 0 : _c.metadataCache)
+        ) {
           const file = this.app.vault.getAbstractFileByPath(filePath);
           if (file instanceof import_obsidian10.TFile) {
             if (file.extension === "mdx") {
@@ -3021,7 +3850,10 @@ var PropertyRenderer = class {
             } else {
               const metadata = this.app.metadataCache.getFileCache(file);
               if (metadata && metadata.frontmatter) {
-                const propertyNames = propName.split(",").map((p) => p.trim()).filter((p) => p);
+                const propertyNames = propName
+                  .split(",")
+                  .map((p) => p.trim())
+                  .filter((p) => p);
                 for (const prop of propertyNames) {
                   const propKey = prop.replace(/^(note|formula|file)\./, "");
                   if (propKey in metadata.frontmatter) {
@@ -3033,8 +3865,7 @@ var PropertyRenderer = class {
             }
           }
         }
-      } catch (e) {
-      }
+      } catch (e) {}
       if (shouldHideMissingProperties() && !propertyExists) {
         return true;
       }
@@ -3049,44 +3880,93 @@ var PropertyRenderer = class {
     if ((position === "top" || position === void 0) && topGroups.length > 0) {
       const topMetaEl = cardEl.createDiv("card-properties properties-top");
       topGroups.forEach((group, groupIndex) => {
-        const prop1ShouldRender = group.props[0] && !shouldHideProperty(group.props[0], group.values[0]);
-        const prop2ShouldRender = group.props[1] && !shouldHideProperty(group.props[1], group.values[1]);
+        const prop1ShouldRender =
+          group.props[0] &&
+          !shouldHideProperty(group.props[0], group.values[0]);
+        const prop2ShouldRender =
+          group.props[1] &&
+          !shouldHideProperty(group.props[1], group.values[1]);
         if (!prop1ShouldRender && !prop2ShouldRender) {
           return;
         }
-        const rowEl = topMetaEl.createDiv(`property-row property-row-group-${groupIndex + 1}`);
+        const rowEl = topMetaEl.createDiv(
+          `property-row property-row-group-${groupIndex + 1}`,
+        );
         if (group.sideBySide) {
           rowEl.addClass("property-row-side-by-side");
         }
         const field1El = rowEl.createDiv("property-field property-field-1");
         if (prop1ShouldRender) {
-          this.renderPropertyContent(field1El, group.props[0], group.values[0], card, entry, settings, onPropertyToggle);
+          this.renderPropertyContent(
+            field1El,
+            group.props[0],
+            group.values[0],
+            card,
+            entry,
+            settings,
+            onPropertyToggle,
+          );
         }
         const field2El = rowEl.createDiv("property-field property-field-2");
         if (prop2ShouldRender) {
-          this.renderPropertyContent(field2El, group.props[1], group.values[1], card, entry, settings, onPropertyToggle);
+          this.renderPropertyContent(
+            field2El,
+            group.props[1],
+            group.values[1],
+            card,
+            entry,
+            settings,
+            onPropertyToggle,
+          );
         }
       });
     }
-    if ((position === "bottom" || position === void 0) && bottomGroups.length > 0) {
-      const bottomMetaEl = cardEl.createDiv("card-properties properties-bottom");
+    if (
+      (position === "bottom" || position === void 0) &&
+      bottomGroups.length > 0
+    ) {
+      const bottomMetaEl = cardEl.createDiv(
+        "card-properties properties-bottom",
+      );
       bottomGroups.forEach((group, groupIndex) => {
-        const prop1ShouldRender = group.props[0] && !shouldHideProperty(group.props[0], group.values[0]);
-        const prop2ShouldRender = group.props[1] && !shouldHideProperty(group.props[1], group.values[1]);
+        const prop1ShouldRender =
+          group.props[0] &&
+          !shouldHideProperty(group.props[0], group.values[0]);
+        const prop2ShouldRender =
+          group.props[1] &&
+          !shouldHideProperty(group.props[1], group.values[1]);
         if (!prop1ShouldRender && !prop2ShouldRender) {
           return;
         }
-        const rowEl = bottomMetaEl.createDiv(`property-row property-row-group-${groupIndex + 1}`);
+        const rowEl = bottomMetaEl.createDiv(
+          `property-row property-row-group-${groupIndex + 1}`,
+        );
         if (group.sideBySide) {
           rowEl.addClass("property-row-side-by-side");
         }
         const field1El = rowEl.createDiv("property-field property-field-1");
         if (prop1ShouldRender) {
-          this.renderPropertyContent(field1El, group.props[0], group.values[0], card, entry, settings, onPropertyToggle);
+          this.renderPropertyContent(
+            field1El,
+            group.props[0],
+            group.values[0],
+            card,
+            entry,
+            settings,
+            onPropertyToggle,
+          );
         }
         const field2El = rowEl.createDiv("property-field property-field-2");
         if (prop2ShouldRender) {
-          this.renderPropertyContent(field2El, group.props[1], group.values[1], card, entry, settings, onPropertyToggle);
+          this.renderPropertyContent(
+            field2El,
+            group.props[1],
+            group.values[1],
+            card,
+            entry,
+            settings,
+            onPropertyToggle,
+          );
         }
       });
     }
@@ -3094,7 +3974,15 @@ var PropertyRenderer = class {
   /**
    * Renders individual property content
    */
-  renderPropertyContent(container, propertyName, resolvedValue, card, entry, settings, onPropertyToggle) {
+  renderPropertyContent(
+    container,
+    propertyName,
+    resolvedValue,
+    card,
+    entry,
+    settings,
+    onPropertyToggle,
+  ) {
     if (propertyName === "") return;
     if (resolvedValue === null && shouldHideMissingProperties()) {
       return;
@@ -3106,17 +3994,31 @@ var PropertyRenderer = class {
       return;
     }
     if (settings.propertyLabels === "hide") {
-      if ((propertyName === "tags" || propertyName === "note.tags") && card.yamlTags.length === 0) {
+      if (
+        (propertyName === "tags" || propertyName === "note.tags") &&
+        card.yamlTags.length === 0
+      ) {
         return;
       }
-      if ((propertyName === "file.tags" || propertyName === "file tags") && card.tags.length === 0) {
+      if (
+        (propertyName === "file.tags" || propertyName === "file tags") &&
+        card.tags.length === 0
+      ) {
         return;
       }
     }
     const basesConfig = this.getBasesConfig ? this.getBasesConfig() : void 0;
-    const basesController = this.getBasesController ? this.getBasesController() : void 0;
-    const propertyLabel = getPropertyLabel(propertyName, this.app, basesConfig, basesController);
-    const isCustomLabel = propertyLabel.toLowerCase() !== propertyName.toLowerCase();
+    const basesController = this.getBasesController
+      ? this.getBasesController()
+      : void 0;
+    const propertyLabel = getPropertyLabel(
+      propertyName,
+      this.app,
+      basesConfig,
+      basesController,
+    );
+    const isCustomLabel =
+      propertyLabel.toLowerCase() !== propertyName.toLowerCase();
     if (settings.propertyLabels === "above") {
       const labelEl = container.createDiv("property-label");
       if (isCustomLabel) {
@@ -3137,11 +4039,18 @@ var PropertyRenderer = class {
       emptyMarker.textContent = getEmptyValueMarker();
       return;
     }
-    const isKnownTimestampProperty = propertyName === "file.mtime" || propertyName === "file.ctime" || propertyName === "modified time" || propertyName === "created time";
+    const isKnownTimestampProperty =
+      propertyName === "file.mtime" ||
+      propertyName === "file.ctime" ||
+      propertyName === "modified time" ||
+      propertyName === "created time";
     if (isKnownTimestampProperty) {
       const timestampWrapper = metaContent.createSpan();
       timestampWrapper.appendText(resolvedValue);
-    } else if ((propertyName === "tags" || propertyName === "note.tags") && card.yamlTags.length > 0) {
+    } else if (
+      (propertyName === "tags" || propertyName === "note.tags") &&
+      card.yamlTags.length > 0
+    ) {
       const tagsWrapper = metaContent.createDiv("tags-wrapper");
       const tagStyle = getTagStyle();
       if (tagStyle !== "plain") {
@@ -3151,18 +4060,30 @@ var PropertyRenderer = class {
         const tagEl = tagsWrapper.createEl("a", {
           cls: "tag",
           text: showTagHashPrefix() ? `#${tag}` : tag,
-          href: "#"
+          href: "#",
         });
         tagEl.addEventListener("click", (e) => {
           var _a, _b, _c;
           e.preventDefault();
-          const searchPlugin = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["global-search"];
-          if ((_c = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _c.openGlobalSearch) {
+          const searchPlugin =
+            (_b =
+              (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
+            null
+              ? void 0
+              : _b["global-search"];
+          if (
+            (_c = searchPlugin == null ? void 0 : searchPlugin.instance) == null
+              ? void 0
+              : _c.openGlobalSearch
+          ) {
             searchPlugin.instance.openGlobalSearch("tag:" + tag);
           }
         });
       });
-    } else if ((propertyName === "file.tags" || propertyName === "file tags") && card.tags.length > 0) {
+    } else if (
+      (propertyName === "file.tags" || propertyName === "file tags") &&
+      card.tags.length > 0
+    ) {
       const tagsWrapper = metaContent.createDiv("tags-wrapper");
       const tagStyle = getTagStyle();
       if (tagStyle !== "plain") {
@@ -3172,13 +4093,22 @@ var PropertyRenderer = class {
         const tagEl = tagsWrapper.createEl("a", {
           cls: "tag",
           text: showTagHashPrefix() ? `#${tag}` : tag,
-          href: "#"
+          href: "#",
         });
         tagEl.addEventListener("click", (e) => {
           var _a, _b, _c;
           e.preventDefault();
-          const searchPlugin = (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["global-search"];
-          if ((_c = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _c.openGlobalSearch) {
+          const searchPlugin =
+            (_b =
+              (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
+            null
+              ? void 0
+              : _b["global-search"];
+          if (
+            (_c = searchPlugin == null ? void 0 : searchPlugin.instance) == null
+              ? void 0
+              : _c.openGlobalSearch
+          ) {
             searchPlugin.instance.openGlobalSearch("tag:" + tag);
           }
         });
@@ -3186,7 +4116,12 @@ var PropertyRenderer = class {
     } else {
       if (!this.app || !this.app.metadataCache) {
         const textWrapper = metaContent.createDiv("text-wrapper");
-        this.renderPropertyValueWithLinks(textWrapper, resolvedValue, card.path, propertyName);
+        this.renderPropertyValueWithLinks(
+          textWrapper,
+          resolvedValue,
+          card.path,
+          propertyName,
+        );
         return;
       }
       let propInfo = void 0;
@@ -3197,26 +4132,31 @@ var PropertyRenderer = class {
           const propertyInfos = getAllPropertyInfos();
           propInfo = propertyInfos[propertyName.toLowerCase()];
         }
-      } catch (e) {
-      }
+      } catch (e) {}
       let entryValue = null;
       try {
         if (entry && typeof entry.getValue === "function") {
           entryValue = entry.getValue(propertyName);
         }
-      } catch (e) {
-      }
-      const isCheckbox = (propInfo == null ? void 0 : propInfo.widget) === "checkbox" || entryValue && "data" in entryValue && typeof entryValue.data === "boolean";
+      } catch (e) {}
+      const isCheckbox =
+        (propInfo == null ? void 0 : propInfo.widget) === "checkbox" ||
+        (entryValue &&
+          "data" in entryValue &&
+          typeof entryValue.data === "boolean");
       if (isCheckbox && onPropertyToggle) {
         const checkbox = metaContent.createEl("input", { type: "checkbox" });
-        checkbox.checked = entryValue && "data" in entryValue ? Boolean(entryValue.data) : false;
+        checkbox.checked =
+          entryValue && "data" in entryValue ? Boolean(entryValue.data) : false;
         metaContent.createSpan({ text: propertyLabel });
         checkbox.addEventListener("change", (e) => {
           e.stopPropagation();
           const checked = checkbox.checked;
           void (async () => {
             try {
-              const cleanProperty = propertyName.startsWith("note.") ? propertyName.substring(5) : propertyName;
+              const cleanProperty = propertyName.startsWith("note.")
+                ? propertyName.substring(5)
+                : propertyName;
               await onPropertyToggle(card.path, cleanProperty, checked);
             } catch (e2) {
               checkbox.checked = !checked;
@@ -3228,10 +4168,18 @@ var PropertyRenderer = class {
         });
       } else {
         const textWrapper = metaContent.createDiv("text-wrapper");
-        this.renderPropertyValueWithLinks(textWrapper, resolvedValue, card.path, propertyName);
+        this.renderPropertyValueWithLinks(
+          textWrapper,
+          resolvedValue,
+          card.path,
+          propertyName,
+        );
       }
     }
-    if (!metaContent.textContent || metaContent.textContent.trim().length === 0) {
+    if (
+      !metaContent.textContent ||
+      metaContent.textContent.trim().length === 0
+    ) {
       metaContent.remove();
     }
   }
@@ -3246,10 +4194,14 @@ var PropertyRenderer = class {
       return;
     }
     const trimmedValue = value.trim();
-    if ((trimmedValue.startsWith("http://") || trimmedValue.startsWith("https://")) && !trimmedValue.includes(" ")) {
+    if (
+      (trimmedValue.startsWith("http://") ||
+        trimmedValue.startsWith("https://")) &&
+      !trimmedValue.includes(" ")
+    ) {
       const linkEl = container.createEl("a", {
         cls: "external-link",
-        href: trimmedValue
+        href: trimmedValue,
       });
       linkEl.textContent = trimmedValue;
       linkEl.setAttr("target", "_blank");
@@ -3259,11 +4211,23 @@ var PropertyRenderer = class {
       });
       return;
     }
-    const isImageProperty = propertyName && (propertyName.toLowerCase().includes("image") || propertyName.toLowerCase() === "cover" || propertyName.toLowerCase() === "thumbnail");
-    if (isImageProperty && !trimmedValue.includes(" ") && !trimmedValue.startsWith("http://") && !trimmedValue.startsWith("https://") && (trimmedValue.includes("/") || trimmedValue.includes("\\") || trimmedValue.match(/\.(png|jpg|jpeg|gif|svg|webp|mp4|mov|avi)$/i))) {
+    const isImageProperty =
+      propertyName &&
+      (propertyName.toLowerCase().includes("image") ||
+        propertyName.toLowerCase() === "cover" ||
+        propertyName.toLowerCase() === "thumbnail");
+    if (
+      isImageProperty &&
+      !trimmedValue.includes(" ") &&
+      !trimmedValue.startsWith("http://") &&
+      !trimmedValue.startsWith("https://") &&
+      (trimmedValue.includes("/") ||
+        trimmedValue.includes("\\") ||
+        trimmedValue.match(/\.(png|jpg|jpeg|gif|svg|webp|mp4|mov|avi)$/i))
+    ) {
       const linkEl = container.createEl("a", {
         cls: "internal-link",
-        href: trimmedValue
+        href: trimmedValue,
       });
       linkEl.textContent = trimmedValue;
       linkEl.addEventListener("click", (e) => {
@@ -3300,7 +4264,7 @@ var PropertyRenderer = class {
         const displayText = parts.length > 1 ? parts[1].trim() : linkPath;
         const linkEl = container.createEl("a", {
           cls: "internal-link",
-          href: linkPath
+          href: linkPath,
         });
         linkEl.textContent = displayText;
         linkEl.addEventListener("click", (e) => {
@@ -3315,7 +4279,7 @@ var PropertyRenderer = class {
         if (linkUrl.startsWith("http://") || linkUrl.startsWith("https://")) {
           const linkEl = container.createEl("a", {
             cls: "external-link",
-            href: linkUrl
+            href: linkUrl,
           });
           linkEl.textContent = linkText;
           linkEl.setAttr("target", "_blank");
@@ -3326,7 +4290,7 @@ var PropertyRenderer = class {
         } else {
           const linkEl = container.createEl("a", {
             cls: "internal-link",
-            href: linkUrl
+            href: linkUrl,
           });
           linkEl.textContent = linkText;
           linkEl.addEventListener("click", (e) => {
@@ -3352,11 +4316,26 @@ init_frontmatter_helper();
 function resolveImageUrl(app, url) {
   var _a, _b, _c, _d;
   if (!url.startsWith("/") || url.startsWith("//")) return url;
-  const vaultCms = (_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["vault-cms"];
-  return (_d = (_c = vaultCms == null ? void 0 : vaultCms.resolvePublicPath) == null ? void 0 : _c.call(vaultCms, url)) != null ? _d : url;
+  const vaultCms =
+    (_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null
+      ? void 0
+      : _b["vault-cms"];
+  return (_d =
+    (_c = vaultCms == null ? void 0 : vaultCms.resolvePublicPath) == null
+      ? void 0
+      : _c.call(vaultCms, url)) != null
+    ? _d
+    : url;
 }
 var SharedCardRenderer = class {
-  constructor(app, plugin, propertyObservers, updateLayoutRef, basesConfig, basesController) {
+  constructor(
+    app,
+    plugin,
+    propertyObservers,
+    updateLayoutRef,
+    basesConfig,
+    basesController,
+  ) {
     this.app = app;
     this.plugin = plugin;
     this.propertyObservers = propertyObservers;
@@ -3367,7 +4346,7 @@ var SharedCardRenderer = class {
       this.app,
       () => this.basesConfig,
       // Pass a getter function so it always gets the latest config
-      () => this.basesController
+      () => this.basesController,
       // Pass a getter function so it always gets the latest controller
     );
   }
@@ -3380,11 +4359,21 @@ var SharedCardRenderer = class {
   /**
    * Renders a complete card with CMS features
    */
-  renderCard(container, card, entry, settings, hoverParent, isSelected, onSelect, onPropertyToggle, toolbarActions) {
+  renderCard(
+    container,
+    card,
+    entry,
+    settings,
+    hoverParent,
+    isSelected,
+    onSelect,
+    onPropertyToggle,
+    toolbarActions,
+  ) {
     const cardEl = container.createDiv("card bases-cms-card");
     setCssProps(cardEl, {
       display: "block",
-      position: "relative"
+      position: "relative",
     });
     if (settings.imageFormat === "cover") {
       cardEl.classList.add("image-format-cover");
@@ -3396,7 +4385,10 @@ var SharedCardRenderer = class {
     cardEl.setAttribute("data-href", card.path);
     cardEl.addClass("bases-cms-cursor-pointer");
     const checkboxEl = cardEl.createDiv("bases-cms-select-checkbox");
-    const checkbox = checkboxEl.createEl("input", { type: "checkbox", cls: "selection-checkbox" });
+    const checkbox = checkboxEl.createEl("input", {
+      type: "checkbox",
+      cls: "selection-checkbox",
+    });
     checkbox.checked = isSelected;
     checkboxEl.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -3407,7 +4399,15 @@ var SharedCardRenderer = class {
       onSelect(card.path, checkbox.checked, e.shiftKey);
     });
     if (settings.showDraftStatus) {
-      renderDraftStatusBadge(cardEl, entry, card.path, settings, onPropertyToggle, this.app, this.mdxFrontmatterCache);
+      renderDraftStatusBadge(
+        cardEl,
+        entry,
+        card.path,
+        settings,
+        onPropertyToggle,
+        this.app,
+        this.mdxFrontmatterCache,
+      );
     }
     cardEl.addEventListener("click", (e) => {
       const target = e.target;
@@ -3418,7 +4418,13 @@ var SharedCardRenderer = class {
         e.preventDefault();
         return;
       }
-      if (checkboxEl.contains(target) || target.tagName === "INPUT" || target.closest("input") || target.closest(".bases-cms-property") || target.closest(".card-status-badge")) {
+      if (
+        checkboxEl.contains(target) ||
+        target.tagName === "INPUT" ||
+        target.closest("input") ||
+        target.closest(".bases-cms-property") ||
+        target.closest(".card-status-badge")
+      ) {
         return;
       }
       if (e.shiftKey) {
@@ -3434,7 +4440,14 @@ var SharedCardRenderer = class {
     });
     cardEl.addEventListener("contextmenu", (e) => {
       const target = e.target;
-      if (checkboxEl.contains(target) || target.tagName === "INPUT" || target.closest("input") || target.closest(".bases-cms-property") || target.closest(".card-status-badge") || target.closest(".bases-cms-quick-edit-icon")) {
+      if (
+        checkboxEl.contains(target) ||
+        target.tagName === "INPUT" ||
+        target.closest("input") ||
+        target.closest(".bases-cms-property") ||
+        target.closest(".card-status-badge") ||
+        target.closest(".bases-cms-quick-edit-icon")
+      ) {
         return;
       }
       const file = this.app.vault.getAbstractFileByPath(card.path);
@@ -3487,13 +4500,13 @@ var SharedCardRenderer = class {
             if (icon) {
               setCssProps(icon, {
                 color: "var(--text-error)",
-                stroke: "var(--text-error)"
+                stroke: "var(--text-error)",
               });
             }
             const title = deleteItem.querySelector(".menu-item-title");
             if (title) {
               setCssProps(title, {
-                color: "var(--text-error)"
+                color: "var(--text-error)",
               });
             }
           }
@@ -3502,35 +4515,55 @@ var SharedCardRenderer = class {
     });
     const titleEl = cardEl.createDiv("card-title");
     titleEl.appendText(card.title);
-    setupQuickEditIcon(this.app, this.plugin, titleEl, cardEl, card.path, settings);
+    setupQuickEditIcon(
+      this.app,
+      this.plugin,
+      titleEl,
+      cardEl,
+      card.path,
+      settings,
+    );
     if (settings.showDate && settings.dateProperty) {
       let dateValue = entry.getValue(settings.dateProperty);
-      const hasValidDate = dateValue && ("date" in dateValue && dateValue.date instanceof Date || "data" in dateValue && dateValue.data != null);
+      const hasValidDate =
+        dateValue &&
+        (("date" in dateValue && dateValue.date instanceof Date) ||
+          ("data" in dateValue && dateValue.data != null));
       if (!hasValidDate) {
         const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (file instanceof import_obsidian11.TFile && file.extension === "mdx") {
+        if (
+          file instanceof import_obsidian11.TFile &&
+          file.extension === "mdx"
+        ) {
           void (async () => {
             const frontmatter = await getFileFrontmatter(this.app, file);
             if (frontmatter) {
-              const cleanProp = settings.dateProperty.startsWith("note.") ? settings.dateProperty.substring(5) : settings.dateProperty;
+              const cleanProp = settings.dateProperty.startsWith("note.")
+                ? settings.dateProperty.substring(5)
+                : settings.dateProperty;
               const frontmatterValue = frontmatter[cleanProp];
               if (frontmatterValue != null) {
                 let date = null;
                 if (frontmatterValue instanceof Date) {
                   date = frontmatterValue;
-                } else if (frontmatterValue && typeof frontmatterValue === "object" && "getTime" in frontmatterValue) {
+                } else if (
+                  frontmatterValue &&
+                  typeof frontmatterValue === "object" &&
+                  "getTime" in frontmatterValue
+                ) {
                   const dateLike = frontmatterValue;
                   try {
                     const timestamp = dateLike.getTime();
                     if (typeof timestamp === "number" && !isNaN(timestamp)) {
                       date = new Date(timestamp);
                     }
-                  } catch (e) {
-                  }
+                  } catch (e) {}
                 }
                 if (!date && typeof frontmatterValue === "string") {
                   const dateStr = frontmatterValue.trim();
-                  const isoDateStr = dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00`;
+                  const isoDateStr = dateStr.includes("T")
+                    ? dateStr
+                    : `${dateStr}T00:00:00`;
                   const parsedDate = new Date(isoDateStr);
                   if (!isNaN(parsedDate.getTime())) {
                     date = parsedDate;
@@ -3556,7 +4589,7 @@ var SharedCardRenderer = class {
                         const timePart = date.toLocaleTimeString(void 0, {
                           hour: "numeric",
                           minute: "2-digit",
-                          hour12: true
+                          hour12: true,
                         });
                         dateString = `${datePart}, ${timePart}`;
                       } else {
@@ -3566,8 +4599,12 @@ var SharedCardRenderer = class {
                       if (!dateEl) {
                         const titleEl2 = cardEl.querySelector(".card-title");
                         if (titleEl2 && titleEl2.parentElement) {
-                          dateEl = titleEl2.parentElement.createDiv("card-date");
-                          titleEl2.parentElement.insertBefore(dateEl, titleEl2.nextSibling);
+                          dateEl =
+                            titleEl2.parentElement.createDiv("card-date");
+                          titleEl2.parentElement.insertBefore(
+                            dateEl,
+                            titleEl2.nextSibling,
+                          );
                         } else {
                           dateEl = cardEl.createDiv("card-date");
                         }
@@ -3604,7 +4641,7 @@ var SharedCardRenderer = class {
             const timePart = date.toLocaleTimeString(void 0, {
               hour: "numeric",
               minute: "2-digit",
-              hour12: true
+              hour12: true,
             });
             dateString = `${datePart}, ${timePart}`;
           } else {
@@ -3615,25 +4652,46 @@ var SharedCardRenderer = class {
         }
       }
     }
-    this.propertyRenderer.renderProperties(cardEl, card, entry, settings, onPropertyToggle, "top");
-    if (settings.showTextPreview || settings.showTags && card.displayTags && card.displayTags.length > 0 || settings.imageFormat === "thumbnail" || settings.imageFormat === "cover" || settings.imageFormat !== "none" && (card.imageUrl || card.hasImageAvailable)) {
+    this.propertyRenderer.renderProperties(
+      cardEl,
+      card,
+      entry,
+      settings,
+      onPropertyToggle,
+      "top",
+    );
+    if (
+      settings.showTextPreview ||
+      (settings.showTags && card.displayTags && card.displayTags.length > 0) ||
+      settings.imageFormat === "thumbnail" ||
+      settings.imageFormat === "cover" ||
+      (settings.imageFormat !== "none" &&
+        (card.imageUrl || card.hasImageAvailable))
+    ) {
       const contentContainer = cardEl.createDiv("card-content");
       if (settings.imageFormat === "thumbnail" && card.imageUrl) {
-        const rawUrls = Array.isArray(card.imageUrl) ? card.imageUrl : [card.imageUrl];
-        const imageUrls = rawUrls.filter((url) => url && typeof url === "string" && url.trim().length > 0);
+        const rawUrls = Array.isArray(card.imageUrl)
+          ? card.imageUrl
+          : [card.imageUrl];
+        const imageUrls = rawUrls.filter(
+          (url) => url && typeof url === "string" && url.trim().length > 0,
+        );
         if (imageUrls.length > 0) {
           const imageEl = contentContainer.createDiv("card-thumbnail");
           const imageEmbedContainer = imageEl.createDiv("image-embed");
           const originalUrl = resolveImageUrl(this.app, imageUrls[0]);
           void (async () => {
-            const finalUrl = await convertGifToStatic(originalUrl, this.plugin.settings.forceStaticGifImages);
+            const finalUrl = await convertGifToStatic(
+              originalUrl,
+              this.plugin.settings.forceStaticGifImages,
+            );
             imageEmbedContainer.style.backgroundImage = `url("${finalUrl}")`;
           })();
           imageEmbedContainer.style.backgroundImage = `url("${originalUrl}")`;
           setCssProps(imageEmbedContainer, {
             backgroundSize: "cover",
             backgroundPosition: "center center",
-            backgroundRepeat: "no-repeat"
+            backgroundRepeat: "no-repeat",
           });
         }
       }
@@ -3647,7 +4705,11 @@ var SharedCardRenderer = class {
           cardEl.__textPreviewEl = textPreviewEl;
           cardEl.__cardPath = card.path;
         }
-        if (settings.showTags && card.displayTags && card.displayTags.length > 0) {
+        if (
+          settings.showTags &&
+          card.displayTags &&
+          card.displayTags.length > 0
+        ) {
           const tagsContainer = textWrapper.createDiv("card-tags");
           const tagStyle = getTagStyle();
           if (tagStyle !== "plain") {
@@ -3674,7 +4736,11 @@ var SharedCardRenderer = class {
           cardEl.__textPreviewEl = textPreviewEl;
           cardEl.__cardPath = card.path;
         }
-        if (settings.showTags && card.displayTags && card.displayTags.length > 0) {
+        if (
+          settings.showTags &&
+          card.displayTags &&
+          card.displayTags.length > 0
+        ) {
           const tagsContainer = contentContainer.createDiv("card-tags");
           const tagStyle = getTagStyle();
           if (tagStyle !== "plain") {
@@ -3695,34 +4761,59 @@ var SharedCardRenderer = class {
       }
       if (settings.imageFormat === "cover") {
         if (card.imageUrl) {
-          const rawUrls = Array.isArray(card.imageUrl) ? card.imageUrl : [card.imageUrl];
-          const imageUrls = rawUrls.filter((url) => url && typeof url === "string" && url.trim().length > 0);
+          const rawUrls = Array.isArray(card.imageUrl)
+            ? card.imageUrl
+            : [card.imageUrl];
+          const imageUrls = rawUrls.filter(
+            (url) => url && typeof url === "string" && url.trim().length > 0,
+          );
           if (imageUrls.length > 0) {
             const imageEl = contentContainer.createDiv("card-cover");
             const imageEmbedContainer = imageEl.createDiv("image-embed");
             const originalUrl = resolveImageUrl(this.app, imageUrls[0]);
             void (async () => {
-              const finalUrl = await convertGifToStatic(originalUrl, this.plugin.settings.forceStaticGifImages);
+              const finalUrl = await convertGifToStatic(
+                originalUrl,
+                this.plugin.settings.forceStaticGifImages,
+              );
               imageEmbedContainer.style.backgroundImage = `url("${finalUrl}")`;
             })();
             imageEmbedContainer.style.backgroundImage = `url("${originalUrl}")`;
             setCssProps(imageEmbedContainer, {
               backgroundSize: "cover",
               backgroundPosition: "center center",
-              backgroundRepeat: "no-repeat"
+              backgroundRepeat: "no-repeat",
             });
-            this.propertyRenderer.renderProperties(cardEl, card, entry, settings, onPropertyToggle, "bottom");
+            this.propertyRenderer.renderProperties(
+              cardEl,
+              card,
+              entry,
+              settings,
+              onPropertyToggle,
+              "bottom",
+            );
             return;
           }
         }
         if (card.hasImageAvailable && !card.imageUrl) {
-          const placeholderEl = contentContainer.createDiv("card-cover-placeholder");
+          const placeholderEl = contentContainer.createDiv(
+            "card-cover-placeholder",
+          );
         } else if (!card.imageUrl) {
-          const placeholderEl = contentContainer.createDiv("card-cover-placeholder");
+          const placeholderEl = contentContainer.createDiv(
+            "card-cover-placeholder",
+          );
         }
       }
     }
-    this.propertyRenderer.renderProperties(cardEl, card, entry, settings, onPropertyToggle, "bottom");
+    this.propertyRenderer.renderProperties(
+      cardEl,
+      card,
+      entry,
+      settings,
+      onPropertyToggle,
+      "bottom",
+    );
     return;
   }
 };
@@ -3738,7 +4829,11 @@ init_frontmatter_helper();
 async function addProperties(app, file, props, overwrite) {
   await processFileFrontMatter(app, file, (frontmatter) => {
     for (const [key, value] of props) {
-      if (key === "tags" && !Object.prototype.hasOwnProperty.call(frontmatter, "tags") && !Array.isArray(value.data)) {
+      if (
+        key === "tags" &&
+        !Object.prototype.hasOwnProperty.call(frontmatter, "tags") &&
+        !Array.isArray(value.data)
+      ) {
         frontmatter[key] = [value.data];
         continue;
       }
@@ -3748,7 +4843,13 @@ async function addProperties(app, file, props, overwrite) {
       }
       const type1 = value.type;
       const existingValue = frontmatter[key];
-      const type2 = Array.isArray(existingValue) ? "list" : typeof existingValue === "number" ? "number" : typeof existingValue === "boolean" ? "checkbox" : "text";
+      const type2 = Array.isArray(existingValue)
+        ? "list"
+        : typeof existingValue === "number"
+          ? "number"
+          : typeof existingValue === "boolean"
+            ? "checkbox"
+            : "text";
       if (canBeAppended(type1, type2)) {
         if (frontmatter[key] === value.data) continue;
         if (!value.data) continue;
@@ -3775,7 +4876,7 @@ function canBeAppended(str1, str2) {
   return true;
 }
 function mergeIntoArrays(...args) {
-  const arrays = args.map((arg) => Array.isArray(arg) ? arg : [arg]);
+  const arrays = args.map((arg) => (Array.isArray(arg) ? arg : [arg]));
   const flattened = arrays.flat();
   const unique = [...new Set(flattened)];
   return unique;
@@ -3812,14 +4913,21 @@ var BulkOperations = class {
             }
           } else {
             if (startsWithUnderscore) {
-              const newName = fileName.substring(1) + (file.extension ? `.${file.extension}` : "");
+              const newName =
+                fileName.substring(1) +
+                (file.extension ? `.${file.extension}` : "");
               pathParts[pathParts.length - 1] = newName;
               const newPath = pathParts.join("/");
               await this.app.fileManager.renameFile(file, newPath);
             }
           }
         } else {
-          const cleanConfigProperty = settings.draftStatusProperty && settings.draftStatusProperty.trim() ? settings.draftStatusProperty.startsWith("note.") ? settings.draftStatusProperty.substring(5) : settings.draftStatusProperty : "draft";
+          const cleanConfigProperty =
+            settings.draftStatusProperty && settings.draftStatusProperty.trim()
+              ? settings.draftStatusProperty.startsWith("note.")
+                ? settings.draftStatusProperty.substring(5)
+                : settings.draftStatusProperty
+              : "draft";
           let targetValue = draft;
           if (settings.draftStatusReverse) {
             targetValue = !draft;
@@ -3834,7 +4942,9 @@ var BulkOperations = class {
         });
       }
     });
-    new import_obsidian12.Notice(`Set ${files.length} file${files.length !== 1 ? "s" : ""} to ${draft ? "draft" : "published"}`);
+    new import_obsidian12.Notice(
+      `Set ${files.length} file${files.length !== 1 ? "s" : ""} to ${draft ? "draft" : "published"}`,
+    );
   }
   /**
    * Add tags to multiple files
@@ -3845,12 +4955,14 @@ var BulkOperations = class {
       type: "tags",
       data: tags,
       overwrite: false,
-      delimiter: ","
+      delimiter: ",",
     });
     await this.batchProcessFiles(files, async (file) => {
       await addProperties(this.app, file, props, false);
     });
-    new import_obsidian12.Notice(`Added tags to ${files.length} file${files.length !== 1 ? "s" : ""}`);
+    new import_obsidian12.Notice(
+      `Added tags to ${files.length} file${files.length !== 1 ? "s" : ""}`,
+    );
   }
   /**
    * Remove tags from multiple files
@@ -3862,7 +4974,7 @@ var BulkOperations = class {
         const fmTags = frontmatter.tags;
         const currentTags = Array.isArray(fmTags) ? fmTags : [fmTags];
         const updatedTags = currentTags.filter(
-          (tag) => !tagsToRemove.includes(tag)
+          (tag) => !tagsToRemove.includes(tag),
         );
         await processFileFrontMatter(this.app, file, (fm) => {
           if (updatedTags.length > 0) {
@@ -3873,34 +4985,44 @@ var BulkOperations = class {
         });
       }
     });
-    new import_obsidian12.Notice(`Removed tags from ${files.length} file${files.length !== 1 ? "s" : ""}`);
+    new import_obsidian12.Notice(
+      `Removed tags from ${files.length} file${files.length !== 1 ? "s" : ""}`,
+    );
   }
   /**
    * Set a property value for multiple files
    */
   async setProperty(files, property, value, propertyType = "text") {
-    const cleanProperty = property.startsWith("note.") ? property.substring(5) : property;
+    const cleanProperty = property.startsWith("note.")
+      ? property.substring(5)
+      : property;
     const props = /* @__PURE__ */ new Map();
     props.set(cleanProperty, {
       type: propertyType,
       data: value,
       overwrite: true,
-      delimiter: ","
+      delimiter: ",",
     });
     await this.batchProcessFiles(files, async (file) => {
       await addProperties(this.app, file, props, true);
     });
-    new import_obsidian12.Notice(`Set ${cleanProperty} on ${files.length} file${files.length !== 1 ? "s" : ""}`);
+    new import_obsidian12.Notice(
+      `Set ${cleanProperty} on ${files.length} file${files.length !== 1 ? "s" : ""}`,
+    );
   }
   /**
    * Remove a property from multiple files
    */
   async removeProperty(files, property) {
-    const cleanProperty = property.startsWith("note.") ? property.substring(5) : property;
+    const cleanProperty = property.startsWith("note.")
+      ? property.substring(5)
+      : property;
     await this.batchProcessFiles(files, async (file) => {
       await removeProperties(this.app, file, [cleanProperty]);
     });
-    new import_obsidian12.Notice(`Removed ${cleanProperty} from ${files.length} file${files.length !== 1 ? "s" : ""}`);
+    new import_obsidian12.Notice(
+      `Removed ${cleanProperty} from ${files.length} file${files.length !== 1 ? "s" : ""}`,
+    );
   }
   /**
    * Batch process files with progress indication
@@ -3939,13 +5061,20 @@ var ManageTagsModal = class extends import_obsidian13.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    new import_obsidian13.Setting(contentEl).setName("Manage tags").setHeading();
-    contentEl.createEl("p", { text: `Managing tags for ${this.files.length} file${this.files.length !== 1 ? "s" : ""}` });
-    new import_obsidian13.Setting(contentEl).setName("Add tags").setDesc("Enter tags to add (comma-separated).").addText((text) => {
-      text.setPlaceholder("tag1, tag2, tag3").onChange((value) => {
-        this.tagsToAdd = value;
-      });
+    new import_obsidian13.Setting(contentEl)
+      .setName("Manage tags")
+      .setHeading();
+    contentEl.createEl("p", {
+      text: `Managing tags for ${this.files.length} file${this.files.length !== 1 ? "s" : ""}`,
     });
+    new import_obsidian13.Setting(contentEl)
+      .setName("Add tags")
+      .setDesc("Enter tags to add (comma-separated).")
+      .addText((text) => {
+        text.setPlaceholder("tag1, tag2, tag3").onChange((value) => {
+          this.tagsToAdd = value;
+        });
+      });
     contentEl.createEl("h3", { text: "Remove tags" });
     const removeContainer = contentEl.createDiv();
     const allTags = /* @__PURE__ */ new Set();
@@ -3956,11 +5085,17 @@ var ManageTagsModal = class extends import_obsidian13.Modal {
           void (async () => {
             const frontmatter = await getFileFrontmatter(this.app, file);
             if (frontmatter == null ? void 0 : frontmatter.tags) {
-              const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [frontmatter.tags];
+              const tags = Array.isArray(frontmatter.tags)
+                ? frontmatter.tags
+                : [frontmatter.tags];
               tags.forEach((tag) => {
                 if (!allTags.has(tag)) {
                   allTags.add(tag);
-                  if (this.contentEl && this.contentEl.isConnected && removeContainer.isConnected) {
+                  if (
+                    this.contentEl &&
+                    this.contentEl.isConnected &&
+                    removeContainer.isConnected
+                  ) {
                     this.addTagCheckbox(removeContainer, tag);
                   }
                 }
@@ -3971,22 +5106,26 @@ var ManageTagsModal = class extends import_obsidian13.Modal {
           const metadata = this.app.metadataCache.getFileCache(file);
           const frontmatter = metadata == null ? void 0 : metadata.frontmatter;
           if (frontmatter == null ? void 0 : frontmatter.tags) {
-            const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [frontmatter.tags];
+            const tags = Array.isArray(frontmatter.tags)
+              ? frontmatter.tags
+              : [frontmatter.tags];
             tags.forEach((tag) => allTags.add(tag));
           }
         }
       }
     }
     for (const tag of Array.from(allTags).sort()) {
-      new import_obsidian13.Setting(removeContainer).setName(tag).addToggle((toggle) => {
-        toggle.setValue(this.tagsToRemove.has(tag)).onChange((value) => {
-          if (value) {
-            this.tagsToRemove.add(tag);
-          } else {
-            this.tagsToRemove.delete(tag);
-          }
+      new import_obsidian13.Setting(removeContainer)
+        .setName(tag)
+        .addToggle((toggle) => {
+          toggle.setValue(this.tagsToRemove.has(tag)).onChange((value) => {
+            if (value) {
+              this.tagsToRemove.add(tag);
+            } else {
+              this.tagsToRemove.delete(tag);
+            }
+          });
         });
-      });
     }
     const buttonContainer = contentEl.createDiv();
     buttonContainer.addClass("bases-cms-modal-button-container");
@@ -4004,19 +5143,24 @@ var ManageTagsModal = class extends import_obsidian13.Modal {
     });
   }
   addTagCheckbox(container, tag) {
-    new import_obsidian13.Setting(container).setName(tag).addToggle((toggle) => {
-      toggle.setValue(this.tagsToRemove.has(tag)).onChange((value) => {
-        if (value) {
-          this.tagsToRemove.add(tag);
-        } else {
-          this.tagsToRemove.delete(tag);
-        }
+    new import_obsidian13.Setting(container)
+      .setName(tag)
+      .addToggle((toggle) => {
+        toggle.setValue(this.tagsToRemove.has(tag)).onChange((value) => {
+          if (value) {
+            this.tagsToRemove.add(tag);
+          } else {
+            this.tagsToRemove.delete(tag);
+          }
+        });
       });
-    });
   }
   async applyChanges() {
     if (this.tagsToAdd.trim()) {
-      const tagsToAdd = this.tagsToAdd.split(",").map((t) => t.trim()).filter((t) => t.length > 0);
+      const tagsToAdd = this.tagsToAdd
+        .split(",")
+        .map((t) => t.trim())
+        .filter((t) => t.length > 0);
       if (tagsToAdd.length > 0) {
         await this.bulkOps.addTags(this.files, tagsToAdd);
       }
@@ -4045,23 +5189,45 @@ var SetPropertyModal = class extends import_obsidian14.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    new import_obsidian14.Setting(contentEl).setName("Set property").setHeading();
-    contentEl.createEl("p", { text: `Setting property on ${this.files.length} file${this.files.length !== 1 ? "s" : ""}` });
-    new import_obsidian14.Setting(contentEl).setName("Property name").setDesc("Enter the property name to set.").addText((text) => {
-      text.setPlaceholder("Enter name").onChange((value) => {
-        this.propertyName = value;
-      });
+    new import_obsidian14.Setting(contentEl)
+      .setName("Set property")
+      .setHeading();
+    contentEl.createEl("p", {
+      text: `Setting property on ${this.files.length} file${this.files.length !== 1 ? "s" : ""}`,
     });
-    new import_obsidian14.Setting(contentEl).setName("Property type").setDesc("Select the property type.").addDropdown((dropdown) => {
-      dropdown.addOption("text", "Text").addOption("number", "Number").addOption("checkbox", "Checkbox").addOption("date", "Date").addOption("list", "List").setValue(this.propertyType).onChange((value) => {
-        this.propertyType = value;
+    new import_obsidian14.Setting(contentEl)
+      .setName("Property name")
+      .setDesc("Enter the property name to set.")
+      .addText((text) => {
+        text.setPlaceholder("Enter name").onChange((value) => {
+          this.propertyName = value;
+        });
       });
-    });
-    new import_obsidian14.Setting(contentEl).setName("Property value").setDesc("Enter the property value. For List type, use comma- or newline-separated values.").addText((text) => {
-      text.setPlaceholder("Enter value").onChange((value) => {
-        this.propertyValue = value;
+    new import_obsidian14.Setting(contentEl)
+      .setName("Property type")
+      .setDesc("Select the property type.")
+      .addDropdown((dropdown) => {
+        dropdown
+          .addOption("text", "Text")
+          .addOption("number", "Number")
+          .addOption("checkbox", "Checkbox")
+          .addOption("date", "Date")
+          .addOption("list", "List")
+          .setValue(this.propertyType)
+          .onChange((value) => {
+            this.propertyType = value;
+          });
       });
-    });
+    new import_obsidian14.Setting(contentEl)
+      .setName("Property value")
+      .setDesc(
+        "Enter the property value. For List type, use comma- or newline-separated values.",
+      )
+      .addText((text) => {
+        text.setPlaceholder("Enter value").onChange((value) => {
+          this.propertyValue = value;
+        });
+      });
     const buttonContainer = contentEl.createDiv();
     buttonContainer.addClass("bases-cms-modal-button-container");
     const cancelBtn = buttonContainer.createEl("button");
@@ -4072,7 +5238,10 @@ var SetPropertyModal = class extends import_obsidian14.Modal {
     applyBtn.addClass("mod-cta");
     applyBtn.addEventListener("click", () => {
       void (async () => {
-        if (this.propertyName && (this.propertyValue || this.propertyType === "list")) {
+        if (
+          this.propertyName &&
+          (this.propertyValue || this.propertyType === "list")
+        ) {
           await this.applyChanges();
           this.close();
         }
@@ -4084,13 +5253,23 @@ var SetPropertyModal = class extends import_obsidian14.Modal {
     if (this.propertyType === "number") {
       value = Number(this.propertyValue);
     } else if (this.propertyType === "checkbox") {
-      value = this.propertyValue.toLowerCase() === "true" || this.propertyValue === "1";
+      value =
+        this.propertyValue.toLowerCase() === "true" ||
+        this.propertyValue === "1";
     } else if (this.propertyType === "date") {
       value = this.propertyValue;
     } else if (this.propertyType === "list") {
-      value = this.propertyValue.split(/[\n,]/).map((s) => s.trim()).filter(Boolean);
+      value = this.propertyValue
+        .split(/[\n,]/)
+        .map((s) => s.trim())
+        .filter(Boolean);
     }
-    await this.bulkOps.setProperty(this.files, this.propertyName, value, this.propertyType);
+    await this.bulkOps.setProperty(
+      this.files,
+      this.propertyName,
+      value,
+      this.propertyType,
+    );
   }
   onClose() {
     const { contentEl } = this;
@@ -4111,8 +5290,12 @@ var RemovePropertyModal = class extends import_obsidian15.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    new import_obsidian15.Setting(contentEl).setName("Remove property").setHeading();
-    contentEl.createEl("p", { text: `Removing properties from ${this.files.length} file${this.files.length !== 1 ? "s" : ""}` });
+    new import_obsidian15.Setting(contentEl)
+      .setName("Remove property")
+      .setHeading();
+    contentEl.createEl("p", {
+      text: `Removing properties from ${this.files.length} file${this.files.length !== 1 ? "s" : ""}`,
+    });
     const propertiesContainer = contentEl.createDiv();
     const allProperties = /* @__PURE__ */ new Set();
     for (const filePath of this.files) {
@@ -4135,14 +5318,21 @@ var RemovePropertyModal = class extends import_obsidian15.Modal {
     void (async () => {
       for (const filePath of this.files) {
         const file = this.app.vault.getAbstractFileByPath(filePath);
-        if (file instanceof import_obsidian15.TFile && file.extension === "mdx") {
+        if (
+          file instanceof import_obsidian15.TFile &&
+          file.extension === "mdx"
+        ) {
           const frontmatter = await getFileFrontmatter(this.app, file);
           if (frontmatter) {
             for (const key in frontmatter) {
               if (key !== "tags" && key !== "title") {
                 if (!allProperties.has(key)) {
                   allProperties.add(key);
-                  if (this.contentEl && this.contentEl.isConnected && propertiesContainer.isConnected) {
+                  if (
+                    this.contentEl &&
+                    this.contentEl.isConnected &&
+                    propertiesContainer.isConnected
+                  ) {
                     this.addPropertyCheckbox(propertiesContainer, key);
                   }
                 }
@@ -4153,7 +5343,9 @@ var RemovePropertyModal = class extends import_obsidian15.Modal {
       }
     })();
     if (allProperties.size === 0) {
-      contentEl.createEl("p", { text: "No properties found in selected files." });
+      contentEl.createEl("p", {
+        text: "No properties found in selected files.",
+      });
     }
     const buttonContainer = contentEl.createDiv();
     buttonContainer.addClass("bases-cms-modal-button-container");
@@ -4173,15 +5365,17 @@ var RemovePropertyModal = class extends import_obsidian15.Modal {
     });
   }
   addPropertyCheckbox(container, prop) {
-    new import_obsidian15.Setting(container).setName(prop).addToggle((toggle) => {
-      toggle.setValue(this.propertiesToRemove.has(prop)).onChange((value) => {
-        if (value) {
-          this.propertiesToRemove.add(prop);
-        } else {
-          this.propertiesToRemove.delete(prop);
-        }
+    new import_obsidian15.Setting(container)
+      .setName(prop)
+      .addToggle((toggle) => {
+        toggle.setValue(this.propertiesToRemove.has(prop)).onChange((value) => {
+          if (value) {
+            this.propertiesToRemove.add(prop);
+          } else {
+            this.propertiesToRemove.delete(prop);
+          }
+        });
       });
-    });
   }
   async applyChanges() {
     for (const prop of this.propertiesToRemove) {
@@ -4209,21 +5403,27 @@ var BulkOperationConfirmModal = class extends import_obsidian19.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    const operationName = this.operation === "draft" ? "mark as draft" : "mark as published";
-    const headingText = operationName.charAt(0).toUpperCase() + operationName.slice(1);
-    new import_obsidian19.Setting(contentEl).setName(`Confirm ${headingText}`).setHeading();
+    const operationName =
+      this.operation === "draft" ? "mark as draft" : "mark as published";
+    const headingText =
+      operationName.charAt(0).toUpperCase() + operationName.slice(1);
+    new import_obsidian19.Setting(contentEl)
+      .setName(`Confirm ${headingText}`)
+      .setHeading();
     contentEl.createEl("p", {
-      text: `Are you sure you want to ${operationName} ${this.files.length} file${this.files.length !== 1 ? "s" : ""}?`
+      text: `Are you sure you want to ${operationName} ${this.files.length} file${this.files.length !== 1 ? "s" : ""}?`,
     });
     if (this.files.length > 0) {
-      const filesList = contentEl.createEl("ul", { cls: "bases-cms-deletion-list" });
+      const filesList = contentEl.createEl("ul", {
+        cls: "bases-cms-deletion-list",
+      });
       for (const filePath of this.files.slice(0, 20)) {
         const li = filesList.createEl("li");
         li.setText(filePath);
       }
       if (this.files.length > 20) {
         filesList.createEl("li", {
-          text: `... and ${this.files.length - 20} more file${this.files.length - 20 !== 1 ? "s" : ""}`
+          text: `... and ${this.files.length - 20} more file${this.files.length - 20 !== 1 ? "s" : ""}`,
         });
       }
     }
@@ -4249,7 +5449,14 @@ var BulkOperationConfirmModal = class extends import_obsidian19.Modal {
 // src/utils/toolbar-actions.ts
 init_smart_deletion();
 var ToolbarActions = class {
-  constructor(app, plugin, getSelectedFiles, clearSelection, refreshView, showToolbar) {
+  constructor(
+    app,
+    plugin,
+    getSelectedFiles,
+    clearSelection,
+    refreshView,
+    showToolbar,
+  ) {
     this.app = app;
     this.plugin = plugin;
     this.getSelectedFiles = getSelectedFiles;
@@ -4271,7 +5478,7 @@ var ToolbarActions = class {
             await this.bulkOps.setDraft(files, true, settings);
             this.refreshView();
           })();
-        }
+        },
       );
       modal.open();
     } else {
@@ -4292,7 +5499,7 @@ var ToolbarActions = class {
             await this.bulkOps.setDraft(files, false, settings);
             this.refreshView();
           })();
-        }
+        },
       );
       modal.open();
     } else {
@@ -4337,22 +5544,18 @@ var ToolbarActions = class {
       const preview = await prepareDeletionPreview(
         this.app,
         files,
-        this.plugin.settings
+        this.plugin.settings,
       );
-      const modal = new DeletionPreviewModal(
-        this.app,
-        preview,
-        () => {
-          this.clearSelection();
-          this.refreshView();
-        }
-      );
+      const modal = new DeletionPreviewModal(this.app, preview, () => {
+        this.clearSelection();
+        this.refreshView();
+      });
       modal.open();
     } else {
       const preview = await prepareDeletionPreview(
         this.app,
         files,
-        this.plugin.settings
+        this.plugin.settings,
       );
       await executeSmartDeletion(this.app, preview);
       this.clearSelection();
@@ -4363,7 +5566,16 @@ var ToolbarActions = class {
 
 // src/components/bulk-toolbar.ts
 var BulkToolbar = class {
-  constructor(app, plugin, container, getSelectedFiles, clearSelection, refreshView, selectAllCallback, settings) {
+  constructor(
+    app,
+    plugin,
+    container,
+    getSelectedFiles,
+    clearSelection,
+    refreshView,
+    selectAllCallback,
+    settings,
+  ) {
     this.app = app;
     this.plugin = plugin;
     this.container = container;
@@ -4382,7 +5594,7 @@ var BulkToolbar = class {
       this.getSelectedFiles,
       this.clearSelection,
       this.refreshView,
-      () => this.show()
+      () => this.show(),
     );
     this.createToolbar();
   }
@@ -4400,7 +5612,8 @@ var BulkToolbar = class {
   }
   createToolbar() {
     this.toolbarEl = document.createElement("div");
-    this.toolbarEl.className = "bases-toolbar bases-cms-bulk-toolbar bases-cms-bulk-toolbar-hidden";
+    this.toolbarEl.className =
+      "bases-toolbar bases-cms-bulk-toolbar bases-cms-bulk-toolbar-hidden";
     this.toolbarEl.__bulkToolbarInstance = this;
     this.createToolbarContent();
     this.positionToolbar();
@@ -4412,7 +5625,12 @@ var BulkToolbar = class {
     if (!this.toolbarEl) return;
     const safeInsertBefore = (parent2, newNode, refNode) => {
       if (!parent2 || !newNode) return false;
-      if (newNode.parentElement === parent2 && (refNode === null ? !newNode.nextSibling : newNode.nextSibling === refNode)) {
+      if (
+        newNode.parentElement === parent2 &&
+        (refNode === null
+          ? !newNode.nextSibling
+          : newNode.nextSibling === refNode)
+      ) {
         return true;
       }
       try {
@@ -4427,9 +5645,22 @@ var BulkToolbar = class {
         return false;
       }
     };
-    const basesHeader = ((_a = this.container.closest(".view-content")) == null ? void 0 : _a.querySelector(".bases-header")) || ((_b = this.container.parentElement) == null ? void 0 : _b.querySelector(".bases-header"));
+    const basesHeader =
+      ((_a = this.container.closest(".view-content")) == null
+        ? void 0
+        : _a.querySelector(".bases-header")) ||
+      ((_b = this.container.parentElement) == null
+        ? void 0
+        : _b.querySelector(".bases-header"));
     if (basesHeader instanceof HTMLElement && basesHeader.parentElement) {
-      if (safeInsertBefore(basesHeader.parentElement, this.toolbarEl, basesHeader.nextSibling)) return;
+      if (
+        safeInsertBefore(
+          basesHeader.parentElement,
+          this.toolbarEl,
+          basesHeader.nextSibling,
+        )
+      )
+        return;
     }
     const parent = this.container.parentElement;
     if (parent) {
@@ -4438,8 +5669,16 @@ var BulkToolbar = class {
   }
   createToolbarContent() {
     if (!this.toolbarEl) return;
-    const leftContainer = this.toolbarEl.createDiv("bases-cms-bulk-toolbar-left");
-    const createBasesButton = (iconName, text, onClick, container, isDestructive = false) => {
+    const leftContainer = this.toolbarEl.createDiv(
+      "bases-cms-bulk-toolbar-left",
+    );
+    const createBasesButton = (
+      iconName,
+      text,
+      onClick,
+      container,
+      isDestructive = false,
+    ) => {
       const toolbarItem = container.createDiv("bases-toolbar-item");
       const button = toolbarItem.createDiv("text-icon-button");
       if (isDestructive) {
@@ -4454,38 +5693,83 @@ var BulkToolbar = class {
       return button;
     };
     if (this.plugin.settings.showToolbarSelectAll) {
-      createBasesButton("copy-check", "Select all", () => this.handleSelectAll(), leftContainer);
+      createBasesButton(
+        "copy-check",
+        "Select all",
+        () => this.handleSelectAll(),
+        leftContainer,
+      );
     }
     if (this.plugin.settings.showToolbarClear) {
-      createBasesButton("square-x", "Clear", () => this.clearSelection(), leftContainer);
+      createBasesButton(
+        "square-x",
+        "Clear",
+        () => this.clearSelection(),
+        leftContainer,
+      );
     }
-    const countItem = leftContainer.createDiv("bases-toolbar-item bases-cms-selected-count");
+    const countItem = leftContainer.createDiv(
+      "bases-toolbar-item bases-cms-selected-count",
+    );
     this.countEl = countItem.createSpan("text-button-label");
     this.countEl.setText("0 selected");
-    const rightContainer = this.toolbarEl.createDiv("bases-cms-bulk-toolbar-right");
+    const rightContainer = this.toolbarEl.createDiv(
+      "bases-cms-bulk-toolbar-right",
+    );
     if (this.plugin.settings.showToolbarPublish) {
-      createBasesButton("book-check", "Publish", () => {
-        void this.actions.handlePublish(this.settings);
-      }, rightContainer);
+      createBasesButton(
+        "book-check",
+        "Publish",
+        () => {
+          void this.actions.handlePublish(this.settings);
+        },
+        rightContainer,
+      );
     }
     if (this.plugin.settings.showToolbarDraft) {
-      createBasesButton("book-dashed", "Draft", () => {
-        void this.actions.handleSetDraft(this.settings);
-      }, rightContainer);
+      createBasesButton(
+        "book-dashed",
+        "Draft",
+        () => {
+          void this.actions.handleSetDraft(this.settings);
+        },
+        rightContainer,
+      );
     }
     if (this.plugin.settings.showToolbarTags) {
-      createBasesButton("tags", "Tags", () => this.actions.handleManageTags(), rightContainer);
+      createBasesButton(
+        "tags",
+        "Tags",
+        () => this.actions.handleManageTags(),
+        rightContainer,
+      );
     }
     if (this.plugin.settings.showToolbarSet) {
-      createBasesButton("list-check", "Set", () => this.actions.handleSetProperty(), rightContainer);
+      createBasesButton(
+        "list-check",
+        "Set",
+        () => this.actions.handleSetProperty(),
+        rightContainer,
+      );
     }
     if (this.plugin.settings.showToolbarRemove) {
-      createBasesButton("list-x", "Remove", () => this.actions.handleRemoveProperty(), rightContainer);
+      createBasesButton(
+        "list-x",
+        "Remove",
+        () => this.actions.handleRemoveProperty(),
+        rightContainer,
+      );
     }
     if (this.plugin.settings.showToolbarDelete) {
-      createBasesButton("trash-2", "Delete", () => {
-        void this.actions.handleDelete();
-      }, rightContainer, true);
+      createBasesButton(
+        "trash-2",
+        "Delete",
+        () => {
+          void this.actions.handleDelete();
+        },
+        rightContainer,
+        true,
+      );
     }
     this.setupResponsiveBehavior();
   }
@@ -4589,7 +5873,9 @@ var BulkToolbar = class {
    * Preserves visibility state and count
    */
   recreate() {
-    const wasVisible = this.toolbarEl && !this.toolbarEl.hasClass("bases-cms-bulk-toolbar-hidden");
+    const wasVisible =
+      this.toolbarEl &&
+      !this.toolbarEl.hasClass("bases-cms-bulk-toolbar-hidden");
     let currentCount = 0;
     if (this.countEl && this.countEl.textContent) {
       const match = this.countEl.textContent.match(/\d+/);
@@ -4625,10 +5911,18 @@ var BulkToolbar = class {
 
 // src/utils/new-note-interceptor.ts
 init_settings_schema();
-function setupNewNoteInterceptor(app, containerEl, config, pluginSettings, registerCleanup) {
+function setupNewNoteInterceptor(
+  app,
+  containerEl,
+  config,
+  pluginSettings,
+  registerCleanup,
+) {
   const interceptNewButton = (e) => {
     const target = e.target;
-    const buttonEl = target.closest('.bases-toolbar-new-item-menu, .bases-toolbar-new-item-menu .text-icon-button, [data-action="new-item"], button[aria-label*="new"], button[aria-label*="New"], .bases-toolbar button');
+    const buttonEl = target.closest(
+      '.bases-toolbar-new-item-menu, .bases-toolbar-new-item-menu .text-icon-button, [data-action="new-item"], button[aria-label*="new"], button[aria-label*="New"], .bases-toolbar button',
+    );
     if (!buttonEl) {
       return;
     }
@@ -4637,31 +5931,49 @@ function setupNewNoteInterceptor(app, containerEl, config, pluginSettings, regis
     }
     const activeLeaf = app.workspace.activeLeaf;
     const activeView = activeLeaf == null ? void 0 : activeLeaf.view;
-    const activeViewContainer = activeView == null ? void 0 : activeView.containerEl;
-    const isCMSView = (activeView == null ? void 0 : activeView.type) === "bases-cms" || (activeViewContainer == null ? void 0 : activeViewContainer.querySelector(".bases-cms-container")) !== null;
+    const activeViewContainer =
+      activeView == null ? void 0 : activeView.containerEl;
+    const isCMSView =
+      (activeView == null ? void 0 : activeView.type) === "bases-cms" ||
+      (activeViewContainer == null
+        ? void 0
+        : activeViewContainer.querySelector(".bases-cms-container")) !== null;
     if (!isCMSView) {
       return;
     }
-    const isOurView = activeViewContainer && (activeViewContainer === containerEl || activeViewContainer.contains(containerEl) || containerEl.contains(activeViewContainer));
+    const isOurView =
+      activeViewContainer &&
+      (activeViewContainer === containerEl ||
+        activeViewContainer.contains(containerEl) ||
+        containerEl.contains(activeViewContainer));
     if (!isOurView) {
       return;
     }
     const containerWithView = containerEl;
     const viewInstance = containerWithView.__cmsView;
-    const viewConfig = (viewInstance == null ? void 0 : viewInstance.config) || containerWithView.__cmsConfig || config;
+    const viewConfig =
+      (viewInstance == null ? void 0 : viewInstance.config) ||
+      containerWithView.__cmsConfig ||
+      config;
     const settings = readCMSSettings(viewConfig, pluginSettings);
-    const hasCustomLocation = settings.newNoteLocation && settings.newNoteLocation.trim() !== "";
+    const hasCustomLocation =
+      settings.newNoteLocation && settings.newNoteLocation.trim() !== "";
     if (settings.customizeNewButton || hasCustomLocation) {
       e.preventDefault();
       e.stopPropagation();
       e.stopImmediatePropagation();
       void (async () => {
         var _a;
-        const locationInput = ((_a = settings.newNoteLocation) == null ? void 0 : _a.trim()) || "";
+        const locationInput =
+          ((_a = settings.newNoteLocation) == null ? void 0 : _a.trim()) || "";
         if (locationInput === "" && !settings.customizeNewButton) {
           const vaultConfig = app.vault.config;
-          const newFileLocation = (vaultConfig == null ? void 0 : vaultConfig.newFileLocation) || "folder";
-          const newFileFolderPath = (vaultConfig == null ? void 0 : vaultConfig.newFileFolderPath) || "";
+          const newFileLocation =
+            (vaultConfig == null ? void 0 : vaultConfig.newFileLocation) ||
+            "folder";
+          const newFileFolderPath =
+            (vaultConfig == null ? void 0 : vaultConfig.newFileFolderPath) ||
+            "";
           let filePath = "Untitled.md";
           if (newFileLocation === "folder" && newFileFolderPath) {
             filePath = `${newFileFolderPath}/Untitled.md`;
@@ -4693,7 +6005,10 @@ function setupNewNoteInterceptor(app, containerEl, config, pluginSettings, regis
           folder = app.vault.getAbstractFileByPath(folderPath);
         }
         if (folder && "children" in folder) {
-          const newFile = await app.vault.create(`${folderPath}/Untitled.md`, "");
+          const newFile = await app.vault.create(
+            `${folderPath}/Untitled.md`,
+            "",
+          );
           if (settings.customizeNewButton) {
             await app.workspace.openLinkText(newFile.path, "", false);
           }
@@ -4705,7 +6020,9 @@ function setupNewNoteInterceptor(app, containerEl, config, pluginSettings, regis
   };
   document.addEventListener("click", interceptNewButton, true);
   const observer = new MutationObserver(() => {
-    const buttons2 = document.querySelectorAll('.bases-toolbar-new-item-menu, .bases-toolbar-new-item-menu .text-icon-button, [data-action="new-item"]');
+    const buttons2 = document.querySelectorAll(
+      '.bases-toolbar-new-item-menu, .bases-toolbar-new-item-menu .text-icon-button, [data-action="new-item"]',
+    );
     buttons2.forEach((buttonEl) => {
       const buttonWithFlag = buttonEl;
       if (!buttonWithFlag.__cmsIntercepted) {
@@ -4715,7 +6032,9 @@ function setupNewNoteInterceptor(app, containerEl, config, pluginSettings, regis
     });
   });
   observer.observe(document.body, { childList: true, subtree: true });
-  const buttons = document.querySelectorAll('.bases-toolbar-new-item-menu, .bases-toolbar-new-item-menu .text-icon-button, [data-action="new-item"]');
+  const buttons = document.querySelectorAll(
+    '.bases-toolbar-new-item-menu, .bases-toolbar-new-item-menu .text-icon-button, [data-action="new-item"]',
+  );
   buttons.forEach((buttonEl) => {
     const buttonWithFlag = buttonEl;
     if (!buttonWithFlag.__cmsIntercepted) {
@@ -4744,12 +6063,12 @@ var PropertyToggleHandler = class {
     try {
       const file = this.app.vault.getAbstractFileByPath(path);
       if (!(file instanceof import_obsidian21.TFile)) return;
-      const cleanProperty = property.startsWith("note.") ? property.substring(5) : property;
-      const settings = readCMSSettings(
-        this.config,
-        this.pluginSettings
-      );
-      const isDraftProperty = settings.showDraftStatus && cleanProperty === "draft";
+      const cleanProperty = property.startsWith("note.")
+        ? property.substring(5)
+        : property;
+      const settings = readCMSSettings(this.config, this.pluginSettings);
+      const isDraftProperty =
+        settings.showDraftStatus && cleanProperty === "draft";
       let shouldRefresh = false;
       if (isDraftProperty) {
         if (settings.draftStatusUseFilenamePrefix) {
@@ -4767,7 +6086,9 @@ var PropertyToggleHandler = class {
             }
           } else {
             if (startsWithUnderscore) {
-              const newName = fileName.substring(1) + (file.extension ? `.${file.extension}` : "");
+              const newName =
+                fileName.substring(1) +
+                (file.extension ? `.${file.extension}` : "");
               pathParts[pathParts.length - 1] = newName;
               const newPath = pathParts.join("/");
               await this.app.fileManager.renameFile(file, newPath);
@@ -4775,7 +6096,12 @@ var PropertyToggleHandler = class {
             }
           }
         } else {
-          const cleanConfigProperty = settings.draftStatusProperty && settings.draftStatusProperty.trim() ? settings.draftStatusProperty.startsWith("note.") ? settings.draftStatusProperty.substring(5) : settings.draftStatusProperty : "draft";
+          const cleanConfigProperty =
+            settings.draftStatusProperty && settings.draftStatusProperty.trim()
+              ? settings.draftStatusProperty.startsWith("note.")
+                ? settings.draftStatusProperty.substring(5)
+                : settings.draftStatusProperty
+              : "draft";
           await processFileFrontMatter(this.app, file, (frontmatter) => {
             frontmatter[cleanConfigProperty] = value;
           });
@@ -4793,7 +6119,10 @@ var PropertyToggleHandler = class {
             try {
               this.onRefresh();
             } catch (error) {
-              console.error("Error refreshing view after property toggle:", error);
+              console.error(
+                "Error refreshing view after property toggle:",
+                error,
+              );
             }
           }, 100);
         });
@@ -4807,7 +6136,14 @@ var PropertyToggleHandler = class {
 // src/utils/scroll-layout-manager.ts
 init_settings_schema();
 var ScrollLayoutManager = class {
-  constructor(containerEl, app, config, pluginSettings, onLoadMore, registerCleanup) {
+  constructor(
+    containerEl,
+    app,
+    config,
+    pluginSettings,
+    onLoadMore,
+    registerCleanup,
+  ) {
     this.containerEl = containerEl;
     this.app = app;
     this.pluginSettings = pluginSettings;
@@ -4885,10 +6221,16 @@ var ScrollLayoutManager = class {
       const isMobile = (_a = this.app.isMobile) != null ? _a : false;
       const viewportMultiplier = isMobile ? 1 : 2;
       const threshold = clientHeight * viewportMultiplier;
-      if (distanceFromBottom < threshold && this.displayedCount < totalEntries) {
+      if (
+        distanceFromBottom < threshold &&
+        this.displayedCount < totalEntries
+      ) {
         this.isLoading = true;
         const batchSize = 50;
-        this.displayedCount = Math.min(this.displayedCount + batchSize, totalEntries);
+        this.displayedCount = Math.min(
+          this.displayedCount + batchSize,
+          totalEntries,
+        );
         this.onLoadMore();
       }
       this.scrollThrottleTimeout = window.setTimeout(() => {
@@ -4914,16 +6256,23 @@ var ScrollLayoutManager = class {
       if (!this.config || typeof this.config.get !== "function") {
         return;
       }
-      const currentSettings = readCMSSettings(
-        this.config,
-        this.pluginSettings
-      );
+      const currentSettings = readCMSSettings(this.config, this.pluginSettings);
       const cardMinWidth = currentSettings.cardSize;
       const imageAspectRatio = currentSettings.imageAspectRatio;
-      this.containerEl.style.setProperty("--card-min-width", `${cardMinWidth}px`);
-      this.containerEl.style.setProperty("--bases-cms-image-aspect-ratio", String(imageAspectRatio));
-      const descriptionMaxLines = (_a = currentSettings.descriptionMaxLines) != null ? _a : 5;
-      this.containerEl.style.setProperty("--bases-cms-text-preview-lines", String(descriptionMaxLines));
+      this.containerEl.style.setProperty(
+        "--card-min-width",
+        `${cardMinWidth}px`,
+      );
+      this.containerEl.style.setProperty(
+        "--bases-cms-image-aspect-ratio",
+        String(imageAspectRatio),
+      );
+      const descriptionMaxLines =
+        (_a = currentSettings.descriptionMaxLines) != null ? _a : 5;
+      this.containerEl.style.setProperty(
+        "--bases-cms-text-preview-lines",
+        String(descriptionMaxLines),
+      );
       this.lastCardSize = cardMinWidth;
       this.lastImageAspectRatio = imageAspectRatio;
       this.lastDescriptionMaxLines = descriptionMaxLines;
@@ -4936,17 +6285,28 @@ var ScrollLayoutManager = class {
       if (!this.config || typeof this.config.get !== "function") {
         return;
       }
-      const currentSettings = readCMSSettings(
-        this.config,
-        this.pluginSettings
-      );
+      const currentSettings = readCMSSettings(this.config, this.pluginSettings);
       const currentCardSize = currentSettings.cardSize;
       const currentImageAspectRatio = currentSettings.imageAspectRatio;
-      const currentDescriptionMaxLines = (_a = currentSettings.descriptionMaxLines) != null ? _a : 5;
-      if (this.lastCardSize !== currentCardSize || this.lastImageAspectRatio !== currentImageAspectRatio || this.lastDescriptionMaxLines !== currentDescriptionMaxLines) {
-        this.containerEl.style.setProperty("--card-min-width", `${currentCardSize}px`);
-        this.containerEl.style.setProperty("--bases-cms-image-aspect-ratio", String(currentImageAspectRatio));
-        this.containerEl.style.setProperty("--bases-cms-text-preview-lines", String(currentDescriptionMaxLines));
+      const currentDescriptionMaxLines =
+        (_a = currentSettings.descriptionMaxLines) != null ? _a : 5;
+      if (
+        this.lastCardSize !== currentCardSize ||
+        this.lastImageAspectRatio !== currentImageAspectRatio ||
+        this.lastDescriptionMaxLines !== currentDescriptionMaxLines
+      ) {
+        this.containerEl.style.setProperty(
+          "--card-min-width",
+          `${currentCardSize}px`,
+        );
+        this.containerEl.style.setProperty(
+          "--bases-cms-image-aspect-ratio",
+          String(currentImageAspectRatio),
+        );
+        this.containerEl.style.setProperty(
+          "--bases-cms-text-preview-lines",
+          String(currentDescriptionMaxLines),
+        );
         this.lastCardSize = currentCardSize;
         this.lastImageAspectRatio = currentImageAspectRatio;
         this.lastDescriptionMaxLines = currentDescriptionMaxLines;
@@ -4960,8 +6320,14 @@ var ScrollLayoutManager = class {
     });
   }
   updateGridLayout(settings) {
-    this.containerEl.style.setProperty("--card-min-width", `${settings.cardSize}px`);
-    this.containerEl.style.setProperty("--bases-cms-image-aspect-ratio", String(settings.imageAspectRatio));
+    this.containerEl.style.setProperty(
+      "--card-min-width",
+      `${settings.cardSize}px`,
+    );
+    this.containerEl.style.setProperty(
+      "--bases-cms-image-aspect-ratio",
+      String(settings.imageAspectRatio),
+    );
     this.lastCardSize = settings.cardSize;
     this.lastImageAspectRatio = settings.imageAspectRatio;
   }
@@ -5019,7 +6385,10 @@ var ScrollLayoutManager = class {
     const containerWidth = this.containerEl.clientWidth;
     const cardMinWidth = this.lastCardSize || 280;
     const gap = 16;
-    return Math.max(1, Math.floor((containerWidth + gap) / (cardMinWidth + gap)));
+    return Math.max(
+      1,
+      Math.floor((containerWidth + gap) / (cardMinWidth + gap)),
+    );
   }
   /**
    * Calculate which cards should be visible in the viewport
@@ -5031,20 +6400,29 @@ var ScrollLayoutManager = class {
     this.cardsPerRow = this.calculateCardsPerRow();
     const rowHeight = this.estimatedCardHeight + 16;
     const totalRows = Math.ceil(totalEntries / this.cardsPerRow);
-    const firstVisibleRow = Math.max(0, Math.floor(scrollTop / rowHeight) - buffer);
+    const firstVisibleRow = Math.max(
+      0,
+      Math.floor(scrollTop / rowHeight) - buffer,
+    );
     const lastVisibleRow = Math.min(
       totalRows - 1,
-      Math.ceil((scrollTop + viewportHeight) / rowHeight) + buffer
+      Math.ceil((scrollTop + viewportHeight) / rowHeight) + buffer,
     );
     const startIndex = firstVisibleRow * this.cardsPerRow;
-    const endIndex = Math.min(totalEntries - 1, (lastVisibleRow + 1) * this.cardsPerRow - 1);
+    const endIndex = Math.min(
+      totalEntries - 1,
+      (lastVisibleRow + 1) * this.cardsPerRow - 1,
+    );
     const topPadding = firstVisibleRow * rowHeight;
-    const bottomPadding = Math.max(0, (totalRows - lastVisibleRow - 1) * rowHeight);
+    const bottomPadding = Math.max(
+      0,
+      (totalRows - lastVisibleRow - 1) * rowHeight,
+    );
     return {
       startIndex,
       endIndex,
       topPadding,
-      bottomPadding
+      bottomPadding,
     };
   }
   /**
@@ -5079,7 +6457,9 @@ var ScrollLayoutManager = class {
         this.scrollThrottleTimeout = null;
       }, 16);
     };
-    this.containerEl.addEventListener("scroll", this.scrollListener, { passive: true });
+    this.containerEl.addEventListener("scroll", this.scrollListener, {
+      passive: true,
+    });
     this.registerCleanup(() => {
       if (this.scrollListener) {
         this.containerEl.removeEventListener("scroll", this.scrollListener);
@@ -5100,7 +6480,16 @@ var ScrollLayoutManager = class {
 
 // src/utils/view-switch-listener.ts
 var ViewSwitchListener = class {
-  constructor(containerEl, plugin, config, controller, data, selectedFiles, onSelectionCleared, registerCleanup) {
+  constructor(
+    containerEl,
+    plugin,
+    config,
+    controller,
+    data,
+    selectedFiles,
+    onSelectionCleared,
+    registerCleanup,
+  ) {
     this.containerEl = containerEl;
     this.plugin = plugin;
     this.config = config;
@@ -5114,8 +6503,7 @@ var ViewSwitchListener = class {
     this.currentBaseIdentifier = null;
   }
   setup(handleSelectionChange) {
-    const startObserving = () => {
-    };
+    const startObserving = () => {};
     const stopObserving = () => {
       if (this.mutationObserver) {
         this.mutationObserver.disconnect();
@@ -5144,8 +6532,7 @@ var ViewSwitchListener = class {
             return String(this.data.baseName);
           }
         }
-      } catch (e) {
-      }
+      } catch (e) {}
       return null;
     };
     const backupCheck = () => {
@@ -5157,7 +6544,11 @@ var ViewSwitchListener = class {
         return;
       }
       const currentBaseId = getBaseIdentifier();
-      if (this.currentBaseIdentifier !== null && currentBaseId !== null && this.currentBaseIdentifier !== currentBaseId) {
+      if (
+        this.currentBaseIdentifier !== null &&
+        currentBaseId !== null &&
+        this.currentBaseIdentifier !== currentBaseId
+      ) {
         this.selectedFiles.clear();
         this.onSelectionCleared();
         stopObserving();
@@ -5182,7 +6573,9 @@ var ViewSwitchListener = class {
         }
         startObserving();
         if (this.backupInterval === null) {
-          this.backupInterval = this.plugin.registerInterval(window.setInterval(backupCheck, 500));
+          this.backupInterval = this.plugin.registerInterval(
+            window.setInterval(backupCheck, 500),
+          );
         }
       } else {
         this.currentBaseIdentifier = null;
@@ -5222,7 +6615,9 @@ function isEmbeddedView(containerEl) {
   if (!containerEl) {
     return false;
   }
-  const embedParent = containerEl.closest(".markdown-embed, .internal-embed, .markdown-embed-content, .markdown-source-view, .markdown-reading-view");
+  const embedParent = containerEl.closest(
+    ".markdown-embed, .internal-embed, .markdown-embed-content, .markdown-source-view, .markdown-reading-view",
+  );
   return embedParent !== null;
 }
 
@@ -5273,7 +6668,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       this.updateLayoutRef,
       void 0,
       // Config not available in constructor
-      controller
+      controller,
     );
     this.containerEl.addClass("bases-cms");
     this.containerEl.addClass("bases-cms-container");
@@ -5282,20 +6677,23 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         this.app,
         this.config,
         this.plugin.settings,
-        () => this.onDataUpdated()
+        () => this.onDataUpdated(),
       );
     } catch (e) {
       this.propertyToggleHandler = null;
     }
     try {
-      const configToUse = this.config && typeof this.config.get === "function" ? this.config : { get: () => void 0 };
+      const configToUse =
+        this.config && typeof this.config.get === "function"
+          ? this.config
+          : { get: () => void 0 };
       this.scrollLayoutManager = new ScrollLayoutManager(
         this.containerEl,
         this.app,
         configToUse,
         this.plugin.settings,
         () => this.onDataUpdated(),
-        (cleanup) => this.register(cleanup)
+        (cleanup) => this.register(cleanup),
       );
     } catch (e) {
       const dummyConfig = { get: () => void 0 };
@@ -5305,7 +6703,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         dummyConfig,
         this.plugin.settings,
         () => this.onDataUpdated(),
-        (cleanup) => this.register(cleanup)
+        (cleanup) => this.register(cleanup),
       );
     }
     try {
@@ -5317,14 +6715,17 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         this.data,
         this.selectedFiles,
         () => this.updateSelectionUI(),
-        (cleanup) => this.register(cleanup)
+        (cleanup) => this.register(cleanup),
       );
     } catch (e) {
       this.viewSwitchListener = null;
     }
     if (this.viewSwitchListener) {
-      const originalHandleSelectionChange = this.handleSelectionChange.bind(this);
-      this.handleSelectionChange = this.viewSwitchListener.setup(originalHandleSelectionChange);
+      const originalHandleSelectionChange =
+        this.handleSelectionChange.bind(this);
+      this.handleSelectionChange = this.viewSwitchListener.setup(
+        originalHandleSelectionChange,
+      );
     }
   }
   /**
@@ -5345,40 +6746,50 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     const entriesWithValues = await Promise.all(
       entries.map(async (entry) => {
-        const value = await getFirstBasesPropertyValue(entry, propertyName, this.app);
+        const value = await getFirstBasesPropertyValue(
+          entry,
+          propertyName,
+          this.app,
+        );
         return { entry, value };
-      })
+      }),
     );
-    return entriesWithValues.sort((a, b) => {
-      const aVal = a.value;
-      const bVal = b.value;
-      if (aVal == null && bVal == null) return 0;
-      if (aVal == null) return 1;
-      if (bVal == null) return -1;
-      const aDate = this.parseDateValue(aVal);
-      const bDate = this.parseDateValue(bVal);
-      if (aDate && bDate) {
-        const comparison2 = aDate.getTime() - bDate.getTime();
-        return direction === "desc" ? -comparison2 : comparison2;
-      }
-      if (aDate && !bDate) {
-        return direction === "desc" ? -1 : 1;
-      }
-      if (!aDate && bDate) {
-        return direction === "desc" ? 1 : -1;
-      }
-      const aStr = this.valueToString(aVal);
-      const bStr = this.valueToString(bVal);
-      const comparison = aStr.localeCompare(bStr);
-      return direction === "desc" ? -comparison : comparison;
-    }).map((item) => item.entry);
+    return entriesWithValues
+      .sort((a, b) => {
+        const aVal = a.value;
+        const bVal = b.value;
+        if (aVal == null && bVal == null) return 0;
+        if (aVal == null) return 1;
+        if (bVal == null) return -1;
+        const aDate = this.parseDateValue(aVal);
+        const bDate = this.parseDateValue(bVal);
+        if (aDate && bDate) {
+          const comparison2 = aDate.getTime() - bDate.getTime();
+          return direction === "desc" ? -comparison2 : comparison2;
+        }
+        if (aDate && !bDate) {
+          return direction === "desc" ? -1 : 1;
+        }
+        if (!aDate && bDate) {
+          return direction === "desc" ? 1 : -1;
+        }
+        const aStr = this.valueToString(aVal);
+        const bStr = this.valueToString(bVal);
+        const comparison = aStr.localeCompare(bStr);
+        return direction === "desc" ? -comparison : comparison;
+      })
+      .map((item) => item.entry);
   }
   /**
    * Parse a date value using the same logic as the shared renderer
    */
   parseDateValue(value) {
     if (!value) return null;
-    if (typeof value === "object" && "date" in value && value.date instanceof Date) {
+    if (
+      typeof value === "object" &&
+      "date" in value &&
+      value.date instanceof Date
+    ) {
       return value.date;
     }
     let data = value;
@@ -5396,12 +6807,13 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         if (typeof timestamp === "number" && !isNaN(timestamp)) {
           return new Date(timestamp);
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     if (typeof data === "string") {
       const dateStr = data.trim();
-      const isoDateStr = dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00`;
+      const isoDateStr = dateStr.includes("T")
+        ? dateStr
+        : `${dateStr}T00:00:00`;
       const parsedDate = new Date(isoDateStr);
       if (!isNaN(parsedDate.getTime())) {
         return parsedDate;
@@ -5440,21 +6852,32 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
   /**
    * Continue processing data after sorting is complete
    */
-  async continueDataProcessing(processedGroups, settings, totalEntriesCount, savedScrollTop, updateId) {
+  async continueDataProcessing(
+    processedGroups,
+    settings,
+    totalEntriesCount,
+    savedScrollTop,
+    updateId,
+  ) {
     var _a;
     const isStillValid = () => updateId === this.lastUpdateId;
     const allFlatEntries = [];
     for (const processedGroup of processedGroups) {
       allFlatEntries.push(...processedGroup.entries);
     }
-    const useVirtualScroll = this.scrollLayoutManager.shouldEnableVirtualScroll(totalEntriesCount);
+    const useVirtualScroll =
+      this.scrollLayoutManager.shouldEnableVirtualScroll(totalEntriesCount);
     let visibleEntries;
     let startIndex = 0;
     let virtualRange = null;
     if (useVirtualScroll) {
-      virtualRange = this.scrollLayoutManager.calculateVisibleRange(totalEntriesCount);
+      virtualRange =
+        this.scrollLayoutManager.calculateVisibleRange(totalEntriesCount);
       startIndex = virtualRange.startIndex;
-      visibleEntries = allFlatEntries.slice(virtualRange.startIndex, virtualRange.endIndex + 1);
+      visibleEntries = allFlatEntries.slice(
+        virtualRange.startIndex,
+        virtualRange.endIndex + 1,
+      );
     } else {
       const remainingCount = this.scrollLayoutManager.getDisplayedCount();
       visibleEntries = allFlatEntries.slice(0, remainingCount);
@@ -5472,7 +6895,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           this.containerEl,
           this.config,
           this.plugin.settings,
-          (cleanup) => this.register(cleanup)
+          (cleanup) => this.register(cleanup),
         );
       } catch (e) {
         this.containerEl.__cmsInterceptorSetup = true;
@@ -5480,19 +6903,27 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     if (!isStillValid()) return;
     this.cardRenderer.basesConfig = this.config;
-    if (this.cardRenderer && typeof this.cardRenderer.setMdxFrontmatterCache === "function") {
+    if (
+      this.cardRenderer &&
+      typeof this.cardRenderer.setMdxFrontmatterCache === "function"
+    ) {
       this.cardRenderer.setMdxFrontmatterCache(this.mdxFrontmatterCache);
     }
     this.mdxFrontmatterCache = {};
     await this.preloadMdxFrontmatter(visibleEntries);
     if (!isStillValid()) return;
-    if (this.cardRenderer && typeof this.cardRenderer.setMdxFrontmatterCache === "function") {
+    if (
+      this.cardRenderer &&
+      typeof this.cardRenderer.setMdxFrontmatterCache === "function"
+    ) {
       this.cardRenderer.setMdxFrontmatterCache(this.mdxFrontmatterCache);
     }
     this.containerEl.empty();
     this.propertyObservers.forEach((obs) => obs.disconnect());
     this.propertyObservers = [];
-    const scrollContentEl = this.containerEl.createDiv("bases-cms-scroll-content");
+    const scrollContentEl = this.containerEl.createDiv(
+      "bases-cms-scroll-content",
+    );
     const feedEl = scrollContentEl.createDiv("bases-cms-grid");
     if (useVirtualScroll && virtualRange && virtualRange.topPadding > 0) {
       const topSpacer = feedEl.createDiv("bases-cms-virtual-spacer");
@@ -5510,21 +6941,28 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       this.images,
       this.hasImageAvailable,
       this.app,
-      this.mdxFrontmatterCache
+      this.mdxFrontmatterCache,
     );
     if (!isStillValid()) return;
     if (!useVirtualScroll && processedGroups.some((g) => g.group.hasKey())) {
       let displayedSoFar = 0;
       let cardIndex = 0;
       for (const processedGroup of processedGroups) {
-        if (displayedSoFar >= this.scrollLayoutManager.getDisplayedCount()) break;
-        const entriesToDisplay = Math.min(processedGroup.entries.length, this.scrollLayoutManager.getDisplayedCount() - displayedSoFar);
+        if (displayedSoFar >= this.scrollLayoutManager.getDisplayedCount())
+          break;
+        const entriesToDisplay = Math.min(
+          processedGroup.entries.length,
+          this.scrollLayoutManager.getDisplayedCount() - displayedSoFar,
+        );
         if (entriesToDisplay === 0) continue;
         const groupEl = feedEl.createDiv("bases-cms-group");
         if (processedGroup.group.hasKey()) {
           const headerEl = groupEl.createDiv("bases-cms-group-heading");
           const valueEl = headerEl.createDiv("bases-cms-group-value");
-          const keyValue = ((_a = processedGroup.group.key) == null ? void 0 : _a.toString()) || "";
+          const keyValue =
+            ((_a = processedGroup.group.key) == null
+              ? void 0
+              : _a.toString()) || "";
           valueEl.setText(keyValue);
         }
         for (let i = 0; i < entriesToDisplay && cardIndex < cards.length; i++) {
@@ -5533,8 +6971,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           try {
             this.renderCard(groupEl, card, entry, displayedSoFar + i, settings);
             totalCardsRendered++;
-          } catch (e) {
-          }
+          } catch (e) {}
           cardIndex++;
         }
         displayedSoFar += entriesToDisplay;
@@ -5546,8 +6983,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         try {
           this.renderCard(feedEl, card, entry, startIndex + i, settings);
           totalCardsRendered++;
-        } catch (e) {
-        }
+        } catch (e) {}
       }
     }
     if (useVirtualScroll && virtualRange && virtualRange.bottomPadding > 0) {
@@ -5557,7 +6993,9 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     if (!isStillValid()) return;
     if (totalCardsRendered === 0 && totalEntriesCount > 0) {
-      throw new Error("No cards were rendered despite having entries. Check card rendering logic.");
+      throw new Error(
+        "No cards were rendered despite having entries. Check card rendering logic.",
+      );
     }
     if (totalCardsRendered > 0) {
       const firstCard = feedEl.querySelector(".bases-cms-card");
@@ -5567,7 +7005,10 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           const containerWidth = this.containerEl.clientWidth;
           const cardMinWidth = settings.cardSize || 280;
           const gap = 16;
-          const cardsPerRow = Math.max(1, Math.floor((containerWidth + gap) / (cardMinWidth + gap)));
+          const cardsPerRow = Math.max(
+            1,
+            Math.floor((containerWidth + gap) / (cardMinWidth + gap)),
+          );
           this.scrollLayoutManager.updateCardMetrics(cardHeight, cardsPerRow);
         });
       }
@@ -5579,11 +7020,19 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       const cachedAllEntries = allFlatEntries;
       const cachedSettings = settings;
       const cachedUpdateId = updateId;
-      this.scrollLayoutManager.setupVirtualScroll(totalEntriesCount, (range) => {
-        if (cachedUpdateId === this.lastUpdateId) {
-          void this.renderVirtualRange(cachedAllEntries, cachedSettings, range, feedEl);
-        }
-      });
+      this.scrollLayoutManager.setupVirtualScroll(
+        totalEntriesCount,
+        (range) => {
+          if (cachedUpdateId === this.lastUpdateId) {
+            void this.renderVirtualRange(
+              cachedAllEntries,
+              cachedSettings,
+              range,
+              feedEl,
+            );
+          }
+        },
+      );
     } else {
       this.scrollLayoutManager.setupInfiniteScroll(totalEntriesCount);
     }
@@ -5596,7 +7045,10 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
    * Render cards for a specific virtual scroll range
    */
   async renderVirtualRange(allEntries, settings, range, feedEl) {
-    const visibleEntries = allEntries.slice(range.startIndex, range.endIndex + 1);
+    const visibleEntries = allEntries.slice(
+      range.startIndex,
+      range.endIndex + 1,
+    );
     await this.loadContentForEntries(visibleEntries, settings);
     feedEl.empty();
     if (range.topPadding > 0) {
@@ -5613,15 +7065,14 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       this.images,
       this.hasImageAvailable,
       this.app,
-      this.mdxFrontmatterCache
+      this.mdxFrontmatterCache,
     );
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];
       const entry = visibleEntries[i];
       try {
         this.renderCard(feedEl, card, entry, range.startIndex + i, settings);
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     if (range.bottomPadding > 0) {
       const bottomSpacer = feedEl.createDiv("bases-cms-virtual-spacer");
@@ -5642,7 +7093,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
             loadingEl.setText("Loading...");
             setCssProps(loadingEl, {
               padding: "20px",
-              textAlign: "center"
+              textAlign: "center",
             });
           }
           setTimeout(() => {
@@ -5656,14 +7107,15 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         const data = this.data;
         const topLevelDefaultView = data == null ? void 0 : data.defaultView;
         const config = this.config;
-        const currentViewName = typeof config.getName === "function" ? config.getName() : config.name;
+        const currentViewName =
+          typeof config.getName === "function" ? config.getName() : config.name;
         if (topLevelDefaultView && currentViewName !== topLevelDefaultView) {
           if (!this.hasAutoSwitched) {
             this.hasAutoSwitched = true;
             const controller = this.basesController;
             console.debug("Bases CMS: Default view sync triggered", {
               target: topLevelDefaultView,
-              current: currentViewName
+              current: currentViewName,
             });
             if (typeof controller.selectView === "function") {
               controller.selectView(topLevelDefaultView);
@@ -5698,7 +7150,12 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         }
         if (!this.data.groupedData || !this.data.data) {
           setTimeout(() => {
-            if (isStillValid() && this.data && this.data.groupedData && this.data.data) {
+            if (
+              isStillValid() &&
+              this.data &&
+              this.data.groupedData &&
+              this.data.data
+            ) {
               this.onDataUpdated();
             }
           }, 100);
@@ -5707,64 +7164,91 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         if (!isStillValid()) return;
         const groupedData = this.data.groupedData;
         const allEntries = this.data.data;
-        const settings = readCMSSettings(
-          this.config,
-          this.plugin.settings
-        );
+        const settings = readCMSSettings(this.config, this.plugin.settings);
         if (!isStillValid()) return;
-        const allFlatEntries = Array.isArray(this.data.data) ? this.data.data : [];
-        this.lastVisiblePaths = allFlatEntries.map((e) => {
-          var _a;
-          return (_a = e.file) == null ? void 0 : _a.path;
-        }).filter(Boolean);
+        const allFlatEntries = Array.isArray(this.data.data)
+          ? this.data.data
+          : [];
+        this.lastVisiblePaths = allFlatEntries
+          .map((e) => {
+            var _a;
+            return (_a = e.file) == null ? void 0 : _a.path;
+          })
+          .filter(Boolean);
         if (this.config && typeof this.config.get === "function") {
           try {
             this.scrollLayoutManager.updateConfig(this.config);
-          } catch (e) {
-          }
+          } catch (e) {}
         }
         this.scrollLayoutManager.updateGridLayout(settings);
         const savedScrollTop = this.containerEl.scrollTop;
         const sortConfigs = this.config.getSort();
         let processedGroups = groupedData.map((group) => ({
           group,
-          entries: [...group.entries]
+          entries: [...group.entries],
         }));
         if (sortConfigs && sortConfigs.length > 0) {
           const firstSort = sortConfigs[0];
           const property = firstSort.property;
           const direction = firstSort.direction.toLowerCase();
-          if (property && !property.includes("ctime") && !property.includes("mtime")) {
+          if (
+            property &&
+            !property.includes("ctime") &&
+            !property.includes("mtime")
+          ) {
             void (async () => {
               try {
                 const allEntries2 = [];
                 for (const processedGroup of processedGroups) {
                   allEntries2.push(...processedGroup.entries);
                 }
-                const sortedEntries = await this.sortEntriesByProperty(allEntries2, property, direction);
-                const sortedProcessedGroups = [{
-                  group: {
-                    hasKey: () => false,
-                    key: null,
-                    entries: sortedEntries
+                const sortedEntries = await this.sortEntriesByProperty(
+                  allEntries2,
+                  property,
+                  direction,
+                );
+                const sortedProcessedGroups = [
+                  {
+                    group: {
+                      hasKey: () => false,
+                      key: null,
+                      entries: sortedEntries,
+                    },
+                    entries: sortedEntries,
                   },
-                  entries: sortedEntries
-                }];
-                await this.continueDataProcessing(sortedProcessedGroups, settings, allEntries2.length, savedScrollTop, updateId);
+                ];
+                await this.continueDataProcessing(
+                  sortedProcessedGroups,
+                  settings,
+                  allEntries2.length,
+                  savedScrollTop,
+                  updateId,
+                );
               } catch (error) {
                 console.error("Bases CMS: Error during custom sorting:", error);
-                await this.continueDataProcessing(processedGroups, settings, allEntries.length, savedScrollTop, updateId);
+                await this.continueDataProcessing(
+                  processedGroups,
+                  settings,
+                  allEntries.length,
+                  savedScrollTop,
+                  updateId,
+                );
               }
             })();
             return;
           }
         }
-        await this.continueDataProcessing(processedGroups, settings, allEntries.length, savedScrollTop, updateId);
+        await this.continueDataProcessing(
+          processedGroups,
+          settings,
+          allEntries.length,
+          savedScrollTop,
+          updateId,
+        );
       } catch (error) {
         try {
           this.scrollLayoutManager.setIsLoading(false);
-        } catch (e) {
-        }
+        } catch (e) {}
         if (this.containerEl && this.containerEl.isConnected) {
           this.containerEl.empty();
           const errorEl = this.containerEl.createDiv("bases-cms-error");
@@ -5773,7 +7257,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
             padding: "20px",
             textAlign: "center",
             color: "var(--text-error)",
-            margin: "20px"
+            margin: "20px",
           });
         }
         console.error("Bases CMS: Error in onDataUpdated:", error);
@@ -5787,7 +7271,8 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     try {
       const controller = this.basesController;
       if (controller) {
-        if (typeof controller.getBaseName === "function") return controller.getBaseName();
+        if (typeof controller.getBaseName === "function")
+          return controller.getBaseName();
         if (controller.baseName) return controller.baseName;
       }
       if (this.config && typeof this.config.getName === "function") {
@@ -5799,8 +7284,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       if (this.data && this.data.baseName) {
         return String(this.data.baseName);
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     return null;
   }
   /**
@@ -5833,7 +7317,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       propertyDisplay12: initialSettings.propertyDisplay12,
       propertyDisplay13: initialSettings.propertyDisplay13,
       propertyDisplay14: initialSettings.propertyDisplay14,
-      propertyDisplayMaxLength: initialSettings.propertyDisplayMaxLength
+      propertyDisplayMaxLength: initialSettings.propertyDisplayMaxLength,
     };
     this.settingsPollInterval = window.setInterval(() => {
       if (!this.config || typeof this.config.get !== "function") {
@@ -5841,17 +7325,76 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       }
       const currentSettings = readCMSSettings(
         this.config,
-        this.plugin.settings
+        this.plugin.settings,
       );
       if (!this.lastSettings) {
         return;
       }
-      const settingsChanged = this.lastSettings.descriptionProperty !== currentSettings.descriptionProperty || this.lastSettings.showTextPreview !== currentSettings.showTextPreview || this.lastSettings.fallbackToContent !== currentSettings.fallbackToContent || this.lastSettings.truncatePreviewProperty !== currentSettings.truncatePreviewProperty || this.lastSettings.descriptionMaxLength !== currentSettings.descriptionMaxLength || this.lastSettings.imageProperty !== currentSettings.imageProperty || this.lastSettings.imageFormat !== currentSettings.imageFormat || this.lastSettings.fallbackToEmbeds !== currentSettings.fallbackToEmbeds || this.lastSettings.propertyDisplay1 !== currentSettings.propertyDisplay1 || this.lastSettings.propertyDisplay2 !== currentSettings.propertyDisplay2 || this.lastSettings.propertyDisplay3 !== currentSettings.propertyDisplay3 || this.lastSettings.propertyDisplay4 !== currentSettings.propertyDisplay4 || this.lastSettings.propertyDisplay5 !== currentSettings.propertyDisplay5 || this.lastSettings.propertyDisplay6 !== currentSettings.propertyDisplay6 || this.lastSettings.propertyDisplay7 !== currentSettings.propertyDisplay7 || this.lastSettings.propertyDisplay8 !== currentSettings.propertyDisplay8 || this.lastSettings.propertyDisplay9 !== currentSettings.propertyDisplay9 || this.lastSettings.propertyDisplay10 !== currentSettings.propertyDisplay10 || this.lastSettings.propertyDisplay11 !== currentSettings.propertyDisplay11 || this.lastSettings.propertyDisplay12 !== currentSettings.propertyDisplay12 || this.lastSettings.propertyDisplay13 !== currentSettings.propertyDisplay13 || this.lastSettings.propertyDisplay14 !== currentSettings.propertyDisplay14 || this.lastSettings.propertyDisplayMaxLength !== currentSettings.propertyDisplayMaxLength;
+      const settingsChanged =
+        this.lastSettings.descriptionProperty !==
+          currentSettings.descriptionProperty ||
+        this.lastSettings.showTextPreview !== currentSettings.showTextPreview ||
+        this.lastSettings.fallbackToContent !==
+          currentSettings.fallbackToContent ||
+        this.lastSettings.truncatePreviewProperty !==
+          currentSettings.truncatePreviewProperty ||
+        this.lastSettings.descriptionMaxLength !==
+          currentSettings.descriptionMaxLength ||
+        this.lastSettings.imageProperty !== currentSettings.imageProperty ||
+        this.lastSettings.imageFormat !== currentSettings.imageFormat ||
+        this.lastSettings.fallbackToEmbeds !==
+          currentSettings.fallbackToEmbeds ||
+        this.lastSettings.propertyDisplay1 !==
+          currentSettings.propertyDisplay1 ||
+        this.lastSettings.propertyDisplay2 !==
+          currentSettings.propertyDisplay2 ||
+        this.lastSettings.propertyDisplay3 !==
+          currentSettings.propertyDisplay3 ||
+        this.lastSettings.propertyDisplay4 !==
+          currentSettings.propertyDisplay4 ||
+        this.lastSettings.propertyDisplay5 !==
+          currentSettings.propertyDisplay5 ||
+        this.lastSettings.propertyDisplay6 !==
+          currentSettings.propertyDisplay6 ||
+        this.lastSettings.propertyDisplay7 !==
+          currentSettings.propertyDisplay7 ||
+        this.lastSettings.propertyDisplay8 !==
+          currentSettings.propertyDisplay8 ||
+        this.lastSettings.propertyDisplay9 !==
+          currentSettings.propertyDisplay9 ||
+        this.lastSettings.propertyDisplay10 !==
+          currentSettings.propertyDisplay10 ||
+        this.lastSettings.propertyDisplay11 !==
+          currentSettings.propertyDisplay11 ||
+        this.lastSettings.propertyDisplay12 !==
+          currentSettings.propertyDisplay12 ||
+        this.lastSettings.propertyDisplay13 !==
+          currentSettings.propertyDisplay13 ||
+        this.lastSettings.propertyDisplay14 !==
+          currentSettings.propertyDisplay14 ||
+        this.lastSettings.propertyDisplayMaxLength !==
+          currentSettings.propertyDisplayMaxLength;
       if (settingsChanged) {
-        if (this.lastSettings.descriptionProperty !== currentSettings.descriptionProperty || this.lastSettings.showTextPreview !== currentSettings.showTextPreview || this.lastSettings.fallbackToContent !== currentSettings.fallbackToContent || this.lastSettings.truncatePreviewProperty !== currentSettings.truncatePreviewProperty || this.lastSettings.descriptionMaxLength !== currentSettings.descriptionMaxLength) {
+        if (
+          this.lastSettings.descriptionProperty !==
+            currentSettings.descriptionProperty ||
+          this.lastSettings.showTextPreview !==
+            currentSettings.showTextPreview ||
+          this.lastSettings.fallbackToContent !==
+            currentSettings.fallbackToContent ||
+          this.lastSettings.truncatePreviewProperty !==
+            currentSettings.truncatePreviewProperty ||
+          this.lastSettings.descriptionMaxLength !==
+            currentSettings.descriptionMaxLength
+        ) {
           this.snippets = {};
         }
-        if (this.lastSettings.imageProperty !== currentSettings.imageProperty || this.lastSettings.imageFormat !== currentSettings.imageFormat || this.lastSettings.fallbackToEmbeds !== currentSettings.fallbackToEmbeds) {
+        if (
+          this.lastSettings.imageProperty !== currentSettings.imageProperty ||
+          this.lastSettings.imageFormat !== currentSettings.imageFormat ||
+          this.lastSettings.fallbackToEmbeds !==
+            currentSettings.fallbackToEmbeds
+        ) {
           this.images = {};
           this.hasImageAvailable = {};
         }
@@ -5878,7 +7421,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           propertyDisplay12: currentSettings.propertyDisplay12,
           propertyDisplay13: currentSettings.propertyDisplay13,
           propertyDisplay14: currentSettings.propertyDisplay14,
-          propertyDisplayMaxLength: currentSettings.propertyDisplayMaxLength
+          propertyDisplayMaxLength: currentSettings.propertyDisplayMaxLength,
         };
         this.onDataUpdated();
       }
@@ -5897,7 +7440,11 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
   async preloadMdxFrontmatter(entries) {
     const mdxEntries = entries.filter((entry) => {
       const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-      return file instanceof import_obsidian22.TFile && file.extension === "mdx" && !(entry.file.path in this.mdxFrontmatterCache);
+      return (
+        file instanceof import_obsidian22.TFile &&
+        file.extension === "mdx" &&
+        !(entry.file.path in this.mdxFrontmatterCache)
+      );
     });
     if (mdxEntries.length === 0) {
       return;
@@ -5910,26 +7457,37 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
             const frontmatter = await getFileFrontmatter(this.app, file);
             this.mdxFrontmatterCache[entry.file.path] = frontmatter;
           } catch (error) {
-            console.error(`Bases CMS: Error preloading properties for ${entry.file.path}:`, error);
+            console.error(
+              `Bases CMS: Error preloading properties for ${entry.file.path}:`,
+              error,
+            );
             this.mdxFrontmatterCache[entry.file.path] = null;
           }
         }
-      })
+      }),
     );
   }
   async loadContentForEntries(entries, settings) {
     if (settings.showTextPreview) {
-      const snippetEntriesPromises = entries.filter((entry) => !(entry.file.path in this.snippets)).map(async (entry) => {
-        const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian22.TFile)) return null;
-        const descValue = await getFirstBasesPropertyValue(entry, settings.descriptionProperty, this.app);
-        return {
-          path: entry.file.path,
-          file,
-          descriptionData: descValue == null ? void 0 : descValue.data
-        };
-      });
-      const snippetEntries = (await Promise.all(snippetEntriesPromises)).filter((e) => e !== null);
+      const snippetEntriesPromises = entries
+        .filter((entry) => !(entry.file.path in this.snippets))
+        .map(async (entry) => {
+          const file = this.app.vault.getAbstractFileByPath(entry.file.path);
+          if (!(file instanceof import_obsidian22.TFile)) return null;
+          const descValue = await getFirstBasesPropertyValue(
+            entry,
+            settings.descriptionProperty,
+            this.app,
+          );
+          return {
+            path: entry.file.path,
+            file,
+            descriptionData: descValue == null ? void 0 : descValue.data,
+          };
+        });
+      const snippetEntries = (await Promise.all(snippetEntriesPromises)).filter(
+        (e) => e !== null,
+      );
       if (snippetEntries.length > 0) {
         await loadSnippetsForEntries(
           snippetEntries,
@@ -5938,29 +7496,37 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           this.app,
           this.snippets,
           settings.truncatePreviewProperty,
-          settings.descriptionMaxLength
+          settings.descriptionMaxLength,
         );
       }
     }
     if (settings.imageFormat !== "none") {
-      const imageEntriesPromises = entries.filter((entry) => !(entry.file.path in this.images)).map(async (entry) => {
-        const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian22.TFile)) return null;
-        const imagePropertyValues = await getAllBasesImagePropertyValues(entry, settings.imageProperty, this.app);
-        return {
-          path: entry.file.path,
-          file,
-          imagePropertyValues
-        };
-      });
-      const imageEntries = (await Promise.all(imageEntriesPromises)).filter((e) => e !== null);
+      const imageEntriesPromises = entries
+        .filter((entry) => !(entry.file.path in this.images))
+        .map(async (entry) => {
+          const file = this.app.vault.getAbstractFileByPath(entry.file.path);
+          if (!(file instanceof import_obsidian22.TFile)) return null;
+          const imagePropertyValues = await getAllBasesImagePropertyValues(
+            entry,
+            settings.imageProperty,
+            this.app,
+          );
+          return {
+            path: entry.file.path,
+            file,
+            imagePropertyValues,
+          };
+        });
+      const imageEntries = (await Promise.all(imageEntriesPromises)).filter(
+        (e) => e !== null,
+      );
       if (imageEntries.length > 0) {
         await loadImagesForEntries(
           imageEntries,
           settings.fallbackToEmbeds,
           this.app,
           this.images,
-          this.hasImageAvailable
+          this.hasImageAvailable,
         );
       }
     }
@@ -5970,27 +7536,31 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
    */
   getDirectDeleteHandler(filePath) {
     return async () => {
-      const { prepareDeletionPreview: prepareDeletionPreview2, executeSmartDeletion: executeSmartDeletion2 } = await Promise.resolve().then(() => (init_smart_deletion(), smart_deletion_exports));
-      const { DeletionPreviewModal: DeletionPreviewModal2 } = await Promise.resolve().then(() => (init_deletion_preview(), deletion_preview_exports));
+      const {
+        prepareDeletionPreview: prepareDeletionPreview2,
+        executeSmartDeletion: executeSmartDeletion2,
+      } = await Promise.resolve().then(
+        () => (init_smart_deletion(), smart_deletion_exports),
+      );
+      const { DeletionPreviewModal: DeletionPreviewModal2 } =
+        await Promise.resolve().then(
+          () => (init_deletion_preview(), deletion_preview_exports),
+        );
       if (this.plugin.settings.confirmDeletions) {
         const preview = await prepareDeletionPreview2(
           this.app,
           [filePath],
-          this.plugin.settings
+          this.plugin.settings,
         );
-        const modal = new DeletionPreviewModal2(
-          this.app,
-          preview,
-          () => {
-            this.onDataUpdated();
-          }
-        );
+        const modal = new DeletionPreviewModal2(this.app, preview, () => {
+          this.onDataUpdated();
+        });
         modal.open();
       } else {
         const preview = await prepareDeletionPreview2(
           this.app,
           [filePath],
-          this.plugin.settings
+          this.plugin.settings,
         );
         await executeSmartDeletion2(this.app, preview);
         this.onDataUpdated();
@@ -6012,7 +7582,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       (path, property, value) => {
         void this.handlePropertyToggle(path, property, value);
       },
-      { handleDelete: this.getDirectDeleteHandler(card.path) }
+      { handleDelete: this.getDirectDeleteHandler(card.path) },
     );
   }
   /**
@@ -6027,13 +7597,22 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     if (!url) return;
     let imageEmbedContainer = cardEl.querySelector(".image-embed");
     if (!imageEmbedContainer) {
-      const placeholder = cardEl.querySelector(".card-cover-placeholder, .card-thumbnail-placeholder");
+      const placeholder = cardEl.querySelector(
+        ".card-cover-placeholder, .card-thumbnail-placeholder",
+      );
       const isThumbnail = cardEl.classList.contains("image-format-thumbnail");
       const isCover = cardEl.classList.contains("image-format-cover");
       if (placeholder) {
         const existingBadge = placeholder.querySelector(".card-status-badge");
-        const imageClassName = placeholder.classList.contains("card-cover-placeholder") ? "card-cover" : "card-thumbnail";
-        const imageEl = (_a = placeholder.parentElement) == null ? void 0 : _a.createDiv(imageClassName);
+        const imageClassName = placeholder.classList.contains(
+          "card-cover-placeholder",
+        )
+          ? "card-cover"
+          : "card-thumbnail";
+        const imageEl =
+          (_a = placeholder.parentElement) == null
+            ? void 0
+            : _a.createDiv(imageClassName);
         if (imageEl) {
           imageEmbedContainer = imageEl.createDiv("image-embed");
           if (existingBadge) {
@@ -6044,8 +7623,14 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       } else if (isThumbnail) {
         const contentContainer = cardEl.querySelector(".card-content");
         if (contentContainer) {
-          const textWrapper = contentContainer.querySelector(".card-text-wrapper");
-          const imageEl = textWrapper ? contentContainer.insertBefore(contentContainer.createDiv("card-thumbnail"), textWrapper) : contentContainer.createDiv("card-thumbnail");
+          const textWrapper =
+            contentContainer.querySelector(".card-text-wrapper");
+          const imageEl = textWrapper
+            ? contentContainer.insertBefore(
+                contentContainer.createDiv("card-thumbnail"),
+                textWrapper,
+              )
+            : contentContainer.createDiv("card-thumbnail");
           imageEmbedContainer = imageEl.createDiv("image-embed");
         }
       } else if (isCover) {
@@ -6058,14 +7643,17 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     if (imageEmbedContainer) {
       void (async () => {
-        const finalUrl = await convertGifToStatic(url, this.plugin.settings.forceStaticGifImages);
+        const finalUrl = await convertGifToStatic(
+          url,
+          this.plugin.settings.forceStaticGifImages,
+        );
         imageEmbedContainer.style.backgroundImage = `url("${finalUrl}")`;
       })();
       imageEmbedContainer.style.backgroundImage = `url("${url}")`;
       setCssProps(imageEmbedContainer, {
         backgroundSize: "cover",
         backgroundPosition: "center center",
-        backgroundRepeat: "no-repeat"
+        backgroundRepeat: "no-repeat",
       });
     }
   }
@@ -6112,7 +7700,9 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     if (this.selectedFiles.size === 0) {
       if (this.bulkToolbar) {
         this.bulkToolbar.hide();
-        const toolbarEl = this.containerEl.querySelector(".bases-cms-bulk-toolbar");
+        const toolbarEl = this.containerEl.querySelector(
+          ".bases-cms-bulk-toolbar",
+        );
         if (toolbarEl instanceof HTMLElement) {
           toolbarEl.removeClass("bases-cms-bulk-toolbar-visible");
           toolbarEl.addClass("bases-cms-bulk-toolbar-hidden");
@@ -6122,7 +7712,11 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
   }
   async handlePropertyToggle(path, property, value) {
     if (this.propertyToggleHandler) {
-      await this.propertyToggleHandler.handlePropertyToggle(path, property, value);
+      await this.propertyToggleHandler.handlePropertyToggle(
+        path,
+        property,
+        value,
+      );
     }
   }
   selectAll() {
@@ -6135,7 +7729,9 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     const cards = this.containerEl.querySelectorAll(".bases-cms-card.selected");
     cards.forEach((cardEl) => {
       cardEl.removeClass("selected");
-      const checkbox = cardEl.querySelector('input[type="checkbox"].selection-checkbox');
+      const checkbox = cardEl.querySelector(
+        'input[type="checkbox"].selection-checkbox',
+      );
       if (checkbox) {
         checkbox.checked = false;
       }
@@ -6148,14 +7744,18 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
    * Update checkbox and class for a specific card in the DOM
    */
   updateCardCheckboxState(path, selected) {
-    const cardEl = this.containerEl.querySelector(`.bases-cms-card[data-path="${path}"]`);
+    const cardEl = this.containerEl.querySelector(
+      `.bases-cms-card[data-path="${path}"]`,
+    );
     if (cardEl instanceof HTMLElement) {
       if (selected) {
         cardEl.addClass("selected");
       } else {
         cardEl.removeClass("selected");
       }
-      const checkbox = cardEl.querySelector('input[type="checkbox"].selection-checkbox');
+      const checkbox = cardEl.querySelector(
+        'input[type="checkbox"].selection-checkbox',
+      );
       if (checkbox) {
         checkbox.checked = selected;
       }
@@ -6178,7 +7778,9 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     const cards = this.containerEl.querySelectorAll(".card");
     cards.forEach((cardEl) => {
       const path = cardEl.getAttribute("data-path");
-      const checkbox = cardEl.querySelector('input[type="checkbox"].selection-checkbox');
+      const checkbox = cardEl.querySelector(
+        'input[type="checkbox"].selection-checkbox',
+      );
       if (path) {
         const isSelected = this.selectedFiles.has(path);
         if (isSelected) {
@@ -6192,7 +7794,9 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       }
     });
     if (this.selectedFiles.size > 0) {
-      const orphanedToolbars = document.querySelectorAll(".bases-cms-bulk-toolbar");
+      const orphanedToolbars = document.querySelectorAll(
+        ".bases-cms-bulk-toolbar",
+      );
       orphanedToolbars.forEach((toolbar) => {
         const toolbarInstance = toolbar.__bulkToolbarInstance;
         if (!toolbarInstance || toolbarInstance !== this.bulkToolbar) {
@@ -6200,10 +7804,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         }
       });
       if (!this.bulkToolbar) {
-        const settings = readCMSSettings(
-          this.config,
-          this.plugin.settings
-        );
+        const settings = readCMSSettings(this.config, this.plugin.settings);
         this.bulkToolbar = new BulkToolbar(
           this.app,
           this.plugin,
@@ -6243,13 +7844,10 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           () => {
             this.selectAll();
           },
-          settings
+          settings,
         );
       } else {
-        const settings = readCMSSettings(
-          this.config,
-          this.plugin.settings
-        );
+        const settings = readCMSSettings(this.config, this.plugin.settings);
         this.bulkToolbar.updateSettings(settings);
       }
       this.bulkToolbar.updateCount(this.selectedFiles.size);
@@ -6257,7 +7855,9 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     } else {
       if (this.bulkToolbar && !this.isRefreshingWithSelection) {
         this.bulkToolbar.hide();
-        const toolbarEl = this.containerEl.querySelector(".bases-cms-bulk-toolbar");
+        const toolbarEl = this.containerEl.querySelector(
+          ".bases-cms-bulk-toolbar",
+        );
         if (toolbarEl instanceof HTMLElement) {
           toolbarEl.removeClass("bases-cms-bulk-toolbar-visible");
           toolbarEl.addClass("bases-cms-bulk-toolbar-hidden");
@@ -6279,7 +7879,9 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     if (this.bulkToolbar) {
       this.bulkToolbar.destroy();
     }
-    const orphanedToolbars = document.querySelectorAll(".bases-cms-bulk-toolbar");
+    const orphanedToolbars = document.querySelectorAll(
+      ".bases-cms-bulk-toolbar",
+    );
     orphanedToolbars.forEach((toolbar) => toolbar.remove());
     const pluginWithMethod = this.plugin;
     if (pluginWithMethod && typeof pluginWithMethod.removeView === "function") {
@@ -6291,17 +7893,19 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
    */
   async onNew() {
     var _a;
-    const settings = readCMSSettings(
-      this.config,
-      this.plugin.settings
-    );
+    const settings = readCMSSettings(this.config, this.plugin.settings);
     if (settings.customizeNewButton) {
       try {
-        const locationInput = ((_a = settings.newNoteLocation) == null ? void 0 : _a.trim()) || "";
+        const locationInput =
+          ((_a = settings.newNoteLocation) == null ? void 0 : _a.trim()) || "";
         if (locationInput === "") {
           const vaultConfig = this.app.vault.config;
-          const newFileLocation = (vaultConfig == null ? void 0 : vaultConfig.newFileLocation) || "folder";
-          const newFileFolderPath = (vaultConfig == null ? void 0 : vaultConfig.newFileFolderPath) || "";
+          const newFileLocation =
+            (vaultConfig == null ? void 0 : vaultConfig.newFileLocation) ||
+            "folder";
+          const newFileFolderPath =
+            (vaultConfig == null ? void 0 : vaultConfig.newFileFolderPath) ||
+            "";
           let filePath = "Untitled.md";
           if (newFileLocation === "folder" && newFileFolderPath) {
             filePath = `${newFileFolderPath}/Untitled.md`;
@@ -6329,12 +7933,14 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           folder = this.app.vault.getAbstractFileByPath(folderPath);
         }
         if (folder && "children" in folder) {
-          const newFile = await this.app.vault.create(`${folderPath}/Untitled.md`, "");
+          const newFile = await this.app.vault.create(
+            `${folderPath}/Untitled.md`,
+            "",
+          );
           await this.app.workspace.openLinkText(newFile.path, "", false);
           return true;
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     return false;
   }
@@ -6367,21 +7973,24 @@ var DEFAULT_SETTINGS = {
   // Enable virtual scrolling for >100 cards
   virtualScrollBuffer: 20,
   // Render 20 cards above/below viewport
-  migrationBasesCmsToCmsDone: false
+  migrationBasesCmsToCmsDone: false,
 };
 
 // src/views/titles-view.ts
 var import_obsidian23 = require("obsidian");
 var TITLES_VIEW_TYPE = "titles";
 function getTitleFromEntry(entry, titleProperty) {
-  const prop = (titleProperty == null ? void 0 : titleProperty.trim()) || "note.title";
+  const prop =
+    (titleProperty == null ? void 0 : titleProperty.trim()) || "note.title";
   const value = entry.getValue(prop);
   if ((value == null ? void 0 : value.data) != null) {
     const d = value.data;
-    if (typeof d === "string" || typeof d === "number") return String(d).trim() || entry.file.basename;
+    if (typeof d === "string" || typeof d === "number")
+      return String(d).trim() || entry.file.basename;
     if (Array.isArray(d)) {
       const first = d[0];
-      if (first != null && typeof first === "object" && "data" in first) return String(first.data).trim() || entry.file.basename;
+      if (first != null && typeof first === "object" && "data" in first)
+        return String(first.data).trim() || entry.file.basename;
     }
   }
   return entry.file.basename || entry.file.name;
@@ -6392,16 +8001,27 @@ function getSecondaryFromEntry(entry, propertyKey) {
   const value = entry.getValue(prop);
   if (!value) return null;
   if (value.date instanceof Date) {
-    return value.date.toLocaleDateString(void 0, { year: "numeric", month: "numeric", day: "numeric" });
+    return value.date.toLocaleDateString(void 0, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
   }
   if (value.data != null) {
     const d = value.data;
-    if (typeof d === "string" || typeof d === "number") return String(d).trim() || null;
+    if (typeof d === "string" || typeof d === "number")
+      return String(d).trim() || null;
     if (typeof d === "boolean") return String(d);
-    if (d instanceof Date) return d.toLocaleDateString(void 0, { year: "numeric", month: "numeric", day: "numeric" });
+    if (d instanceof Date)
+      return d.toLocaleDateString(void 0, {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      });
     if (Array.isArray(d) && d.length > 0) {
       const first = d[0];
-      if (first != null && typeof first === "object" && "data" in first) return String(first.data);
+      if (first != null && typeof first === "object" && "data" in first)
+        return String(first.data);
       return String(first);
     }
   }
@@ -6412,7 +8032,9 @@ var BasesTitlesView = class extends import_obsidian23.BasesView {
     super(controller);
     this.type = TITLES_VIEW_TYPE;
     this.plugin = plugin;
-    this.containerEl = parentContainerEl.createDiv("bases-titles-view bases-cms-wrapper bases-titles-loading");
+    this.containerEl = parentContainerEl.createDiv(
+      "bases-titles-view bases-cms-wrapper bases-titles-loading",
+    );
     this.containerEl.style.height = "100%";
     this.containerEl.style.width = "100%";
     this.containerEl.style.overflowY = "auto";
@@ -6449,12 +8071,17 @@ var BasesTitlesView = class extends import_obsidian23.BasesView {
       const config = this.config;
       if (config == null ? void 0 : config.get) {
         const t = config.get("titleProperty");
-        titleProp = ((_b = typeof t === "string" ? t : "") == null ? void 0 : _b.trim()) || "note.title";
+        titleProp =
+          ((_b = typeof t === "string" ? t : "") == null
+            ? void 0
+            : _b.trim()) || "note.title";
         const s = config.get("secondaryProperty");
-        secondaryProp = ((_c = typeof s === "string" ? s : "") == null ? void 0 : _c.trim()) || "";
+        secondaryProp =
+          ((_c = typeof s === "string" ? s : "") == null
+            ? void 0
+            : _c.trim()) || "";
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     const fragment = document.createDocumentFragment();
     const listEl = document.createElement("ul");
     listEl.className = "bases-titles-list";
@@ -6463,7 +8090,9 @@ var BasesTitlesView = class extends import_obsidian23.BasesView {
     listEl.style.padding = "0";
     for (const entry of entries) {
       const title = getTitleFromEntry(entry, titleProp) || entry.file.basename;
-      const secondary = secondaryProp ? getSecondaryFromEntry(entry, secondaryProp) : null;
+      const secondary = secondaryProp
+        ? getSecondaryFromEntry(entry, secondaryProp)
+        : null;
       const li = listEl.appendChild(document.createElement("li"));
       const link = li.appendChild(document.createElement("a"));
       link.href = entry.file.path;
@@ -6516,7 +8145,11 @@ function registerBasesCMSView(plugin, retries = 5) {
                   return;
                 }
                 const viewData = view.data;
-                const hasData = viewData && Array.isArray(viewData.data) && viewData.data.length > 0 && viewData.groupedData;
+                const hasData =
+                  viewData &&
+                  Array.isArray(viewData.data) &&
+                  viewData.data.length > 0 &&
+                  viewData.groupedData;
                 if (typeof view.onDataUpdated === "function") {
                   view.onDataUpdated();
                 }
@@ -6526,30 +8159,46 @@ function registerBasesCMSView(plugin, retries = 5) {
                   window.setTimeout(tryRefresh, delay);
                 }
               } catch (error) {
-                console.warn("Bases CMS: Error refreshing newly created embedded view:", error);
+                console.warn(
+                  "Bases CMS: Error refreshing newly created embedded view:",
+                  error,
+                );
               }
             };
             window.setTimeout(tryRefresh, baseDelay);
           }
           return view;
         },
-        options: () => viewOptionsFn(CMS_VIEW_TYPE)
+        options: () => viewOptionsFn(CMS_VIEW_TYPE),
       };
       basesPlugin.registerBasesView(CMS_VIEW_TYPE, viewConfig);
       const titlesViewConfig = {
         name: "Titles",
         icon: "lucide-type",
-        factory: (controller, containerEl) => new BasesTitlesView(controller, containerEl, plugin),
+        factory: (controller, containerEl) =>
+          new BasesTitlesView(controller, containerEl, plugin),
         options: () => [
           {
             type: "group",
             displayName: "Title",
             items: [
-              { type: "property", displayName: "Title property", key: "titleProperty", placeholder: "Select property", default: "note.title" },
-              { type: "property", displayName: "Secondary property (after dash)", key: "secondaryProperty", placeholder: "Optional, e.g. date", default: "" }
-            ]
-          }
-        ]
+              {
+                type: "property",
+                displayName: "Title property",
+                key: "titleProperty",
+                placeholder: "Select property",
+                default: "note.title",
+              },
+              {
+                type: "property",
+                displayName: "Secondary property (after dash)",
+                key: "secondaryProperty",
+                placeholder: "Optional, e.g. date",
+                default: "",
+              },
+            ],
+          },
+        ],
       };
       basesPlugin.registerBasesView(TITLES_VIEW_TYPE, titlesViewConfig);
     } else if (retries > 0) {
@@ -6563,14 +8212,17 @@ function registerBasesCMSView(plugin, retries = 5) {
         registerBasesCMSView(plugin, retries - 1);
       }, 200);
     } else {
-      console.warn("Bases CMS: registerBasesView not available. Is Bases plugin installed?");
+      console.warn(
+        "Bases CMS: registerBasesView not available. Is Bases plugin installed?",
+      );
     }
   } catch (error) {
     console.error("Bases CMS: Error registering view:", error);
   }
 }
 function getCMSViewOptions2() {
-  const { getCMSViewOptions: getCMSViewOptions3 } = (init_settings_schema(), __toCommonJS(settings_schema_exports));
+  const { getCMSViewOptions: getCMSViewOptions3 } =
+    (init_settings_schema(), __toCommonJS(settings_schema_exports));
   return getCMSViewOptions3;
 }
 
@@ -6585,7 +8237,10 @@ async function migrateBasesCmsToCms(app) {
       try {
         const content = await app.vault.read(file);
         if (content.toLowerCase().includes("bases-cms")) {
-          const newContent = content.replace(/(type[ \t]*:[ \t]*["']?)bases-cms\b/gi, "$1cms");
+          const newContent = content.replace(
+            /(type[ \t]*:[ \t]*["']?)bases-cms\b/gi,
+            "$1cms",
+          );
           if (newContent !== content) {
             await app.vault.modify(file, newContent);
             migratedCount++;
@@ -6619,7 +8274,9 @@ var BasesCMSPlugin = class extends import_obsidian24.Plugin {
         this.settings.migrationBasesCmsToCmsDone = true;
         await this.saveSettings();
         if (migratedCount > 0) {
-          new import_obsidian25.Notice(`Bases CMS: Successfully migrated ${migratedCount} files to new 'cms' view type.`);
+          new import_obsidian25.Notice(
+            `Bases CMS: Successfully migrated ${migratedCount} files to new 'cms' view type.`,
+          );
         }
       }
     });
@@ -6628,8 +8285,10 @@ var BasesCMSPlugin = class extends import_obsidian24.Plugin {
       name: "Run Vault Migration (Convert bases-cms to cms)",
       callback: async () => {
         const migratedCount = await migrateBasesCmsToCms(this.app);
-        new import_obsidian25.Notice(`Bases CMS: Migration complete. ${migratedCount} files updated.`);
-      }
+        new import_obsidian25.Notice(
+          `Bases CMS: Migration complete. ${migratedCount} files updated.`,
+        );
+      },
     });
     this.addSettingTab(new BasesCMSSettingTab(this.app, this));
     registerBasesCMSView(this);
@@ -6645,7 +8304,7 @@ var BasesCMSPlugin = class extends import_obsidian24.Plugin {
           return true;
         }
         return false;
-      }
+      },
     });
     this.addCommand({
       id: "deselect-all",
@@ -6659,17 +8318,17 @@ var BasesCMSPlugin = class extends import_obsidian24.Plugin {
           return true;
         }
         return false;
-      }
+      },
     });
     this.registerEvent(
       this.app.workspace.on("active-leaf-change", () => {
         this.refreshEmbeddedViews();
-      })
+      }),
     );
     this.registerEvent(
       this.app.workspace.on("file-open", () => {
         this.refreshEmbeddedViews();
-      })
+      }),
     );
   }
   onunload() {
@@ -6692,12 +8351,12 @@ var BasesCMSPlugin = class extends import_obsidian24.Plugin {
    */
   getActiveCMSView() {
     try {
-      const obsidianActiveView = this.app.workspace.getActiveViewOfType(BasesCMSView);
+      const obsidianActiveView =
+        this.app.workspace.getActiveViewOfType(BasesCMSView);
       if (obsidianActiveView && obsidianActiveView instanceof BasesCMSView) {
         return obsidianActiveView;
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     const activeLeaf = this.app.workspace.activeLeaf;
     if (!activeLeaf) return null;
     for (const view of this.activeViews) {
@@ -6709,8 +8368,7 @@ var BasesCMSPlugin = class extends import_obsidian24.Plugin {
             return view;
           }
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     return null;
   }
@@ -6778,7 +8436,9 @@ var BasesCMSPlugin = class extends import_obsidian24.Plugin {
         }
       });
       if (refreshedCount > 0) {
-        console.debug(`Bases CMS: Refreshed ${refreshedCount} embedded view(s) after active file change`);
+        console.debug(
+          `Bases CMS: Refreshed ${refreshedCount} embedded view(s) after active file change`,
+        );
       }
     }, this.settings.embeddedViewRefreshDebounceMs);
   }
