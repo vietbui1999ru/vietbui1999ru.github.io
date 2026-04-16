@@ -66,3 +66,27 @@ describe('aboutSchema', () => {
     expect(() => aboutSchema.parse({ title: 't' })).toThrow()
   })
 })
+
+describe('educationSchema', () => {
+  it('requires institution, degree, date_start, summary', () => {
+    expect(() => educationSchema.parse({ institution: 'u' })).toThrow()
+  })
+  it('defaults graph_node to true', () => {
+    const parsed = educationSchema.parse({
+      institution: 'u', degree: 'd', date_start: '2020-09-01', summary: 's',
+    })
+    expect(parsed.graph_node).toBe(true)
+  })
+})
+
+describe('gallerySchema', () => {
+  it('requires title, date, image', () => {
+    expect(() => gallerySchema.parse({ title: 't' })).toThrow()
+  })
+  it('defaults graph_node to true', () => {
+    const parsed = gallerySchema.parse({
+      title: 't', date: '2026-04-16', image: '/x.jpg',
+    })
+    expect(parsed.graph_node).toBe(true)
+  })
+})
