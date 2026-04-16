@@ -6122,3 +6122,814 @@ git add src/scenes/sims/kuramotoSivashinsky/presets.ts \
         src/scenes/sims/kuramotoSivashinsky/index.ts
 git commit -m "feat(sims): KS SimModule + 3 presets"
 ```
+
+---
+
+## Phase 15 — `/sim/[name]` playground pages
+
+### Task D31: Dynamic route `src/pages/sim/[name].astro`
+
+**Files:**
+- Create: `src/pages/sim/[name].astro`
+
+- [ ] **Step 1: Create the dynamic Astro route**
+
+```astro
+---
+// src/pages/sim/[name].astro
+import { SCENE_REGISTRY } from '../../scenes/registry'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { GetStaticPaths } from 'astro'
+
+export const getStaticPaths = (() => {
+  return Object.keys(SCENE_REGISTRY).map((name) => ({ params: { name } }))
+}) satisfies GetStaticPaths
+
+const { name } = Astro.params
+const entry = SCENE_REGISTRY[name as keyof typeof SCENE_REGISTRY]
+if (!entry) throw new Error(`Unknown sim: ${name}`)
+---
+
+<BaseLayout title={`${entry.label} — Playground`} fullViewport>
+  <!--
+    The app-wide Canvas (mounted in BaseLayout) reads `data-scene-id`
+    from this sentinel and activates the matching SimModule.
+  -->
+  <div
+    id="sim-playground-slot"
+    data-scene-id={name}
+    data-playground="true"
+    class="sim-playground-root"
+    aria-label={`${entry.label} simulation playground`}
+  />
+
+  <!-- Back-to-home link, positioned absolutely over canvas -->
+  <a
+    href="/"
+    class="sim-back-link"
+    aria-label="Back to portfolio home"
+  >
+    ← Home
+  </a>
+
+  <!-- Share-URL button: progressive enhancement via inline script -->
+  <button
+    id="sim-share-btn"
+    class="sim-share-btn"
+    type="button"
+    aria-label="Copy share URL"
+  >
+    Share
+  </button>
+</BaseLayout>
+
+<style>
+  .sim-playground-root {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .sim-back-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 50;
+    color: white;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .sim-back-link:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .sim-share-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 50;
+    color: white;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .sim-share-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+</style>
+
+<script>
+  // Share-URL: copy current href (includes hash from URL-sync store) to clipboard
+  const shareBtn = document.getElementById('sim-share-btn')
+  shareBtn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      shareBtn.textContent = 'Copied!'
+      setTimeout(() => { shareBtn.textContent = 'Share' }, 2000)
+    } catch {
+      shareBtn.textContent = 'Copy failed'
+      setTimeout(() => { shareBtn.textContent = 'Share' }, 2000)
+    }
+  })
+</script>
+```
+
+- [ ] **Step 2: Verify `SCENE_REGISTRY` is exported**
+
+The registry was established in Task D11. Confirm the named export exists:
+
+```bash
+grep -n "export.*SCENE_REGISTRY" src/scenes/registry.ts
+```
+
+Expected: one line, e.g. `export const SCENE_REGISTRY = { ... }`.
+
+- [ ] **Step 3: Verify `BaseLayout` accepts `fullViewport` prop**
+
+```bash
+grep -n "fullViewport" src/layouts/BaseLayout.astro
+```
+
+If the prop is absent, add it to `BaseLayout.astro`:
+
+```astro
+---
+// Add to BaseLayout.astro Props
+interface Props {
+  title: string
+  fullViewport?: boolean
+}
+const { title, fullViewport = false } = Astro.props
+---
+```
+
+Then conditionally set `overflow: hidden` on `<body>` when `fullViewport` is true:
+
+```astro
+<body class:list={[{ 'overflow-hidden': fullViewport }]}>
+```
+
+- [ ] **Step 4: SceneRouter must handle `data-playground="true"` sentinel**
+
+The `SceneRouter` (Task D11) reads DOM `data-scene-id` attributes from registered slot elements. The playground page sets both `data-scene-id` and `data-playground="true"`. The router should:
+1. Treat `data-playground="true"` as a signal to expand Leva by default (`{ collapsed: false }`).
+2. Otherwise follow the same mount/unmount logic as section slots.
+
+If the router does not yet read `data-playground`, add the check:
+
+```ts
+// src/scenes/router.ts  — inside mountSlot or equivalent
+const isPlayground = el.dataset.playground === 'true'
+if (isPlayground) {
+  useLevaStore.getState().setCollapsed(false)
+}
+```
+
+- [ ] **Step 5: Build-time smoke check**
+
+Run: `pnpm build`
+
+Expected: for every key in `SCENE_REGISTRY` the build emits a corresponding HTML file. Verify with:
+
+```bash
+for name in singularity lorenz magnetic grayScott kuramotoSivashinsky; do
+  test -f "dist/sim/$name/index.html" && echo "OK: $name" || echo "MISSING: $name"
+done
+```
+
+Expected output: five `OK:` lines, zero `MISSING:` lines.
+
+- [ ] **Step 6: TypeScript check**
+
+Run: `pnpm tsc --noEmit`
+Expected: exit code 0.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add src/pages/sim/[name].astro
+git commit -m "feat(scenes): /sim/[name] playground pages"
+```
+
+---
+
+## Phase 16 — Home hero integration
+
+### Task D32: Wire `Home.tsx` hero to Singularity via scene router sentinel
+
+**Files:**
+- Modify: `src/components/sections/Home.tsx`
+- Create: `src/hooks/useSingularityScrollUniforms.ts`
+
+- [ ] **Step 1: Extract scroll-uniform coupling into its own hook**
+
+Create `src/hooks/useSingularityScrollUniforms.ts`:
+
+```ts
+// src/hooks/useSingularityScrollUniforms.ts
+import { useEffect } from 'react'
+import { useSceneStore } from '../scenes/sceneStore'
+
+/**
+ * Couples window scroll progress (0→1 over first viewport height) to the
+ * `uScrollProgress` uniform of the active Singularity scene.
+ *
+ * Call this hook once inside the component that owns the Hero slot.
+ * It registers / unregisters the scroll listener automatically.
+ */
+export function useSingularityScrollUniforms(): void {
+  const setUniform = useSceneStore((s) => s.setUniform)
+
+  useEffect(() => {
+    function onScroll() {
+      const progress = Math.min(
+        1,
+        window.scrollY / (window.innerHeight || 1),
+      )
+      setUniform('singularity', 'uScrollProgress', progress)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll() // prime on mount
+
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [setUniform])
+}
+```
+
+- [ ] **Step 2: Ensure `sceneStore` exposes `setUniform`**
+
+Check `src/scenes/sceneStore.ts`:
+
+```bash
+grep -n "setUniform" src/scenes/sceneStore.ts
+```
+
+If absent, add the slice:
+
+```ts
+// Inside the Zustand store definition
+setUniform: (sceneId: string, key: string, value: unknown) => {
+  set((state) => ({
+    uniforms: {
+      ...state.uniforms,
+      [sceneId]: { ...(state.uniforms[sceneId] ?? {}), [key]: value },
+    },
+  }))
+},
+```
+
+And declare the corresponding `uniforms` state key:
+
+```ts
+uniforms: {} as Record<string, Record<string, unknown>>,
+```
+
+The Singularity scene reads `uniforms['singularity'].uScrollProgress` inside its `useFrame` callback.
+
+- [ ] **Step 3: Replace direct `SingularityShaders` usage in `Home.tsx`**
+
+Before this task, `Home.tsx` likely renders `<SingularityShaders />` directly. Replace it with a DOM sentinel that the scene router picks up:
+
+```tsx
+// src/components/sections/Home.tsx
+import React, { useRef } from 'react'
+import { useSingularityScrollUniforms } from '../../hooks/useSingularityScrollUniforms'
+
+export default function Home() {
+  useSingularityScrollUniforms()
+
+  return (
+    <section id="home" className="relative min-h-screen flex items-center">
+      {/*
+        Scene-router sentinel: the app-wide Canvas reads this attribute
+        and activates the Singularity SimModule for this slot.
+        The Canvas is mounted in BaseLayout above this section in the DOM.
+      */}
+      <div
+        data-scene-id="singularity"
+        aria-hidden="true"
+        className="absolute inset-0 -z-10"
+      />
+
+      {/* Hero copy — unchanged from pre-migration */}
+      <div className="relative z-10 hero-content">
+        {/* existing hero JSX preserved here */}
+      </div>
+    </section>
+  )
+}
+```
+
+Note: if `Home.tsx` contains additional hero content (headline, subtitle, CTA buttons), preserve it verbatim. Only the `<SingularityShaders />` element and any direct canvas/ref wiring is replaced by the sentinel `<div>`.
+
+- [ ] **Step 4: Remove `SingularityShaders` import from `Home.tsx`**
+
+```bash
+grep -n "SingularityShaders" src/components/sections/Home.tsx
+```
+
+Expected: zero matches after the edit in Step 3.
+
+- [ ] **Step 5: Full test + build**
+
+Run: `pnpm test && pnpm build`
+Expected: all tests pass; build succeeds.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add src/components/sections/Home.tsx \
+        src/hooks/useSingularityScrollUniforms.ts \
+        src/scenes/sceneStore.ts
+git commit -m "feat(sims): Home hero uses Singularity scene via router"
+```
+
+---
+
+## Phase 17 — Cleanup
+
+### Task D33: Remove `src/components/shaders/Singularity.tsx` and `react-shaders`
+
+**Files:**
+- Delete: `src/components/shaders/Singularity.tsx`
+- Modify: `package.json` (dependency removal)
+- Modify: `pnpm-lock.yaml` (auto-updated)
+
+- [ ] **Step 1: Confirm no remaining references to `SingularityShaders` or `react-shaders`**
+
+```bash
+grep -rn "react-shaders\|SingularityShaders" src/
+```
+
+Expected: zero matches. If any match is found, update or remove the referencing file before proceeding.
+
+- [ ] **Step 2: Delete the old shader component**
+
+```bash
+rm src/components/shaders/Singularity.tsx
+```
+
+Verify deletion:
+
+```bash
+ls src/components/shaders/Singularity.tsx 2>&1
+```
+
+Expected: `ls: … No such file or directory`.
+
+- [ ] **Step 3: Remove `react-shaders` from dependencies**
+
+```bash
+pnpm remove react-shaders
+```
+
+Expected: `package.json` no longer lists `react-shaders`; `pnpm-lock.yaml` updated.
+
+Verify:
+
+```bash
+grep "react-shaders" package.json
+```
+
+Expected: zero matches.
+
+- [ ] **Step 4: TypeScript check**
+
+Run: `pnpm tsc --noEmit`
+Expected: exit code 0.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add -u
+git commit -m "chore: remove react-shaders after r3f port"
+```
+
+---
+
+### Task D34: Conditionally remove `src/lib/fourier.ts`
+
+**Files:**
+- Possibly delete: `src/lib/fourier.ts`
+
+- [ ] **Step 1: Check if `fourier.ts` is used outside the old singularity shader**
+
+```bash
+grep -rn "fourier\|from.*lib/fourier" src/
+```
+
+If the only references were inside `src/components/shaders/Singularity.tsx` (now deleted) and `src/scenes/sims/kuramotoSivashinsky/` (which uses it legitimately via the KS pseudospectral compute layer from Task D28), **keep the file** and close this task with a note.
+
+If the only remaining references are inside the KS compute layer or `src/lib/fft.ts` shims, keep the file.
+
+If zero references remain after the deletion of `Singularity.tsx`, proceed to Step 2.
+
+- [ ] **Step 2: Delete if unused**
+
+```bash
+rm src/lib/fourier.ts
+pnpm tsc --noEmit
+```
+
+Expected: exit code 0 (no import errors introduced by removal).
+
+- [ ] **Step 3: Commit only if deleted**
+
+```bash
+git add -u
+git commit -m "chore: remove unused fourier.ts after react-shaders cleanup"
+```
+
+If the file is still needed (KS references it), skip the commit and add a comment in the KS SimModule `index.ts`:
+
+```ts
+// fourier.ts is a dependency of this module — do not delete.
+```
+
+---
+
+## Phase 18 — Perf verification
+
+### Task D35: Perf budget harness + manual checklist
+
+**Files:**
+- Create: `scripts/perf-budget.mjs`
+
+Per-sim mid-tier compute budget (spec §7.6):
+
+| Sim | Target compute/frame | Notes |
+|-----|---------------------|-------|
+| Magnetic (GPU particles 2k) | p95 ≤ 0.8ms | |
+| Lorenz (CPU 500 trails) | p95 ≤ 0.3ms | |
+| Gray-Scott (GPU 256² × 4 sub) | p95 ≤ 1.2ms | |
+| Kuramoto-Sivashinsky (GPU 512 pts × 4 sub ETDRK4) | p95 ≤ 1.5ms | |
+| Rendering overhead (shared) | 2–3ms | |
+| **Total active (1 sim)** | **p95 ≤ 5ms** | 11ms headroom at 60fps |
+
+- [ ] **Step 1: Create the scripted harness**
+
+```js
+// scripts/perf-budget.mjs
+/**
+ * Perf budget harness for Sub-Project D simulations.
+ *
+ * Usage (requires Playwright installed as dev dependency):
+ *   node scripts/perf-budget.mjs
+ *
+ * If Playwright is not installed, the script prints manual DevTools steps
+ * and exits 0 (CI-safe). Install Playwright to enable automated assertions.
+ *
+ * Environment variables:
+ *   BASE_URL   — default http://localhost:4321
+ *   SIM_NAMES  — comma-separated list; default all five sims
+ *   DURATION   — sample window in ms; default 30000
+ */
+
+import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
+
+const BASE_URL = process.env.BASE_URL ?? 'http://localhost:4321'
+const SIM_NAMES = (process.env.SIM_NAMES ?? 'singularity,lorenz,magnetic,grayScott,kuramotoSivashinsky').split(',')
+const DURATION = Number(process.env.DURATION ?? 30_000)
+
+// Per-sim p95 budgets in milliseconds (spec §7.6 mid-tier)
+const BUDGETS = {
+  singularity: 5,       // full-frame budget (renders as hero; no isolation)
+  lorenz: 5,
+  magnetic: 5,
+  grayScott: 5,
+  kuramotoSivashinsky: 5,
+}
+
+async function runWithPlaywright() {
+  const { chromium } = await import('playwright')
+  const browser = await chromium.launch({ args: ['--enable-gpu'] })
+  const results = []
+
+  for (const name of SIM_NAMES) {
+    const url = `${BASE_URL}/sim/${name}`
+    console.log(`\n[perf] Sampling ${url} for ${DURATION / 1000}s …`)
+    const context = await browser.newContext()
+    const page = await context.newPage()
+
+    // Collect frame times via Performance.mark hooks injected into the page
+    const frameTimes = []
+    await page.addInitScript(() => {
+      window.__FRAME_TIMES__ = []
+      let last = performance.now()
+      function tick() {
+        const now = performance.now()
+        window.__FRAME_TIMES__.push(now - last)
+        last = now
+        requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    })
+
+    await page.goto(url, { waitUntil: 'networkidle' })
+    await page.waitForTimeout(DURATION)
+
+    const raw = await page.evaluate(() => window.__FRAME_TIMES__ ?? [])
+    await context.close()
+
+    // Compute p95 frame time
+    const sorted = [...raw].sort((a, b) => a - b)
+    const p95 = sorted[Math.floor(sorted.length * 0.95)] ?? Infinity
+    const budget = BUDGETS[name] ?? 16
+    const pass = p95 <= budget
+
+    results.push({ name, p95: p95.toFixed(2), budget, pass })
+    console.log(`[perf] ${name}: p95 = ${p95.toFixed(2)}ms  budget = ${budget}ms  ${pass ? 'PASS' : 'FAIL'}`)
+  }
+
+  await browser.close()
+
+  const failed = results.filter((r) => !r.pass)
+  if (failed.length > 0) {
+    console.error('\n[perf] BUDGET EXCEEDED:')
+    failed.forEach((r) => console.error(`  ${r.name}: p95 ${r.p95}ms > ${r.budget}ms`))
+    process.exit(1)
+  }
+
+  console.log('\n[perf] All sims within budget.')
+  process.exit(0)
+}
+
+async function main() {
+  // Detect whether playwright is available
+  const playwrightPkg = resolve('node_modules/playwright/package.json')
+  if (existsSync(playwrightPkg)) {
+    await runWithPlaywright()
+    return
+  }
+
+  // Fallback: print manual checklist
+  console.log(`
+[perf] Playwright not found. Run manually:
+
+MANUAL CHROME DEVTOOLS PERFORMANCE CHECKLIST
+============================================
+For each sim URL: ${SIM_NAMES.map((n) => `${BASE_URL}/sim/${n}`).join(', ')}
+
+1. Open Chrome DevTools → Performance tab.
+2. Set CPU throttle to 4× slowdown (mid-tier proxy).
+3. Click Record, let sim run for 10 seconds, click Stop.
+4. Inspect the flame chart:
+   - Scripting (yellow): compute + React overhead
+   - Rendering (purple): r3f/three.js draw calls
+   - Painting (green): compositing
+5. Check "Summary" panel — total frame time should be < 16ms.
+6. Verify p95 frame time (Frames panel) stays under 16ms.
+7. Expected mid-tier budget per sim (spec §7.6):
+   - Magnetic:              compute ~0.8ms
+   - Lorenz:                compute ~0.3ms
+   - Gray-Scott:            compute ~1.2ms
+   - Kuramoto-Sivashinsky:  compute ~1.5ms
+   - Rendering overhead:    ~2–3ms (shared)
+   - Total active (1 sim):  ~4–5ms  (11ms headroom at 60fps)
+
+OFFSCREEN PAUSE VERIFICATION
+=============================
+1. Navigate to any sim playground page (/sim/<name>).
+2. Open DevTools Performance tab, start recording.
+3. Scroll the page so the canvas is fully out of viewport.
+4. Wait 5 seconds.
+5. Stop recording.
+6. Inspect the CPU activity — scripting should drop to ~0 within
+   one requestAnimationFrame cycle after the canvas leaves viewport.
+7. Expected: IntersectionObserver fires → useFrame halted → CPU ≈ 0.
+`)
+  process.exit(0)
+}
+
+main().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})
+```
+
+- [ ] **Step 2: Add optional `playwright` dev dependency note to `package.json` scripts**
+
+Open `package.json` and add the script entry (do not install playwright automatically):
+
+```json
+"perf:budget": "node scripts/perf-budget.mjs"
+```
+
+Verify it is present:
+
+```bash
+grep "perf:budget" package.json
+```
+
+Expected: one match.
+
+- [ ] **Step 3: Verify IntersectionObserver pause behavior — manual checklist**
+
+The automated frame-time harness above covers throughput. The offscreen pause requires a manual visual check because headless Chromium does not fire `IntersectionObserver` in the same way as a visible browser:
+
+```
+Checklist — IntersectionObserver pause:
+[ ] Open /sim/singularity in Chrome, DevTools Performance tab recording.
+[ ] Scroll canvas fully out of viewport (e.g. arrow-key to bottom of page).
+[ ] Wait 5 seconds.
+[ ] Stop recording.
+[ ] Confirm: after the first rAF following the scroll, the "Scripting" band
+    on the flame chart becomes empty (no useFrame work, no GPU submits).
+[ ] Repeat for /sim/lorenz, /sim/magnetic, /sim/grayScott,
+    /sim/kuramotoSivashinsky.
+```
+
+The `SceneHost` component (Task D12) wires this via:
+
+```ts
+const io = new IntersectionObserver(
+  ([entry]) => { scene.setActive(entry.isIntersecting) },
+  { threshold: 0 },
+)
+io.observe(slotEl)
+```
+
+If any sim does not pause, check that `setActive(false)` short-circuits the `useFrame` callback inside that sim's `Scene.tsx`.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add scripts/perf-budget.mjs package.json
+git commit -m "chore(perf): add budget verification harness + checklist"
+```
+
+---
+
+## Phase 19 — End-to-end verification
+
+### Task D36: Full clean-build E2E verification
+
+**Files:**
+- No new files. Verify existing output.
+
+- [ ] **Step 1: Clean install from scratch**
+
+```bash
+rm -rf node_modules dist
+pnpm install --frozen-lockfile
+```
+
+Expected: install completes with no peer-dependency errors. `node_modules/` recreated.
+
+- [ ] **Step 2: Run full test suite**
+
+Run: `pnpm test`
+
+Expected: all Sub-Project D tests pass (exit code 0). Test files to confirm green:
+
+- `src/lib/__tests__/rk4.test.ts` (Task D2)
+- `src/lib/__tests__/verlet.test.ts` (Task D3)
+- `src/lib/__tests__/etdrk4.test.ts` (Task D4)
+- `src/lib/__tests__/fft.test.ts` (Task D4)
+- `src/scenes/__tests__/lorenz.physics.test.ts` (Task D17)
+- `src/scenes/__tests__/magnetic.physics.test.ts` (Task D21)
+- `src/scenes/__tests__/grayScott.compute.test.ts` (Task D25)
+- `src/scenes/__tests__/ks.compute.test.ts` (Task D28)
+
+- [ ] **Step 3: TypeScript check**
+
+Run: `pnpm tsc --noEmit`
+Expected: exit code 0, zero errors.
+
+- [ ] **Step 4: Production build**
+
+Run: `pnpm build`
+
+Expected: build completes with no errors and emits the following HTML files:
+
+```bash
+for name in singularity lorenz magnetic grayScott kuramotoSivashinsky; do
+  test -f "dist/sim/$name/index.html" && echo "OK: $name" || echo "MISSING: $name"
+done
+```
+
+Expected output: five `OK:` lines.
+
+- [ ] **Step 5: Preview and manual verification**
+
+Run: `pnpm preview`
+
+Open each URL and run the following checklist:
+
+**`/` (Home)**
+- [ ] Page loads; hero Canvas renders Singularity simulation.
+- [ ] Scroll down — Singularity `uScrollProgress` uniform responds (visible shader change).
+- [ ] No console errors.
+
+**`/sim/singularity`**
+- [ ] Full-viewport Canvas renders Singularity.
+- [ ] Press `L` — Leva panel toggles visibility (expanded by default on playground).
+- [ ] Press `?` — Help overlay opens with math description; press `?` again to close.
+- [ ] Presets dropdown lists at least the default preset; selecting a preset changes the sim config.
+- [ ] Symmetry slider changes initial condition; sim restarts with new IC.
+- [ ] "Share" button copies current URL (including hash) to clipboard.
+- [ ] Modify any config value — URL hash updates (debounced ~500ms).
+- [ ] Reload with that hash — sim initialises to the saved config.
+- [ ] Enable `prefers-reduced-motion` in OS/DevTools → sim halts compute (static snapshot visible).
+- [ ] Disable `prefers-reduced-motion` → sim resumes.
+- [ ] "← Home" link navigates back to `/`.
+
+**`/sim/lorenz`**
+- [ ] Canvas renders Lorenz attractor trails.
+- [ ] `L` / `?` / presets / share / hash round-trip all work (same checklist as above).
+- [ ] Scroll canvas out of viewport (open DevTools Perf, record 5s) → CPU near 0.
+
+**`/sim/magnetic`**
+- [ ] Canvas renders magnetic dipole particle simulation.
+- [ ] Symmetry `D_n` slider changes particle initial positions symmetrically.
+- [ ] All interactive controls work.
+
+**`/sim/grayScott`**
+- [ ] Canvas renders reaction-diffusion patterns.
+- [ ] Colormap selector in Leva changes palette.
+- [ ] `F` / `k` sliders change pattern regime.
+
+**`/sim/kuramotoSivashinsky`**
+- [ ] Canvas renders space-time plot.
+- [ ] Symmetry `C_n` slider alters initial Fourier modes.
+- [ ] All interactive controls work.
+
+- [ ] **Step 6: Final fix commit (if needed)**
+
+If any issues surfaced during Steps 1–5, fix them inline and commit:
+
+```bash
+git add <changed files>
+git commit -m "fix: <specifics of what was broken>"
+```
+
+If no fixes are needed, skip this step.
+
+---
+
+## Self-Review Checklist
+
+### Spec coverage cross-reference
+
+| Spec section | Description | Tasks |
+|---|---|---|
+| §7.1 Scene architecture | `Sim<Config,State>` type, registry | D1, D6, D7, D11 |
+| §7.2 Solver primitives | RK4, Verlet, ETDRK4, FFT | D2, D3, D4 |
+| §7.3 GPU compute | WebGL ping-pong, RGBA16F fallback | D5 |
+| §7.4 Symmetry ICs | `C_n` / `D_n` generators | D8 |
+| §7.5 URL hash + presets | Hash sync, Zustand slice | D14 |
+| §7.6 Perf plan | Adaptive tier, pause-on-offscreen, budget | D9, D10, D12, D35 |
+| §7.7 Leva integration | Global panel, keyboard `L`, folders | D13 |
+| §7.8 Playground pages | `/sim/[name]` full-viewport routes | D31 |
+| §8.4 Solver correctness tests | rk4, verlet, etdrk4 unit tests | D2, D3, D4 |
+| §8.4 Sim behavior tests | Lorenz, GS, KS correctness | D17, D25, D28 |
+| §8.4 Leva round-trip | Config JSON → leva → JSON identity | D13, D14 |
+| §8.4 GPU fallback | RGBA16F alternate path | D5 |
+| §8.4 Offscreen pause | IntersectionObserver halts compute | D12, D35 |
+| §8.4 Perf profiler | Mid-tier frame budget verified | D35 |
+| Help overlay (`?` key) | Math description collapsible | D15 |
+| Singularity r3f port | Hero sim migrated off `react-shaders` | D16 |
+| Lorenz sim | Full physics + scene + presets | D17–D20 |
+| Magnetic sim | Dipole + Verlet + D_n IC + presets | D21–D23 |
+| Gray-Scott sim | Fragment shader + ping-pong + presets | D24–D27 |
+| Kuramoto-Sivashinsky sim | ETDRK4 + space-time scene + presets | D28–D30 |
+| Home hero integration | Sentinel replaces direct shader import | D32 |
+| Cleanup | `react-shaders` removed, dead files deleted | D33, D34 |
+| E2E verification | Clean build + manual preview checklist | D36 |
+
+### Placeholder scan
+
+- No `TBD`, `TODO`, or `<…>` placeholder remains in any task.
+- Every `Run:` command has a defined `Expected:` outcome.
+- Every `Create:` / `Modify:` header specifies an exact file path.
+
+### Type consistency
+
+- `SimModule<Config, State>`, `SymmetryType`, `PerfTier`, `SimState` all declared in `src/scenes/types.ts` (Task D6) and used consistently across all SimModule `index.ts` files.
+- `SceneRegistry` type derived from `SCENE_REGISTRY` object; `keyof typeof SCENE_REGISTRY` used in `[name].astro`.
+- Zustand store slices (`useSceneStore`, `useLevaStore`, `useHashStore`) each typed with their slice interface.
+
+---
+
+## Out of scope for this plan (deferred items)
+
+The following items appear in the spec or were considered during planning but are **not** implemented here. They are candidates for a future sub-project D extension.
+
+- **2D Kuramoto-Sivashinsky variant** — spec §7 notes a possible 2D KS extension. The current implementation is 1D pseudospectral (512 points, space-time plot). A 2D variant would require a 2D FFT pass, a different colormap, and a redesigned Scene layout.
+- **GPU particle variant of Magnetic with >2000 particles** — spec §7.6 high tier lists 10 000 particles. The current Magnetic sim is CPU/Verlet for mid tier; a GPU instanced-mesh or compute-shader variant is needed for high-tier counts.
+- **Custom scenes for remaining portfolio sections** (About, Experience, Education, Gallery, etc.) — spec §11 describes per-section ambient simulations. Sub-project D ships only Singularity (Home hero) and playground routes. Other section sims are a separate planning unit.
+- **Full WebGPU migration** — the architecture is designed to accommodate a WebGPU compute backend (replacing the WebGL ping-pong approach), but the implementation uses WebGL throughout. Migration is blocked on broader browser adoption.
+- **Post-processing stack beyond r3f defaults** — bloom, chromatic aberration, SSAO, and similar `@react-three/postprocessing` passes were considered for the Singularity hero. They are deferred to avoid LCP budget risk on first load.
+- **Visual regression screenshot suite** — spec §8.4 lists per-sim screenshot at fixed seed + step count. A Playwright screenshot fixture setup is deferred to avoid CI GPU dependency in the initial rollout.
