@@ -55,6 +55,12 @@ function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
+const UNSAFE_SCHEME = /^\s*(javascript|data|vbscript|file):/i
+
+function safeUrl(url: string): string {
+  return UNSAFE_SCHEME.test(url) ? '' : url
+}
+
 export const remarkWikilinks: Plugin<[WikilinkOptions], Root> = (opts) => {
   const { index, onDead = () => {}, strict = false } = opts
   return (tree, file) => {
@@ -85,15 +91,16 @@ export const remarkWikilinks: Plugin<[WikilinkOptions], Root> = (opts) => {
         if (target.kind === 'clipping' && !target.publish) {
           const parts: string[] = ['<a class="note-popover"', `data-title="${escapeAttr(target.title)}"`]
           if (target.preview) parts.push(`data-preview="${escapeAttr(target.preview)}"`)
-          if (target.source) parts.push(`data-source="${escapeAttr(target.source)}"`)
+          if (target.source) parts.push(`data-source="${escapeAttr(safeUrl(target.source))}"`)
           const html = `${parts.join(' ')}>${escapeHtml(display)}</a>`
+          // html node not typed as PhrasingContent but accepted by mdast AST
           out.push({ type: 'html', value: html } as any)
           continue
         }
 
         out.push({
           type: 'link',
-          url: target.url,
+          url: safeUrl(target.url),
           title: null,
           children: [{ type: 'text', value: display }],
         })

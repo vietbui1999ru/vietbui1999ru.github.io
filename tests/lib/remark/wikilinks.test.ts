@@ -83,4 +83,27 @@ describe('remark-wikilinks', () => {
     expect(node.value).toContain('&lt;')
     expect(node.value).toContain('&amp;')
   })
+
+  it('handles multiple wikilinks in one text node', async () => {
+    const tree: any = await transform('See [[hello-world]] and [[stripe-mrr]] and [[missing]] end.')
+    const children = tree.children[0].children
+    const links = children.filter((c: any) => c.type === 'link')
+    expect(links).toHaveLength(2)
+    expect(links[0].url).toBe('/blog/hello-world')
+    expect(links[1].url).toBe('/projects/stripe-mrr')
+    const deadText = children.find((c: any) => c.type === 'text' && c.value === 'missing')
+    expect(deadText).toBeDefined()
+  })
+
+  it('strips javascript: url scheme to empty href', async () => {
+    const dangerous: WikilinkIndex = {
+      ...index,
+      posts: new Map([['bad', { kind: 'blog', url: 'javascript:alert(1)', title: 'Bad' }]]),
+    }
+    const tree = unified().use(remarkParse).parse('Click [[bad]] here.')
+    await unified().use(remarkParse).use(remarkWikilinks, { index: dangerous, onDead: () => {} }).run(tree)
+    const link: any = (tree as any).children[0].children[1]
+    expect(link.type).toBe('link')
+    expect(link.url).toBe('')
+  })
 })
