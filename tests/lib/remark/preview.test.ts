@@ -31,4 +31,16 @@ describe('remark-preview', () => {
     const out = await run(long)
     expect(out?.length).toBeLessThanOrEqual(280)
   })
+
+  it('preserves codepoint boundaries when truncating emoji', async () => {
+    const emoji = '🚀'.repeat(200)
+    const out = await run(emoji)
+    expect(out).toBeDefined()
+    expect([...out!].every((c) => c === '🚀' || c === '…')).toBe(true)
+  })
+
+  it('leaves preview unset when first paragraph is empty', async () => {
+    const out = await run('# heading only\n\n')
+    expect(out).toBeUndefined()
+  })
 })

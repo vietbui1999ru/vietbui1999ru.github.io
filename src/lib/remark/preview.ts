@@ -16,7 +16,12 @@ export const remarkPreview: Plugin<[], Root> = () => (tree, file) => {
   if (!first) return
 
   const raw = toString(first).trim()
-  const preview = raw.length > MAX_PREVIEW ? raw.slice(0, MAX_PREVIEW - 1).trimEnd() + '…' : raw
+  if (!raw) return
+
+  const chars = [...raw]
+  const preview = chars.length > MAX_PREVIEW
+    ? chars.slice(0, MAX_PREVIEW - 1).join('').trimEnd() + '…'
+    : raw
   frontmatter.preview = preview
   ;(file.data.astro as any).frontmatter = frontmatter
 }
