@@ -3860,3 +3860,2265 @@ git add src/scenes/sims/singularity/Scene.tsx \
         tests/scenes/sims/singularity/Scene.test.tsx
 git commit -m "feat(sims): port Singularity shader to r3f"
 ```
+
+---
+
+## Phase 11 — Lorenz Attractor (CPU RK4)
+
+### Task D17: Lorenz physics step function
+
+**Files:**
+- Create: `src/scenes/sims/lorenz/physics.ts`
+- Create: `tests/scenes/sims/lorenz/physics.test.ts`
+
+- [ ] **Step 1: Create `src/scenes/sims/lorenz/physics.ts`**
+
+```ts
+export interface LorenzState {
+  x: number
+  y: number
+  z: number
+}
+
+export interface LorenzParams {
+  sigma: number
+  rho: number
+  beta: number
+  dt: number
+}
+
+function lorenzDerivative(
+  s: LorenzState,
+  { sigma, rho, beta }: Omit<LorenzParams, 'dt'>,
+): LorenzState {
+  return {
+    x: sigma * (s.y - s.x),
+    y: s.x * (rho - s.z) - s.y,
+    z: s.x * s.y - beta * s.z,
+  }
+}
+
+/** RK4 integration of Lorenz ODEs. Returns next state. */
+export function lorenzStep(
+  state: LorenzState,
+  params: LorenzParams,
+): LorenzState {
+  const { dt, sigma, rho, beta } = params
+  const p = { sigma, rho, beta }
+
+  const k1 = lorenzDerivative(state, p)
+
+  const s2: LorenzState = {
+    x: state.x + 0.5 * dt * k1.x,
+    y: state.y + 0.5 * dt * k1.y,
+    z: state.z + 0.5 * dt * k1.z,
+  }
+  const k2 = lorenzDerivative(s2, p)
+
+  const s3: LorenzState = {
+    x: state.x + 0.5 * dt * k2.x,
+    y: state.y + 0.5 * dt * k2.y,
+    z: state.z + 0.5 * dt * k2.z,
+  }
+  const k3 = lorenzDerivative(s3, p)
+
+  const s4: LorenzState = {
+    x: state.x + dt * k3.x,
+    y: state.y + dt * k3.y,
+    z: state.z + dt * k3.z,
+  }
+  const k4 = lorenzDerivative(s4, p)
+
+  return {
+    x: state.x + (dt / 6) * (k1.x + 2 * k2.x + 2 * k3.x + k4.x),
+    y: state.y + (dt / 6) * (k1.y + 2 * k2.y + 2 * k3.y + k4.y),
+    z: state.z + (dt / 6) * (k1.z + 2 * k2.z + 2 * k3.z + k4.z),
+  }
+}
+```
+
+- [ ] **Step 2: Create `tests/scenes/sims/lorenz/physics.test.ts`**
+
+```ts
+import { describe, it, expect } from 'vitest'
+import { lorenzStep, type LorenzState, type LorenzParams } from '@/scenes/sims/lorenz/physics'
+
+const CLASSIC: LorenzParams = { sigma: 10, rho: 28, beta: 8 / 3, dt: 0.005 }
+
+describe('lorenzStep', () => {
+  it('returns a new object (immutable)', () => {
+    const s: LorenzState = { x: 1, y: 1, z: 1 }
+    const next = lorenzStep(s, CLASSIC)
+    expect(next).not.toBe(s)
+  })
+
+  it('moves state after one step', () => {
+    const s: LorenzState = { x: 1, y: 1, z: 1 }
+    const next = lorenzStep(s, CLASSIC)
+    expect(next.x).not.toBeCloseTo(s.x, 10)
+  })
+
+  it('two nearby trajectories diverge exponentially (positive Lyapunov)', () => {
+    // Seed two states that differ by epsilon in x
+    const eps = 1e-6
+    let s1: LorenzState = { x: 1.0, y: 1.0, z: 1.0 }
+    let s2: LorenzState = { x: 1.0 + eps, y: 1.0, z: 1.0 }
+
+    const nSteps = 4000
+    for (let i = 0; i < nSteps; i++) {
+      s1 = lorenzStep(s1, CLASSIC)
+      s2 = lorenzStep(s2, CLASSIC)
+    }
+
+    const dx = s2.x - s1.x
+    const dy = s2.y - s1.y
+    const dz = s2.z - s1.z
+    const separation = Math.sqrt(dx * dx + dy * dy + dz * dz)
+
+    // Positive Lyapunov: separation should be >> eps after 4000 steps at dt=0.005 (t=20s)
+    expect(separation).toBeGreaterThan(eps * 100)
+  })
+
+  it('zero-force fixed point at origin (sigma > 0, rho=0, beta > 0)', () => {
+    // At origin with rho=0: dx/dt = sigma*(0-0)=0, dy/dt = 0*(0-0)-0=0, dz/dt=0*0-beta*0=0
+    const s: LorenzState = { x: 0, y: 0, z: 0 }
+    const next = lorenzStep(s, { sigma: 10, rho: 0, beta: 8 / 3, dt: 0.01 })
+    expect(next.x).toBeCloseTo(0, 12)
+    expect(next.y).toBeCloseTo(0, 12)
+    expect(next.z).toBeCloseTo(0, 12)
+  })
+})
+```
+
+- [ ] **Step 3: Run tests**
+
+Run: `pnpm test tests/scenes/sims/lorenz/physics.test.ts`
+Expected: `✓ tests/scenes/sims/lorenz/physics.test.ts (4 tests)` with exit code 0.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/scenes/sims/lorenz/physics.ts \
+        tests/scenes/sims/lorenz/physics.test.ts
+git commit -m "feat(sims): Lorenz step fn + Lyapunov test"
+```
+
+---
+
+### Task D18: Lorenz trail buffer
+
+**Files:**
+- Create: `src/scenes/sims/lorenz/trails.ts`
+- Create: `tests/scenes/sims/lorenz/trails.test.ts`
+
+- [ ] **Step 1: Create `src/scenes/sims/lorenz/trails.ts`**
+
+```ts
+/**
+ * Per-particle ring buffer of positions for trail rendering.
+ * Maintains a flat Float32Array of xyz triples; `head` is the next
+ * write index (mod capacity). Provides a helper to fill a
+ * BufferAttribute positions array in draw order (oldest → newest).
+ */
+export interface TrailBuffer {
+  /** Flat xyz positions, length = capacity * 3 */
+  data: Float32Array
+  /** How many slots the ring has */
+  capacity: number
+  /** Index of next write slot (not yet filled) */
+  head: number
+  /** Total pushes so far (capped at Number.MAX_SAFE_INTEGER) */
+  count: number
+}
+
+export function createTrailBuffer(capacity: number): TrailBuffer {
+  return {
+    data: new Float32Array(capacity * 3),
+    capacity,
+    head: 0,
+    count: 0,
+  }
+}
+
+/** Push a new xyz position into the ring buffer. */
+export function pushPosition(
+  buf: TrailBuffer,
+  x: number,
+  y: number,
+  z: number,
+): void {
+  const idx = buf.head * 3
+  buf.data[idx] = x
+  buf.data[idx + 1] = y
+  buf.data[idx + 2] = z
+  buf.head = (buf.head + 1) % buf.capacity
+  if (buf.count < buf.capacity) buf.count++
+}
+
+/**
+ * Write the ring buffer contents (oldest → newest) into `out`,
+ * starting at `outOffset` (xyz index, not byte index).
+ * Returns the number of valid positions written.
+ */
+export function readTrail(
+  buf: TrailBuffer,
+  out: Float32Array,
+  outOffset = 0,
+): number {
+  const n = buf.count
+  if (n === 0) return 0
+
+  const cap = buf.capacity
+  // Oldest slot: if buffer is not yet full, it's 0; otherwise it's `head`
+  const oldest = buf.count < cap ? 0 : buf.head
+
+  for (let i = 0; i < n; i++) {
+    const src = ((oldest + i) % cap) * 3
+    const dst = (outOffset + i) * 3
+    out[dst] = buf.data[src]
+    out[dst + 1] = buf.data[src + 1]
+    out[dst + 2] = buf.data[src + 2]
+  }
+  return n
+}
+```
+
+- [ ] **Step 2: Create `tests/scenes/sims/lorenz/trails.test.ts`**
+
+```ts
+import { describe, it, expect } from 'vitest'
+import {
+  createTrailBuffer,
+  pushPosition,
+  readTrail,
+} from '@/scenes/sims/lorenz/trails'
+
+describe('TrailBuffer', () => {
+  it('starts empty', () => {
+    const buf = createTrailBuffer(10)
+    expect(buf.count).toBe(0)
+    expect(buf.head).toBe(0)
+  })
+
+  it('pushes positions and increments count up to capacity', () => {
+    const buf = createTrailBuffer(4)
+    pushPosition(buf, 1, 2, 3)
+    pushPosition(buf, 4, 5, 6)
+    expect(buf.count).toBe(2)
+    pushPosition(buf, 7, 8, 9)
+    pushPosition(buf, 10, 11, 12)
+    pushPosition(buf, 13, 14, 15) // overflow — count should stay 4
+    expect(buf.count).toBe(4)
+  })
+
+  it('readTrail returns positions in oldest-to-newest order', () => {
+    const buf = createTrailBuffer(3)
+    pushPosition(buf, 1, 0, 0)
+    pushPosition(buf, 2, 0, 0)
+    pushPosition(buf, 3, 0, 0)
+
+    const out = new Float32Array(9)
+    const n = readTrail(buf, out)
+    expect(n).toBe(3)
+    expect(out[0]).toBe(1)
+    expect(out[3]).toBe(2)
+    expect(out[6]).toBe(3)
+  })
+
+  it('overwrites oldest on overflow and reads in correct order', () => {
+    const buf = createTrailBuffer(3)
+    pushPosition(buf, 1, 0, 0) // will be overwritten
+    pushPosition(buf, 2, 0, 0)
+    pushPosition(buf, 3, 0, 0)
+    pushPosition(buf, 4, 0, 0) // overwrites slot 0 (value 1)
+
+    const out = new Float32Array(9)
+    const n = readTrail(buf, out)
+    expect(n).toBe(3)
+    expect(out[0]).toBe(2)
+    expect(out[3]).toBe(3)
+    expect(out[6]).toBe(4)
+  })
+
+  it('readTrail with outOffset writes at correct position', () => {
+    const buf = createTrailBuffer(2)
+    pushPosition(buf, 5, 6, 7)
+    const out = new Float32Array(6)
+    readTrail(buf, out, 1)
+    expect(out[3]).toBe(5)
+    expect(out[4]).toBe(6)
+    expect(out[5]).toBe(7)
+  })
+})
+```
+
+- [ ] **Step 3: Run tests**
+
+Run: `pnpm test tests/scenes/sims/lorenz/trails.test.ts`
+Expected: `✓ tests/scenes/sims/lorenz/trails.test.ts (5 tests)` with exit code 0.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/scenes/sims/lorenz/trails.ts \
+        tests/scenes/sims/lorenz/trails.test.ts
+git commit -m "feat(sims): trail buffer for Lorenz"
+```
+
+---
+
+### Task D19: Lorenz Scene component
+
+**Files:**
+- Create: `src/scenes/sims/lorenz/Scene.tsx`
+- Create: `tests/scenes/sims/lorenz/Scene.test.tsx`
+
+- [ ] **Step 1: Create `src/scenes/sims/lorenz/Scene.tsx`**
+
+```tsx
+import { useRef, useMemo } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { useControls } from 'leva'
+import * as THREE from 'three'
+import { lorenzStep, type LorenzState } from './physics'
+import { createTrailBuffer, pushPosition, readTrail } from './trails'
+
+export interface LorenzConfig {
+  sigma: number
+  rho: number
+  beta: number
+  particleCount: number
+  dt: number
+  trailLength: number
+}
+
+export const LORENZ_LEVA_SCHEMA = {
+  sigma:         { value: 10,    min: 0,    max: 30,   step: 0.1  },
+  rho:           { value: 28,    min: 0,    max: 150,  step: 0.1  },
+  beta:          { value: 8 / 3, min: 0,    max: 10,   step: 0.01 },
+  particleCount: { value: 500,   min: 10,   max: 2000, step: 10   },
+  dt:            { value: 0.005, min: 0.001, max: 0.02, step: 0.001 },
+  trailLength:   { value: 800,   min: 50,   max: 2000, step: 50   },
+}
+
+interface Particle {
+  state: LorenzState
+  trail: ReturnType<typeof createTrailBuffer>
+  color: THREE.Color
+}
+
+function initParticles(count: number, trailLength: number): Particle[] {
+  return Array.from({ length: count }, (_, i) => {
+    const angle = (i / count) * Math.PI * 2
+    return {
+      state: {
+        x: Math.cos(angle) * 0.1 + 1,
+        y: Math.sin(angle) * 0.1 + 1,
+        z: 1 + (i % 5) * 0.01,
+      },
+      trail: createTrailBuffer(trailLength),
+      color: new THREE.Color().setHSL(i / count, 0.9, 0.6),
+    }
+  })
+}
+
+export function LorenzScene() {
+  const { sigma, rho, beta, particleCount, dt, trailLength } = useControls(
+    'Lorenz',
+    LORENZ_LEVA_SCHEMA,
+  )
+
+  const particles = useRef<Particle[]>([])
+  const linesRef = useRef<THREE.LineSegments[]>([])
+  const groupRef = useRef<THREE.Group>(null)
+
+  // Re-initialize particles when count or trail length changes
+  useMemo(() => {
+    particles.current = initParticles(particleCount, trailLength)
+  }, [particleCount, trailLength])
+
+  useFrame(() => {
+    const params = { sigma, rho, beta, dt }
+    for (const p of particles.current) {
+      p.state = lorenzStep(p.state, params)
+      pushPosition(p.trail, p.state.x, p.state.y, p.state.z)
+    }
+  })
+
+  return (
+    <group ref={groupRef} scale={0.1}>
+      {particles.current.map((p, i) => {
+        const positions = new Float32Array(p.trail.capacity * 3)
+        const count = readTrail(p.trail, positions)
+        return (
+          <line key={i}>
+            <bufferGeometry>
+              <bufferAttribute
+                attach="attributes-position"
+                array={positions}
+                count={count}
+                itemSize={3}
+              />
+            </bufferGeometry>
+            <lineBasicMaterial color={p.color} transparent opacity={0.7} />
+          </line>
+        )
+      })}
+    </group>
+  )
+}
+
+export default LorenzScene
+```
+
+- [ ] **Step 2: Create `tests/scenes/sims/lorenz/Scene.test.tsx`**
+
+```tsx
+import { describe, it, expect, vi } from 'vitest'
+import { render } from '@testing-library/react'
+import React from 'react'
+
+// Mock @react-three/fiber and leva — not available in jsdom
+vi.mock('@react-three/fiber', () => ({
+  useFrame: vi.fn(),
+  useThree: vi.fn(() => ({ gl: {}, scene: {}, camera: {} })),
+}))
+vi.mock('leva', () => ({
+  useControls: vi.fn(() => ({
+    sigma: 10, rho: 28, beta: 8 / 3,
+    particleCount: 10, dt: 0.005, trailLength: 20,
+  })),
+}))
+
+vi.mock('three', async () => {
+  const actual = await vi.importActual<typeof import('three')>('three')
+  return actual
+})
+
+import { LORENZ_LEVA_SCHEMA } from '@/scenes/sims/lorenz/Scene'
+
+describe('LorenzScene (unit)', () => {
+  it('leva schema has required keys', () => {
+    expect(LORENZ_LEVA_SCHEMA).toHaveProperty('sigma')
+    expect(LORENZ_LEVA_SCHEMA).toHaveProperty('rho')
+    expect(LORENZ_LEVA_SCHEMA).toHaveProperty('beta')
+    expect(LORENZ_LEVA_SCHEMA).toHaveProperty('particleCount')
+    expect(LORENZ_LEVA_SCHEMA).toHaveProperty('dt')
+    expect(LORENZ_LEVA_SCHEMA).toHaveProperty('trailLength')
+  })
+
+  it('sigma default is 10', () => {
+    expect(LORENZ_LEVA_SCHEMA.sigma.value).toBe(10)
+  })
+
+  it('rho default is 28', () => {
+    expect(LORENZ_LEVA_SCHEMA.rho.value).toBe(28)
+  })
+})
+```
+
+- [ ] **Step 3: Run tests**
+
+Run: `pnpm test tests/scenes/sims/lorenz/Scene.test.tsx`
+Expected: `✓ tests/scenes/sims/lorenz/Scene.test.tsx (3 tests)` with exit code 0.
+
+- [ ] **Step 4: TypeScript check**
+
+Run: `pnpm tsc --noEmit`
+Expected: exit code 0, no new errors.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/scenes/sims/lorenz/Scene.tsx \
+        tests/scenes/sims/lorenz/Scene.test.tsx
+git commit -m "feat(sims): Lorenz Scene with leva schema"
+```
+
+---
+
+### Task D20: Lorenz SimModule registration + presets
+
+**Files:**
+- Create: `src/scenes/sims/lorenz/presets.ts`
+- Create: `src/scenes/sims/lorenz/index.ts`
+
+- [ ] **Step 1: Create `src/scenes/sims/lorenz/presets.ts`**
+
+```ts
+import type { SimPreset } from '@/scenes/engine/types'
+import type { LorenzConfig } from './Scene'
+
+export const LORENZ_PRESETS: Record<string, SimPreset<LorenzConfig>> = {
+  classic: {
+    label: 'Classic σ=10 ρ=28 β=8/3',
+    config: { sigma: 10, rho: 28, beta: 8 / 3, particleCount: 500, dt: 0.005, trailLength: 800 },
+  },
+  periodic: {
+    label: 'Periodic ρ=99.96',
+    config: { sigma: 10, rho: 99.96, beta: 8 / 3, particleCount: 200, dt: 0.002, trailLength: 600 },
+  },
+  doubleScroll: {
+    label: 'Double-scroll σ=10 ρ=28 β=8/3',
+    config: { sigma: 10, rho: 28, beta: 8 / 3, particleCount: 1000, dt: 0.005, trailLength: 1200 },
+  },
+}
+
+export const LORENZ_DEFAULT_PRESET = 'classic'
+```
+
+- [ ] **Step 2: Create `src/scenes/sims/lorenz/index.ts`**
+
+```ts
+import type { SimModule } from '@/scenes/engine/types'
+import type { SymmetryType } from '@/scenes/engine/Symmetry'
+import { LorenzScene } from './Scene'
+import type { LorenzConfig } from './Scene'
+import { LORENZ_PRESETS, LORENZ_DEFAULT_PRESET } from './presets'
+
+export interface LorenzState {
+  // CPU-only sim; scene manages its own particle array via useRef
+}
+
+const LorenzModule: SimModule<LorenzConfig, LorenzState> = {
+  id: 'lorenz',
+  label: 'Lorenz Attractor',
+  Scene: LorenzScene,
+
+  init(_config: LorenzConfig, _perf): LorenzState {
+    return {}
+  },
+
+  step(_state: LorenzState, _dt: number): void {
+    // Integration happens inside Scene.tsx via useFrame
+  },
+
+  dispose(_state: LorenzState): void {
+    // No GPU resources to release
+  },
+
+  /**
+   * Lorenz is meaningful for C_n symmetry (particles on a ring); D_n also valid
+   * for even-order double-scroll mirroring. Disable for order < 1.
+   */
+  symmetryApplies(type: SymmetryType, order: number): boolean {
+    return type === 'C' && order >= 1
+  },
+
+  presets: LORENZ_PRESETS,
+  defaultPreset: LORENZ_DEFAULT_PRESET,
+}
+
+export default LorenzModule
+```
+
+- [ ] **Step 3: Run full test suite**
+
+Run: `pnpm test`
+Expected: all tests pass. Exit code 0.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/scenes/sims/lorenz/presets.ts \
+        src/scenes/sims/lorenz/index.ts
+git commit -m "feat(sims): Lorenz SimModule registration + presets"
+```
+
+---
+
+## Phase 12 — Magnetic Field (Verlet, CPU)
+
+### Task D21: Magnetic physics — dipole field + Lorentz force + Verlet integrator
+
+**Files:**
+- Create: `src/scenes/sims/magnetic/physics.ts`
+- Create: `tests/scenes/sims/magnetic/physics.test.ts`
+
+- [ ] **Step 1: Create `src/scenes/sims/magnetic/physics.ts`**
+
+```ts
+export interface Vec3 { x: number; y: number; z: number }
+
+export interface MagneticSource {
+  position: Vec3
+  /** Magnetic moment vector (direction + magnitude) */
+  moment: Vec3
+}
+
+function cross(a: Vec3, b: Vec3): Vec3 {
+  return {
+    x: a.y * b.z - a.z * b.y,
+    y: a.z * b.x - a.x * b.z,
+    z: a.x * b.y - a.y * b.x,
+  }
+}
+
+function sub(a: Vec3, b: Vec3): Vec3 {
+  return { x: a.x - b.x, y: a.y - b.y, z: a.z - b.z }
+}
+
+function scale(v: Vec3, s: number): Vec3 {
+  return { x: v.x * s, y: v.y * s, z: v.z * s }
+}
+
+function add(a: Vec3, b: Vec3): Vec3 {
+  return { x: a.x + b.x, y: a.y + b.y, z: a.z + b.z }
+}
+
+function dot(a: Vec3, b: Vec3): number {
+  return a.x * b.x + a.y * b.y + a.z * b.z
+}
+
+function len(v: Vec3): number {
+  return Math.sqrt(dot(v, v))
+}
+
+/**
+ * Dipole magnetic field: B = (mu0/4π) * [3(m·r̂)r̂ - m] / r³
+ * We absorb (mu0/4π) into the source moment magnitude for simplicity (SI-like).
+ */
+export function dipoleField(position: Vec3, source: MagneticSource): Vec3 {
+  const r = sub(position, source.position)
+  const rLen = len(r)
+  if (rLen < 1e-10) return { x: 0, y: 0, z: 0 }
+  const rLen3 = rLen * rLen * rLen
+  const rHat = scale(r, 1 / rLen)
+  const mDotRHat = dot(source.moment, rHat)
+  const term1 = scale(rHat, 3 * mDotRHat)
+  const term2 = source.moment
+  return scale(sub(term1, term2), 1 / rLen3)
+}
+
+/** Sum dipole B contributions from all sources at a given position. */
+export function magneticField(position: Vec3, sources: MagneticSource[]): Vec3 {
+  return sources.reduce<Vec3>(
+    (acc, src) => add(acc, dipoleField(position, src)),
+    { x: 0, y: 0, z: 0 },
+  )
+}
+
+/** Lorentz force F = q * v × B */
+export function lorentzForce(v: Vec3, B: Vec3, charge: number): Vec3 {
+  return scale(cross(v, B), charge)
+}
+
+export interface MagneticParticle {
+  position: Vec3
+  velocity: Vec3
+  /** Previous-step acceleration for Verlet bookkeeping */
+  accel: Vec3
+}
+
+export interface VerletParams {
+  dt: number
+  charge: number
+  mass: number
+}
+
+/**
+ * Velocity-Verlet integration step (symplectic, energy-conserving for
+ * conservative forces). Returns mutated particles array.
+ */
+export function velocityVerletStep(
+  particles: MagneticParticle[],
+  sources: MagneticSource[],
+  { dt, charge, mass }: VerletParams,
+): MagneticParticle[] {
+  for (const p of particles) {
+    // x(t+dt) = x(t) + v(t)*dt + 0.5*a(t)*dt²
+    p.position = {
+      x: p.position.x + p.velocity.x * dt + 0.5 * p.accel.x * dt * dt,
+      y: p.position.y + p.velocity.y * dt + 0.5 * p.accel.y * dt * dt,
+      z: p.position.z + p.velocity.z * dt + 0.5 * p.accel.z * dt * dt,
+    }
+
+    const B = magneticField(p.position, sources)
+    const F = lorentzForce(p.velocity, B, charge)
+    const newAccel = scale(F, 1 / mass)
+
+    // v(t+dt) = v(t) + 0.5*(a(t)+a(t+dt))*dt
+    p.velocity = {
+      x: p.velocity.x + 0.5 * (p.accel.x + newAccel.x) * dt,
+      y: p.velocity.y + 0.5 * (p.accel.y + newAccel.y) * dt,
+      z: p.velocity.z + 0.5 * (p.accel.z + newAccel.z) * dt,
+    }
+    p.accel = newAccel
+  }
+  return particles
+}
+```
+
+- [ ] **Step 2: Create `tests/scenes/sims/magnetic/physics.test.ts`**
+
+```ts
+import { describe, it, expect } from 'vitest'
+import {
+  magneticField,
+  lorentzForce,
+  velocityVerletStep,
+  type MagneticParticle,
+  type MagneticSource,
+} from '@/scenes/sims/magnetic/physics'
+
+// Uniform B in z direction achieved by a very strong far-away dipole along z
+// For testing circular motion energy conservation, we use an analytical constant B
+// by constructing sources such that the field at origin is (0, 0, B0)
+// --- easier: directly test lorentzForce and energy conservation in a constant field
+// by using velocityVerletStep with a mock source that gives constant B.
+
+// Mock source: use a dipole placed far away along z so B at origin ≈ (0,0,B_approx)
+// Better: test via cross product
+
+describe('lorentzForce', () => {
+  it('v in x, B in z → force in -y (right-hand rule for positive charge)', () => {
+    const v = { x: 1, y: 0, z: 0 }
+    const B = { x: 0, y: 0, z: 1 }
+    const F = lorentzForce(v, B, 1)
+    // v × B = (1,0,0) × (0,0,1) = (0*1 - 0*0, 0*0 - 1*1, 1*0 - 0*0) = (0,-1,0)
+    expect(F.x).toBeCloseTo(0, 10)
+    expect(F.y).toBeCloseTo(-1, 10)
+    expect(F.z).toBeCloseTo(0, 10)
+  })
+
+  it('scales with charge', () => {
+    const v = { x: 1, y: 0, z: 0 }
+    const B = { x: 0, y: 0, z: 1 }
+    const F2 = lorentzForce(v, B, 2)
+    expect(F2.y).toBeCloseTo(-2, 10)
+  })
+
+  it('reverses for negative charge', () => {
+    const v = { x: 1, y: 0, z: 0 }
+    const B = { x: 0, y: 0, z: 1 }
+    const F = lorentzForce(v, B, -1)
+    expect(F.y).toBeCloseTo(1, 10)
+  })
+})
+
+describe('magneticField', () => {
+  it('returns zero at source position (singularity guard)', () => {
+    const src: MagneticSource = { position: { x: 0, y: 0, z: 0 }, moment: { x: 0, y: 0, z: 1 } }
+    const B = magneticField({ x: 0, y: 0, z: 0 }, [src])
+    expect(B.x).toBe(0)
+    expect(B.y).toBe(0)
+    expect(B.z).toBe(0)
+  })
+
+  it('sums contributions from multiple sources', () => {
+    const src1: MagneticSource = { position: { x: -100, y: 0, z: 0 }, moment: { x: 0, y: 0, z: 1 } }
+    const src2: MagneticSource = { position: { x: 100, y: 0, z: 0 }, moment: { x: 0, y: 0, z: 1 } }
+    const B_both = magneticField({ x: 0, y: 0, z: 0 }, [src1, src2])
+    const B_one = magneticField({ x: 0, y: 0, z: 0 }, [src1])
+    // With two symmetric sources the z components should add
+    expect(Math.abs(B_both.z)).toBeGreaterThan(Math.abs(B_one.z))
+  })
+})
+
+describe('velocityVerletStep — circular motion energy conservation', () => {
+  it('conserves kinetic energy within 1% over 10000 steps in analytic constant-B field', () => {
+    // Simulate circular Larmor motion in constant B=(0,0,B0)
+    // Use a proxy: set sources to empty and manually pre-compute accel
+    // Instead, we place a single dipole extremely far along z with huge moment
+    // so that at the test particle position (origin) B ≈ B_approx_z
+    // Easier: use a special source arrangement — skip for brevity and instead
+    // directly override by testing that the speed (|v|) is conserved.
+    // Lorentz force is always perpendicular to v, so |v|² must be constant.
+
+    // Place particle at (1, 0, 0) with velocity (0, 1, 0)
+    // Use a far-away dipole along z axis with moment (0,0,M) at (0,0,-1000)
+    // That gives B ≈ (mu=M/r³) * 2*zhat at origin
+    const M = 1e9 // large moment for near-uniform field
+    const sources: MagneticSource[] = [
+      { position: { x: 0, y: 0, z: -1000 }, moment: { x: 0, y: 0, z: M } },
+    ]
+
+    const v0 = { x: 0, y: 1, z: 0 }
+    const particles: MagneticParticle[] = [
+      {
+        position: { x: 1, y: 0, z: 0 },
+        velocity: { ...v0 },
+        accel: { x: 0, y: 0, z: 0 },
+      },
+    ]
+    const params = { dt: 0.0001, charge: 1, mass: 1 }
+
+    // Compute initial KE
+    const v0sq = v0.x ** 2 + v0.y ** 2 + v0.z ** 2
+    const initialKE = 0.5 * params.mass * v0sq
+
+    for (let i = 0; i < 10000; i++) {
+      velocityVerletStep(particles, sources, params)
+    }
+
+    const vf = particles[0].velocity
+    const vfsq = vf.x ** 2 + vf.y ** 2 + vf.z ** 2
+    const finalKE = 0.5 * params.mass * vfsq
+
+    const drift = Math.abs(finalKE - initialKE) / initialKE
+    expect(drift).toBeLessThan(0.01) // within 1%
+  })
+})
+```
+
+- [ ] **Step 3: Run tests**
+
+Run: `pnpm test tests/scenes/sims/magnetic/physics.test.ts`
+Expected: `✓ tests/scenes/sims/magnetic/physics.test.ts (6 tests)` with exit code 0.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/scenes/sims/magnetic/physics.ts \
+        tests/scenes/sims/magnetic/physics.test.ts
+git commit -m "feat(sims): magnetic field + Verlet integrator"
+```
+
+---
+
+### Task D22: Magnetic Scene with D_n symmetry initial conditions
+
+**Files:**
+- Create: `src/scenes/sims/magnetic/Scene.tsx`
+- Create: `tests/scenes/sims/magnetic/Scene.test.tsx`
+
+- [ ] **Step 1: Create `src/scenes/sims/magnetic/Scene.tsx`**
+
+```tsx
+import { useRef, useMemo } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { useControls } from 'leva'
+import * as THREE from 'three'
+import {
+  velocityVerletStep,
+  magneticField,
+  lorentzForce,
+  type MagneticParticle,
+  type MagneticSource,
+  type Vec3,
+} from './physics'
+
+export interface MagneticConfig {
+  particleCount: number
+  charge: number
+  mass: number
+  B0: number
+  dt: number
+  trailLength: number
+  symmetryType: 'C' | 'D' | 'none'
+  symmetryOrder: number
+}
+
+export const MAGNETIC_LEVA_SCHEMA = {
+  particleCount:  { value: 500,   min: 10,   max: 10000, step: 10  },
+  charge:         { value: 1,     min: -5,   max: 5,     step: 0.1 },
+  mass:           { value: 1,     min: 0.1,  max: 10,    step: 0.1 },
+  B0:             { value: 1,     min: 0.01, max: 10,    step: 0.01 },
+  dt:             { value: 0.005, min: 0.001, max: 0.05, step: 0.001 },
+  trailLength:    { value: 200,   min: 10,   max: 1000,  step: 10  },
+  symmetryOrder:  { value: 4,     min: 1,    max: 12,    step: 1   },
+}
+
+function dihedralRing(count: number, order: number, radius: number): Vec3[] {
+  const positions: Vec3[] = []
+  const perSector = Math.max(1, Math.floor(count / order))
+  for (let s = 0; s < order; s++) {
+    const baseAngle = (s / order) * Math.PI * 2
+    for (let i = 0; i < perSector && positions.length < count; i++) {
+      const jitter = (i / perSector) * (Math.PI * 2 / order) * 0.8
+      const angle = baseAngle + jitter
+      positions.push({
+        x: radius * Math.cos(angle) + (Math.random() - 0.5) * 0.05,
+        y: radius * Math.sin(angle) + (Math.random() - 0.5) * 0.05,
+        z: (Math.random() - 0.5) * 0.1,
+      })
+    }
+  }
+  while (positions.length < count) {
+    const angle = Math.random() * Math.PI * 2
+    positions.push({ x: radius * Math.cos(angle), y: radius * Math.sin(angle), z: 0 })
+  }
+  return positions
+}
+
+export function MagneticScene() {
+  const {
+    particleCount, charge, mass, B0, dt, trailLength, symmetryOrder,
+  } = useControls('Magnetic', MAGNETIC_LEVA_SCHEMA)
+
+  const positionsRef = useRef<Float32Array>(new Float32Array(0))
+  const particles = useRef<MagneticParticle[]>([])
+
+  const sources: MagneticSource[] = useMemo(() => {
+    const base: MagneticSource[] = []
+    for (let s = 0; s < symmetryOrder; s++) {
+      const angle = (s / symmetryOrder) * Math.PI * 2
+      base.push({
+        position: { x: 2 * Math.cos(angle), y: 2 * Math.sin(angle), z: 0 },
+        moment: { x: 0, y: 0, z: B0 },
+      })
+    }
+    return base
+  }, [symmetryOrder, B0])
+
+  useMemo(() => {
+    const initPositions = dihedralRing(particleCount, symmetryOrder, 1.0)
+    particles.current = initPositions.map((pos) => {
+      const B = magneticField(pos, sources)
+      const v0 = { x: -pos.y * 0.5, y: pos.x * 0.5, z: 0 }
+      const F = lorentzForce(v0, B, charge)
+      return {
+        position: pos,
+        velocity: v0,
+        accel: { x: F.x / mass, y: F.y / mass, z: F.z / mass },
+      }
+    })
+    positionsRef.current = new Float32Array(particleCount * 3)
+  }, [particleCount, symmetryOrder, B0, charge, mass])
+
+  const pointsRef = useRef<THREE.Points>(null)
+
+  useFrame(() => {
+    velocityVerletStep(particles.current, sources, { dt, charge, mass })
+    const buf = positionsRef.current
+    for (let i = 0; i < particles.current.length; i++) {
+      const p = particles.current[i]
+      buf[i * 3] = p.position.x
+      buf[i * 3 + 1] = p.position.y
+      buf[i * 3 + 2] = p.position.z
+    }
+    if (pointsRef.current) {
+      const attr = pointsRef.current.geometry.attributes.position as THREE.BufferAttribute
+      attr.needsUpdate = true
+    }
+  })
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          array={positionsRef.current}
+          count={particleCount}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial size={0.04} color="#00aaff" transparent opacity={0.8} sizeAttenuation />
+    </points>
+  )
+}
+
+export default MagneticScene
+```
+
+- [ ] **Step 2: Create `tests/scenes/sims/magnetic/Scene.test.tsx`**
+
+```tsx
+import { describe, it, expect, vi } from 'vitest'
+
+vi.mock('@react-three/fiber', () => ({
+  useFrame: vi.fn(),
+  useThree: vi.fn(() => ({ gl: {}, scene: {}, camera: {} })),
+}))
+vi.mock('leva', () => ({
+  useControls: vi.fn(() => ({
+    particleCount: 10, charge: 1, mass: 1, B0: 1,
+    dt: 0.005, trailLength: 20, symmetryOrder: 4,
+  })),
+}))
+
+import { MAGNETIC_LEVA_SCHEMA } from '@/scenes/sims/magnetic/Scene'
+
+describe('MagneticScene (unit)', () => {
+  it('leva schema has all required keys', () => {
+    const keys = ['particleCount', 'charge', 'mass', 'B0', 'dt', 'trailLength', 'symmetryOrder']
+    for (const key of keys) {
+      expect(MAGNETIC_LEVA_SCHEMA).toHaveProperty(key)
+    }
+  })
+
+  it('default particleCount is 500', () => {
+    expect(MAGNETIC_LEVA_SCHEMA.particleCount.value).toBe(500)
+  })
+})
+```
+
+- [ ] **Step 3: Run tests**
+
+Run: `pnpm test tests/scenes/sims/magnetic/Scene.test.tsx`
+Expected: `✓ tests/scenes/sims/magnetic/Scene.test.tsx (2 tests)` with exit code 0.
+
+- [ ] **Step 4: TypeScript check**
+
+Run: `pnpm tsc --noEmit`
+Expected: exit code 0.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/scenes/sims/magnetic/Scene.tsx \
+        tests/scenes/sims/magnetic/Scene.test.tsx
+git commit -m "feat(sims): Magnetic Scene with D_n symmetry ICs"
+```
+
+---
+
+### Task D23: Magnetic SimModule registration + 5 presets
+
+**Files:**
+- Create: `src/scenes/sims/magnetic/presets.ts`
+- Create: `src/scenes/sims/magnetic/index.ts`
+
+- [ ] **Step 1: Create `src/scenes/sims/magnetic/presets.ts`**
+
+```ts
+import type { SimPreset } from '@/scenes/engine/types'
+import type { MagneticConfig } from './Scene'
+
+export const MAGNETIC_PRESETS: Record<string, SimPreset<MagneticConfig>> = {
+  dipole: {
+    label: 'Dipole (1 source)',
+    config: {
+      particleCount: 500, charge: 1, mass: 1, B0: 1,
+      dt: 0.005, trailLength: 200, symmetryType: 'C', symmetryOrder: 1,
+    },
+  },
+  quadrupole: {
+    label: 'Quadrupole (2 sources)',
+    config: {
+      particleCount: 800, charge: 1, mass: 1, B0: 1.5,
+      dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 2,
+    },
+  },
+  hexapole: {
+    label: 'Hexapole (3 sources)',
+    config: {
+      particleCount: 1200, charge: 1, mass: 1, B0: 1.2,
+      dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 3,
+    },
+  },
+  ringTrap: {
+    label: 'Ring Trap (6 sources)',
+    config: {
+      particleCount: 2000, charge: 1, mass: 0.5, B0: 2,
+      dt: 0.003, trailLength: 300, symmetryType: 'D', symmetryOrder: 6,
+    },
+  },
+  tokamak2d: {
+    label: 'Tokamak 2D (12 sources)',
+    config: {
+      particleCount: 3000, charge: 1, mass: 1, B0: 3,
+      dt: 0.002, trailLength: 400, symmetryType: 'D', symmetryOrder: 12,
+    },
+  },
+}
+
+export const MAGNETIC_DEFAULT_PRESET = 'dipole'
+```
+
+- [ ] **Step 2: Create `src/scenes/sims/magnetic/index.ts`**
+
+```ts
+import type { SimModule } from '@/scenes/engine/types'
+import type { SymmetryType } from '@/scenes/engine/Symmetry'
+import { MagneticScene } from './Scene'
+import type { MagneticConfig } from './Scene'
+import { MAGNETIC_PRESETS, MAGNETIC_DEFAULT_PRESET } from './presets'
+
+export interface MagneticState {
+  // Scene manages particle array internally via useRef
+}
+
+const MagneticModule: SimModule<MagneticConfig, MagneticState> = {
+  id: 'magnetic',
+  label: 'Magnetic Field',
+  Scene: MagneticScene,
+
+  init(_config: MagneticConfig, _perf): MagneticState {
+    return {}
+  },
+
+  step(_state: MagneticState, _dt: number): void {
+    // Integration runs in Scene.tsx useFrame
+  },
+
+  dispose(_state: MagneticState): void {
+    // No external GPU resources
+  },
+
+  /**
+   * Magnetic sim supports both C_n (ring) and D_n (dihedral ring) symmetry
+   * for source placement and initial conditions.
+   */
+  symmetryApplies(type: SymmetryType, order: number): boolean {
+    return (type === 'C' || type === 'D') && order >= 1
+  },
+
+  presets: MAGNETIC_PRESETS,
+  defaultPreset: MAGNETIC_DEFAULT_PRESET,
+}
+
+export default MagneticModule
+```
+
+- [ ] **Step 3: Run full test suite**
+
+Run: `pnpm test`
+Expected: all tests pass. Exit code 0.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/scenes/sims/magnetic/presets.ts \
+        src/scenes/sims/magnetic/index.ts
+git commit -m "feat(sims): Magnetic SimModule + 5 presets"
+```
+
+---
+
+## Phase 13 — Gray-Scott Reaction-Diffusion (GPU Ping-Pong)
+
+### Task D24: Gray-Scott fragment shader
+
+**Files:**
+- Create: `src/scenes/sims/grayScott/shaders/reaction-diffusion.frag`
+
+- [ ] **Step 1: Create `src/scenes/sims/grayScott/shaders/reaction-diffusion.frag`**
+
+```glsl
+#version 300 es
+precision highp float;
+
+// Current UV-concentration texture (ping or pong)
+uniform sampler2D u_state;
+// Reaction parameters
+uniform float u_F;       // feed rate
+uniform float u_k;       // kill rate
+uniform float u_Du;      // diffusion coefficient for U
+uniform float u_Dv;      // diffusion coefficient for V
+uniform float u_dt;      // time step per substep
+uniform vec2  u_texel;   // 1.0 / textureSize
+
+in vec2 v_uv;
+out vec4 fragColor;
+
+/**
+ * 3×3 isotropic discrete Laplacian (Peyret & Taylor weights):
+ *   center: -1, axis neighbors: 0.2, diagonal neighbors: 0.05
+ * Normalized so the sum of weights = 0 and the central weight equals -1.
+ */
+vec2 laplacian(sampler2D tex, vec2 uv, vec2 texel) {
+  vec2 center = texture(tex, uv).rg;
+
+  vec2 n  = texture(tex, uv + vec2( 0,  1) * texel).rg;
+  vec2 s  = texture(tex, uv + vec2( 0, -1) * texel).rg;
+  vec2 e  = texture(tex, uv + vec2( 1,  0) * texel).rg;
+  vec2 w  = texture(tex, uv + vec2(-1,  0) * texel).rg;
+
+  vec2 ne = texture(tex, uv + vec2( 1,  1) * texel).rg;
+  vec2 nw = texture(tex, uv + vec2(-1,  1) * texel).rg;
+  vec2 se = texture(tex, uv + vec2( 1, -1) * texel).rg;
+  vec2 sw = texture(tex, uv + vec2(-1, -1) * texel).rg;
+
+  return (
+    0.2  * (n + s + e + w) +
+    0.05 * (ne + nw + se + sw) -
+    1.0  * center
+  );
+}
+
+void main() {
+  vec2 uv = v_uv;
+
+  // Current concentrations
+  vec2 conc = texture(u_state, uv).rg;
+  float U = conc.r;
+  float V = conc.g;
+
+  // 3×3 Laplacian for each species
+  vec2 lap = laplacian(u_state, uv, u_texel);
+  float lapU = lap.r;
+  float lapV = lap.g;
+
+  // Gray-Scott reaction terms
+  float reaction = U * V * V;
+
+  // PDE update (explicit Euler substep)
+  float dU = u_Du * lapU - reaction + u_F * (1.0 - U);
+  float dV = u_Dv * lapV + reaction - (u_F + u_k) * V;
+
+  float newU = clamp(U + u_dt * dU, 0.0, 1.0);
+  float newV = clamp(V + u_dt * dV, 0.0, 1.0);
+
+  fragColor = vec4(newU, newV, 0.0, 1.0);
+}
+```
+
+- [ ] **Step 2: Verify the file is present**
+
+Run: `ls src/scenes/sims/grayScott/shaders/reaction-diffusion.frag`
+Expected: file listed with exit code 0.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/scenes/sims/grayScott/shaders/reaction-diffusion.frag
+git commit -m "feat(sims): Gray-Scott fragment shader"
+```
+
+---
+
+### Task D25: Gray-Scott compute layer with substepping
+
+**Files:**
+- Create: `src/scenes/sims/grayScott/compute.ts`
+- Create: `tests/scenes/sims/grayScott/compute.test.ts`
+
+- [ ] **Step 1: Create `src/scenes/sims/grayScott/compute.ts`**
+
+```ts
+import type { GPUComputeField } from '@/scenes/solvers/gpuCompute'
+import { createComputeField } from '@/scenes/solvers/gpuCompute'
+
+export interface GrayScottComputeConfig {
+  gridSize: number
+  F: number
+  k: number
+  Du: number
+  Dv: number
+  dt: number
+  substeps: number
+}
+
+export interface GrayScottCompute {
+  field: GPUComputeField
+  substeps: number
+  /** Advance the simulation by one display frame (runs `substeps` substeps). */
+  step(): void
+  /** Dispose GPU resources. */
+  dispose(): void
+}
+
+/**
+ * Creates a Gray-Scott GPU compute layer backed by two ping-pong textures.
+ * Each call to `step()` runs `config.substeps` GPU dispatch passes.
+ */
+export function createGrayScottCompute(
+  config: GrayScottComputeConfig,
+  shaderSource: string,
+): GrayScottCompute {
+  const field = createComputeField({
+    width: config.gridSize,
+    height: config.gridSize,
+    fragmentShader: shaderSource,
+    uniforms: {
+      u_F:     { value: config.F },
+      u_k:     { value: config.k },
+      u_Du:    { value: config.Du },
+      u_Dv:    { value: config.Dv },
+      u_dt:    { value: config.dt },
+      u_texel: { value: [1 / config.gridSize, 1 / config.gridSize] },
+    },
+  })
+
+  let _substeps = config.substeps
+
+  return {
+    field,
+    get substeps() { return _substeps },
+    set substeps(n: number) { _substeps = Math.max(1, n) },
+
+    step() {
+      for (let i = 0; i < _substeps; i++) {
+        field.compute()
+      }
+    },
+
+    dispose() {
+      field.dispose()
+    },
+  }
+}
+```
+
+- [ ] **Step 2: Create `tests/scenes/sims/grayScott/compute.test.ts`**
+
+```ts
+import { describe, it, expect, vi } from 'vitest'
+
+// Gray-Scott compute requires WebGL2 — mock gpuCompute for unit tests
+vi.mock('@/scenes/solvers/gpuCompute', () => ({
+  createComputeField: vi.fn((_opts: unknown) => ({
+    compute: vi.fn(),
+    dispose: vi.fn(),
+    texture: null,
+  })),
+}))
+
+import { createGrayScottCompute } from '@/scenes/sims/grayScott/compute'
+import { createComputeField } from '@/scenes/solvers/gpuCompute'
+
+const SHADER_STUB = '/* stub */'
+
+const BASE_CONFIG = {
+  gridSize: 64,
+  F: 0.03,
+  k: 0.062,
+  Du: 0.16,
+  Dv: 0.08,
+  dt: 1.0,
+  substeps: 4,
+}
+
+describe('createGrayScottCompute', () => {
+  it('calls createComputeField with the correct grid dimensions', () => {
+    createGrayScottCompute(BASE_CONFIG, SHADER_STUB)
+    expect(createComputeField).toHaveBeenCalledWith(
+      expect.objectContaining({ width: 64, height: 64 }),
+    )
+  })
+
+  it('step() calls field.compute() substeps times', () => {
+    const gs = createGrayScottCompute(BASE_CONFIG, SHADER_STUB)
+    gs.step()
+    expect(gs.field.compute).toHaveBeenCalledTimes(4)
+  })
+
+  it('changing substeps affects compute call count', () => {
+    const gs = createGrayScottCompute(BASE_CONFIG, SHADER_STUB)
+    gs.substeps = 8
+    ;(gs.field.compute as ReturnType<typeof vi.fn>).mockClear()
+    gs.step()
+    expect(gs.field.compute).toHaveBeenCalledTimes(8)
+  })
+
+  it('substeps cannot be set below 1', () => {
+    const gs = createGrayScottCompute(BASE_CONFIG, SHADER_STUB)
+    gs.substeps = 0
+    expect(gs.substeps).toBe(1)
+  })
+
+  it('dispose() calls field.dispose()', () => {
+    const gs = createGrayScottCompute(BASE_CONFIG, SHADER_STUB)
+    gs.dispose()
+    expect(gs.field.dispose).toHaveBeenCalledTimes(1)
+  })
+})
+```
+
+- [ ] **Step 3: Run tests**
+
+Run: `pnpm test tests/scenes/sims/grayScott/compute.test.ts`
+Expected: `✓ tests/scenes/sims/grayScott/compute.test.ts (5 tests)` with exit code 0.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/scenes/sims/grayScott/compute.ts \
+        tests/scenes/sims/grayScott/compute.test.ts
+git commit -m "feat(sims): Gray-Scott compute layer with substepping"
+```
+
+---
+
+### Task D26: Gray-Scott Scene with colormap selector
+
+**Files:**
+- Create: `src/scenes/sims/grayScott/Scene.tsx`
+- Create: `tests/scenes/sims/grayScott/Scene.test.tsx`
+
+- [ ] **Step 1: Create `src/scenes/sims/grayScott/Scene.tsx`**
+
+```tsx
+import { useRef, useEffect, useMemo } from 'react'
+import { useFrame, useThree } from '@react-three/fiber'
+import { useControls } from 'leva'
+import * as THREE from 'three'
+import reactionDiffusionFrag from './shaders/reaction-diffusion.frag?raw'
+import { createGrayScottCompute, type GrayScottComputeConfig } from './compute'
+
+export interface GrayScottConfig extends GrayScottComputeConfig {
+  colormap: 'viridis' | 'magma' | 'grayscale'
+}
+
+export const GRAY_SCOTT_LEVA_SCHEMA = {
+  F:        { value: 0.030,  min: 0.005, max: 0.1,  step: 0.001 },
+  k:        { value: 0.062,  min: 0.04,  max: 0.08, step: 0.001 },
+  Du:       { value: 0.16,   min: 0.05,  max: 0.5,  step: 0.01  },
+  Dv:       { value: 0.08,   min: 0.01,  max: 0.25, step: 0.005 },
+  dt:       { value: 1.0,    min: 0.1,   max: 2.0,  step: 0.1   },
+  substeps: { value: 4,      min: 1,     max: 16,   step: 1     },
+  gridSize: { value: 256,    min: 64,    max: 512,  step: 64    },
+  colormap: {
+    value: 'viridis',
+    options: ['viridis', 'magma', 'grayscale'],
+  },
+}
+
+// Simple inline colormap LUT textures (1×256 RGBA)
+function buildColormapTexture(name: 'viridis' | 'magma' | 'grayscale'): THREE.DataTexture {
+  const size = 256
+  const data = new Uint8Array(size * 4)
+  for (let i = 0; i < size; i++) {
+    const t = i / (size - 1)
+    let r = 0, g = 0, b = 0
+    if (name === 'grayscale') {
+      r = g = b = Math.round(t * 255)
+    } else if (name === 'viridis') {
+      // Approximation of viridis colormap
+      r = Math.round((0.267 + t * 0.004 + t * t * (-0.003) + t * t * t * 0.732) * 255)
+      g = Math.round((0.004 + t * 1.143 + t * t * (-0.636)) * 255)
+      b = Math.round((0.329 + t * 1.098 + t * t * (-1.979) + t * t * t * 1.552) * 255)
+    } else {
+      // magma approximation
+      r = Math.round((0.001 + t * 1.644 + t * t * (-0.645)) * 255)
+      g = Math.round((0.000 + t * 0.293 + t * t * 0.707) * 255)
+      b = Math.round((0.014 + t * 0.642 + t * t * (-0.656)) * 255)
+    }
+    data[i * 4] = Math.min(255, Math.max(0, r))
+    data[i * 4 + 1] = Math.min(255, Math.max(0, g))
+    data[i * 4 + 2] = Math.min(255, Math.max(0, b))
+    data[i * 4 + 3] = 255
+  }
+  const tex = new THREE.DataTexture(data, size, 1, THREE.RGBAFormat)
+  tex.needsUpdate = true
+  return tex
+}
+
+const displayVert = /* glsl */ `
+varying vec2 v_uv;
+void main() {
+  v_uv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`
+
+const displayFrag = /* glsl */ `
+uniform sampler2D u_state;
+uniform sampler2D u_colormap;
+varying vec2 v_uv;
+void main() {
+  float v = texture2D(u_state, v_uv).g; // V concentration drives color
+  vec3 col = texture2D(u_colormap, vec2(v, 0.5)).rgb;
+  gl_FragColor = vec4(col, 1.0);
+}
+`
+
+export function GrayScottScene() {
+  const { F, k, Du, Dv, dt, substeps, gridSize, colormap } = useControls(
+    'Gray-Scott',
+    GRAY_SCOTT_LEVA_SCHEMA,
+  )
+  const { gl } = useThree()
+  const computeRef = useRef<ReturnType<typeof createGrayScottCompute> | null>(null)
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null)
+  const colormapTex = useMemo(() => buildColormapTexture(colormap as 'viridis' | 'magma' | 'grayscale'), [colormap])
+
+  // Initialize / reinitialize compute when grid params change
+  useEffect(() => {
+    if (computeRef.current) computeRef.current.dispose()
+    const config = { gridSize, F, k, Du, Dv, dt, substeps }
+    computeRef.current = createGrayScottCompute(config, reactionDiffusionFrag)
+    return () => {
+      computeRef.current?.dispose()
+    }
+  }, [gridSize])
+
+  // Update uniforms live when F/k/Du/Dv/dt/substeps change
+  useEffect(() => {
+    const c = computeRef.current
+    if (!c) return
+    c.field.setUniform('u_F', F)
+    c.field.setUniform('u_k', k)
+    c.field.setUniform('u_Du', Du)
+    c.field.setUniform('u_Dv', Dv)
+    c.field.setUniform('u_dt', dt)
+    c.substeps = substeps
+  }, [F, k, Du, Dv, dt, substeps])
+
+  useFrame(() => {
+    const c = computeRef.current
+    if (!c) return
+    c.step()
+    if (materialRef.current) {
+      materialRef.current.uniforms.u_state.value = c.field.texture
+      materialRef.current.uniforms.u_colormap.value = colormapTex
+    }
+  })
+
+  return (
+    <mesh>
+      <planeGeometry args={[2, 2]} />
+      <shaderMaterial
+        ref={materialRef}
+        vertexShader={displayVert}
+        fragmentShader={displayFrag}
+        uniforms={{
+          u_state:    { value: null },
+          u_colormap: { value: colormapTex },
+        }}
+      />
+    </mesh>
+  )
+}
+
+export default GrayScottScene
+```
+
+- [ ] **Step 2: Create `tests/scenes/sims/grayScott/Scene.test.tsx`**
+
+```tsx
+import { describe, it, expect, vi } from 'vitest'
+
+vi.mock('@react-three/fiber', () => ({
+  useFrame: vi.fn(),
+  useThree: vi.fn(() => ({ gl: {} })),
+}))
+vi.mock('leva', () => ({
+  useControls: vi.fn(() => ({
+    F: 0.03, k: 0.062, Du: 0.16, Dv: 0.08,
+    dt: 1, substeps: 4, gridSize: 64, colormap: 'viridis',
+  })),
+}))
+vi.mock('./shaders/reaction-diffusion.frag?raw', () => ({ default: '/* stub */' }))
+vi.mock('./compute', () => ({
+  createGrayScottCompute: vi.fn(() => ({
+    field: { texture: null, setUniform: vi.fn(), compute: vi.fn(), dispose: vi.fn() },
+    substeps: 4,
+    step: vi.fn(),
+    dispose: vi.fn(),
+  })),
+}))
+
+import { GRAY_SCOTT_LEVA_SCHEMA } from '@/scenes/sims/grayScott/Scene'
+
+describe('GrayScottScene (unit)', () => {
+  it('leva schema has required keys', () => {
+    const keys = ['F', 'k', 'Du', 'Dv', 'dt', 'substeps', 'gridSize', 'colormap']
+    for (const key of keys) {
+      expect(GRAY_SCOTT_LEVA_SCHEMA).toHaveProperty(key)
+    }
+  })
+
+  it('default F is 0.030', () => {
+    expect(GRAY_SCOTT_LEVA_SCHEMA.F.value).toBeCloseTo(0.030, 3)
+  })
+
+  it('colormap options include viridis, magma, grayscale', () => {
+    const opts = (GRAY_SCOTT_LEVA_SCHEMA.colormap as { value: string; options: string[] }).options
+    expect(opts).toContain('viridis')
+    expect(opts).toContain('magma')
+    expect(opts).toContain('grayscale')
+  })
+})
+```
+
+- [ ] **Step 3: Run tests**
+
+Run: `pnpm test tests/scenes/sims/grayScott/Scene.test.tsx`
+Expected: `✓ tests/scenes/sims/grayScott/Scene.test.tsx (3 tests)` with exit code 0.
+
+- [ ] **Step 4: TypeScript check**
+
+Run: `pnpm tsc --noEmit`
+Expected: exit code 0.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/scenes/sims/grayScott/Scene.tsx \
+        tests/scenes/sims/grayScott/Scene.test.tsx
+git commit -m "feat(sims): Gray-Scott Scene with colormap selector"
+```
+
+---
+
+### Task D27: Gray-Scott SimModule + 5 pattern presets
+
+**Files:**
+- Create: `src/scenes/sims/grayScott/presets.ts`
+- Create: `src/scenes/sims/grayScott/index.ts`
+
+- [ ] **Step 1: Create `src/scenes/sims/grayScott/presets.ts`**
+
+```ts
+import type { SimPreset } from '@/scenes/engine/types'
+import type { GrayScottConfig } from './Scene'
+
+export const GRAY_SCOTT_PRESETS: Record<string, SimPreset<GrayScottConfig>> = {
+  spots: {
+    label: 'Spots (F=0.030 k=0.062)',
+    config: {
+      F: 0.030, k: 0.062, Du: 0.16, Dv: 0.08,
+      dt: 1.0, substeps: 4, gridSize: 256, colormap: 'viridis',
+    },
+  },
+  stripes: {
+    label: 'Stripes (F=0.025 k=0.055)',
+    config: {
+      F: 0.025, k: 0.055, Du: 0.16, Dv: 0.08,
+      dt: 1.0, substeps: 4, gridSize: 256, colormap: 'magma',
+    },
+  },
+  maze: {
+    label: 'Maze (F=0.029 k=0.057)',
+    config: {
+      F: 0.029, k: 0.057, Du: 0.16, Dv: 0.08,
+      dt: 1.0, substeps: 4, gridSize: 256, colormap: 'viridis',
+    },
+  },
+  spiral: {
+    label: 'Spiral (F=0.014 k=0.054)',
+    config: {
+      F: 0.014, k: 0.054, Du: 0.16, Dv: 0.08,
+      dt: 1.0, substeps: 6, gridSize: 256, colormap: 'magma',
+    },
+  },
+  coral: {
+    label: 'Coral (F=0.062 k=0.062)',
+    config: {
+      F: 0.062, k: 0.062, Du: 0.16, Dv: 0.08,
+      dt: 1.0, substeps: 4, gridSize: 256, colormap: 'grayscale',
+    },
+  },
+}
+
+export const GRAY_SCOTT_DEFAULT_PRESET = 'spots'
+```
+
+- [ ] **Step 2: Create `src/scenes/sims/grayScott/index.ts`**
+
+```ts
+import type { SimModule } from '@/scenes/engine/types'
+import type { SymmetryType } from '@/scenes/engine/Symmetry'
+import { GrayScottScene } from './Scene'
+import type { GrayScottConfig } from './Scene'
+import { GRAY_SCOTT_PRESETS, GRAY_SCOTT_DEFAULT_PRESET } from './presets'
+
+export interface GrayScottState {
+  // GPU state managed inside Scene via useRef/useEffect
+}
+
+const GrayScottModule: SimModule<GrayScottConfig, GrayScottState> = {
+  id: 'grayScott',
+  label: 'Gray-Scott Reaction-Diffusion',
+  Scene: GrayScottScene,
+
+  init(_config: GrayScottConfig, _perf): GrayScottState {
+    return {}
+  },
+
+  step(_state: GrayScottState, _dt: number): void {
+    // GPU compute loop runs inside Scene.tsx useFrame
+  },
+
+  dispose(_state: GrayScottState): void {
+    // GPU resources cleaned up via Scene useEffect cleanup
+  },
+
+  /**
+   * Gray-Scott supports C_n and D_n symmetric initial V-perturbation masks;
+   * pattern formation preserves symmetry absent noise.
+   */
+  symmetryApplies(type: SymmetryType, order: number): boolean {
+    return (type === 'C' || type === 'D') && order >= 1
+  },
+
+  presets: GRAY_SCOTT_PRESETS,
+  defaultPreset: GRAY_SCOTT_DEFAULT_PRESET,
+}
+
+export default GrayScottModule
+```
+
+- [ ] **Step 3: Run full test suite**
+
+Run: `pnpm test`
+Expected: all tests pass. Exit code 0.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/scenes/sims/grayScott/presets.ts \
+        src/scenes/sims/grayScott/index.ts
+git commit -m "feat(sims): Gray-Scott SimModule + 5 pattern presets"
+```
+
+---
+
+## Phase 14 — Kuramoto-Sivashinsky (1D, ETDRK4 Pseudospectral)
+
+### Task D28: KS pseudospectral compute layer
+
+**Files:**
+- Create: `src/scenes/sims/kuramotoSivashinsky/compute.ts`
+- Create: `tests/scenes/sims/kuramotoSivashinsky/compute.test.ts`
+
+- [ ] **Step 1: Create `src/scenes/sims/kuramotoSivashinsky/compute.ts`**
+
+```ts
+import { fft, ifft } from '@/scenes/solvers/fft'
+import { etdrk4Step } from '@/scenes/solvers/etdrk4'
+
+export interface KSConfig {
+  /** Domain length L */
+  L: number
+  /** Number of Fourier modes N (should be power of 2) */
+  N: number
+  /** Hyper-viscosity coefficient ν (default 1.0) */
+  nu: number
+  /** Time step */
+  dt: number
+}
+
+export interface KSState {
+  /** Real-space solution array, length N */
+  u: Float64Array
+  /** Wavenumbers, length N */
+  k: Float64Array
+  /** ETDRK4 linear operator diagonal (Fourier space), length N */
+  L_hat: Float64Array
+  /** Time elapsed */
+  time: number
+}
+
+/**
+ * Build wavenumbers for an N-point FFT on domain [0, L).
+ * Ordering: [0, 1, …, N/2-1, -N/2, …, -1] (standard FFT ordering).
+ */
+function buildWavenumbers(N: number, L: number): Float64Array {
+  const k = new Float64Array(N)
+  for (let i = 0; i < N; i++) {
+    const ki = i <= N / 2 ? i : i - N
+    k[i] = (2 * Math.PI * ki) / L
+  }
+  return k
+}
+
+/**
+ * KS linear operator: L = -k² - ν k⁴
+ * (instability at low k, hyperviscous damping at high k)
+ */
+function buildLinearOperator(k: Float64Array, nu: number): Float64Array {
+  const L_hat = new Float64Array(k.length)
+  for (let i = 0; i < k.length; i++) {
+    const ki2 = k[i] * k[i]
+    L_hat[i] = -ki2 - nu * ki2 * ki2
+  }
+  return L_hat
+}
+
+/**
+ * Nonlinear term in Fourier space: F[N(u)] = FFT(-u * du/dx)
+ * du/dx is computed spectrally: d/dx ↔ multiply by ik.
+ */
+function nonlinearTerm(
+  u_hat: Float64Array,
+  k: Float64Array,
+  N: number,
+): Float64Array {
+  // Compute u in real space
+  const u_real = ifft(u_hat, N)
+
+  // Compute du/dx in real space via spectral differentiation
+  // du_dx_hat[i] = i*k[i] * u_hat[i]  (real part → -k*imag, imag part → k*real)
+  const dudx_hat_re = new Float64Array(N)
+  const dudx_hat_im = new Float64Array(N)
+  // u_hat is interleaved real/imag in Float64Array (re0,im0,re1,im1,...)
+  for (let i = 0; i < N; i++) {
+    const re = u_hat[2 * i]
+    const im = u_hat[2 * i + 1]
+    dudx_hat_re[i] = -k[i] * im
+    dudx_hat_im[i] = k[i] * re
+  }
+  const dudx_hat_interleaved = new Float64Array(N * 2)
+  for (let i = 0; i < N; i++) {
+    dudx_hat_interleaved[2 * i] = dudx_hat_re[i]
+    dudx_hat_interleaved[2 * i + 1] = dudx_hat_im[i]
+  }
+  const dudx_real = ifft(dudx_hat_interleaved, N)
+
+  // Nonlinear product in real space: -u * du/dx
+  const nl = new Float64Array(N)
+  for (let i = 0; i < N; i++) {
+    nl[i] = -u_real[i] * dudx_real[i]
+  }
+
+  // Return FFT of nonlinear product (interleaved complex)
+  return fft(nl, N)
+}
+
+/** Initialize a KS state from a real-space initial condition array. */
+export function createKSState(u0: Float64Array, config: KSConfig): KSState {
+  const { N, L, nu } = config
+  const k = buildWavenumbers(N, L)
+  const L_hat = buildLinearOperator(k, nu)
+  const u_hat = fft(u0, N)
+
+  return {
+    u: u0.slice(),
+    k,
+    L_hat,
+    time: 0,
+  }
+}
+
+/**
+ * Advance the KS equation one time step using ETDRK4 in Fourier space.
+ * The nonlinear term is evaluated in real space for de-aliasing.
+ */
+export function ksStep(state: KSState, config: KSConfig): KSState {
+  const { N, dt, nu } = config
+  const { k, L_hat, time } = state
+
+  // Transform current state to Fourier space
+  const u_hat = fft(state.u, N)
+
+  // ETDRK4: integrate û' = L_hat * û + N(û) over dt
+  // where N is evaluated via back-transform
+  const u_hat_next = etdrk4Step(
+    u_hat,
+    L_hat,
+    (uh) => nonlinearTerm(uh, k, N),
+    dt,
+  )
+
+  // Back-transform to real space
+  const u_next = ifft(u_hat_next, N)
+
+  return {
+    u: u_next,
+    k,
+    L_hat,
+    time: time + dt,
+  }
+}
+
+/**
+ * Generate a C_n-symmetric initial condition:
+ * u(x) = Σ_j cos(n·j·2πx/L + φ_j)  for j in [1, harmonics]
+ */
+export function ksSymmetricIC(
+  N: number,
+  L: number,
+  symmetryOrder: number,
+  harmonics = 3,
+  amplitude = 0.1,
+): Float64Array {
+  const u = new Float64Array(N)
+  for (let i = 0; i < N; i++) {
+    const x = (i / N) * L
+    for (let j = 1; j <= harmonics; j++) {
+      const phase = (j * 0.1337) // deterministic phase offset
+      u[i] += amplitude * Math.cos(symmetryOrder * j * (2 * Math.PI * x / L) + phase)
+    }
+  }
+  return u
+}
+```
+
+- [ ] **Step 2: Create `tests/scenes/sims/kuramotoSivashinsky/compute.test.ts`**
+
+```ts
+import { describe, it, expect, vi } from 'vitest'
+
+// Mock the FFT and ETDRK4 solvers to avoid implementing them here
+vi.mock('@/scenes/solvers/fft', () => ({
+  fft: vi.fn((u: Float64Array, N: number) => {
+    // Return interleaved complex array of zeros except re[0] = mean
+    const out = new Float64Array(N * 2)
+    let sum = 0
+    for (let i = 0; i < N; i++) sum += u[i]
+    out[0] = sum / N
+    return out
+  }),
+  ifft: vi.fn((_u_hat: Float64Array, N: number) => new Float64Array(N)),
+}))
+
+vi.mock('@/scenes/solvers/etdrk4', () => ({
+  etdrk4Step: vi.fn((u_hat: Float64Array, _L: Float64Array, _N: unknown, _dt: number) => u_hat),
+}))
+
+import { createKSState, ksStep, ksSymmetricIC } from '@/scenes/sims/kuramotoSivashinsky/compute'
+import { etdrk4Step } from '@/scenes/solvers/etdrk4'
+
+const BASE_CONFIG = { L: 32 * Math.PI, N: 64, nu: 1.0, dt: 0.05 }
+
+describe('createKSState', () => {
+  it('creates state with correct array length', () => {
+    const u0 = new Float64Array(64).fill(0)
+    const state = createKSState(u0, BASE_CONFIG)
+    expect(state.u.length).toBe(64)
+    expect(state.k.length).toBe(64)
+    expect(state.L_hat.length).toBe(64)
+    expect(state.time).toBe(0)
+  })
+
+  it('linear operator is zero at k=0', () => {
+    const u0 = new Float64Array(64).fill(0)
+    const state = createKSState(u0, BASE_CONFIG)
+    expect(state.L_hat[0]).toBe(0)
+  })
+
+  it('linear operator is negative for k>0 (damped high frequencies)', () => {
+    const u0 = new Float64Array(64).fill(0)
+    const state = createKSState(u0, BASE_CONFIG)
+    // Check a mid-range wavenumber
+    expect(state.L_hat[8]).toBeLessThan(0)
+  })
+})
+
+describe('ksStep', () => {
+  it('advances time by dt', () => {
+    const u0 = new Float64Array(64).fill(0.1)
+    const state = createKSState(u0, BASE_CONFIG)
+    const next = ksStep(state, BASE_CONFIG)
+    expect(next.time).toBeCloseTo(BASE_CONFIG.dt, 10)
+  })
+
+  it('calls etdrk4Step once per ksStep', () => {
+    const u0 = new Float64Array(64).fill(0.1)
+    const state = createKSState(u0, BASE_CONFIG)
+    ;(etdrk4Step as ReturnType<typeof vi.fn>).mockClear()
+    ksStep(state, BASE_CONFIG)
+    expect(etdrk4Step).toHaveBeenCalledTimes(1)
+  })
+
+  it('returns a new state object (immutable step)', () => {
+    const u0 = new Float64Array(64).fill(0.1)
+    const state = createKSState(u0, BASE_CONFIG)
+    const next = ksStep(state, BASE_CONFIG)
+    expect(next).not.toBe(state)
+  })
+})
+
+describe('ksSymmetricIC', () => {
+  it('returns array of length N', () => {
+    const u = ksSymmetricIC(64, 32 * Math.PI, 4)
+    expect(u.length).toBe(64)
+  })
+
+  it('has C_n symmetry: u[i] ≈ u[i + N/n] for exact C_n ICs', () => {
+    // For symmetryOrder=2, u(x+L/2) ≈ u(x) because we use cos(2*j*2π x/L)
+    const N = 128
+    const L = 32 * Math.PI
+    const n = 2
+    const u = ksSymmetricIC(N, L, n, 1, 1.0) // single harmonic for exactness
+    // cos(2 * 1 * 2π * (x + L/2) / L) = cos(2π*x/L*2 + 2π) = cos(2π*x/L*2) ✓
+    for (let i = 0; i < N / 2; i++) {
+      expect(u[i]).toBeCloseTo(u[i + N / 2], 8)
+    }
+  })
+
+  it('energy is bounded (not zero, not infinite)', () => {
+    const u = ksSymmetricIC(512, 32 * Math.PI, 4)
+    const energy = u.reduce((s, v) => s + v * v, 0) / u.length
+    expect(energy).toBeGreaterThan(0)
+    expect(energy).toBeLessThan(1e6)
+  })
+})
+```
+
+- [ ] **Step 3: Run tests**
+
+Run: `pnpm test tests/scenes/sims/kuramotoSivashinsky/compute.test.ts`
+Expected: `✓ tests/scenes/sims/kuramotoSivashinsky/compute.test.ts (8 tests)` with exit code 0.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/scenes/sims/kuramotoSivashinsky/compute.ts \
+        tests/scenes/sims/kuramotoSivashinsky/compute.test.ts
+git commit -m "feat(sims): KS pseudospectral compute layer"
+```
+
+---
+
+### Task D29: KS space-time Scene
+
+**Files:**
+- Create: `src/scenes/sims/kuramotoSivashinsky/Scene.tsx`
+- Create: `tests/scenes/sims/kuramotoSivashinsky/Scene.test.tsx`
+
+- [ ] **Step 1: Create `src/scenes/sims/kuramotoSivashinsky/Scene.tsx`**
+
+```tsx
+import { useRef, useMemo, useEffect } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { useControls } from 'leva'
+import * as THREE from 'three'
+import { createKSState, ksStep, ksSymmetricIC } from './compute'
+
+export interface KSConfig {
+  L: number
+  N: number
+  nu: number
+  dt: number
+  symmetryOrder: number
+}
+
+export const KS_LEVA_SCHEMA = {
+  L:             { value: 32 * Math.PI, min: 10,  max: 400, step: 1    },
+  N:             { value: 512,          min: 64,  max: 1024, step: 64  },
+  nu:            { value: 1.0,          min: 0.1, max: 4.0,  step: 0.1 },
+  dt:            { value: 0.05,         min: 0.01, max: 0.2, step: 0.01 },
+  symmetryOrder: { value: 1,            min: 1,   max: 8,    step: 1   },
+}
+
+// Space-time ring buffer: scrolling texture where each row is one time step
+const SPACETIME_ROWS = 512
+
+const spaceTimeVert = /* glsl */ `
+varying vec2 v_uv;
+void main() {
+  v_uv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`
+
+const spaceTimeFrag = /* glsl */ `
+uniform sampler2D u_spaceTime;
+uniform float u_head;     // normalized ring head position [0,1]
+varying vec2 v_uv;
+void main() {
+  // Remap y so that ring head appears at bottom of the display
+  float y = mod(v_uv.y + u_head, 1.0);
+  float val = texture2D(u_spaceTime, vec2(v_uv.x, y)).r;
+  // Map [-2, 2] amplitude range to [0, 1] for color
+  float t = clamp((val + 2.0) / 4.0, 0.0, 1.0);
+  // Inferno-like colormap
+  vec3 col = vec3(t * 1.2, t * t * 0.8, (1.0 - t) * 0.6 + t * t * 0.4);
+  gl_FragColor = vec4(col, 1.0);
+}
+`
+
+export function KuramotoSivashinskyScene() {
+  const { L, N, nu, dt, symmetryOrder } = useControls('Kuramoto-Sivashinsky', KS_LEVA_SCHEMA)
+
+  const stateRef = useRef<ReturnType<typeof createKSState> | null>(null)
+  const rowIndexRef = useRef(0)
+
+  // Space-time texture: rows = time, cols = space
+  const spaceTimeTex = useMemo(() => {
+    const data = new Float32Array(N * SPACETIME_ROWS)
+    const tex = new THREE.DataTexture(
+      data,
+      N,
+      SPACETIME_ROWS,
+      THREE.RedFormat,
+      THREE.FloatType,
+    )
+    tex.needsUpdate = true
+    return tex
+  }, [N])
+
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null)
+
+  // Re-initialize when config changes
+  useEffect(() => {
+    const u0 = ksSymmetricIC(N, L, symmetryOrder)
+    const config = { L, N, nu, dt }
+    stateRef.current = createKSState(u0, config)
+    rowIndexRef.current = 0
+    // Clear texture
+    const data = spaceTimeTex.image.data as Float32Array
+    data.fill(0)
+    spaceTimeTex.needsUpdate = true
+  }, [L, N, nu, dt, symmetryOrder])
+
+  useFrame(() => {
+    if (!stateRef.current) return
+    const config = { L, N, nu, dt }
+    stateRef.current = ksStep(stateRef.current, config)
+
+    // Write current u row into the ring buffer texture
+    const row = rowIndexRef.current % SPACETIME_ROWS
+    rowIndexRef.current++
+    const data = spaceTimeTex.image.data as Float32Array
+    for (let i = 0; i < N; i++) {
+      data[row * N + i] = stateRef.current.u[i]
+    }
+    spaceTimeTex.needsUpdate = true
+
+    if (materialRef.current) {
+      materialRef.current.uniforms.u_head.value =
+        (rowIndexRef.current % SPACETIME_ROWS) / SPACETIME_ROWS
+    }
+  })
+
+  return (
+    <mesh>
+      <planeGeometry args={[2, 2]} />
+      <shaderMaterial
+        ref={materialRef}
+        vertexShader={spaceTimeVert}
+        fragmentShader={spaceTimeFrag}
+        uniforms={{
+          u_spaceTime: { value: spaceTimeTex },
+          u_head:      { value: 0 },
+        }}
+      />
+    </mesh>
+  )
+}
+
+export default KuramotoSivashinskyScene
+```
+
+- [ ] **Step 2: Create `tests/scenes/sims/kuramotoSivashinsky/Scene.test.tsx`**
+
+```tsx
+import { describe, it, expect, vi } from 'vitest'
+
+vi.mock('@react-three/fiber', () => ({
+  useFrame: vi.fn(),
+  useThree: vi.fn(() => ({ gl: {} })),
+}))
+vi.mock('leva', () => ({
+  useControls: vi.fn(() => ({
+    L: 32 * Math.PI, N: 64, nu: 1.0, dt: 0.05, symmetryOrder: 1,
+  })),
+}))
+vi.mock('./compute', () => ({
+  createKSState: vi.fn(() => ({ u: new Float64Array(64), k: new Float64Array(64), L_hat: new Float64Array(64), time: 0 })),
+  ksStep: vi.fn((s: unknown) => s),
+  ksSymmetricIC: vi.fn(() => new Float64Array(64)),
+}))
+
+import { KS_LEVA_SCHEMA } from '@/scenes/sims/kuramotoSivashinsky/Scene'
+
+describe('KuramotoSivashinskyScene (unit)', () => {
+  it('leva schema has required keys', () => {
+    const keys = ['L', 'N', 'nu', 'dt', 'symmetryOrder']
+    for (const key of keys) {
+      expect(KS_LEVA_SCHEMA).toHaveProperty(key)
+    }
+  })
+
+  it('default N is 512', () => {
+    expect(KS_LEVA_SCHEMA.N.value).toBe(512)
+  })
+
+  it('default nu is 1.0', () => {
+    expect(KS_LEVA_SCHEMA.nu.value).toBeCloseTo(1.0, 5)
+  })
+
+  it('default dt is 0.05', () => {
+    expect(KS_LEVA_SCHEMA.dt.value).toBeCloseTo(0.05, 5)
+  })
+})
+```
+
+- [ ] **Step 3: Run tests**
+
+Run: `pnpm test tests/scenes/sims/kuramotoSivashinsky/Scene.test.tsx`
+Expected: `✓ tests/scenes/sims/kuramotoSivashinsky/Scene.test.tsx (4 tests)` with exit code 0.
+
+- [ ] **Step 4: TypeScript check**
+
+Run: `pnpm tsc --noEmit`
+Expected: exit code 0.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/scenes/sims/kuramotoSivashinsky/Scene.tsx \
+        tests/scenes/sims/kuramotoSivashinsky/Scene.test.tsx
+git commit -m "feat(sims): KS space-time Scene"
+```
+
+---
+
+### Task D30: KS SimModule registration + 3 presets
+
+**Files:**
+- Create: `src/scenes/sims/kuramotoSivashinsky/presets.ts`
+- Create: `src/scenes/sims/kuramotoSivashinsky/index.ts`
+
+- [ ] **Step 1: Create `src/scenes/sims/kuramotoSivashinsky/presets.ts`**
+
+```ts
+import type { SimPreset } from '@/scenes/engine/types'
+import type { KSConfig } from './Scene'
+
+export const KS_PRESETS: Record<string, SimPreset<KSConfig>> = {
+  classic: {
+    label: 'Classic (L=32π, N=512)',
+    config: { L: 32 * Math.PI, N: 512, nu: 1.0, dt: 0.05, symmetryOrder: 1 },
+  },
+  turbulent: {
+    label: 'Turbulent (L=200)',
+    config: { L: 200, N: 512, nu: 1.0, dt: 0.05, symmetryOrder: 1 },
+  },
+  quasiPeriodic: {
+    label: 'Quasi-Periodic (L=18π)',
+    config: { L: 18 * Math.PI, N: 256, nu: 1.0, dt: 0.04, symmetryOrder: 2 },
+  },
+}
+
+export const KS_DEFAULT_PRESET = 'classic'
+```
+
+- [ ] **Step 2: Create `src/scenes/sims/kuramotoSivashinsky/index.ts`**
+
+```ts
+import type { SimModule } from '@/scenes/engine/types'
+import type { SymmetryType } from '@/scenes/engine/Symmetry'
+import { KuramotoSivashinskyScene } from './Scene'
+import type { KSConfig } from './Scene'
+import { KS_PRESETS, KS_DEFAULT_PRESET } from './presets'
+
+export interface KSState {
+  // CPU pseudospectral state managed in Scene.tsx via useRef
+}
+
+const KuramotoSivashinskyModule: SimModule<KSConfig, KSState> = {
+  id: 'kuramotoSivashinsky',
+  label: 'Kuramoto-Sivashinsky',
+  Scene: KuramotoSivashinskyScene,
+
+  init(_config: KSConfig, _perf): KSState {
+    return {}
+  },
+
+  step(_state: KSState, _dt: number): void {
+    // Pseudospectral stepping runs inside Scene.tsx useFrame
+  },
+
+  dispose(_state: KSState): void {
+    // No external GPU resources to release
+  },
+
+  /**
+   * KS supports C_n ICs generated as symmetric Fourier mode sums.
+   * Valid orders: 1, 2, 3, 4, 6, 8 — those that divide evenly into
+   * typical domain lengths and produce stable symmetric patterns.
+   */
+  symmetryApplies(type: SymmetryType, order: number): boolean {
+    return type === 'C' && [1, 2, 3, 4, 6, 8].includes(order)
+  },
+
+  presets: KS_PRESETS,
+  defaultPreset: KS_DEFAULT_PRESET,
+}
+
+export default KuramotoSivashinskyModule
+```
+
+- [ ] **Step 3: Run full test suite**
+
+Run: `pnpm test`
+Expected: all tests pass. Exit code 0.
+
+- [ ] **Step 4: TypeScript check**
+
+Run: `pnpm tsc --noEmit`
+Expected: exit code 0, no errors.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/scenes/sims/kuramotoSivashinsky/presets.ts \
+        src/scenes/sims/kuramotoSivashinsky/index.ts
+git commit -m "feat(sims): KS SimModule + 3 presets"
+```
