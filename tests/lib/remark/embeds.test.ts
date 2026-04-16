@@ -51,4 +51,20 @@ describe('remark-embeds', () => {
     expect(copyAsset).not.toHaveBeenCalled()
     expect(tree.children[0].children[0].url).toBe('https://example.com/img.png')
   })
+
+  it('handles multiple embeds in one text node', async () => {
+    const copyAsset = vi.fn((filename: string, slug: string) => `/blog-assets/${slug}/${filename}`)
+    const resolveExcalidraw = vi.fn()
+    const tree: any = await transform('![[a.png]] then ![[b.png]] done', {
+      attachmentsRoot: '/vault/Attachments',
+      copyAsset,
+      resolveExcalidraw,
+    })
+    const children = tree.children[0].children
+    const images = children.filter((c: any) => c.type === 'image')
+    expect(images).toHaveLength(2)
+    expect(images[0].url).toBe('/blog-assets/my-post/a.png')
+    expect(images[1].url).toBe('/blog-assets/my-post/b.png')
+    expect(copyAsset).toHaveBeenCalledTimes(2)
+  })
 })

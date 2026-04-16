@@ -5,7 +5,17 @@ import path from 'node:path'
 
 export interface EmbedOptions {
   attachmentsRoot: string
+  /**
+   * Copy an asset into the public directory and return its public URL.
+   * Callback is responsible for rejecting path traversal (`..`) in the filename
+   * before touching the filesystem — plugin passes filenames through unmodified.
+   */
   copyAsset: (filename: string, postSlug: string) => string
+  /**
+   * Resolve an excalidraw.md filename to SVG markup (string).
+   * Callback is responsible for sanitizing the SVG (strip `<script>`, on*
+   * handlers, javascript: URLs) — plugin injects the return value as raw HTML.
+   */
   resolveExcalidraw: (filename: string) => string
 }
 
@@ -38,6 +48,7 @@ export const remarkEmbeds: Plugin<[EmbedOptions], Root> = (opts) => {
 
         if (filename.endsWith('.excalidraw.md')) {
           const svg = resolveExcalidraw(filename)
+          // html node not typed as PhrasingContent but accepted by mdast AST
           out.push({ type: 'html', value: svg } as any)
           continue
         }
