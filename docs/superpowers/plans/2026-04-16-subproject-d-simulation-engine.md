@@ -1588,3 +1588,2275 @@ Expected: all tests pass. Vitest reports the harness test plus all new solver + 
 git add src/scenes/engine/PerfController.ts tests/scenes/engine/PerfController.test.ts
 git commit -m "feat(scenes): PerfController with GPU-tier detect + reduced-motion"
 ```
+
+---
+
+## Phase 7 — Scene infrastructure
+
+### Task D10: `SceneRegistry`
+
+**Files:**
+- Create: `src/scenes/engine/SceneRegistry.ts`
+- Create: `tests/scenes/engine/SceneRegistry.test.ts`
+
+- [ ] **Step 1: Write the failing tests**
+
+Create `tests/scenes/engine/SceneRegistry.test.ts`:
+
+```ts
+import { describe, it, expect, beforeEach } from 'vitest'
+import { SceneRegistry } from '@/scenes/engine/SceneRegistry'
+import type { SimModule } from '@/scenes/engine/types'
+
+function makeMockModule(id: string): SimModule {
+  return {
+    id: id as SimModule['id'],
+    title: `Mock ${id}`,
+    description: `Description of ${id}`,
+    defaults: {},
+    presets: {},
+    schema: {},
+    Scene: () => null,
+    init: () => ({}),
+    step: () => {},
+    dispose: () => {},
+    symmetryApplies: () => false,
+  }
+}
+
+describe('SceneRegistry', () => {
+  let registry: SceneRegistry
+
+  beforeEach(() => {
+    registry = new SceneRegistry()
+  })
+
+  it('register + get round-trip: returns the same module by id', () => {
+    const mod = makeMockModule('singularity')
+    registry.register(mod)
+    expect(registry.get('singularity')).toBe(mod)
+  })
+
+  it('get returns undefined for unregistered id', () => {
+    expect(registry.get('lorenz')).toBeUndefined()
+  })
+
+  it('list returns all registered modules in insertion order', () => {
+    const m1 = makeMockModule('singularity')
+    const m2 = makeMockModule('lorenz')
+    registry.register(m1)
+    registry.register(m2)
+    const list = registry.list()
+    expect(list).toHaveLength(2)
+    expect(list[0]).toBe(m1)
+    expect(list[1]).toBe(m2)
+  })
+
+  it('list returns empty array when nothing registered', () => {
+    expect(registry.list()).toEqual([])
+  })
+
+  it('duplicate register with the same id throws', () => {
+    const mod = makeMockModule('singularity')
+    registry.register(mod)
+    expect(() => registry.register(mod)).toThrowError(/already registered/)
+  })
+
+  it('duplicate register with same id but different object also throws', () => {
+    registry.register(makeMockModule('singularity'))
+    expect(() => registry.register(makeMockModule('singularity'))).toThrowError(/already registered/)
+  })
+})
+```
+
+- [ ] **Step 2: Run tests — expect FAIL (module missing)**
+
+Run: `pnpm test tests/scenes/engine/SceneRegistry.test.ts`
+Expected: FAIL — cannot resolve `@/scenes/engine/SceneRegistry`.
+
+- [ ] **Step 3: Implement `src/scenes/engine/SceneRegistry.ts`**
+
+```ts
+import type { SceneId, SimModule } from './types'
+
+/**
+ * Typed registry mapping SceneId → SimModule.
+ *
+ * Instantiate once at app boot and pass to Canvas + LevaPanel via React context.
+ *
+ * Rules:
+ * - Registering the same id twice throws. Prevents silent override of modules
+ *   that share an id in different dynamic import chunks.
+ * - `get()` returns undefined (not null) for unregistered ids so callers can
+ *   use optional-chaining without null checks.
+ * - `list()` preserves insertion order (Map guarantees this in ES2015+).
+ */
+export class SceneRegistry {
+  private readonly map = new Map<SceneId, SimModule>()
+
+  /**
+   * Register a sim module. Throws if the id is already registered.
+   */
+  register(mod: SimModule): void {
+    if (this.map.has(mod.id)) {
+      throw new Error(
+        `SceneRegistry: id "${mod.id}" already registered. ` +
+          `Each SimModule must have a unique SceneId.`,
+      )
+    }
+    this.map.set(mod.id, mod)
+  }
+
+  /**
+   * Retrieve a sim module by id.
+   * Returns undefined if no module with this id has been registered.
+   */
+  get(id: SceneId): SimModule | undefined {
+    return this.map.get(id)
+  }
+
+  /**
+   * Return all registered modules in insertion order.
+   */
+  list(): SimModule[] {
+    return Array.from(this.map.values())
+  }
+}
+```
+
+- [ ] **Step 4: Run tests — expect PASS**
+
+Run: `pnpm test tests/scenes/engine/SceneRegistry.test.ts`
+Expected: `✓ tests/scenes/engine/SceneRegistry.test.ts (6 tests)` with exit code 0.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/scenes/engine/SceneRegistry.ts tests/scenes/engine/SceneRegistry.test.ts
+git commit -m "feat(scenes): typed SceneRegistry"
+```
+
+---
+
+### Task D11: `SceneRouter`
+
+**Files:**
+- Create: `src/scenes/engine/SceneRouter.tsx`
+- Create: `tests/scenes/engine/SceneRouter.test.tsx`
+
+- [ ] **Step 1: Write the failing tests**
+
+Create `tests/scenes/engine/SceneRouter.test.tsx`:
+
+```tsx
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { renderHook, act } from '@testing-library/react'
+import { useActiveScene } from '@/scenes/engine/SceneRouter'
+import type { SceneRegistry } from '@/scenes/engine/SceneRegistry'
+
+// ---------------------------------------------------------------------------
+// Mock IntersectionObserver
+// ---------------------------------------------------------------------------
+
+type IOCallback = (entries: IntersectionObserverEntry[]) => void
+
+let capturedCallback: IOCallback | null = null
+let capturedTargets: Element[] = []
+
+const mockObserve = vi.fn((el: Element) => {
+  capturedTargets.push(el)
+})
+const mockUnobserve = vi.fn()
+const mockDisconnect = vi.fn()
+
+function MockIntersectionObserver(cb: IOCallback) {
+  capturedCallback = cb
+  return {
+    observe: mockObserve,
+    unobserve: mockUnobserve,
+    disconnect: mockDisconnect,
+  }
+}
+
+// Utility: fire mock IO entries
+function fireEntries(entries: Array<{ target: Element; intersectionRatio: number }>) {
+  if (!capturedCallback) throw new Error('IntersectionObserver callback not captured')
+  capturedCallback(
+    entries.map(({ target, intersectionRatio }) => ({
+      target,
+      intersectionRatio,
+      isIntersecting: intersectionRatio > 0,
+      boundingClientRect: {} as DOMRectReadOnly,
+      intersectionRect: {} as DOMRectReadOnly,
+      rootBounds: null,
+      time: 0,
+    })) as IntersectionObserverEntry[],
+  )
+}
+
+beforeEach(() => {
+  capturedCallback = null
+  capturedTargets = []
+  mockObserve.mockClear()
+  mockUnobserve.mockClear()
+  mockDisconnect.mockClear()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ;(globalThis as any).IntersectionObserver = MockIntersectionObserver
+})
+
+afterEach(() => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  delete (globalThis as any).IntersectionObserver
+})
+
+// Minimal registry stub
+function makeRegistry(ids: string[]) {
+  return {
+    list: () => ids.map((id) => ({ id })),
+  } as unknown as SceneRegistry
+}
+
+// ---------------------------------------------------------------------------
+// Tests
+// ---------------------------------------------------------------------------
+
+describe('useActiveScene', () => {
+  it('falls back to routeHint when no sentinel has intersectionRatio > 0', () => {
+    const registry = makeRegistry(['singularity', 'lorenz'])
+    const { result } = renderHook(() =>
+      useActiveScene({ registry, routeHint: 'lorenz' }),
+    )
+    expect(result.current.activeSceneId).toBe('lorenz')
+  })
+
+  it('selects the scene with the highest intersectionRatio when sentinels fire', () => {
+    const registry = makeRegistry(['singularity', 'lorenz'])
+
+    // Create real DOM sentinels so the hook can observe them
+    const sentinel1 = document.createElement('div')
+    sentinel1.setAttribute('data-scene-id', 'singularity')
+    document.body.appendChild(sentinel1)
+
+    const sentinel2 = document.createElement('div')
+    sentinel2.setAttribute('data-scene-id', 'lorenz')
+    document.body.appendChild(sentinel2)
+
+    const { result } = renderHook(() =>
+      useActiveScene({ registry, routeHint: 'singularity' }),
+    )
+
+    act(() => {
+      fireEntries([
+        { target: sentinel1, intersectionRatio: 0.3 },
+        { target: sentinel2, intersectionRatio: 0.8 },
+      ])
+    })
+
+    expect(result.current.activeSceneId).toBe('lorenz')
+
+    document.body.removeChild(sentinel1)
+    document.body.removeChild(sentinel2)
+  })
+
+  it('setActiveSceneId overrides selection immediately', () => {
+    const registry = makeRegistry(['singularity', 'lorenz'])
+    const { result } = renderHook(() =>
+      useActiveScene({ registry, routeHint: 'singularity' }),
+    )
+
+    act(() => {
+      result.current.setActiveSceneId('lorenz')
+    })
+
+    expect(result.current.activeSceneId).toBe('lorenz')
+  })
+
+  it('disconnects IntersectionObserver on unmount', () => {
+    const registry = makeRegistry(['singularity'])
+    const { unmount } = renderHook(() =>
+      useActiveScene({ registry, routeHint: 'singularity' }),
+    )
+    unmount()
+    expect(mockDisconnect).toHaveBeenCalledOnce()
+  })
+})
+```
+
+- [ ] **Step 2: Run tests — expect FAIL (module missing)**
+
+Run: `pnpm test tests/scenes/engine/SceneRouter.test.tsx`
+Expected: FAIL — cannot resolve `@/scenes/engine/SceneRouter`.
+
+- [ ] **Step 3: Implement `src/scenes/engine/SceneRouter.tsx`**
+
+```tsx
+import { useState, useEffect, useCallback, useRef } from 'react'
+import type { SceneId } from './types'
+import type { SceneRegistry } from './SceneRegistry'
+
+export interface UseActiveSceneOptions {
+  registry: SceneRegistry
+  /**
+   * Fallback scene id when no `data-scene-id` sentinel is intersecting the
+   * viewport. Typically derived from the current route path.
+   */
+  routeHint: SceneId
+}
+
+export interface UseActiveSceneResult {
+  activeSceneId: SceneId
+  setActiveSceneId: (id: SceneId) => void
+}
+
+/**
+ * Tracks which sim scene is currently "active" based on which DOM sentinel
+ * element (identified by `data-scene-id="<sceneId>"`) has the largest
+ * intersection ratio with the viewport.
+ *
+ * Falls back to `routeHint` when no sentinel is visible (e.g. page load before
+ * any scroll, or SSR/jsdom where IntersectionObserver is absent).
+ *
+ * Sentinels are `<div data-scene-id="singularity" />` elements. Each scene
+ * section should render one at its scroll anchor. The hook picks them up
+ * automatically via querySelectorAll after mount.
+ *
+ * @example
+ * ```tsx
+ * const { activeSceneId } = useActiveScene({ registry, routeHint: 'singularity' })
+ * ```
+ */
+export function useActiveScene({
+  registry,
+  routeHint,
+}: UseActiveSceneOptions): UseActiveSceneResult {
+  const [activeSceneId, setActiveSceneId] = useState<SceneId>(routeHint)
+  // Track per-sentinel ratio; the key is the data-scene-id attribute value
+  const ratioMap = useRef(new Map<SceneId, number>())
+
+  const selectBestScene = useCallback(() => {
+    let best: SceneId | null = null
+    let bestRatio = 0
+    for (const [id, ratio] of ratioMap.current.entries()) {
+      if (ratio > bestRatio) {
+        bestRatio = ratio
+        best = id
+      }
+    }
+    if (best !== null && bestRatio > 0) {
+      setActiveSceneId(best)
+    } else {
+      setActiveSceneId(routeHint)
+    }
+  }, [routeHint])
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      // SSR / old browsers: stay with routeHint
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const id = (entry.target as HTMLElement).dataset['sceneId'] as SceneId | undefined
+          if (id) {
+            ratioMap.current.set(id, entry.intersectionRatio)
+          }
+        }
+        selectBestScene()
+      },
+      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] },
+    )
+
+    // Observe all sentinels currently in the DOM
+    const sentinels = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-scene-id]'),
+    )
+    for (const el of sentinels) {
+      observer.observe(el)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [registry, selectBestScene])
+
+  return { activeSceneId, setActiveSceneId }
+}
+```
+
+- [ ] **Step 4: Run tests — expect PASS**
+
+Run: `pnpm test tests/scenes/engine/SceneRouter.test.tsx`
+Expected: `✓ tests/scenes/engine/SceneRouter.test.tsx (4 tests)` with exit code 0.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/scenes/engine/SceneRouter.tsx tests/scenes/engine/SceneRouter.test.tsx
+git commit -m "feat(scenes): SceneRouter with IntersectionObserver"
+```
+
+---
+
+### Task D12: `Canvas` root + `SceneHost` + `BaseLayout` wiring
+
+**Files:**
+- Create: `src/scenes/engine/Canvas.tsx`
+- Create: `src/scenes/engine/SceneHost.tsx`
+- Modify: `src/layouts/BaseLayout.astro`
+- Create: `tests/scenes/engine/SceneHost.test.tsx`
+
+- [ ] **Step 1: Write the failing tests**
+
+Create `tests/scenes/engine/SceneHost.test.tsx`:
+
+```tsx
+import { describe, it, expect, vi } from 'vitest'
+import { render } from '@testing-library/react'
+import React, { Suspense } from 'react'
+
+// ---------------------------------------------------------------------------
+// Mock @react-three/fiber and @react-three/drei so jsdom doesn't need WebGL
+// ---------------------------------------------------------------------------
+vi.mock('@react-three/fiber', () => ({
+  Canvas: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="r3f-canvas">{children}</div>
+  ),
+  useFrame: vi.fn(),
+}))
+
+vi.mock('@react-three/drei', () => ({
+  OrthographicCamera: () => null,
+}))
+
+// Mock dynamic import map used by SceneHost
+// The SceneHost uses a static importMap object; we inject a test scene here.
+vi.mock('@/scenes/sims/mock-sim/index', () => ({
+  default: {
+    id: 'singularity',
+    Scene: () => <mesh data-testid="mock-scene-mesh" />,
+  },
+}))
+
+import { SceneHost } from '@/scenes/engine/SceneHost'
+
+describe('SceneHost', () => {
+  it('renders without crashing with a known activeSceneId', () => {
+    const { container } = render(
+      <Suspense fallback={<div>loading</div>}>
+        <SceneHost activeSceneId="singularity" />
+      </Suspense>,
+    )
+    // Suspense fallback may render initially; confirm no error thrown
+    expect(container).toBeTruthy()
+  })
+
+  it('renders null without crashing for unknown activeSceneId', () => {
+    const { container } = render(
+      <Suspense fallback={null}>
+        {/* Cast to bypass TS — tests unknown runtime id */}
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        <SceneHost activeSceneId={'not-a-scene' as any} />
+      </Suspense>,
+    )
+    expect(container).toBeTruthy()
+  })
+})
+```
+
+- [ ] **Step 2: Run tests — expect FAIL (module missing)**
+
+Run: `pnpm test tests/scenes/engine/SceneHost.test.tsx`
+Expected: FAIL — cannot resolve `@/scenes/engine/SceneHost`.
+
+- [ ] **Step 3: Implement `src/scenes/engine/SceneHost.tsx`**
+
+```tsx
+import React, { Suspense, lazy, useMemo } from 'react'
+import type { SceneId } from './types'
+
+/**
+ * Static map of SceneId → lazy-imported scene module.
+ *
+ * Each entry lazy-imports `src/scenes/sims/<id>/index.ts` which must export a
+ * default `SimModule`. The `Scene` component is extracted inside the lazy
+ * wrapper so that React.lazy receives a component directly.
+ *
+ * Add a new entry here when adding a new sim.
+ */
+const sceneImportMap: Partial<Record<SceneId, React.LazyExoticComponent<React.FC>>> = {
+  singularity: lazy(async () => {
+    const mod = await import('../sims/singularity/index')
+    const SceneComponent: React.FC = (props) =>
+      React.createElement(mod.singularityModule.Scene, props as Parameters<typeof mod.singularityModule.Scene>[0])
+    return { default: SceneComponent }
+  }),
+}
+
+export interface SceneHostProps {
+  activeSceneId: SceneId
+}
+
+/**
+ * Renders the scene component matching `activeSceneId`.
+ * Each sim is code-split via React.lazy + dynamic import.
+ * Wraps with Suspense (fallback = null) so missing sims fail gracefully.
+ */
+export function SceneHost({ activeSceneId }: SceneHostProps): React.ReactElement {
+  const LazyScene = useMemo(
+    () => sceneImportMap[activeSceneId] ?? null,
+    [activeSceneId],
+  )
+
+  if (!LazyScene) {
+    return <></>
+  }
+
+  return (
+    <Suspense fallback={null}>
+      <LazyScene />
+    </Suspense>
+  )
+}
+```
+
+- [ ] **Step 4: Implement `src/scenes/engine/Canvas.tsx`**
+
+```tsx
+import React from 'react'
+import { Canvas as R3FCanvas } from '@react-three/fiber'
+import { OrthographicCamera } from '@react-three/drei'
+import { SceneHost } from './SceneHost'
+import type { SceneId } from './types'
+
+export interface AppCanvasProps {
+  activeSceneId: SceneId
+  /** When true, use an orthographic projection (default false = perspective) */
+  orthographic?: boolean
+}
+
+/**
+ * App-wide single r3f Canvas.
+ *
+ * Mounted in BaseLayout at `fixed inset-0 -z-10 pointer-events-none` so it
+ * sits behind all page content and never intercepts mouse events.
+ *
+ * The Canvas is intentionally frameless (no background): the site background
+ * color is set via CSS on `<body>`, so the Canvas layer blends on top
+ * transparently by default.
+ */
+export function AppCanvas({ activeSceneId, orthographic = false }: AppCanvasProps): React.ReactElement {
+  return (
+    <R3FCanvas
+      orthographic={orthographic}
+      gl={{ antialias: true, alpha: true }}
+      style={{ position: 'fixed', inset: 0, zIndex: -10, pointerEvents: 'none' }}
+      aria-hidden="true"
+    >
+      {orthographic && <OrthographicCamera makeDefault position={[0, 0, 5]} />}
+      <SceneHost activeSceneId={activeSceneId} />
+    </R3FCanvas>
+  )
+}
+```
+
+- [ ] **Step 5: Create the `AppCanvasIsland` wrapper for Astro client:load**
+
+Create `src/scenes/engine/AppCanvasIsland.tsx`:
+
+```tsx
+/**
+ * Astro island entry-point for the app-wide Canvas.
+ *
+ * Wraps AppCanvas with SceneRouter so the active scene is determined by
+ * IntersectionObserver + route. Passes the singleton SceneRegistry.
+ *
+ * Imported in BaseLayout.astro as `client:load`.
+ */
+import React from 'react'
+import { AppCanvas } from './Canvas'
+import { useActiveScene } from './SceneRouter'
+import { SceneRegistry } from './SceneRegistry'
+import { singularityModule } from '../sims/singularity/index'
+
+// Singleton registry for the app (all sims registered here at module load time)
+const registry = new SceneRegistry()
+registry.register(singularityModule)
+// Additional sims registered in their respective task commits (D17-D20)
+
+export default function AppCanvasIsland(): React.ReactElement {
+  const { activeSceneId } = useActiveScene({ registry, routeHint: 'singularity' })
+  return <AppCanvas activeSceneId={activeSceneId} />
+}
+```
+
+- [ ] **Step 6: Mount Canvas island in BaseLayout**
+
+Edit `src/layouts/BaseLayout.astro` to add the Canvas island import and mount it:
+
+```astro
+---
+import "@/styles/global.css";
+import pcmasterracePng from "@/assets/images/pcmasterrace.png";
+import { cn } from "@/lib/utils";
+import NavBarDock from "@/components/layout/NavBarDock";
+import MobileBottomNav from "@/components/layout/MobileBottomNav";
+import AnimatedCursor from "@/components/ui/AnimatedCursor";
+import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
+import { MobileBlocker } from "@/components/layout/MobileBlocker";
+import AppCanvasIsland from "@/scenes/engine/AppCanvasIsland";
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Viet Bui | Portfolio</title>
+    <link rel="icon" type="image/png" href={pcmasterracePng.src} />
+  </head>
+  <body
+    class={cn(
+      "group/body overscroll-none antialiased bg-background text-foreground",
+    )}
+  >
+    <AppCanvasIsland client:load />
+    <MobileBlocker client:load />
+    <VectorFieldBackground client:load className="hidden md:block" />
+    <AnimatedCursor client:load />
+    <NavBarDock client:load />
+    <MobileBottomNav client:load />
+    <main class="relative z-10 flex flex-1 flex-col pt-4 pb-20 md:pt-24 md:pb-0">
+      <slot />
+    </main>
+  </body>
+</html>
+```
+
+- [ ] **Step 7: Run tests — expect PASS**
+
+Run: `pnpm test tests/scenes/engine/SceneHost.test.tsx`
+Expected: `✓ tests/scenes/engine/SceneHost.test.tsx (2 tests)` with exit code 0.
+
+- [ ] **Step 8: Verify build**
+
+Run: `pnpm build`
+Expected: exit code 0 with no new TypeScript errors. The Canvas island appears in the build graph.
+
+- [ ] **Step 9: Commit**
+
+```bash
+git add src/scenes/engine/Canvas.tsx src/scenes/engine/SceneHost.tsx \
+        src/scenes/engine/AppCanvasIsland.tsx src/layouts/BaseLayout.astro \
+        tests/scenes/engine/SceneHost.test.tsx
+git commit -m "feat(scenes): app-wide Canvas mounted in BaseLayout"
+```
+
+---
+
+## Phase 8 — Leva panel + URL hash + Presets
+
+### Task D13: Global Leva panel
+
+**Files:**
+- Create: `src/scenes/ui/LevaPanel.tsx`
+- Create: `tests/scenes/ui/LevaPanel.test.tsx`
+
+- [ ] **Step 1: Write the failing tests**
+
+Create `tests/scenes/ui/LevaPanel.test.tsx`:
+
+```tsx
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { renderHook, act } from '@testing-library/react'
+
+// ---------------------------------------------------------------------------
+// We test the keyboard + media-query logic extracted as a pure hook,
+// not the Leva render itself (Leva is a UI lib we trust).
+// ---------------------------------------------------------------------------
+import { useLevaPanelVisibility } from '@/scenes/ui/LevaPanel'
+
+// Mock matchMedia
+function mockMatchMedia(mobileMatch: boolean) {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: vi.fn((query: string) => ({
+      matches: query.includes('max-width') ? mobileMatch : false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  })
+}
+
+describe('useLevaPanelVisibility', () => {
+  beforeEach(() => {
+    mockMatchMedia(false) // desktop by default
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('starts visible on desktop (viewport >= 768px)', () => {
+    mockMatchMedia(false)
+    const { result } = renderHook(() => useLevaPanelVisibility())
+    expect(result.current.hidden).toBe(false)
+  })
+
+  it('starts hidden on mobile (viewport < 768px)', () => {
+    mockMatchMedia(true)
+    const { result } = renderHook(() => useLevaPanelVisibility())
+    expect(result.current.hidden).toBe(true)
+  })
+
+  it('keyboard L toggles visibility on desktop', () => {
+    mockMatchMedia(false)
+    const { result } = renderHook(() => useLevaPanelVisibility())
+    expect(result.current.hidden).toBe(false)
+
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'l' }))
+    })
+    expect(result.current.hidden).toBe(true)
+
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'l' }))
+    })
+    expect(result.current.hidden).toBe(false)
+  })
+
+  it('uppercase L also toggles', () => {
+    mockMatchMedia(false)
+    const { result } = renderHook(() => useLevaPanelVisibility())
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'L' }))
+    })
+    expect(result.current.hidden).toBe(true)
+  })
+
+  it('keyboard L does not toggle when on mobile (stays hidden)', () => {
+    mockMatchMedia(true)
+    const { result } = renderHook(() => useLevaPanelVisibility())
+    expect(result.current.hidden).toBe(true)
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'l' }))
+    })
+    // Mobile: L key has no effect — panel stays hidden
+    expect(result.current.hidden).toBe(true)
+  })
+})
+```
+
+- [ ] **Step 2: Run tests — expect FAIL (module missing)**
+
+Run: `pnpm test tests/scenes/ui/LevaPanel.test.tsx`
+Expected: FAIL — cannot resolve `@/scenes/ui/LevaPanel`.
+
+- [ ] **Step 3: Implement `src/scenes/ui/LevaPanel.tsx`**
+
+```tsx
+import React, { useState, useEffect } from 'react'
+import { Leva } from 'leva'
+
+// ---------------------------------------------------------------------------
+// Extracted hook — unit-testable without Leva or WebGL
+// ---------------------------------------------------------------------------
+
+export interface LevaPanelVisibility {
+  /** When true, the Leva panel is hidden (pass directly to <Leva hidden={...} />) */
+  hidden: boolean
+}
+
+/**
+ * Manages Leva panel visibility with:
+ * - Initial state: visible on desktop (≥768px), hidden on mobile (<768px).
+ * - Keyboard `L` / `l`: toggles visibility, desktop only.
+ *
+ * Exported for unit testing. Consumed by `LevaPanel` component.
+ */
+export function useLevaPanelVisibility(): LevaPanelVisibility {
+  const isMobile = (): boolean => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(max-width: 767px)').matches
+  }
+
+  const [hidden, setHidden] = useState<boolean>(() => isMobile())
+
+  useEffect(() => {
+    const mobile = isMobile()
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (mobile) return
+      if (e.key === 'l' || e.key === 'L') {
+        // Ignore if focus is inside an input/textarea/contenteditable
+        const target = e.target as HTMLElement
+        if (
+          target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable
+        ) {
+          return
+        }
+        setHidden((prev) => !prev)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
+  return { hidden }
+}
+
+// ---------------------------------------------------------------------------
+// LevaPanel component
+// ---------------------------------------------------------------------------
+
+/**
+ * Global Leva control panel.
+ *
+ * Mount this once in BaseLayout (alongside AppCanvasIsland). It renders the
+ * global Leva panel whose schema is populated by whichever sim is active.
+ * Schema composition (active sim → leva controls) is handled by calling
+ * `useControls` inside each sim's Scene component; Leva merges them
+ * automatically into this single panel via its internal store.
+ *
+ * Keyboard `L` toggles visibility. Hidden by default on mobile.
+ */
+export function LevaPanel(): React.ReactElement {
+  const { hidden } = useLevaPanelVisibility()
+
+  return (
+    <Leva
+      hidden={hidden}
+      collapsed={false}
+      theme={{
+        sizes: { rootWidth: '280px' },
+      }}
+    />
+  )
+}
+
+export default LevaPanel
+```
+
+- [ ] **Step 4: Mount LevaPanel in BaseLayout**
+
+Edit `src/layouts/BaseLayout.astro` — add LevaPanel import and island mount below `AppCanvasIsland`:
+
+In the frontmatter (between the `---` delimiters), add:
+```ts
+import LevaPanel from "@/scenes/ui/LevaPanel";
+```
+
+In the body, add after `<AppCanvasIsland client:load />`:
+```html
+<LevaPanel client:load />
+```
+
+- [ ] **Step 5: Run tests — expect PASS**
+
+Run: `pnpm test tests/scenes/ui/LevaPanel.test.tsx`
+Expected: `✓ tests/scenes/ui/LevaPanel.test.tsx (5 tests)` with exit code 0.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add src/scenes/ui/LevaPanel.tsx tests/scenes/ui/LevaPanel.test.tsx \
+        src/layouts/BaseLayout.astro
+git commit -m "feat(scenes): global Leva panel with L-key toggle"
+```
+
+---
+
+### Task D14: URL hash sync + preset store
+
+**Files:**
+- Create: `src/scenes/engine/UrlState.ts`
+- Create: `src/scenes/engine/Presets.ts`
+- Create: `src/scenes/ui/PresetMenu.tsx`
+- Create: `tests/scenes/engine/UrlState.test.ts`
+- Create: `tests/scenes/engine/Presets.test.ts`
+- Create: `tests/scenes/ui/PresetMenu.test.tsx`
+
+- [ ] **Step 1: Write the failing tests**
+
+Create `tests/scenes/engine/UrlState.test.ts`:
+
+```ts
+import { describe, it, expect } from 'vitest'
+import { encodeConfig, decodeConfig } from '@/scenes/engine/UrlState'
+
+describe('encodeConfig / decodeConfig round-trip', () => {
+  it('round-trips a flat config object', () => {
+    const config = { speed: 5, intensity: 0.5, waveStrength: 0.3, colorShift: 0.1, size: 1.0 }
+    const encoded = encodeConfig(config)
+    const decoded = decodeConfig(encoded)
+    expect(decoded).toEqual(config)
+  })
+
+  it('encodes to a non-empty string', () => {
+    const encoded = encodeConfig({ a: 1, b: 2 })
+    expect(typeof encoded).toBe('string')
+    expect(encoded.length).toBeGreaterThan(0)
+  })
+
+  it('decodes empty string to empty object', () => {
+    expect(decodeConfig('')).toEqual({})
+  })
+
+  it('round-trips numeric values including negatives and floats', () => {
+    const config = { x: -3.14, y: 0.0, z: 99.99 }
+    expect(decodeConfig(encodeConfig(config))).toEqual(config)
+  })
+
+  it('round-trips boolean values', () => {
+    const config = { showTrails: true, showGrid: false }
+    expect(decodeConfig(encodeConfig(config))).toEqual(config)
+  })
+
+  it('round-trips string values', () => {
+    const config = { preset: 'classic', colormap: 'viridis' }
+    expect(decodeConfig(encodeConfig(config))).toEqual(config)
+  })
+
+  it('is idempotent: encode(decode(encode(x))) === encode(x)', () => {
+    const config = { sigma: 10, rho: 28, beta: 2.6667 }
+    const once = encodeConfig(config)
+    const twice = encodeConfig(decodeConfig(once))
+    expect(twice).toBe(once)
+  })
+})
+```
+
+Create `tests/scenes/engine/Presets.test.ts`:
+
+```ts
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+
+// Mock localStorage before importing Presets
+const localStorageMock = (() => {
+  let store: Record<string, string> = {}
+  return {
+    getItem: vi.fn((key: string) => store[key] ?? null),
+    setItem: vi.fn((key: string, value: string) => { store[key] = value }),
+    removeItem: vi.fn((key: string) => { delete store[key] }),
+    clear: vi.fn(() => { store = {} }),
+    get length() { return Object.keys(store).length },
+    key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
+  }
+})()
+
+Object.defineProperty(globalThis, 'localStorage', { value: localStorageMock, writable: true })
+
+import { savePreset, loadPreset, listPresets, deletePreset } from '@/scenes/engine/Presets'
+
+beforeEach(() => {
+  localStorageMock.clear()
+  vi.clearAllMocks()
+})
+
+describe('Presets CRUD', () => {
+  it('savePreset + loadPreset round-trips a config', () => {
+    const config = { sigma: 10, rho: 28, beta: 2.6667 }
+    savePreset('lorenz', 'my-test', config)
+    const loaded = loadPreset('lorenz', 'my-test')
+    expect(loaded).toEqual(config)
+  })
+
+  it('loadPreset returns null for unknown name', () => {
+    expect(loadPreset('lorenz', 'nonexistent')).toBeNull()
+  })
+
+  it('listPresets returns names of all saved presets for a sceneId', () => {
+    savePreset('lorenz', 'preset-a', { sigma: 10 })
+    savePreset('lorenz', 'preset-b', { sigma: 20 })
+    savePreset('singularity', 'preset-x', { speed: 3 })
+    const lorenzPresets = listPresets('lorenz')
+    expect(lorenzPresets).toContain('preset-a')
+    expect(lorenzPresets).toContain('preset-b')
+    expect(lorenzPresets).not.toContain('preset-x')
+  })
+
+  it('listPresets returns empty array when nothing saved', () => {
+    expect(listPresets('lorenz')).toEqual([])
+  })
+
+  it('deletePreset removes a preset', () => {
+    savePreset('lorenz', 'to-delete', { sigma: 5 })
+    deletePreset('lorenz', 'to-delete')
+    expect(loadPreset('lorenz', 'to-delete')).toBeNull()
+    expect(listPresets('lorenz')).not.toContain('to-delete')
+  })
+
+  it('overwriting a preset updates its value', () => {
+    savePreset('lorenz', 'draft', { sigma: 5 })
+    savePreset('lorenz', 'draft', { sigma: 99 })
+    expect(loadPreset('lorenz', 'draft')).toEqual({ sigma: 99 })
+  })
+})
+```
+
+- [ ] **Step 2: Run tests — expect FAIL (modules missing)**
+
+Run: `pnpm test tests/scenes/engine/UrlState.test.ts tests/scenes/engine/Presets.test.ts`
+Expected: FAIL — cannot resolve `@/scenes/engine/UrlState` and `@/scenes/engine/Presets`.
+
+- [ ] **Step 3: Implement `src/scenes/engine/UrlState.ts`**
+
+```ts
+/**
+ * Compact URL hash encoding for sim configs.
+ *
+ * Format: `key=value&key2=value2`
+ * - Numbers are encoded as their string representation (parseFloat on decode)
+ * - Booleans encoded as "1" / "0"
+ * - Strings URI-encoded
+ *
+ * This format is intentionally simple and human-readable so that shared URLs
+ * are legible (e.g. `#sigma=10&rho=28&beta=2.667`).
+ *
+ * Limitations: only supports flat objects (no nested keys). Deep configs must
+ * be flattened by the sim before calling encodeConfig.
+ */
+
+type ConfigValue = string | number | boolean
+type FlatConfig = Record<string, ConfigValue>
+
+/**
+ * Encode a flat config object to a compact query-string.
+ * Keys are sorted alphabetically for idempotency (encode(decode(encode(x))) === encode(x)).
+ */
+export function encodeConfig(config: FlatConfig): string {
+  const sortedKeys = Object.keys(config).sort()
+  return sortedKeys
+    .map((key) => {
+      const value = config[key]
+      let encoded: string
+      if (typeof value === 'boolean') {
+        encoded = value ? '1' : '0'
+      } else if (typeof value === 'number') {
+        // Use toPrecision to avoid floating-point noise while keeping precision
+        encoded = String(value)
+      } else {
+        encoded = encodeURIComponent(String(value))
+      }
+      return `${encodeURIComponent(key)}=${encoded}`
+    })
+    .join('&')
+}
+
+/**
+ * Decode a query-string produced by `encodeConfig` back to a flat config.
+ * Returns an empty object for empty / malformed input.
+ *
+ * Type inference: values that parse as numbers become numbers, "1"/"0" become
+ * booleans only when the key exists in a provided type hint; otherwise they
+ * remain numbers. For full typed decode, pass results through a sim-specific
+ * zod schema.
+ */
+export function decodeConfig(encoded: string): FlatConfig {
+  if (!encoded || encoded.trim() === '') return {}
+
+  const result: FlatConfig = {}
+  const pairs = encoded.split('&')
+
+  for (const pair of pairs) {
+    const eqIdx = pair.indexOf('=')
+    if (eqIdx === -1) continue
+    const rawKey = pair.slice(0, eqIdx)
+    const rawVal = pair.slice(eqIdx + 1)
+    if (!rawKey) continue
+
+    const key = decodeURIComponent(rawKey)
+    const valStr = decodeURIComponent(rawVal)
+
+    // Attempt numeric parse first
+    const num = Number(valStr)
+    if (valStr !== '' && !isNaN(num)) {
+      result[key] = num
+    } else if (valStr === 'true') {
+      result[key] = true
+    } else if (valStr === 'false') {
+      result[key] = false
+    } else {
+      result[key] = valStr
+    }
+  }
+
+  return result
+}
+
+// ---------------------------------------------------------------------------
+// Debounced URL hash writer — used by the PresetMenu and Leva onChange.
+// ---------------------------------------------------------------------------
+
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
+
+/**
+ * Write a config to `window.location.hash` (debounced, 300ms).
+ * Preserves the scroll position — uses `history.replaceState` not assignment.
+ */
+export function writeHashDebounced(config: FlatConfig, delayMs = 300): void {
+  if (typeof window === 'undefined') return
+  if (debounceTimer !== null) {
+    clearTimeout(debounceTimer)
+  }
+  debounceTimer = setTimeout(() => {
+    const hash = encodeConfig(config)
+    history.replaceState(null, '', hash ? `#${hash}` : window.location.pathname)
+    debounceTimer = null
+  }, delayMs)
+}
+
+/**
+ * Read the current URL hash and decode it to a flat config.
+ * Returns empty object when no hash is present.
+ */
+export function readHashConfig(): FlatConfig {
+  if (typeof window === 'undefined') return {}
+  const hash = window.location.hash.replace(/^#/, '')
+  return decodeConfig(hash)
+}
+```
+
+- [ ] **Step 4: Implement `src/scenes/engine/Presets.ts`**
+
+```ts
+/**
+ * User preset persistence layer backed by localStorage.
+ *
+ * Storage key format: `sim-preset:<sceneId>:<presetName>`
+ * Index key format:   `sim-preset-index:<sceneId>` → JSON array of preset names
+ *
+ * All operations are synchronous. localStorage is synchronous in all browsers.
+ * Gracefully handles missing localStorage (SSR / privacy mode).
+ */
+
+const PREFIX = 'sim-preset'
+const INDEX_PREFIX = 'sim-preset-index'
+
+function presetKey(sceneId: string, name: string): string {
+  return `${PREFIX}:${sceneId}:${name}`
+}
+
+function indexKey(sceneId: string): string {
+  return `${INDEX_PREFIX}:${sceneId}`
+}
+
+function safeLocalStorage(): Storage | null {
+  try {
+    return typeof localStorage !== 'undefined' ? localStorage : null
+  } catch {
+    return null
+  }
+}
+
+function readIndex(sceneId: string): string[] {
+  const ls = safeLocalStorage()
+  if (!ls) return []
+  try {
+    const raw = ls.getItem(indexKey(sceneId))
+    return raw ? (JSON.parse(raw) as string[]) : []
+  } catch {
+    return []
+  }
+}
+
+function writeIndex(sceneId: string, names: string[]): void {
+  const ls = safeLocalStorage()
+  if (!ls) return
+  ls.setItem(indexKey(sceneId), JSON.stringify(names))
+}
+
+/**
+ * Save a preset config under the given sceneId + name.
+ * Overwrites any existing preset with the same name.
+ */
+export function savePreset(sceneId: string, name: string, config: unknown): void {
+  const ls = safeLocalStorage()
+  if (!ls) return
+
+  ls.setItem(presetKey(sceneId, name), JSON.stringify(config))
+
+  // Update index
+  const names = readIndex(sceneId)
+  if (!names.includes(name)) {
+    names.push(name)
+    writeIndex(sceneId, names)
+  }
+}
+
+/**
+ * Load a saved preset config.
+ * Returns null if the preset does not exist or cannot be parsed.
+ */
+export function loadPreset(sceneId: string, name: string): unknown | null {
+  const ls = safeLocalStorage()
+  if (!ls) return null
+  try {
+    const raw = ls.getItem(presetKey(sceneId, name))
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * List all saved preset names for a given sceneId.
+ * Returns an empty array when nothing is saved or localStorage is unavailable.
+ */
+export function listPresets(sceneId: string): string[] {
+  return readIndex(sceneId)
+}
+
+/**
+ * Delete a saved preset by sceneId + name.
+ * No-op if the preset does not exist.
+ */
+export function deletePreset(sceneId: string, name: string): void {
+  const ls = safeLocalStorage()
+  if (!ls) return
+
+  ls.removeItem(presetKey(sceneId, name))
+
+  const names = readIndex(sceneId).filter((n) => n !== name)
+  writeIndex(sceneId, names)
+}
+```
+
+- [ ] **Step 5: Run tests — expect PASS**
+
+Run: `pnpm test tests/scenes/engine/UrlState.test.ts tests/scenes/engine/Presets.test.ts`
+Expected: `✓ UrlState (7 tests)` + `✓ Presets (6 tests)` with exit code 0.
+
+- [ ] **Step 6: Implement `src/scenes/ui/PresetMenu.tsx`**
+
+```tsx
+import React, { useState, useCallback, useTransition } from 'react'
+import { listPresets, loadPreset, savePreset, deletePreset } from '@/scenes/engine/Presets'
+import { encodeConfig, writeHashDebounced } from '@/scenes/engine/UrlState'
+import type { SceneId } from '@/scenes/engine/types'
+
+export interface PresetMenuProps {
+  sceneId: SceneId
+  /** Current config object from the active sim */
+  currentConfig: Record<string, unknown>
+  /** Built-in presets shipped with the sim (name → partial config) */
+  builtinPresets: Record<string, Record<string, unknown>>
+  /** Called when a preset is loaded; sim should apply the config */
+  onLoad: (config: Record<string, unknown>) => void
+}
+
+/**
+ * Dropdown preset menu: shows built-in presets + user-saved presets.
+ * Features:
+ * - "Save current as…" prompt → saves to localStorage
+ * - "Copy shareable URL" → encodes config to URL hash and copies to clipboard
+ * - "Delete" next to user presets
+ *
+ * All state updates use `startTransition` to avoid blocking the render loop.
+ */
+export function PresetMenu({
+  sceneId,
+  currentConfig,
+  builtinPresets,
+  onLoad,
+}: PresetMenuProps): React.ReactElement {
+  const [userPresets, setUserPresets] = useState<string[]>(() => listPresets(sceneId))
+  const [, startTransition] = useTransition()
+  const [copyLabel, setCopyLabel] = useState('Copy shareable URL')
+
+  const handleLoadBuiltin = useCallback(
+    (name: string) => {
+      const partial = builtinPresets[name]
+      if (partial) {
+        startTransition(() => {
+          onLoad({ ...currentConfig, ...partial })
+        })
+      }
+    },
+    [builtinPresets, currentConfig, onLoad],
+  )
+
+  const handleLoadUser = useCallback(
+    (name: string) => {
+      const loaded = loadPreset(sceneId, name)
+      if (loaded) {
+        startTransition(() => {
+          onLoad(loaded as Record<string, unknown>)
+        })
+      }
+    },
+    [sceneId, onLoad],
+  )
+
+  const handleSave = useCallback(() => {
+    const name = window.prompt('Preset name:')
+    if (!name || name.trim() === '') return
+    savePreset(sceneId, name.trim(), currentConfig)
+    setUserPresets(listPresets(sceneId))
+  }, [sceneId, currentConfig])
+
+  const handleDelete = useCallback(
+    (name: string) => {
+      deletePreset(sceneId, name)
+      setUserPresets(listPresets(sceneId))
+    },
+    [sceneId],
+  )
+
+  const handleCopyURL = useCallback(() => {
+    // Write to hash immediately (not debounced) then copy
+    const hash = encodeConfig(currentConfig as Record<string, string | number | boolean>)
+    const url = `${window.location.origin}${window.location.pathname}#${hash}`
+    navigator.clipboard.writeText(url).then(() => {
+      setCopyLabel('Copied!')
+      setTimeout(() => setCopyLabel('Copy shareable URL'), 2000)
+    }).catch(() => {
+      // Fallback: use the debounced writer which at least updates the address bar
+      writeHashDebounced(currentConfig as Record<string, string | number | boolean>, 0)
+    })
+  }, [currentConfig])
+
+  const builtinNames = Object.keys(builtinPresets)
+
+  return (
+    <div className="preset-menu" style={{ display: 'flex', flexDirection: 'column', gap: '4px', minWidth: '200px' }}>
+      {builtinNames.length > 0 && (
+        <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+          <legend style={{ fontSize: '11px', opacity: 0.6, marginBottom: '2px' }}>Built-in</legend>
+          {builtinNames.map((name) => (
+            <button
+              key={name}
+              type="button"
+              onClick={() => handleLoadBuiltin(name)}
+              style={{ display: 'block', width: '100%', textAlign: 'left', padding: '2px 4px', background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+            >
+              {name}
+            </button>
+          ))}
+        </fieldset>
+      )}
+
+      {userPresets.length > 0 && (
+        <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+          <legend style={{ fontSize: '11px', opacity: 0.6, marginBottom: '2px' }}>Saved</legend>
+          {userPresets.map((name) => (
+            <div key={name} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button
+                type="button"
+                onClick={() => handleLoadUser(name)}
+                style={{ flex: 1, textAlign: 'left', padding: '2px 4px', background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+              >
+                {name}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDelete(name)}
+                aria-label={`Delete preset ${name}`}
+                style={{ padding: '2px 6px', background: 'none', border: 'none', cursor: 'pointer', color: '#f88', fontSize: '12px' }}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </fieldset>
+      )}
+
+      <hr style={{ margin: '4px 0', opacity: 0.3 }} />
+      <button
+        type="button"
+        onClick={handleSave}
+        style={{ padding: '3px 6px', background: 'none', border: '1px solid currentColor', borderRadius: '3px', cursor: 'pointer', color: 'inherit', fontSize: '12px' }}
+      >
+        Save current as…
+      </button>
+      <button
+        type="button"
+        onClick={handleCopyURL}
+        style={{ padding: '3px 6px', background: 'none', border: '1px solid currentColor', borderRadius: '3px', cursor: 'pointer', color: 'inherit', fontSize: '12px' }}
+      >
+        {copyLabel}
+      </button>
+    </div>
+  )
+}
+
+export default PresetMenu
+```
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add src/scenes/engine/UrlState.ts src/scenes/engine/Presets.ts \
+        src/scenes/ui/PresetMenu.tsx \
+        tests/scenes/engine/UrlState.test.ts tests/scenes/engine/Presets.test.ts
+git commit -m "feat(scenes): URL hash sync + preset menu (built-ins + user)"
+```
+
+---
+
+## Phase 9 — Help overlay
+
+### Task D15: `HelpOverlay`
+
+**Files:**
+- Create: `src/scenes/ui/HelpOverlay.tsx`
+- Create: `tests/scenes/ui/HelpOverlay.test.tsx`
+
+- [ ] **Step 1: Write the failing tests**
+
+Create `tests/scenes/ui/HelpOverlay.test.tsx`:
+
+```tsx
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { render, screen, fireEvent, act } from '@testing-library/react'
+import { HelpOverlay } from '@/scenes/ui/HelpOverlay'
+
+const defaultProps = {
+  sceneTitle: 'Singularity',
+  description: 'A black-hole accretion shader simulating gravitational lensing.',
+  formula: 'I = 1 - exp(-exp(c.x * 0.7) / w.x / (2 + i²/4 - i) / (0.5 + 1/a) / (0.03 + |p| - 0.7) * intensity)',
+  presetNames: ['default', 'intense', 'subtle'],
+  shortcuts: [
+    { key: 'L', description: 'Toggle Leva panel' },
+    { key: '?', description: 'Toggle this help overlay' },
+  ],
+}
+
+describe('HelpOverlay keyboard interaction', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('is not open by default (dialog not in document)', () => {
+    render(<HelpOverlay {...defaultProps} />)
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+
+  it('opens when ? key is pressed', () => {
+    render(<HelpOverlay {...defaultProps} />)
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+    })
+    expect(screen.getByRole('dialog')).toBeTruthy()
+  })
+
+  it('shows scene title in the dialog', () => {
+    render(<HelpOverlay {...defaultProps} />)
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+    })
+    expect(screen.getByText('Singularity')).toBeTruthy()
+  })
+
+  it('shows the description in the dialog', () => {
+    render(<HelpOverlay {...defaultProps} />)
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+    })
+    expect(screen.getByText(defaultProps.description)).toBeTruthy()
+  })
+
+  it('closes when Escape key is pressed', () => {
+    render(<HelpOverlay {...defaultProps} />)
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+    })
+    expect(screen.getByRole('dialog')).toBeTruthy()
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    })
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+
+  it('closes when the overlay backdrop is clicked', () => {
+    render(<HelpOverlay {...defaultProps} />)
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+    })
+    const backdrop = screen.getByTestId('help-overlay-backdrop')
+    fireEvent.click(backdrop)
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+
+  it('toggles: second ? press closes the dialog', () => {
+    render(<HelpOverlay {...defaultProps} />)
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+    })
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+    })
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+})
+```
+
+- [ ] **Step 2: Run tests — expect FAIL (module missing)**
+
+Run: `pnpm test tests/scenes/ui/HelpOverlay.test.tsx`
+Expected: FAIL — cannot resolve `@/scenes/ui/HelpOverlay`.
+
+- [ ] **Step 3: Implement `src/scenes/ui/HelpOverlay.tsx`**
+
+```tsx
+import React, { useState, useEffect, useCallback, useRef } from 'react'
+
+export interface KeyboardShortcut {
+  key: string
+  description: string
+}
+
+export interface HelpOverlayProps {
+  /** Title of the currently active sim */
+  sceneTitle: string
+  /** Human-readable description of the sim's physics */
+  description: string
+  /**
+   * Mathematical formula shown in a monospaced block.
+   * Use plain ASCII math or MathML string for display.
+   */
+  formula: string
+  /** Names of available presets (built-in + user) */
+  presetNames: string[]
+  /** Global keyboard shortcuts shown in the cheat sheet */
+  shortcuts: KeyboardShortcut[]
+}
+
+/**
+ * HelpOverlay
+ *
+ * Press `?` to open a modal dialog showing:
+ * - Active sim title
+ * - Physics description
+ * - Mathematical formula (monospaced fallback)
+ * - List of presets
+ * - Keyboard shortcuts cheat sheet
+ *
+ * Dismissal: `Escape` key, or click the backdrop.
+ * Focus is trapped inside the dialog when open.
+ */
+export function HelpOverlay({
+  sceneTitle,
+  description,
+  formula,
+  presetNames,
+  shortcuts,
+}: HelpOverlayProps): React.ReactElement {
+  const [open, setOpen] = useState(false)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  const close = useCallback(() => setOpen(false), [])
+  const toggle = useCallback(() => setOpen((prev) => !prev), [])
+
+  // Keyboard listener: `?` toggles, `Escape` closes
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      // Ignore if typing in a form field
+      const target = e.target as HTMLElement
+      if (
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable
+      ) {
+        return
+      }
+      if (e.key === '?') {
+        e.preventDefault()
+        toggle()
+      } else if (e.key === 'Escape') {
+        close()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [toggle, close])
+
+  // Move focus to close button when dialog opens (basic focus trap)
+  useEffect(() => {
+    if (open && closeButtonRef.current) {
+      closeButtonRef.current.focus()
+    }
+  }, [open])
+
+  if (!open) {
+    return <></>
+  }
+
+  return (
+    // Backdrop
+    <div
+      data-testid="help-overlay-backdrop"
+      onClick={close}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        backgroundColor: 'rgba(0,0,0,0.65)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {/* Dialog — stop propagation so clicks inside don't close */}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="help-overlay-title"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: '#1a1a2e',
+          border: '1px solid rgba(255,255,255,0.15)',
+          borderRadius: '8px',
+          padding: '24px 28px',
+          maxWidth: '520px',
+          width: '90vw',
+          maxHeight: '80vh',
+          overflowY: 'auto',
+          color: '#e8e8e8',
+          fontFamily: 'inherit',
+          position: 'relative',
+        }}
+      >
+        {/* Close button */}
+        <button
+          ref={closeButtonRef}
+          type="button"
+          onClick={close}
+          aria-label="Close help overlay"
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '16px',
+            background: 'none',
+            border: 'none',
+            fontSize: '18px',
+            cursor: 'pointer',
+            color: 'inherit',
+            opacity: 0.7,
+          }}
+        >
+          ×
+        </button>
+
+        {/* Title */}
+        <h2
+          id="help-overlay-title"
+          style={{ margin: '0 0 8px', fontSize: '18px', fontWeight: 600 }}
+        >
+          {sceneTitle}
+        </h2>
+
+        {/* Description */}
+        <p style={{ margin: '0 0 16px', opacity: 0.85, lineHeight: 1.5, fontSize: '14px' }}>
+          {description}
+        </p>
+
+        {/* Formula */}
+        {formula && (
+          <section style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '13px', opacity: 0.6, marginBottom: '6px', fontWeight: 500 }}>
+              Formula
+            </h3>
+            <pre
+              style={{
+                background: 'rgba(255,255,255,0.06)',
+                borderRadius: '4px',
+                padding: '10px 12px',
+                fontSize: '11px',
+                overflowX: 'auto',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-all',
+                lineHeight: 1.6,
+                margin: 0,
+              }}
+            >
+              {formula}
+            </pre>
+          </section>
+        )}
+
+        {/* Presets */}
+        {presetNames.length > 0 && (
+          <section style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '13px', opacity: 0.6, marginBottom: '6px', fontWeight: 500 }}>
+              Presets
+            </h3>
+            <ul style={{ margin: 0, padding: '0 0 0 16px', fontSize: '13px', lineHeight: 1.7 }}>
+              {presetNames.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Keyboard shortcuts cheat sheet */}
+        {shortcuts.length > 0 && (
+          <section>
+            <h3 style={{ fontSize: '13px', opacity: 0.6, marginBottom: '6px', fontWeight: 500 }}>
+              Keyboard shortcuts
+            </h3>
+            <table style={{ borderCollapse: 'collapse', fontSize: '13px', width: '100%' }}>
+              <tbody>
+                {shortcuts.map(({ key, description: desc }) => (
+                  <tr key={key}>
+                    <td style={{ paddingRight: '12px', paddingBottom: '4px', fontFamily: 'monospace', opacity: 0.9 }}>
+                      <kbd
+                        style={{
+                          background: 'rgba(255,255,255,0.1)',
+                          borderRadius: '3px',
+                          padding: '1px 5px',
+                          fontSize: '12px',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                        }}
+                      >
+                        {key}
+                      </kbd>
+                    </td>
+                    <td style={{ paddingBottom: '4px', opacity: 0.8 }}>{desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default HelpOverlay
+```
+
+- [ ] **Step 4: Run tests — expect PASS**
+
+Run: `pnpm test tests/scenes/ui/HelpOverlay.test.tsx`
+Expected: `✓ tests/scenes/ui/HelpOverlay.test.tsx (7 tests)` with exit code 0.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/scenes/ui/HelpOverlay.tsx tests/scenes/ui/HelpOverlay.test.tsx
+git commit -m "feat(scenes): HelpOverlay with ? shortcut"
+```
+
+---
+
+## Phase 10 — Singularity port (first sim)
+
+### Task D16: Port existing Singularity shader to r3f
+
+**Files:**
+- Create: `src/scenes/sims/singularity/Scene.tsx`
+- Create: `src/scenes/sims/singularity/presets.ts`
+- Create: `src/scenes/sims/singularity/index.ts`
+- Create: `tests/scenes/sims/singularity/Scene.test.tsx`
+
+- [ ] **Step 1: Write the failing tests**
+
+Create `tests/scenes/sims/singularity/Scene.test.tsx`:
+
+```tsx
+import { describe, it, expect, vi } from 'vitest'
+import { render } from '@testing-library/react'
+import React, { Suspense } from 'react'
+
+// ---------------------------------------------------------------------------
+// Mock heavy r3f dependencies so jsdom can import the Scene module
+// ---------------------------------------------------------------------------
+vi.mock('@react-three/fiber', () => ({
+  useFrame: vi.fn(),
+  useThree: vi.fn(() => ({ clock: { getElapsedTime: () => 0 } })),
+}))
+
+vi.mock('@react-three/drei', () => ({
+  shaderMaterial: vi.fn((uniforms: Record<string, unknown>, vert: string, frag: string) => {
+    // Return a minimal mock component class
+    function MockShaderMaterial() {}
+    MockShaderMaterial.key = `mock-${Math.random()}`
+    MockShaderMaterial.defaultProps = uniforms
+    // Store vert/frag for inspection
+    ;(MockShaderMaterial as unknown as Record<string, unknown>).__vert = vert
+    ;(MockShaderMaterial as unknown as Record<string, unknown>).__frag = frag
+    return MockShaderMaterial
+  }),
+  extend: vi.fn(),
+}))
+
+// Mock three.js at a basic level
+vi.mock('three', async () => {
+  const actual = await vi.importActual<typeof import('three')>('three')
+  return {
+    ...actual,
+    WebGLRenderer: vi.fn(),
+  }
+})
+
+import { singularityModule } from '@/scenes/sims/singularity/index'
+import { SINGULARITY_PRESETS } from '@/scenes/sims/singularity/presets'
+
+describe('singularityModule', () => {
+  it('exports a module with id "singularity"', () => {
+    expect(singularityModule.id).toBe('singularity')
+  })
+
+  it('has a non-empty title', () => {
+    expect(typeof singularityModule.title).toBe('string')
+    expect(singularityModule.title.length).toBeGreaterThan(0)
+  })
+
+  it('has a non-empty description', () => {
+    expect(typeof singularityModule.description).toBe('string')
+    expect(singularityModule.description.length).toBeGreaterThan(0)
+  })
+
+  it('defaults contain all 5 uniform keys', () => {
+    const d = singularityModule.defaults as Record<string, unknown>
+    expect(d).toHaveProperty('speed')
+    expect(d).toHaveProperty('intensity')
+    expect(d).toHaveProperty('size')
+    expect(d).toHaveProperty('waveStrength')
+    expect(d).toHaveProperty('colorShift')
+  })
+
+  it('schema contains all 5 uniform keys', () => {
+    const s = singularityModule.schema as Record<string, unknown>
+    expect(s).toHaveProperty('speed')
+    expect(s).toHaveProperty('intensity')
+    expect(s).toHaveProperty('size')
+    expect(s).toHaveProperty('waveStrength')
+    expect(s).toHaveProperty('colorShift')
+  })
+
+  it('symmetryApplies always returns false (singularity has inherent radial symmetry)', () => {
+    expect(singularityModule.symmetryApplies('C', 4)).toBe(false)
+    expect(singularityModule.symmetryApplies('D', 3)).toBe(false)
+    expect(singularityModule.symmetryApplies('none', 1)).toBe(false)
+  })
+
+  it('init returns an empty state object (shader-only sim has no CPU state)', () => {
+    const state = singularityModule.init(singularityModule.defaults, 'mid')
+    expect(state).toBeDefined()
+  })
+
+  it('step is a no-op and does not throw', () => {
+    const state = singularityModule.init(singularityModule.defaults, 'mid')
+    expect(() => singularityModule.step(state, 0.016)).not.toThrow()
+  })
+
+  it('dispose is a no-op and does not throw', () => {
+    const state = singularityModule.init(singularityModule.defaults, 'mid')
+    expect(() => singularityModule.dispose(state)).not.toThrow()
+  })
+})
+
+describe('SINGULARITY_PRESETS', () => {
+  it('has exactly 3 built-in presets: default, intense, subtle', () => {
+    const names = Object.keys(SINGULARITY_PRESETS)
+    expect(names).toContain('default')
+    expect(names).toContain('intense')
+    expect(names).toContain('subtle')
+    expect(names).toHaveLength(3)
+  })
+
+  it('each preset is a partial config with at least one key', () => {
+    for (const [name, preset] of Object.entries(SINGULARITY_PRESETS)) {
+      expect(Object.keys(preset).length).toBeGreaterThan(0, `Preset "${name}" is empty`)
+    }
+  })
+})
+```
+
+- [ ] **Step 2: Run tests — expect FAIL (module missing)**
+
+Run: `pnpm test tests/scenes/sims/singularity/Scene.test.tsx`
+Expected: FAIL — cannot resolve `@/scenes/sims/singularity/index`.
+
+- [ ] **Step 3: Create `src/scenes/sims/singularity/presets.ts`**
+
+```ts
+import type { SingularityConfig } from './index'
+
+/**
+ * Built-in presets for the Singularity shader sim.
+ *
+ * These are partial configs merged on top of the module defaults.
+ * Values are tuned to reproduce visually distinct aesthetics.
+ */
+export const SINGULARITY_PRESETS: Record<string, Partial<SingularityConfig>> = {
+  /** Default: matches the original Home.tsx scroll-driven values at rest */
+  default: {
+    speed: 5.0,
+    intensity: 0.5,
+    size: 1.0,
+    waveStrength: 0.5,
+    colorShift: 0.1,
+  },
+  /** Intense: maximally turbulent, bright accretion disk */
+  intense: {
+    speed: 12.0,
+    intensity: 1.8,
+    size: 0.7,
+    waveStrength: 1.4,
+    colorShift: 0.6,
+  },
+  /** Subtle: slow, dark, meditative — suitable for background sections */
+  subtle: {
+    speed: 2.0,
+    intensity: 0.18,
+    size: 1.4,
+    waveStrength: 0.15,
+    colorShift: 0.0,
+  },
+}
+```
+
+- [ ] **Step 4: Create `src/scenes/sims/singularity/Scene.tsx`**
+
+The original shader uses the `react-shaders` `mainImage` convention (uses `iResolution`, `iTime`, `gl_FragCoord`). We adapt it to a standard three.js vertex + fragment shader pair using drei's `shaderMaterial`.
+
+```tsx
+import React, { useRef, useMemo } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { shaderMaterial } from '@react-three/drei'
+import * as THREE from 'three'
+import type { SingularityConfig } from './index'
+import type { PerfTier, SymmetryConfig } from '@/scenes/engine/types'
+
+// ---------------------------------------------------------------------------
+// Vertex shader — fullscreen quad, passes UV to fragment
+// ---------------------------------------------------------------------------
+const vertexShader = /* glsl */ `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`
+
+// ---------------------------------------------------------------------------
+// Fragment shader — port of src/components/shaders/Singularity.tsx
+// Adapts from react-shaders mainImage(iResolution, iTime) convention
+// to three.js uniforms (u_resolution, u_time).
+// ---------------------------------------------------------------------------
+const fragmentShader = /* glsl */ `
+precision highp float;
+
+uniform float u_time;
+uniform vec2  u_resolution;
+uniform float u_speed;
+uniform float u_intensity;
+uniform float u_size;
+uniform float u_waveStrength;
+uniform float u_colorShift;
+
+varying vec2 vUv;
+
+vec3 blackholeColorRamp(float t) {
+  if (t < 0.1)   return vec3(0.0, 0.0, 0.0);
+  if (t < 0.25)  return mix(vec3(0.0), vec3(1.0), (t - 0.1) / 0.15);
+  if (t < 0.55)  return mix(vec3(1.0), vec3(1.0, 0.95, 0.36), (t - 0.25) / 0.3);
+  if (t < 0.8)   return mix(vec3(1.0, 0.95, 0.36), vec3(1.0, 0.6, 0.18), (t - 0.55) / 0.25);
+  if (t < 0.95)  return mix(vec3(1.0, 0.6, 0.18), vec3(0.9, 0.33, 0.05), (t - 0.8) / 0.15);
+  return vec3(0.1, 0.07, 0.07);
+}
+
+void main() {
+  // Reconstruct gl_FragCoord-style from vUv + resolution
+  vec2 F = vUv * u_resolution;
+  vec2 r = u_resolution;
+
+  float i = 0.2 * u_speed, a;
+  vec2 p = (F + F - r) / r.y / (0.7 * u_size),
+       d = vec2(-1.0, 1.0),
+       b = p - i * d,
+       c = p * mat2(1.0, 1.0, d / (0.1 + i / dot(b, b)));
+
+  mat2 rot = mat2(
+    cos(0.5 * log(a = dot(c, c)) + u_time * i * u_speed),
+    -sin(0.5 * log(a) + u_time * i * u_speed),
+    sin(0.5 * log(a) + u_time * i * u_speed + 33.0),
+    cos(0.5 * log(a) + u_time * i * u_speed + 33.0)
+  );
+  vec2 v = c * rot / i;
+  vec2 w = vec2(0.0);
+
+  for (float j = 0.0; j < 9.0; j++) {
+    i += 1.0;
+    w += 1.0 + sin(v * u_waveStrength);
+    v += 0.7 * sin(v.yx * i + u_time * u_speed) / i + 0.5;
+  }
+
+  i = length(sin(v / 0.3) * 0.4 + c * (3.0 + d));
+
+  float color_t = clamp(
+    (length(p) - 0.4) * 1.4
+    + 0.25 * sin(u_time * 0.2 + length(c) * 4.0)
+    + u_colorShift * 0.2,
+    0.0, 1.0
+  );
+  vec3 colorRamp = blackholeColorRamp(color_t);
+
+  float brightness = 1.0 - exp(
+    -exp(c.x * 0.7)
+      / w.x
+      / (2.0 + i * i / 4.0 - i)
+      / (0.5 + 1.0 / a)
+      / (0.03 + abs(length(p) - 0.7))
+      * u_intensity
+  );
+
+  gl_FragColor = vec4(colorRamp * brightness, 1.0);
+}
+`
+
+// ---------------------------------------------------------------------------
+// ShaderMaterial via drei (auto-attaches to mesh, hot-reloadable)
+// ---------------------------------------------------------------------------
+const SingularityMaterial = shaderMaterial(
+  {
+    u_time: 0.0,
+    u_resolution: new THREE.Vector2(1, 1),
+    u_speed: 5.0,
+    u_intensity: 0.5,
+    u_size: 1.0,
+    u_waveStrength: 0.5,
+    u_colorShift: 0.1,
+  },
+  vertexShader,
+  fragmentShader,
+)
+
+// Extend three.js namespace so JSX can reference <singularityMaterial />
+// (drei extend call done at module load time)
+import { extend } from '@react-three/drei'
+extend({ SingularityMaterial })
+
+// TypeScript JSX element declaration
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    singularityMaterial: React.PropsWithChildren<{
+      ref?: React.Ref<THREE.ShaderMaterial & {
+        u_time: number
+        u_resolution: THREE.Vector2
+        u_speed: number
+        u_intensity: number
+        u_size: number
+        u_waveStrength: number
+        u_colorShift: number
+      }>
+    }>
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Scene component
+// ---------------------------------------------------------------------------
+
+export interface SingularitySceneProps {
+  config: SingularityConfig
+  perf: PerfTier
+  symmetry: SymmetryConfig
+}
+
+/**
+ * Fullscreen plane with the Singularity shader applied as a three.js
+ * ShaderMaterial. The plane spans the full NDC screen (-1 to +1 in x and y)
+ * and sits at z=0 in front of the orthographic camera.
+ *
+ * The sim is shader-only: there is no CPU state, no integration loop.
+ * `u_time` is driven by the r3f frame clock.
+ */
+export function SingularityScene({ config }: SingularitySceneProps): React.ReactElement {
+  const matRef = useRef<THREE.ShaderMaterial & {
+    u_time: number
+    u_resolution: THREE.Vector2
+    u_speed: number
+    u_intensity: number
+    u_size: number
+    u_waveStrength: number
+    u_colorShift: number
+  }>(null)
+
+  // Keep uniforms in sync with leva config
+  const uniforms = useMemo(
+    () => ({
+      u_speed: config.speed,
+      u_intensity: config.intensity,
+      u_size: config.size,
+      u_waveStrength: config.waveStrength,
+      u_colorShift: config.colorShift,
+    }),
+    [config],
+  )
+
+  useFrame(({ clock, size }) => {
+    if (!matRef.current) return
+    matRef.current.u_time = clock.getElapsedTime()
+    matRef.current.u_resolution.set(size.width, size.height)
+    matRef.current.u_speed = uniforms.u_speed
+    matRef.current.u_intensity = uniforms.u_intensity
+    matRef.current.u_size = uniforms.u_size
+    matRef.current.u_waveStrength = uniforms.u_waveStrength
+    matRef.current.u_colorShift = uniforms.u_colorShift
+  })
+
+  return (
+    // Fullscreen quad: PlaneGeometry covers NDC [-1,1] × [-1,1] at z=0
+    <mesh>
+      <planeGeometry args={[2, 2]} />
+      {/* @ts-expect-error: drei extend adds singularityMaterial to JSX namespace */}
+      <singularityMaterial ref={matRef} />
+    </mesh>
+  )
+}
+```
+
+- [ ] **Step 5: Create `src/scenes/sims/singularity/index.ts`**
+
+```ts
+import { useControls } from 'leva'
+import React from 'react'
+import type { SimModule, PerfTier, SymmetryConfig, SymmetryType } from '@/scenes/engine/types'
+import { SingularityScene } from './Scene'
+import { SINGULARITY_PRESETS } from './presets'
+
+// ---------------------------------------------------------------------------
+// Config type
+// ---------------------------------------------------------------------------
+
+export interface SingularityConfig {
+  speed: number
+  intensity: number
+  size: number
+  waveStrength: number
+  colorShift: number
+}
+
+// ---------------------------------------------------------------------------
+// Shader-only sim has no meaningful CPU state
+// ---------------------------------------------------------------------------
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface SingularityState {}
+
+// ---------------------------------------------------------------------------
+// Leva schema
+// ---------------------------------------------------------------------------
+
+const schema = {
+  speed: { value: 5.0, min: 0.5, max: 20.0, step: 0.1, label: 'Speed' },
+  intensity: { value: 0.5, min: 0.01, max: 3.0, step: 0.01, label: 'Intensity' },
+  size: { value: 1.0, min: 0.2, max: 3.0, step: 0.05, label: 'Size' },
+  waveStrength: { value: 0.5, min: 0.0, max: 2.0, step: 0.05, label: 'Wave Strength' },
+  colorShift: { value: 0.1, min: -1.0, max: 1.0, step: 0.05, label: 'Color Shift' },
+}
+
+// ---------------------------------------------------------------------------
+// Scene wrapper that wires leva controls to the shader
+// ---------------------------------------------------------------------------
+
+function SingularitySceneWithControls({
+  config: initialConfig,
+  perf,
+  symmetry,
+}: {
+  config: SingularityConfig
+  perf: PerfTier
+  symmetry: SymmetryConfig
+}): React.ReactElement {
+  // useControls merges into the global Leva store (mounted in BaseLayout)
+  const config = useControls('Singularity', {
+    speed: { value: initialConfig.speed, min: 0.5, max: 20.0, step: 0.1, label: 'Speed' },
+    intensity: { value: initialConfig.intensity, min: 0.01, max: 3.0, step: 0.01, label: 'Intensity' },
+    size: { value: initialConfig.size, min: 0.2, max: 3.0, step: 0.05, label: 'Size' },
+    waveStrength: { value: initialConfig.waveStrength, min: 0.0, max: 2.0, step: 0.05, label: 'Wave Strength' },
+    colorShift: { value: initialConfig.colorShift, min: -1.0, max: 1.0, step: 0.05, label: 'Color Shift' },
+  })
+
+  return React.createElement(SingularityScene, { config, perf, symmetry })
+}
+
+// ---------------------------------------------------------------------------
+// SimModule export
+// ---------------------------------------------------------------------------
+
+export const singularityModule: SimModule<SingularityConfig, SingularityState> = {
+  id: 'singularity',
+  title: 'Singularity',
+  description:
+    'A fragment shader simulating gravitational lensing around a black hole accretion disk. ' +
+    'Light bends as it approaches the event horizon; the color ramp spans from black through ' +
+    'white-yellow to deep orange at the outer disk boundary.',
+
+  defaults: {
+    speed: 5.0,
+    intensity: 0.5,
+    size: 1.0,
+    waveStrength: 0.5,
+    colorShift: 0.1,
+  },
+
+  presets: SINGULARITY_PRESETS,
+
+  schema,
+
+  Scene: SingularitySceneWithControls,
+
+  init(_config: SingularityConfig, _perf: PerfTier): SingularityState {
+    // Shader-only sim: no CPU state to initialize
+    return {}
+  },
+
+  step(_state: SingularityState, _dt: number): void {
+    // No integration step; all animation is driven by u_time in useFrame
+  },
+
+  dispose(_state: SingularityState): void {
+    // No GPU resources to release beyond what three.js disposes automatically
+  },
+
+  /**
+   * Singularity is an isotropic radial shader — it has inherent continuous
+   * rotational symmetry and discrete symmetry groups are not applicable.
+   * Always returns false to disable the symmetry controls in the Leva panel.
+   */
+  symmetryApplies(_type: SymmetryType, _order: number): boolean {
+    return false
+  },
+}
+```
+
+- [ ] **Step 6: Run tests — expect PASS**
+
+Run: `pnpm test tests/scenes/sims/singularity/Scene.test.tsx`
+Expected: `✓ tests/scenes/sims/singularity/Scene.test.tsx (11 tests)` with exit code 0.
+
+- [ ] **Step 7: Verify TypeScript**
+
+Run: `pnpm tsc --noEmit`
+Expected: exit code 0 with no new TypeScript errors.
+
+- [ ] **Step 8: Run full test suite**
+
+Run: `pnpm test`
+Expected: all tests pass (harness + solvers + engine + sims). Exit code 0.
+
+- [ ] **Step 9: Commit**
+
+```bash
+git add src/scenes/sims/singularity/Scene.tsx \
+        src/scenes/sims/singularity/presets.ts \
+        src/scenes/sims/singularity/index.ts \
+        tests/scenes/sims/singularity/Scene.test.tsx
+git commit -m "feat(sims): port Singularity shader to r3f"
+```
