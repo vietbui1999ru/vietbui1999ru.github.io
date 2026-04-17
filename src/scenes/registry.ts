@@ -14,6 +14,7 @@ import { SceneRegistry } from './engine/SceneRegistry'
 import { singularityModule } from './sims/singularity/index'
 import LorenzModule from './sims/lorenz/index'
 import MagneticModule from './sims/magnetic/index'
+import GrayScottModule from './sims/grayScott/index'
 
 // ---------------------------------------------------------------------------
 // All registered modules in display order
@@ -25,6 +26,7 @@ export const registeredModules: SimModule[] = [
   singularityModule as SimModule,
   LorenzModule as SimModule,
   MagneticModule as SimModule,
+  GrayScottModule as SimModule,
 ]
 
 // ---------------------------------------------------------------------------
