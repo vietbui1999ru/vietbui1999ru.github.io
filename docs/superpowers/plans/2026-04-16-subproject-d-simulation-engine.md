@@ -844,10 +844,13 @@ Create `tests/scenes/solvers/gpuCompute.test.ts`:
 
 ```ts
 import { describe, it, expect, vi } from 'vitest'
+import { detectRGBA16F } from '@/scenes/solvers/gpuCompute'
 
 // ---------------------------------------------------------------------------
 // Pure-function unit test: RGBA16F capability detection
-// This test mocks WebGLRenderingContext and runs without WebGL hardware.
+// Mocks WebGLRenderingContext; no GPU required.
+// Static import (not require()) — vitest ESM doesn't resolve `@/` under CJS require.
+// detectRGBA16F takes `gl` as an argument so no module-level mocking is needed.
 // ---------------------------------------------------------------------------
 describe('detectRGBA16F (unit, no WebGL required)', () => {
   it('returns true when EXT_color_buffer_float is available', () => {
@@ -856,8 +859,6 @@ describe('detectRGBA16F (unit, no WebGL required)', () => {
         name === 'EXT_color_buffer_float' ? {} : null,
       ),
     } as unknown as WebGLRenderingContext
-    // Lazy-import after mocking so the module uses our mock
-    const { detectRGBA16F } = require('@/scenes/solvers/gpuCompute')
     expect(detectRGBA16F(mockGL)).toBe(true)
   })
 
@@ -865,7 +866,6 @@ describe('detectRGBA16F (unit, no WebGL required)', () => {
     const mockGL = {
       getExtension: vi.fn(() => null),
     } as unknown as WebGLRenderingContext
-    const { detectRGBA16F } = require('@/scenes/solvers/gpuCompute')
     expect(detectRGBA16F(mockGL)).toBe(false)
   })
 })
