@@ -33,6 +33,18 @@ const sceneImportMap: Partial<
       React.createElement(mod.default.Scene, props as Parameters<typeof mod.default.Scene>[0])
     return { default: SceneComponent }
   }),
+  'gray-scott': lazy(async () => {
+    const mod = await import('../sims/grayScott/index')
+    const SceneComponent: React.FC<SceneProps> = (props) =>
+      React.createElement(mod.default.Scene, props as Parameters<typeof mod.default.Scene>[0])
+    return { default: SceneComponent }
+  }),
+  'kuramoto-sivashinsky': lazy(async () => {
+    const mod = await import('../sims/kuramotoSivashinsky/index')
+    const SceneComponent: React.FC<SceneProps> = (props) =>
+      React.createElement(mod.default.Scene, props as Parameters<typeof mod.default.Scene>[0])
+    return { default: SceneComponent }
+  }),
 }
 
 export interface SceneHostProps {
