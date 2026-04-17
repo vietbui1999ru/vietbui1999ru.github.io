@@ -4,12 +4,15 @@ import { useControls } from 'leva'
 import * as THREE from 'three'
 import type { PerfTier, SymmetryConfig } from '@/scenes/engine/types'
 import { createKSState, ksStep, ksSymmetricIC } from './compute'
-import type { KSConfig } from './compute'
+import type { KSConfig as KSComputeConfig } from './compute'
 
-export type { KSConfig }
+/** Full config used by the SimModule (compute config + symmetry IC order). */
+export interface KSConfig extends KSComputeConfig {
+  symmetryOrder: number
+}
 
 export type KSSceneProps = {
-  config: KSConfig & { symmetryOrder: number }
+  config: KSConfig
   perf: PerfTier
   symmetry: SymmetryConfig
 }
@@ -65,7 +68,7 @@ export function KuramotoSivashinskyScene({ config, perf: _perf, symmetry: _symme
       N:             { value: config.N,             min: 64,   max: 1024, step: 64   },
       nu:            { value: config.nu,            min: 0.1,  max: 4.0,  step: 0.1  },
       dt:            { value: config.dt,            min: 0.01, max: 0.2,  step: 0.01 },
-      symmetryOrder: { value: (config as KSSceneProps['config']).symmetryOrder, min: 1, max: 8, step: 1 },
+      symmetryOrder: { value: config.symmetryOrder, min: 1, max: 8, step: 1 },
     },
   )
 
