@@ -21,6 +21,18 @@ const sceneImportMap: Partial<
       React.createElement(mod.singularityModule.Scene, props as Parameters<typeof mod.singularityModule.Scene>[0])
     return { default: SceneComponent }
   }),
+  lorenz: lazy(async () => {
+    const mod = await import('../sims/lorenz/index')
+    const SceneComponent: React.FC<SceneProps> = (props) =>
+      React.createElement(mod.default.Scene, props as Parameters<typeof mod.default.Scene>[0])
+    return { default: SceneComponent }
+  }),
+  magnetic: lazy(async () => {
+    const mod = await import('../sims/magnetic/index')
+    const SceneComponent: React.FC<SceneProps> = (props) =>
+      React.createElement(mod.default.Scene, props as Parameters<typeof mod.default.Scene>[0])
+    return { default: SceneComponent }
+  }),
 }
 
 export interface SceneHostProps {

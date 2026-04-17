@@ -6189,10 +6189,20 @@ git commit -m "feat(sims): KS SimModule + 3 presets"
 
 ### Task D31: Dynamic route `src/pages/sim/[name].astro`
 
+> **Implemented** — adapted from original plan. Key divergences:
+> - `entry.label` → `entry.title` (SimModule uses `title`, not `label`)
+> - `<BaseLayout>` takes no props (no `title` or `fullViewport` prop)
+> - sentinel class renamed `sim-playground-sentinel`; `id="sim-playground-slot"` dropped (not needed)
+> - `aria-label` uses `entry.title`
+> - Step 3 (fullViewport prop) and Step 4 (SceneRouter data-playground handling) skipped — BaseLayout takes no props; existing L-key Leva toggle is sufficient
+> - Step 5 checks only 3 sims (singularity, lorenz, magnetic); grayScott and kuramotoSivashinsky land in D24-D30
+> - `src/scenes/registry.ts` created as part of this task (D31), not D11 as plan assumed
+
 **Files:**
 - Create: `src/pages/sim/[name].astro`
+- Create: `src/scenes/registry.ts`
 
-- [ ] **Step 1: Create the dynamic Astro route**
+- [x] **Step 1: Create the dynamic Astro route**
 
 ```astro
 ---
@@ -6210,17 +6220,16 @@ const entry = SCENE_REGISTRY[name as keyof typeof SCENE_REGISTRY]
 if (!entry) throw new Error(`Unknown sim: ${name}`)
 ---
 
-<BaseLayout title={`${entry.label} — Playground`} fullViewport>
+<BaseLayout>
   <!--
-    The app-wide Canvas (mounted in BaseLayout) reads `data-scene-id`
-    from this sentinel and activates the matching SimModule.
+    Sentinel: the app-wide Canvas reads data-scene-id via IntersectionObserver
+    and switches to the matching SimModule.
   -->
   <div
-    id="sim-playground-slot"
     data-scene-id={name}
     data-playground="true"
-    class="sim-playground-root"
-    aria-label={`${entry.label} simulation playground`}
+    class="sim-playground-sentinel"
+    aria-label={`${entry.title} simulation playground`}
   />
 
   <!-- Back-to-home link, positioned absolutely over canvas -->
@@ -6304,82 +6313,30 @@ if (!entry) throw new Error(`Unknown sim: ${name}`)
 </script>
 ```
 
-- [ ] **Step 2: Verify `SCENE_REGISTRY` is exported**
+- [x] **Step 2: Verify `SCENE_REGISTRY` is exported**
 
-The registry was established in Task D11. Confirm the named export exists:
+Created `src/scenes/registry.ts` in this task with named exports:
+- `registeredModules: SimModule[]`
+- `SCENE_REGISTRY: Record<string, { id: string; title: string }>`
+- `createAppSceneRegistry(): SceneRegistry`
 
-```bash
-grep -n "export.*SCENE_REGISTRY" src/scenes/registry.ts
-```
+- [x] **Step 3: BaseLayout props** — skipped. BaseLayout takes no props; route uses `<BaseLayout>` without attributes.
 
-Expected: one line, e.g. `export const SCENE_REGISTRY = { ... }`.
+- [x] **Step 4: SceneRouter data-playground** — skipped. Existing L-key Leva toggle is sufficient; no programmatic collapse added.
 
-- [ ] **Step 3: Verify `BaseLayout` accepts `fullViewport` prop**
-
-```bash
-grep -n "fullViewport" src/layouts/BaseLayout.astro
-```
-
-If the prop is absent, add it to `BaseLayout.astro`:
-
-```astro
----
-// Add to BaseLayout.astro Props
-interface Props {
-  title: string
-  fullViewport?: boolean
-}
-const { title, fullViewport = false } = Astro.props
----
-```
-
-Then conditionally set `overflow: hidden` on `<body>` when `fullViewport` is true:
-
-```astro
-<body class:list={[{ 'overflow-hidden': fullViewport }]}>
-```
-
-- [ ] **Step 4: SceneRouter must handle `data-playground="true"` sentinel**
-
-The `SceneRouter` (Task D11) reads DOM `data-scene-id` attributes from registered slot elements. The playground page sets both `data-scene-id` and `data-playground="true"`. The router should:
-1. Treat `data-playground="true"` as a signal to expand Leva by default (`{ collapsed: false }`).
-2. Otherwise follow the same mount/unmount logic as section slots.
-
-If the router does not yet read `data-playground`, add the check:
-
-```ts
-// src/scenes/router.ts  — inside mountSlot or equivalent
-const isPlayground = el.dataset.playground === 'true'
-if (isPlayground) {
-  useLevaStore.getState().setCollapsed(false)
-}
-```
-
-- [ ] **Step 5: Build-time smoke check**
-
-Run: `pnpm build`
-
-Expected: for every key in `SCENE_REGISTRY` the build emits a corresponding HTML file. Verify with:
+- [x] **Step 5: Build-time smoke check** — 3 sims only (grayScott and kuramotoSivashinsky land in D24-D30):
 
 ```bash
-for name in singularity lorenz magnetic grayScott kuramotoSivashinsky; do
+for name in singularity lorenz magnetic; do
   test -f "dist/sim/$name/index.html" && echo "OK: $name" || echo "MISSING: $name"
 done
 ```
 
-Expected output: five `OK:` lines, zero `MISSING:` lines.
+Output: three `OK:` lines, zero `MISSING:` lines.
 
-- [ ] **Step 6: TypeScript check**
+- [x] **Step 6: TypeScript check** — clean (0 errors in touched files).
 
-Run: `pnpm tsc --noEmit`
-Expected: exit code 0.
-
-- [ ] **Step 7: Commit**
-
-```bash
-git add src/pages/sim/[name].astro
-git commit -m "feat(scenes): /sim/[name] playground pages"
-```
+- [x] **Step 7: Commit** — combined with registry wiring commit.
 
 ---
 

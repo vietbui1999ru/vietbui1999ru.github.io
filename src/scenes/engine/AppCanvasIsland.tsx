@@ -9,14 +9,11 @@
 import React from 'react'
 import { AppCanvas } from './Canvas'
 import { useActiveScene } from './SceneRouter'
-import { SceneRegistry } from './SceneRegistry'
 import type { SymmetryConfig } from './types'
-import { singularityModule } from '../sims/singularity/index'
+import { createAppSceneRegistry } from '../registry'
 
 // Singleton registry for the app (all sims registered here at module load time)
-const registry = new SceneRegistry()
-registry.register(singularityModule)
-// Additional sims registered in their respective task commits (D17-D20)
+const registry = createAppSceneRegistry()
 
 // Stub perf + symmetry until D9/D13 wire them live. 'mid' is the safe middle
 // tier; detect-gpu integration ships in a later task.
