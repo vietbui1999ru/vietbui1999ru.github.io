@@ -28,11 +28,14 @@ export const KS_LEVA_SCHEMA = {
 // Space-time ring buffer: scrolling texture where each row is one time step
 const SPACETIME_ROWS = 512
 
+// Fullscreen NDC bypass: PlaneGeometry(2,2) spans clip space [-1,1],
+// so writing position.xy directly to gl_Position gives a true fullscreen
+// quad regardless of the enclosing Canvas camera.
 const spaceTimeVert = /* glsl */ `
 varying vec2 v_uv;
 void main() {
   v_uv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  gl_Position = vec4(position.xy, 0.0, 1.0);
 }
 `
 

@@ -60,11 +60,14 @@ function buildColormapTexture(name: 'viridis' | 'magma' | 'grayscale'): THREE.Da
   return tex
 }
 
+// Fullscreen NDC bypass: PlaneGeometry(2,2) spans clip space [-1,1],
+// so writing position.xy directly to gl_Position gives a true fullscreen
+// quad regardless of the enclosing Canvas camera.
 const displayVert = /* glsl */ `
 varying vec2 v_uv;
 void main() {
   v_uv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  gl_Position = vec4(position.xy, 0.0, 1.0);
 }
 `
 
@@ -141,7 +144,9 @@ export function GrayScottScene({ config, perf: _perf, symmetry: _symmetry }: Gra
     if (!c) return
     c.step()
     if (materialRef.current) {
-      materialRef.current.uniforms.u_state.value = c.field.texture
+      // c.field.texture is a WebGLRenderTarget; samplers need the underlying Texture.
+      const rt = c.field.texture
+      materialRef.current.uniforms.u_state.value = rt ? rt.texture : null
       materialRef.current.uniforms.u_colormap.value = colormapTex
     }
   })

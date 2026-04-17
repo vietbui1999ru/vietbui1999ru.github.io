@@ -1,15 +1,18 @@
 /**
  * Single source of truth for all registered SimModules.
  *
- * Consumed by:
- *  - AppCanvasIsland (React): calls createAppSceneRegistry() to get a
- *    class-based SceneRegistry instance at module load time.
- *  - /sim/[name].astro (Astro SSG): uses the plain SCENE_REGISTRY object
- *    in getStaticPaths without importing React-side code.
+ * Adding a new sim: add ONE entry to `registeredModules` below. The derived
+ * maps (`SCENE_REGISTRY`, `sceneMap`, `createAppSceneRegistry`) update
+ * automatically, and `SceneHost` reads from `sceneMap` — no parallel lists
+ * to keep in sync.
  *
- * Adding a new sim: import its module here and push it into registeredModules.
+ * Consumed by:
+ *  - AppCanvasIsland (React): `createAppSceneRegistry()` for live lookups
+ *  - SceneHost (React): `sceneMap` for id → Scene component
+ *  - /sim/[name].astro (Astro SSG): `SCENE_REGISTRY` for `getStaticPaths`
+ *    (plain metadata object, no React deps)
  */
-import type { SimModule } from './engine/types'
+import type { SceneId, SimModule } from './engine/types'
 import { SceneRegistry } from './engine/SceneRegistry'
 import { singularityModule } from './sims/singularity/index'
 import LorenzModule from './sims/lorenz/index'
@@ -18,11 +21,8 @@ import GrayScottModule from './sims/grayScott/index'
 import KuramotoSivashinskyModule from './sims/kuramotoSivashinsky/index'
 
 // ---------------------------------------------------------------------------
-// All registered modules in display order
+// All registered modules in display order — THE ONE LIST
 // ---------------------------------------------------------------------------
-// Cast each module to the base SimModule type (unknown Config/State) to satisfy
-// the covariant array type. The concrete generics are preserved inside each
-// sim's own index.ts; the registry only needs the common contract.
 export const registeredModules: SimModule[] = [
   singularityModule as SimModule,
   LorenzModule as SimModule,
@@ -30,6 +30,13 @@ export const registeredModules: SimModule[] = [
   GrayScottModule as SimModule,
   KuramotoSivashinskyModule as SimModule,
 ]
+
+// ---------------------------------------------------------------------------
+// Id → module lookup (runtime). SceneHost reads Scene components from here.
+// ---------------------------------------------------------------------------
+export const sceneMap: Partial<Record<SceneId, SimModule>> = Object.fromEntries(
+  registeredModules.map((m) => [m.id, m]),
+) as Partial<Record<SceneId, SimModule>>
 
 // ---------------------------------------------------------------------------
 // Plain record for Astro SSG (getStaticPaths). No React dependencies.
