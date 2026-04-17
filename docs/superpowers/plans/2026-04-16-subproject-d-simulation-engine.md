@@ -339,7 +339,7 @@ describe('verletStep', () => {
    * State layout: [x, v] (position, velocity).
    * Acceleration: a(x) = -x (unit spring constant, unit mass).
    */
-  it('conserves energy to < 1e-6 relative drift over 100_000 steps (symplectic)', () => {
+  it('conserves energy to < 1e-4 relative drift over 100_000 steps (symplectic, bounded oscillation)', () => {
     let x = 1.0
     let v = 0.0
     const dt = 0.01
@@ -358,7 +358,7 @@ describe('verletStep', () => {
 
     const finalEnergy = 0.5 * (x * x + v * v)
     const relDrift = Math.abs(finalEnergy - initialEnergy) / initialEnergy
-    expect(relDrift).toBeLessThan(1e-6)
+    expect(relDrift).toBeLessThan(1e-4)
   })
 
   it('returns position and velocity fields', () => {
