@@ -3667,7 +3667,7 @@ const SingularityMaterial = shaderMaterial(
 
 // Extend three.js namespace so JSX can reference <singularityMaterial />
 // (drei extend call done at module load time)
-import { extend } from '@react-three/drei'
+import { extend } from '@react-three/fiber'
 extend({ SingularityMaterial })
 
 // TypeScript JSX element declaration
@@ -3743,7 +3743,6 @@ export function SingularityScene({ config }: SingularitySceneProps): React.React
     // Fullscreen quad: PlaneGeometry covers NDC [-1,1] × [-1,1] at z=0
     <mesh>
       <planeGeometry args={[2, 2]} />
-      {/* @ts-expect-error: drei extend adds singularityMaterial to JSX namespace */}
       <singularityMaterial ref={matRef} />
     </mesh>
   )
