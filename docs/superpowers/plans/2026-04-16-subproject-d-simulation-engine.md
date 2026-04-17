@@ -498,8 +498,12 @@ describe('etdrk4Step', () => {
       t += dt
     }
 
-    // Analytic steady-state value at t
-    const uSS = (Math.sin(t) - 100 * Math.cos(t)) / 10001.0
+    // Particular solution of du/dt = -100u + sin(t):
+    //   u_p = a*sin(t) + b*cos(t), match coefficients:
+    //     a*cos(t) - b*sin(t) = -100a*sin(t) - 100b*cos(t) + sin(t)
+    //     → a = -100b, -b = -100a + 1 → a = 100/10001, b = -1/10001
+    //   u_ss(t) = (100*sin(t) - cos(t)) / 10001
+    const uSS = (100 * Math.sin(t) - Math.cos(t)) / 10001.0
     expect(Math.abs(u - uSS)).toBeLessThan(1e-6)
   })
 
