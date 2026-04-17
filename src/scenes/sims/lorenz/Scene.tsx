@@ -1,5 +1,6 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { PerspectiveCamera } from '@react-three/drei'
 import { useControls } from 'leva'
 import * as THREE from 'three'
 import type { PerfTier, SymmetryConfig } from '@/scenes/engine/types'
@@ -55,6 +56,11 @@ function initParticles(count: number, trailLength: number): Particle[] {
  * LorenzScene — accepts { config, perf, symmetry } per the SimModule contract.
  * Merges `config` into the Leva useControls initial values so the panel
  * reflects whatever preset or config was selected externally.
+ *
+ * Animation pattern: pre-allocate one Float32Array per particle (persistent,
+ * never recreated per frame). useFrame steps physics, refills the array via
+ * readTrail, flips attr.needsUpdate, and calls geometry.setDrawRange so
+ * WebGL only draws the valid prefix — mirroring the MagneticScene pattern.
  */
 export function LorenzScene({ config, perf: _perf, symmetry: _symmetry }: LorenzSceneProps) {
   const { sigma, rho, beta, particleCount, dt, trailLength } = useControls(
@@ -70,40 +76,61 @@ export function LorenzScene({ config, perf: _perf, symmetry: _symmetry }: Lorenz
   )
 
   const particles = useRef<Particle[]>([])
-  const groupRef = useRef<THREE.Group>(null)
 
-  // Re-initialize particles when count or trail length changes
-  useMemo(() => {
+  // One persistent Float32Array per particle, keyed on [particleCount, trailLength].
+  // Allocated once; mutated in-place every frame by readTrail.
+  const trailBuffers = useMemo<Float32Array[]>(() => {
     particles.current = initParticles(particleCount, trailLength)
+    return particles.current.map(() => new Float32Array(trailLength * 3))
   }, [particleCount, trailLength])
+
+  // One BufferAttribute ref per particle so useFrame can flip needsUpdate.
+  const attrRefs = useRef<(THREE.BufferAttribute | null)[]>([])
+  // One BufferGeometry ref per particle so useFrame can call setDrawRange.
+  const geoRefs = useRef<(THREE.BufferGeometry | null)[]>([])
 
   useFrame(() => {
     const params = { sigma, rho, beta, dt }
-    for (const p of particles.current) {
+    for (let i = 0; i < particles.current.length; i++) {
+      const p = particles.current[i]
       p.state = lorenzStep(p.state, params)
       pushPosition(p.trail, p.state.x, p.state.y, p.state.z)
+
+      readTrail(p.trail, trailBuffers[i])
+
+      const attr = attrRefs.current[i]
+      if (attr) {
+        attr.needsUpdate = true
+      }
+
+      const geo = geoRefs.current[i]
+      if (geo) {
+        geo.setDrawRange(0, p.trail.count)
+      }
     }
   })
 
   return (
-    <group ref={groupRef} scale={0.1}>
-      {particles.current.map((p, i) => {
-        const positions = new Float32Array(p.trail.capacity * 3)
-        const count = readTrail(p.trail, positions)
-        return (
+    <>
+      <PerspectiveCamera makeDefault position={[0, 0, 15]} fov={50} />
+      <group scale={0.1}>
+        {trailBuffers.map((buf, i) => (
           <line key={i}>
-            <bufferGeometry>
+            <bufferGeometry
+              ref={(el) => { geoRefs.current[i] = el as THREE.BufferGeometry | null }}
+            >
               <bufferAttribute
                 attach="attributes-position"
-                args={[positions, 3]}
-                count={count}
+                args={[buf, 3]}
+                count={trailLength}
+                ref={(el) => { attrRefs.current[i] = el as THREE.BufferAttribute | null }}
               />
             </bufferGeometry>
-            <lineBasicMaterial color={p.color} transparent opacity={0.7} />
+            <lineBasicMaterial color={particles.current[i]?.color} transparent opacity={0.7} />
           </line>
-        )
-      })}
-    </group>
+        ))}
+      </group>
+    </>
   )
 }
 
