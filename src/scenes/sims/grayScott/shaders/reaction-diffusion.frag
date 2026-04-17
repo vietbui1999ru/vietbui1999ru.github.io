@@ -1,10 +1,11 @@
 // Gray-Scott reaction-diffusion step, GLSL ES 1.00 (WebGL1-style).
 //
-// GPUComputationRenderer prepends its own header including:
-//   - precision statement
-//   - `uniform sampler2D textureField;`
-//   - `varying vec2 vUv;`
-// so we do NOT re-declare them here.
+// GPUComputationRenderer prepends its own header that declares:
+//   - the precision statement
+//   - `uniform sampler2D textureField;`  (the ping-pong state)
+//   - `uniform vec2 resolution;`         (texture size in pixels)
+// and uses a minimal vertex shader that does NOT pass a UV varying.
+// So we compute UV in the fragment shader from gl_FragCoord/resolution.
 
 // Reaction parameters (injected via variable.material.uniforms in compute.ts)
 uniform float u_F;       // feed rate
@@ -40,7 +41,7 @@ vec2 laplacian(sampler2D tex, vec2 uv, vec2 texel) {
 }
 
 void main() {
-  vec2 uv = vUv;
+  vec2 uv = gl_FragCoord.xy / resolution.xy;
 
   // Current concentrations
   vec2 conc = texture2D(textureField, uv).rg;
