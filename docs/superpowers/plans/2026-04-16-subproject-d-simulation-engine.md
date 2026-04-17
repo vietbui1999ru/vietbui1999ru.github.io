@@ -792,7 +792,9 @@ export function fftForward(signal: Float64Array): { re: Float64Array; im: Float6
  * Inverse complex-to-real FFT.
  * Inputs: re, im each of length N.
  * Output: real-valued signal of length N (imaginary parts discarded after IFFT).
- * Normalises by 1/N (matches forward transform convention).
+ *
+ * fft.js `inverseTransform` already normalises by 1/N, so we do NOT divide
+ * again here.
  */
 export function fftInverse(re: Float64Array, im: Float64Array, N: number): Float64Array {
   const fft = getFFT(N)
@@ -808,7 +810,7 @@ export function fftInverse(re: Float64Array, im: Float64Array, N: number): Float
 
   const result = new Float64Array(N)
   for (let i = 0; i < N; i++) {
-    result[i] = complexOutput[2 * i] / N
+    result[i] = complexOutput[2 * i]
   }
   return result
 }
