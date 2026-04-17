@@ -4812,12 +4812,15 @@ function dihedralRing(count: number, order: number, radius: number): Vec3[] {
   return positions
 }
 
-export function MagneticScene() {
+// PATCH D22 (applied): MagneticScene receives { config, perf, symmetry } per SimModule
+// contract. positionsRef allocated full-size up front (not Float32Array(0)).
+// bufferAttribute uses args={[array, 3]} not array={...} itemSize={...} (r3f 9).
+export function MagneticScene({ config, perf: _perf, symmetry: _symmetry }: MagneticSceneProps) {
   const {
-    particleCount, charge, mass, B0, dt, trailLength, symmetryOrder,
-  } = useControls('Magnetic', MAGNETIC_LEVA_SCHEMA)
+    particleCount, charge, mass, B0, dt, symmetryOrder,
+  } = useControls('Magnetic', { /* config merged key-by-key — see Scene.tsx */ })
 
-  const positionsRef = useRef<Float32Array>(new Float32Array(0))
+  const positionsRef = useRef<Float32Array>(new Float32Array(particleCount * 3))
   const particles = useRef<MagneticParticle[]>([])
 
   const sources: MagneticSource[] = useMemo(() => {
@@ -4833,6 +4836,8 @@ export function MagneticScene() {
   }, [symmetryOrder, B0])
 
   useMemo(() => {
+    // PATCH D22: re-allocate first so the ref is always correctly-sized
+    positionsRef.current = new Float32Array(particleCount * 3)
     const initPositions = dihedralRing(particleCount, symmetryOrder, 1.0)
     particles.current = initPositions.map((pos) => {
       const B = magneticField(pos, sources)
@@ -4844,8 +4849,7 @@ export function MagneticScene() {
         accel: { x: F.x / mass, y: F.y / mass, z: F.z / mass },
       }
     })
-    positionsRef.current = new Float32Array(particleCount * 3)
-  }, [particleCount, symmetryOrder, B0, charge, mass])
+  }, [particleCount, symmetryOrder, B0, charge, mass, sources])
 
   const pointsRef = useRef<THREE.Points>(null)
 
@@ -4867,11 +4871,11 @@ export function MagneticScene() {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
+        {/* PATCH D22: r3f 9 requires args={[array, itemSize]} not array/itemSize props */}
         <bufferAttribute
           attach="attributes-position"
-          array={positionsRef.current}
+          args={[positionsRef.current, 3]}
           count={particleCount}
-          itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial size={0.04} color="#00aaff" transparent opacity={0.8} sizeAttenuation />
@@ -4943,90 +4947,75 @@ git commit -m "feat(sims): Magnetic Scene with D_n symmetry ICs"
 - [ ] **Step 1: Create `src/scenes/sims/magnetic/presets.ts`**
 
 ```ts
-import type { SimPreset } from '@/scenes/engine/types'
+// PATCH D23: SimPreset<C> wrapper removed; shape is Record<string, Partial<MagneticConfig>>.
+// MAGNETIC_DEFAULT_PRESET export dropped (not part of SimModule contract).
 import type { MagneticConfig } from './Scene'
 
-export const MAGNETIC_PRESETS: Record<string, SimPreset<MagneticConfig>> = {
+export const MAGNETIC_PRESETS: Record<string, Partial<MagneticConfig>> = {
   dipole: {
-    label: 'Dipole (1 source)',
-    config: {
-      particleCount: 500, charge: 1, mass: 1, B0: 1,
-      dt: 0.005, trailLength: 200, symmetryType: 'C', symmetryOrder: 1,
-    },
+    particleCount: 500, charge: 1, mass: 1, B0: 1,
+    dt: 0.005, trailLength: 200, symmetryType: 'C', symmetryOrder: 1,
   },
   quadrupole: {
-    label: 'Quadrupole (2 sources)',
-    config: {
-      particleCount: 800, charge: 1, mass: 1, B0: 1.5,
-      dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 2,
-    },
+    particleCount: 800, charge: 1, mass: 1, B0: 1.5,
+    dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 2,
   },
   hexapole: {
-    label: 'Hexapole (3 sources)',
-    config: {
-      particleCount: 1200, charge: 1, mass: 1, B0: 1.2,
-      dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 3,
-    },
+    particleCount: 1200, charge: 1, mass: 1, B0: 1.2,
+    dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 3,
   },
   ringTrap: {
-    label: 'Ring Trap (6 sources)',
-    config: {
-      particleCount: 2000, charge: 1, mass: 0.5, B0: 2,
-      dt: 0.003, trailLength: 300, symmetryType: 'D', symmetryOrder: 6,
-    },
+    particleCount: 2000, charge: 1, mass: 0.5, B0: 2,
+    dt: 0.003, trailLength: 300, symmetryType: 'D', symmetryOrder: 6,
   },
   tokamak2d: {
-    label: 'Tokamak 2D (12 sources)',
-    config: {
-      particleCount: 3000, charge: 1, mass: 1, B0: 3,
-      dt: 0.002, trailLength: 400, symmetryType: 'D', symmetryOrder: 12,
-    },
+    particleCount: 3000, charge: 1, mass: 1, B0: 3,
+    dt: 0.002, trailLength: 400, symmetryType: 'D', symmetryOrder: 12,
   },
 }
-
-export const MAGNETIC_DEFAULT_PRESET = 'dipole'
 ```
 
 - [ ] **Step 2: Create `src/scenes/sims/magnetic/index.ts`**
 
 ```ts
-import type { SimModule } from '@/scenes/engine/types'
-import type { SymmetryType } from '@/scenes/engine/Symmetry'
-import { MagneticScene } from './Scene'
+// PATCH D23: Normalized to SimModule contract (matches Lorenz shape).
+// - label → title + description
+// - SymmetryType imported from '@/scenes/engine/types' (not engine/Symmetry)
+// - defaults + schema fields added (required by SimModule<C,S>)
+// - MAGNETIC_DEFAULT_PRESET / defaultPreset field removed (not in contract)
+// - presets: MAGNETIC_PRESETS is Record<string, Partial<Config>> (flat)
+import type { SimModule, PerfTier, SymmetryType } from '@/scenes/engine/types'
+import { MagneticScene, MAGNETIC_LEVA_SCHEMA } from './Scene'
 import type { MagneticConfig } from './Scene'
-import { MAGNETIC_PRESETS, MAGNETIC_DEFAULT_PRESET } from './presets'
+import { MAGNETIC_PRESETS } from './presets'
 
-export interface MagneticState {
-  // Scene manages particle array internally via useRef
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface MagneticState {}
 
 const MagneticModule: SimModule<MagneticConfig, MagneticState> = {
   id: 'magnetic',
-  label: 'Magnetic Field',
-  Scene: MagneticScene,
+  title: 'Magnetic Field',
+  description:
+    'Charged test particles integrating under the Lorentz force F = qv×B in a field generated by a D_n-symmetric arrangement of magnetic dipoles. Velocity-Verlet integrator (symplectic). Initial conditions on a dihedral ring; particle count and dipole order tunable.',
 
-  init(_config: MagneticConfig, _perf): MagneticState {
-    return {}
-  },
-
-  step(_state: MagneticState, _dt: number): void {
-    // Integration runs in Scene.tsx useFrame
-  },
-
-  dispose(_state: MagneticState): void {
-    // No external GPU resources
-  },
-
-  /**
-   * Magnetic sim supports both C_n (ring) and D_n (dihedral ring) symmetry
-   * for source placement and initial conditions.
-   */
-  symmetryApplies(type: SymmetryType, order: number): boolean {
-    return (type === 'C' || type === 'D') && order >= 1
+  defaults: {
+    particleCount: 500, charge: 1, mass: 1, B0: 1,
+    dt: 0.005, trailLength: 200, symmetryType: 'C', symmetryOrder: 1,
   },
 
   presets: MAGNETIC_PRESETS,
-  defaultPreset: MAGNETIC_DEFAULT_PRESET,
+  schema: MAGNETIC_LEVA_SCHEMA,
+  Scene: MagneticScene,
+
+  init(_config: MagneticConfig, _perf: PerfTier): MagneticState {
+    return {}
+  },
+  step(_state: MagneticState, _dt: number): void {},
+  dispose(_state: MagneticState): void {},
+
+  symmetryApplies(type: SymmetryType, order: number): boolean {
+    return (type === 'C' || type === 'D') && order >= 1
+  },
 }
 
 export default MagneticModule
