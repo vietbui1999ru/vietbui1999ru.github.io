@@ -4196,6 +4196,10 @@ git commit -m "feat(sims): trail buffer for Lorenz"
 
 ### Task D19: Lorenz Scene component
 
+> **PLAN PATCH (2026-04-16):** Original plan had `LorenzScene()` with no props.
+> Contract requires `{ config, perf, symmetry }`. Corrected below.
+> Also: `bufferAttribute` requires `args={[array, itemSize]}` not individual props.
+
 **Files:**
 - Create: `src/scenes/sims/lorenz/Scene.tsx`
 - Create: `tests/scenes/sims/lorenz/Scene.test.tsx`
@@ -4207,6 +4211,7 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useControls } from 'leva'
 import * as THREE from 'three'
+import type { PerfTier, SymmetryConfig } from '@/scenes/engine/types'
 import { lorenzStep, type LorenzState } from './physics'
 import { createTrailBuffer, pushPosition, readTrail } from './trails'
 
@@ -4217,6 +4222,12 @@ export interface LorenzConfig {
   particleCount: number
   dt: number
   trailLength: number
+}
+
+export type LorenzSceneProps = {
+  config: LorenzConfig
+  perf: PerfTier
+  symmetry: SymmetryConfig
 }
 
 export const LORENZ_LEVA_SCHEMA = {
@@ -4249,14 +4260,25 @@ function initParticles(count: number, trailLength: number): Particle[] {
   })
 }
 
-export function LorenzScene() {
+/**
+ * LorenzScene — accepts { config, perf, symmetry } per the SimModule contract.
+ * Merges `config` into the Leva useControls initial values so the panel
+ * reflects whatever preset or config was selected externally.
+ */
+export function LorenzScene({ config, perf: _perf, symmetry: _symmetry }: LorenzSceneProps) {
   const { sigma, rho, beta, particleCount, dt, trailLength } = useControls(
     'Lorenz',
-    LORENZ_LEVA_SCHEMA,
+    {
+      sigma:         { value: config.sigma,         min: 0,    max: 30,   step: 0.1  },
+      rho:           { value: config.rho,           min: 0,    max: 150,  step: 0.1  },
+      beta:          { value: config.beta,          min: 0,    max: 10,   step: 0.01 },
+      particleCount: { value: config.particleCount, min: 10,   max: 2000, step: 10   },
+      dt:            { value: config.dt,            min: 0.001, max: 0.02, step: 0.001 },
+      trailLength:   { value: config.trailLength,   min: 50,   max: 2000, step: 50   },
+    },
   )
 
   const particles = useRef<Particle[]>([])
-  const linesRef = useRef<THREE.LineSegments[]>([])
   const groupRef = useRef<THREE.Group>(null)
 
   // Re-initialize particles when count or trail length changes
@@ -4282,9 +4304,8 @@ export function LorenzScene() {
             <bufferGeometry>
               <bufferAttribute
                 attach="attributes-position"
-                array={positions}
+                args={[positions, 3]}
                 count={count}
-                itemSize={3}
               />
             </bufferGeometry>
             <lineBasicMaterial color={p.color} transparent opacity={0.7} />
@@ -4366,6 +4387,11 @@ git commit -m "feat(sims): Lorenz Scene with leva schema"
 
 ### Task D20: Lorenz SimModule registration + presets
 
+> **PLAN PATCH (2026-04-16):** Original plan used `SimPreset<C>` wrapper, `label`/`config`
+> fields, `LORENZ_DEFAULT_PRESET`, `label` on SimModule, missing `title`/`description`/
+> `defaults`/`schema`, and imported `SymmetryType` from `'@/scenes/engine/Symmetry'` (wrong).
+> All corrected below to match `SimModule` contract in `types.ts` and Singularity's shape.
+
 **Files:**
 - Create: `src/scenes/sims/lorenz/presets.ts`
 - Create: `src/scenes/sims/lorenz/index.ts`
@@ -4373,51 +4399,72 @@ git commit -m "feat(sims): Lorenz Scene with leva schema"
 - [ ] **Step 1: Create `src/scenes/sims/lorenz/presets.ts`**
 
 ```ts
-import type { SimPreset } from '@/scenes/engine/types'
 import type { LorenzConfig } from './Scene'
 
-export const LORENZ_PRESETS: Record<string, SimPreset<LorenzConfig>> = {
+/**
+ * Built-in presets for the Lorenz Attractor sim.
+ *
+ * These are partial configs merged on top of the module defaults.
+ * Matching Singularity's presets shape: Record<string, Partial<Config>>.
+ */
+export const LORENZ_PRESETS: Record<string, Partial<LorenzConfig>> = {
+  /** Classic strange attractor parameters from Lorenz 1963. */
   classic: {
-    label: 'Classic σ=10 ρ=28 β=8/3',
-    config: { sigma: 10, rho: 28, beta: 8 / 3, particleCount: 500, dt: 0.005, trailLength: 800 },
+    sigma: 10, rho: 28, beta: 8 / 3, particleCount: 500, dt: 0.005, trailLength: 800,
   },
+  /** Near-periodic orbit at high rho. */
   periodic: {
-    label: 'Periodic ρ=99.96',
-    config: { sigma: 10, rho: 99.96, beta: 8 / 3, particleCount: 200, dt: 0.002, trailLength: 600 },
+    sigma: 10, rho: 99.96, beta: 8 / 3, particleCount: 200, dt: 0.002, trailLength: 600,
   },
+  /** Double-scroll with more particles and longer trails. */
   doubleScroll: {
-    label: 'Double-scroll σ=10 ρ=28 β=8/3',
-    config: { sigma: 10, rho: 28, beta: 8 / 3, particleCount: 1000, dt: 0.005, trailLength: 1200 },
+    sigma: 10, rho: 28, beta: 8 / 3, particleCount: 1000, dt: 0.005, trailLength: 1200,
   },
 }
-
-export const LORENZ_DEFAULT_PRESET = 'classic'
 ```
 
 - [ ] **Step 2: Create `src/scenes/sims/lorenz/index.ts`**
 
 ```ts
-import type { SimModule } from '@/scenes/engine/types'
-import type { SymmetryType } from '@/scenes/engine/Symmetry'
-import { LorenzScene } from './Scene'
+import type { SimModule, PerfTier, SymmetryType } from '@/scenes/engine/types'
+import { LorenzScene, LORENZ_LEVA_SCHEMA } from './Scene'
 import type { LorenzConfig } from './Scene'
-import { LORENZ_PRESETS, LORENZ_DEFAULT_PRESET } from './presets'
+import { LORENZ_PRESETS } from './presets'
 
-export interface LorenzState {
-  // CPU-only sim; scene manages its own particle array via useRef
-}
+// CPU-only sim: scene manages its own particle array via useRef
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface LorenzState {}
 
 const LorenzModule: SimModule<LorenzConfig, LorenzState> = {
   id: 'lorenz',
-  label: 'Lorenz Attractor',
+  title: 'Lorenz Attractor',
+  description:
+    'Three-variable ODE system (Lorenz 1963) that exhibits deterministic chaos. ' +
+    'Two butterfly-like attractor wings at classical parameters σ=10, ρ=28, β=8/3. ' +
+    'RK4 integration; positive Lyapunov exponent makes initially-nearby trajectories diverge.',
+
+  defaults: {
+    sigma: 10,
+    rho: 28,
+    beta: 8 / 3,
+    particleCount: 500,
+    dt: 0.005,
+    trailLength: 800,
+  },
+
+  presets: LORENZ_PRESETS,
+
+  schema: LORENZ_LEVA_SCHEMA,
+
   Scene: LorenzScene,
 
-  init(_config: LorenzConfig, _perf): LorenzState {
+  init(_config: LorenzConfig, _perf: PerfTier): LorenzState {
+    // Integration happens inside Scene.tsx via useFrame; no CPU state here
     return {}
   },
 
   step(_state: LorenzState, _dt: number): void {
-    // Integration happens inside Scene.tsx via useFrame
+    // No integration step at module level; all animation is driven by useFrame
   },
 
   dispose(_state: LorenzState): void {
@@ -4431,9 +4478,6 @@ const LorenzModule: SimModule<LorenzConfig, LorenzState> = {
   symmetryApplies(type: SymmetryType, order: number): boolean {
     return type === 'C' && order >= 1
   },
-
-  presets: LORENZ_PRESETS,
-  defaultPreset: LORENZ_DEFAULT_PRESET,
 }
 
 export default LorenzModule

@@ -95,9 +95,8 @@ export function LorenzScene({ config, perf: _perf, symmetry: _symmetry }: Lorenz
             <bufferGeometry>
               <bufferAttribute
                 attach="attributes-position"
-                array={positions}
+                args={[positions, 3]}
                 count={count}
-                itemSize={3}
               />
             </bufferGeometry>
             <lineBasicMaterial color={p.color} transparent opacity={0.7} />
