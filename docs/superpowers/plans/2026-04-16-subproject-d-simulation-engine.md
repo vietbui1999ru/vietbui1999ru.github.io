@@ -1197,24 +1197,44 @@ describe('dnMask', () => {
     expect(mask.length).toBe(16 * 16)
   })
 
-  it('is N-fold rotationally symmetric (same as cnMask)', () => {
+  it('for a radially-symmetric base, cnMask and dnMask equal the base at every pixel', () => {
+    // A radially-symmetric base f(x,y) = g(r) is invariant under any rotation,
+    // so averaging N rotated samples yields f itself. This is a clean structural
+    // check that sidesteps pixel-rounding artefacts from comparing rotated pixel
+    // indices (which do NOT lie at the same continuous radius after rounding).
     const size = 32
     const N = 3
     const base = (x: number, y: number) => Math.cos(Math.sqrt(x * x + y * y) * 5)
     const cn = cnMask(size, N, base)
     const dn = dnMask(size, N, base)
-    // D_n includes C_n symmetry, so values at all C_n-symmetric pixels must match
-    const half = size / 2
-    const toIdx = (i: number, j: number) => j * size + i
-    const ix = Math.round(half + 4); const iy = Math.round(half + 2)
-    // Rotate by 2π/3
-    const angle = (2 * Math.PI) / N
-    const rx = Math.round(half + Math.cos(angle) * 4 - Math.sin(angle) * 2)
-    const ry = Math.round(half + Math.sin(angle) * 4 + Math.cos(angle) * 2)
-    if (ix < size && iy < size && rx < size && ry < size) {
-      expect(cn[toIdx(ix, iy)]).toBeCloseTo(cn[toIdx(rx, ry)], 3)
-      expect(dn[toIdx(ix, iy)]).toBeCloseTo(dn[toIdx(rx, ry)], 3)
+
+    for (let j = 0; j < size; j++) {
+      for (let i = 0; i < size; i++) {
+        const x = (i / (size - 1)) * 2 - 1
+        const y = (j / (size - 1)) * 2 - 1
+        const expected = base(x, y)
+        const idx = j * size + i
+        // Float32Array storage → ~7 decimal digits; precision 5 leaves margin
+        expect(cn[idx]).toBeCloseTo(expected, 5)
+        expect(dn[idx]).toBeCloseTo(expected, 5)
+      }
     }
+  })
+
+  it('preserves 4-fold symmetry at integer-aligned pixel offsets (no rounding error)', () => {
+    // N=4, 90° rotation maps pixel offset (a, b) → (-b, a) EXACTLY in integer
+    // pixels. Pick a non-radial base and verify the rotation pair matches.
+    const size = 33 // odd so there's a true center pixel
+    const N = 4
+    const base = (x: number, y: number) => x + 2 * y // non-radial
+    const cn = cnMask(size, N, base)
+    const center = (size - 1) / 2
+    const a = 6, b = 3
+    const toIdx = (i: number, j: number) => j * size + i
+    // (center+a, center+b) and (center-b, center+a) are exact 90° rotation pair.
+    expect(cn[toIdx(center + a, center + b)]).toBeCloseTo(
+      cn[toIdx(center - b, center + a)], 10,
+    )
   })
 })
 ```
@@ -1417,6 +1437,7 @@ function mockMatchMedia(prefersReduced: boolean) {
 describe('getPerfTier — reduced motion short-circuit', () => {
   beforeEach(() => {
     resetPerfCache()
+    mockGetGPUTier.mockClear()
     mockGetGPUTier.mockResolvedValue({ tier: 3, type: 'BENCHMARK' } as never)
   })
 
@@ -1442,6 +1463,7 @@ describe('getPerfTier — reduced motion short-circuit', () => {
 describe('getPerfTier — GPU tier mapping', () => {
   beforeEach(() => {
     resetPerfCache()
+    mockGetGPUTier.mockClear()
     mockMatchMedia(false)
   })
 
