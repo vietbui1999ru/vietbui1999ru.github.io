@@ -7,28 +7,28 @@ import type { SingularityConfig } from './index'
  * Values are tuned to reproduce visually distinct aesthetics.
  */
 export const SINGULARITY_PRESETS: Record<string, Partial<SingularityConfig>> = {
-  /** Default: matches the original Home.tsx scroll-driven values at rest */
+  /** Default: matches the legacy Home.tsx at-rest values (all 1.0). */
   default: {
-    speed: 5.0,
-    intensity: 0.5,
+    speed: 1.0,
+    intensity: 1.0,
     size: 1.0,
-    waveStrength: 0.5,
-    colorShift: 0.1,
+    waveStrength: 1.0,
+    colorShift: 1.0,
   },
-  /** Intense: maximally turbulent, bright accretion disk */
+  /** Intense: faster rotation, brighter accretion disk, richer hue. */
   intense: {
-    speed: 12.0,
+    speed: 2.5,
     intensity: 1.8,
     size: 0.7,
-    waveStrength: 1.4,
-    colorShift: 0.6,
+    waveStrength: 1.6,
+    colorShift: 1.5,
   },
-  /** Subtle: slow, dark, meditative — suitable for background sections */
+  /** Subtle: slow, dim, near-grayscale for background use. */
   subtle: {
-    speed: 2.0,
-    intensity: 0.18,
+    speed: 0.4,
+    intensity: 0.5,
     size: 1.4,
-    waveStrength: 0.15,
-    colorShift: 0.0,
+    waveStrength: 0.5,
+    colorShift: 0.2,
   },
 }

@@ -23,15 +23,16 @@ export interface SingularityConfig {
 export interface SingularityState {}
 
 // ---------------------------------------------------------------------------
-// Leva schema
+// Leva schema — ranges match the legacy react-shaders Singularity controls
+// (all five params default to 1.0; colorShift spans [-1, 1] for hue flip).
 // ---------------------------------------------------------------------------
 
 const schema = {
-  speed: { value: 5.0, min: 0.5, max: 20.0, step: 0.1, label: 'Speed' },
-  intensity: { value: 0.5, min: 0.01, max: 3.0, step: 0.01, label: 'Intensity' },
-  size: { value: 1.0, min: 0.2, max: 3.0, step: 0.05, label: 'Size' },
-  waveStrength: { value: 0.5, min: 0.0, max: 2.0, step: 0.05, label: 'Wave Strength' },
-  colorShift: { value: 0.1, min: -1.0, max: 1.0, step: 0.05, label: 'Color Shift' },
+  speed: { value: 1.0, min: 0.1, max: 8.0, step: 0.05, label: 'Speed' },
+  intensity: { value: 1.0, min: 0.1, max: 3.0, step: 0.05, label: 'Intensity' },
+  size: { value: 1.0, min: 0.3, max: 3.0, step: 0.05, label: 'Size' },
+  waveStrength: { value: 1.0, min: 0.0, max: 3.0, step: 0.05, label: 'Wave Strength' },
+  colorShift: { value: 1.0, min: -2.0, max: 2.0, step: 0.05, label: 'Color Shift' },
 }
 
 // ---------------------------------------------------------------------------
@@ -49,11 +50,11 @@ function SingularitySceneWithControls({
 }): React.ReactElement {
   // useControls merges into the global Leva store (mounted in BaseLayout)
   const config = useControls('Singularity', {
-    speed: { value: initialConfig.speed, min: 0.5, max: 20.0, step: 0.1, label: 'Speed' },
-    intensity: { value: initialConfig.intensity, min: 0.01, max: 3.0, step: 0.01, label: 'Intensity' },
-    size: { value: initialConfig.size, min: 0.2, max: 3.0, step: 0.05, label: 'Size' },
-    waveStrength: { value: initialConfig.waveStrength, min: 0.0, max: 2.0, step: 0.05, label: 'Wave Strength' },
-    colorShift: { value: initialConfig.colorShift, min: -1.0, max: 1.0, step: 0.05, label: 'Color Shift' },
+    speed: { value: initialConfig.speed, min: 0.1, max: 8.0, step: 0.05, label: 'Speed' },
+    intensity: { value: initialConfig.intensity, min: 0.1, max: 3.0, step: 0.05, label: 'Intensity' },
+    size: { value: initialConfig.size, min: 0.3, max: 3.0, step: 0.05, label: 'Size' },
+    waveStrength: { value: initialConfig.waveStrength, min: 0.0, max: 3.0, step: 0.05, label: 'Wave Strength' },
+    colorShift: { value: initialConfig.colorShift, min: -2.0, max: 2.0, step: 0.05, label: 'Color Shift' },
   })
 
   return React.createElement(SingularityScene, { config, perf, symmetry })
@@ -68,15 +69,15 @@ export const singularityModule: SimModule<SingularityConfig, SingularityState> =
   title: 'Singularity',
   description:
     'A fragment shader simulating gravitational lensing around a black hole accretion disk. ' +
-    'Light bends as it approaches the event horizon; the color ramp spans from black through ' +
-    'white-yellow to deep orange at the outer disk boundary.',
+    'Color emerges from per-channel exponential tinting of the geometry; colorShift scales ' +
+    'the RGB gradient vector (0.6, -0.4, -1.0) so channels diverge asymmetrically.',
 
   defaults: {
-    speed: 5.0,
-    intensity: 0.5,
+    speed: 1.0,
+    intensity: 1.0,
     size: 1.0,
-    waveStrength: 0.5,
-    colorShift: 0.1,
+    waveStrength: 1.0,
+    colorShift: 1.0,
   },
 
   presets: SINGULARITY_PRESETS,

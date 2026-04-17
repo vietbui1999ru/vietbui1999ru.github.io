@@ -6,20 +6,32 @@ import type { SingularityConfig } from './index'
 import type { PerfTier, SymmetryConfig } from '@/scenes/engine/types'
 
 // ---------------------------------------------------------------------------
-// Vertex shader — fullscreen quad, passes UV to fragment
+// Vertex shader — fullscreen quad in NDC.
+// Bypasses the camera: PlaneGeometry(2, 2) already spans NDC [-1, +1] in xy,
+// so writing `position.xy` directly to clip-space gives a true fullscreen quad
+// regardless of whether the enclosing Canvas uses a perspective or
+// orthographic projection. This is the standard shader-only fullscreen pattern.
 // ---------------------------------------------------------------------------
 const vertexShader = /* glsl */ `
 varying vec2 vUv;
 void main() {
   vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  gl_Position = vec4(position.xy, 0.0, 1.0);
 }
 `
 
 // ---------------------------------------------------------------------------
-// Fragment shader — port of src/components/shaders/Singularity.tsx
-// Adapts from react-shaders mainImage(iResolution, iTime) convention
-// to three.js uniforms (u_resolution, u_time).
+// Fragment shader — faithful port of src/components/shaders/Singularity.tsx.
+// Legacy used the react-shaders mainImage(iResolution, iTime) convention;
+// this version adapts it to three.js uniforms (u_resolution, u_time) but
+// preserves the EXACT algorithm:
+//
+//   - No color-ramp function. Color emerges from per-channel exponential
+//     tinting via colorGrad = vec4(.6, -.4, -1, 0) * u_colorShift.
+//   - Final output is vec4(1 - exp(-exp(c.x * colorGrad) / w.xyyx / ...))
+//     which produces RGBA directly; w.xyyx is a vec4 swizzle of vec2 w.
+//   - The mat2-of-vec4-cos construction for the rotation is preserved as-is
+//     (Shadertoy golf pattern: cos with phase offsets in 0/33/11/0).
 // ---------------------------------------------------------------------------
 const fragmentShader = /* glsl */ `
 precision highp float;
@@ -34,32 +46,22 @@ uniform float u_colorShift;
 
 varying vec2 vUv;
 
-vec3 blackholeColorRamp(float t) {
-  if (t < 0.1)   return vec3(0.0, 0.0, 0.0);
-  if (t < 0.25)  return mix(vec3(0.0), vec3(1.0), (t - 0.1) / 0.15);
-  if (t < 0.55)  return mix(vec3(1.0), vec3(1.0, 0.95, 0.36), (t - 0.25) / 0.3);
-  if (t < 0.8)   return mix(vec3(1.0, 0.95, 0.36), vec3(1.0, 0.6, 0.18), (t - 0.55) / 0.25);
-  if (t < 0.95)  return mix(vec3(1.0, 0.6, 0.18), vec3(0.9, 0.33, 0.05), (t - 0.8) / 0.15);
-  return vec3(0.1, 0.07, 0.07);
-}
-
 void main() {
-  // Reconstruct gl_FragCoord-style from vUv + resolution
   vec2 F = vUv * u_resolution;
   vec2 r = u_resolution;
 
-  float i = 0.2 * u_speed, a;
-  vec2 p = (F + F - r) / r.y / (0.7 * u_size),
-       d = vec2(-1.0, 1.0),
-       b = p - i * d,
-       c = p * mat2(1.0, 1.0, d / (0.1 + i / dot(b, b)));
+  float i = 0.2 * u_speed;
+  vec2 p = (F + F - r) / r.y / (0.7 * u_size);
+  vec2 d = vec2(-1.0, 1.0);
+  vec2 b = p - i * d;
+  vec2 c = p * mat2(1.0, 1.0, d / (0.1 + i / dot(b, b)));
 
-  mat2 rot = mat2(
-    cos(0.5 * log(a = dot(c, c)) + u_time * i * u_speed),
-    -sin(0.5 * log(a) + u_time * i * u_speed),
-    sin(0.5 * log(a) + u_time * i * u_speed + 33.0),
-    cos(0.5 * log(a) + u_time * i * u_speed + 33.0)
-  );
+  float a = dot(c, c);
+  // Rotation built from cos() of a vec4 with phase offsets (0, 33, 11, 0).
+  // Matches legacy's mat2(cos(.5*log(a) + iTime*i*speed + vec4(0,33,11,0))).
+  vec4 phase = 0.5 * log(a) + u_time * i * u_speed + vec4(0.0, 33.0, 11.0, 0.0);
+  vec4 cph = cos(phase);
+  mat2 rot = mat2(cph.x, cph.y, cph.z, cph.w);
   vec2 v = c * rot / i;
   vec2 w = vec2(0.0);
 
@@ -71,24 +73,17 @@ void main() {
 
   i = length(sin(v / 0.3) * 0.4 + c * (3.0 + d));
 
-  float color_t = clamp(
-    (length(p) - 0.4) * 1.4
-    + 0.25 * sin(u_time * 0.2 + length(c) * 4.0)
-    + u_colorShift * 0.2,
-    0.0, 1.0
-  );
-  vec3 colorRamp = blackholeColorRamp(color_t);
+  vec4 colorGrad = vec4(0.6, -0.4, -1.0, 0.0) * u_colorShift;
 
-  float brightness = 1.0 - exp(
-    -exp(c.x * 0.7)
-      / w.x
-      / (2.0 + i * i / 4.0 - i)
-      / (0.5 + 1.0 / a)
-      / (0.03 + abs(length(p) - 0.7))
-      * u_intensity
-  );
+  // Per-channel exponential tint. c.x * colorGrad yields distinct exponents
+  // per RGBA channel → hue emerges from geometry. w.xyyx swizzles vec2 → vec4.
+  vec4 innerExp = exp(c.x * colorGrad);
+  vec4 denom = w.xyyx
+             * (2.0 + i * i / 4.0 - i)
+             * (0.5 + 1.0 / a)
+             * (0.03 + abs(length(p) - 0.7));
 
-  gl_FragColor = vec4(colorRamp * brightness, 1.0);
+  gl_FragColor = 1.0 - exp(-innerExp / denom * u_intensity);
 }
 `
 
@@ -99,11 +94,11 @@ const SingularityMaterial = shaderMaterial(
   {
     u_time: 0.0,
     u_resolution: new THREE.Vector2(1, 1),
-    u_speed: 5.0,
-    u_intensity: 0.5,
+    u_speed: 1.0,
+    u_intensity: 1.0,
     u_size: 1.0,
-    u_waveStrength: 0.5,
-    u_colorShift: 0.1,
+    u_waveStrength: 1.0,
+    u_colorShift: 1.0,
   },
   vertexShader,
   fragmentShader,
