@@ -1,10 +1,9 @@
 "use client";
 
-import SingularityShaders from "@/components/shaders/Singularity";
 import GradientText from "@/components/ui/GradientText";
 import TypingText from "@/components/ui/TypingText";
 import { Magnetic } from "@/components/ui/magnetic";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SiGithub, SiGitlab } from "@icons-pack/react-simple-icons";
 import {
   INTRO_GRADIENT,
@@ -12,95 +11,36 @@ import {
   INTRO_LINE1,
   HOME_TAGLINE,
   INTRO_TYPING_SPEED,
-  SINGULARITY_SCROLL_MAX,
-  SINGULARITY_SCROLL_MIN,
-  SINGULARITY_SIZE_RESIZE_FACTOR,
   VIET_GRADIENT,
 } from "@/data/homeData";
 
 const GITLAB_PROFILE_URL = "https://gitlab.com/vietbui1999ru";
 
 const Home = () => {
-  const [singularitySpeed, setSingularitySpeed] = useState(1.0);
-  const [singularityIntensity, setSingularityIntensity] = useState(1.0);
-  const [singularitySize, setSingularitySize] = useState(1.0);
-  const [singularityWaveStrength, setSingularityWaveStrength] = useState(1.0);
-  const [singularityColorShift, setSingularityColorShift] = useState(1.0);
   const [githubGradientAngle, setGithubGradientAngle] = useState(220);
   const [gitlabGradientAngle, setGitlabGradientAngle] = useState(220);
 
-  const [isTouchOrMobile, setIsTouchOrMobile] = useState(false);
-
-  useEffect(() => {
-    const checkIsTouchOrMobile = () => {
-      if (typeof window === "undefined") return;
-      const isCoarsePointer =
-        typeof window.matchMedia !== "undefined"
-          ? window.matchMedia("(pointer: coarse)").matches
-          : false;
-      const isSmallViewport = window.innerWidth < 768;
-      setIsTouchOrMobile(isCoarsePointer || isSmallViewport);
-    };
-
-    checkIsTouchOrMobile();
-    window.addEventListener("resize", checkIsTouchOrMobile);
-    window.addEventListener("orientationchange", checkIsTouchOrMobile);
-
-    return () => {
-      window.removeEventListener("resize", checkIsTouchOrMobile);
-      window.removeEventListener("orientationchange", checkIsTouchOrMobile);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isTouchOrMobile) {
-      setSingularitySpeed(0);
-      setSingularityIntensity(0);
-      setSingularitySize(0);
-      setSingularityWaveStrength(0);
-      setSingularityColorShift(0);
-      return;
-    }
-
-    const handleScroll = () => {
-      const t = Math.min(1, window.scrollY / (window.innerHeight / 2));
-      const v =
-        SINGULARITY_SCROLL_MIN +
-        (SINGULARITY_SCROLL_MAX - SINGULARITY_SCROLL_MIN) * (1 - t);
-      const sizeMax = SINGULARITY_SCROLL_MAX * SINGULARITY_SIZE_RESIZE_FACTOR;
-      const sizeV =
-        SINGULARITY_SCROLL_MIN + (sizeMax - SINGULARITY_SCROLL_MIN) * (1 - t);
-      setSingularitySpeed(v);
-      setSingularityIntensity(v);
-      setSingularitySize(sizeV);
-      setSingularityWaveStrength(v);
-      setSingularityColorShift(v);
-    };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isTouchOrMobile]);
   return (
-    <div
-      id="home"
-      className="relative min-h-screen w-full bg-gradient-to-b from-background to-surface/40"
-    >
-      {!isTouchOrMobile && (
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{ opacity: singularitySize > 0.25 ? 1 : 0 }}
-          aria-hidden={singularitySize <= 0.25}
-        >
-          <SingularityShaders
-            className="singularity-shader h-full w-full"
-            speed={singularitySpeed}
-            intensity={singularityIntensity}
-            size={singularitySize}
-            waveStrength={singularityWaveStrength}
-            colorShift={singularityColorShift}
-          />
-        </div>
-      )}
+    <div id="home" className="relative min-h-screen w-full">
+      {/* Viewport-filling gradient overlay. Sits ABOVE the r3f canvas
+          (z-index 0 > canvas -10) and BELOW hero text (z-index 10). Covers
+          the strip that BaseLayout's <main pt-24 pb-20> would otherwise
+          leave uncolored, so the r3f Singularity never peeks through
+          brighter than the home gradient. */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 bg-gradient-to-b from-background to-surface/40 pointer-events-none"
+        style={{ zIndex: 0 }}
+      />
+
+      {/* Scene sentinel: SceneRouter's IntersectionObserver picks up
+          data-scene-id="singularity" and activates the r3f Singularity
+          module in the app-wide Canvas (mounted in BaseLayout). */}
+      <div
+        data-scene-id="singularity"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
 
       <div className="relative z-10 flex min-h-screen w-full items-center justify-center px-4">
         <div className="text-center space-y-4 max-w-3xl">
