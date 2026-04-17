@@ -27,11 +27,17 @@ vi.mock('@/scenes/sims/mock-sim/index', () => ({
 
 import { SceneHost } from '@/scenes/engine/SceneHost'
 
+const stubSceneProps = {
+  config: {},
+  perf: 'mid' as const,
+  symmetry: { type: 'none' as const, order: 1 },
+}
+
 describe('SceneHost', () => {
   it('renders without crashing with a known activeSceneId', () => {
     const { container } = render(
       <Suspense fallback={<div>loading</div>}>
-        <SceneHost activeSceneId="singularity" />
+        <SceneHost activeSceneId="singularity" {...stubSceneProps} />
       </Suspense>,
     )
     // Suspense fallback may render initially; confirm no error thrown
@@ -43,7 +49,7 @@ describe('SceneHost', () => {
       <Suspense fallback={null}>
         {/* Cast to bypass TS — tests unknown runtime id */}
         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        <SceneHost activeSceneId={'not-a-scene' as any} />
+        <SceneHost activeSceneId={'not-a-scene' as any} {...stubSceneProps} />
       </Suspense>,
     )
     expect(container).toBeTruthy()
