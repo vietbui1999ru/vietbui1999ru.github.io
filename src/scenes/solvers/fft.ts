@@ -9,9 +9,10 @@
  *   - fftInverse(re, im, N) → realSignal   (recovers real part)
  */
 
-// fft.js ships as a CommonJS module; import default export.
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const FFT = require('fft.js') as new (size: number) => {
+// fft.js ships as CommonJS; Vite interop gives us the constructor as default.
+import FFTImport from 'fft.js'
+
+type FFTInstance = {
   size: number
   createComplexArray(): Float64Array
   toComplexArray(input: ArrayLike<number>, output?: Float64Array): Float64Array
@@ -22,10 +23,12 @@ const FFT = require('fft.js') as new (size: number) => {
   completeSpectrum(spectrum: Float64Array): void
 }
 
-/** Cache FFT instances by size to avoid repeated allocation */
-const fftCache = new Map<number, InstanceType<typeof FFT>>()
+const FFT = FFTImport as unknown as new (size: number) => FFTInstance
 
-function getFFT(n: number): InstanceType<typeof FFT> {
+/** Cache FFT instances by size to avoid repeated allocation */
+const fftCache = new Map<number, FFTInstance>()
+
+function getFFT(n: number): FFTInstance {
   if (!fftCache.has(n)) {
     fftCache.set(n, new FFT(n))
   }
