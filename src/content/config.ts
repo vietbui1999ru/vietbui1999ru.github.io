@@ -5,7 +5,7 @@ import { blogSchema } from "@/content/schemas";
 const blog = defineCollection({
   loader: glob({
     pattern: "**/*.md",
-    base: "./src/content/blog",
+    base: "./vendor/vault/Blogs",
   }),
   schema: blogSchema,
 });

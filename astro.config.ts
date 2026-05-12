@@ -8,7 +8,7 @@ import { remarkPreview } from "./src/lib/remark/preview";
 import { remarkEmbeds } from "./src/lib/remark/embeds";
 import { remarkWikilinks } from "./src/lib/remark/wikilinks";
 import { createAssetAdapters } from "./src/lib/remark/adapters";
-import { getVaultRoot, warnIfNotMain } from "./src/lib/vault";
+import { getVaultRoot } from "./src/lib/vault";
 import { buildWikilinkIndex } from "./src/lib/build-wikilink-index";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -20,8 +20,7 @@ const site = process.env.VERCEL
   : (process.env.SITE ?? "http://localhost:4321");
 const base = process.env.BASE || "/";
 
-const vaultRoot = getVaultRoot();
-warnIfNotMain(vaultRoot);
+const vaultRoot = getVaultRoot(__dirname);
 
 const { copyAsset, resolveExcalidraw } = createAssetAdapters({
   attachmentsRoot: path.join(vaultRoot, "Attachments"),
@@ -30,7 +29,7 @@ const { copyAsset, resolveExcalidraw } = createAssetAdapters({
 });
 
 const wikilinkIndex = buildWikilinkIndex(
-  path.resolve(__dirname, "src/content/blog")
+  path.join(vaultRoot, "Blogs")
 );
 
 export default defineConfig({
@@ -40,11 +39,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkPreview,
-      [remarkEmbeds, {
-        attachmentsRoot: path.join(vaultRoot, "Attachments"),
-        copyAsset,
-        resolveExcalidraw,
-      }],
+      [remarkEmbeds, { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw }],
       [remarkWikilinks, {
         index: wikilinkIndex,
         onDead: (slug: string, file: string) =>
