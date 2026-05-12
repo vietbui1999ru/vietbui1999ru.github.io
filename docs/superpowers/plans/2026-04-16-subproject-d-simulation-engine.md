@@ -339,7 +339,7 @@ describe('verletStep', () => {
    * State layout: [x, v] (position, velocity).
    * Acceleration: a(x) = -x (unit spring constant, unit mass).
    */
-  it('conserves energy to < 1e-6 relative drift over 100_000 steps (symplectic)', () => {
+  it('conserves energy to < 1e-4 relative drift over 100_000 steps (symplectic, bounded oscillation)', () => {
     let x = 1.0
     let v = 0.0
     const dt = 0.01
@@ -358,7 +358,7 @@ describe('verletStep', () => {
 
     const finalEnergy = 0.5 * (x * x + v * v)
     const relDrift = Math.abs(finalEnergy - initialEnergy) / initialEnergy
-    expect(relDrift).toBeLessThan(1e-6)
+    expect(relDrift).toBeLessThan(1e-4)
   })
 
   it('returns position and velocity fields', () => {
@@ -498,8 +498,12 @@ describe('etdrk4Step', () => {
       t += dt
     }
 
-    // Analytic steady-state value at t
-    const uSS = (Math.sin(t) - 100 * Math.cos(t)) / 10001.0
+    // Particular solution of du/dt = -100u + sin(t):
+    //   u_p = a*sin(t) + b*cos(t), match coefficients:
+    //     a*cos(t) - b*sin(t) = -100a*sin(t) - 100b*cos(t) + sin(t)
+    //     → a = -100b, -b = -100a + 1 → a = 100/10001, b = -1/10001
+    //   u_ss(t) = (100*sin(t) - cos(t)) / 10001
+    const uSS = (100 * Math.sin(t) - Math.cos(t)) / 10001.0
     expect(Math.abs(u - uSS)).toBeLessThan(1e-6)
   })
 
@@ -788,7 +792,9 @@ export function fftForward(signal: Float64Array): { re: Float64Array; im: Float6
  * Inverse complex-to-real FFT.
  * Inputs: re, im each of length N.
  * Output: real-valued signal of length N (imaginary parts discarded after IFFT).
- * Normalises by 1/N (matches forward transform convention).
+ *
+ * fft.js `inverseTransform` already normalises by 1/N, so we do NOT divide
+ * again here.
  */
 export function fftInverse(re: Float64Array, im: Float64Array, N: number): Float64Array {
   const fft = getFFT(N)
@@ -804,7 +810,7 @@ export function fftInverse(re: Float64Array, im: Float64Array, N: number): Float
 
   const result = new Float64Array(N)
   for (let i = 0; i < N; i++) {
-    result[i] = complexOutput[2 * i] / N
+    result[i] = complexOutput[2 * i]
   }
   return result
 }
@@ -838,10 +844,13 @@ Create `tests/scenes/solvers/gpuCompute.test.ts`:
 
 ```ts
 import { describe, it, expect, vi } from 'vitest'
+import { detectRGBA16F } from '@/scenes/solvers/gpuCompute'
 
 // ---------------------------------------------------------------------------
 // Pure-function unit test: RGBA16F capability detection
-// This test mocks WebGLRenderingContext and runs without WebGL hardware.
+// Mocks WebGLRenderingContext; no GPU required.
+// Static import (not require()) — vitest ESM doesn't resolve `@/` under CJS require.
+// detectRGBA16F takes `gl` as an argument so no module-level mocking is needed.
 // ---------------------------------------------------------------------------
 describe('detectRGBA16F (unit, no WebGL required)', () => {
   it('returns true when EXT_color_buffer_float is available', () => {
@@ -850,8 +859,6 @@ describe('detectRGBA16F (unit, no WebGL required)', () => {
         name === 'EXT_color_buffer_float' ? {} : null,
       ),
     } as unknown as WebGLRenderingContext
-    // Lazy-import after mocking so the module uses our mock
-    const { detectRGBA16F } = require('@/scenes/solvers/gpuCompute')
     expect(detectRGBA16F(mockGL)).toBe(true)
   })
 
@@ -859,7 +866,6 @@ describe('detectRGBA16F (unit, no WebGL required)', () => {
     const mockGL = {
       getExtension: vi.fn(() => null),
     } as unknown as WebGLRenderingContext
-    const { detectRGBA16F } = require('@/scenes/solvers/gpuCompute')
     expect(detectRGBA16F(mockGL)).toBe(false)
   })
 })
@@ -1191,24 +1197,44 @@ describe('dnMask', () => {
     expect(mask.length).toBe(16 * 16)
   })
 
-  it('is N-fold rotationally symmetric (same as cnMask)', () => {
+  it('for a radially-symmetric base, cnMask and dnMask equal the base at every pixel', () => {
+    // A radially-symmetric base f(x,y) = g(r) is invariant under any rotation,
+    // so averaging N rotated samples yields f itself. This is a clean structural
+    // check that sidesteps pixel-rounding artefacts from comparing rotated pixel
+    // indices (which do NOT lie at the same continuous radius after rounding).
     const size = 32
     const N = 3
     const base = (x: number, y: number) => Math.cos(Math.sqrt(x * x + y * y) * 5)
     const cn = cnMask(size, N, base)
     const dn = dnMask(size, N, base)
-    // D_n includes C_n symmetry, so values at all C_n-symmetric pixels must match
-    const half = size / 2
-    const toIdx = (i: number, j: number) => j * size + i
-    const ix = Math.round(half + 4); const iy = Math.round(half + 2)
-    // Rotate by 2π/3
-    const angle = (2 * Math.PI) / N
-    const rx = Math.round(half + Math.cos(angle) * 4 - Math.sin(angle) * 2)
-    const ry = Math.round(half + Math.sin(angle) * 4 + Math.cos(angle) * 2)
-    if (ix < size && iy < size && rx < size && ry < size) {
-      expect(cn[toIdx(ix, iy)]).toBeCloseTo(cn[toIdx(rx, ry)], 3)
-      expect(dn[toIdx(ix, iy)]).toBeCloseTo(dn[toIdx(rx, ry)], 3)
+
+    for (let j = 0; j < size; j++) {
+      for (let i = 0; i < size; i++) {
+        const x = (i / (size - 1)) * 2 - 1
+        const y = (j / (size - 1)) * 2 - 1
+        const expected = base(x, y)
+        const idx = j * size + i
+        // Float32Array storage → ~7 decimal digits; precision 5 leaves margin
+        expect(cn[idx]).toBeCloseTo(expected, 5)
+        expect(dn[idx]).toBeCloseTo(expected, 5)
+      }
     }
+  })
+
+  it('preserves 4-fold symmetry at integer-aligned pixel offsets (no rounding error)', () => {
+    // N=4, 90° rotation maps pixel offset (a, b) → (-b, a) EXACTLY in integer
+    // pixels. Pick a non-radial base and verify the rotation pair matches.
+    const size = 33 // odd so there's a true center pixel
+    const N = 4
+    const base = (x: number, y: number) => x + 2 * y // non-radial
+    const cn = cnMask(size, N, base)
+    const center = (size - 1) / 2
+    const a = 6, b = 3
+    const toIdx = (i: number, j: number) => j * size + i
+    // (center+a, center+b) and (center-b, center+a) are exact 90° rotation pair.
+    expect(cn[toIdx(center + a, center + b)]).toBeCloseTo(
+      cn[toIdx(center - b, center + a)], 10,
+    )
   })
 })
 ```
@@ -1411,6 +1437,7 @@ function mockMatchMedia(prefersReduced: boolean) {
 describe('getPerfTier — reduced motion short-circuit', () => {
   beforeEach(() => {
     resetPerfCache()
+    mockGetGPUTier.mockClear()
     mockGetGPUTier.mockResolvedValue({ tier: 3, type: 'BENCHMARK' } as never)
   })
 
@@ -1436,6 +1463,7 @@ describe('getPerfTier — reduced motion short-circuit', () => {
 describe('getPerfTier — GPU tier mapping', () => {
   beforeEach(() => {
     resetPerfCache()
+    mockGetGPUTier.mockClear()
     mockMatchMedia(false)
   })
 
@@ -3639,7 +3667,7 @@ const SingularityMaterial = shaderMaterial(
 
 // Extend three.js namespace so JSX can reference <singularityMaterial />
 // (drei extend call done at module load time)
-import { extend } from '@react-three/drei'
+import { extend } from '@react-three/fiber'
 extend({ SingularityMaterial })
 
 // TypeScript JSX element declaration
@@ -3715,7 +3743,6 @@ export function SingularityScene({ config }: SingularitySceneProps): React.React
     // Fullscreen quad: PlaneGeometry covers NDC [-1,1] × [-1,1] at z=0
     <mesh>
       <planeGeometry args={[2, 2]} />
-      {/* @ts-expect-error: drei extend adds singularityMaterial to JSX namespace */}
       <singularityMaterial ref={matRef} />
     </mesh>
   )
@@ -4169,6 +4196,10 @@ git commit -m "feat(sims): trail buffer for Lorenz"
 
 ### Task D19: Lorenz Scene component
 
+> **PLAN PATCH (2026-04-16):** Original plan had `LorenzScene()` with no props.
+> Contract requires `{ config, perf, symmetry }`. Corrected below.
+> Also: `bufferAttribute` requires `args={[array, itemSize]}` not individual props.
+
 **Files:**
 - Create: `src/scenes/sims/lorenz/Scene.tsx`
 - Create: `tests/scenes/sims/lorenz/Scene.test.tsx`
@@ -4180,6 +4211,7 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useControls } from 'leva'
 import * as THREE from 'three'
+import type { PerfTier, SymmetryConfig } from '@/scenes/engine/types'
 import { lorenzStep, type LorenzState } from './physics'
 import { createTrailBuffer, pushPosition, readTrail } from './trails'
 
@@ -4190,6 +4222,12 @@ export interface LorenzConfig {
   particleCount: number
   dt: number
   trailLength: number
+}
+
+export type LorenzSceneProps = {
+  config: LorenzConfig
+  perf: PerfTier
+  symmetry: SymmetryConfig
 }
 
 export const LORENZ_LEVA_SCHEMA = {
@@ -4222,14 +4260,25 @@ function initParticles(count: number, trailLength: number): Particle[] {
   })
 }
 
-export function LorenzScene() {
+/**
+ * LorenzScene — accepts { config, perf, symmetry } per the SimModule contract.
+ * Merges `config` into the Leva useControls initial values so the panel
+ * reflects whatever preset or config was selected externally.
+ */
+export function LorenzScene({ config, perf: _perf, symmetry: _symmetry }: LorenzSceneProps) {
   const { sigma, rho, beta, particleCount, dt, trailLength } = useControls(
     'Lorenz',
-    LORENZ_LEVA_SCHEMA,
+    {
+      sigma:         { value: config.sigma,         min: 0,    max: 30,   step: 0.1  },
+      rho:           { value: config.rho,           min: 0,    max: 150,  step: 0.1  },
+      beta:          { value: config.beta,          min: 0,    max: 10,   step: 0.01 },
+      particleCount: { value: config.particleCount, min: 10,   max: 2000, step: 10   },
+      dt:            { value: config.dt,            min: 0.001, max: 0.02, step: 0.001 },
+      trailLength:   { value: config.trailLength,   min: 50,   max: 2000, step: 50   },
+    },
   )
 
   const particles = useRef<Particle[]>([])
-  const linesRef = useRef<THREE.LineSegments[]>([])
   const groupRef = useRef<THREE.Group>(null)
 
   // Re-initialize particles when count or trail length changes
@@ -4255,9 +4304,8 @@ export function LorenzScene() {
             <bufferGeometry>
               <bufferAttribute
                 attach="attributes-position"
-                array={positions}
+                args={[positions, 3]}
                 count={count}
-                itemSize={3}
               />
             </bufferGeometry>
             <lineBasicMaterial color={p.color} transparent opacity={0.7} />
@@ -4339,6 +4387,11 @@ git commit -m "feat(sims): Lorenz Scene with leva schema"
 
 ### Task D20: Lorenz SimModule registration + presets
 
+> **PLAN PATCH (2026-04-16):** Original plan used `SimPreset<C>` wrapper, `label`/`config`
+> fields, `LORENZ_DEFAULT_PRESET`, `label` on SimModule, missing `title`/`description`/
+> `defaults`/`schema`, and imported `SymmetryType` from `'@/scenes/engine/Symmetry'` (wrong).
+> All corrected below to match `SimModule` contract in `types.ts` and Singularity's shape.
+
 **Files:**
 - Create: `src/scenes/sims/lorenz/presets.ts`
 - Create: `src/scenes/sims/lorenz/index.ts`
@@ -4346,51 +4399,72 @@ git commit -m "feat(sims): Lorenz Scene with leva schema"
 - [ ] **Step 1: Create `src/scenes/sims/lorenz/presets.ts`**
 
 ```ts
-import type { SimPreset } from '@/scenes/engine/types'
 import type { LorenzConfig } from './Scene'
 
-export const LORENZ_PRESETS: Record<string, SimPreset<LorenzConfig>> = {
+/**
+ * Built-in presets for the Lorenz Attractor sim.
+ *
+ * These are partial configs merged on top of the module defaults.
+ * Matching Singularity's presets shape: Record<string, Partial<Config>>.
+ */
+export const LORENZ_PRESETS: Record<string, Partial<LorenzConfig>> = {
+  /** Classic strange attractor parameters from Lorenz 1963. */
   classic: {
-    label: 'Classic σ=10 ρ=28 β=8/3',
-    config: { sigma: 10, rho: 28, beta: 8 / 3, particleCount: 500, dt: 0.005, trailLength: 800 },
+    sigma: 10, rho: 28, beta: 8 / 3, particleCount: 500, dt: 0.005, trailLength: 800,
   },
+  /** Near-periodic orbit at high rho. */
   periodic: {
-    label: 'Periodic ρ=99.96',
-    config: { sigma: 10, rho: 99.96, beta: 8 / 3, particleCount: 200, dt: 0.002, trailLength: 600 },
+    sigma: 10, rho: 99.96, beta: 8 / 3, particleCount: 200, dt: 0.002, trailLength: 600,
   },
+  /** Double-scroll with more particles and longer trails. */
   doubleScroll: {
-    label: 'Double-scroll σ=10 ρ=28 β=8/3',
-    config: { sigma: 10, rho: 28, beta: 8 / 3, particleCount: 1000, dt: 0.005, trailLength: 1200 },
+    sigma: 10, rho: 28, beta: 8 / 3, particleCount: 1000, dt: 0.005, trailLength: 1200,
   },
 }
-
-export const LORENZ_DEFAULT_PRESET = 'classic'
 ```
 
 - [ ] **Step 2: Create `src/scenes/sims/lorenz/index.ts`**
 
 ```ts
-import type { SimModule } from '@/scenes/engine/types'
-import type { SymmetryType } from '@/scenes/engine/Symmetry'
-import { LorenzScene } from './Scene'
+import type { SimModule, PerfTier, SymmetryType } from '@/scenes/engine/types'
+import { LorenzScene, LORENZ_LEVA_SCHEMA } from './Scene'
 import type { LorenzConfig } from './Scene'
-import { LORENZ_PRESETS, LORENZ_DEFAULT_PRESET } from './presets'
+import { LORENZ_PRESETS } from './presets'
 
-export interface LorenzState {
-  // CPU-only sim; scene manages its own particle array via useRef
-}
+// CPU-only sim: scene manages its own particle array via useRef
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface LorenzState {}
 
 const LorenzModule: SimModule<LorenzConfig, LorenzState> = {
   id: 'lorenz',
-  label: 'Lorenz Attractor',
+  title: 'Lorenz Attractor',
+  description:
+    'Three-variable ODE system (Lorenz 1963) that exhibits deterministic chaos. ' +
+    'Two butterfly-like attractor wings at classical parameters σ=10, ρ=28, β=8/3. ' +
+    'RK4 integration; positive Lyapunov exponent makes initially-nearby trajectories diverge.',
+
+  defaults: {
+    sigma: 10,
+    rho: 28,
+    beta: 8 / 3,
+    particleCount: 500,
+    dt: 0.005,
+    trailLength: 800,
+  },
+
+  presets: LORENZ_PRESETS,
+
+  schema: LORENZ_LEVA_SCHEMA,
+
   Scene: LorenzScene,
 
-  init(_config: LorenzConfig, _perf): LorenzState {
+  init(_config: LorenzConfig, _perf: PerfTier): LorenzState {
+    // Integration happens inside Scene.tsx via useFrame; no CPU state here
     return {}
   },
 
   step(_state: LorenzState, _dt: number): void {
-    // Integration happens inside Scene.tsx via useFrame
+    // No integration step at module level; all animation is driven by useFrame
   },
 
   dispose(_state: LorenzState): void {
@@ -4404,9 +4478,6 @@ const LorenzModule: SimModule<LorenzConfig, LorenzState> = {
   symmetryApplies(type: SymmetryType, order: number): boolean {
     return type === 'C' && order >= 1
   },
-
-  presets: LORENZ_PRESETS,
-  defaultPreset: LORENZ_DEFAULT_PRESET,
 }
 
 export default LorenzModule
@@ -4741,12 +4812,15 @@ function dihedralRing(count: number, order: number, radius: number): Vec3[] {
   return positions
 }
 
-export function MagneticScene() {
+// PATCH D22 (applied): MagneticScene receives { config, perf, symmetry } per SimModule
+// contract. positionsRef allocated full-size up front (not Float32Array(0)).
+// bufferAttribute uses args={[array, 3]} not array={...} itemSize={...} (r3f 9).
+export function MagneticScene({ config, perf: _perf, symmetry: _symmetry }: MagneticSceneProps) {
   const {
-    particleCount, charge, mass, B0, dt, trailLength, symmetryOrder,
-  } = useControls('Magnetic', MAGNETIC_LEVA_SCHEMA)
+    particleCount, charge, mass, B0, dt, symmetryOrder,
+  } = useControls('Magnetic', { /* config merged key-by-key — see Scene.tsx */ })
 
-  const positionsRef = useRef<Float32Array>(new Float32Array(0))
+  const positionsRef = useRef<Float32Array>(new Float32Array(particleCount * 3))
   const particles = useRef<MagneticParticle[]>([])
 
   const sources: MagneticSource[] = useMemo(() => {
@@ -4762,6 +4836,8 @@ export function MagneticScene() {
   }, [symmetryOrder, B0])
 
   useMemo(() => {
+    // PATCH D22: re-allocate first so the ref is always correctly-sized
+    positionsRef.current = new Float32Array(particleCount * 3)
     const initPositions = dihedralRing(particleCount, symmetryOrder, 1.0)
     particles.current = initPositions.map((pos) => {
       const B = magneticField(pos, sources)
@@ -4773,8 +4849,7 @@ export function MagneticScene() {
         accel: { x: F.x / mass, y: F.y / mass, z: F.z / mass },
       }
     })
-    positionsRef.current = new Float32Array(particleCount * 3)
-  }, [particleCount, symmetryOrder, B0, charge, mass])
+  }, [particleCount, symmetryOrder, B0, charge, mass, sources])
 
   const pointsRef = useRef<THREE.Points>(null)
 
@@ -4796,11 +4871,11 @@ export function MagneticScene() {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
+        {/* PATCH D22: r3f 9 requires args={[array, itemSize]} not array/itemSize props */}
         <bufferAttribute
           attach="attributes-position"
-          array={positionsRef.current}
+          args={[positionsRef.current, 3]}
           count={particleCount}
-          itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial size={0.04} color="#00aaff" transparent opacity={0.8} sizeAttenuation />
@@ -4872,90 +4947,75 @@ git commit -m "feat(sims): Magnetic Scene with D_n symmetry ICs"
 - [ ] **Step 1: Create `src/scenes/sims/magnetic/presets.ts`**
 
 ```ts
-import type { SimPreset } from '@/scenes/engine/types'
+// PATCH D23: SimPreset<C> wrapper removed; shape is Record<string, Partial<MagneticConfig>>.
+// MAGNETIC_DEFAULT_PRESET export dropped (not part of SimModule contract).
 import type { MagneticConfig } from './Scene'
 
-export const MAGNETIC_PRESETS: Record<string, SimPreset<MagneticConfig>> = {
+export const MAGNETIC_PRESETS: Record<string, Partial<MagneticConfig>> = {
   dipole: {
-    label: 'Dipole (1 source)',
-    config: {
-      particleCount: 500, charge: 1, mass: 1, B0: 1,
-      dt: 0.005, trailLength: 200, symmetryType: 'C', symmetryOrder: 1,
-    },
+    particleCount: 500, charge: 1, mass: 1, B0: 1,
+    dt: 0.005, trailLength: 200, symmetryType: 'C', symmetryOrder: 1,
   },
   quadrupole: {
-    label: 'Quadrupole (2 sources)',
-    config: {
-      particleCount: 800, charge: 1, mass: 1, B0: 1.5,
-      dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 2,
-    },
+    particleCount: 800, charge: 1, mass: 1, B0: 1.5,
+    dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 2,
   },
   hexapole: {
-    label: 'Hexapole (3 sources)',
-    config: {
-      particleCount: 1200, charge: 1, mass: 1, B0: 1.2,
-      dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 3,
-    },
+    particleCount: 1200, charge: 1, mass: 1, B0: 1.2,
+    dt: 0.004, trailLength: 200, symmetryType: 'D', symmetryOrder: 3,
   },
   ringTrap: {
-    label: 'Ring Trap (6 sources)',
-    config: {
-      particleCount: 2000, charge: 1, mass: 0.5, B0: 2,
-      dt: 0.003, trailLength: 300, symmetryType: 'D', symmetryOrder: 6,
-    },
+    particleCount: 2000, charge: 1, mass: 0.5, B0: 2,
+    dt: 0.003, trailLength: 300, symmetryType: 'D', symmetryOrder: 6,
   },
   tokamak2d: {
-    label: 'Tokamak 2D (12 sources)',
-    config: {
-      particleCount: 3000, charge: 1, mass: 1, B0: 3,
-      dt: 0.002, trailLength: 400, symmetryType: 'D', symmetryOrder: 12,
-    },
+    particleCount: 3000, charge: 1, mass: 1, B0: 3,
+    dt: 0.002, trailLength: 400, symmetryType: 'D', symmetryOrder: 12,
   },
 }
-
-export const MAGNETIC_DEFAULT_PRESET = 'dipole'
 ```
 
 - [ ] **Step 2: Create `src/scenes/sims/magnetic/index.ts`**
 
 ```ts
-import type { SimModule } from '@/scenes/engine/types'
-import type { SymmetryType } from '@/scenes/engine/Symmetry'
-import { MagneticScene } from './Scene'
+// PATCH D23: Normalized to SimModule contract (matches Lorenz shape).
+// - label → title + description
+// - SymmetryType imported from '@/scenes/engine/types' (not engine/Symmetry)
+// - defaults + schema fields added (required by SimModule<C,S>)
+// - MAGNETIC_DEFAULT_PRESET / defaultPreset field removed (not in contract)
+// - presets: MAGNETIC_PRESETS is Record<string, Partial<Config>> (flat)
+import type { SimModule, PerfTier, SymmetryType } from '@/scenes/engine/types'
+import { MagneticScene, MAGNETIC_LEVA_SCHEMA } from './Scene'
 import type { MagneticConfig } from './Scene'
-import { MAGNETIC_PRESETS, MAGNETIC_DEFAULT_PRESET } from './presets'
+import { MAGNETIC_PRESETS } from './presets'
 
-export interface MagneticState {
-  // Scene manages particle array internally via useRef
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface MagneticState {}
 
 const MagneticModule: SimModule<MagneticConfig, MagneticState> = {
   id: 'magnetic',
-  label: 'Magnetic Field',
-  Scene: MagneticScene,
+  title: 'Magnetic Field',
+  description:
+    'Charged test particles integrating under the Lorentz force F = qv×B in a field generated by a D_n-symmetric arrangement of magnetic dipoles. Velocity-Verlet integrator (symplectic). Initial conditions on a dihedral ring; particle count and dipole order tunable.',
 
-  init(_config: MagneticConfig, _perf): MagneticState {
-    return {}
-  },
-
-  step(_state: MagneticState, _dt: number): void {
-    // Integration runs in Scene.tsx useFrame
-  },
-
-  dispose(_state: MagneticState): void {
-    // No external GPU resources
-  },
-
-  /**
-   * Magnetic sim supports both C_n (ring) and D_n (dihedral ring) symmetry
-   * for source placement and initial conditions.
-   */
-  symmetryApplies(type: SymmetryType, order: number): boolean {
-    return (type === 'C' || type === 'D') && order >= 1
+  defaults: {
+    particleCount: 500, charge: 1, mass: 1, B0: 1,
+    dt: 0.005, trailLength: 200, symmetryType: 'C', symmetryOrder: 1,
   },
 
   presets: MAGNETIC_PRESETS,
-  defaultPreset: MAGNETIC_DEFAULT_PRESET,
+  schema: MAGNETIC_LEVA_SCHEMA,
+  Scene: MagneticScene,
+
+  init(_config: MagneticConfig, _perf: PerfTier): MagneticState {
+    return {}
+  },
+  step(_state: MagneticState, _dt: number): void {},
+  dispose(_state: MagneticState): void {},
+
+  symmetryApplies(type: SymmetryType, order: number): boolean {
+    return (type === 'C' || type === 'D') && order >= 1
+  },
 }
 
 export default MagneticModule
@@ -6129,10 +6189,20 @@ git commit -m "feat(sims): KS SimModule + 3 presets"
 
 ### Task D31: Dynamic route `src/pages/sim/[name].astro`
 
+> **Implemented** — adapted from original plan. Key divergences:
+> - `entry.label` → `entry.title` (SimModule uses `title`, not `label`)
+> - `<BaseLayout>` takes no props (no `title` or `fullViewport` prop)
+> - sentinel class renamed `sim-playground-sentinel`; `id="sim-playground-slot"` dropped (not needed)
+> - `aria-label` uses `entry.title`
+> - Step 3 (fullViewport prop) and Step 4 (SceneRouter data-playground handling) skipped — BaseLayout takes no props; existing L-key Leva toggle is sufficient
+> - Step 5 checks only 3 sims (singularity, lorenz, magnetic); grayScott and kuramotoSivashinsky land in D24-D30
+> - `src/scenes/registry.ts` created as part of this task (D31), not D11 as plan assumed
+
 **Files:**
 - Create: `src/pages/sim/[name].astro`
+- Create: `src/scenes/registry.ts`
 
-- [ ] **Step 1: Create the dynamic Astro route**
+- [x] **Step 1: Create the dynamic Astro route**
 
 ```astro
 ---
@@ -6150,17 +6220,16 @@ const entry = SCENE_REGISTRY[name as keyof typeof SCENE_REGISTRY]
 if (!entry) throw new Error(`Unknown sim: ${name}`)
 ---
 
-<BaseLayout title={`${entry.label} — Playground`} fullViewport>
+<BaseLayout>
   <!--
-    The app-wide Canvas (mounted in BaseLayout) reads `data-scene-id`
-    from this sentinel and activates the matching SimModule.
+    Sentinel: the app-wide Canvas reads data-scene-id via IntersectionObserver
+    and switches to the matching SimModule.
   -->
   <div
-    id="sim-playground-slot"
     data-scene-id={name}
     data-playground="true"
-    class="sim-playground-root"
-    aria-label={`${entry.label} simulation playground`}
+    class="sim-playground-sentinel"
+    aria-label={`${entry.title} simulation playground`}
   />
 
   <!-- Back-to-home link, positioned absolutely over canvas -->
@@ -6244,82 +6313,30 @@ if (!entry) throw new Error(`Unknown sim: ${name}`)
 </script>
 ```
 
-- [ ] **Step 2: Verify `SCENE_REGISTRY` is exported**
+- [x] **Step 2: Verify `SCENE_REGISTRY` is exported**
 
-The registry was established in Task D11. Confirm the named export exists:
+Created `src/scenes/registry.ts` in this task with named exports:
+- `registeredModules: SimModule[]`
+- `SCENE_REGISTRY: Record<string, { id: string; title: string }>`
+- `createAppSceneRegistry(): SceneRegistry`
 
-```bash
-grep -n "export.*SCENE_REGISTRY" src/scenes/registry.ts
-```
+- [x] **Step 3: BaseLayout props** — skipped. BaseLayout takes no props; route uses `<BaseLayout>` without attributes.
 
-Expected: one line, e.g. `export const SCENE_REGISTRY = { ... }`.
+- [x] **Step 4: SceneRouter data-playground** — skipped. Existing L-key Leva toggle is sufficient; no programmatic collapse added.
 
-- [ ] **Step 3: Verify `BaseLayout` accepts `fullViewport` prop**
-
-```bash
-grep -n "fullViewport" src/layouts/BaseLayout.astro
-```
-
-If the prop is absent, add it to `BaseLayout.astro`:
-
-```astro
----
-// Add to BaseLayout.astro Props
-interface Props {
-  title: string
-  fullViewport?: boolean
-}
-const { title, fullViewport = false } = Astro.props
----
-```
-
-Then conditionally set `overflow: hidden` on `<body>` when `fullViewport` is true:
-
-```astro
-<body class:list={[{ 'overflow-hidden': fullViewport }]}>
-```
-
-- [ ] **Step 4: SceneRouter must handle `data-playground="true"` sentinel**
-
-The `SceneRouter` (Task D11) reads DOM `data-scene-id` attributes from registered slot elements. The playground page sets both `data-scene-id` and `data-playground="true"`. The router should:
-1. Treat `data-playground="true"` as a signal to expand Leva by default (`{ collapsed: false }`).
-2. Otherwise follow the same mount/unmount logic as section slots.
-
-If the router does not yet read `data-playground`, add the check:
-
-```ts
-// src/scenes/router.ts  — inside mountSlot or equivalent
-const isPlayground = el.dataset.playground === 'true'
-if (isPlayground) {
-  useLevaStore.getState().setCollapsed(false)
-}
-```
-
-- [ ] **Step 5: Build-time smoke check**
-
-Run: `pnpm build`
-
-Expected: for every key in `SCENE_REGISTRY` the build emits a corresponding HTML file. Verify with:
+- [x] **Step 5: Build-time smoke check** — 3 sims only (grayScott and kuramotoSivashinsky land in D24-D30):
 
 ```bash
-for name in singularity lorenz magnetic grayScott kuramotoSivashinsky; do
+for name in singularity lorenz magnetic; do
   test -f "dist/sim/$name/index.html" && echo "OK: $name" || echo "MISSING: $name"
 done
 ```
 
-Expected output: five `OK:` lines, zero `MISSING:` lines.
+Output: three `OK:` lines, zero `MISSING:` lines.
 
-- [ ] **Step 6: TypeScript check**
+- [x] **Step 6: TypeScript check** — clean (0 errors in touched files).
 
-Run: `pnpm tsc --noEmit`
-Expected: exit code 0.
-
-- [ ] **Step 7: Commit**
-
-```bash
-git add src/pages/sim/[name].astro
-git commit -m "feat(scenes): /sim/[name] playground pages"
-```
+- [x] **Step 7: Commit** — combined with registry wiring commit.
 
 ---
 

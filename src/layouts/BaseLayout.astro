@@ -7,6 +7,8 @@ import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import AnimatedCursor from "@/components/ui/AnimatedCursor";
 import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
 import { MobileBlocker } from "@/components/layout/MobileBlocker";
+import AppCanvasIsland from "@/scenes/engine/AppCanvasIsland";
+import LevaPanel from "@/scenes/ui/LevaPanel";
 ---
 
 <!doctype html>
@@ -22,6 +24,8 @@ import { MobileBlocker } from "@/components/layout/MobileBlocker";
       "group/body overscroll-none antialiased bg-background text-foreground",
     )}
   >
+    <AppCanvasIsland client:load />
+    <LevaPanel client:load />
     <MobileBlocker client:load />
     <VectorFieldBackground client:load className="hidden md:block" />
     <AnimatedCursor client:load />

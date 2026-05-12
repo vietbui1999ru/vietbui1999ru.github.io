@@ -1,0 +1,50 @@
+---
+import AppCanvasIsland from "@/scenes/engine/AppCanvasIsland";
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Sim Test — isolated r3f harness</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: black;
+        color: #ddd;
+        font-family: system-ui, sans-serif;
+        min-height: 100vh;
+      }
+      .label {
+        position: fixed;
+        top: 0.75rem;
+        left: 0.75rem;
+        z-index: 50;
+        padding: 0.4rem 0.7rem;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(6px);
+        border-radius: 6px;
+        font-size: 0.8rem;
+        opacity: 0.75;
+      }
+      .label a { color: #9cf; text-decoration: none; }
+      .label a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div class="label">
+      r3f isolated harness — active scene: <code>singularity</code> ·
+      <a href="/">back</a>
+    </div>
+    <!-- AppCanvasIsland uses fixed inset:0 z-index:-10 by default (so it sits
+         behind site chrome). On this blank page there is no site chrome, so
+         we wrap it in a positioned container to give it its own stacking
+         context at z-index 0 — the canvas draws into it directly. -->
+    <div style="position: fixed; inset: 0; z-index: 0;">
+      <AppCanvasIsland client:load />
+    </div>
+  </body>
+</html>
