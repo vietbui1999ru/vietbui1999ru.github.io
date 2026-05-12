@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Dock,
-  DockIcon,
-  DockItem,
-  DockLabel,
-} from "@/components/ui/dockHeading";
+import { Dock, DockIcon, DockItem, DockLabel } from "@/components/ui/dockHeading";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, NAV_ACTIVE_CLASS, NAV_INACTIVE_CLASS } from "@/data/navigationData";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
@@ -35,20 +30,20 @@ const NavBarDock = () => {
                     "aspect-square rounded-full bg-secondary border border-background",
                     isActive && "bg-accent/50 border-primary ring-2 ring-primary/20",
                   )}
-                  onClick={() => { window.location.href = item.href; }}
+                  onClick={() => {
+                    const target = window.location.pathname === "/" ? item.href : "/" + item.href;
+                    window.location.href = target;
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
-                      window.location.href = item.href;
+                      const target = window.location.pathname === "/" ? item.href : "/" + item.href;
+                      window.location.href = target;
                     }
                   }}
                 >
                   <DockLabel>{item.label}</DockLabel>
-                  <DockIcon
-                    className={cn(
-                      isActive ? NAV_ACTIVE_CLASS : NAV_INACTIVE_CLASS,
-                    )}
-                  >
+                  <DockIcon className={cn(isActive ? NAV_ACTIVE_CLASS : NAV_INACTIVE_CLASS)}>
                     <Icon className="h-full w-full" />
                   </DockIcon>
                 </DockItem>
