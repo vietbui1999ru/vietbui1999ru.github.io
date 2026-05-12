@@ -4,6 +4,12 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import path from "path";
 import { fileURLToPath } from "url";
+import { remarkPreview } from "./src/lib/remark/preview";
+import { remarkEmbeds } from "./src/lib/remark/embeds";
+import { remarkWikilinks } from "./src/lib/remark/wikilinks";
+import { createAssetAdapters } from "./src/lib/remark/adapters";
+import { getVaultRoot } from "./src/lib/vault";
+import { buildWikilinkIndex } from "./src/lib/build-wikilink-index";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,11 +20,33 @@ const site = process.env.VERCEL
   : (process.env.SITE ?? "http://localhost:4321");
 const base = process.env.BASE || "/";
 
-// https://astro.build/config
+const vaultRoot = getVaultRoot(__dirname);
+
+const { copyAsset, resolveExcalidraw } = createAssetAdapters({
+  attachmentsRoot: path.join(vaultRoot, "Attachments"),
+  publicRoot: path.resolve(__dirname, "public"),
+  excalidrawCacheDir: path.resolve(__dirname, ".cache/excalidraw"),
+});
+
+const wikilinkIndex = buildWikilinkIndex(
+  path.join(vaultRoot, "Blogs")
+);
+
 export default defineConfig({
   site,
   base,
   integrations: [react()],
+  markdown: {
+    remarkPlugins: [
+      remarkPreview,
+      [remarkEmbeds, { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw }],
+      [remarkWikilinks, {
+        index: wikilinkIndex,
+        onDead: (slug: string, file: string) =>
+          console.warn(`[wikilinks] dead link: [[${slug}]] in ${file}`),
+      }],
+    ],
+  },
   vite: {
     plugins: [tailwindcss()],
     resolve: {
