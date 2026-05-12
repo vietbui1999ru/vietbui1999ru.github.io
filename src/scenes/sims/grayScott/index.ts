@@ -1,14 +1,9 @@
-import type { SimModule, PerfTier, SymmetryType } from '@/scenes/engine/types'
+import type { SimModule, SymmetryType } from '@/scenes/engine/types'
 import { GrayScottScene, GRAY_SCOTT_LEVA_SCHEMA } from './Scene'
 import type { GrayScottConfig } from './Scene'
 import { GRAY_SCOTT_PRESETS } from './presets'
 
-// GPU state is managed inside Scene.tsx via useRef/useEffect;
-// no CPU-side state object is needed.
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface GrayScottState {}
-
-const GrayScottModule: SimModule<GrayScottConfig, GrayScottState> = {
+const GrayScottModule: SimModule<GrayScottConfig> = {
   id: 'gray-scott',
   title: 'Gray-Scott Reaction-Diffusion',
   description:
@@ -33,19 +28,6 @@ const GrayScottModule: SimModule<GrayScottConfig, GrayScottState> = {
   schema: GRAY_SCOTT_LEVA_SCHEMA,
 
   Scene: GrayScottScene,
-
-  init(_config: GrayScottConfig, _perf: PerfTier): GrayScottState {
-    // GPU compute loop is driven by useFrame inside Scene.tsx; no CPU state here
-    return {}
-  },
-
-  step(_state: GrayScottState, _dt: number): void {
-    // GPU substeps run inside Scene.tsx useFrame
-  },
-
-  dispose(_state: GrayScottState): void {
-    // GPU resources cleaned up via Scene useEffect cleanup
-  },
 
   /**
    * Gray-Scott supports C_n and D_n symmetric initial V-perturbation masks;

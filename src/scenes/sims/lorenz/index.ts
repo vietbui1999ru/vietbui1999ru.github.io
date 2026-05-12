@@ -1,13 +1,9 @@
-import type { SimModule, PerfTier, SymmetryType } from '@/scenes/engine/types'
+import type { SimModule, SymmetryType } from '@/scenes/engine/types'
 import { LorenzScene, LORENZ_LEVA_SCHEMA } from './Scene'
 import type { LorenzConfig } from './Scene'
 import { LORENZ_PRESETS } from './presets'
 
-// CPU-only sim: scene manages its own particle array via useRef
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface LorenzState {}
-
-const LorenzModule: SimModule<LorenzConfig, LorenzState> = {
+const LorenzModule: SimModule<LorenzConfig> = {
   id: 'lorenz',
   title: 'Lorenz Attractor',
   description:
@@ -29,19 +25,6 @@ const LorenzModule: SimModule<LorenzConfig, LorenzState> = {
   schema: LORENZ_LEVA_SCHEMA,
 
   Scene: LorenzScene,
-
-  init(_config: LorenzConfig, _perf: PerfTier): LorenzState {
-    // Integration happens inside Scene.tsx via useFrame; no CPU state here
-    return {}
-  },
-
-  step(_state: LorenzState, _dt: number): void {
-    // No integration step at module level; all animation is driven by useFrame
-  },
-
-  dispose(_state: LorenzState): void {
-    // No GPU resources to release
-  },
 
   /**
    * Lorenz is meaningful for C_n symmetry (particles on a ring); D_n also valid

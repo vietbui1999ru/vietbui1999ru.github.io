@@ -51,6 +51,7 @@ const EducationTimeline = () => {
 
   return (
     <section id="education" className="relative min-h-screen w-full">
+      <div data-section-id="education" aria-hidden="true" className="absolute inset-0 pointer-events-none" />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloEducationEffect className="w-full" />

@@ -33,11 +33,8 @@ const Home = () => {
         style={{ zIndex: 0 }}
       />
 
-      {/* Scene sentinel: SceneRouter's IntersectionObserver picks up
-          data-scene-id="singularity" and activates the r3f Singularity
-          module in the app-wide Canvas (mounted in BaseLayout). */}
       <div
-        data-scene-id="singularity"
+        data-section-id="home"
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
       />

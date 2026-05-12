@@ -1,14 +1,9 @@
-import type { SimModule, PerfTier, SymmetryType } from '@/scenes/engine/types'
+import type { SimModule, SymmetryType } from '@/scenes/engine/types'
 import { KuramotoSivashinskyScene, KS_LEVA_SCHEMA } from './Scene'
 import type { KSConfig } from './Scene'
 import { KS_PRESETS } from './presets'
 
-// CPU pseudospectral state is managed inside Scene.tsx via useRef/useEffect;
-// no separate CPU-side state object is needed at the module level.
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface KSModuleState {}
-
-const KuramotoSivashinskyModule: SimModule<KSConfig, KSModuleState> = {
+const KuramotoSivashinskyModule: SimModule<KSConfig> = {
   id: 'kuramoto-sivashinsky',
   title: 'Kuramoto-Sivashinsky',
   description:
@@ -31,19 +26,6 @@ const KuramotoSivashinskyModule: SimModule<KSConfig, KSModuleState> = {
   schema: KS_LEVA_SCHEMA,
 
   Scene: KuramotoSivashinskyScene,
-
-  init(_config: KSConfig, _perf: PerfTier): KSModuleState {
-    // Pseudospectral compute loop is driven by useFrame inside Scene.tsx
-    return {}
-  },
-
-  step(_state: KSModuleState, _dt: number): void {
-    // ETDRK4 stepping runs inside Scene.tsx useFrame
-  },
-
-  dispose(_state: KSModuleState): void {
-    // No external GPU resources to release; DataTexture is owned by React
-  },
 
   /**
    * KS supports C_n symmetric ICs generated as Fourier mode sums with

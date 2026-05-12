@@ -58,6 +58,7 @@ const Gallery = () => {
 
   return (
     <section id="gallery" className="relative min-h-screen w-full">
+      <div data-section-id="gallery" aria-hidden="true" className="absolute inset-0 pointer-events-none" />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloGalleryEffect className="w-full" />

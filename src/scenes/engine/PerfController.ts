@@ -1,4 +1,3 @@
-import { getGPUTier } from 'detect-gpu'
 import type { PerfTier } from './types'
 
 // ---------------------------------------------------------------------------
@@ -74,6 +73,7 @@ export async function getPerfTier(): Promise<PerfResult> {
 
   let gpuTierNumber = 2 // default to mid if detection fails
   try {
+    const { getGPUTier } = await import('detect-gpu')
     const result = await getGPUTier()
     gpuTierNumber = result.tier ?? 2
   } catch {

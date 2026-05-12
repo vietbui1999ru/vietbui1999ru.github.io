@@ -75,20 +75,6 @@ describe('singularityModule', () => {
     expect(singularityModule.symmetryApplies('none', 1)).toBe(false)
   })
 
-  it('init returns an empty state object (shader-only sim has no CPU state)', () => {
-    const state = singularityModule.init(singularityModule.defaults, 'mid')
-    expect(state).toBeDefined()
-  })
-
-  it('step is a no-op and does not throw', () => {
-    const state = singularityModule.init(singularityModule.defaults, 'mid')
-    expect(() => singularityModule.step(state, 0.016)).not.toThrow()
-  })
-
-  it('dispose is a no-op and does not throw', () => {
-    const state = singularityModule.init(singularityModule.defaults, 'mid')
-    expect(() => singularityModule.dispose(state)).not.toThrow()
-  })
 })
 
 describe('SINGULARITY_PRESETS', () => {

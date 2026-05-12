@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-// We must mock 'detect-gpu' before importing PerfController
 vi.mock('detect-gpu', () => ({
   getGPUTier: vi.fn(),
 }))

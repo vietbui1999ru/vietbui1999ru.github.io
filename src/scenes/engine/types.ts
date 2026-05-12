@@ -36,7 +36,7 @@ export type LevaSchema = Record<string, unknown>
 // ---------------------------------------------------------------------------
 // Sim module contract
 // ---------------------------------------------------------------------------
-export interface SimModule<Config = unknown, State = unknown> {
+export interface SimModule<Config = unknown> {
   /** Unique identifier matching SceneId */
   id: SceneId
 
@@ -61,15 +61,6 @@ export interface SimModule<Config = unknown, State = unknown> {
     perf: PerfTier
     symmetry: SymmetryConfig
   }>
-
-  /** Initialize solver state from config and perf tier */
-  init(config: Config, perf: PerfTier): State
-
-  /** Advance simulation by one time step dt (seconds) */
-  step(state: State, dt: number): void
-
-  /** Release GPU resources, cancel animation loops, etc. */
-  dispose(state: State): void
 
   /**
    * Returns true when the given symmetry type + order is physically

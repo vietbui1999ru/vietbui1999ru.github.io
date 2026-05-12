@@ -11,9 +11,6 @@ function makeMockModule(id: string): SimModule {
     presets: {},
     schema: {},
     Scene: () => null,
-    init: () => ({}),
-    step: () => {},
-    dispose: () => {},
     symmetryApplies: () => false,
   }
 }

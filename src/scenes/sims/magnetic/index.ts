@@ -1,13 +1,9 @@
-import type { SimModule, PerfTier, SymmetryType } from '@/scenes/engine/types'
+import type { SimModule, SymmetryType } from '@/scenes/engine/types'
 import { MagneticScene, MAGNETIC_LEVA_SCHEMA } from './Scene'
 import type { MagneticConfig } from './Scene'
 import { MAGNETIC_PRESETS } from './presets'
 
-// CPU-only sim: scene manages its own particle array via useRef
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface MagneticState {}
-
-const MagneticModule: SimModule<MagneticConfig, MagneticState> = {
+const MagneticModule: SimModule<MagneticConfig> = {
   id: 'magnetic',
   title: 'Magnetic Field',
   description:
@@ -29,19 +25,6 @@ const MagneticModule: SimModule<MagneticConfig, MagneticState> = {
   schema: MAGNETIC_LEVA_SCHEMA,
 
   Scene: MagneticScene,
-
-  init(_config: MagneticConfig, _perf: PerfTier): MagneticState {
-    // Integration happens inside Scene.tsx via useFrame; no CPU state here
-    return {}
-  },
-
-  step(_state: MagneticState, _dt: number): void {
-    // No integration step at module level; all animation is driven by useFrame
-  },
-
-  dispose(_state: MagneticState): void {
-    // No GPU resources to release
-  },
 
   /**
    * Magnetic sim supports both C_n (ring) and D_n (dihedral ring) symmetry

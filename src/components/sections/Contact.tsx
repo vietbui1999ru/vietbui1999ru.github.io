@@ -60,6 +60,7 @@ const Contact = () => {
 
   return (
     <section id="contact" className="relative min-h-screen w-full">
+      <div data-section-id="contact" aria-hidden="true" className="absolute inset-0 pointer-events-none" />
       <div className="section-content">
         <header className="mb-12 flex flex-col justify-center items-center gap-4 text-center">
           <AppleHelloContactEffect className="w-full" />

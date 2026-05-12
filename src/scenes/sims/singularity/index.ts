@@ -17,12 +17,6 @@ export interface SingularityConfig {
 }
 
 // ---------------------------------------------------------------------------
-// Shader-only sim has no meaningful CPU state
-// ---------------------------------------------------------------------------
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SingularityState {}
-
-// ---------------------------------------------------------------------------
 // Leva schema — ranges match the legacy react-shaders Singularity controls
 // (all five params default to 1.0; colorShift spans [-1, 1] for hue flip).
 // ---------------------------------------------------------------------------
@@ -64,7 +58,7 @@ function SingularitySceneWithControls({
 // SimModule export
 // ---------------------------------------------------------------------------
 
-export const singularityModule: SimModule<SingularityConfig, SingularityState> = {
+export const singularityModule: SimModule<SingularityConfig> = {
   id: 'singularity',
   title: 'Singularity',
   description:
@@ -85,19 +79,6 @@ export const singularityModule: SimModule<SingularityConfig, SingularityState> =
   schema,
 
   Scene: SingularitySceneWithControls,
-
-  init(_config: SingularityConfig, _perf: PerfTier): SingularityState {
-    // Shader-only sim: no CPU state to initialize
-    return {}
-  },
-
-  step(_state: SingularityState, _dt: number): void {
-    // No integration step; all animation is driven by u_time in useFrame
-  },
-
-  dispose(_state: SingularityState): void {
-    // No GPU resources to release beyond what three.js disposes automatically
-  },
 
   /**
    * Singularity is an isotropic radial shader — it has inherent continuous
