@@ -3,18 +3,37 @@
 import { Carousel, Card as CarouselCard } from "@/components/ui/CardsCarousel";
 import type { Card } from "@/components/ui/CardsCarousel";
 import { AppleHelloMyWorkEffect } from "@/components/ui/apple-hello-effect";
+import { LavaLampBackground } from "@/components/ui/LavaLampBackground";
 import { SkillBadge } from "@/components/ui/SkillBadge";
 import { buttonVariants } from "@/components/ui/button";
 import { Github, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PROJECTS_ITEMS, PROJECTS_TITLE } from "@/data/projectsData";
 
-const projectImage = (title: string) =>
-  `https://picsum.photos/seed/${encodeURIComponent(title)}/400/600`;
+// Warm amber palette — each card gets a slightly shifted point in the same range
+const GRAD_START = "#fff7e6";
+const GRAD_END = "#ffb870";
 
-function projectToCarouselCard(project: (typeof PROJECTS_ITEMS)[number]): Card {
+function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
+function hexToRgb(hex: string) {
+  const h = hex.replace("#", "");
+  return { r: parseInt(h.slice(0, 2), 16), g: parseInt(h.slice(2, 4), 16), b: parseInt(h.slice(4, 6), 16) };
+}
+function mixHex(a: string, b: string, t: number) {
+  const c1 = hexToRgb(a); const c2 = hexToRgb(b);
+  const ch = (v: number) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0");
+  return `#${ch(lerp(c1.r, c2.r, t))}${ch(lerp(c1.g, c2.g, t))}${ch(lerp(c1.b, c2.b, t))}`;
+}
+
+function gradientForIndex(index: number, total: number) {
+  const t = total <= 1 ? 0 : index / (total - 1);
+  return { fromColor: mixHex(GRAD_START, GRAD_END, t * 0.4), toColor: mixHex(GRAD_START, GRAD_END, 0.6 + t * 0.4) };
+}
+
+function projectToCarouselCard(project: (typeof PROJECTS_ITEMS)[number], index: number, total: number): Card {
+  const { fromColor, toColor } = gradientForIndex(index, total);
   return {
-    src: projectImage(project.title),
+    background: <LavaLampBackground fromColor={fromColor} toColor={toColor} />,
     title: project.title,
     category: project.badges?.[0] ?? "Project",
     content: (
@@ -55,7 +74,8 @@ function projectToCarouselCard(project: (typeof PROJECTS_ITEMS)[number]): Card {
 }
 
 const Projects = () => {
-  const carouselCards = PROJECTS_ITEMS.map(projectToCarouselCard);
+  const total = PROJECTS_ITEMS.length;
+  const carouselCards = PROJECTS_ITEMS.map((p, i) => projectToCarouselCard(p, i, total));
 
   return (
     <section id="projects" className="relative min-h-screen w-full">

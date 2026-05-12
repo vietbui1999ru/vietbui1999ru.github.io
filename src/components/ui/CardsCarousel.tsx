@@ -20,10 +20,13 @@ export interface CarouselProps {
 }
 
 export interface Card {
-  src: string;
+  /** Image URL for the card thumbnail. Optional when `background` is provided. */
+  src?: string;
   title: string;
   category: string;
   content: React.ReactNode;
+  /** Custom background element (e.g. LavaLampBackground). Takes precedence over `src`. */
+  background?: React.ReactNode;
 }
 
 export const CarouselContext = createContext<{
@@ -199,17 +202,19 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
               className="relative z-[60] my-auto h-fit w-full max-w-[var(--content-max)] flex-shrink-0"
             >
               <motion.div
-                animate={{ opacity: 1, scale: 1 }}
+                animate={{ opacity: 1 }}
                 className="rounded-3xl bg-card text-card-foreground p-4 font-sans md:p-10"
                 exit={{
                   opacity: 0,
-                  scale: 0.95,
-                  transition: { duration: 0.2 },
+                  transition: { duration: 0.15, ease: "easeIn" },
                 }}
-                initial={{ opacity: 0, scale: 0.98 }}
+                initial={{ opacity: 0 }}
                 layoutId={layout ? `card-${card.title}` : undefined}
                 ref={containerRef}
-                transition={{ duration: 0.25, ease: "easeOut" }}
+                transition={{
+                  layout: { type: "spring", stiffness: 400, damping: 30, mass: 0.8 },
+                  opacity: { duration: 0.2, ease: "easeOut" },
+                }}
               >
                 <button
                   type="button"
@@ -256,12 +261,17 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
             {card.title}
           </motion.p>
         </div>
-        <BlurImage
-          alt={card.title}
-          className="absolute inset-0 z-10 object-cover"
-          fill
-          src={card.src}
-        />
+        <div className="pointer-events-none absolute inset-0 z-10">
+          {card.background ? (
+            card.background
+          ) : card.src ? (
+            <BlurImage
+              alt={card.title}
+              className="h-full w-full object-cover"
+              src={card.src}
+            />
+          ) : null}
+        </div>
       </motion.button>
     </>
   );
