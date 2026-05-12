@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import path from "path";
 import { fileURLToPath } from "url";
+import remarkCallout from "@r4ai/remark-callout";
 import { remarkPreview } from "./src/lib/remark/preview";
 import { remarkEmbeds } from "./src/lib/remark/embeds";
 import { remarkWikilinks } from "./src/lib/remark/wikilinks";
@@ -43,6 +44,7 @@ export default defineConfig({
       wrap: true,
     },
     remarkPlugins: [
+      remarkCallout,
       remarkPreview,
       [remarkEmbeds, { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw }],
       [remarkWikilinks, {
