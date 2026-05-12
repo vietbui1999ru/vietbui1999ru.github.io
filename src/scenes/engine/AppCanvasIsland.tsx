@@ -20,7 +20,13 @@ function deriveRouteHint(): SceneId {
   return "singularity";
 }
 
-export default function AppCanvasIsland(): React.ReactElement {
+function isSimEnabled(): boolean {
+  if (typeof window === "undefined") return false;
+  const p = window.location.pathname;
+  return p === "/" || p.startsWith("/sim/");
+}
+
+function SimCanvas(): React.ReactElement {
   const defaultScene = deriveRouteHint();
   const [perf, setPerf] = useState<PerfTier>("mid");
 
@@ -47,4 +53,9 @@ export default function AppCanvasIsland(): React.ReactElement {
       symmetry={defaultSymmetry}
     />
   );
+}
+
+export default function AppCanvasIsland(): React.ReactElement {
+  if (!isSimEnabled()) return <></>;
+  return <SimCanvas />;
 }
