@@ -62,6 +62,8 @@ export function VectorFieldBackground({
   });
   const scrollYRef = useRef(0);
   const rafRef = useRef<number>(0);
+  const loopActiveRef = useRef(false);
+  const drawRef = useRef<() => void>(() => {});
   const [fadeEnd, setFadeEnd] = useState(800);
   const effectiveFadeEndRef = useRef(800);
   const cursorEnabled = cursorAttraction > 0;
@@ -90,6 +92,10 @@ export function VectorFieldBackground({
   useEffect(() => {
     const onScroll = () => {
       scrollYRef.current = window.scrollY;
+      if (!loopActiveRef.current && window.scrollY > 0) {
+        loopActiveRef.current = true;
+        drawRef.current();
+      }
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -148,8 +154,8 @@ export function VectorFieldBackground({
     const effectiveFadeEnd = effectiveFadeEndRef.current;
     const opacity = Math.min(1, scrollY / effectiveFadeEnd);
     if (opacity <= 0) {
-      rafRef.current = requestAnimationFrame(draw);
-      return;
+      loopActiveRef.current = false;
+      return; // stop the loop; scroll handler will restart it
     }
 
     const now = performance.now();
@@ -247,10 +253,12 @@ export function VectorFieldBackground({
     }
 
     ctx.restore();
+    loopActiveRef.current = true;
     rafRef.current = requestAnimationFrame(draw);
   }, [field, effectiveGrid, arrowScale, effectiveCursorEnabled, cursorAttraction]);
 
   useEffect(() => {
+    drawRef.current = draw;
     draw();
     return () => cancelAnimationFrame(rafRef.current);
   }, [draw]);

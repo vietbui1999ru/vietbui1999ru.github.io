@@ -16,47 +16,52 @@ import {
 } from "@/data/homeData";
 
 const Home = () => {
-  const [singularitySpeed, setSingularitySpeed] = useState(1.0);
-  const [singularityIntensity, setSingularityIntensity] = useState(1.0);
-  const [singularitySize, setSingularitySize] = useState(1.0);
-  const [singularityWaveStrength, setSingularityWaveStrength] = useState(1.0);
-  const [singularityColorShift, setSingularityColorShift] = useState(1.0);
+  const [progress, setProgress] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onMqChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener("change", onMqChange);
+    return () => mq.removeEventListener("change", onMqChange);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       const t = Math.min(1, window.scrollY / (window.innerHeight / 2));
-      const v =
-        SINGULARITY_SCROLL_MIN +
-        (SINGULARITY_SCROLL_MAX - SINGULARITY_SCROLL_MIN) * (1 - t);
-      const sizeMax = SINGULARITY_SCROLL_MAX * SINGULARITY_SIZE_RESIZE_FACTOR;
-      const sizeV =
-        SINGULARITY_SCROLL_MIN + (sizeMax - SINGULARITY_SCROLL_MIN) * (1 - t);
-      setSingularitySpeed(v);
-      setSingularityIntensity(v);
-      setSingularitySize(sizeV);
-      setSingularityWaveStrength(v);
-      setSingularityColorShift(v);
+      setProgress(t);
     };
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const v =
+    SINGULARITY_SCROLL_MIN +
+    (SINGULARITY_SCROLL_MAX - SINGULARITY_SCROLL_MIN) * (1 - progress);
+  const sizeMax = SINGULARITY_SCROLL_MAX * SINGULARITY_SIZE_RESIZE_FACTOR;
+  const sizeV =
+    SINGULARITY_SCROLL_MIN + (sizeMax - SINGULARITY_SCROLL_MIN) * (1 - progress);
+
   return (
     <div id="home" className="relative min-h-screen w-full">
-      <div
-        className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-        style={{ opacity: singularitySize > 0.25 ? 1 : 0 }}
-        aria-hidden={singularitySize <= 0.25}
-      >
-        <SingularityShaders
-          className="singularity-shader h-full w-full"
-          speed={singularitySpeed}
-          intensity={singularityIntensity}
-          size={singularitySize}
-          waveStrength={singularityWaveStrength}
-          colorShift={singularityColorShift}
-        />
-      </div>
+      {!reducedMotion && (
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+          style={{ opacity: sizeV > 0.25 ? 1 : 0 }}
+          aria-hidden={sizeV <= 0.25}
+        >
+          <SingularityShaders
+            className="singularity-shader h-full w-full"
+            speed={v}
+            intensity={v}
+            size={sizeV}
+            waveStrength={v}
+            colorShift={v}
+          />
+        </div>
+      )}
 
       <div className="relative z-10 flex min-h-screen w-full items-center justify-center px-4">
         <p className="text-center">

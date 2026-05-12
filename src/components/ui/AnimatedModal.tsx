@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import type React from "react";
 import {
   createContext,
@@ -64,6 +64,9 @@ export const ModalTrigger = ({
   );
 };
 
+const FOCUSABLE_SELECTOR =
+  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
 export const ModalBody = ({
   children,
   className,
@@ -84,6 +87,46 @@ export const ModalBody = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const { setOpen } = useModal();
   useOnClickOutside(modalRef, () => setOpen(false));
+
+  useEffect(() => {
+    if (!open) return;
+
+    const modal = modalRef.current;
+    if (!modal) return;
+
+    const focusable = Array.from(
+      modal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+    );
+
+    if (focusable.length > 0) {
+      focusable[0].focus();
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+
+      const current = document.activeElement as HTMLElement;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (current === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (current === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
+
+  const dragControls = useDragControls();
 
   return (
     <AnimatePresence>
@@ -111,13 +154,17 @@ export const ModalBody = ({
               rotateX: 0,
               y: 0,
             }}
+            aria-label="Dialog"
+            aria-modal="true"
             className={cn(
               "min-h-[50%] max-h-[90%] max-w-[95%] md:max-w-[40%] bg-card text-card-foreground border border-border rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
               className,
             )}
             drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
+            dragControls={dragControls}
             dragElastic={0.2}
+            dragListener={false}
             onDragEnd={(_e, info) => {
               const DISMISS_OFFSET = 100;
               const DISMISS_VELOCITY = 500;
@@ -137,12 +184,17 @@ export const ModalBody = ({
               y: 40,
             }}
             ref={modalRef}
+            role="dialog"
             transition={{
               type: "spring",
               stiffness: 260,
               damping: 15,
             }}
           >
+            <div
+              className="mx-auto mt-3 mb-1 h-1.5 w-16 cursor-grab rounded-full bg-muted-foreground/30 touch-none"
+              onPointerDown={(e) => dragControls.start(e)}
+            />
             <CloseIcon />
             {children}
           </motion.div>
