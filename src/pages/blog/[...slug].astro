@@ -23,6 +23,7 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
 ---
 
 <BaseLayout>
+  <div class="w-full flex-1 bg-background">
   <div class="mx-auto w-full max-w-[var(--content-max)] px-4 pt-16 pb-24 sm:px-6">
     <a
       href="/blog"
@@ -79,5 +80,6 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
     >
       <Content />
     </div>
+  </div>
   </div>
 </BaseLayout>
