@@ -1,13 +1,13 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, NAV_ACTIVE_CLASS } from "@/data/navigationData";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 
 const MobileBottomNav = () => {
   const activeHash = useScrollSpy();
-  const pathname = usePathname();
+  const [pathname] = useState(() => typeof window !== "undefined" ? window.location.pathname : "/");
 
   return (
     <nav
