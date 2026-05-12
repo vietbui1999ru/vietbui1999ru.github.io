@@ -37,6 +37,10 @@ interface DockProps {
 interface DockItemProps {
   className?: string;
   children: React.ReactNode;
+  onClick?: () => void;
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
+  "aria-label"?: string;
+  "aria-current"?: React.AriaAttributes["aria-current"];
 }
 interface DockLabelProps {
   className?: string;
@@ -123,7 +127,7 @@ function Dock({
   );
 }
 
-function DockItem({ children, className }: DockItemProps) {
+function DockItem({ children, className, onClick, onKeyDown, "aria-label": ariaLabel, "aria-current": ariaCurrent }: DockItemProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const { distance, magnification, mouseX, spring } = useDock();
@@ -145,17 +149,20 @@ function DockItem({ children, className }: DockItemProps) {
 
   return (
     <motion.div
-      aria-haspopup="true"
+      aria-current={ariaCurrent}
+      aria-label={ariaLabel}
       className={cn(
-        "relative inline-flex items-center justify-center",
+        "relative inline-flex items-center justify-center cursor-pointer",
         className,
       )}
       onBlur={() => isHovered.set(0)}
+      onClick={onClick}
       onFocus={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
       onHoverStart={() => isHovered.set(1)}
+      onKeyDown={onKeyDown}
       ref={ref}
-      role="button"
+      role="link"
       style={{ width }}
       tabIndex={0}
     >

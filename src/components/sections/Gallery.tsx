@@ -17,15 +17,23 @@ const Gallery = () => {
   const [activeImage, setActiveImage] = useState<Marquee3DImage | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(4);
+  const resizeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
       setColumns(w < 640 ? 2 : w < 1024 ? 3 : 4);
     };
+    const onResize = () => {
+      if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
+      resizeTimerRef.current = setTimeout(update, 100);
+    };
     update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
+    };
   }, []);
 
   useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () =>

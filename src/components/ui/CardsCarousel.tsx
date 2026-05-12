@@ -69,15 +69,11 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
   const handleCardClose = (index: number) => {
     if (carouselRef.current) {
-      const cardWidth =
-        typeof window !== "undefined" && window.innerWidth < 768 ? 160 : 224;
-      const gap =
-        typeof window !== "undefined" && window.innerWidth < 768 ? 4 : 8;
-      const scrollPosition = (cardWidth + gap) * (index + 1);
-      carouselRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
+      const snapCards = carouselRef.current.querySelectorAll<HTMLElement>(".snap-start");
+      const target = snapCards[index + 1] ?? snapCards[index];
+      if (target) {
+        carouselRef.current.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
+      }
       setCurrentIndex(index);
     }
   };
@@ -111,7 +107,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                   y: 0,
                   transition: {
                     duration: 0.5,
-                    delay: 0.2 * index,
+                    delay: Math.min(0.2 * index, 0.6),
                     ease: "easeOut",
                   },
                 }}

@@ -9,6 +9,7 @@ const MobileBottomNav = () => {
 
   return (
     <nav
+      aria-label="Site navigation"
       className="fixed bottom-0 left-0 right-0 z-[9999999] md:hidden border-t border-border bg-background/80 backdrop-blur-lg"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
@@ -20,6 +21,7 @@ const MobileBottomNav = () => {
             <a
               key={item.href}
               href={item.href}
+              aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex flex-col items-center justify-center gap-0.5 py-2 min-w-[44px] min-h-[44px] touch-manipulation transition-colors",
                 isActive ? NAV_ACTIVE_CLASS : "text-muted-foreground",
