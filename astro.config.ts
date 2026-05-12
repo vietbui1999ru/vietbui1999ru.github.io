@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import path from "path";
 import { fileURLToPath } from "url";
+import { remarkPreview } from "./src/lib/remark/preview";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -19,6 +20,9 @@ export default defineConfig({
   site,
   base,
   integrations: [react()],
+  markdown: {
+    remarkPlugins: [remarkPreview],
+  },
   vite: {
     plugins: [tailwindcss()],
     resolve: {
