@@ -12,16 +12,72 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+const wordCount = (entry.body ?? "").trim().split(/\s+/).length;
+const readingTime = `${Math.max(1, Math.round(wordCount / 200))} min read`;
+const formattedDate = entry.data.date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
 ---
 
 <BaseLayout>
-  <article class="mx-auto w-full max-w-[var(--content-max)] px-4 py-24 sm:px-6">
-    <h1 class="text-4xl font-bold mb-4">{entry.data.title}</h1>
-    <p class="text-muted-foreground mb-8">
-      {entry.data.date.toLocaleDateString("en-US")}
-    </p>
-    <div class="prose dark:prose-invert">
+  <div class="mx-auto w-full max-w-[var(--content-max)] px-4 pt-16 pb-24 sm:px-6">
+    <a
+      href="/blog"
+      class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-10 transition-colors"
+    >
+      ← Blog
+    </a>
+
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold tracking-tight mb-3">
+        {entry.data.title}
+      </h1>
+      <p class="text-muted-foreground text-base mb-4">
+        {entry.data.description}
+      </p>
+      <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+        <time datetime={entry.data.date.toISOString()}>{formattedDate}</time>
+        {readingTime && <span>·</span>}
+        {readingTime && <span>{readingTime}</span>}
+        {entry.data.updated && (
+          <>
+            <span>·</span>
+            <span>
+              Updated{" "}
+              {entry.data.updated.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+          </>
+        )}
+      </div>
+      {entry.data.tags && entry.data.tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4">
+          {entry.data.tags.map((tag) => (
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div
+      class="prose prose-neutral dark:prose-invert
+             prose-headings:font-semibold prose-headings:tracking-tight
+             prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+             prose-code:before:content-none prose-code:after:content-none
+             prose-code:rounded prose-code:px-1.5 prose-code:py-0.5
+             prose-code:bg-secondary prose-code:text-secondary-foreground prose-code:font-normal
+             prose-pre:rounded-lg prose-pre:border prose-pre:border-border
+             max-w-none"
+    >
       <Content />
     </div>
-  </article>
+  </div>
 </BaseLayout>

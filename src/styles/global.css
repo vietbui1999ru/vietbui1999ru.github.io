@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @import "tw-animate-css";
 
@@ -311,4 +312,26 @@
   .lava-card-blob {
     animation: none !important;
   }
+}
+
+/* Shiki dual-theme: light mode uses github-light, dark mode uses github-dark */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+.dark .astro-code,
+.dark .astro-code span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+/* prose: let Shiki own code block colors, keep inline code styled */
+.prose :where(pre):not(:where([class~="not-prose"] *)) {
+  background-color: transparent;
+  padding: 0;
+}
+.prose :where(pre code):not(:where([class~="not-prose"] *)) {
+  background-color: transparent;
+  font-size: 0.875em;
 }

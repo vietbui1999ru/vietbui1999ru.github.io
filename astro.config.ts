@@ -37,6 +37,11 @@ export default defineConfig({
   base,
   integrations: [react()],
   markdown: {
+    shikiConfig: {
+      themes: { light: "github-light", dark: "github-dark" },
+      defaultColor: false,
+      wrap: true,
+    },
     remarkPlugins: [
       remarkPreview,
       [remarkEmbeds, { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw }],
