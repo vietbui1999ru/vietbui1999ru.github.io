@@ -8,8 +8,7 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if ((from && typeof from === "object") || typeof from === "function") {
@@ -22,8 +21,7 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toCommonJS = (mod) =>
-  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
@@ -96,16 +94,12 @@ var FileNameHistorySettingTab = class extends import_obsidian.PluginSettingTab {
     generalGroup.addSetting((setting) => {
       setting
         .setName("Case-sensitive uniqueness")
-        .setDesc(
-          "If enabled, treat case differences as unique values in the configured property.",
-        )
+        .setDesc("If enabled, treat case differences as unique values in the configured property.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.caseSensitive)
-            .onChange((value) => {
-              this.plugin.settings.caseSensitive = value;
-              saveSettings();
-            }),
+          toggle.setValue(this.plugin.settings.caseSensitive).onChange((value) => {
+            this.plugin.settings.caseSensitive = value;
+            saveSettings();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -113,12 +107,10 @@ var FileNameHistorySettingTab = class extends import_obsidian.PluginSettingTab {
         .setName("Auto-create history property")
         .setDesc("Automatically create the configured property if missing.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.autoCreateFrontmatter)
-            .onChange((value) => {
-              this.plugin.settings.autoCreateFrontmatter = value;
-              saveSettings();
-            }),
+          toggle.setValue(this.plugin.settings.autoCreateFrontmatter).onChange((value) => {
+            this.plugin.settings.autoCreateFrontmatter = value;
+            saveSettings();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -138,15 +130,9 @@ var FileNameHistorySettingTab = class extends import_obsidian.PluginSettingTab {
             }),
         );
     });
-    const filteringGroup = new import_obsidian.SettingGroup(
-      containerEl,
-    ).setHeading("Filtering");
-    const foldersGroup = new import_obsidian.SettingGroup(
-      containerEl,
-    ).setHeading("Folders");
-    const advancedGroup = new import_obsidian.SettingGroup(
-      containerEl,
-    ).setHeading("Advanced");
+    const filteringGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Filtering");
+    const foldersGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Folders");
+    const advancedGroup = new import_obsidian.SettingGroup(containerEl).setHeading("Advanced");
     filteringGroup.addSetting((setting) => {
       setting
         .setName("Ignore regex patterns")
@@ -189,15 +175,13 @@ var FileNameHistorySettingTab = class extends import_obsidian.PluginSettingTab {
           "Comma-separated list of folder paths to include. If empty, all folders are included. Use {vault} or {root} to include only files directly in the vault root (no subfolders).",
         )
         .addText((text) =>
-          text
-            .setValue(this.plugin.settings.includeFolders.join(","))
-            .onChange((value) => {
-              this.plugin.settings.includeFolders = value
-                .split(",")
-                .map((s) => s.trim())
-                .filter((s) => s);
-              saveSettings();
-            }),
+          text.setValue(this.plugin.settings.includeFolders.join(",")).onChange((value) => {
+            this.plugin.settings.includeFolders = value
+              .split(",")
+              .map((s) => s.trim())
+              .filter((s) => s);
+            saveSettings();
+          }),
         );
     });
     foldersGroup.addSetting((setting) => {
@@ -207,15 +191,13 @@ var FileNameHistorySettingTab = class extends import_obsidian.PluginSettingTab {
           'Comma-separated list of folder paths to exclude. Supports wildcards: use "folder/*" to exclude direct children, "folder/**" to exclude all descendants. Use {vault} or {root} to exclude files directly in the vault root.',
         )
         .addText((text) =>
-          text
-            .setValue(this.plugin.settings.excludeFolders.join(","))
-            .onChange((value) => {
-              this.plugin.settings.excludeFolders = value
-                .split(",")
-                .map((s) => s.trim())
-                .filter((s) => s);
-              saveSettings();
-            }),
+          text.setValue(this.plugin.settings.excludeFolders.join(",")).onChange((value) => {
+            this.plugin.settings.excludeFolders = value
+              .split(",")
+              .map((s) => s.trim())
+              .filter((s) => s);
+            saveSettings();
+          }),
         );
     });
     advancedGroup.addSetting((setting) => {
@@ -305,9 +287,7 @@ var HistoryProcessor = class {
     }
     const aliasesArray = aliases;
     const existing = new Set(
-      this.settings.caseSensitive
-        ? aliasesArray
-        : aliasesArray.map((a) => a.toLowerCase()),
+      this.settings.caseSensitive ? aliasesArray : aliasesArray.map((a) => a.toLowerCase()),
     );
     let added = false;
     for (const name of toAdd) {
@@ -322,9 +302,7 @@ var HistoryProcessor = class {
       return;
     }
     frontmatter[this.settings.historyPropertyName] = aliasesArray;
-    const newFrontmatterText = (0, import_obsidian2.stringifyYaml)(
-      frontmatter,
-    ).trim();
+    const newFrontmatterText = (0, import_obsidian2.stringifyYaml)(frontmatter).trim();
     const newContent = `---
 ${newFrontmatterText}
 ---
@@ -377,14 +355,10 @@ ${bodyContent}`;
       }
       const aliasesArray = aliases;
       const existing = new Set(
-        this.settings.caseSensitive
-          ? aliasesArray
-          : aliasesArray.map((a) => a.toLowerCase()),
+        this.settings.caseSensitive ? aliasesArray : aliasesArray.map((a) => a.toLowerCase()),
       );
       for (const name of toAdd) {
-        const checkName = this.settings.caseSensitive
-          ? name
-          : name.toLowerCase();
+        const checkName = this.settings.caseSensitive ? name : name.toLowerCase();
         if (!existing.has(checkName)) {
           aliasesArray.push(name);
           existing.add(checkName);
@@ -448,10 +422,7 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
     return path.startsWith(folder + "/") || path === folder;
   }
   isPathExcluded(path, excludePattern) {
-    if (
-      excludePattern.includes("{vault}") ||
-      excludePattern.includes("{root}")
-    ) {
+    if (excludePattern.includes("{vault}") || excludePattern.includes("{root}")) {
       const resolvedPattern = excludePattern.replace(/\{vault\}|\{root\}/g, "");
       if (resolvedPattern === "" || resolvedPattern === "/") {
         return !path.includes("/");
@@ -481,29 +452,20 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
     const isNameChange = this.settings.caseSensitive
       ? oldBasename !== newBasename
       : oldBasename.toLowerCase() !== newBasename.toLowerCase();
-    const isFolderChange =
-      oldImmediateParentName !== newImmediateParentName && !isNameChange;
+    const isFolderChange = oldImmediateParentName !== newImmediateParentName && !isNameChange;
     if (!isNameChange && !isFolderChange) {
       return;
     }
     const path = newFile.path;
-    if (
-      this.settings.excludePropertyName &&
-      this.settings.excludePropertyName.trim() !== ""
-    ) {
+    if (this.settings.excludePropertyName && this.settings.excludePropertyName.trim() !== "") {
       const cache = this.app.metadataCache.getFileCache(newFile);
       const frontmatter = cache == null ? void 0 : cache.frontmatter;
-      if (
-        frontmatter &&
-        frontmatter[this.settings.excludePropertyName] === true
-      ) {
+      if (frontmatter && frontmatter[this.settings.excludePropertyName] === true) {
         return;
       }
     }
     if (this.settings.includeFolders.length > 0) {
-      if (
-        !this.settings.includeFolders.some((f) => this.isPathInFolder(path, f))
-      ) {
+      if (!this.settings.includeFolders.some((f) => this.isPathInFolder(path, f))) {
         return;
       }
     }
@@ -513,8 +475,7 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
       this.settings.trackFolderRenames.trim() !== "" &&
       (this.settings.caseSensitive
         ? newFile.basename === this.settings.trackFolderRenames
-        : newFile.basename.toLowerCase() ===
-          this.settings.trackFolderRenames.toLowerCase());
+        : newFile.basename.toLowerCase() === this.settings.trackFolderRenames.toLowerCase());
     for (const excludePattern of this.settings.excludeFolders) {
       if (this.isPathExcluded(path, excludePattern)) {
         if (
@@ -556,8 +517,7 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
       const currentBasename = newFile.basename;
       const matchesFilename = this.settings.caseSensitive
         ? currentBasename === this.settings.trackFolderRenames
-        : currentBasename.toLowerCase() ===
-          this.settings.trackFolderRenames.toLowerCase();
+        : currentBasename.toLowerCase() === this.settings.trackFolderRenames.toLowerCase();
       if (!matchesFilename) {
         return;
       }
@@ -565,10 +525,7 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
         return;
       }
       if (
-        regexes.some(
-          (re) =>
-            re.test(oldImmediateParentName) || re.test(newImmediateParentName),
-        )
+        regexes.some((re) => re.test(oldImmediateParentName) || re.test(newImmediateParentName))
       ) {
         return;
       }
@@ -596,10 +553,7 @@ var FileNameHistoryPlugin = class extends import_obsidian3.Plugin {
     entry.timeoutId = window.setTimeout(() => {
       void (async () => {
         try {
-          await this.historyProcessor.processAliases(
-            entry.currentPath,
-            entry.queue,
-          );
+          await this.historyProcessor.processAliases(entry.currentPath, entry.queue);
         } catch (error) {
           console.error("Error processing aliases:", error);
         }

@@ -23,5 +23,4 @@ export type ProjectItem = {
 };
 
 export const PROJECTS_TITLE = projectsJson.title;
-export const PROJECTS_ITEMS: ProjectItem[] =
-  projectsJson.items as ProjectItem[];
+export const PROJECTS_ITEMS: ProjectItem[] = projectsJson.items as ProjectItem[];

@@ -1,4 +1,4 @@
-import type { SingularityConfig } from './index'
+import type { SingularityConfig } from "./index";
 
 /**
  * Built-in presets for the Singularity shader sim.
@@ -31,4 +31,4 @@ export const SINGULARITY_PRESETS: Record<string, Partial<SingularityConfig>> = {
     waveStrength: 0.5,
     colorShift: 0.2,
   },
-}
+};

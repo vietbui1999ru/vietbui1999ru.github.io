@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppleHelloBlogEffect } from "@/components/ui/apple-hello-effect";
 import { buttonVariants } from "@/components/ui/button";
 import { Calendar, Clock, FileText } from "lucide-react";
@@ -37,13 +31,15 @@ const Blog = ({ posts }: BlogProps) => {
 
   return (
     <section id="blog" className="relative min-h-screen w-full">
-      <div data-section-id="blog" aria-hidden="true" className="absolute inset-0 pointer-events-none" />
+      <div
+        data-section-id="blog"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloBlogEffect className="w-full" />
-          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-            {BLOG_SECTION_SUBTITLE}
-          </p>
+          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">{BLOG_SECTION_SUBTITLE}</p>
         </header>
 
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -54,9 +50,7 @@ const Blog = ({ posts }: BlogProps) => {
                   <FileText className="size-10 text-muted-foreground/50" />
                 </div>
                 <CardHeader className="flex-1">
-                  <CardTitle className="text-lg line-clamp-2">
-                    {post.title}
-                  </CardTitle>
+                  <CardTitle className="text-lg line-clamp-2">{post.title}</CardTitle>
                   <CardDescription className="flex flex-wrap items-center gap-3 text-xs">
                     <span className="flex items-center gap-1">
                       <Calendar className="size-3" />
@@ -70,10 +64,7 @@ const Blog = ({ posts }: BlogProps) => {
                   </p>
                   <a
                     href={`/blog/${post.slug}`}
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "sm" }),
-                      "inline-flex",
-                    )}
+                    className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "inline-flex")}
                   >
                     Read more
                   </a>
@@ -103,10 +94,7 @@ const Blog = ({ posts }: BlogProps) => {
                 </p>
                 <a
                   href="/blog/coming-soon"
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "sm" }),
-                    "inline-flex",
-                  )}
+                  className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "inline-flex")}
                 >
                   Read more
                 </a>
@@ -116,13 +104,7 @@ const Blog = ({ posts }: BlogProps) => {
         </div>
 
         <div className="mt-8 text-center">
-          <a
-            href="/blog"
-            className={cn(
-              buttonVariants({ variant: "outline" }),
-              "inline-flex",
-            )}
-          >
+          <a href="/blog" className={cn(buttonVariants({ variant: "outline" }), "inline-flex")}>
             View all posts
           </a>
         </div>

@@ -53,12 +53,7 @@ export function TimelineLayout({
   if (!items.length) return null;
 
   return (
-    <div
-      className={cn(
-        "relative w-full max-w-6xl mx-auto flex flex-col gap-8",
-        className,
-      )}
-    >
+    <div className={cn("relative w-full max-w-6xl mx-auto flex flex-col gap-8", className)}>
       {/* Spine: left on mobile, center on md+ */}
       <div
         className={cn(
@@ -111,13 +106,9 @@ export function TimelineLayout({
                 )}
               >
                 <div className="mb-2 space-y-1">
-                  <h3 className="font-semibold leading-tight text-base md:text-lg">
-                    {item.title}
-                  </h3>
+                  <h3 className="font-semibold leading-tight text-base md:text-lg">{item.title}</h3>
                   {item.subtitle && (
-                    <p className="text-xs md:text-sm text-muted-foreground">
-                      {item.subtitle}
-                    </p>
+                    <p className="text-xs md:text-sm text-muted-foreground">{item.subtitle}</p>
                   )}
                   {item.date && (
                     <p className="text-xs md:text-sm uppercase tracking-wide text-muted-foreground/80">
@@ -129,10 +120,7 @@ export function TimelineLayout({
                 {item.contentColumns && item.contentColumns.length > 0 ? (
                   <div className="mt-2 grid grid-cols-1 gap-4 text-xs md:text-sm text-muted-foreground text-left md:grid-cols-2">
                     {item.contentColumns.map((col, colIdx) => (
-                      <ul
-                        key={colIdx}
-                        className="space-y-5 list-disc list-inside"
-                      >
+                      <ul key={colIdx} className="space-y-5 list-disc list-inside">
                         {col.map((b, i) => (
                           <li key={i}>{b}</li>
                         ))}
@@ -172,11 +160,7 @@ export function TimelineLayout({
                           {tag.label}
                         </a>
                       ) : (
-                        <span
-                          key={`${tag.label}-${i}`}
-                          className={pillClass}
-                          title={tip}
-                        >
+                        <span key={`${tag.label}-${i}`} className={pillClass} title={tip}>
                           {tag.label}
                         </span>
                       );
@@ -254,15 +238,8 @@ export function TimelineLayout({
               <div className="md:hidden pl-12 pr-2">{content}</div>
 
               {/* Desktop: two-column zig-zag */}
-              <div
-                className={cn(
-                  "hidden md:flex w-full",
-                  isRight && "md:flex-row-reverse",
-                )}
-              >
-                <div className={cn("w-1/2", isRight ? "pl-10" : "pr-10")}>
-                  {content}
-                </div>
+              <div className={cn("hidden md:flex w-full", isRight && "md:flex-row-reverse")}>
+                <div className={cn("w-1/2", isRight ? "pl-10" : "pr-10")}>{content}</div>
                 <div className="w-1/2" />
               </div>
             </li>

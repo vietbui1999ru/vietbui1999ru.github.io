@@ -1,28 +1,28 @@
-import React from 'react'
-import { Canvas as R3FCanvas } from '@react-three/fiber'
-import { OrthographicCamera } from '@react-three/drei'
-import { SceneHost } from './SceneHost'
-import type { PerfTier, SceneId, SymmetryConfig } from './types'
+import React from "react";
+import { Canvas as R3FCanvas } from "@react-three/fiber";
+import { OrthographicCamera } from "@react-three/drei";
+import { SceneHost } from "./SceneHost";
+import type { PerfTier, SceneId, SymmetryConfig } from "./types";
 
 export interface AppCanvasProps {
-  activeSceneId: SceneId
+  activeSceneId: SceneId;
   /** Config forwarded to the active scene. Until D13 (Leva store), AppCanvasIsland
    *  supplies the module's defaults. */
-  config: unknown
-  perf: PerfTier
-  symmetry: SymmetryConfig
+  config: unknown;
+  perf: PerfTier;
+  symmetry: SymmetryConfig;
   /** When true, use an orthographic projection (default false = perspective) */
-  orthographic?: boolean
+  orthographic?: boolean;
   /** Optional inline style override. Defaults to fixed full-viewport behind content. */
-  style?: React.CSSProperties
+  style?: React.CSSProperties;
 }
 
 const defaultStyle: React.CSSProperties = {
-  position: 'fixed',
+  position: "fixed",
   inset: 0,
   zIndex: -10,
-  pointerEvents: 'none',
-}
+  pointerEvents: "none",
+};
 
 /**
  * App-wide single r3f Canvas.
@@ -52,5 +52,5 @@ export function AppCanvas({
       {orthographic && <OrthographicCamera makeDefault position={[0, 0, 5]} />}
       <SceneHost activeSceneId={activeSceneId} config={config} perf={perf} symmetry={symmetry} />
     </R3FCanvas>
-  )
+  );
 }

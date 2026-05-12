@@ -18,24 +18,18 @@ var __defNormalProp = (obj, key, value) =>
         value,
       })
     : (obj[key] = value);
-var __markAsModule = (target) =>
-  __defProp(target, "__esModule", { value: true });
+var __markAsModule = (target) => __defProp(target, "__esModule", { value: true });
 var __export = (target, all) => {
   __markAsModule(target);
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __reExport = (target, module2, desc) => {
-  if (
-    (module2 && typeof module2 === "object") ||
-    typeof module2 === "function"
-  ) {
+  if ((module2 && typeof module2 === "object") || typeof module2 === "function") {
     for (let key of __getOwnPropNames(module2))
       if (!__hasOwnProp.call(target, key) && key !== "default")
         __defProp(target, key, {
           get: () => module2[key],
-          enumerable:
-            !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable,
+          enumerable: !(desc = __getOwnPropDesc(module2, key)) || desc.enumerable,
         });
   }
   return target;
@@ -67,9 +61,7 @@ var import_obsidian = __toModule(require("obsidian"));
 
 // node_modules/monkey-around/mjs/index.js
 function around(obj, factories) {
-  const removers = Object.keys(factories).map((key) =>
-    around1(obj, key, factories[key]),
-  );
+  const removers = Object.keys(factories).map((key) => around1(obj, key, factories[key]));
   return removers.length === 1
     ? removers[0]
     : function () {
@@ -146,9 +138,7 @@ var SettingsSearch = class extends import_obsidian.Plugin {
       this.settingsResultsContainerEl.createEl("h3", {
         text: "Settings Search Results",
       });
-      this.settingsResultsEl = this.settingsResultsContainerEl.createDiv(
-        "settings-search-results",
-      );
+      this.settingsResultsEl = this.settingsResultsContainerEl.createDiv("settings-search-results");
       this.buildScope();
       this.buildSearch();
       this.buildResources();
@@ -199,9 +189,7 @@ var SettingsSearch = class extends import_obsidian.Plugin {
     }
     const setting = new import_obsidian.Setting(createDiv())
       .setName(name)
-      .setDesc(
-        createFragment((e) => (e.createDiv().innerHTML = resource.desc ?? "")),
-      );
+      .setDesc(createFragment((e) => (e.createDiv().innerHTML = resource.desc ?? "")));
     if (resource.external) {
       setting.settingEl.addClass("set-externally");
     }
@@ -221,13 +209,8 @@ var SettingsSearch = class extends import_obsidian.Plugin {
     }
     if (resource.tab == "plugins") {
       const plugins = Object.values(this.app.internalPlugins.plugins);
-      const plugin = plugins.find(
-        (p) => p._loaded && p.instance.name == resource.text,
-      );
-      if (
-        plugin &&
-        this.app.setting.pluginTabs.find((t) => t.id == plugin.instance.id)
-      ) {
+      const plugin = plugins.find((p) => p._loaded && p.instance.name == resource.text);
+      if (plugin && this.app.setting.pluginTabs.find((t) => t.id == plugin.instance.id)) {
         setting.addExtraButton((b) => {
           b.setTooltip(`Open ${resource.text} Settings`).onClick(() => {
             this.app.setting.openTabById(plugin.instance.id);
@@ -279,12 +262,8 @@ var SettingsSearch = class extends import_obsidian.Plugin {
         continue;
       }
       resource.external = true;
-      this.resources = this.resources.filter(
-        (r) => !this.equivalent(resource, r),
-      );
-      removing.push(
-        ...keys.filter((k) => k == resource || this.equivalent(resource, k)),
-      );
+      this.resources = this.resources.filter((r) => !this.equivalent(resource, r));
+      removing.push(...keys.filter((k) => k == resource || this.equivalent(resource, k)));
     }
     this.removeResourcesFromCache(removing);
   }
@@ -295,14 +274,11 @@ var SettingsSearch = class extends import_obsidian.Plugin {
   }
   async getTabResources(tab) {
     await tab.display();
-    const settings = tab.containerEl.querySelectorAll(
-      ".setting-item:not(.setting-item-header)",
-    );
+    const settings = tab.containerEl.querySelectorAll(".setting-item:not(.setting-item-header)");
     for (const el of Array.from(settings)) {
       const text = el.querySelector(".setting-item-name")?.textContent;
       if (!text) continue;
-      const desc =
-        el.querySelector(".setting-item-description")?.innerHTML ?? "";
+      const desc = el.querySelector(".setting-item-description")?.innerHTML ?? "";
       const resource = {
         tab: tab.id,
         name: tab.name,
@@ -382,11 +358,9 @@ var SettingsSearch = class extends import_obsidian.Plugin {
     );
   }
   buildSearch() {
-    const tempSetting = new import_obsidian.Setting(createDiv()).addSearch(
-      (s) => {
-        this.search = s;
-      },
-    );
+    const tempSetting = new import_obsidian.Setting(createDiv()).addSearch((s) => {
+      this.search = s;
+    });
     this.settingsNavItemContainer.append(tempSetting.controlEl);
     tempSetting.settingEl.detach();
     this.search.onChange((v) => {
@@ -483,9 +457,7 @@ var SettingsSearch = class extends import_obsidian.Plugin {
       if (!import_obsidian.Platform.isMobile) {
         this.app.setting.activeTab.navEl.removeClass("is-active");
         this.app.setting.tabContentContainer.empty();
-        this.app.setting.tabContentContainer.append(
-          this.settingsResultsContainerEl,
-        );
+        this.app.setting.tabContentContainer.append(this.settingsResultsContainerEl);
       } else {
         const headers = this.app.setting.tabHeadersEl.querySelectorAll(
           ".vertical-tab-header-group:not(.settings-search-container)",
@@ -527,9 +499,7 @@ var SettingsSearch = class extends import_obsidian.Plugin {
       for (const resource of results) {
         if (!(resource.tab in headers)) {
           headers[resource.tab] = this.settingsResultsEl.createDiv();
-          new import_obsidian.Setting(headers[resource.tab])
-            .setHeading()
-            .setName(resource.name);
+          new import_obsidian.Setting(headers[resource.tab]).setHeading().setName(resource.name);
         }
         const setting = this.getResourceFromCache(resource);
         headers[resource.tab].append(setting.settingEl);
@@ -565,9 +535,7 @@ var SettingsSearch = class extends import_obsidian.Plugin {
           previous.hasClass("style-settings-heading")
         ) {
           previous.removeClass("is-collapsed");
-          collapsed = collapsed.parentElement?.closest(
-            ".style-settings-container",
-          );
+          collapsed = collapsed.parentElement?.closest(".style-settings-container");
           previous = collapsed?.previousElementSibling;
         }
       }

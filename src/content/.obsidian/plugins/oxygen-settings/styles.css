@@ -563,10 +563,8 @@
 
 /* The theme already handles indentation guides using --nav-indentation-guide-width and --nav-indentation-guide-color */
 /* We only need to override when "None" (0px) is selected - make it invisible but keep it for indentation */
-body.oxygen-theme[style*="--nav-indentation-guide-width: 0px"]
-  .nav-folder-children::before,
-body.oxygen-theme[style*="--nav-indentation-guide-width:0px"]
-  .nav-folder-children::before {
+body.oxygen-theme[style*="--nav-indentation-guide-width: 0px"] .nav-folder-children::before,
+body.oxygen-theme[style*="--nav-indentation-guide-width:0px"] .nav-folder-children::before {
   opacity: 0 !important;
   visibility: hidden !important;
 }
@@ -704,12 +702,7 @@ body.oxygen-theme[style*="--nav-indentation-guide-width:0px"]
 /* Ensure cmdr buttons are treated the same as nav-action-button */
 /* This makes cmdr buttons first-class citizens alongside regular nav-action-button elements */
 body .mod-sidedock .workspace-leaf-content > .nav-header .cmdr.clickable-icon,
-body
-  .mod-sidedock
-  .workspace-leaf-content
-  > .view-content
-  > .nav-header
-  .cmdr.clickable-icon {
+body .mod-sidedock .workspace-leaf-content > .view-content > .nav-header .cmdr.clickable-icon {
   /* Inherit nav-action-button styling */
   display: inline-flex;
   align-items: center;
@@ -727,11 +720,7 @@ body .view-header .view-actions .cmdr-page-header.clickable-icon.view-action {
 
 /* Also target the SVG inside cmdr buttons to ensure stroke color matches */
 body .view-header .view-actions .cmdr.clickable-icon.view-action svg,
-body
-  .view-header
-  .view-actions
-  .cmdr-page-header.clickable-icon.view-action
-  svg {
+body .view-header .view-actions .cmdr-page-header.clickable-icon.view-action svg {
   color: var(--icon-color) !important;
   stroke: currentColor !important;
 }

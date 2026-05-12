@@ -63,9 +63,7 @@ const Home = () => {
               neon: true,
             }}
           />
-          <p className="text-2xl md:text-3xl text-muted-foreground">
-            {HOME_TAGLINE}
-          </p>
+          <p className="text-2xl md:text-3xl text-muted-foreground">{HOME_TAGLINE}</p>
           <div className="mt-4 flex justify-center">
             <div className="flex flex-col items-center gap-3">
               <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -77,11 +75,8 @@ const Home = () => {
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-medium shadow-md backdrop-blur transition hover:border-white/30 hover:bg-white/5"
                     aria-label="View Viet Bui's GitHub profile"
                     onMouseMove={(event) => {
-                      const bounds =
-                        event.currentTarget.getBoundingClientRect();
-                      const relativeX =
-                        (event.clientX - bounds.left) /
-                        Math.max(bounds.width, 1);
+                      const bounds = event.currentTarget.getBoundingClientRect();
+                      const relativeX = (event.clientX - bounds.left) / Math.max(bounds.width, 1);
                       const clampedX = Math.min(Math.max(relativeX, 0), 1);
                       const angle = 180 + clampedX * 180;
                       setGithubGradientAngle(angle);
@@ -107,11 +102,8 @@ const Home = () => {
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-medium shadow-md backdrop-blur transition hover:border-white/30 hover:bg-white/5"
                     aria-label="View Viet Bui's GitLab profile"
                     onMouseMove={(event) => {
-                      const bounds =
-                        event.currentTarget.getBoundingClientRect();
-                      const relativeX =
-                        (event.clientX - bounds.left) /
-                        Math.max(bounds.width, 1);
+                      const bounds = event.currentTarget.getBoundingClientRect();
+                      const relativeX = (event.clientX - bounds.left) / Math.max(bounds.width, 1);
                       const clampedX = Math.min(Math.max(relativeX, 0), 1);
                       const angle = 180 + clampedX * 180;
                       setGitlabGradientAngle(angle);

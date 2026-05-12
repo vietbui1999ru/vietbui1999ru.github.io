@@ -4,11 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AppleHelloGalleryEffect } from "@/components/ui/apple-hello-effect";
 import { Marquee3D, type Marquee3DImage } from "@/components/ui/Marquee3D";
-import {
-  GALLERY_SECTION_TITLE,
-  GALLERY_SECTION_SUBTITLE,
-  GALLERY_ITEMS,
-} from "@/data/galleryData";
+import { GALLERY_SECTION_TITLE, GALLERY_SECTION_SUBTITLE, GALLERY_ITEMS } from "@/data/galleryData";
 import { Card3D } from "@/components/ui/Card3D";
 import { X, ExternalLink } from "lucide-react";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
@@ -28,9 +24,7 @@ const Gallery = () => {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () =>
-    setActiveImage(null),
-  );
+  useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () => setActiveImage(null));
 
   useEffect(() => {
     if (!activeImage) return;
@@ -45,20 +39,24 @@ const Gallery = () => {
     };
   }, [activeImage]);
 
-  const marqueeImages: Marquee3DImage[] = GALLERY_ITEMS.filter(
-    (item) => item.image,
-  ).map((item) => ({
-    id: item.id,
-    src: item.image!,
-    alt: item.title ?? item.id,
-    title: item.title,
-    description: item.description,
-    href: item.href,
-  }));
+  const marqueeImages: Marquee3DImage[] = GALLERY_ITEMS.filter((item) => item.image).map(
+    (item) => ({
+      id: item.id,
+      src: item.image!,
+      alt: item.title ?? item.id,
+      title: item.title,
+      description: item.description,
+      href: item.href,
+    }),
+  );
 
   return (
     <section id="gallery" className="relative min-h-screen w-full">
-      <div data-section-id="gallery" aria-hidden="true" className="absolute inset-0 pointer-events-none" />
+      <div
+        data-section-id="gallery"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloGalleryEffect className="w-full" />
@@ -123,14 +121,10 @@ const Gallery = () => {
                     />
                   </div>
                   {activeImage.title && (
-                    <h3 className="text-xl font-semibold mb-1">
-                      {activeImage.title}
-                    </h3>
+                    <h3 className="text-xl font-semibold mb-1">{activeImage.title}</h3>
                   )}
                   {activeImage.description && (
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {activeImage.description}
-                    </p>
+                    <p className="text-sm text-muted-foreground mb-3">{activeImage.description}</p>
                   )}
                   {activeImage.href && (
                     <a

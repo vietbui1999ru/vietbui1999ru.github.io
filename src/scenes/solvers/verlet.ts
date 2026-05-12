@@ -17,11 +17,11 @@ export function verletStep(
   accel: (position: number) => number,
   dt: number,
 ): { x: number; v: number } {
-  const a0 = accel(x)
-  const xNew = x + v * dt + 0.5 * a0 * dt * dt
-  const a1 = accel(xNew)
-  const vNew = v + 0.5 * (a0 + a1) * dt
-  return { x: xNew, v: vNew }
+  const a0 = accel(x);
+  const xNew = x + v * dt + 0.5 * a0 * dt * dt;
+  const a1 = accel(xNew);
+  const vNew = v + 0.5 * (a0 + a1) * dt;
+  return { x: xNew, v: vNew };
 }
 
 /**
@@ -36,18 +36,18 @@ export function verletStepVec(
   accel: (pos: Float64Array) => Float64Array,
   dt: number,
 ): void {
-  const n = positions.length
-  const a0 = accel(positions)
+  const n = positions.length;
+  const a0 = accel(positions);
 
-  const newPos = new Float64Array(n)
+  const newPos = new Float64Array(n);
   for (let i = 0; i < n; i++) {
-    newPos[i] = positions[i] + velocities[i] * dt + 0.5 * a0[i] * dt * dt
+    newPos[i] = positions[i] + velocities[i] * dt + 0.5 * a0[i] * dt * dt;
   }
 
-  const a1 = accel(newPos)
+  const a1 = accel(newPos);
 
   for (let i = 0; i < n; i++) {
-    positions[i] = newPos[i]
-    velocities[i] = velocities[i] + 0.5 * (a0[i] + a1[i]) * dt
+    positions[i] = newPos[i];
+    velocities[i] = velocities[i] + 0.5 * (a0[i] + a1[i]) * dt;
   }
 }

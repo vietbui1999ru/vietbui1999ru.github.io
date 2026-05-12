@@ -1,4 +1,4 @@
-import type { PerfTier } from './types'
+import type { PerfTier } from "./types";
 
 // ---------------------------------------------------------------------------
 // Result type
@@ -6,24 +6,24 @@ import type { PerfTier } from './types'
 
 export interface PerfResult {
   /** GPU capability tier after mapping */
-  tier: PerfTier
+  tier: PerfTier;
   /**
    * True when the OS-level `prefers-reduced-motion: reduce` media query is
    * active. In this case tier is forced to 'low' regardless of GPU score, and
    * the engine should render only static snapshots.
    */
-  reducedMotion: boolean
+  reducedMotion: boolean;
 }
 
 // ---------------------------------------------------------------------------
 // Internal cache — reset via resetPerfCache() for tests
 // ---------------------------------------------------------------------------
 
-let cached: PerfResult | null = null
+let cached: PerfResult | null = null;
 
 /** Clears the cached result. Exposed for unit tests; do not call in production. */
 export function resetPerfCache(): void {
-  cached = null
+  cached = null;
 }
 
 // ---------------------------------------------------------------------------
@@ -31,10 +31,10 @@ export function resetPerfCache(): void {
 // ---------------------------------------------------------------------------
 
 function prefersReducedMotion(): boolean {
-  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-    return false
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
   }
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
 // ---------------------------------------------------------------------------
@@ -42,9 +42,9 @@ function prefersReducedMotion(): boolean {
 // ---------------------------------------------------------------------------
 
 function mapGPUTier(tier: number): PerfTier {
-  if (tier <= 1) return 'low'
-  if (tier === 2) return 'mid'
-  return 'high'
+  if (tier <= 1) return "low";
+  if (tier === 2) return "mid";
+  return "high";
 }
 
 // ---------------------------------------------------------------------------
@@ -63,24 +63,24 @@ function mapGPUTier(tier: number): PerfTier {
  * @returns Promise resolving to a PerfResult with tier and reducedMotion flag.
  */
 export async function getPerfTier(): Promise<PerfResult> {
-  if (cached !== null) return cached
+  if (cached !== null) return cached;
 
   // Short-circuit for accessibility preference
   if (prefersReducedMotion()) {
-    cached = { tier: 'low', reducedMotion: true }
-    return cached
+    cached = { tier: "low", reducedMotion: true };
+    return cached;
   }
 
-  let gpuTierNumber = 2 // default to mid if detection fails
+  let gpuTierNumber = 2; // default to mid if detection fails
   try {
-    const { getGPUTier } = await import('detect-gpu')
-    const result = await getGPUTier()
-    gpuTierNumber = result.tier ?? 2
+    const { getGPUTier } = await import("detect-gpu");
+    const result = await getGPUTier();
+    gpuTierNumber = result.tier ?? 2;
   } catch {
     // Detection failure treated as mid tier (safe default)
-    gpuTierNumber = 2
+    gpuTierNumber = 2;
   }
 
-  cached = { tier: mapGPUTier(gpuTierNumber), reducedMotion: false }
-  return cached
+  cached = { tier: mapGPUTier(gpuTierNumber), reducedMotion: false };
+  return cached;
 }

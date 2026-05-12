@@ -9,8 +9,7 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if ((from && typeof from === "object") || typeof from === "function") {
@@ -23,8 +22,7 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toCommonJS = (mod) =>
-  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
@@ -87,10 +85,7 @@ function matchesFolderPattern(filePath, folderPattern) {
   const normalizedFilePath = filePath.toLowerCase();
   const normalizedPattern = folderPattern.toLowerCase().replace(/^\/|\/$/g, "");
   if (!normalizedPattern || normalizedPattern.trim() === "") {
-    return (
-      !normalizedFilePath.includes("/") ||
-      normalizedFilePath.split("/").length === 1
-    );
+    return !normalizedFilePath.includes("/") || normalizedFilePath.split("/").length === 1;
   }
   if (!normalizedPattern.includes("*")) {
     return (
@@ -170,10 +165,7 @@ var FileOperations = class {
           const expectedDepth = patternSegments.length;
           if (contentType.creationMode === "folder") {
             const folderDepth = pathDepth - 1;
-            if (
-              folderDepth === expectedDepth ||
-              folderDepth === expectedDepth + 1
-            ) {
+            if (folderDepth === expectedDepth || folderDepth === expectedDepth + 1) {
               return contentType.id;
             }
           } else {
@@ -242,8 +234,7 @@ var FileOperations = class {
     }
     const kebabTitle = toKebabCase(title);
     const enableUnderscorePrefix =
-      (contentType == null ? void 0 : contentType.enableUnderscorePrefix) ||
-      false;
+      (contentType == null ? void 0 : contentType.enableUnderscorePrefix) || false;
     const prefix = enableUnderscorePrefix ? "_" : "";
     let targetFolder = "";
     if (type === "note") {
@@ -262,35 +253,14 @@ var FileOperations = class {
         await this.app.vault.createFolder(targetFolder);
       }
     }
-    const creationMode =
-      (contentType == null ? void 0 : contentType.creationMode) || "file";
+    const creationMode = (contentType == null ? void 0 : contentType.creationMode) || "file";
     if (creationMode === "folder") {
-      return this.createFolderStructure(
-        file,
-        kebabTitle,
-        prefix,
-        targetFolder,
-        type,
-        contentType,
-      );
+      return this.createFolderStructure(file, kebabTitle, prefix, targetFolder, type, contentType);
     } else {
-      return this.createFileStructure(
-        file,
-        kebabTitle,
-        prefix,
-        targetFolder,
-        contentType,
-      );
+      return this.createFileStructure(file, kebabTitle, prefix, targetFolder, contentType);
     }
   }
-  async createFolderStructure(
-    file,
-    kebabTitle,
-    prefix,
-    targetFolder,
-    type,
-    contentType,
-  ) {
+  async createFolderStructure(file, kebabTitle, prefix, targetFolder, type, contentType) {
     const folderName = `${prefix}${kebabTitle}`;
     let folderPath;
     if (targetFolder) {
@@ -309,13 +279,8 @@ var FileOperations = class {
         await this.app.vault.createFolder(folderPath);
       }
     } catch (e) {}
-    const indexFileName =
-      (contentType == null ? void 0 : contentType.indexFileName) || "index";
-    const extension = (
-      contentType == null ? void 0 : contentType.useMdxExtension
-    )
-      ? ".mdx"
-      : ".md";
+    const indexFileName = (contentType == null ? void 0 : contentType.indexFileName) || "index";
+    const extension = (contentType == null ? void 0 : contentType.useMdxExtension) ? ".mdx" : ".md";
     const fileName = `${indexFileName}${extension}`;
     const newPath = `${folderPath}/${fileName}`;
     const existingFile = this.app.vault.getAbstractFileByPath(newPath);
@@ -333,8 +298,7 @@ var FileOperations = class {
         return null;
       }
       setTimeout(() => {
-        const fileExplorer =
-          this.app.workspace.getLeavesOfType("file-explorer")[0];
+        const fileExplorer = this.app.workspace.getLeavesOfType("file-explorer")[0];
         if (fileExplorer && fileExplorer.view) {
           const view = fileExplorer.view;
           if (view && typeof view === "object" && "tree" in view) {
@@ -361,8 +325,7 @@ var FileOperations = class {
             if (content) {
               const lines = content.split("\n");
               const lastLine = lines.length - 1;
-              const lastLineLength =
-                ((_a = lines[lastLine]) == null ? void 0 : _a.length) || 0;
+              const lastLineLength = ((_a = lines[lastLine]) == null ? void 0 : _a.length) || 0;
               editor.setCursor({ line: lastLine, ch: lastLineLength });
               editor.focus();
               return true;
@@ -380,26 +343,13 @@ var FileOperations = class {
       }, 100);
       return newFile;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      new import_obsidian.Notice(
-        `Failed to create folder structure: ${errorMessage}.`,
-      );
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      new import_obsidian.Notice(`Failed to create folder structure: ${errorMessage}.`);
       return null;
     }
   }
-  async createFileStructure(
-    file,
-    kebabTitle,
-    prefix,
-    targetFolder,
-    contentType,
-  ) {
-    const extension = (
-      contentType == null ? void 0 : contentType.useMdxExtension
-    )
-      ? ".mdx"
-      : ".md";
+  async createFileStructure(file, kebabTitle, prefix, targetFolder, contentType) {
+    const extension = (contentType == null ? void 0 : contentType.useMdxExtension) ? ".mdx" : ".md";
     const newName = `${prefix}${kebabTitle}${extension}`;
     let newPath;
     if (targetFolder) {
@@ -413,10 +363,7 @@ var FileOperations = class {
       }
     }
     const existingFile = this.app.vault.getAbstractFileByPath(newPath);
-    if (
-      existingFile instanceof import_obsidian.TFile &&
-      existingFile !== file
-    ) {
+    if (existingFile instanceof import_obsidian.TFile && existingFile !== file) {
       new import_obsidian.Notice(`File with name "${newName}" already exists.`);
       return null;
     }
@@ -442,8 +389,7 @@ var FileOperations = class {
             if (content) {
               const lines = content.split("\n");
               const lastLine = lines.length - 1;
-              const lastLineLength =
-                ((_a = lines[lastLine]) == null ? void 0 : _a.length) || 0;
+              const lastLineLength = ((_a = lines[lastLine]) == null ? void 0 : _a.length) || 0;
               editor.setCursor({ line: lastLine, ch: lastLineLength });
               editor.focus();
               return true;
@@ -461,8 +407,7 @@ var FileOperations = class {
       }, 100);
       return newFile;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       new import_obsidian.Notice(`Failed to rename file: ${errorMessage}.`);
       return null;
     }
@@ -480,23 +425,15 @@ var FileOperations = class {
     }
     const kebabTitle = toKebabCase(title);
     const prefix = "";
-    const creationMode =
-      (contentType == null ? void 0 : contentType.creationMode) || "file";
+    const creationMode = (contentType == null ? void 0 : contentType.creationMode) || "file";
     if (creationMode === "folder") {
-      return this.renameFolderStructure(
-        file,
-        kebabTitle,
-        prefix,
-        type,
-        contentType,
-      );
+      return this.renameFolderStructure(file, kebabTitle, prefix, type, contentType);
     } else {
       return this.renameFileStructure(file, kebabTitle, prefix, contentType);
     }
   }
   async renameFolderStructure(file, kebabTitle, prefix, type, contentType) {
-    const indexFileName =
-      (contentType == null ? void 0 : contentType.indexFileName) || "index";
+    const indexFileName = (contentType == null ? void 0 : contentType.indexFileName) || "index";
     const isIndex = file.basename === indexFileName;
     if (isIndex) {
       if (!file.parent) {
@@ -507,9 +444,7 @@ var FileOperations = class {
       const newFolderName = `${prefix}${kebabTitle}`;
       const parentFolder = file.parent.parent;
       if (!parentFolder) {
-        new import_obsidian.Notice(
-          "Cannot rename: parent folder has no parent.",
-        );
+        new import_obsidian.Notice("Cannot rename: parent folder has no parent.");
         return null;
       }
       let newFolderPath;
@@ -518,19 +453,15 @@ var FileOperations = class {
       } else {
         newFolderPath = `${parentFolder.path}/${newFolderName}`;
       }
-      const existingFolder =
-        this.app.vault.getAbstractFileByPath(newFolderPath);
+      const existingFolder = this.app.vault.getAbstractFileByPath(newFolderPath);
       if (existingFolder instanceof import_obsidian.TFolder) {
-        new import_obsidian.Notice(
-          `Folder already exists at ${newFolderPath}.`,
-        );
+        new import_obsidian.Notice(`Folder already exists at ${newFolderPath}.`);
         return null;
       }
       try {
         await this.app.fileManager.renameFile(file.parent, newFolderPath);
       } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : String(error);
+        const errorMessage = error instanceof Error ? error.message : String(error);
         new import_obsidian.Notice(`Failed to rename folder: ${errorMessage}.`);
         return null;
       }
@@ -551,10 +482,7 @@ var FileOperations = class {
       const newName = `${prefix}${kebabTitle}.${extension}`;
       const newPath = `${file.parent.path}/${newName}`;
       const existingFile = this.app.vault.getAbstractFileByPath(newPath);
-      if (
-        existingFile instanceof import_obsidian.TFile &&
-        existingFile !== file
-      ) {
+      if (existingFile instanceof import_obsidian.TFile && existingFile !== file) {
         new import_obsidian.Notice(`File already exists at ${newPath}.`);
         return null;
       }
@@ -572,20 +500,14 @@ var FileOperations = class {
       new import_obsidian.Notice("Cannot rename: file has no parent folder.");
       return null;
     }
-    const indexFileName =
-      (contentType == null ? void 0 : contentType.indexFileName) || "";
-    const isIndex =
-      indexFileName &&
-      indexFileName.trim() !== "" &&
-      file.basename === indexFileName;
+    const indexFileName = (contentType == null ? void 0 : contentType.indexFileName) || "";
+    const isIndex = indexFileName && indexFileName.trim() !== "" && file.basename === indexFileName;
     if (isIndex) {
       prefix = file.parent.name.startsWith("_") ? "_" : "";
       const newFolderName = `${prefix}${kebabTitle}`;
       const parentFolder = file.parent.parent;
       if (!parentFolder) {
-        new import_obsidian.Notice(
-          "Cannot rename: parent folder has no parent.",
-        );
+        new import_obsidian.Notice("Cannot rename: parent folder has no parent.");
         return null;
       }
       let newFolderPath;
@@ -594,12 +516,9 @@ var FileOperations = class {
       } else {
         newFolderPath = `${parentFolder.path}/${newFolderName}`;
       }
-      const existingFolder =
-        this.app.vault.getAbstractFileByPath(newFolderPath);
+      const existingFolder = this.app.vault.getAbstractFileByPath(newFolderPath);
       if (existingFolder instanceof import_obsidian.TFolder) {
-        new import_obsidian.Notice(
-          `Folder already exists at ${newFolderPath}.`,
-        );
+        new import_obsidian.Notice(`Folder already exists at ${newFolderPath}.`);
         return null;
       }
       const newFilePath = `${newFolderPath}/${file.name}`;
@@ -610,8 +529,7 @@ var FileOperations = class {
         await this.app.fileManager.renameFile(file.parent, newFolderPath);
       } catch (error) {
         console.error("FileOperations: Folder rename failed:", error);
-        const errorMessage =
-          error instanceof Error ? error.message : String(error);
+        const errorMessage = error instanceof Error ? error.message : String(error);
         new import_obsidian.Notice(`Failed to rename folder: ${errorMessage}.`);
         return null;
       }
@@ -632,10 +550,7 @@ var FileOperations = class {
       newPath = `${file.parent.path}/${newName}`;
     }
     const existingFile = this.app.vault.getAbstractFileByPath(newPath);
-    if (
-      existingFile instanceof import_obsidian.TFile &&
-      existingFile !== file
-    ) {
+    if (existingFile instanceof import_obsidian.TFile && existingFile !== file) {
       new import_obsidian.Notice(`File already exists at ${newPath}.`);
       return null;
     }
@@ -646,8 +561,7 @@ var FileOperations = class {
       await this.app.fileManager.renameFile(file, newPath);
     } catch (error) {
       console.error("FileOperations: File rename failed:", error);
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       new import_obsidian.Notice(`Failed to rename file: ${errorMessage}.`);
       return null;
     }
@@ -705,9 +619,7 @@ var TemplateParser = class {
         const arrayKeys = /* @__PURE__ */ new Set();
         propertiesText.split("\n").forEach((line) => {
           const trimmedLine = line.trim();
-          const match = trimmedLine.match(
-            /^([a-zA-Z_][a-zA-Z0-9_-]*):\s*(.*)$/,
-          );
+          const match = trimmedLine.match(/^([a-zA-Z_][a-zA-Z0-9_-]*):\s*(.*)$/);
           if (match) {
             const [, key, value] = match;
             currentKey = key;
@@ -770,11 +682,7 @@ var TemplateParser = class {
               const item = trimmedLine.replace(/^-\s*/, "");
               if (item) existingProperties[currentKey].push(item);
             }
-          } else if (
-            trimmedLine &&
-            !trimmedLine.startsWith("- ") &&
-            !trimmedLine.startsWith("#")
-          ) {
+          } else if (trimmedLine && !trimmedLine.startsWith("- ") && !trimmedLine.startsWith("#")) {
             const keyMatch = trimmedLine.match(/^([^:]+):\s*(.*)$/);
             if (keyMatch) {
               const [, key, value] = keyMatch;
@@ -790,9 +698,7 @@ var TemplateParser = class {
           }
         });
       } catch (e) {
-        new import_obsidian2.Notice(
-          "Falling back to template due to parsing error.",
-        );
+        new import_obsidian2.Notice("Falling back to template due to parsing error.");
       }
     }
     const bodyContent = content.slice(propertiesEnd);
@@ -823,8 +729,7 @@ var TemplateParser = class {
           const [, key, value] = match;
           templateProps.push(key);
           const isKnownArrayKey = KNOWN_ARRAY_KEYS.includes(key);
-          const isEmptyArray =
-            !value || value.trim() === "" || value.trim() === "[]";
+          const isEmptyArray = !value || value.trim() === "" || value.trim() === "[]";
           const isArrayProperty = isKnownArrayKey || isEmptyArray;
           if (isArrayProperty) {
             if (value && value.startsWith("[")) {
@@ -848,9 +753,7 @@ var TemplateParser = class {
                   }
                 } else if (
                   nextLine === "---" ||
-                  (nextLine &&
-                    !nextLine.startsWith("- ") &&
-                    nextLine.includes(":"))
+                  (nextLine && !nextLine.startsWith("- ") && nextLine.includes(":"))
                 ) {
                   break;
                 }
@@ -863,9 +766,7 @@ var TemplateParser = class {
               .replace(/\{\{title\}\}/g, title)
               .replace(
                 /\{\{date\}\}/g,
-                window
-                  .moment(/* @__PURE__ */ new Date())
-                  .format(settings.dateFormat),
+                window.moment(/* @__PURE__ */ new Date()).format(settings.dateFormat),
               )
               .replace(/\{\{slug\}\}/g, slug);
             templateValues[key] = stringValue;
@@ -878,8 +779,7 @@ var TemplateParser = class {
   buildFrontmatterContent(finalProps, arrayKeys) {
     let newContent = "---\n";
     for (const key in finalProps) {
-      const isArrayProperty =
-        KNOWN_ARRAY_KEYS.includes(key) || (arrayKeys && arrayKeys.has(key));
+      const isArrayProperty = KNOWN_ARRAY_KEYS.includes(key) || (arrayKeys && arrayKeys.has(key));
       if (isArrayProperty) {
         newContent += `${key}:
 `;
@@ -933,8 +833,7 @@ var TemplateParser = class {
           titleKeyPosition = index;
         }
         const isKnownArrayKey = KNOWN_ARRAY_KEYS.includes(key);
-        const isEmptyArray =
-          !value || value.trim() === "" || value.trim() === "[]";
+        const isEmptyArray = !value || value.trim() === "" || value.trim() === "[]";
         const isArrayProperty = isKnownArrayKey || isEmptyArray;
         if (isArrayProperty) {
           existing[key] = [];
@@ -942,18 +841,10 @@ var TemplateParser = class {
         } else {
           existing[key] = value ? value.trim() : "";
         }
-      } else if (
-        currentKey &&
-        arrayKeys.has(currentKey) &&
-        trimmedLine.startsWith("- ")
-      ) {
+      } else if (currentKey && arrayKeys.has(currentKey) && trimmedLine.startsWith("- ")) {
         const item = trimmedLine.replace(/^-\s*/, "");
         if (item) existing[currentKey].push(item);
-      } else if (
-        trimmedLine &&
-        !trimmedLine.startsWith("- ") &&
-        !trimmedLine.startsWith("#")
-      ) {
+      } else if (trimmedLine && !trimmedLine.startsWith("- ") && !trimmedLine.startsWith("#")) {
         const keyMatch = trimmedLine.match(/^([^:]+):\s*(.*)$/);
         if (keyMatch) {
           const [, key, value] = keyMatch;
@@ -1088,18 +979,11 @@ var LinkConverter = class {
     let addTrailingSlash = false;
     const parts = path.split("/");
     const lastPart = parts[parts.length - 1];
-    if (
-      indexFileName &&
-      indexFileName.trim() !== "" &&
-      lastPart === indexFileName
-    ) {
+    if (indexFileName && indexFileName.trim() !== "" && lastPart === indexFileName) {
       parts.pop();
       path = parts.join("/");
       addTrailingSlash = true;
-    } else if (
-      (!indexFileName || indexFileName.trim() === "") &&
-      lastPart === "index"
-    ) {
+    } else if ((!indexFileName || indexFileName.trim() === "") && lastPart === "index") {
       parts.pop();
       path = parts.join("/");
       addTrailingSlash = true;
@@ -1121,11 +1005,7 @@ var LinkConverter = class {
       (settings.addTrailingSlashToLinks || addTrailingSlash) && !anchor;
     return `${basePath}${slug}${shouldAddTrailingSlash ? "/" : ""}${anchor}`;
   }
-  getAstroUrlFromInternalLinkWithContext(
-    link,
-    currentFilePath,
-    currentFileContentType,
-  ) {
+  getAstroUrlFromInternalLinkWithContext(link, currentFilePath, currentFileContentType) {
     const hashIndex = link.indexOf("#");
     let path = hashIndex >= 0 ? link.slice(0, hashIndex) : link;
     const anchor = hashIndex >= 0 ? link.slice(hashIndex) : "";
@@ -1151,18 +1031,11 @@ var LinkConverter = class {
     let addTrailingSlash = false;
     const parts = path.split("/");
     const lastPart = parts[parts.length - 1];
-    if (
-      indexFileName &&
-      indexFileName.trim() !== "" &&
-      lastPart === indexFileName
-    ) {
+    if (indexFileName && indexFileName.trim() !== "" && lastPart === indexFileName) {
       parts.pop();
       path = parts.join("/");
       addTrailingSlash = true;
-    } else if (
-      (!indexFileName || indexFileName.trim() === "") &&
-      lastPart === "index"
-    ) {
+    } else if ((!indexFileName || indexFileName.trim() === "") && lastPart === "index") {
       parts.pop();
       path = parts.join("/");
       addTrailingSlash = true;
@@ -1202,10 +1075,7 @@ var LinkConverter = class {
           const expectedDepth = patternSegments.length;
           if (contentType.creationMode === "folder") {
             const folderDepth = pathDepth - 1;
-            if (
-              folderDepth === expectedDepth ||
-              folderDepth === expectedDepth + 1
-            ) {
+            if (folderDepth === expectedDepth || folderDepth === expectedDepth + 1) {
               return true;
             }
           } else {
@@ -1243,10 +1113,7 @@ var LinkConverter = class {
           const expectedDepth = patternSegments.length;
           if (contentType.creationMode === "folder") {
             const folderDepth = pathDepth - 1;
-            if (
-              folderDepth === expectedDepth ||
-              folderDepth === expectedDepth + 1
-            ) {
+            if (folderDepth === expectedDepth || folderDepth === expectedDepth + 1) {
               return {
                 basePath: contentType.linkBasePath || "",
                 creationMode: contentType.creationMode,
@@ -1293,9 +1160,7 @@ var LinkConverter = class {
     const originalContent = editor.getValue();
     const originalLineCount = originalContent.split("\n").length;
     const originalLineLength =
-      ((_a = originalContent.split("\n")[originalLine]) == null
-        ? void 0
-        : _a.length) || 0;
+      ((_a = originalContent.split("\n")[originalLine]) == null ? void 0 : _a.length) || 0;
     const content = editor.getValue();
     let newContent = content;
     let convertedCount = 0;
@@ -1323,16 +1188,13 @@ var LinkConverter = class {
       } else {
         targetPath = linkText + ".md";
       }
-      const isInConfiguredDirectory =
-        this.isInConfiguredContentDirectory(targetPath);
+      const isInConfiguredDirectory = this.isInConfiguredContentDirectory(targetPath);
       const isSimpleFilename = !targetPath.includes("/");
       const hasCurrentContentType =
         currentFileContentType.basePath !== "" ||
         currentFileContentType.creationMode !== "file" ||
         currentFileContentType.indexFileName !== "";
-      return (
-        isInConfiguredDirectory || (isSimpleFilename && hasCurrentContentType)
-      );
+      return isInConfiguredDirectory || (isSimpleFilename && hasCurrentContentType);
     };
     newContent = newContent.replace(
       /\[\[([^\]|]+)(\|([^\]]+))?\]\]/g,
@@ -1405,9 +1267,7 @@ var LinkConverter = class {
     editor.setValue(newContent);
     const newLineCount = newContent.split("\n").length;
     const newLineLength =
-      ((_b = newContent.split("\n")[originalLine]) == null
-        ? void 0
-        : _b.length) || 0;
+      ((_b = newContent.split("\n")[originalLine]) == null ? void 0 : _b.length) || 0;
     let newLine = originalLine;
     let newCh = originalCh;
     if (newLineCount !== originalLineCount) {
@@ -1481,10 +1341,7 @@ var TitleModal = class extends import_obsidian4.Modal {
     }
     const titleKey = this.fileOps.getTitleKey(this.type);
     const cache = this.app.metadataCache.getFileCache(this.file);
-    if (
-      (cache == null ? void 0 : cache.frontmatter) &&
-      titleKey in cache.frontmatter
-    ) {
+    if ((cache == null ? void 0 : cache.frontmatter) && titleKey in cache.frontmatter) {
       const titleValue = cache.frontmatter[titleKey];
       if (typeof titleValue === "string") {
         return titleValue;
@@ -1495,10 +1352,7 @@ var TitleModal = class extends import_obsidian4.Modal {
           return firstValue;
         }
         if (firstValue != null) {
-          if (
-            typeof firstValue === "number" ||
-            typeof firstValue === "boolean"
-          ) {
+          if (typeof firstValue === "number" || typeof firstValue === "boolean") {
             return String(firstValue);
           }
           if (typeof firstValue === "string") {
@@ -1526,8 +1380,7 @@ var TitleModal = class extends import_obsidian4.Modal {
     let basename = this.file.basename;
     if (this.file.parent && this.type !== "note") {
       const contentType = this.fileOps.getContentType(this.type);
-      const indexFileName =
-        (contentType == null ? void 0 : contentType.indexFileName) || "";
+      const indexFileName = (contentType == null ? void 0 : contentType.indexFileName) || "";
       if (indexFileName.trim() !== "" && basename === indexFileName) {
         basename = this.file.parent.name;
       }
@@ -1553,8 +1406,7 @@ var TitleModal = class extends import_obsidian4.Modal {
     let basename = this.file.basename;
     if (this.file.parent && this.type !== "note") {
       const contentType = this.fileOps.getContentType(this.type);
-      const indexFileName =
-        (contentType == null ? void 0 : contentType.indexFileName) || "";
+      const indexFileName = (contentType == null ? void 0 : contentType.indexFileName) || "";
       if (indexFileName.trim() !== "" && basename === indexFileName) {
         basename = this.file.parent.name;
       }
@@ -1567,8 +1419,7 @@ var TitleModal = class extends import_obsidian4.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    const isMobile =
-      window.innerWidth <= 768 || import_obsidian4.Platform.isMobile;
+    const isMobile = window.innerWidth <= 768 || import_obsidian4.Platform.isMobile;
     if (isMobile) {
       this.modalEl.addClass("astro-composer-mobile-modal");
     }
@@ -1668,11 +1519,7 @@ var TitleModal = class extends import_obsidian4.Modal {
           type: this.type,
         });
         if (newFile) {
-          await this.templateParser.updateTitleInFrontmatter(
-            newFile,
-            title,
-            this.type,
-          );
+          await this.templateParser.updateTitleInFrontmatter(newFile, title, this.type);
         } else {
           this.close();
           return;
@@ -1684,8 +1531,7 @@ var TitleModal = class extends import_obsidian4.Modal {
             title,
             type: this.type,
           });
-          const shouldInsertProperties =
-            this.plugin.settings.autoInsertProperties;
+          const shouldInsertProperties = this.plugin.settings.autoInsertProperties;
           if (newFile && shouldInsertProperties) {
             await this.addPropertiesToFile(newFile, title, this.type);
             this.positionCursorAtEnd(newFile);
@@ -1697,8 +1543,7 @@ var TitleModal = class extends import_obsidian4.Modal {
           title,
           type: this.type,
         });
-        const shouldInsertProperties =
-          this.plugin.settings.autoInsertProperties;
+        const shouldInsertProperties = this.plugin.settings.autoInsertProperties;
         if (newFile && shouldInsertProperties) {
           await this.addPropertiesToFile(newFile, title, this.type);
           this.positionCursorAtEnd(newFile);
@@ -1715,8 +1560,7 @@ var TitleModal = class extends import_obsidian4.Modal {
       }
     } catch (error) {
       console.error("TitleModal: Error during process:", error);
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       new import_obsidian4.Notice(
         `Error ${this.isRename ? "renaming" : "creating"} ${this.type}: ${errorMessage}.`,
       );
@@ -1736,14 +1580,11 @@ var TitleModal = class extends import_obsidian4.Modal {
     var _a, _b;
     let targetFolder;
     const originalDir =
-      ((_b = (_a = this.file) == null ? void 0 : _a.parent) == null
-        ? void 0
-        : _b.path) || "";
+      ((_b = (_a = this.file) == null ? void 0 : _a.parent) == null ? void 0 : _b.path) || "";
     if (this.type !== "note") {
       const contentType2 = this.fileOps.getContentType(this.type);
       if (originalDir === "" || originalDir === "/") {
-        targetFolder =
-          (contentType2 == null ? void 0 : contentType2.folder) || "";
+        targetFolder = (contentType2 == null ? void 0 : contentType2.folder) || "";
       } else {
         targetFolder = originalDir;
       }
@@ -1752,11 +1593,7 @@ var TitleModal = class extends import_obsidian4.Modal {
     }
     const filename = this.fileOps.generateFilename(title);
     const contentType = this.fileOps.getContentType(this.type);
-    const extension = (
-      contentType == null ? void 0 : contentType.useMdxExtension
-    )
-      ? ".mdx"
-      : ".md";
+    const extension = (contentType == null ? void 0 : contentType.useMdxExtension) ? ".mdx" : ".md";
     const filePath = targetFolder
       ? `${targetFolder}/${filename}${extension}`
       : `${filename}${extension}`;
@@ -1780,8 +1617,7 @@ var TitleModal = class extends import_obsidian4.Modal {
           if (content) {
             const lines = content.split("\n");
             const lastLine = lines.length - 1;
-            const lastLineLength =
-              ((_a2 = lines[lastLine]) == null ? void 0 : _a2.length) || 0;
+            const lastLineLength = ((_a2 = lines[lastLine]) == null ? void 0 : _a2.length) || 0;
             editor.setCursor({ line: lastLine, ch: lastLineLength });
             editor.focus();
             return true;
@@ -1798,16 +1634,13 @@ var TitleModal = class extends import_obsidian4.Modal {
       }, 100);
       return newFile;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       throw new Error(`Failed to create file: ${errorMessage}`);
     }
   }
   generateInitialContent(title) {
     const now = /* @__PURE__ */ new Date();
-    const dateString = window
-      .moment(now)
-      .format(this.plugin.settings.dateFormat);
+    const dateString = window.moment(now).format(this.plugin.settings.dateFormat);
     const slug = toKebabCase(title);
     let template;
     if (this.type === "note") {
@@ -1837,9 +1670,7 @@ date: ${dateString}
   }
   async addPropertiesToFile(file, title, type) {
     const now = /* @__PURE__ */ new Date();
-    const dateString = window
-      .moment(now)
-      .format(this.plugin.settings.dateFormat);
+    const dateString = window.moment(now).format(this.plugin.settings.dateFormat);
     const slug = toKebabCase(title);
     let template;
     if (type === "note") {
@@ -1870,17 +1701,14 @@ date: ${dateString}
   positionCursorAtEnd(file) {
     const positionCursor = () => {
       var _a;
-      const view = this.app.workspace.getActiveViewOfType(
-        import_obsidian4.MarkdownView,
-      );
+      const view = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
       if (view && view.file === file && view.editor) {
         const editor = view.editor;
         const content = editor.getValue();
         if (content) {
           const lines = content.split("\n");
           const lastLine = lines.length - 1;
-          const lastLineLength =
-            ((_a = lines[lastLine]) == null ? void 0 : _a.length) || 0;
+          const lastLineLength = ((_a = lines[lastLine]) == null ? void 0 : _a.length) || 0;
           editor.setCursor({ line: lastLine, ch: lastLineLength });
           editor.focus();
           return true;
@@ -1897,19 +1725,9 @@ date: ${dateString}
     }, 100);
   }
   escapeYamlString(str) {
-    if (
-      str.includes('"') ||
-      str.includes("'") ||
-      str.includes("\n") ||
-      str.includes("\\")
-    ) {
+    if (str.includes('"') || str.includes("'") || str.includes("\n") || str.includes("\\")) {
       return `'${str.replace(/'/g, "''")}'`;
-    } else if (
-      str.includes(" ") ||
-      str.includes(":") ||
-      str.includes("#") ||
-      str.includes("@")
-    ) {
+    } else if (str.includes(" ") || str.includes(":") || str.includes("#") || str.includes("@")) {
       return `"${str.replace(/"/g, '\\"')}"`;
     } else {
       return str;
@@ -1942,17 +1760,10 @@ function registerCommands(plugin, settings) {
       name: "Standardize properties",
       icon: "file-check",
       editorCallback: (editor, ctx) => {
-        const file =
-          ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
+        const file = ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
         if (file instanceof import_obsidian5.TFile) {
           const currentSettings = pluginInterface2.settings || settings;
-          void standardizeProperties(
-            plugin.app,
-            currentSettings,
-            file,
-            pluginInterface2,
-            editor,
-          );
+          void standardizeProperties(plugin.app, currentSettings, file, pluginInterface2, editor);
         }
       },
     });
@@ -1961,8 +1772,7 @@ function registerCommands(plugin, settings) {
       name: "Convert internal links for astro",
       icon: "link-2",
       editorCallback: (editor, ctx) => {
-        const file =
-          ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
+        const file = ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
         if (file instanceof import_obsidian5.TFile) {
           linkConverter.convertWikilinksForAstro(editor, file);
         }
@@ -1973,8 +1783,7 @@ function registerCommands(plugin, settings) {
       name: "Rename current content",
       icon: "pencil",
       editorCallback: (editor, ctx) => {
-        const file =
-          ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
+        const file = ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
         if (file instanceof import_obsidian5.TFile) {
           if (!hasMatchingContentType2(file, settings)) {
             new import_obsidian5.Notice(
@@ -1985,13 +1794,8 @@ function registerCommands(plugin, settings) {
           const type = fileOps.determineType(file);
           const cache = plugin.app.metadataCache.getFileCache(file);
           const titleKey = fileOps.getTitleKey(type);
-          if (
-            !(cache == null ? void 0 : cache.frontmatter) ||
-            !(titleKey in cache.frontmatter)
-          ) {
-            new import_obsidian5.Notice(
-              `Cannot rename: No ${titleKey} found in properties`,
-            );
+          if (!(cache == null ? void 0 : cache.frontmatter) || !(titleKey in cache.frontmatter)) {
+            new import_obsidian5.Notice(`Cannot rename: No ${titleKey} found in properties`);
             return;
           }
           new TitleModal(plugin.app, file, plugin, type, true).open();
@@ -2002,8 +1806,7 @@ function registerCommands(plugin, settings) {
   }
   const pluginInterface = plugin;
   function hasMatchingContentType(file, settings2) {
-    const currentSettings =
-      (plugin == null ? void 0 : plugin.settings) || settings2;
+    const currentSettings = (plugin == null ? void 0 : plugin.settings) || settings2;
     const tempFileOps = new FileOperations(plugin.app, currentSettings, plugin);
     const type = tempFileOps.determineType(file);
     if (type === "note") {
@@ -2017,8 +1820,7 @@ function registerCommands(plugin, settings) {
     name: "Standardize properties",
     icon: "file-check",
     editorCallback: (editor, ctx) => {
-      const file =
-        ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
+      const file = ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
       if (file instanceof import_obsidian5.TFile) {
         void standardizeProperties(plugin.app, settings, file, plugin, editor);
       }
@@ -2029,14 +1831,10 @@ function registerCommands(plugin, settings) {
     name: "Convert internal links for astro",
     icon: "link-2",
     editorCallback: (editor, ctx) => {
-      const file =
-        ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
+      const file = ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
       if (file instanceof import_obsidian5.TFile) {
         const currentSettings = pluginInterface.settings || settings;
-        const currentLinkConverter = new LinkConverter(
-          currentSettings,
-          pluginInterface,
-        );
+        const currentLinkConverter = new LinkConverter(currentSettings, pluginInterface);
         currentLinkConverter.convertWikilinksForAstro(editor, file);
       }
     },
@@ -2046,15 +1844,10 @@ function registerCommands(plugin, settings) {
     name: "Rename current content",
     icon: "pencil",
     editorCallback: (editor, ctx) => {
-      const file =
-        ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
+      const file = ctx instanceof import_obsidian5.MarkdownView ? ctx.file : ctx.file;
       if (file instanceof import_obsidian5.TFile) {
         const currentSettings = pluginInterface.settings || settings;
-        const currentFileOps = new FileOperations(
-          plugin.app,
-          currentSettings,
-          pluginInterface,
-        );
+        const currentFileOps = new FileOperations(plugin.app, currentSettings, pluginInterface);
         if (!hasMatchingContentType(file, currentSettings)) {
           new import_obsidian5.Notice(
             "Cannot rename: this file is not part of a configured content type folder.",
@@ -2103,8 +1896,7 @@ function registerCommands(plugin, settings) {
 }
 async function standardizeProperties(app, settings, file, plugin, editor) {
   var _a;
-  const currentSettings =
-    (plugin == null ? void 0 : plugin.settings) || settings;
+  const currentSettings = (plugin == null ? void 0 : plugin.settings) || settings;
   const templateParser = new TemplateParser(app, currentSettings);
   const fileOps = new FileOperations(app, currentSettings, plugin);
   let cursorPosition = null;
@@ -2138,10 +1930,7 @@ async function standardizeProperties(app, settings, file, plugin, editor) {
   const content = await app.vault.read(file);
   const title = file.basename.replace(/^_/, "");
   const parsed = templateParser.parseFrontmatter(content);
-  const { templateProps, templateValues } = templateParser.parseTemplate(
-    templateString,
-    title,
-  );
+  const { templateProps, templateValues } = templateParser.parseTemplate(templateString, title);
   const finalProps = { ...parsed.properties };
   const arrayKeys = /* @__PURE__ */ new Set();
   const slug = toKebabCase(title);
@@ -2159,9 +1948,7 @@ async function standardizeProperties(app, settings, file, plugin, editor) {
       const isArrayValue = Array.isArray(templateValue);
       if (isArrayValue) {
         const existingItems = parsed.properties[key] || [];
-        const newItems = templateValue.filter(
-          (item) => !existingItems.includes(item),
-        );
+        const newItems = templateValue.filter((item) => !existingItems.includes(item));
         finalProps[key] = [...existingItems, ...newItems];
         arrayKeys.add(key);
       } else {
@@ -2186,14 +1973,11 @@ async function standardizeProperties(app, settings, file, plugin, editor) {
     }
   }
   const newContent =
-    templateParser.buildFrontmatterContent(finalProps, arrayKeys) +
-    parsed.bodyContent;
+    templateParser.buildFrontmatterContent(finalProps, arrayKeys) + parsed.bodyContent;
   await app.vault.modify(file, newContent);
   if (editor && cursorPosition) {
     await new Promise((resolve) => setTimeout(resolve, 50));
-    const activeView = app.workspace.getActiveViewOfType(
-      import_obsidian5.MarkdownView,
-    );
+    const activeView = app.workspace.getActiveViewOfType(import_obsidian5.MarkdownView);
     if (activeView && activeView.file === file && activeView.editor) {
       const activeEditor = activeView.editor;
       const newLineCount = newContent.split("\n").length;
@@ -2206,8 +1990,7 @@ async function standardizeProperties(app, settings, file, plugin, editor) {
         }
       }
       const newLineLength =
-        ((_a = newContent.split("\n")[newLine]) == null ? void 0 : _a.length) ||
-        0;
+        ((_a = newContent.split("\n")[newLine]) == null ? void 0 : _a.length) || 0;
       if (newCh > newLineLength) {
         newCh = Math.max(0, newLineLength);
       }
@@ -2260,19 +2043,14 @@ function registerContentTypeCommands(plugin, settings) {
             try {
               await plugin.app.vault.createFolder(targetFolder);
             } catch (error) {
-              const errorMessage =
-                error instanceof Error ? error.message : String(error);
-              new import_obsidian5.Notice(
-                `Failed to create folder: ${errorMessage}`,
-              );
+              const errorMessage = error instanceof Error ? error.message : String(error);
+              new import_obsidian5.Notice(`Failed to create folder: ${errorMessage}`);
               return;
             }
           }
         }
         const tempFileName = "Untitled.md";
-        const filePath = targetFolder
-          ? `${targetFolder}/${tempFileName}`
-          : tempFileName;
+        const filePath = targetFolder ? `${targetFolder}/${tempFileName}` : tempFileName;
         const existingFile = plugin.app.vault.getAbstractFileByPath(filePath);
         if (existingFile instanceof import_obsidian5.TFile) {
           new TitleModal(
@@ -2290,17 +2068,9 @@ function registerContentTypeCommands(plugin, settings) {
         }
         try {
           const tempFile = await plugin.app.vault.create(filePath, "");
-          new TitleModal(
-            plugin.app,
-            tempFile,
-            pluginInterface,
-            contentType.id,
-            false,
-            true,
-          ).open();
+          new TitleModal(plugin.app, tempFile, pluginInterface, contentType.id, false, true).open();
         } catch (error) {
-          const errorMessage =
-            error instanceof Error ? error.message : String(error);
+          const errorMessage = error instanceof Error ? error.message : String(error);
           new import_obsidian5.Notice(`Failed to create file: ${errorMessage}`);
           if (pluginInterface && "pluginCreatedFiles" in pluginInterface) {
             pluginInterface.pluginCreatedFiles.delete(filePath);
@@ -2359,29 +2129,18 @@ function openTerminalInProjectRoot(app, settings) {
     const fs = require("fs");
     const adapter = app.vault.adapter;
     const vaultPath = adapter.basePath || adapter.path;
-    const vaultPathString =
-      typeof vaultPath === "string" ? vaultPath : String(vaultPath);
+    const vaultPathString = typeof vaultPath === "string" ? vaultPath : String(vaultPath);
     let projectPath;
-    if (
-      settings.terminalProjectRootPath &&
-      settings.terminalProjectRootPath.trim()
-    ) {
-      projectPath = path.resolve(
-        vaultPathString,
-        settings.terminalProjectRootPath,
-      );
+    if (settings.terminalProjectRootPath && settings.terminalProjectRootPath.trim()) {
+      projectPath = path.resolve(vaultPathString, settings.terminalProjectRootPath);
     } else {
       projectPath = vaultPathString;
     }
     if (!fs.existsSync(projectPath)) {
-      new import_obsidian5.Notice(
-        `Project root directory not found at: ${projectPath}`,
-      );
+      new import_obsidian5.Notice(`Project root directory not found at: ${projectPath}`);
       return;
     }
-    const configuredApp = sanitizeTerminalApp(
-      settings.terminalApplicationName || "",
-    );
+    const configuredApp = sanitizeTerminalApp(settings.terminalApplicationName || "");
     const terminalApp = configuredApp || getDefaultTerminalApp();
     if (!configuredApp && !terminalApp) {
       new import_obsidian5.Notice(
@@ -2398,21 +2157,16 @@ function openTerminalInProjectRoot(app, settings) {
     if (platform === "win32") {
       const escapedPath = projectPath.replace(/"/g, '"');
       const lowerApp = terminalApp.toLowerCase();
-      if (
-        lowerApp === "wt.exe" ||
-        lowerApp === "wt" ||
-        lowerApp === "windows terminal"
-      ) {
+      if (lowerApp === "wt.exe" || lowerApp === "wt" || lowerApp === "windows terminal") {
         exec("where wt", (error) => {
           if (!error) {
             const command = `start "" wt.exe -d "${escapedPath}"`;
             terminalLogger.log("Windows launch (wt)", { command, projectPath });
             exec(command, (execError) => {
               if (execError) {
-                terminalLogger.log(
-                  "Windows Terminal failed, falling back to cmd",
-                  { error: execError.message },
-                );
+                terminalLogger.log("Windows Terminal failed, falling back to cmd", {
+                  error: execError.message,
+                });
                 const fallbackCommand = `start "" cmd.exe /K "cd /d "${escapedPath}""`;
                 exec(fallbackCommand, (cmdError) => {
                   if (cmdError) {
@@ -2495,9 +2249,7 @@ function openTerminalInProjectRoot(app, settings) {
         }
       });
     } else {
-      const terminals = terminalApp
-        ? [terminalApp]
-        : ["gnome-terminal", "konsole", "xterm"];
+      const terminals = terminalApp ? [terminalApp] : ["gnome-terminal", "konsole", "xterm"];
       const projectPathEscaped = projectPath.replace(/"/g, '\\"');
       const tryTerminal = (index) => {
         if (index >= terminals.length) {
@@ -2560,12 +2312,9 @@ async function openConfigFile(app, settings) {
     const { shell } = require("electron");
     const adapter = app.vault.adapter;
     const vaultPath = adapter.basePath || adapter.path;
-    const vaultPathString =
-      typeof vaultPath === "string" ? vaultPath : String(vaultPath);
+    const vaultPathString = typeof vaultPath === "string" ? vaultPath : String(vaultPath);
     if (!settings.configFilePath || !settings.configFilePath.trim()) {
-      new import_obsidian5.Notice(
-        "Please specify a config file path in settings.",
-      );
+      new import_obsidian5.Notice("Please specify a config file path in settings.");
       return;
     }
     const configPath = path.resolve(vaultPathString, settings.configFilePath);
@@ -2598,12 +2347,7 @@ var CommandPickerModal = class extends import_obsidian6.FuzzySuggestModal {
       try {
         const commands = commandRegistry.listCommands();
         for (const command of commands) {
-          if (
-            command &&
-            command.id &&
-            command.name &&
-            !commandMap.has(command.id)
-          ) {
+          if (command && command.id && command.name && !commandMap.has(command.id)) {
             commandMap.set(command.id, {
               id: command.id,
               name: command.name,
@@ -2611,24 +2355,15 @@ var CommandPickerModal = class extends import_obsidian6.FuzzySuggestModal {
           }
         }
       } catch (e) {
-        console.warn(
-          "[Astro Composer] Error getting commands via listCommands():",
-          e,
-        );
+        console.warn("[Astro Composer] Error getting commands via listCommands():", e);
       }
     }
     try {
-      const registry =
-        commandRegistry == null ? void 0 : commandRegistry.commands;
+      const registry = commandRegistry == null ? void 0 : commandRegistry.commands;
       if (registry && typeof registry === "object") {
         const allCommands = Object.values(registry);
         for (const command of allCommands) {
-          if (
-            command &&
-            command.id &&
-            command.name &&
-            !commandMap.has(command.id)
-          ) {
+          if (command && command.id && command.name && !commandMap.has(command.id)) {
             commandMap.set(command.id, {
               id: command.id,
               name: command.name,
@@ -2640,17 +2375,11 @@ var CommandPickerModal = class extends import_obsidian6.FuzzySuggestModal {
       console.warn("[Astro Composer] Error getting commands via registry:", e);
     }
     try {
-      const internalRegistry =
-        commandRegistry == null ? void 0 : commandRegistry.commandRegistry;
+      const internalRegistry = commandRegistry == null ? void 0 : commandRegistry.commandRegistry;
       if (internalRegistry && typeof internalRegistry === "object") {
         const allCommands = Object.values(internalRegistry);
         for (const command of allCommands) {
-          if (
-            command &&
-            command.id &&
-            command.name &&
-            !commandMap.has(command.id)
-          ) {
+          if (command && command.id && command.name && !commandMap.has(command.id)) {
             commandMap.set(command.id, {
               id: command.id,
               name: command.name,
@@ -2659,10 +2388,7 @@ var CommandPickerModal = class extends import_obsidian6.FuzzySuggestModal {
         }
       }
     } catch (e) {
-      console.warn(
-        "[Astro Composer] Error getting commands via internal registry:",
-        e,
-      );
+      console.warn("[Astro Composer] Error getting commands via internal registry:", e);
     }
     const commandOptions = Array.from(commandMap.values());
     commandOptions.sort((a, b) => a.name.localeCompare(b.name));
@@ -2883,10 +2609,7 @@ var IconPickerModal = class extends import_obsidian7.FuzzySuggestModal {
     const content = el.createDiv({ cls: "suggestion-content" });
     content.createDiv({ cls: "suggestion-title", text: item.name });
     const aux = el.createDiv({ cls: "suggestion-aux" });
-    (0, import_obsidian7.setIcon)(
-      aux.createSpan({ cls: "suggestion-flair" }),
-      item.id,
-    );
+    (0, import_obsidian7.setIcon)(aux.createSpan({ cls: "suggestion-flair" }), item.id);
   }
 };
 
@@ -2986,9 +2709,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
     generalGroup.addSetting((setting) => {
       setting
         .setName("Date format")
-        .setDesc(
-          "Format for the date in properties (yyyy-mm-dd, MMMM D, yyyy, yyyy-mm-dd HH:mm)",
-        )
+        .setDesc("Format for the date in properties (yyyy-mm-dd, MMMM D, yyyy, yyyy-mm-dd HH:mm)")
         .addText((text) =>
           text
             .setPlaceholder("YYYY-MM-DD")
@@ -3002,17 +2723,13 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
     generalGroup.addSetting((setting) => {
       setting
         .setName("Enable copy heading links")
-        .setDesc(
-          "Add right-click context menu option to copy heading links in various formats.",
-        )
+        .setDesc("Add right-click context menu option to copy heading links in various formats.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(settings.enableCopyHeadingLink)
-            .onChange(async (value) => {
-              settings.enableCopyHeadingLink = value;
-              await this.plugin.saveSettings();
-              this.updateCopyHeadingFields();
-            }),
+          toggle.setValue(settings.enableCopyHeadingLink).onChange(async (value) => {
+            settings.enableCopyHeadingLink = value;
+            await this.plugin.saveSettings();
+            this.updateCopyHeadingFields();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -3047,12 +2764,10 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           "Add trailing slashes to all converted internal links (/about/ instead of /about).",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(settings.addTrailingSlashToLinks)
-            .onChange(async (value) => {
-              settings.addTrailingSlashToLinks = value;
-              await this.plugin.saveSettings();
-            }),
+          toggle.setValue(settings.addTrailingSlashToLinks).onChange(async (value) => {
+            settings.addTrailingSlashToLinks = value;
+            await this.plugin.saveSettings();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -3062,12 +2777,10 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           "Automatically process new files when they're changed in the background (by Git or other plugins). Disable to prevent modal spam when files are already processed on other devices during a sync.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(settings.processBackgroundFileChanges)
-            .onChange(async (value) => {
-              settings.processBackgroundFileChanges = value;
-              await this.plugin.saveSettings();
-            }),
+          toggle.setValue(settings.processBackgroundFileChanges).onChange(async (value) => {
+            settings.processBackgroundFileChanges = value;
+            await this.plugin.saveSettings();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -3077,30 +2790,24 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           "Make .mdx files visible in Obsidian's file explorer. Requires reload to take effect.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(settings.showMdxFilesInExplorer)
-            .onChange(async (value) => {
-              settings.showMdxFilesInExplorer = value;
-              await this.plugin.saveSettings();
-            }),
+          toggle.setValue(settings.showMdxFilesInExplorer).onChange(async (value) => {
+            settings.showMdxFilesInExplorer = value;
+            await this.plugin.saveSettings();
+          }),
         );
     });
-    const automationGroup = new import_obsidian9.SettingGroup(
-      containerEl,
-    ).setHeading("Property automation");
+    const automationGroup = new import_obsidian9.SettingGroup(containerEl).setHeading(
+      "Property automation",
+    );
     automationGroup.addSetting((setting) => {
       setting
         .setName("Auto-insert properties")
-        .setDesc(
-          "Automatically insert the properties template when creating new files.",
-        )
+        .setDesc("Automatically insert the properties template when creating new files.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(settings.autoInsertProperties)
-            .onChange(async (value) => {
-              settings.autoInsertProperties = value;
-              await this.plugin.saveSettings();
-            }),
+          toggle.setValue(settings.autoInsertProperties).onChange(async (value) => {
+            settings.autoInsertProperties = value;
+            await this.plugin.saveSettings();
+          }),
         );
     });
     automationGroup.addSetting((setting) => {
@@ -3110,20 +2817,16 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           "When enabled, clicking into the title property will trigger the rename file command, keeping the file slug in sync.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(settings.renameOnTitleClick)
-            .onChange(async (value) => {
-              settings.renameOnTitleClick = value;
-              await this.plugin.saveSettings();
-            }),
+          toggle.setValue(settings.renameOnTitleClick).onChange(async (value) => {
+            settings.renameOnTitleClick = value;
+            await this.plugin.saveSettings();
+          }),
         );
     });
     automationGroup.addSetting((setting) => {
       setting
         .setName("Update date on publish")
-        .setDesc(
-          "Update 'date' property when switching from draft to published status.",
-        )
+        .setDesc("Update 'date' property when switching from draft to published status.")
         .addToggle((toggle) =>
           toggle.setValue(settings.syncDraftDate).onChange(async (value) => {
             settings.syncDraftDate = value;
@@ -3181,9 +2884,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
         automationGroup.addSetting((setting) => {
           setting
             .setName("Draft logic")
-            .setDesc(
-              "Whether the property value 'true' means it is a draft or published.",
-            )
+            .setDesc("Whether the property value 'true' means it is a draft or published.")
             .addDropdown((dropdown) =>
               dropdown
                 .addOption("true-is-draft", "True = Draft")
@@ -3203,9 +2904,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       automationGroup.addSetting((setting) => {
         setting
           .setName("Published date property name")
-          .setDesc(
-            "The property field to update when published ('date' or 'pubDate').",
-          )
+          .setDesc("The property field to update when published ('date' or 'pubDate').")
           .addText((text) =>
             text
               .setPlaceholder("date")
@@ -3217,9 +2916,9 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           );
       });
     }
-    const contentTypesGroup = new import_obsidian9.SettingGroup(
-      containerEl,
-    ).setHeading("Content types");
+    const contentTypesGroup = new import_obsidian9.SettingGroup(containerEl).setHeading(
+      "Content types",
+    );
     contentTypesGroup.addSetting((setting) => {
       setting.settingEl.addClass("astro-composer-setting-hidden-elements");
       setting.settingEl.addClass("astro-composer-setting-container-full-width");
@@ -3231,24 +2930,22 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       this.renderCustomContentTypes();
     }
     if (!import_obsidian9.Platform.isMobile) {
-      const developerGroup = new import_obsidian9.SettingGroup(
-        containerEl,
-      ).setHeading("Developer commands");
+      const developerGroup = new import_obsidian9.SettingGroup(containerEl).setHeading(
+        "Developer commands",
+      );
       developerGroup.addSetting((setting) => {
         setting
           .setName("Enable open terminal command")
           .setDesc("Enable command to open terminal in project root directory.")
           .addToggle((toggle) =>
-            toggle
-              .setValue(settings.enableOpenTerminalCommand)
-              .onChange(async (value) => {
-                settings.enableOpenTerminalCommand = value;
-                await this.plugin.saveSettings();
-                this.updateTerminalCommandFields();
-                if (this.plugin.registerRibbonIcons) {
-                  this.plugin.registerRibbonIcons();
-                }
-              }),
+            toggle.setValue(settings.enableOpenTerminalCommand).onChange(async (value) => {
+              settings.enableOpenTerminalCommand = value;
+              await this.plugin.saveSettings();
+              this.updateTerminalCommandFields();
+              if (this.plugin.registerRibbonIcons) {
+                this.plugin.registerRibbonIcons();
+              }
+            }),
           );
       });
       this.terminalCommandContainer = containerEl.createDiv({
@@ -3327,12 +3024,10 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
             "Log terminal launch commands and platform decisions to the developer console for troubleshooting.",
           )
           .addToggle((toggle) =>
-            toggle
-              .setValue(settings.enableTerminalDebugLogging)
-              .onChange(async (value) => {
-                settings.enableTerminalDebugLogging = value;
-                await this.plugin.saveSettings();
-              }),
+            toggle.setValue(settings.enableTerminalDebugLogging).onChange(async (value) => {
+              settings.enableTerminalDebugLogging = value;
+              await this.plugin.saveSettings();
+            }),
           );
         setting.settingEl.classList.toggle(
           "astro-composer-setting-container-visible",
@@ -3376,20 +3071,16 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       developerGroup.addSetting((setting) => {
         setting
           .setName("Enable edit config file command")
-          .setDesc(
-            "Enable command to open astro config file in default editor.",
-          )
+          .setDesc("Enable command to open astro config file in default editor.")
           .addToggle((toggle) =>
-            toggle
-              .setValue(settings.enableOpenConfigFileCommand)
-              .onChange(async (value) => {
-                settings.enableOpenConfigFileCommand = value;
-                await this.plugin.saveSettings();
-                this.updateConfigCommandFields();
-                if (this.plugin.registerRibbonIcons) {
-                  this.plugin.registerRibbonIcons();
-                }
-              }),
+            toggle.setValue(settings.enableOpenConfigFileCommand).onChange(async (value) => {
+              settings.enableOpenConfigFileCommand = value;
+              await this.plugin.saveSettings();
+              this.updateConfigCommandFields();
+              if (this.plugin.registerRibbonIcons) {
+                this.plugin.registerRibbonIcons();
+              }
+            }),
           );
       });
       this.configCommandContainer = containerEl.createDiv({
@@ -3463,17 +3154,12 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       developerGroup.addSetting((setting) => {
         setting
           .setName("Swap out help button for custom action")
-          .setDesc(
-            "Replace the help button in the vault profile area with a custom action.",
-          )
+          .setDesc("Replace the help button in the vault profile area with a custom action.")
           .addToggle((toggle) => {
             var _a2, _b;
             return toggle
               .setValue(
-                (_b =
-                  (_a2 = settings.helpButtonReplacement) == null
-                    ? void 0
-                    : _a2.enabled) != null
+                (_b = (_a2 = settings.helpButtonReplacement) == null ? void 0 : _a2.enabled) != null
                   ? _b
                   : false,
               )
@@ -3495,46 +3181,35 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           });
       });
       if ((_a = settings.helpButtonReplacement) == null ? void 0 : _a.enabled) {
-        const commandName = this.getCommandName(
-          settings.helpButtonReplacement.commandId,
-        );
+        const commandName = this.getCommandName(settings.helpButtonReplacement.commandId);
         developerGroup.addSetting((setting) => {
           setting
             .setName("Command")
-            .setDesc(
-              "Select the command to execute when the button is clicked.",
-            )
+            .setDesc("Select the command to execute when the button is clicked.")
             .addButton((button) =>
-              button
-                .setButtonText(commandName || "Select command")
-                .onClick(() => {
-                  const modal = new CommandPickerModal(
-                    this.app,
-                    (commandId) => {
-                      void (async () => {
-                        if (!settings.helpButtonReplacement) {
-                          settings.helpButtonReplacement = {
-                            enabled: true,
-                            commandId: "edit-astro-config",
-                            iconId: "rocket",
-                          };
-                        }
-                        settings.helpButtonReplacement.commandId = commandId;
-                        await this.plugin.saveSettings();
-                        if (this.plugin.updateHelpButton) {
-                          await this.plugin.updateHelpButton();
-                        }
-                        this.display();
-                      })();
-                    },
-                  );
-                  modal.open();
-                }),
+              button.setButtonText(commandName || "Select command").onClick(() => {
+                const modal = new CommandPickerModal(this.app, (commandId) => {
+                  void (async () => {
+                    if (!settings.helpButtonReplacement) {
+                      settings.helpButtonReplacement = {
+                        enabled: true,
+                        commandId: "edit-astro-config",
+                        iconId: "rocket",
+                      };
+                    }
+                    settings.helpButtonReplacement.commandId = commandId;
+                    await this.plugin.saveSettings();
+                    if (this.plugin.updateHelpButton) {
+                      await this.plugin.updateHelpButton();
+                    }
+                    this.display();
+                  })();
+                });
+                modal.open();
+              }),
             );
         });
-        const iconName = this.getIconName(
-          settings.helpButtonReplacement.iconId,
-        );
+        const iconName = this.getIconName(settings.helpButtonReplacement.iconId);
         developerGroup.addSetting((setting) => {
           setting
             .setName("Icon")
@@ -3580,17 +3255,10 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       const nameEl = settingEl.querySelector(".setting-item-name");
       if (
         nameEl &&
-        ((_a = nameEl.textContent) == null ? void 0 : _a.trim()) ===
-          "Default heading link format"
+        ((_a = nameEl.textContent) == null ? void 0 : _a.trim()) === "Default heading link format"
       ) {
-        settingEl.classList.toggle(
-          "astro-composer-setting-container-visible",
-          isVisible,
-        );
-        settingEl.classList.toggle(
-          "astro-composer-setting-container-hidden",
-          !isVisible,
-        );
+        settingEl.classList.toggle("astro-composer-setting-container-visible", isVisible);
+        settingEl.classList.toggle("astro-composer-setting-container-hidden", !isVisible);
       }
     });
   }
@@ -3614,18 +3282,9 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       const nameEl = settingEl.querySelector(".setting-item-name");
       if (nameEl) {
         const name = (_a = nameEl.textContent) == null ? void 0 : _a.trim();
-        if (
-          name === "Project root directory path" ||
-          name === "Show open terminal ribbon icon"
-        ) {
-          settingEl.classList.toggle(
-            "astro-composer-setting-container-visible",
-            isVisible,
-          );
-          settingEl.classList.toggle(
-            "astro-composer-setting-container-hidden",
-            !isVisible,
-          );
+        if (name === "Project root directory path" || name === "Show open terminal ribbon icon") {
+          settingEl.classList.toggle("astro-composer-setting-container-visible", isVisible);
+          settingEl.classList.toggle("astro-composer-setting-container-hidden", !isVisible);
         }
       }
     });
@@ -3655,18 +3314,9 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       const nameEl = settingEl.querySelector(".setting-item-name");
       if (nameEl) {
         const name = (_a = nameEl.textContent) == null ? void 0 : _a.trim();
-        if (
-          name === "Config file path" ||
-          name === "Show open config ribbon icon"
-        ) {
-          settingEl.classList.toggle(
-            "astro-composer-setting-container-visible",
-            isVisible,
-          );
-          settingEl.classList.toggle(
-            "astro-composer-setting-container-hidden",
-            !isVisible,
-          );
+        if (name === "Config file path" || name === "Show open config ribbon icon") {
+          settingEl.classList.toggle("astro-composer-setting-container-visible", isVisible);
+          settingEl.classList.toggle("astro-composer-setting-container-hidden", !isVisible);
         }
       }
     });
@@ -3689,9 +3339,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           if (!folderConflicts[contentType.folder]) {
             folderConflicts[contentType.folder] = [];
           }
-          folderConflicts[contentType.folder].push(
-            contentType.name || "Content",
-          );
+          folderConflicts[contentType.folder].push(contentType.name || "Content");
         }
       }
     }
@@ -3747,9 +3395,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       }
       collapseButton.addEventListener("click", () => {
         void this.toggleContentTypeCollapse(customType.id);
-        const updatedType = this.plugin.settings.contentTypes.find(
-          (ct) => ct.id === customType.id,
-        );
+        const updatedType = this.plugin.settings.contentTypes.find((ct) => ct.id === customType.id);
         if (updatedType) {
           if (updatedType.collapsed) {
             collapseButton.classList.add("is-collapsed");
@@ -3831,24 +3477,17 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
         cls: "custom-content-type-settings",
         attr: { "data-type-id": customType.id },
       });
-      const initiallyCollapsed =
-        (_b = customType.collapsed) != null ? _b : false;
+      const initiallyCollapsed = (_b = customType.collapsed) != null ? _b : false;
       const initiallyVisible = customType.enabled && !initiallyCollapsed;
       if (initiallyVisible) {
-        settingsContainer.classList.add(
-          "astro-composer-setting-container-visible",
-        );
+        settingsContainer.classList.add("astro-composer-setting-container-visible");
       } else {
-        settingsContainer.classList.add(
-          "astro-composer-setting-container-hidden",
-        );
+        settingsContainer.classList.add("astro-composer-setting-container-hidden");
       }
       const nameContainer = settingsContainer.createDiv();
       new import_obsidian9.Setting(nameContainer)
         .setName("Content type name")
-        .setDesc(
-          "Display name for this content type ('projects', 'notes', 'tutorials')",
-        )
+        .setDesc("Display name for this content type ('projects', 'notes', 'tutorials')")
         .addText((text) => {
           text
             .setPlaceholder("Enter content type name")
@@ -3905,12 +3544,10 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           "When enabled, automation will only trigger for new .md files within this content type's folder and one level down (for folder-based content). Files in deeper subfolders will be ignored.",
         )
         .addToggle((toggle2) =>
-          toggle2
-            .setValue(customType.ignoreSubfolders || false)
-            .onChange(async (value) => {
-              customType.ignoreSubfolders = value;
-              await this.plugin.saveSettings();
-            }),
+          toggle2.setValue(customType.ignoreSubfolders || false).onChange(async (value) => {
+            customType.ignoreSubfolders = value;
+            await this.plugin.saveSettings();
+          }),
         );
       const underscorePrefixContainer = settingsContainer.createDiv();
       new import_obsidian9.Setting(underscorePrefixContainer)
@@ -3919,12 +3556,10 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           "Add an underscore prefix (_content-title) to new notes by default when enabled. This hides them from astro, which can be helpful for drafts",
         )
         .addToggle((toggle2) =>
-          toggle2
-            .setValue(customType.enableUnderscorePrefix || false)
-            .onChange(async (value) => {
-              customType.enableUnderscorePrefix = value;
-              await this.plugin.saveSettings();
-            }),
+          toggle2.setValue(customType.enableUnderscorePrefix || false).onChange(async (value) => {
+            customType.enableUnderscorePrefix = value;
+            await this.plugin.saveSettings();
+          }),
         );
       const linkContainer = settingsContainer.createDiv();
       new import_obsidian9.Setting(linkContainer)
@@ -3944,9 +3579,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
       const creationModeContainer = settingsContainer.createDiv();
       new import_obsidian9.Setting(creationModeContainer)
         .setName("Creation mode")
-        .setDesc(
-          "How to create new entries: file-based or folder-based with an index file.",
-        )
+        .setDesc("How to create new entries: file-based or folder-based with an index file.")
         .addDropdown((dropdown) =>
           dropdown
             .addOption("file", "File-based (content-title.md)")
@@ -3988,12 +3621,10 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
         .setName("Use MDX instead of MD")
         .setDesc("Create files with .mdx extension instead of .md extension.")
         .addToggle((toggle2) =>
-          toggle2
-            .setValue(customType.useMdxExtension || false)
-            .onChange(async (value) => {
-              customType.useMdxExtension = value;
-              await this.plugin.saveSettings();
-            }),
+          toggle2.setValue(customType.useMdxExtension || false).onChange(async (value) => {
+            customType.useMdxExtension = value;
+            await this.plugin.saveSettings();
+          }),
         );
       const modifiedDateContainer = settingsContainer.createDiv();
       new import_obsidian9.Setting(modifiedDateContainer)
@@ -4048,9 +3679,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
               const contentType = this.plugin.settings.contentTypes.find(
                 (ct) => ct.id === customType.id,
               );
-              const typeName =
-                (contentType == null ? void 0 : contentType.name) ||
-                "content type";
+              const typeName = (contentType == null ? void 0 : contentType.name) || "content type";
               const modal = new ConfirmModal(
                 this.app,
                 `Are you sure you want to remove "${typeName}"? This action cannot be undone.`,
@@ -4085,16 +3714,12 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
     const settingsContainer =
       (_a = this.customContentTypesContainer) == null
         ? void 0
-        : _a.querySelector(
-            `[data-type-id="${typeId}"].custom-content-type-settings`,
-          );
+        : _a.querySelector(`[data-type-id="${typeId}"].custom-content-type-settings`);
     if (settingsContainer) {
       const contentTypes = this.plugin.settings.contentTypes || [];
       const contentType = contentTypes.find((ct) => ct.id === typeId);
       const isCollapsed =
-        (_b = contentType == null ? void 0 : contentType.collapsed) != null
-          ? _b
-          : false;
+        (_b = contentType == null ? void 0 : contentType.collapsed) != null ? _b : false;
       const shouldBeVisible = enabled && !isCollapsed;
       settingsContainer.classList.toggle(
         "astro-composer-setting-container-visible",
@@ -4114,9 +3739,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
     const indexFileContainer =
       (_a = this.customContentTypesContainer) == null
         ? void 0
-        : _a.querySelector(
-            `[data-type-id="${typeId}"] .custom-index-file-field`,
-          );
+        : _a.querySelector(`[data-type-id="${typeId}"] .custom-index-file-field`);
     if (indexFileContainer) {
       indexFileContainer.classList.toggle(
         "astro-composer-setting-container-visible",
@@ -4136,9 +3759,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
     const ignoreSubfoldersContainer =
       (_a = this.customContentTypesContainer) == null
         ? void 0
-        : _a.querySelector(
-            `[data-type-id="${typeId}"].custom-ignore-subfolders-field`,
-          );
+        : _a.querySelector(`[data-type-id="${typeId}"].custom-ignore-subfolders-field`);
     if (ignoreSubfoldersContainer) {
       ignoreSubfoldersContainer.classList.toggle(
         "astro-composer-setting-container-visible",
@@ -4158,9 +3779,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
     const conflictWarningEl =
       (_a = this.customContentTypesContainer) == null
         ? void 0
-        : _a.querySelector(
-            `[data-type-id="${typeId}"].astro-composer-conflict-warning`,
-          );
+        : _a.querySelector(`[data-type-id="${typeId}"].astro-composer-conflict-warning`);
     if (!conflictWarningEl) return;
     const currentFolder = (currentType.folder || "").trim();
     const conflictingTypes = [];
@@ -4228,10 +3847,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
     if (!commandId) return "";
     try {
       const commandRegistry = this.app.commands;
-      if (
-        commandRegistry &&
-        typeof commandRegistry.listCommands === "function"
-      ) {
+      if (commandRegistry && typeof commandRegistry.listCommands === "function") {
         try {
           const allCommands = commandRegistry.listCommands();
           const command = allCommands.find((cmd) => cmd.id === commandId);
@@ -4239,15 +3855,11 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
             return command.name;
           }
         } catch (e) {
-          console.warn(
-            "[Astro Composer] Error getting command name via listCommands():",
-            e,
-          );
+          console.warn("[Astro Composer] Error getting command name via listCommands():", e);
         }
       }
       try {
-        const registry =
-          commandRegistry == null ? void 0 : commandRegistry.commands;
+        const registry = commandRegistry == null ? void 0 : commandRegistry.commands;
         if (registry && typeof registry === "object") {
           const command = registry[commandId];
           if (command == null ? void 0 : command.name) {
@@ -4255,10 +3867,7 @@ var AstroComposerSettingTab = class extends import_obsidian9.PluginSettingTab {
           }
         }
       } catch (e) {
-        console.warn(
-          "[Astro Composer] Error getting command name via registry:",
-          e,
-        );
+        console.warn("[Astro Composer] Error getting command name via registry:", e);
       }
     } catch (e) {
       console.warn("[Astro Composer] Error getting command name:", e);
@@ -4532,16 +4141,14 @@ var MigrationService = class {
     }
     const hasPostsSettings =
       settings.automatePostCreation !== void 0 && settings.automatePostCreation;
-    const hasPagesSettings =
-      settings.enablePages !== void 0 && settings.enablePages;
+    const hasPagesSettings = settings.enablePages !== void 0 && settings.enablePages;
     if (!hasPostsSettings && !hasPagesSettings) {
       settings.migrationCompleted = true;
       await this.plugin.saveSettings();
       return;
     }
     const legacyContentTypes = settings.customContentTypes;
-    const existingContentTypes =
-      settings.contentTypes || legacyContentTypes || [];
+    const existingContentTypes = settings.contentTypes || legacyContentTypes || [];
     const conflicts = [];
     if (existingContentTypes.some((ct) => ct.name === "Posts")) {
       conflicts.push("Posts");
@@ -4561,10 +4168,7 @@ var MigrationService = class {
                   timeoutResolve({ action: "skip" });
                 }, 3e4);
               });
-              const result = await Promise.race([
-                modal.waitForResult(),
-                timeoutPromise,
-              ]);
+              const result = await Promise.race([modal.waitForResult(), timeoutPromise]);
               if (result.action === "skip") {
                 shouldMigrate = false;
                 new import_obsidian11.Notice(
@@ -4596,8 +4200,7 @@ var MigrationService = class {
         folder: settings.postsFolder || "",
         linkBasePath: settings.postsLinkBasePath || "",
         template:
-          settings.defaultTemplate ||
-          '---\ntitle: "{{title}}"\ndate: {{date}}\ntags: []\n---\n',
+          settings.defaultTemplate || '---\ntitle: "{{title}}"\ndate: {{date}}\ntags: []\n---\n',
         enabled: true,
         creationMode: settings.creationMode || "file",
         indexFileName: settings.indexFileName || "",
@@ -4614,9 +4217,7 @@ var MigrationService = class {
         name: "Pages",
         folder: settings.pagesFolder || "",
         linkBasePath: settings.pagesLinkBasePath || "",
-        template:
-          settings.pageTemplate ||
-          '---\ntitle: "{{title}}"\ndescription: ""\n---\n',
+        template: settings.pageTemplate || '---\ntitle: "{{title}}"\ndescription: ""\n---\n',
         enabled: true,
         creationMode: settings.pagesCreationMode || "file",
         indexFileName: settings.pagesIndexFileName || "",
@@ -4629,14 +4230,11 @@ var MigrationService = class {
     }
     const existingFromNew = settings.contentTypes || [];
     const existingFromLegacy = legacyContentTypes || [];
-    let existingTypes =
-      existingFromNew.length > 0 ? existingFromNew : existingFromLegacy;
+    let existingTypes = existingFromNew.length > 0 ? existingFromNew : existingFromLegacy;
     let finalTypes = [...existingTypes];
     if (migratedTypes.length > 0) {
       const existingNames = new Set(existingTypes.map((ct) => ct.name));
-      const newMigratedTypes = migratedTypes.filter(
-        (mt) => !existingNames.has(mt.name),
-      );
+      const newMigratedTypes = migratedTypes.filter((mt) => !existingNames.has(mt.name));
       if (newMigratedTypes.length > 0) {
         finalTypes = [...existingTypes, ...newMigratedTypes];
       }
@@ -4675,10 +4273,7 @@ var MigrationService = class {
         if (this.plugin.settingsTab instanceof AstroComposerSettingTab) {
           const settingsTab = this.plugin.settingsTab;
           try {
-            if (
-              settingsTab.customContentTypesContainer ||
-              settingsTab.containerEl
-            ) {
+            if (settingsTab.customContentTypesContainer || settingsTab.containerEl) {
               settingsTab.display();
             }
           } catch (e) {
@@ -4748,10 +4343,7 @@ var CreateEventService = class {
             const expectedDepth = patternSegments.length;
             if (contentType.creationMode === "folder") {
               const folderDepth = pathDepth - 1;
-              if (
-                folderDepth === expectedDepth ||
-                folderDepth === expectedDepth + 1
-              ) {
+              if (folderDepth === expectedDepth || folderDepth === expectedDepth + 1) {
                 matches = true;
               }
             } else {
@@ -4771,9 +4363,7 @@ var CreateEventService = class {
         }
       }
       if (matchingTypes.length > 1) {
-        const typeNames = matchingTypes
-          .map((ct) => ct.name || "Unnamed")
-          .join(", ");
+        const typeNames = matchingTypes.map((ct) => ct.name || "Unnamed").join(", ");
         new import_obsidian12.Notice(
           `Multiple content types (${typeNames}) match this file. Using most specific: ${matchingTypes[0].name || "Unnamed"}`,
         );
@@ -4789,8 +4379,7 @@ var CreateEventService = class {
         }
         const stat = await this.app.vault.adapter.stat(file.path);
         const isRecent =
-          (stat == null ? void 0 : stat.mtime) &&
-          now - stat.mtime < CONSTANTS.STAT_MTIME_THRESHOLD;
+          (stat == null ? void 0 : stat.mtime) && now - stat.mtime < CONSTANTS.STAT_MTIME_THRESHOLD;
         if (!isRecent) {
           return;
         }
@@ -4814,14 +4403,7 @@ var CreateEventService = class {
       setTimeout(() => {
         this.lastProcessedFiles.delete(file.path);
       }, CONSTANTS.DEBOUNCE_MS + 100);
-      new TitleModal(
-        this.app,
-        file,
-        this.plugin,
-        matchedContentTypeId,
-        false,
-        true,
-      ).open();
+      new TitleModal(this.app, file, this.plugin, matchedContentTypeId, false, true).open();
     })();
   }
 };
@@ -4847,15 +4429,13 @@ var FrontmatterService = class {
     var _a;
     this.draftStatusMap.clear();
     const settings = this.plugin.settings;
-    const isUnderscoreMode =
-      settings.draftDetectionMode === "underscore-prefix";
+    const isUnderscoreMode = settings.draftDetectionMode === "underscore-prefix";
     const draftProp = settings.draftProperty || "draft";
     const files = this.app.vault
       .getFiles()
       .filter(
         (f) =>
-          f instanceof import_obsidian13.TFile &&
-          (f.extension === "md" || f.extension === "mdx"),
+          f instanceof import_obsidian13.TFile && (f.extension === "md" || f.extension === "mdx"),
       );
     for (const file of files) {
       if (isUnderscoreMode) {
@@ -4863,13 +4443,8 @@ var FrontmatterService = class {
       } else {
         const cache = this.app.metadataCache.getFileCache(file);
         const rawValue =
-          (_a = cache == null ? void 0 : cache.frontmatter) == null
-            ? void 0
-            : _a[draftProp];
-        this.draftStatusMap.set(
-          file.path,
-          this.calculateIsDraft(rawValue, settings),
-        );
+          (_a = cache == null ? void 0 : cache.frontmatter) == null ? void 0 : _a[draftProp];
+        this.draftStatusMap.set(file.path, this.calculateIsDraft(rawValue, settings));
       }
     }
   }
@@ -4903,15 +4478,9 @@ var FrontmatterService = class {
           void (async () => {
             try {
               const content = await this.app.vault.read(file);
-              this.contentHashCache.set(
-                file.path,
-                this.getContentHash(content),
-              );
+              this.contentHashCache.set(file.path, this.getContentHash(content));
             } catch (e) {
-              console.error(
-                `Failed to lazily initialize content hash for ${file.path}:`,
-                e,
-              );
+              console.error(`Failed to lazily initialize content hash for ${file.path}:`, e);
             }
           })();
         }
@@ -4929,9 +4498,7 @@ var FrontmatterService = class {
         void this.updateDate(file);
       } else {
         const contentType =
-          (_a = this.plugin.fileOps) == null
-            ? void 0
-            : _a.getContentTypeByPath(file.path);
+          (_a = this.plugin.fileOps) == null ? void 0 : _a.getContentTypeByPath(file.path);
         if (contentType == null ? void 0 : contentType.enableUnderscorePrefix) {
           void this.updateDate(file);
         }
@@ -4943,12 +4510,8 @@ var FrontmatterService = class {
     const settings = this.plugin.settings;
     if (settings.draftDetectionMode === "underscore-prefix") {
       const contentType2 =
-        (_a = this.plugin.fileOps) == null
-          ? void 0
-          : _a.getContentTypeByPath(file.path);
-      const hasModifiedField2 = !!(contentType2 == null
-        ? void 0
-        : contentType2.modifiedDateField);
+        (_a = this.plugin.fileOps) == null ? void 0 : _a.getContentTypeByPath(file.path);
+      const hasModifiedField2 = !!(contentType2 == null ? void 0 : contentType2.modifiedDateField);
       if (!hasModifiedField2) return;
       const activeFile2 = this.app.workspace.getActiveFile();
       const isActiveFile2 = activeFile2 && activeFile2.path === file.path;
@@ -4962,21 +4525,15 @@ var FrontmatterService = class {
       return;
     }
     const contentType =
-      (_b = this.plugin.fileOps) == null
-        ? void 0
-        : _b.getContentTypeByPath(file.path);
-    const hasModifiedField = !!(contentType == null
-      ? void 0
-      : contentType.modifiedDateField);
+      (_b = this.plugin.fileOps) == null ? void 0 : _b.getContentTypeByPath(file.path);
+    const hasModifiedField = !!(contentType == null ? void 0 : contentType.modifiedDateField);
     if (!settings.syncDraftDate && !hasModifiedField) {
       return;
     }
     const cache = this.app.metadataCache.getFileCache(file);
     const draftProp = settings.draftProperty || "draft";
     const rawValue =
-      (_c = cache == null ? void 0 : cache.frontmatter) == null
-        ? void 0
-        : _c[draftProp];
+      (_c = cache == null ? void 0 : cache.frontmatter) == null ? void 0 : _c[draftProp];
     const isCurrentlyDraft = this.calculateIsDraft(rawValue, settings);
     if (!this.draftStatusMap.has(file.path)) {
       this.draftStatusMap.set(file.path, isCurrentlyDraft);
@@ -4992,10 +4549,7 @@ var FrontmatterService = class {
       return;
     }
     const now = Date.now();
-    if (
-      this.lastProcessedFile === file.path &&
-      now - this.lastProcessedTime < 2e3
-    ) {
+    if (this.lastProcessedFile === file.path && now - this.lastProcessedTime < 2e3) {
       return;
     }
     if (this.debounceTimeout) {
@@ -5061,16 +4615,13 @@ var FrontmatterService = class {
     await this.app.fileManager.processFrontMatter(file, (frontmatter) => {
       let changed = false;
       if (settings.syncDraftDate && draftStatusChangedToPublished) {
-        const today = (0, import_obsidian13.moment)().format(
-          settings.dateFormat,
-        );
+        const today = (0, import_obsidian13.moment)().format(settings.dateFormat);
         if (frontmatter[publishDateField] !== today) {
           frontmatter[publishDateField] = today;
           changed = true;
         }
       }
-      const modifiedField =
-        contentType == null ? void 0 : contentType.modifiedDateField;
+      const modifiedField = contentType == null ? void 0 : contentType.modifiedDateField;
       if (modifiedField && frontmatter[modifiedField] !== void 0) {
         const now = (0, import_obsidian13.moment)().format(settings.dateFormat);
         if (frontmatter[modifiedField] !== now) {
@@ -5117,10 +4668,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
         try {
           this.registerExtensions(["mdx"], "markdown");
         } catch (error) {
-          console.warn(
-            "[Astro Composer] MDX extension already registered:",
-            error,
-          );
+          console.warn("[Astro Composer] MDX extension already registered:", error);
         }
       }
       this.app.workspace.onLayoutReady(() => {
@@ -5200,10 +4748,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     } else {
       Object.assign(this.settings, loadedData);
     }
-    if (
-      !this.settings.contentTypes ||
-      !Array.isArray(this.settings.contentTypes)
-    ) {
+    if (!this.settings.contentTypes || !Array.isArray(this.settings.contentTypes)) {
       this.settings.contentTypes = [];
     }
     if (!this.settings.migrationCompleted) {
@@ -5269,17 +4814,9 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
         if (!(file instanceof import_obsidian14.TFile)) {
           return;
         }
-        const heading = this.headingLinkGenerator.findHeadingAtLine(
-          this.app,
-          file,
-          cursor.line,
-        );
+        const heading = this.headingLinkGenerator.findHeadingAtLine(this.app, file, cursor.line);
         if (heading) {
-          const fullLink = this.headingLinkGenerator.generateLink(
-            this.app,
-            file,
-            heading,
-          );
+          const fullLink = this.headingLinkGenerator.generateLink(this.app, file, heading);
           const urlOnly = this.headingLinkGenerator.extractUrl(fullLink);
           menu.addItem((item) => {
             item
@@ -5287,9 +4824,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
               .setIcon("link-2")
               .onClick(async () => {
                 await navigator.clipboard.writeText(urlOnly);
-                new import_obsidian14.Notice(
-                  "Heading link copied to clipboard",
-                );
+                new import_obsidian14.Notice("Heading link copied to clipboard");
               });
           });
           menu.addItem((item) => {
@@ -5298,9 +4833,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
               .setIcon("heading")
               .onClick(async () => {
                 await navigator.clipboard.writeText(fullLink);
-                new import_obsidian14.Notice(
-                  "Heading link with text copied to clipboard",
-                );
+                new import_obsidian14.Notice("Heading link with text copied to clipboard");
               });
           });
         }
@@ -5314,8 +4847,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     if (import_obsidian14.Platform.isMobile) {
       if (this.terminalRibbonIcon) {
         try {
-          if (this.terminalRibbonIcon.parentNode)
-            this.terminalRibbonIcon.remove();
+          if (this.terminalRibbonIcon.parentNode) this.terminalRibbonIcon.remove();
         } catch (e) {}
         this.terminalRibbonIcon = null;
       }
@@ -5338,15 +4870,12 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
       return;
     }
     const terminalShouldExist =
-      this.settings.enableTerminalRibbonIcon &&
-      this.settings.enableOpenTerminalCommand;
+      this.settings.enableTerminalRibbonIcon && this.settings.enableOpenTerminalCommand;
     const configShouldExist =
-      this.settings.enableConfigRibbonIcon &&
-      this.settings.enableOpenConfigFileCommand;
+      this.settings.enableConfigRibbonIcon && this.settings.enableOpenConfigFileCommand;
     if (this.terminalRibbonIcon) {
       try {
-        if (this.terminalRibbonIcon.parentNode)
-          this.terminalRibbonIcon.remove();
+        if (this.terminalRibbonIcon.parentNode) this.terminalRibbonIcon.remove();
       } catch (e) {}
       this.terminalRibbonIcon = null;
     }
@@ -5358,14 +4887,10 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     }
     try {
       document
-        .querySelectorAll(
-          '.side-dock-ribbon-action[aria-label="Open project terminal"]',
-        )
+        .querySelectorAll('.side-dock-ribbon-action[aria-label="Open project terminal"]')
         .forEach((el) => el.remove());
       document
-        .querySelectorAll(
-          '.side-dock-ribbon-action[aria-label="Edit astro config"]',
-        )
+        .querySelectorAll('.side-dock-ribbon-action[aria-label="Edit astro config"]')
         .forEach((el) => el.remove());
     } catch (e) {}
     if (terminalShouldExist) {
@@ -5381,30 +4906,18 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
         },
       );
       if (this.terminalRibbonIcon)
-        this.terminalRibbonIcon.setAttribute(
-          "data-astro-composer-terminal-ribbon",
-          "true",
-        );
+        this.terminalRibbonIcon.setAttribute("data-astro-composer-terminal-ribbon", "true");
     }
     if (configShouldExist) {
-      this.configRibbonIcon = this.addRibbonIcon(
-        "rocket",
-        "Edit astro config",
-        async () => {
-          if (!this.settings.enableOpenConfigFileCommand) {
-            new import_obsidian14.Notice(
-              "Edit config file command is disabled.",
-            );
-            return;
-          }
-          await openConfigFile(this.app, this.settings);
-        },
-      );
+      this.configRibbonIcon = this.addRibbonIcon("rocket", "Edit astro config", async () => {
+        if (!this.settings.enableOpenConfigFileCommand) {
+          new import_obsidian14.Notice("Edit config file command is disabled.");
+          return;
+        }
+        await openConfigFile(this.app, this.settings);
+      });
       if (this.configRibbonIcon)
-        this.configRibbonIcon.setAttribute(
-          "data-astro-composer-config-ribbon",
-          "true",
-        );
+        this.configRibbonIcon.setAttribute("data-astro-composer-config-ribbon", "true");
     }
     this.updateRibbonContextMenuCSS();
     this.setupRibbonContextMenuObserver();
@@ -5442,37 +4955,27 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
   }
   updateRibbonContextMenuCSS() {
     const terminalShouldBeHidden =
-      !this.settings.enableTerminalRibbonIcon ||
-      !this.settings.enableOpenTerminalCommand;
+      !this.settings.enableTerminalRibbonIcon || !this.settings.enableOpenTerminalCommand;
     const configShouldBeHidden =
-      !this.settings.enableConfigRibbonIcon ||
-      !this.settings.enableOpenConfigFileCommand;
-    if (terminalShouldBeHidden)
-      document.body.addClass("astro-composer-hide-terminal-icon");
+      !this.settings.enableConfigRibbonIcon || !this.settings.enableOpenConfigFileCommand;
+    if (terminalShouldBeHidden) document.body.addClass("astro-composer-hide-terminal-icon");
     else document.body.removeClass("astro-composer-hide-terminal-icon");
-    if (configShouldBeHidden)
-      document.body.addClass("astro-composer-hide-config-icon");
+    if (configShouldBeHidden) document.body.addClass("astro-composer-hide-config-icon");
     else document.body.removeClass("astro-composer-hide-config-icon");
   }
   setupRibbonContextMenuObserver() {
-    if (this.ribbonContextMenuObserver)
-      this.ribbonContextMenuObserver.disconnect();
+    if (this.ribbonContextMenuObserver) this.ribbonContextMenuObserver.disconnect();
     const terminalShouldBeHidden =
-      !this.settings.enableTerminalRibbonIcon ||
-      !this.settings.enableOpenTerminalCommand;
+      !this.settings.enableTerminalRibbonIcon || !this.settings.enableOpenTerminalCommand;
     const configShouldBeHidden =
-      !this.settings.enableConfigRibbonIcon ||
-      !this.settings.enableOpenConfigFileCommand;
+      !this.settings.enableConfigRibbonIcon || !this.settings.enableOpenConfigFileCommand;
     if (!terminalShouldBeHidden && !configShouldBeHidden) return;
     this.ribbonContextMenuObserver = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (mutation.addedNodes.length > 0) {
           for (const node of Array.from(mutation.addedNodes)) {
             if (node instanceof HTMLElement) {
-              if (
-                node.classList.contains("menu") ||
-                node.querySelector(".menu")
-              ) {
+              if (node.classList.contains("menu") || node.querySelector(".menu")) {
                 this.removeRibbonIconsFromContextMenu(node);
               }
             }
@@ -5515,8 +5018,7 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
    */
   syncHelpButton() {
     var _a, _b, _c, _d;
-    const enabled =
-      (_a = this.settings.helpButtonReplacement) == null ? void 0 : _a.enabled;
+    const enabled = (_a = this.settings.helpButtonReplacement) == null ? void 0 : _a.enabled;
     if (enabled) document.body.addClass("astro-composer-hide-help-button");
     else document.body.removeClass("astro-composer-hide-help-button");
     if (!enabled) {
@@ -5554,15 +5056,11 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
     customButton.setAttribute("data-astro-composer-help-replacement", "true");
     customButton.onclick = null;
     const iconContainer =
-      ((_c = customButton.querySelector("svg")) == null
-        ? void 0
-        : _c.parentElement) || customButton;
+      ((_c = customButton.querySelector("svg")) == null ? void 0 : _c.parentElement) ||
+      customButton;
     try {
       if (iconContainer instanceof HTMLElement) {
-        (0, import_obsidian14.setIcon)(
-          iconContainer,
-          this.settings.helpButtonReplacement.iconId,
-        );
+        (0, import_obsidian14.setIcon)(iconContainer, this.settings.helpButtonReplacement.iconId);
       }
     } catch (error) {
       console.warn("[Astro Composer] Error setting replacement icon:", error);
@@ -5574,16 +5072,10 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
         evt.preventDefault();
         evt.stopPropagation();
         const commandId =
-          (_a2 = this.settings.helpButtonReplacement) == null
-            ? void 0
-            : _a2.commandId;
+          (_a2 = this.settings.helpButtonReplacement) == null ? void 0 : _a2.commandId;
         if (commandId) {
           const appWithCommands = this.app;
-          if (
-            (_b2 = appWithCommands.commands) == null
-              ? void 0
-              : _b2.executeCommandById
-          ) {
+          if ((_b2 = appWithCommands.commands) == null ? void 0 : _b2.executeCommandById) {
             void appWithCommands.commands.executeCommandById(commandId);
           }
         }
@@ -5606,11 +5098,9 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
   removeRibbonIconsFromContextMenu(menuElement) {
     var _a, _b;
     const terminalShouldBeHidden =
-      !this.settings.enableTerminalRibbonIcon ||
-      !this.settings.enableOpenTerminalCommand;
+      !this.settings.enableTerminalRibbonIcon || !this.settings.enableOpenTerminalCommand;
     const configShouldBeHidden =
-      !this.settings.enableConfigRibbonIcon ||
-      !this.settings.enableOpenConfigFileCommand;
+      !this.settings.enableConfigRibbonIcon || !this.settings.enableOpenConfigFileCommand;
     const menuItems = menuElement.querySelectorAll(".menu-item");
     for (const item of Array.from(menuItems)) {
       const svg = item.querySelector("svg");
@@ -5619,29 +5109,16 @@ var AstroComposerPlugin = class extends import_obsidian14.Plugin {
           svg.getAttribute("data-lucide") ||
           svg.getAttribute("xmlns:lucide") ||
           svg.getAttribute("data-icon") ||
-          (svg.classList.contains("lucide-terminal-square")
-            ? "terminal-square"
-            : null) ||
+          (svg.classList.contains("lucide-terminal-square") ? "terminal-square" : null) ||
           (svg.classList.contains("lucide-rocket") ? "rocket" : null) ||
           (svg.classList.contains("lucide-wrench") ? "wrench" : null);
         if (iconName) iconName = iconName.replace(/^lucide-/, "");
         if (terminalShouldBeHidden && iconName === "terminal-square") {
-          if (
-            (_a = item.textContent) == null
-              ? void 0
-              : _a.toLowerCase().includes("terminal")
-          )
+          if ((_a = item.textContent) == null ? void 0 : _a.toLowerCase().includes("terminal"))
             item.remove();
         }
-        if (
-          configShouldBeHidden &&
-          (iconName === "rocket" || iconName === "wrench")
-        ) {
-          if (
-            (_b = item.textContent) == null
-              ? void 0
-              : _b.toLowerCase().includes("config")
-          )
+        if (configShouldBeHidden && (iconName === "rocket" || iconName === "wrench")) {
+          if ((_b = item.textContent) == null ? void 0 : _b.toLowerCase().includes("config"))
             item.remove();
         }
       }

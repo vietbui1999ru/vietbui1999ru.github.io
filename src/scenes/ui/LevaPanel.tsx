@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Leva } from 'leva'
+import React, { useState, useEffect } from "react";
+import { Leva } from "leva";
 
 // ---------------------------------------------------------------------------
 // Extracted hook — unit-testable without Leva or WebGL
@@ -7,7 +7,7 @@ import { Leva } from 'leva'
 
 export interface LevaPanelVisibility {
   /** When true, the Leva panel is hidden (pass directly to <Leva hidden={...} />) */
-  hidden: boolean
+  hidden: boolean;
 }
 
 /**
@@ -19,38 +19,38 @@ export interface LevaPanelVisibility {
  */
 export function useLevaPanelVisibility(): LevaPanelVisibility {
   const isMobile = (): boolean => {
-    if (typeof window === 'undefined') return false
-    return window.matchMedia('(max-width: 767px)').matches
-  }
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 767px)").matches;
+  };
 
-  const [hidden, setHidden] = useState<boolean>(() => isMobile())
+  const [hidden, setHidden] = useState<boolean>(() => isMobile());
 
   useEffect(() => {
-    const mobile = isMobile()
+    const mobile = isMobile();
 
     function handleKeyDown(e: KeyboardEvent) {
-      if (mobile) return
-      if (e.key === 'l' || e.key === 'L') {
+      if (mobile) return;
+      if (e.key === "l" || e.key === "L") {
         // Ignore if focus is inside an input/textarea/contenteditable
-        const target = e.target as HTMLElement
+        const target = e.target as HTMLElement;
         if (
-          target.tagName === 'INPUT' ||
-          target.tagName === 'TEXTAREA' ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
           target.isContentEditable
         ) {
-          return
+          return;
         }
-        setHidden((prev) => !prev)
+        setHidden((prev) => !prev);
       }
     }
 
-    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [])
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
-  return { hidden }
+  return { hidden };
 }
 
 // ---------------------------------------------------------------------------
@@ -69,17 +69,17 @@ export function useLevaPanelVisibility(): LevaPanelVisibility {
  * Keyboard `L` toggles visibility. Hidden by default on mobile.
  */
 export function LevaPanel(): React.ReactElement {
-  const { hidden } = useLevaPanelVisibility()
+  const { hidden } = useLevaPanelVisibility();
 
   return (
     <Leva
       hidden={hidden}
       collapsed={false}
       theme={{
-        sizes: { rootWidth: '280px' },
+        sizes: { rootWidth: "280px" },
       }}
     />
-  )
+  );
 }
 
-export default LevaPanel
+export default LevaPanel;

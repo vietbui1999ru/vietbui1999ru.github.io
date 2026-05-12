@@ -22,12 +22,7 @@ var x = (s, e) => () => (e || s((e = { exports: {} }).exports, e), e.exports),
   };
 var ln = (s, e, t) => (
     (t = s != null ? tn(on(s)) : {}),
-    Ze(
-      e || !s || !s.__esModule
-        ? pe(t, "default", { value: s, enumerable: !0 })
-        : t,
-      s,
-    )
+    Ze(e || !s || !s.__esModule ? pe(t, "default", { value: s, enumerable: !0 }) : t, s)
   ),
   un = (s) => Ze(pe({}, "__esModule", { value: !0 }), s);
 var $e = x((ps, et) => {
@@ -47,15 +42,7 @@ var xe = x((ms, tt) => {
     dn = Number.MAX_SAFE_INTEGER || 9007199254740991,
     pn = 16,
     mn = 250,
-    hn = [
-      "major",
-      "premajor",
-      "minor",
-      "preminor",
-      "patch",
-      "prepatch",
-      "prerelease",
-    ];
+    hn = ["major", "premajor", "minor", "preminor", "patch", "prepatch", "prerelease"];
   tt.exports = {
     MAX_LENGTH: 256,
     MAX_SAFE_COMPONENT_LENGTH: pn,
@@ -69,11 +56,7 @@ var xe = x((ms, tt) => {
 });
 var Be = x((F, nt) => {
   "use strict";
-  var {
-      MAX_SAFE_COMPONENT_LENGTH: Oe,
-      MAX_SAFE_BUILD_LENGTH: fn,
-      MAX_LENGTH: bn,
-    } = xe(),
+  var { MAX_SAFE_COMPONENT_LENGTH: Oe, MAX_SAFE_BUILD_LENGTH: fn, MAX_LENGTH: bn } = xe(),
     wn = $e();
   F = nt.exports = {};
   var Tn = (F.re = []),
@@ -90,11 +73,7 @@ var Be = x((F, nt) => {
     ],
     Rn = (s) => {
       for (let [e, t] of Pn)
-        s = s
-          .split(`${e}*`)
-          .join(`${e}{0,${t}}`)
-          .split(`${e}+`)
-          .join(`${e}{1,${t}}`);
+        s = s.split(`${e}*`).join(`${e}{0,${t}}`).split(`${e}+`).join(`${e}{1,${t}}`);
       return s;
     },
     y = (s, e, t) => {
@@ -118,18 +97,9 @@ var Be = x((F, nt) => {
     "MAINVERSIONLOOSE",
     `(${h[f.NUMERICIDENTIFIERLOOSE]})\\.(${h[f.NUMERICIDENTIFIERLOOSE]})\\.(${h[f.NUMERICIDENTIFIERLOOSE]})`,
   );
-  y(
-    "PRERELEASEIDENTIFIER",
-    `(?:${h[f.NONNUMERICIDENTIFIER]}|${h[f.NUMERICIDENTIFIER]})`,
-  );
-  y(
-    "PRERELEASEIDENTIFIERLOOSE",
-    `(?:${h[f.NONNUMERICIDENTIFIER]}|${h[f.NUMERICIDENTIFIERLOOSE]})`,
-  );
-  y(
-    "PRERELEASE",
-    `(?:-(${h[f.PRERELEASEIDENTIFIER]}(?:\\.${h[f.PRERELEASEIDENTIFIER]})*))`,
-  );
+  y("PRERELEASEIDENTIFIER", `(?:${h[f.NONNUMERICIDENTIFIER]}|${h[f.NUMERICIDENTIFIER]})`);
+  y("PRERELEASEIDENTIFIERLOOSE", `(?:${h[f.NONNUMERICIDENTIFIER]}|${h[f.NUMERICIDENTIFIERLOOSE]})`);
+  y("PRERELEASE", `(?:-(${h[f.PRERELEASEIDENTIFIER]}(?:\\.${h[f.PRERELEASEIDENTIFIER]})*))`);
   y(
     "PRERELEASELOOSE",
     `(?:-?(${h[f.PRERELEASEIDENTIFIERLOOSE]}(?:\\.${h[f.PRERELEASEIDENTIFIERLOOSE]})*))`,
@@ -138,10 +108,7 @@ var Be = x((F, nt) => {
   y("BUILD", `(?:\\+(${h[f.BUILDIDENTIFIER]}(?:\\.${h[f.BUILDIDENTIFIER]})*))`);
   y("FULLPLAIN", `v?${h[f.MAINVERSION]}${h[f.PRERELEASE]}?${h[f.BUILD]}?`);
   y("FULL", `^${h[f.FULLPLAIN]}$`);
-  y(
-    "LOOSEPLAIN",
-    `[v=\\s]*${h[f.MAINVERSIONLOOSE]}${h[f.PRERELEASELOOSE]}?${h[f.BUILD]}?`,
-  );
+  y("LOOSEPLAIN", `[v=\\s]*${h[f.MAINVERSIONLOOSE]}${h[f.PRERELEASELOOSE]}?${h[f.BUILD]}?`);
   y("LOOSE", `^${h[f.LOOSEPLAIN]}$`);
   y("GTLT", "((?:<|>)?=?)");
   y("XRANGEIDENTIFIERLOOSE", `${h[f.NUMERICIDENTIFIERLOOSE]}|x|X|\\*`);
@@ -156,15 +123,9 @@ var Be = x((F, nt) => {
   );
   y("XRANGE", `^${h[f.GTLT]}\\s*${h[f.XRANGEPLAIN]}$`);
   y("XRANGELOOSE", `^${h[f.GTLT]}\\s*${h[f.XRANGEPLAINLOOSE]}$`);
-  y(
-    "COERCEPLAIN",
-    `(^|[^\\d])(\\d{1,${Oe}})(?:\\.(\\d{1,${Oe}}))?(?:\\.(\\d{1,${Oe}}))?`,
-  );
+  y("COERCEPLAIN", `(^|[^\\d])(\\d{1,${Oe}})(?:\\.(\\d{1,${Oe}}))?(?:\\.(\\d{1,${Oe}}))?`);
   y("COERCE", `${h[f.COERCEPLAIN]}(?:$|[^\\d])`);
-  y(
-    "COERCEFULL",
-    h[f.COERCEPLAIN] + `(?:${h[f.PRERELEASE]})?(?:${h[f.BUILD]})?(?:$|[^\\d])`,
-  );
+  y("COERCEFULL", h[f.COERCEPLAIN] + `(?:${h[f.PRERELEASE]})?(?:${h[f.BUILD]})?(?:$|[^\\d])`);
   y("COERCERTL", h[f.COERCE], !0);
   y("COERCERTLFULL", h[f.COERCEFULL], !0);
   y("LONETILDE", "(?:~>?)");
@@ -179,20 +140,10 @@ var Be = x((F, nt) => {
   y("CARETLOOSE", `^${h[f.LONECARET]}${h[f.XRANGEPLAINLOOSE]}$`);
   y("COMPARATORLOOSE", `^${h[f.GTLT]}\\s*(${h[f.LOOSEPLAIN]})$|^$`);
   y("COMPARATOR", `^${h[f.GTLT]}\\s*(${h[f.FULLPLAIN]})$|^$`);
-  y(
-    "COMPARATORTRIM",
-    `(\\s*)${h[f.GTLT]}\\s*(${h[f.LOOSEPLAIN]}|${h[f.XRANGEPLAIN]})`,
-    !0,
-  );
+  y("COMPARATORTRIM", `(\\s*)${h[f.GTLT]}\\s*(${h[f.LOOSEPLAIN]}|${h[f.XRANGEPLAIN]})`, !0);
   F.comparatorTrimReplace = "$1$2$3";
-  y(
-    "HYPHENRANGE",
-    `^\\s*(${h[f.XRANGEPLAIN]})\\s+-\\s+(${h[f.XRANGEPLAIN]})\\s*$`,
-  );
-  y(
-    "HYPHENRANGELOOSE",
-    `^\\s*(${h[f.XRANGEPLAINLOOSE]})\\s+-\\s+(${h[f.XRANGEPLAINLOOSE]})\\s*$`,
-  );
+  y("HYPHENRANGE", `^\\s*(${h[f.XRANGEPLAIN]})\\s+-\\s+(${h[f.XRANGEPLAIN]})\\s*$`);
+  y("HYPHENRANGELOOSE", `^\\s*(${h[f.XRANGEPLAINLOOSE]})\\s+-\\s+(${h[f.XRANGEPLAINLOOSE]})\\s*$`);
   y("STAR", "(<|>)?=?\\s*\\*");
   y("GTE0", "^\\s*>=\\s*0\\.0\\.0\\s*$");
   y("GTE0PRE", "^\\s*>=\\s*0\\.0\\.0-0\\s*$");
@@ -208,13 +159,11 @@ var lt = x((fs, at) => {
   "use strict";
   var ot = /^[0-9]+$/,
     rt = (s, e) => {
-      if (typeof s == "number" && typeof e == "number")
-        return s === e ? 0 : s < e ? -1 : 1;
+      if (typeof s == "number" && typeof e == "number") return s === e ? 0 : s < e ? -1 : 1;
       let t = ot.test(s),
         n = ot.test(e);
       return (
-        t && n && ((s = +s), (e = +e)),
-        s === e ? 0 : t && !n ? -1 : n && !t ? 1 : s < e ? -1 : 1
+        t && n && ((s = +s), (e = +e)), s === e ? 0 : t && !n ? -1 : n && !t ? 1 : s < e ? -1 : 1
       );
     },
     Cn = (s, e) => rt(e, s);
@@ -230,18 +179,11 @@ var we = x((bs, ct) => {
     Ve = class s {
       constructor(e, t) {
         if (((t = Ln(t)), e instanceof s)) {
-          if (
-            e.loose === !!t.loose &&
-            e.includePrerelease === !!t.includePrerelease
-          )
-            return e;
+          if (e.loose === !!t.loose && e.includePrerelease === !!t.includePrerelease) return e;
           e = e.version;
         } else if (typeof e != "string")
-          throw new TypeError(
-            `Invalid version. Must be a string. Got type "${typeof e}".`,
-          );
-        if (e.length > ut)
-          throw new TypeError(`version is longer than ${ut} characters`);
+          throw new TypeError(`Invalid version. Must be a string. Got type "${typeof e}".`);
+        if (e.length > ut) throw new TypeError(`version is longer than ${ut} characters`);
         (me("SemVer", e, t),
           (this.options = t),
           (this.loose = !!t.loose),
@@ -256,10 +198,8 @@ var we = x((bs, ct) => {
           this.major > he || this.major < 0)
         )
           throw new TypeError("Invalid major version");
-        if (this.minor > he || this.minor < 0)
-          throw new TypeError("Invalid minor version");
-        if (this.patch > he || this.patch < 0)
-          throw new TypeError("Invalid patch version");
+        if (this.minor > he || this.minor < 0) throw new TypeError("Invalid minor version");
+        if (this.patch > he || this.patch < 0) throw new TypeError("Invalid patch version");
         (n[4]
           ? (this.prerelease = n[4].split(".").map((i) => {
               if (/^[0-9]+$/.test(i)) {
@@ -275,8 +215,7 @@ var we = x((bs, ct) => {
       format() {
         return (
           (this.version = `${this.major}.${this.minor}.${this.patch}`),
-          this.prerelease.length &&
-            (this.version += `-${this.prerelease.join(".")}`),
+          this.prerelease.length && (this.version += `-${this.prerelease.join(".")}`),
           this.version
         );
       }
@@ -284,16 +223,11 @@ var we = x((bs, ct) => {
         return this.version;
       }
       compare(e) {
-        if (
-          (me("SemVer.compare", this.version, this.options, e),
-          !(e instanceof s))
-        ) {
+        if ((me("SemVer.compare", this.version, this.options, e), !(e instanceof s))) {
           if (typeof e == "string" && e === this.version) return 0;
           e = new s(e, this.options);
         }
-        return e.version === this.version
-          ? 0
-          : this.compareMain(e) || this.comparePre(e);
+        return e.version === this.version ? 0 : this.compareMain(e) || this.comparePre(e);
       }
       compareMain(e) {
         return (
@@ -325,8 +259,7 @@ var we = x((bs, ct) => {
         do {
           let n = this.prerelease[t],
             i = e.prerelease[t];
-          if ((me("prerelease compare", t, n, i), n === void 0 && i === void 0))
-            return 0;
+          if ((me("prerelease compare", t, n, i), n === void 0 && i === void 0)) return 0;
           if (i === void 0) return 1;
           if (n === void 0) return -1;
           if (n === i) continue;
@@ -339,8 +272,7 @@ var we = x((bs, ct) => {
         do {
           let n = this.build[t],
             i = e.build[t];
-          if ((me("build compare", t, n, i), n === void 0 && i === void 0))
-            return 0;
+          if ((me("build compare", t, n, i), n === void 0 && i === void 0)) return 0;
           if (i === void 0) return 1;
           if (n === void 0) return -1;
           if (n === i) continue;
@@ -349,12 +281,9 @@ var we = x((bs, ct) => {
       }
       inc(e, t, n) {
         if (e.startsWith("pre")) {
-          if (!t && n === !1)
-            throw new Error("invalid increment argument: identifier is empty");
+          if (!t && n === !1) throw new Error("invalid increment argument: identifier is empty");
           if (t) {
-            let i = `-${t}`.match(
-              this.options.loose ? fe[be.PRERELEASELOOSE] : fe[be.PRERELEASE],
-            );
+            let i = `-${t}`.match(this.options.loose ? fe[be.PRERELEASELOOSE] : fe[be.PRERELEASE]);
             if (!i || i[1] !== t) throw new Error(`invalid identifier: ${t}`);
           }
         }
@@ -367,19 +296,13 @@ var we = x((bs, ct) => {
               this.inc("pre", t, n));
             break;
           case "preminor":
-            ((this.prerelease.length = 0),
-              (this.patch = 0),
-              this.minor++,
-              this.inc("pre", t, n));
+            ((this.prerelease.length = 0), (this.patch = 0), this.minor++, this.inc("pre", t, n));
             break;
           case "prepatch":
-            ((this.prerelease.length = 0),
-              this.inc("patch", t, n),
-              this.inc("pre", t, n));
+            ((this.prerelease.length = 0), this.inc("patch", t, n), this.inc("pre", t, n));
             break;
           case "prerelease":
-            (this.prerelease.length === 0 && this.inc("patch", t, n),
-              this.inc("pre", t, n));
+            (this.prerelease.length === 0 && this.inc("patch", t, n), this.inc("pre", t, n));
             break;
           case "release":
             if (this.prerelease.length === 0)
@@ -387,10 +310,7 @@ var we = x((bs, ct) => {
             this.prerelease.length = 0;
             break;
           case "major":
-            ((this.minor !== 0 ||
-              this.patch !== 0 ||
-              this.prerelease.length === 0) &&
-              this.major++,
+            ((this.minor !== 0 || this.patch !== 0 || this.prerelease.length === 0) && this.major++,
               (this.minor = 0),
               (this.patch = 0),
               (this.prerelease = []));
@@ -401,8 +321,7 @@ var we = x((bs, ct) => {
               (this.prerelease = []));
             break;
           case "patch":
-            (this.prerelease.length === 0 && this.patch++,
-              (this.prerelease = []));
+            (this.prerelease.length === 0 && this.patch++, (this.prerelease = []));
             break;
           case "pre": {
             let i = Number(n) ? 1 : 0;
@@ -410,13 +329,10 @@ var we = x((bs, ct) => {
             else {
               let o = this.prerelease.length;
               for (; --o >= 0; )
-                typeof this.prerelease[o] == "number" &&
-                  (this.prerelease[o]++, (o = -2));
+                typeof this.prerelease[o] == "number" && (this.prerelease[o]++, (o = -2));
               if (o === -1) {
                 if (t === this.prerelease.join(".") && n === !1)
-                  throw new Error(
-                    "invalid increment argument: identifier already exists",
-                  );
+                  throw new Error("invalid increment argument: identifier already exists");
                 this.prerelease.push(i);
               }
             }
@@ -468,12 +384,10 @@ var _e = x((Es, ft) => {
     { safeRe: Te, t: Ee } = Be(),
     xn = (s, e) => {
       if (s instanceof Dn) return s;
-      if ((typeof s == "number" && (s = String(s)), typeof s != "string"))
-        return null;
+      if ((typeof s == "number" && (s = String(s)), typeof s != "string")) return null;
       e = e || {};
       let t = null;
-      if (!e.rtl)
-        t = s.match(e.includePrerelease ? Te[Ee.COERCEFULL] : Te[Ee.COERCE]);
+      if (!e.rtl) t = s.match(e.includePrerelease ? Te[Ee.COERCEFULL] : Te[Ee.COERCE]);
       else {
         let u = e.includePrerelease ? Te[Ee.COERCERTLFULL] : Te[Ee.COERCERTL],
           g;
@@ -504,12 +418,7 @@ var Kt = x((v) => {
   function oe(s) {
     var t, n;
     let e = window.app.plugins.getPlugin("periodic-notes");
-    return (
-      e &&
-      ((n = (t = e.settings) == null ? void 0 : t[s]) == null
-        ? void 0
-        : n.enabled)
-    );
+    return e && ((n = (t = e.settings) == null ? void 0 : t[s]) == null ? void 0 : n.enabled);
   }
   function re() {
     var s, e, t, n;
@@ -520,9 +429,7 @@ var Kt = x((v) => {
           format: g,
           folder: m,
           template: l,
-        } = ((e =
-          (s = o.getPlugin("periodic-notes")) == null ? void 0 : s.settings) ==
-        null
+        } = ((e = (s = o.getPlugin("periodic-notes")) == null ? void 0 : s.settings) == null
           ? void 0
           : e.daily) || {};
         return {
@@ -535,9 +442,7 @@ var Kt = x((v) => {
         folder: a,
         format: c,
         template: u,
-      } = ((n =
-        (t = i.getPluginById("daily-notes")) == null ? void 0 : t.instance) ==
-      null
+      } = ((n = (t = i.getPluginById("daily-notes")) == null ? void 0 : t.instance) == null
         ? void 0
         : n.options) || {};
       return {
@@ -555,10 +460,7 @@ var Kt = x((v) => {
       let c = window.app.plugins,
         u = (s = c.getPlugin("calendar")) == null ? void 0 : s.options,
         g =
-          (t =
-            (e = c.getPlugin("periodic-notes")) == null
-              ? void 0
-              : e.settings) == null
+          (t = (e = c.getPlugin("periodic-notes")) == null ? void 0 : e.settings) == null
             ? void 0
             : t.weekly;
       if (oe("weekly"))
@@ -571,8 +473,7 @@ var Kt = x((v) => {
       return {
         format: m.weeklyNoteFormat || Ye,
         folder: ((o = m.weeklyNoteFolder) == null ? void 0 : o.trim()) || "",
-        template:
-          ((a = m.weeklyNoteTemplate) == null ? void 0 : a.trim()) || "",
+        template: ((a = m.weeklyNoteTemplate) == null ? void 0 : a.trim()) || "",
       };
     } catch (c) {
       console.info("No custom weekly note settings found!", c);
@@ -584,10 +485,7 @@ var Kt = x((v) => {
     try {
       let o =
         (oe("monthly") &&
-          ((t =
-            (e = s.getPlugin("periodic-notes")) == null
-              ? void 0
-              : e.settings) == null
+          ((t = (e = s.getPlugin("periodic-notes")) == null ? void 0 : e.settings) == null
             ? void 0
             : t.monthly)) ||
         {};
@@ -606,10 +504,7 @@ var Kt = x((v) => {
     try {
       let o =
         (oe("quarterly") &&
-          ((t =
-            (e = s.getPlugin("periodic-notes")) == null
-              ? void 0
-              : e.settings) == null
+          ((t = (e = s.getPlugin("periodic-notes")) == null ? void 0 : e.settings) == null
             ? void 0
             : t.quarterly)) ||
         {};
@@ -628,10 +523,7 @@ var Kt = x((v) => {
     try {
       let o =
         (oe("yearly") &&
-          ((t =
-            (e = s.getPlugin("periodic-notes")) == null
-              ? void 0
-              : e.settings) == null
+          ((t = (e = s.getPlugin("periodic-notes")) == null ? void 0 : e.settings) == null
             ? void 0
             : t.yearly)) ||
         {};
@@ -656,17 +548,13 @@ var Kt = x((v) => {
   }
   function Hn(s) {
     let e = s.substring(s.lastIndexOf("/") + 1);
-    return (
-      e.lastIndexOf(".") != -1 && (e = e.substring(0, e.lastIndexOf("."))),
-      e
-    );
+    return (e.lastIndexOf(".") != -1 && (e = e.substring(0, e.lastIndexOf("."))), e);
   }
   async function Gn(s) {
     let e = s.replace(/\\/g, "/").split("/");
     if ((e.pop(), e.length)) {
       let t = _t(...e);
-      window.app.vault.getAbstractFileByPath(t) ||
-        (await window.app.vault.createFolder(t));
+      window.app.vault.getAbstractFileByPath(t) || (await window.app.vault.createFolder(t));
     }
   }
   async function ge(s, e) {
@@ -712,20 +600,13 @@ var Kt = x((v) => {
     return Gt(Hn(s), e);
   }
   function Gt(s, e) {
-    let n = { day: re, week: ae, month: le, quarter: ue, year: ce }
-        [e]()
-        .format.split("/")
-        .pop(),
+    let n = { day: re, week: ae, month: le, quarter: ue, year: ce }[e]().format.split("/").pop(),
       i = window.moment(s, n, !0);
     if (!i.isValid()) return null;
     if (jn(n, e) && e === "week") {
       let o = Ht(n);
       if (/w{1,2}/i.test(o))
-        return window.moment(
-          s,
-          n.replace(/M{1,4}/g, "").replace(/D{1,4}/g, ""),
-          !1,
-        );
+        return window.moment(s, n.replace(/M{1,4}/g, "").replace(/D{1,4}/g, ""), !1);
     }
     return i;
   }
@@ -755,15 +636,11 @@ var Kt = x((v) => {
                   second: C.get("second"),
                 });
               return (
-                b && N.add(parseInt(w, 10), p),
-                T ? N.format(T.substring(1).trim()) : N.format(o)
+                b && N.add(parseInt(w, 10), p), T ? N.format(T.substring(1).trim()) : N.format(o)
               );
             },
           )
-          .replace(
-            /{{\s*yesterday\s*}}/gi,
-            s.clone().subtract(1, "day").format(o),
-          )
+          .replace(/{{\s*yesterday\s*}}/gi, s.clone().subtract(1, "day").format(o))
           .replace(/{{\s*tomorrow\s*}}/gi, s.clone().add(1, "d").format(o)),
       );
       return (e.foldManager.save(l, u), l);
@@ -799,15 +676,7 @@ var Kt = x((v) => {
   function Xn() {
     let { moment: s } = window,
       e = s.localeData()._week.dow,
-      t = [
-        "sunday",
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-      ];
+      t = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
     for (; e; ) (t.push(t.shift()), e--);
     return t;
   }
@@ -834,8 +703,7 @@ var Kt = x((v) => {
                   second: p.get("second"),
                 });
               return (
-                r && T.add(parseInt(d, 10), b),
-                w ? T.format(w.substring(1).trim()) : T.format(n)
+                r && T.add(parseInt(d, 10), b), w ? T.format(w.substring(1).trim()) : T.format(n)
               );
             },
           )
@@ -900,8 +768,7 @@ var Kt = x((v) => {
                   second: p.get("second"),
                 });
               return (
-                r && T.add(parseInt(d, 10), b),
-                w ? T.format(w.substring(1).trim()) : T.format(n)
+                r && T.add(parseInt(d, 10), b), w ? T.format(w.substring(1).trim()) : T.format(n)
               );
             },
           )
@@ -960,8 +827,7 @@ var Kt = x((v) => {
                   second: p.get("second"),
                 });
               return (
-                r && T.add(parseInt(d, 10), b),
-                w ? T.format(w.substring(1).trim()) : T.format(n)
+                r && T.add(parseInt(d, 10), b), w ? T.format(w.substring(1).trim()) : T.format(n)
               );
             },
           )
@@ -1020,8 +886,7 @@ var Kt = x((v) => {
                   second: p.get("second"),
                 });
               return (
-                r && T.add(parseInt(d, 10), b),
-                w ? T.format(w.substring(1).trim()) : T.format(n)
+                r && T.add(parseInt(d, 10), b), w ? T.format(w.substring(1).trim()) : T.format(n)
               );
             },
           )
@@ -1065,57 +930,34 @@ var Kt = x((v) => {
       e = s.internalPlugins.plugins["daily-notes"];
     if (e && e.enabled) return !0;
     let t = s.plugins.getPlugin("periodic-notes");
-    return (
-      t &&
-      ((i = (n = t.settings) == null ? void 0 : n.daily) == null
-        ? void 0
-        : i.enabled)
-    );
+    return t && ((i = (n = t.settings) == null ? void 0 : n.daily) == null ? void 0 : i.enabled);
   }
   function Yt() {
     var t, n;
     let { app: s } = window;
     if (s.plugins.getPlugin("calendar")) return !0;
     let e = s.plugins.getPlugin("periodic-notes");
-    return (
-      e &&
-      ((n = (t = e.settings) == null ? void 0 : t.weekly) == null
-        ? void 0
-        : n.enabled)
-    );
+    return e && ((n = (t = e.settings) == null ? void 0 : t.weekly) == null ? void 0 : n.enabled);
   }
   function Xt() {
     var t, n;
     let { app: s } = window,
       e = s.plugins.getPlugin("periodic-notes");
-    return (
-      e &&
-      ((n = (t = e.settings) == null ? void 0 : t.monthly) == null
-        ? void 0
-        : n.enabled)
-    );
+    return e && ((n = (t = e.settings) == null ? void 0 : t.monthly) == null ? void 0 : n.enabled);
   }
   function Wt() {
     var t, n;
     let { app: s } = window,
       e = s.plugins.getPlugin("periodic-notes");
     return (
-      e &&
-      ((n = (t = e.settings) == null ? void 0 : t.quarterly) == null
-        ? void 0
-        : n.enabled)
+      e && ((n = (t = e.settings) == null ? void 0 : t.quarterly) == null ? void 0 : n.enabled)
     );
   }
   function Jt() {
     var t, n;
     let { app: s } = window,
       e = s.plugins.getPlugin("periodic-notes");
-    return (
-      e &&
-      ((n = (t = e.settings) == null ? void 0 : t.yearly) == null
-        ? void 0
-        : n.enabled)
-    );
+    return e && ((n = (t = e.settings) == null ? void 0 : t.yearly) == null ? void 0 : n.enabled);
   }
   function as(s) {
     let e = { day: re, week: ae, month: le, quarter: ue, year: ce }[s];
@@ -1180,8 +1022,7 @@ var J = require("obsidian"),
         okButtonText: "OK",
         title: "",
       };
-      ((this.options = { ...i, ...t }),
-        this.containerEl.addClass("confirm-modal"));
+      ((this.options = { ...i, ...t }), this.containerEl.addClass("confirm-modal"));
     }
     onClose() {
       (super.onClose(), this.resolve(this.isConfirmed));
@@ -1198,8 +1039,7 @@ var J = require("obsidian"),
           ((this.isConfirmed = !0), this.close());
         }));
       let n = new J.ButtonComponent(this.contentEl);
-      (n.setButtonText(this.options.cancelButtonText),
-        n.onClick(this.close.bind(this)));
+      (n.setButtonText(this.options.cancelButtonText), n.onClick(this.close.bind(this)));
     }
   };
 async function De(s) {
@@ -1223,8 +1063,7 @@ var D = class extends Error {
   O = class extends Error {
     constructor(e) {
       var n, i;
-      (super(`GitHub API error ${e}: ${e.message}`),
-        (this.message = e.message));
+      (super(`GitHub API error ${e}: ${e.message}`), (this.message = e.message));
       let t = e;
       ((this.status = (n = t.status) != null ? n : 400),
         (this.headers = (i = t.headers) != null ? i : {}),
@@ -1302,43 +1141,22 @@ var ye = (s) => {
         P = {
           validToken: !1,
           currentScopes:
-            (a = (o = T["x-oauth-scopes"]) == null ? void 0 : o.split(", ")) !=
-            null
-              ? a
-              : [],
+            (a = (o = T["x-oauth-scopes"]) == null ? void 0 : o.split(", ")) != null ? a : [],
           acceptedScopes:
-            (u =
-              (c = T["x-accepted-oauth-scopes"]) == null
-                ? void 0
-                : c.split(", ")) != null
+            (u = (c = T["x-accepted-oauth-scopes"]) == null ? void 0 : c.split(", ")) != null
               ? u
               : [],
           acceptedPermissions:
-            (m =
-              (g = T["x-accepted-github-permissions"]) == null
-                ? void 0
-                : g.split(", ")) != null
+            (m = (g = T["x-accepted-github-permissions"]) == null ? void 0 : g.split(", ")) != null
               ? m
               : [],
           expirationDate: R,
           rateLimit: {
-            limit: Number.parseInt(
-              (l = T["x-ratelimit-limit"]) != null ? l : "0",
-              10,
-            ),
-            remaining: Number.parseInt(
-              (r = T["x-ratelimit-remaining"]) != null ? r : "0",
-              10,
-            ),
-            reset: Number.parseInt(
-              (d = T["x-ratelimit-reset"]) != null ? d : "0",
-              10,
-            ),
+            limit: Number.parseInt((l = T["x-ratelimit-limit"]) != null ? l : "0", 10),
+            remaining: Number.parseInt((r = T["x-ratelimit-remaining"]) != null ? r : "0", 10),
+            reset: Number.parseInt((d = T["x-ratelimit-reset"]) != null ? d : "0", 10),
             resource: (b = T["x-ratelimit-resource"]) != null ? b : "",
-            used: Number.parseInt(
-              (w = T["x-ratelimit-used"]) != null ? w : "0",
-              10,
-            ),
+            used: Number.parseInt((w = T["x-ratelimit-used"]) != null ? w : "0", 10),
           },
           error: { type: "none", message: "No error", details: {} },
         };
@@ -1354,8 +1172,7 @@ var ye = (s) => {
           ? ((P.validToken = p.status === 404), P)
           : ((P.error = {
               type: "insufficient_scope",
-              message:
-                "Token lacks required scopes. Check documentation for requirements.",
+              message: "Token lacks required scopes. Check documentation for requirements.",
               details: {
                 currentScopes: [...P.acceptedScopes, ...P.acceptedPermissions],
               },
@@ -1366,9 +1183,7 @@ var ye = (s) => {
   He = async (s, e = !0, t = "") => {
     let n = `https://api.github.com/repos/${s}`;
     try {
-      return (
-        await ve({ url: n, headers: t ? { Authorization: `Token ${t}` } : {} })
-      ).json.private;
+      return (await ve({ url: n, headers: t ? { Authorization: `Token ${t}` } : {} })).json.private;
     } catch (i) {
       if (i instanceof D) throw i;
       return (e && console.log("error in isPrivateRepo", n, i), !1);
@@ -1399,10 +1214,7 @@ var ye = (s) => {
       return u.status !== 200 ? null : u.text;
     } catch (o) {
       if (o instanceof D) throw o;
-      return (
-        t && console.log("error in grabReleaseFileFromRepository", s, o),
-        null
-      );
+      return (t && console.log("error in grabReleaseFileFromRepository", s, o), null);
     }
   },
   yt = async (s = !0) => {
@@ -1440,10 +1252,7 @@ var ye = (s) => {
       let n = await (0, V.requestUrl)({ url: t });
       return n.status === 404 ? null : n.text;
     } catch (n) {
-      return (
-        e && console.log("error in grabCommmunityThemeManifestFile", n),
-        null
-      );
+      return (e && console.log("error in grabCommmunityThemeManifestFile", n), null);
     }
   },
   Bn = (s) => {
@@ -1503,10 +1312,7 @@ var ye = (s) => {
           : null
       );
     } catch (c) {
-      throw (
-        n && console.log(`Error in grabReleaseFromRepository for ${s}:`, c),
-        c
-      );
+      throw (n && console.log(`Error in grabReleaseFromRepository for ${s}:`, c), c);
     }
   },
   ve = async (s, e) => {
@@ -1564,8 +1370,7 @@ var je = {
 };
 function It(s, e, t = "latest", n = !1, i = "") {
   let o = !1;
-  s.settings.pluginList.contains(e) ||
-    (s.settings.pluginList.unshift(e), (o = !0));
+  s.settings.pluginList.contains(e) || (s.settings.pluginList.unshift(e), (o = !0));
   let a = s.settings.pluginSubListFrozenVersion.find((c) => c.repo === e);
   (a
     ? (Object.assign(a, {
@@ -1601,8 +1406,7 @@ function ze(s, e, t) {
   n && ((n.tokenName = t || void 0), s.saveSettings());
 }
 function Ct(s, e, t) {
-  for (let n of s.settings.themesList)
-    n.repo === e && ((n.lastUpdate = t), s.saveSettings());
+  for (let n of s.settings.themesList) n.repo === e && ((n.lastUpdate = t), s.saveSettings());
 }
 var L = require("obsidian");
 var j = class {
@@ -1624,9 +1428,7 @@ var j = class {
         (a = this.statusEl) == null || a.removeClass("invalid", "valid"),
         (c = this.statusEl) == null || c.empty(),
         r.validToken
-          ? ((u = this.statusEl) == null || u.addClass("valid"),
-            this.showValidTokenInfo(r),
-            !0)
+          ? ((u = this.statusEl) == null || u.addClass("valid"), this.showValidTokenInfo(r), !0)
           : ((g = this.statusEl) == null || g.addClass("invalid"),
             this.showErrorMessage(r.error),
             !1)
@@ -1642,10 +1444,7 @@ var j = class {
   }
   showValidTokenInfo(e) {
     var n, i;
-    let t =
-      (n = this.statusEl) == null
-        ? void 0
-        : n.createDiv({ cls: "brat-token-details" });
+    let t = (n = this.statusEl) == null ? void 0 : n.createDiv({ cls: "brat-token-details" });
     if (
       t &&
       (t.createDiv({
@@ -1676,10 +1475,7 @@ var j = class {
   }
   showErrorMessage(e) {
     var n, i, o;
-    let t =
-      (n = this.statusEl) == null
-        ? void 0
-        : n.createDiv({ cls: "brat-token-error" });
+    let t = (n = this.statusEl) == null ? void 0 : n.createDiv({ cls: "brat-token-error" });
     if (t && (t.createDiv({ text: e.message }), e.details))
       switch (e.type) {
         case "invalid_prefix":
@@ -1814,9 +1610,7 @@ var U = class extends L.Modal {
     var o, a, c, u, g, m, l, r;
     if (this.address === "") return;
     let t = ye(this.address);
-    if (
-      this.plugin.settings.pluginSubListFrozenVersion.find((d) => d.repo === t)
-    ) {
+    if (this.plugin.settings.pluginSubListFrozenVersion.find((d) => d.repo === t)) {
       ((await this.betaPlugins.addPlugin(
         t,
         !1,
@@ -1855,34 +1649,25 @@ var U = class extends L.Modal {
   updateVersionDropdown(t, n, i = "") {
     let o;
     (t.clear(),
-      n.length > 0 &&
-      !i &&
-      this.plugin.settings.selectLatestPluginVersionByDefault
+      n.length > 0 && !i && this.plugin.settings.selectLatestPluginVersionByDefault
         ? ((o = "latest"), (this.version = "latest"))
         : (o = i),
       n.length < 20 || L.Platform.isMobile
         ? t.addDropdown((c) => {
-            (c.addOption("", "Select a version"),
-              c.addOption("latest", "Latest version"));
+            (c.addOption("", "Select a version"), c.addOption("latest", "Latest version"));
             for (let u of n)
-              c.addOption(
-                u.version,
-                `${u.version} ${u.prerelease ? "(Prerelease)" : ""}`,
-              );
+              c.addOption(u.version, `${u.version} ${u.prerelease ? "(Prerelease)" : ""}`);
             (c.onChange((u) => {
               var g;
               ((this.version = u),
-                (g = this.addPluginButton) == null ||
-                  g.setDisabled(this.version === ""));
+                (g = this.addPluginButton) == null || g.setDisabled(this.version === ""));
             }),
               c.setValue(o),
               c.selectEl.addClass("brat-version-selector"),
               (c.selectEl.style.width = "100%"));
           })
         : t.addButton((c) => {
-            c.setButtonText(
-              o === "latest" ? "Latest version" : o || "Select a version...",
-            )
+            c.setButtonText(o === "latest" ? "Latest version" : o || "Select a version...")
               .setClass("brat-version-selector")
               .setClass("button")
               .onClick(() => {
@@ -1890,13 +1675,8 @@ var U = class extends L.Modal {
                 new Ie(this.app, this.address, g, o, (l) => {
                   var r;
                   ((this.version = l),
-                    c.setButtonText(
-                      l === "latest"
-                        ? "Latest version"
-                        : l || "Select a version...",
-                    ),
-                    (r = this.addPluginButton) == null ||
-                      r.setDisabled(this.version === ""));
+                    c.setButtonText(l === "latest" ? "Latest version" : l || "Select a version..."),
+                    (r = this.addPluginButton) == null || r.setDisabled(this.version === ""));
                 }).open();
               });
           }));
@@ -1904,8 +1684,7 @@ var U = class extends L.Modal {
   onOpen() {
     let t = this.contentEl.createEl("h4");
     (this.address
-      ? (t.appendText("Change plugin version: "),
-        t.appendChild(ee(this.address)))
+      ? (t.appendText("Change plugin version: "), t.appendChild(ee(this.address)))
       : t.setText("Github repository for beta plugin:"),
       this.contentEl.createEl("form", {}, (n) => {
         var g;
@@ -1922,29 +1701,23 @@ var U = class extends L.Modal {
                     var b, w;
                     ((this.address = ye(d.trim())),
                       this.version !== "" &&
-                        (!this.address ||
-                          !this.isGitHubRepositoryMatch(this.address)) &&
+                        (!this.address || !this.isGitHubRepositoryMatch(this.address)) &&
                         this.versionSetting &&
                         (this.updateVersionDropdown(this.versionSetting, []),
-                        this.versionSetting.settingEl.classList.add(
-                          "disabled-setting",
-                        ),
+                        this.versionSetting.settingEl.classList.add("disabled-setting"),
                         this.versionSetting.setDisabled(!0),
                         r.inputEl.classList.remove("valid-repository"),
                         r.inputEl.classList.remove("invalid-repository")),
                       this.version ||
                         (this.isGitHubRepositoryMatch(this.address)
-                          ? (b = this.addPluginButton) == null ||
-                            b.setDisabled(!1)
-                          : (w = this.addPluginButton) == null ||
-                            w.setDisabled(!0)));
+                          ? (b = this.addPluginButton) == null || b.setDisabled(!1)
+                          : (w = this.addPluginButton) == null || w.setDisabled(!0)));
                   }),
                   r.inputEl.addEventListener("keydown", async (d) => {
                     var b, w, p;
                     d.key === "Enter" &&
                       (this.address &&
-                        ((this.updateVersion && this.version !== "") ||
-                          !this.updateVersion) &&
+                        ((this.updateVersion && this.version !== "") || !this.updateVersion) &&
                         (d.preventDefault(),
                         (b = this.addPluginButton) == null || b.setDisabled(!0),
                         (w = this.cancelButton) == null || w.setDisabled(!0),
@@ -1960,8 +1733,7 @@ var U = class extends L.Modal {
               });
             }));
         let i = n.createDiv("validation-status");
-        (this.address ||
-          i.setText("Enter a GitHub repository address to validate it."),
+        (this.address || i.setText("Enter a GitHub repository address to validate it."),
           (this.versionSetting = new L.Setting(n)
             .setClass("version-setting")
             .setClass("disabled-setting")),
@@ -1978,17 +1750,12 @@ var U = class extends L.Modal {
                 .onChange(async (l) => {
                   var d, b, w, p, T;
                   if (
-                    ((this.secretName = (l == null ? void 0 : l.trim()) || ""),
-                    !this.secretName)
+                    ((this.secretName = (l == null ? void 0 : l.trim()) || ""), !this.secretName)
                   ) {
                     (this.address &&
                       Pe(this.plugin, this.address) &&
                       (ze(this.plugin, this.address, ""),
-                      E(
-                        this.plugin,
-                        `Token setting cleared for ${this.address}`,
-                        3,
-                      )),
+                      E(this.plugin, `Token setting cleared for ${this.address}`, 3)),
                       this.updateRepositoryVersionInfo(this.version, i));
                     return;
                   }
@@ -2000,25 +1767,15 @@ var U = class extends L.Modal {
                       ? void 0
                       : d.validateToken(r, this.address))),
                     this.validToken
-                      ? ((p = this.validateButton) == null ||
-                          p.setButtonText("Valid"),
+                      ? ((p = this.validateButton) == null || p.setButtonText("Valid"),
                         (T = this.validateButton) == null || T.setDisabled(!0),
                         this.address &&
-                          (await this.updateRepositoryVersionInfo(
-                            this.version,
-                            i,
-                          ),
+                          (await this.updateRepositoryVersionInfo(this.version, i),
                           Pe(this.plugin, this.address) &&
                             (ze(this.plugin, this.address, this.secretName),
-                            E(
-                              this.plugin,
-                              `Token setting updated for ${this.address}`,
-                              3,
-                            ))))
-                      : ((b = this.validateButton) == null ||
-                          b.setButtonText("Invalid"),
-                        (w = this.validateButton) == null ||
-                          w.setDisabled(!1)));
+                            E(this.plugin, `Token setting updated for ${this.address}`, 3))))
+                      : ((b = this.validateButton) == null || b.setButtonText("Invalid"),
+                        (w = this.validateButton) == null || w.setDisabled(!1)));
                 }),
             ),
           (this.validator = new j()),
@@ -2031,8 +1788,7 @@ var U = class extends L.Modal {
                 var r, d;
                 ((this.validToken = l),
                   this.validToken &&
-                    ((r = this.validateButton) == null ||
-                      r.setButtonText("Valid"),
+                    ((r = this.validateButton) == null || r.setButtonText("Valid"),
                     (d = this.validateButton) == null || d.setDisabled(!0)));
               }));
         }
@@ -2056,20 +1812,14 @@ var U = class extends L.Modal {
                 this.close();
               })),
             (this.addPluginButton = new L.ButtonComponent(m)
-              .setButtonText(
-                this.updateVersion && this.address
-                  ? "Change version"
-                  : "Add plugin",
-              )
+              .setButtonText(this.updateVersion && this.address ? "Change version" : "Add plugin")
               .setCta()
               .onClick(() => {
                 var r, d, b, w;
                 this.address !== "" &&
-                  ((this.updateVersion && this.version !== "") ||
-                    !this.updateVersion) &&
+                  ((this.updateVersion && this.version !== "") || !this.updateVersion) &&
                   ((r = this.addPluginButton) == null || r.setDisabled(!0),
-                  (d = this.addPluginButton) == null ||
-                    d.setButtonText("Installing \u2026"),
+                  (d = this.addPluginButton) == null || d.setButtonText("Installing \u2026"),
                   (b = this.cancelButton) == null || b.setDisabled(!0),
                   (w = this.versionSetting) == null || w.setDisabled(!0),
                   this.submitForm());
@@ -2098,10 +1848,8 @@ var U = class extends L.Modal {
           var l;
           (m.preventDefault(),
             this.address !== "" &&
-              ((this.updateVersion && this.version !== "") ||
-                !this.updateVersion) &&
-              ((l = this.addPluginButton) == null || l.setDisabled(!0),
-              this.submitForm()));
+              ((this.updateVersion && this.version !== "") || !this.updateVersion) &&
+              ((l = this.addPluginButton) == null || l.setDisabled(!0), this.submitForm()));
         });
       }),
       this.address &&
@@ -2135,9 +1883,7 @@ var U = class extends L.Modal {
         let b = this.plugin.app.secretStorage.getSecret(this.secretName);
         b && (r = b);
       } else if (this.plugin.settings.globalTokenName) {
-        let b = this.plugin.app.secretStorage.getSecret(
-          this.plugin.settings.globalTokenName,
-        );
+        let b = this.plugin.app.secretStorage.getSecret(this.plugin.settings.globalTokenName);
         b && (r = b);
       }
       let d = await Et(o, this.plugin.settings.debuggingMode, r);
@@ -2151,11 +1897,9 @@ var U = class extends L.Modal {
             this.updateVersionDropdown(this.versionSetting, d, t)))
         : (i == null || i.inputEl.classList.remove("valid-repository"),
           i == null || i.inputEl.classList.add("invalid-repository"),
-          n == null ||
-            n.setText("Error: No releases found in this repository."),
+          n == null || n.setText("Error: No releases found in this repository."),
           n == null || n.addClass("validation-status-error"),
-          (a = this.versionSetting) == null ||
-            a.settingEl.classList.add("disabled-setting"),
+          (a = this.versionSetting) == null || a.settingEl.classList.add("disabled-setting"),
           (c = this.versionSetting) == null || c.setDisabled(!0),
           (u = this.addPluginButton) == null || u.setDisabled(!0));
     } catch (r) {
@@ -2192,8 +1936,7 @@ var U = class extends L.Modal {
               );
             break;
           case 403:
-            n == null ||
-              n.setText("Access denied. Check your personal access token.");
+            n == null || n.setText("Access denied. Check your personal access token.");
             break;
           default:
             n == null || n.setText(`Error: ${d.message}`);
@@ -2208,17 +1951,14 @@ var U = class extends L.Modal {
   }
   onClose() {
     this.openSettingsTabAfterwards &&
-      (this.plugin.app.setting.open(),
-      this.plugin.app.setting.openTabById(this.plugin.APP_ID));
+      (this.plugin.app.setting.open(), this.plugin.app.setting.openTabById(this.plugin.APP_ID));
   }
   isGitHubRepositoryMatch(t) {
     let n = t
       .trim()
       .replace(/\.git$/, "")
       .toLowerCase();
-    return /^(?:https?:\/\/github\.com\/)?([a-zA-Z0-9._-]+)\/([a-zA-Z0-9._-]+)$/i.test(
-      n,
-    );
+    return /^(?:https?:\/\/github\.com\/)?([a-zA-Z0-9._-]+)\/([a-zA-Z0-9._-]+)$/i.test(n);
   }
 };
 var St = require("obsidian");
@@ -2256,13 +1996,7 @@ This does not seem to be an obsidian plugin with valid releases, as there are no
               console.error("BRAT: validateRepository", e, t, n)),
             null
           );
-        let m = await K(
-          g,
-          "manifest.json",
-          this.plugin.settings.debuggingMode,
-          u,
-          c,
-        );
+        let m = await K(g, "manifest.json", this.plugin.settings.debuggingMode, u, c);
         if (!m)
           return (
             n &&
@@ -2375,29 +2109,9 @@ Unspecified error encountered: ${u}, verify debug for more information.`,
       return (
         console.log({ reallyGetManifestOrNot: u, version: c.tag_name }),
         {
-          mainJs: await K(
-            c,
-            "main.js",
-            this.plugin.settings.debuggingMode,
-            a,
-            o,
-          ),
-          manifest: u
-            ? await K(
-                c,
-                "manifest.json",
-                this.plugin.settings.debuggingMode,
-                a,
-                o,
-              )
-            : "",
-          styles: await K(
-            c,
-            "styles.css",
-            this.plugin.settings.debuggingMode,
-            a,
-            o,
-          ),
+          mainJs: await K(c, "main.js", this.plugin.settings.debuggingMode, a, o),
+          manifest: u ? await K(c, "manifest.json", this.plugin.settings.debuggingMode, a, o) : "",
+          styles: await K(c, "styles.css", this.plugin.settings.debuggingMode, a, o),
         }
       );
     }
@@ -2422,17 +2136,7 @@ Unspecified error encountered: ${u}, verify debug for more information.`,
     ) {
       try {
         this.plugin.settings.debuggingMode &&
-          console.log(
-            "BRAT: addPlugin",
-            e,
-            t,
-            n,
-            i,
-            o,
-            a,
-            c,
-            u ? "with secret" : "public",
-          );
+          console.log("BRAT: addPlugin", e, t, n, i, o, a, c, u ? "with secret" : "public");
         let g = "";
         u && u.trim() !== ""
           ? ((g = (await this.plugin.app.secretStorage.getSecret(u)) || ""),
@@ -2450,10 +2154,7 @@ Unspecified error encountered: ${u}, verify debug for more information.`,
         let m = 10,
           l = await this.validateRepository(e, !0, !0, o, g),
           r = !!l;
-        if (
-          (r || (l = await this.validateRepository(e, !1, !0, o, g)),
-          l === null)
-        ) {
+        if ((r || (l = await this.validateRepository(e, !1, !0, o, g)), l === null)) {
           let w = `${e}
 A manifest.json file does not exist in the latest release of the repository. This plugin cannot be installed.`;
           return (await this.plugin.log(w, !0), E(this.plugin, w, m), !1);
@@ -2464,15 +2165,8 @@ The manifest.json file in the latest release or pre-release of the repository do
           return (await this.plugin.log(w, !0), E(this.plugin, w, m), !1);
         }
         let d = !1;
-        if (
-          Object.hasOwn(l, "minAppVersion") &&
-          !(0, k.requireApiVersion)(l.minAppVersion)
-        ) {
-          if (
-            o === "" ||
-            o === "latest" ||
-            !this.plugin.settings.allowIncompatiblePlugins
-          ) {
+        if (Object.hasOwn(l, "minAppVersion") && !(0, k.requireApiVersion)(l.minAppVersion)) {
+          if (o === "" || o === "latest" || !this.plugin.settings.allowIncompatiblePlugins) {
             let p = `Plugin: ${e}
 
 The manifest.json for this plugin indicates that the Obsidian version of the app needs to be ${l.minAppVersion}, but this installation of Obsidian is ${k.apiVersion}. 
@@ -2511,8 +2205,7 @@ You will need to update your Obsidian to use this plugin or contact the plugin d
         let b = async () => {
           var T, C;
           let w = await this.getAllReleaseFiles(e, r, o, g);
-          (console.log("rFiles", w),
-            (r || w.manifest === "") && (w.manifest = JSON.stringify(l)));
+          (console.log("rFiles", w), (r || w.manifest === "") && (w.manifest = JSON.stringify(l)));
           let p = JSON.parse((T = w.manifest) != null ? T : "");
           if (
             (d &&
@@ -2533,9 +2226,7 @@ You will need to update your Obsidian to use this plugin or contact the plugin d
                       R.createEl("br"),
                       R.appendText("The "),
                       R.createEl("code", { text: "manifest.json" }),
-                      R.appendText(
-                        " for this plugin indicates that the plugin has ",
-                      ),
+                      R.appendText(" for this plugin indicates that the plugin has "),
                       R.createEl("code", { text: "isDesktopOnly: true" }),
                       R.appendText(", but you are using a mobile device."),
                       R.createEl("br"),
@@ -2543,9 +2234,7 @@ You will need to update your Obsidian to use this plugin or contact the plugin d
                         "Using this plugin is not recommended and may not work as expected. Use at your own risk.",
                       ),
                       R.createEl("br"),
-                      R.appendText(
-                        "Do you want to forcefully run it on mobile anyways?",
-                      ));
+                      R.appendText("Do you want to forcefully run it on mobile anyways?"));
                   }),
                 }))
               )
@@ -2561,16 +2250,11 @@ You will need to update your Obsidian to use this plugin or contact the plugin d
 The manifest.json for this plugin indicates that the plugin has isDesktopOnly: true, but you are using a mobile device.
 
 The plugin will not be installed.`;
-              return (
-                await this.plugin.log(N, !0),
-                E(this.plugin, N, 30),
-                null
-              );
+              return (await this.plugin.log(N, !0), E(this.plugin, N, 30), null);
             }
           if (
             (d && (w.manifest = JSON.stringify(p)),
-            this.plugin.settings.debuggingMode &&
-              console.log("BRAT: rFiles.manifest", r, w),
+            this.plugin.settings.debuggingMode && console.log("BRAT: rFiles.manifest", r, w),
             w.mainJs === null)
           ) {
             let N = `${e}
@@ -2583,9 +2267,7 @@ The release is not complete and cannot be downloaded. main.js is missing from th
           let w = await b();
           if (w === null) return !1;
           if (
-            (await this.writeReleaseFilesToPluginFolder(l.id, w),
-            It(this.plugin, e, o, d, u),
-            c)
+            (await this.writeReleaseFilesToPluginFolder(l.id, w), It(this.plugin, e, o, d, u), c)
           ) {
             let { plugins: p } = this.plugin.app,
               T = (0, k.normalizePath)(`${p.getPluginFolder()}/${l.id}`);
@@ -2604,9 +2286,7 @@ Plugin has been reinstalled and reloaded with version ${l.version}`,
             let p = o === "" ? "" : ` (version: ${o})`,
               T = `${e}${p}
 The plugin has been registered with BRAT.`;
-            (c ||
-              (T +=
-                " You may still need to enable it the Community Plugin List."),
+            (c || (T += " You may still need to enable it the Community Plugin List."),
               await this.plugin.log(T, !0),
               E(this.plugin, T, m));
           }
@@ -2618,17 +2298,10 @@ The plugin has been registered with BRAT.`;
           } catch (R) {
             if (R.errno === -4058 || R.errno === -2)
               return (await this.addPlugin(e, !1, r, !1, o, !1, c, u), !0);
-            console.log(
-              "BRAT - Local Manifest Load",
-              l.id,
-              JSON.stringify(R, null, 2),
-            );
+            console.log("BRAT - Local Manifest Load", l.id, JSON.stringify(R, null, 2));
           }
           if (o !== "" && o !== "latest")
-            return (
-              E(this.plugin, `The version of ${e} is frozen, not updating.`, 3),
-              !1
-            );
+            return (E(this.plugin, `The version of ${e} is frozen, not updating.`, 3), !1);
           let T = await JSON.parse(p),
             C = Ae(T.version, { includePrerelease: !0, loose: !0 }),
             N = Ae(l.version, { includePrerelease: !0, loose: !0 });
@@ -2643,10 +2316,7 @@ The plugin has been registered with BRAT.`;
                   !0,
                 ),
                 E(this.plugin, W, 30, () => {
-                  l &&
-                    window.open(
-                      `https://github.com/${e}/releases/tag/${l.version}`,
-                    );
+                  l && window.open(`https://github.com/${e}/releases/tag/${l.version}`);
                 }),
                 !1
               );
@@ -2662,10 +2332,7 @@ Plugin has been updated from version ${T.version} to ${l.version}. `;
                 !0,
               ),
               E(this.plugin, P, 30, () => {
-                l &&
-                  window.open(
-                    `https://github.com/${e}/releases/tag/${l.version}`,
-                  );
+                l && window.open(`https://github.com/${e}/releases/tag/${l.version}`);
               }),
               !0
             );
@@ -2682,11 +2349,7 @@ Plugin has been updated from version ${T.version} to ${l.version}. `;
         });
         let m = g instanceof Error ? g.message : "Unknown error occurred";
         return (
-          await this.plugin.log(
-            `Error ${t ? "updating" : "adding"} plugin ${e}: ${m}`,
-            !0,
-          ),
-          !1
+          await this.plugin.log(`Error ${t ? "updating" : "adding"} plugin ${e}: ${m}`, !0), !1
         );
       }
       return !0;
@@ -2728,35 +2391,24 @@ ${i}`,
             3e4,
           )));
       let o = new Map(
-          this.plugin.settings.pluginSubListFrozenVersion.map((u) => [
-            u.repo,
-            u.version,
-          ]),
+          this.plugin.settings.pluginSubListFrozenVersion.map((u) => [u.repo, u.version]),
         ),
         a = new Map(
-          this.plugin.settings.pluginSubListFrozenVersion.map((u) => [
-            u.repo,
-            u.tokenName || "",
-          ]),
+          this.plugin.settings.pluginSubListFrozenVersion.map((u) => [u.repo, u.tokenName || ""]),
         );
       for (let u of this.plugin.settings.pluginList) {
         let g = o.get(u);
-        (g && g !== "latest") ||
-          (await this.updatePlugin(u, t, !1, !1, a.get(u) || ""));
+        (g && g !== "latest") || (await this.updatePlugin(u, t, !1, !1, a.get(u) || ""));
       }
       let c = "Checking for plugin updates COMPLETED";
-      (await this.plugin.log(c, !0),
-        e && (n && n.hide(), E(this.plugin, c, 10)));
+      (await this.plugin.log(c, !0), e && (n && n.hide(), E(this.plugin, c, 10)));
     }
     deletePlugin(e) {
       let t = `Removed ${e} from BRAT plugin list`;
       (this.plugin.log(t, !0),
-        (this.plugin.settings.pluginList =
-          this.plugin.settings.pluginList.filter((n) => n !== e)),
+        (this.plugin.settings.pluginList = this.plugin.settings.pluginList.filter((n) => n !== e)),
         (this.plugin.settings.pluginSubListFrozenVersion =
-          this.plugin.settings.pluginSubListFrozenVersion.filter(
-            (n) => n.repo !== e,
-          )),
+          this.plugin.settings.pluginSubListFrozenVersion.filter((n) => n.repo !== e)),
         this.plugin.saveSettings());
     }
     getEnabledDisabledPlugins(e) {
@@ -2850,10 +2502,7 @@ ${n}`,
       e && (s.settings.notificationsEnabled && t && t.hide(), E(s, i)));
   },
   Ce = (s, e) => {
-    ((s.settings.themesList = s.settings.themesList.filter(
-      (n) => n.repo !== e,
-    )),
-      s.saveSettings());
+    ((s.settings.themesList = s.settings.themesList.filter((n) => n.repo !== e)), s.saveSettings());
     let t = `Removed ${e} from BRAT themes list and will no longer be updated. However, the theme files still exist in the vault. To remove them, go into Settings > Appearance and remove the theme.`;
     (s.log(t, !0), E(s, t));
   },
@@ -2861,9 +2510,7 @@ ${n}`,
 var $t = "brat-migrations";
 async function Un(s, e) {
   try {
-    let t = await s.vault.adapter.read(
-      `${s.vault.configDir}/plugins/obsidian42-brat/${$t}.json`,
-    );
+    let t = await s.vault.adapter.read(`${s.vault.configDir}/plugins/obsidian42-brat/${$t}.json`);
     return JSON.parse(t).appliedMigrations.includes(e);
   } catch (t) {
     return !1;
@@ -2878,8 +2525,7 @@ async function _n(s, e) {
       n = JSON.parse(i);
     } catch (i) {}
     n.appliedMigrations.includes(e) ||
-      (n.appliedMigrations.push(e),
-      await s.vault.adapter.write(t, JSON.stringify(n, null, 2)));
+      (n.appliedMigrations.push(e), await s.vault.adapter.write(t, JSON.stringify(n, null, 2)));
   } catch (t) {
     console.error(`BRAT: Failed to mark migration ${e} complete:`, t);
   }
@@ -2906,9 +2552,7 @@ async function xt(s, e, t) {
           let m = a(u);
           return m
             ? (console.log(`BRAT: Reusing existing secret "${m}"`), m)
-            : (s.secretStorage.setSecret(g, u),
-              console.log(`BRAT: Created new secret "${g}"`),
-              g);
+            : (s.secretStorage.setSecret(g, u), console.log(`BRAT: Created new secret "${g}"`), g);
         };
       if (e.personalAccessToken && e.personalAccessToken.trim() !== "") {
         let u = e.personalAccessToken.trim(),
@@ -2924,9 +2568,7 @@ async function xt(s, e, t) {
             ((u.tokenName = l), (u.token = void 0), i++);
           }
       }
-      (i > 0 &&
-        (await t(),
-        console.log(`BRAT: Migrated ${i} token(s) to SecretStorage`)),
+      (i > 0 && (await t(), console.log(`BRAT: Migrated ${i} token(s) to SecretStorage`)),
         await _n(s, n));
     } catch (i) {
       console.error("BRAT: Failed to migrate tokens to SecretStorage:", i);
@@ -2935,10 +2577,7 @@ async function xt(s, e, t) {
 var H = require("obsidian");
 var B = class extends H.Modal {
   constructor(e, t = !1) {
-    (super(e.app),
-      (this.plugin = e),
-      (this.address = ""),
-      (this.openSettingsTabAfterwards = t));
+    (super(e.app), (this.plugin = e), (this.address = ""), (this.openSettingsTabAfterwards = t));
   }
   async submitForm() {
     if (this.address === "") return;
@@ -2975,11 +2614,9 @@ var B = class extends H.Modal {
               }, 10));
           }),
           e.createDiv("modal-button-container", (i) => {
-            (new H.ButtonComponent(i)
-              .setButtonText("Never mind")
-              .onClick(() => {
-                this.close();
-              }),
+            (new H.ButtonComponent(i).setButtonText("Never mind").onClick(() => {
+              this.close();
+            }),
               new H.ButtonComponent(i)
                 .setButtonText("Add theme")
                 .setCta()
@@ -3012,8 +2649,7 @@ var B = class extends H.Modal {
   }
   onClose() {
     this.openSettingsTabAfterwards &&
-      (this.plugin.app.setting.openTab(),
-      this.plugin.app.setting.openTabById(this.plugin.APP_ID));
+      (this.plugin.app.setting.openTab(), this.plugin.app.setting.openTabById(this.plugin.APP_ID));
   }
 };
 var Ot = require("obsidian");
@@ -3054,8 +2690,7 @@ var Bt = require("obsidian"),
     enterTrigger(t) {
       var o;
       let n =
-          (o = document.querySelector(".suggestion-item.is-selected div")) ==
-          null
+          (o = document.querySelector(".suggestion-item.is-selected div")) == null
             ? void 0
             : o.textContent,
         i = this.data.find((a) => a.display === n);
@@ -3086,10 +2721,7 @@ var se = class {
         name: "Plugins: Check for updates to all beta plugins and UPDATE",
         showInRibbon: !0,
         callback: async () => {
-          await this.plugin.betaPlugins.checkForPluginUpdatesAndInstallUpdates(
-            !0,
-            !1,
-          );
+          await this.plugin.betaPlugins.checkForPluginUpdatesAndInstallUpdates(!0, !1);
         },
       },
       {
@@ -3098,10 +2730,7 @@ var se = class {
         name: "Plugins: Only check for updates to beta plugins, but don't Update",
         showInRibbon: !0,
         callback: async () => {
-          await this.plugin.betaPlugins.checkForPluginUpdatesAndInstallUpdates(
-            !0,
-            !0,
-          );
+          await this.plugin.betaPlugins.checkForPluginUpdatesAndInstallUpdates(!0, !0);
         },
       },
       {
@@ -3150,11 +2779,7 @@ ${o}`,
         name: "Plugins: Choose a single plugin to reinstall",
         showInRibbon: !0,
         callback: () => {
-          let e = new Set(
-              this.plugin.settings.pluginSubListFrozenVersion.map(
-                (i) => i.repo,
-              ),
-            ),
+          let e = new Set(this.plugin.settings.pluginSubListFrozenVersion.map((i) => i.repo)),
             t = Object.values(this.plugin.settings.pluginList)
               .filter((i) => !e.has(i))
               .map((i) => ({ display: i, info: i })),
@@ -3396,12 +3021,9 @@ var Le = class extends A.PluginSettingTab {
           'If enabled beta plugins will be automatically enabled after installtion by default. Note: you can toggle this on and off for each plugin in the "Add Plugin" form.',
         )
         .addToggle((l) => {
-          l.setValue(this.plugin.settings.enableAfterInstall).onChange(
-            async (r) => {
-              ((this.plugin.settings.enableAfterInstall = r),
-                await this.plugin.saveSettings());
-            },
-          );
+          l.setValue(this.plugin.settings.enableAfterInstall).onChange(async (r) => {
+            ((this.plugin.settings.enableAfterInstall = r), await this.plugin.saveSettings());
+          });
         }),
       new A.Setting(t)
         .setName("Auto-update plugins at startup")
@@ -3409,12 +3031,9 @@ var Le = class extends A.PluginSettingTab {
           "If enabled all beta plugins will be checked for updates each time Obsidian starts. Note: this does not update frozen version plugins.",
         )
         .addToggle((l) => {
-          l.setValue(this.plugin.settings.updateAtStartup).onChange(
-            async (r) => {
-              ((this.plugin.settings.updateAtStartup = r),
-                await this.plugin.saveSettings());
-            },
-          );
+          l.setValue(this.plugin.settings.updateAtStartup).onChange(async (r) => {
+            ((this.plugin.settings.updateAtStartup = r), await this.plugin.saveSettings());
+          });
         }),
       new A.Setting(t)
         .setName("Auto-update themes at startup")
@@ -3422,12 +3041,9 @@ var Le = class extends A.PluginSettingTab {
           "If enabled all beta themes will be checked for updates each time Obsidian starts.",
         )
         .addToggle((l) => {
-          l.setValue(this.plugin.settings.updateThemesAtStartup).onChange(
-            async (r) => {
-              ((this.plugin.settings.updateThemesAtStartup = r),
-                await this.plugin.saveSettings());
-            },
-          );
+          l.setValue(this.plugin.settings.updateThemesAtStartup).onChange(async (r) => {
+            ((this.plugin.settings.updateThemesAtStartup = r), await this.plugin.saveSettings());
+          });
         }),
       new A.Setting(t)
         .setName("Select latest plugin version by default")
@@ -3435,12 +3051,12 @@ var Le = class extends A.PluginSettingTab {
           "If enabled the latest version will be selected by default when adding a new plugin.",
         )
         .addToggle((l) => {
-          l.setValue(
-            this.plugin.settings.selectLatestPluginVersionByDefault,
-          ).onChange(async (r) => {
-            ((this.plugin.settings.selectLatestPluginVersionByDefault = r),
-              await this.plugin.saveSettings());
-          });
+          l.setValue(this.plugin.settings.selectLatestPluginVersionByDefault).onChange(
+            async (r) => {
+              ((this.plugin.settings.selectLatestPluginVersionByDefault = r),
+                await this.plugin.saveSettings());
+            },
+          );
         }),
       new A.Setting(t)
         .setName("Allow incompatible plugins")
@@ -3448,18 +3064,13 @@ var Le = class extends A.PluginSettingTab {
           "If enabled, plugins with higher app versions will be allowed to be installed. Also it allows desktop-only plugins to be installed on mobile devices.",
         )
         .addToggle((l) => {
-          l.setValue(this.plugin.settings.allowIncompatiblePlugins).onChange(
-            async (r) => {
-              ((this.plugin.settings.allowIncompatiblePlugins = r),
-                await this.plugin.saveSettings());
-            },
-          );
+          l.setValue(this.plugin.settings.allowIncompatiblePlugins).onChange(async (r) => {
+            ((this.plugin.settings.allowIncompatiblePlugins = r), await this.plugin.saveSettings());
+          });
         }),
       z(t, !0),
       t.createEl("hr"));
-    let n = new Map(
-        this.plugin.settings.pluginSubListFrozenVersion.map((l) => [l.repo, l]),
-      ),
+    let n = new Map(this.plugin.settings.pluginSubListFrozenVersion.map((l) => [l.repo, l])),
       i = new Map(),
       o = new A.SettingGroup(t).setHeading("Beta plugin list");
     (o.addSearch((l) => {
@@ -3543,9 +3154,7 @@ var Le = class extends A.PluginSettingTab {
             }),
           d
             .addButton((P) => {
-              (P.setIcon("edit").setTooltip(
-                "Change version and update settings",
-              ),
+              (P.setIcon("edit").setTooltip("Change version and update settings"),
                 p && P.setWarning(),
                 P.onClick(() => {
                   (this.plugin.betaPlugins.displayAddNewPluginModal(
@@ -3570,8 +3179,7 @@ var Le = class extends A.PluginSettingTab {
                       { parentElement: M } = W;
                     M != null &&
                       M.parentElement &&
-                      (M.parentElement.remove(),
-                      this.plugin.betaPlugins.deletePlugin(l));
+                      (M.parentElement.remove(), this.plugin.betaPlugins.deletePlugin(l));
                   }
                 });
             }));
@@ -3632,8 +3240,7 @@ var Le = class extends A.PluginSettingTab {
           .addToggle((r) => {
             (r.setValue(this.plugin.settings.notificationsEnabled),
               r.onChange(async (d) => {
-                ((this.plugin.settings.notificationsEnabled = d),
-                  await this.plugin.saveSettings());
+                ((this.plugin.settings.notificationsEnabled = d), await this.plugin.saveSettings());
               }));
           }),
       )
@@ -3642,26 +3249,20 @@ var Le = class extends A.PluginSettingTab {
           .setName("Enable logging")
           .setDesc("Plugin updates will be logged to a file in the log file.")
           .addToggle((r) => {
-            r.setValue(this.plugin.settings.loggingEnabled).onChange(
-              async (d) => {
-                ((this.plugin.settings.loggingEnabled = d),
-                  await this.plugin.saveSettings());
-              },
-            );
+            r.setValue(this.plugin.settings.loggingEnabled).onChange(async (d) => {
+              ((this.plugin.settings.loggingEnabled = d), await this.plugin.saveSettings());
+            });
           }),
       )
       .addSetting((l) =>
         l
           .setName("BRAT log file location")
-          .setDesc(
-            "Logs will be saved to this file. Don't add .md to the file name.",
-          )
+          .setDesc("Logs will be saved to this file. Don't add .md to the file name.")
           .addSearch((r) => {
             r.setPlaceholder("Example: BRAT-log")
               .setValue(this.plugin.settings.loggingPath)
               .onChange(async (d) => {
-                ((this.plugin.settings.loggingPath = d),
-                  await this.plugin.saveSettings());
+                ((this.plugin.settings.loggingPath = d), await this.plugin.saveSettings());
               });
           }),
       )
@@ -3670,12 +3271,9 @@ var Le = class extends A.PluginSettingTab {
           .setName("Enable verbose logging")
           .setDesc("Get a lot  more information in  the log.")
           .addToggle((r) => {
-            r.setValue(this.plugin.settings.loggingVerboseEnabled).onChange(
-              async (d) => {
-                ((this.plugin.settings.loggingVerboseEnabled = d),
-                  await this.plugin.saveSettings());
-              },
-            );
+            r.setValue(this.plugin.settings.loggingVerboseEnabled).onChange(async (d) => {
+              ((this.plugin.settings.loggingVerboseEnabled = d), await this.plugin.saveSettings());
+            });
           }),
       )
       .addSetting((l) =>
@@ -3685,12 +3283,9 @@ var Le = class extends A.PluginSettingTab {
             "Atomic Bomb level console logging. Can be used for troubleshooting and development.",
           )
           .addToggle((r) => {
-            r.setValue(this.plugin.settings.debuggingMode).onChange(
-              async (d) => {
-                ((this.plugin.settings.debuggingMode = d),
-                  await this.plugin.saveSettings());
-              },
-            );
+            r.setValue(this.plugin.settings.debuggingMode).onChange(async (d) => {
+              ((this.plugin.settings.debuggingMode = d), await this.plugin.saveSettings());
+            });
           }),
       );
     let g = new A.SettingGroup(t).setHeading("GitHub Personal Access Token"),
@@ -3702,14 +3297,10 @@ var Le = class extends A.PluginSettingTab {
             "Set a personal access token to increase rate limits for public repositories on GitHub. You can create one in ",
           url: "https://github.com/settings/tokens/new?scopes=public_repo",
           text: "your GitHub account settings",
-          appendText:
-            " and then add it here. Please consult the documentation for more details.",
+          appendText: " and then add it here. Please consult the documentation for more details.",
         }),
       ),
-        (this.accessTokenSetting = new A.SecretComponent(
-          this.plugin.app,
-          l.controlEl,
-        )),
+        (this.accessTokenSetting = new A.SecretComponent(this.plugin.app, l.controlEl)),
         this.accessTokenSetting
           .setValue(this.plugin.settings.globalTokenName || "")
           .onChange(async (r) => {
@@ -3722,15 +3313,10 @@ var Le = class extends A.PluginSettingTab {
                   (b = this.accessTokenButton) == null || b.setDisabled(!1))
                 : ((m = ""),
                   (w = this.accessTokenButton) == null || w.setDisabled(!0),
-                  await ((p = this.validator) == null
-                    ? void 0
-                    : p.validateToken(""))));
+                  await ((p = this.validator) == null ? void 0 : p.validateToken(""))));
           }),
         this.plugin.settings.globalTokenName &&
-          (m =
-            this.plugin.app.secretStorage.getSecret(
-              this.plugin.settings.globalTokenName,
-            ) || ""),
+          (m = this.plugin.app.secretStorage.getSecret(this.plugin.settings.globalTokenName) || ""),
         l
           .addExtraButton((r) => {
             r.setIcon("cross")
@@ -3741,9 +3327,7 @@ var Le = class extends A.PluginSettingTab {
                   await this.plugin.saveSettings(),
                   (d = this.accessTokenSetting) == null || d.setValue(""),
                   (m = ""),
-                  await ((b = this.validator) == null
-                    ? void 0
-                    : b.validateToken("")));
+                  await ((b = this.validator) == null ? void 0 : b.validateToken("")));
               });
           })
           .addButton((r) => {
@@ -3753,10 +3337,7 @@ var Le = class extends A.PluginSettingTab {
                 .setCta()
                 .onClick(async () => {
                   var d;
-                  m &&
-                    (await ((d = this.validator) == null
-                      ? void 0
-                      : d.validateToken(m)));
+                  m && (await ((d = this.validator) == null ? void 0 : d.validateToken(m)));
                 }));
           })
           .then(() => {
@@ -3775,9 +3356,7 @@ var Le = class extends A.PluginSettingTab {
   createTokenInfoElement(t) {
     let n = t.createDiv({ cls: "brat-token-info" });
     return (
-      n.createDiv({ cls: "brat-token-status" }),
-      n.createDiv({ cls: "brat-token-details" }),
-      n
+      n.createDiv({ cls: "brat-token-status" }), n.createDiv({ cls: "brat-token-details" }), n
     );
   }
 };
@@ -3810,10 +3389,7 @@ var ie = class {
 var de = require("obsidian"),
   Qt = ln(Kt());
 async function Zt(s, e, t = !1) {
-  if (
-    (s.settings.debuggingMode && console.log(`BRAT: ${e}`),
-    s.settings.loggingEnabled)
-  ) {
+  if ((s.settings.debuggingMode && console.log(`BRAT: ${e}`), s.settings.loggingEnabled)) {
     if (!s.settings.loggingVerboseEnabled && t) return;
     let n = `${s.settings.loggingPath}.md`,
       i = `[[${(0, de.moment)()
@@ -3850,14 +3426,7 @@ var ke = class extends en.Plugin {
           let i;
           switch (n) {
             case "plugin":
-              ((i = new U(
-                this,
-                this.betaPlugins,
-                !0,
-                !1,
-                t[n],
-                t.version ? t.version : void 0,
-              )),
+              ((i = new U(this, this.betaPlugins, !0, !1, t[n], t.version ? t.version : void 0)),
                 i.open());
               break;
             case "theme":
@@ -3879,10 +3448,7 @@ var ke = class extends en.Plugin {
           (await xt(this.app, this.settings, () => this.saveSettings()),
             this.app.workspace.onLayoutReady(() => {
               (this.addSettingTab(new Le(this.app, this)),
-                this.registerObsidianProtocolHandler(
-                  "brat",
-                  this.obsidianProtocolHandler,
-                ),
+                this.registerObsidianProtocolHandler("brat", this.obsidianProtocolHandler),
                 this.betaPlugins.checkIncompatiblePlugins(),
                 this.settings.updateAtStartup &&
                   setTimeout(() => {

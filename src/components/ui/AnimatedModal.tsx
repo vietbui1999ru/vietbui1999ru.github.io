@@ -2,14 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import type React from "react";
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
@@ -23,11 +16,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
 
-  return (
-    <ModalContext.Provider value={{ open, setOpen }}>
-      {children}
-    </ModalContext.Provider>
-  );
+  return <ModalContext.Provider value={{ open, setOpen }}>{children}</ModalContext.Provider>;
 };
 
 export const useModal = () => {
@@ -65,13 +54,7 @@ export const ModalTrigger = ({
   );
 };
 
-export const ModalBody = ({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) => {
+export const ModalBody = ({ children, className }: { children: ReactNode; className?: string }) => {
   const { open } = useModal();
 
   useEffect(() => {
@@ -122,10 +105,7 @@ export const ModalBody = ({
             onDragEnd={(_e, info) => {
               const DISMISS_OFFSET = 100;
               const DISMISS_VELOCITY = 500;
-              if (
-                info.offset.y > DISMISS_OFFSET ||
-                info.velocity.y > DISMISS_VELOCITY
-              ) {
+              if (info.offset.y > DISMISS_OFFSET || info.velocity.y > DISMISS_VELOCITY) {
                 setOpen(false);
               }
             }}
@@ -165,12 +145,7 @@ export const ModalContent = ({
   className?: string;
 }) => {
   return (
-    <div
-      className={cn(
-        "flex flex-col flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto",
-        className,
-      )}
-    >
+    <div className={cn("flex flex-col flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto", className)}>
       {children}
     </div>
   );
@@ -184,12 +159,7 @@ export const ModalFooter = ({
   className?: string;
 }) => {
   return (
-    <div
-      className={cn(
-        "flex justify-end p-4 bg-gray-100 dark:bg-neutral-900",
-        className,
-      )}
-    >
+    <div className={cn("flex justify-end p-4 bg-gray-100 dark:bg-neutral-900", className)}>
       {children}
     </div>
   );
