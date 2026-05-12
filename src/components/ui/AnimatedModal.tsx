@@ -192,7 +192,11 @@ export const ModalContent = ({
   children: ReactNode;
   className?: string;
 }) => {
-  return <div className={cn("flex flex-col flex-1 p-8 md:p-10", className)}>{children}</div>;
+  return (
+    <div className={cn("flex flex-col flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto", className)}>
+      {children}
+    </div>
+  );
 };
 
 export const ModalFooter = ({
