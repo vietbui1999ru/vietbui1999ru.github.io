@@ -54,7 +54,7 @@ export const ModalTrigger = ({
     <button
       type="button"
       className={cn(
-        "px-4 py-2 rounded-md text-black dark:text-white text-center relative overflow-hidden",
+        "px-4 py-2 rounded-md text-foreground text-center relative overflow-hidden",
         className,
       )}
       onClick={() => setOpen(true)}
@@ -112,7 +112,7 @@ export const ModalBody = ({
               y: 0,
             }}
             className={cn(
-              "min-h-[50%] max-h-[90%] max-w-[95%] md:max-w-[40%] bg-white dark:bg-neutral-950 border border-transparent dark:border-neutral-800 rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
+              "min-h-[50%] max-h-[90%] max-w-[95%] md:max-w-[40%] bg-card text-card-foreground border border-border rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
               className,
             )}
             drag="y"
@@ -176,7 +176,7 @@ export const ModalFooter = ({
   return (
     <div
       className={cn(
-        "flex justify-end p-4 bg-gray-100 dark:bg-neutral-900",
+        "flex justify-end p-4 bg-muted",
         className,
       )}
     >
@@ -192,7 +192,7 @@ const Overlay = ({ className }: { className?: string }) => {
         opacity: 1,
         backdropFilter: "blur(10px)",
       }}
-      className={`fixed inset-0 h-full w-full bg-black bg-opacity-50 z-50 ${className ?? ""}`}
+      className={`fixed inset-0 h-full w-full bg-background/60 z-50 ${className ?? ""}`}
       exit={{
         opacity: 0,
         backdropFilter: "blur(0px)",
@@ -214,7 +214,7 @@ const CloseIcon = () => {
     >
       <svg
         aria-label="Close"
-        className="text-black dark:text-white h-4 w-4 group-hover:scale-125 group-hover:rotate-3 transition duration-200"
+        className="text-foreground h-4 w-4 group-hover:scale-125 group-hover:rotate-3 transition duration-200"
         fill="none"
         height="24"
         role="img"

@@ -130,19 +130,19 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
         <div className="mt-4 flex w-full justify-center gap-2">
           <button
             type="button"
-            className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full bg-muted text-muted-foreground disabled:opacity-50"
             disabled={!canScrollLeft}
             onClick={scrollLeft}
           >
-            <ArrowLeft className="h-6 w-6 text-gray-500" />
+            <ArrowLeft className="h-6 w-6" />
           </button>
           <button
             type="button"
-            className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full bg-gray-100 disabled:opacity-50"
+            className="relative z-40 flex h-11 w-11 items-center justify-center rounded-full bg-muted text-muted-foreground disabled:opacity-50"
             disabled={!canScrollRight}
             onClick={scrollRight}
           >
-            <ArrowRight className="h-6 w-6 text-gray-500" />
+            <ArrowRight className="h-6 w-6" />
           </button>
         </div>
       </div>
@@ -204,7 +204,7 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
             >
               <motion.div
                 animate={{ opacity: 1, scale: 1 }}
-                className="rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-neutral-900"
+                className="rounded-3xl bg-card text-card-foreground p-4 font-sans md:p-10"
                 exit={{
                   opacity: 0,
                   scale: 0.95,
@@ -217,19 +217,19 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
               >
                 <button
                   type="button"
-                  className="sticky top-4 right-0 ml-auto flex h-11 w-11 items-center justify-center rounded-full bg-black dark:bg-white"
+                  className="sticky top-4 right-0 ml-auto flex h-11 w-11 items-center justify-center rounded-full bg-primary"
                   onClick={handleClose}
                 >
-                  <X className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
+                  <X className="h-6 w-6 text-primary-foreground" />
                 </button>
                 <motion.p
-                  className="text-base font-medium text-black dark:text-white"
+                  className="text-base font-medium text-foreground"
                   layoutId={layout ? `category-${card.title}` : undefined}
                 >
                   {card.category}
                 </motion.p>
                 <motion.p
-                  className="mt-4 text-2xl font-semibold text-neutral-700 md:text-5xl dark:text-white"
+                  className="mt-4 text-2xl font-semibold text-foreground md:text-5xl"
                   layoutId={layout ? `title-${card.title}` : undefined}
                 >
                   {card.title}
@@ -241,7 +241,7 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
         )}
       </AnimatePresence>
       <motion.button
-        className="relative z-10 flex h-52 w-44 flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-100 md:h-64 md:w-56 dark:bg-neutral-900"
+        className="relative z-10 flex h-52 w-44 flex-col items-start justify-start overflow-hidden rounded-3xl bg-card md:h-64 md:w-56"
         layoutId={layout ? `card-${card.title}` : undefined}
         onClick={() => setOpen(true)}
       >
