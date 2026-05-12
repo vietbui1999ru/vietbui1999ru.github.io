@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import type React from "react";
 import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -43,18 +43,26 @@ export const ModalTrigger = ({
     <button
       type="button"
       className={cn(
-        "px-4 py-2 rounded-md text-black dark:text-white text-center relative overflow-hidden",
+        "px-4 py-2 rounded-md text-foreground text-center relative overflow-hidden",
         className,
       )}
       onClick={() => setOpen(true)}
-      onMouseEnter={() => setOpen(true)}
     >
       {children}
     </button>
   );
 };
 
-export const ModalBody = ({ children, className }: { children: ReactNode; className?: string }) => {
+const FOCUSABLE_SELECTOR =
+  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+export const ModalBody = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
   const { open } = useModal();
 
   useEffect(() => {
@@ -68,6 +76,46 @@ export const ModalBody = ({ children, className }: { children: ReactNode; classN
   const modalRef = useRef<HTMLDivElement>(null);
   const { setOpen } = useModal();
   useOnClickOutside(modalRef, () => setOpen(false));
+
+  useEffect(() => {
+    if (!open) return;
+
+    const modal = modalRef.current;
+    if (!modal) return;
+
+    const focusable = Array.from(
+      modal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+    );
+
+    if (focusable.length > 0) {
+      focusable[0].focus();
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+
+      const current = document.activeElement as HTMLElement;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (current === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (current === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
+
+  const dragControls = useDragControls();
 
   return (
     <AnimatePresence>
@@ -95,13 +143,17 @@ export const ModalBody = ({ children, className }: { children: ReactNode; classN
               rotateX: 0,
               y: 0,
             }}
+            aria-label="Dialog"
+            aria-modal="true"
             className={cn(
-              "w-full max-w-[95%] md:max-w-[40rem] max-h-[90vh] sm:min-h-[50%] bg-white dark:bg-neutral-950 border border-transparent dark:border-neutral-800 rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
+              "min-h-[50%] max-h-[90%] max-w-[95%] md:max-w-[40%] bg-card text-card-foreground border border-border rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
               className,
             )}
             drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
+            dragControls={dragControls}
             dragElastic={0.2}
+            dragListener={false}
             onDragEnd={(_e, info) => {
               const DISMISS_OFFSET = 100;
               const DISMISS_VELOCITY = 500;
@@ -121,13 +173,17 @@ export const ModalBody = ({ children, className }: { children: ReactNode; classN
               y: 40,
             }}
             ref={modalRef}
-            onMouseLeave={() => setOpen(false)}
+            role="dialog"
             transition={{
               type: "spring",
               stiffness: 260,
               damping: 15,
             }}
           >
+            <div
+              className="mx-auto mt-3 mb-1 h-1.5 w-16 cursor-grab rounded-full bg-muted-foreground/30 touch-none"
+              onPointerDown={(e) => dragControls.start(e)}
+            />
             <CloseIcon />
             {children}
           </motion.div>
@@ -159,7 +215,12 @@ export const ModalFooter = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("flex justify-end p-4 bg-gray-100 dark:bg-neutral-900", className)}>
+    <div
+      className={cn(
+        "flex justify-end p-4 bg-muted",
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -172,7 +233,7 @@ const Overlay = ({ className }: { className?: string }) => {
         opacity: 1,
         backdropFilter: "blur(10px)",
       }}
-      className={`fixed inset-0 h-full w-full bg-black bg-opacity-50 z-50 ${className ?? ""}`}
+      className={`fixed inset-0 h-full w-full bg-background/60 z-50 ${className ?? ""}`}
       exit={{
         opacity: 0,
         backdropFilter: "blur(0px)",
@@ -194,7 +255,7 @@ const CloseIcon = () => {
     >
       <svg
         aria-label="Close"
-        className="text-black dark:text-white h-4 w-4 group-hover:scale-125 group-hover:rotate-3 transition duration-200"
+        className="text-foreground h-4 w-4 group-hover:scale-125 group-hover:rotate-3 transition duration-200"
         fill="none"
         height="24"
         role="img"

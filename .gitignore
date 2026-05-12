@@ -20,10 +20,12 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Git worktrees
+.worktrees/
+
 # Vault CMS / Obsidian
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
-.ref/
 
 # Superpowers brainstorm companion
 .superpowers/

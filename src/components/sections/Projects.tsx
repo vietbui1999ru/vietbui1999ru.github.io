@@ -3,14 +3,14 @@
 import { Carousel, Card as CarouselCard, BlurImage } from "@/components/ui/CardsCarousel";
 import type { Card } from "@/components/ui/CardsCarousel";
 import { AppleHelloMyWorkEffect } from "@/components/ui/apple-hello-effect";
-import { SkillBadge } from "@/components/ui/SkillBadge";
-import { buttonVariants } from "@/components/ui/button";
-import { Github, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 import {
   LavaLampBackground,
   type LavaLampBackgroundProps,
 } from "@/components/ui/LavaLampBackground";
+import { SkillBadge } from "@/components/ui/SkillBadge";
+import { buttonVariants } from "@/components/ui/button";
+import { Github, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { PROJECTS_ITEMS, PROJECTS_TITLE } from "@/data/projectsData";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -26,8 +26,7 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
 
 function componentToHex(c: number) {
   const clamped = Math.max(0, Math.min(255, Math.round(c)));
-  const hex = clamped.toString(16).padStart(2, "0");
-  return hex;
+  return clamped.toString(16).padStart(2, "0");
 }
 
 function mixHexColors(a: string, b: string, t: number): string {
@@ -35,10 +34,7 @@ function mixHexColors(a: string, b: string, t: number): string {
   const c2 = hexToRgb(b);
   if (!c1 || !c2) return a;
   const mix = (x: number, y: number) => x + (y - x) * t;
-  const r = mix(c1.r, c2.r);
-  const g = mix(c1.g, c2.g);
-  const bCh = mix(c1.b, c2.b);
-  return `#${componentToHex(r)}${componentToHex(g)}${componentToHex(bCh)}`;
+  return `#${componentToHex(mix(c1.r, c2.r))}${componentToHex(mix(c1.g, c2.g))}${componentToHex(mix(c1.b, c2.b))}`;
 }
 
 function gradientForIndex(
@@ -47,18 +43,12 @@ function gradientForIndex(
 ): Pick<LavaLampBackgroundProps, "fromColor" | "toColor"> {
   const baseStart = "#fff7e6";
   const baseEnd = "#ffb870";
-
-  if (total <= 1) {
-    return { fromColor: baseStart, toColor: baseEnd };
-  }
-
+  if (total <= 1) return { fromColor: baseStart, toColor: baseEnd };
   const t = index / (total - 1);
-
-  // For each card, pick a slightly different point in the same warm range.
-  const fromColor = mixHexColors(baseStart, baseEnd, t * 0.4);
-  const toColor = mixHexColors(baseStart, baseEnd, 0.6 + t * 0.4);
-
-  return { fromColor, toColor };
+  return {
+    fromColor: mixHexColors(baseStart, baseEnd, t * 0.4),
+    toColor: mixHexColors(baseStart, baseEnd, 0.6 + t * 0.4),
+  };
 }
 
 function ProjectImageGallery({ images, title }: { images: string[]; title: string }) {
@@ -81,11 +71,7 @@ function ProjectImageGallery({ images, title }: { images: string[]; title: strin
   const scroll = (direction: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
-    const step = el.clientWidth;
-    el.scrollBy({
-      left: direction === "left" ? -step : step,
-      behavior: "smooth",
-    });
+    el.scrollBy({ left: direction === "left" ? -el.clientWidth : el.clientWidth, behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -134,15 +120,8 @@ function ProjectImageGallery({ images, title }: { images: string[]; title: strin
         onScroll={updateScrollState}
       >
         {images.map((src, i) => (
-          <div
-            key={i}
-            className="relative h-[18rem] w-full flex-shrink-0 snap-center overflow-hidden rounded-xl bg-black"
-          >
-            <BlurImage
-              src={src}
-              alt={`${title} preview ${i + 1}`}
-              className="h-full w-full object-contain"
-            />
+          <div key={i} className="relative h-[18rem] w-full flex-shrink-0 snap-center overflow-hidden rounded-xl bg-black">
+            <BlurImage src={src} alt={`${title} preview ${i + 1}`} className="h-full w-full object-contain" />
           </div>
         ))}
       </div>
