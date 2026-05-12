@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
 
 export type VectorFieldFn = (x: number, y: number) => [number, number];
 
@@ -63,12 +62,19 @@ export function VectorFieldBackground({
   });
   const scrollYRef = useRef(0);
   const rafRef = useRef<number>(0);
-  const runningRef = useRef(false);
+  const loopActiveRef = useRef(false);
+  const drawRef = useRef<() => void>(() => {});
   const [fadeEnd, setFadeEnd] = useState(800);
   const effectiveFadeEndRef = useRef(800);
   const cursorEnabled = cursorAttraction > 0;
 
-  const isMobile = useIsMobileOrTouch();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(
+      window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768
+    );
+  }, []);
 
   const effectiveGrid = isMobile ? Math.min(grid, 20) : grid;
   const effectiveCursorEnabled = cursorEnabled && !isMobile;
@@ -86,8 +92,9 @@ export function VectorFieldBackground({
   useEffect(() => {
     const onScroll = () => {
       scrollYRef.current = window.scrollY;
-      if (!runningRef.current && !isMobile) {
-        draw();
+      if (!loopActiveRef.current && window.scrollY > 0) {
+        loopActiveRef.current = true;
+        drawRef.current();
       }
     };
     onScroll();
@@ -119,8 +126,6 @@ export function VectorFieldBackground({
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    runningRef.current = true;
-
     if (typeof document !== "undefined" && document.hidden) {
       rafRef.current = requestAnimationFrame(draw);
       return;
@@ -149,8 +154,8 @@ export function VectorFieldBackground({
     const effectiveFadeEnd = effectiveFadeEndRef.current;
     const opacity = Math.min(1, scrollY / effectiveFadeEnd);
     if (opacity <= 0) {
-      runningRef.current = false;
-      return;
+      loopActiveRef.current = false;
+      return; // stop the loop; scroll handler will restart it
     }
 
     const now = performance.now();
@@ -248,31 +253,15 @@ export function VectorFieldBackground({
     }
 
     ctx.restore();
+    loopActiveRef.current = true;
     rafRef.current = requestAnimationFrame(draw);
-  }, [
-    field,
-    effectiveGrid,
-    arrowScale,
-    effectiveCursorEnabled,
-    cursorAttraction,
-  ]);
+  }, [field, effectiveGrid, arrowScale, effectiveCursorEnabled, cursorAttraction]);
 
   useEffect(() => {
-    if (isMobile) {
-      cancelAnimationFrame(rafRef.current);
-      runningRef.current = false;
-      return;
-    }
+    drawRef.current = draw;
     draw();
-    return () => {
-      runningRef.current = false;
-      cancelAnimationFrame(rafRef.current);
-    };
-  }, [draw, isMobile]);
-
-  if (isMobile) {
-    return null;
-  }
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [draw]);
 
   return (
     <div

@@ -106,7 +106,7 @@ export function TimelineLayout({
             <Card3D active maxTilt={8} className="h-full">
               <div
                 className={cn(
-                  "rounded-2xl border bg-card/60 p-5 shadow-sm transition-transform text-center h-full",
+                  "rounded-xl border bg-card/60 p-4 shadow-sm transition-transform h-full",
                   animate && "animate-in slide-in-from-bottom-2 duration-300",
                 )}
               >
@@ -127,12 +127,9 @@ export function TimelineLayout({
                 </div>
 
                 {item.contentColumns && item.contentColumns.length > 0 ? (
-                  <div className="mt-2 grid grid-cols-1 gap-4 text-xs md:text-sm text-muted-foreground text-left md:grid-cols-2">
+                  <div className="mt-2 grid grid-cols-1 gap-4 text-xs md:text-sm text-muted-foreground md:grid-cols-2">
                     {item.contentColumns.map((col, colIdx) => (
-                      <ul
-                        key={colIdx}
-                        className="space-y-5 list-disc list-inside"
-                      >
+                      <ul key={colIdx} className="space-y-1 list-disc list-inside">
                         {col.map((b, i) => (
                           <li key={i}>{b}</li>
                         ))}
@@ -140,7 +137,7 @@ export function TimelineLayout({
                     ))}
                   </div>
                 ) : bullets ? (
-                  <ul className="mt-2 space-y-5 text-xs md:text-sm text-muted-foreground list-disc list-inside text-left">
+                  <ul className="mt-2 space-y-1 text-[11px] md:text-xs text-muted-foreground list-disc list-inside">
                     {bullets.map((b, i) => (
                       <li key={i}>{b}</li>
                     ))}
@@ -250,20 +247,15 @@ export function TimelineLayout({
                 )}
               </div>
 
-              {/* Mobile: left-rail, card to the right */}
-              <div className="md:hidden pl-12 pr-2">{content}</div>
-
-              {/* Desktop: two-column zig-zag */}
+              {/* Single render: left-rail on mobile, zig-zag half on md+ */}
               <div
                 className={cn(
-                  "hidden md:flex w-full",
-                  isRight && "md:flex-row-reverse",
+                  "pl-12 pr-2",
+                  "md:pl-0 md:pr-0 md:w-1/2",
+                  isRight ? "md:ml-auto md:pl-10" : "md:mr-auto md:pr-10",
                 )}
               >
-                <div className={cn("w-1/2", isRight ? "pl-10" : "pr-10")}>
-                  {content}
-                </div>
-                <div className="w-1/2" />
+                {content}
               </div>
             </li>
           );
