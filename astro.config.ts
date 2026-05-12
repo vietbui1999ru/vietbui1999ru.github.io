@@ -29,9 +29,7 @@ const { copyAsset, resolveExcalidraw } = createAssetAdapters({
   excalidrawCacheDir: path.resolve(__dirname, ".cache/excalidraw"),
 });
 
-const wikilinkIndex = buildWikilinkIndex(
-  path.join(vaultRoot, "Blogs")
-);
+const wikilinkIndex = buildWikilinkIndex(path.join(vaultRoot, "Blogs"));
 
 export default defineConfig({
   site,
@@ -46,12 +44,18 @@ export default defineConfig({
     remarkPlugins: [
       remarkCallout,
       remarkPreview,
-      [remarkEmbeds, { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw }],
-      [remarkWikilinks, {
-        index: wikilinkIndex,
-        onDead: (slug: string, file: string) =>
-          console.warn(`[wikilinks] dead link: [[${slug}]] in ${file}`),
-      }],
+      [
+        remarkEmbeds,
+        { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw },
+      ],
+      [
+        remarkWikilinks,
+        {
+          index: wikilinkIndex,
+          onDead: (slug: string, file: string) =>
+            console.warn(`[wikilinks] dead link: [[${slug}]] in ${file}`),
+        },
+      ],
     ],
   },
   vite: {

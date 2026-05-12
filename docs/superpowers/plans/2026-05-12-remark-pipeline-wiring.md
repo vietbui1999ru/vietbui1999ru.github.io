@@ -12,19 +12,20 @@
 
 ## File Map
 
-| Action | Path | Responsibility |
-|--------|------|----------------|
-| Create | `src/lib/vault.ts` | Vault root resolution + branch warning |
-| Create | `src/lib/build-wikilink-index.ts` | Sync frontmatter scan → `WikilinkIndex` |
-| Modify | `astro.config.ts` | Wire all three remark plugins |
-| Create | `tests/lib/vault.test.ts` | Unit tests for `vault.ts` |
-| Create | `tests/lib/build-wikilink-index.test.ts` | Unit tests for index builder |
+| Action | Path                                     | Responsibility                          |
+| ------ | ---------------------------------------- | --------------------------------------- |
+| Create | `src/lib/vault.ts`                       | Vault root resolution + branch warning  |
+| Create | `src/lib/build-wikilink-index.ts`        | Sync frontmatter scan → `WikilinkIndex` |
+| Modify | `astro.config.ts`                        | Wire all three remark plugins           |
+| Create | `tests/lib/vault.test.ts`                | Unit tests for `vault.ts`               |
+| Create | `tests/lib/build-wikilink-index.test.ts` | Unit tests for index builder            |
 
 ---
 
 ## Task 1: `src/lib/vault.ts`
 
 **Files:**
+
 - Create: `src/lib/vault.ts`
 - Create: `tests/lib/vault.test.ts`
 
@@ -33,68 +34,70 @@
 Create `tests/lib/vault.test.ts`:
 
 ```typescript
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import os from 'node:os'
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import os from "node:os";
 
-vi.mock('node:child_process', () => ({
+vi.mock("node:child_process", () => ({
   execFileSync: vi.fn(),
-}))
+}));
 
-import { execFileSync } from 'node:child_process'
-import { getVaultRoot, warnIfNotMain } from '@/lib/vault'
+import { execFileSync } from "node:child_process";
+import { getVaultRoot, warnIfNotMain } from "@/lib/vault";
 
-const mockExecFileSync = vi.mocked(execFileSync)
+const mockExecFileSync = vi.mocked(execFileSync);
 
 beforeEach(() => {
-  delete process.env.VAULT_ROOT
-  vi.clearAllMocks()
-})
+  delete process.env.VAULT_ROOT;
+  vi.clearAllMocks();
+});
 
 afterEach(() => {
-  delete process.env.VAULT_ROOT
-})
+  delete process.env.VAULT_ROOT;
+});
 
-describe('getVaultRoot', () => {
-  it('returns VAULT_ROOT env var when set (absolute path)', () => {
-    process.env.VAULT_ROOT = '/custom/vault'
-    expect(getVaultRoot()).toBe('/custom/vault')
-  })
+describe("getVaultRoot", () => {
+  it("returns VAULT_ROOT env var when set (absolute path)", () => {
+    process.env.VAULT_ROOT = "/custom/vault";
+    expect(getVaultRoot()).toBe("/custom/vault");
+  });
 
-  it('expands leading ~ to home directory', () => {
-    process.env.VAULT_ROOT = '~/my/vault'
-    expect(getVaultRoot()).toBe(`${os.homedir()}/my/vault`)
-  })
+  it("expands leading ~ to home directory", () => {
+    process.env.VAULT_ROOT = "~/my/vault";
+    expect(getVaultRoot()).toBe(`${os.homedir()}/my/vault`);
+  });
 
-  it('defaults to ~/repos/Obsidian when env not set', () => {
-    expect(getVaultRoot()).toBe(`${os.homedir()}/repos/Obsidian`)
-  })
-})
+  it("defaults to ~/repos/Obsidian when env not set", () => {
+    expect(getVaultRoot()).toBe(`${os.homedir()}/repos/Obsidian`);
+  });
+});
 
-describe('warnIfNotMain', () => {
-  it('does not warn when vault is on main branch', () => {
-    mockExecFileSync.mockReturnValue('main\n' as any)
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    warnIfNotMain('/some/vault')
-    expect(warn).not.toHaveBeenCalled()
-    warn.mockRestore()
-  })
+describe("warnIfNotMain", () => {
+  it("does not warn when vault is on main branch", () => {
+    mockExecFileSync.mockReturnValue("main\n" as any);
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    warnIfNotMain("/some/vault");
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  });
 
-  it('warns when vault is on a non-main branch', () => {
-    mockExecFileSync.mockReturnValue('jobs-network\n' as any)
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    warnIfNotMain('/some/vault')
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('jobs-network'))
-    warn.mockRestore()
-  })
+  it("warns when vault is on a non-main branch", () => {
+    mockExecFileSync.mockReturnValue("jobs-network\n" as any);
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    warnIfNotMain("/some/vault");
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("jobs-network"));
+    warn.mockRestore();
+  });
 
-  it('warns when git command fails (vault not found)', () => {
-    mockExecFileSync.mockImplementation(() => { throw new Error('not a git repo') })
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    warnIfNotMain('/nonexistent')
-    expect(warn).toHaveBeenCalled()
-    warn.mockRestore()
-  })
-})
+  it("warns when git command fails (vault not found)", () => {
+    mockExecFileSync.mockImplementation(() => {
+      throw new Error("not a git repo");
+    });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    warnIfNotMain("/nonexistent");
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+});
 ```
 
 - [ ] **Step 1.2: Run test to verify it fails**
@@ -108,34 +111,32 @@ Expected: FAIL — `Cannot find module '@/lib/vault'`
 - [ ] **Step 1.3: Implement `src/lib/vault.ts`**
 
 ```typescript
-import { execFileSync } from 'node:child_process'
-import os from 'node:os'
-import path from 'node:path'
+import { execFileSync } from "node:child_process";
+import os from "node:os";
+import path from "node:path";
 
 export function getVaultRoot(): string {
-  const env = process.env.VAULT_ROOT
+  const env = process.env.VAULT_ROOT;
   if (env) {
-    return env.startsWith('~')
-      ? path.join(os.homedir(), env.slice(1))
-      : env
+    return env.startsWith("~") ? path.join(os.homedir(), env.slice(1)) : env;
   }
-  return path.join(os.homedir(), 'repos', 'Obsidian')
+  return path.join(os.homedir(), "repos", "Obsidian");
 }
 
 export function warnIfNotMain(vaultRoot: string): void {
   try {
-    const branch = execFileSync('git', ['branch', '--show-current'], {
+    const branch = execFileSync("git", ["branch", "--show-current"], {
       cwd: vaultRoot,
-      encoding: 'utf-8',
-    }).trim()
-    if (branch !== 'main') {
+      encoding: "utf-8",
+    }).trim();
+    if (branch !== "main") {
       console.warn(
         `[vault] WARNING: Obsidian vault is on branch '${branch}', not 'main'. ` +
-        `Embeds may reference wrong attachments.`
-      )
+          `Embeds may reference wrong attachments.`,
+      );
     }
   } catch {
-    console.warn(`[vault] WARNING: Could not check vault branch at ${vaultRoot}`)
+    console.warn(`[vault] WARNING: Could not check vault branch at ${vaultRoot}`);
   }
 }
 ```
@@ -160,6 +161,7 @@ git commit -m "feat(blog): vault root resolver + branch warning"
 ## Task 2: `src/lib/build-wikilink-index.ts`
 
 **Files:**
+
 - Create: `src/lib/build-wikilink-index.ts`
 - Create: `tests/lib/build-wikilink-index.test.ts`
 
@@ -168,90 +170,96 @@ git commit -m "feat(blog): vault root resolver + branch warning"
 Create `tests/lib/build-wikilink-index.test.ts`:
 
 ```typescript
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import fs from 'node:fs'
-import path from 'node:path'
-import os from 'node:os'
-import { buildWikilinkIndex } from '@/lib/build-wikilink-index'
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
+import os from "node:os";
+import { buildWikilinkIndex } from "@/lib/build-wikilink-index";
 
-let tmp: string
+let tmp: string;
 
 beforeEach(() => {
-  tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'wikilink-index-test-'))
-})
+  tmp = fs.mkdtempSync(path.join(os.tmpdir(), "wikilink-index-test-"));
+});
 
 afterEach(() => {
-  fs.rmSync(tmp, { recursive: true, force: true })
-})
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
 
 function write(filename: string, content: string) {
-  fs.writeFileSync(path.join(tmp, filename), content)
+  fs.writeFileSync(path.join(tmp, filename), content);
 }
 
-describe('buildWikilinkIndex', () => {
-  it('returns empty posts map when directory is empty', () => {
-    const index = buildWikilinkIndex(tmp)
-    expect(index.posts.size).toBe(0)
-  })
+describe("buildWikilinkIndex", () => {
+  it("returns empty posts map when directory is empty", () => {
+    const index = buildWikilinkIndex(tmp);
+    expect(index.posts.size).toBe(0);
+  });
 
-  it('returns empty maps for non-blog collections', () => {
-    const index = buildWikilinkIndex(tmp)
-    expect(index.projects.size).toBe(0)
-    expect(index.roles.size).toBe(0)
-    expect(index.clippings.size).toBe(0)
-  })
+  it("returns empty maps for non-blog collections", () => {
+    const index = buildWikilinkIndex(tmp);
+    expect(index.projects.size).toBe(0);
+    expect(index.roles.size).toBe(0);
+    expect(index.clippings.size).toBe(0);
+  });
 
-  it('indexes a published post by slug', () => {
-    write('hello-world.md', `---
+  it("indexes a published post by slug", () => {
+    write(
+      "hello-world.md",
+      `---
 title: Hello World
 description: A test post
 date: 2026-01-01
 draft: false
 ---
 
-Content here.`)
-    const index = buildWikilinkIndex(tmp)
-    expect(index.posts.has('hello-world')).toBe(true)
-    const entry = index.posts.get('hello-world')!
-    expect(entry.kind).toBe('blog')
-    expect(entry.url).toBe('/blog/hello-world')
-    expect(entry.title).toBe('Hello World')
-  })
+Content here.`,
+    );
+    const index = buildWikilinkIndex(tmp);
+    expect(index.posts.has("hello-world")).toBe(true);
+    const entry = index.posts.get("hello-world")!;
+    expect(entry.kind).toBe("blog");
+    expect(entry.url).toBe("/blog/hello-world");
+    expect(entry.title).toBe("Hello World");
+  });
 
-  it('skips draft posts', () => {
-    write('draft-post.md', `---
+  it("skips draft posts", () => {
+    write(
+      "draft-post.md",
+      `---
 title: Draft
 description: Not published
 date: 2026-01-01
 draft: true
 ---
 
-Draft content.`)
-    const index = buildWikilinkIndex(tmp)
-    expect(index.posts.has('draft-post')).toBe(false)
-  })
+Draft content.`,
+    );
+    const index = buildWikilinkIndex(tmp);
+    expect(index.posts.has("draft-post")).toBe(false);
+  });
 
-  it('indexes multiple posts', () => {
-    write('post-a.md', `---\ntitle: Post A\ndate: 2026-01-01\ndraft: false\n---\n`)
-    write('post-b.md', `---\ntitle: Post B\ndate: 2026-01-02\ndraft: false\n---\n`)
-    const index = buildWikilinkIndex(tmp)
-    expect(index.posts.size).toBe(2)
-    expect(index.posts.has('post-a')).toBe(true)
-    expect(index.posts.has('post-b')).toBe(true)
-  })
+  it("indexes multiple posts", () => {
+    write("post-a.md", `---\ntitle: Post A\ndate: 2026-01-01\ndraft: false\n---\n`);
+    write("post-b.md", `---\ntitle: Post B\ndate: 2026-01-02\ndraft: false\n---\n`);
+    const index = buildWikilinkIndex(tmp);
+    expect(index.posts.size).toBe(2);
+    expect(index.posts.has("post-a")).toBe(true);
+    expect(index.posts.has("post-b")).toBe(true);
+  });
 
-  it('uses filename as title fallback when frontmatter has no title', () => {
-    write('no-title.md', `Content without frontmatter.`)
-    const index = buildWikilinkIndex(tmp)
-    const entry = index.posts.get('no-title')
-    expect(entry?.title).toBe('no-title')
-  })
+  it("uses filename as title fallback when frontmatter has no title", () => {
+    write("no-title.md", `Content without frontmatter.`);
+    const index = buildWikilinkIndex(tmp);
+    const entry = index.posts.get("no-title");
+    expect(entry?.title).toBe("no-title");
+  });
 
-  it('returns empty index when directory does not exist', () => {
-    const index = buildWikilinkIndex('/nonexistent/path/xyz')
-    expect(index.posts.size).toBe(0)
-  })
-})
+  it("returns empty index when directory does not exist", () => {
+    const index = buildWikilinkIndex("/nonexistent/path/xyz");
+    expect(index.posts.size).toBe(0);
+  });
+});
 ```
 
 - [ ] **Step 2.2: Run test to verify it fails**
@@ -265,56 +273,57 @@ Expected: FAIL — `Cannot find module '@/lib/build-wikilink-index'`
 - [ ] **Step 2.3: Implement `src/lib/build-wikilink-index.ts`**
 
 ```typescript
-import fs from 'node:fs'
-import path from 'node:path'
-import type { WikilinkIndex } from '@/lib/remark/wikilinks'
+import fs from "node:fs";
+import path from "node:path";
+import type { WikilinkIndex } from "@/lib/remark/wikilinks";
 
 function parseFrontmatter(content: string): Record<string, string | boolean> {
-  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/)
-  if (!match) return {}
-  const fm: Record<string, string | boolean> = {}
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) return {};
+  const fm: Record<string, string | boolean> = {};
   for (const line of match[1].split(/\r?\n/)) {
-    const kv = line.match(/^(\w+):\s*(.+)$/)
-    if (!kv) continue
-    const [, key, raw] = kv
-    const val = raw.trim()
-    fm[key] = val === 'true' ? true : val === 'false' ? false : val.replace(/^["']|["']$/g, '')
+    const kv = line.match(/^(\w+):\s*(.+)$/);
+    if (!kv) continue;
+    const [, key, raw] = kv;
+    const val = raw.trim();
+    fm[key] = val === "true" ? true : val === "false" ? false : val.replace(/^["']|["']$/g, "");
   }
-  return fm
+  return fm;
 }
 
 export function buildWikilinkIndex(blogDir: string): WikilinkIndex {
   const index: WikilinkIndex = {
-    posts:     new Map(),
-    projects:  new Map(),
-    roles:     new Map(),
+    posts: new Map(),
+    projects: new Map(),
+    roles: new Map(),
     education: new Map(),
-    gallery:   new Map(),
+    gallery: new Map(),
     clippings: new Map(),
-  }
+  };
 
-  let files: string[]
+  let files: string[];
   try {
-    files = (fs.readdirSync(blogDir, { recursive: true, encoding: 'utf-8' }) as string[])
-      .filter(f => f.endsWith('.md'))
+    files = (fs.readdirSync(blogDir, { recursive: true, encoding: "utf-8" }) as string[]).filter(
+      (f) => f.endsWith(".md"),
+    );
   } catch {
-    return index
+    return index;
   }
 
   for (const file of files) {
-    const fullPath = path.join(blogDir, file)
-    const content = fs.readFileSync(fullPath, 'utf-8')
-    const fm = parseFrontmatter(content)
+    const fullPath = path.join(blogDir, file);
+    const content = fs.readFileSync(fullPath, "utf-8");
+    const fm = parseFrontmatter(content);
 
-    if (fm.draft === true) continue
+    if (fm.draft === true) continue;
 
-    const slug = path.basename(file, '.md')
-    const title = typeof fm.title === 'string' && fm.title ? fm.title : slug
+    const slug = path.basename(file, ".md");
+    const title = typeof fm.title === "string" && fm.title ? fm.title : slug;
 
-    index.posts.set(slug, { kind: 'blog', url: `/blog/${slug}`, title })
+    index.posts.set(slug, { kind: "blog", url: `/blog/${slug}`, title });
   }
 
-  return index
+  return index;
 }
 ```
 
@@ -348,6 +357,7 @@ git commit -m "feat(blog): sync wikilink index builder from content/blog frontma
 No new unit tests — verified by `pnpm build`.
 
 **Files:**
+
 - Modify: `astro.config.ts`
 
 - [ ] **Step 3.1: Update `astro.config.ts`**
@@ -386,9 +396,7 @@ const { copyAsset, resolveExcalidraw } = createAssetAdapters({
   excalidrawCacheDir: path.resolve(__dirname, ".cache/excalidraw"),
 });
 
-const wikilinkIndex = buildWikilinkIndex(
-  path.resolve(__dirname, "src/content/blog")
-);
+const wikilinkIndex = buildWikilinkIndex(path.resolve(__dirname, "src/content/blog"));
 
 export default defineConfig({
   site,
@@ -397,16 +405,22 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkPreview,
-      [remarkEmbeds, {
-        attachmentsRoot: path.join(vaultRoot, "Attachments"),
-        copyAsset,
-        resolveExcalidraw,
-      }],
-      [remarkWikilinks, {
-        index: wikilinkIndex,
-        onDead: (slug: string, file: string) =>
-          console.warn(`[wikilinks] dead link: [[${slug}]] in ${file}`),
-      }],
+      [
+        remarkEmbeds,
+        {
+          attachmentsRoot: path.join(vaultRoot, "Attachments"),
+          copyAsset,
+          resolveExcalidraw,
+        },
+      ],
+      [
+        remarkWikilinks,
+        {
+          index: wikilinkIndex,
+          onDead: (slug: string, file: string) =>
+            console.warn(`[wikilinks] dead link: [[${slug}]] in ${file}`),
+        },
+      ],
     ],
   },
   vite: {

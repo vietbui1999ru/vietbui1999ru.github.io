@@ -7,7 +7,9 @@ import { useScrollSpy } from "@/hooks/useScrollSpy";
 
 const MobileBottomNav = () => {
   const activeHash = useScrollSpy();
-  const [pathname] = useState(() => typeof window !== "undefined" ? window.location.pathname : "/");
+  const [pathname] = useState(() =>
+    typeof window !== "undefined" ? window.location.pathname : "/",
+  );
 
   return (
     <nav
