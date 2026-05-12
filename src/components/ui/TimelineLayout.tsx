@@ -53,12 +53,7 @@ export function TimelineLayout({
   if (!items.length) return null;
 
   return (
-    <div
-      className={cn(
-        "relative w-full max-w-6xl mx-auto flex flex-col gap-8",
-        className,
-      )}
-    >
+    <div className={cn("relative w-full max-w-6xl mx-auto flex flex-col gap-8", className)}>
       {/* Spine: left on mobile, center on md+ */}
       <div
         className={cn(
@@ -111,13 +106,9 @@ export function TimelineLayout({
                 )}
               >
                 <div className="mb-2 space-y-1">
-                  <h3 className="font-semibold leading-tight text-base md:text-lg">
-                    {item.title}
-                  </h3>
+                  <h3 className="font-semibold leading-tight text-base md:text-lg">{item.title}</h3>
                   {item.subtitle && (
-                    <p className="text-xs md:text-sm text-muted-foreground">
-                      {item.subtitle}
-                    </p>
+                    <p className="text-xs md:text-sm text-muted-foreground">{item.subtitle}</p>
                   )}
                   {item.date && (
                     <p className="text-xs md:text-sm uppercase tracking-wide text-muted-foreground/80">
@@ -169,11 +160,7 @@ export function TimelineLayout({
                           {tag.label}
                         </a>
                       ) : (
-                        <span
-                          key={`${tag.label}-${i}`}
-                          className={pillClass}
-                          title={tip}
-                        >
+                        <span key={`${tag.label}-${i}`} className={pillClass} title={tip}>
                           {tag.label}
                         </span>
                       );

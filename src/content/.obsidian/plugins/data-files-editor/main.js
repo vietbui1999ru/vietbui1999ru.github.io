@@ -25,12 +25,7 @@ var Ie = (e, t) => {
   };
 var Be = (e, t, s) => (
     (s = e != null ? Ne(Ae(e)) : {}),
-    ge(
-      t || !e || !e.__esModule
-        ? W(s, "default", { value: e, enumerable: !0 })
-        : s,
-      e,
-    )
+    ge(t || !e || !e.__esModule ? W(s, "default", { value: e, enumerable: !0 }) : s, e)
   ),
   Je = (e) => ge(W({}, "__esModule", { value: !0 }), e);
 var wt = {};
@@ -112,9 +107,7 @@ var se = require("@codemirror/view"),
   $ = require("@codemirror/commands"),
   Pe = require("@codemirror/language"),
   D = () => [se.keymap.of([$.indentWithTab]), Pe.indentUnit.of("    ")],
-  he = () => [
-    se.keymap.of([{ key: "Shift-Tab", preventDefault: !0, run: $.indentLess }]),
-  ];
+  he = () => [se.keymap.of([{ key: "Shift-Tab", preventDefault: !0, run: $.indentLess }])];
 var Se = require("obsidian"),
   k = require("@codemirror/view"),
   Xe = require("@codemirror/state"),
@@ -158,16 +151,12 @@ var g = require("@codemirror/view"),
 var h = class extends Se.TextFileView {
   constructor(s, o) {
     super(s);
-    this.customHistoryKeymap = [
-      { win: "Ctrl-Shift-z", run: xe.redo, preventDefault: !0 },
-    ];
+    this.customHistoryKeymap = [{ win: "Ctrl-Shift-z", run: xe.redo, preventDefault: !0 }];
     this.plugin = o;
   }
   onload() {
     (super.onload(),
-      (this.editorEl = this.contentEl.createDiv(
-        "datafile-source-view mod-cm6",
-      )),
+      (this.editorEl = this.contentEl.createDiv("datafile-source-view mod-cm6")),
       (this.cmEditor = new k.EditorView({
         state: this.createDefaultEditorState(),
         parent: this.editorEl,
@@ -192,18 +181,14 @@ var h = class extends Se.TextFileView {
   async reload() {
     this.plugin.settings.doAutosaveFiles && (await this.save(!1));
     let s = this.getViewData();
-    (this.cmEditor.setState(this.createDefaultEditorState()),
-      this.setViewData(s, !1));
+    (this.cmEditor.setState(this.createDefaultEditorState()), this.setViewData(s, !1));
   }
   onEditorUpdate(s) {
     this.plugin.settings.doAutosaveFiles && s.docChanged && this.requestSave();
   }
   createDefaultEditorState() {
     return Xe.EditorState.create({
-      extensions: [
-        ...this.getCommonEditorExtensions(),
-        ...this.getEditorExtensions(),
-      ],
+      extensions: [...this.getCommonEditorExtensions(), ...this.getEditorExtensions()],
     });
   }
   getCommonEditorExtensions() {
@@ -212,10 +197,7 @@ var h = class extends Se.TextFileView {
       k.keymap.of(this.customHistoryKeymap),
       k.EditorView.updateListener.of(this.onEditorUpdate.bind(this)),
     ];
-    return (
-      this.plugin.settings.lineWrapping && s.push(k.EditorView.lineWrapping),
-      s
-    );
+    return (this.plugin.settings.lineWrapping && s.push(k.EditorView.lineWrapping), s);
   }
 };
 var R = class extends h {
@@ -321,12 +303,7 @@ var ut = new T.ContextTracker({
   },
 });
 function w(e, t, s = 0) {
-  return (
-    e.peek(s) == t &&
-    e.peek(s + 1) == t &&
-    e.peek(s + 2) == t &&
-    E(e.peek(s + 3))
-  );
+  return e.peek(s) == t && e.peek(s + 1) == t && e.peek(s + 2) == t && E(e.peek(s + 3));
 }
 var Tt = new T.ExternalTokenizer(
     (e, t) => {
@@ -342,9 +319,7 @@ var Tt = new T.ExternalTokenizer(
         let o = 0;
         for (; e.next == 32; ) (o++, e.advance());
         (o < t.context.depth ||
-          (o == t.context.depth &&
-            t.context.type == Oe &&
-            (e.next != 45 || !E(e.peek(1))))) &&
+          (o == t.context.depth && t.context.type == Oe && (e.next != 45 || !E(e.peek(1))))) &&
           e.next != -1 &&
           !u(e.next) &&
           e.next != 35 &&
@@ -362,19 +337,11 @@ var Tt = new T.ExternalTokenizer(
       if (e.next == 45)
         (e.advance(),
           E(e.next) &&
-            e.acceptToken(
-              t.context.type == Oe && t.context.depth == V(e, e.pos - 1)
-                ? at
-                : be,
-            ));
+            e.acceptToken(t.context.type == Oe && t.context.depth == V(e, e.pos - 1) ? at : be));
       else if (e.next == 63)
         (e.advance(),
           E(e.next) &&
-            e.acceptToken(
-              t.context.type == oe && t.context.depth == V(e, e.pos - 1)
-                ? ot
-                : ye,
-            ));
+            e.acceptToken(t.context.type == oe && t.context.depth == V(e, e.pos - 1) ? ot : ye));
       else {
         let s = e.pos;
         for (;;)
@@ -400,11 +367,7 @@ var Tt = new T.ExternalTokenizer(
         if (e.next == 58) {
           if (e.pos == s && t.canShift(ft)) return;
           let o = e.peek(1);
-          E(o) &&
-            e.acceptTokenTo(
-              t.context.type == oe && t.context.depth == V(e, s) ? it : ve,
-              s,
-            );
+          E(o) && e.acceptTokenTo(t.context.type == oe && t.context.depth == V(e, s) ? it : ve, s);
         }
       }
     },
@@ -492,10 +455,7 @@ function ae(e, t) {
   return s != "u" && !(t && s == "f");
 }
 function Ve(e, t, s, o) {
-  if (
-    M(e.next) == "s" ||
-    ((e.next == 63 || e.next == 58 || e.next == 45) && ae(e.peek(1), s))
-  )
+  if (M(e.next) == "s" || ((e.next == 63 || e.next == 58 || e.next == 45) && ae(e.peek(1), s)))
     e.advance();
   else return !1;
   let O = e.pos;
@@ -511,14 +471,7 @@ function Ve(e, t, s, o) {
       i = e.peek(++d);
     }
     if (
-      !(
-        i >= 0 &&
-        (i == 58
-          ? ae(e.peek(d + 1), s)
-          : i == 35
-            ? e.peek(d - 1) != 32
-            : ae(i, s))
-      ) ||
+      !(i >= 0 && (i == 58 ? ae(e.peek(d + 1), s) : i == 35 ? e.peek(d - 1) != 32 : ae(i, s))) ||
       (!s && a <= o) ||
       (a == 0 && !s && (w(e, 45, d) || w(e, 46, d)))
     )
@@ -610,8 +563,7 @@ var p = require("@codemirror/language"),
     version: 14,
     states:
       "!vOQOPOOO]OPO'#C_OhOPO'#C^OOOO'#Cc'#CcOpOPO'#CaQOOOOOO{OPOOOOOO'#Cb'#CbO!WOPO'#C`O!`OPO,58xOOOO-E6a-E6aOOOO-E6`-E6`OOOO'#C_'#C_OOOO1G.d1G.d",
-    stateData:
-      "!h~OXPOYROWTP~OWVXXRXYRX~OYVOXSP~OXROYROWTX~OXROYROWTP~OYVOXSX~OX[O~OXY~",
+    stateData: "!h~OXPOYROWTP~OWVXXRXYRX~OYVOXSP~OXROYROWTX~OXROYROWTP~OYVOXSX~OX[O~OXY~",
     goto: "vWPPX[beioRUOQQOR]XRXQTTOUQWQRZWSSOURYS",
     nodeNames: "\u26A0 Document Frontmatter DashLine FrontmatterContent Body",
     maxTerm: 10,
@@ -629,16 +581,10 @@ var p = require("@codemirror/language"),
       props: [
         p.indentNodeProp.add({
           Stream: (e) => {
-            for (
-              let t = e.node.resolve(e.pos, -1);
-              t && t.to >= e.pos;
-              t = t.parent
-            ) {
-              if (t.name == "BlockLiteralContent" && t.from < t.to)
-                return e.baseIndentFor(t);
+            for (let t = e.node.resolve(e.pos, -1); t && t.to >= e.pos; t = t.parent) {
+              if (t.name == "BlockLiteralContent" && t.from < t.to) return e.baseIndentFor(t);
               if (t.name == "BlockLiteral") return e.baseIndentFor(t) + e.unit;
-              if (t.name == "BlockSequence" || t.name == "BlockMapping")
-                return e.column(t.from, 1);
+              if (t.name == "BlockSequence" || t.name == "BlockMapping") return e.column(t.from, 1);
               if (t.name == "QuotedLiteral") return null;
               if (t.name == "Literal") {
                 let s = e.column(t.from, 1);
@@ -694,9 +640,7 @@ var Lt = Z.HighlightStyle.define([
     getEditorExtensions() {
       let t = [D(), We()];
       return (
-        document.body.classList.contains("theme-dark") &&
-          t.push((0, Z.syntaxHighlighting)(Lt)),
-        t
+        document.body.classList.contains("theme-dark") && t.push((0, Z.syntaxHighlighting)(Lt)), t
       );
     }
   };
@@ -749,172 +693,150 @@ var Y = class extends qe.PluginSettingTab {
     let { containerEl: s } = this;
     ((this.requestReloadView = !1), s.empty());
     let o = s.createEl("h2", { text: "File types" });
-    ((o.style.padding = "0 var(--size-4-4)"),
-      (o.style.marginBottom = "var(--size-4-4)"));
+    ((o.style.padding = "0 var(--size-4-4)"), (o.style.marginBottom = "var(--size-4-4)"));
     let O = s.createEl("p", {
       text: "Toggle which file types this plugin should handle. Please note that you must restart Obsidian for many of these changes to take effect.",
       cls: "setting-item-description",
     });
-    ((O.style.padding = "0 var(--size-4-4)"),
-      (O.style.marginBottom = "var(--size-4-4)"));
+    ((O.style.padding = "0 var(--size-4-4)"), (O.style.marginBottom = "var(--size-4-4)"));
     let i = de(s);
     (i.addSetting((a) =>
       a.setName("Load .txt files").addToggle((r) =>
         r.setValue(this.plugin.settings.doLoadTxt).onChange(async (n) => {
-          ((this.plugin.settings.doLoadTxt = n),
-            await this.plugin.saveSettings());
+          ((this.plugin.settings.doLoadTxt = n), await this.plugin.saveSettings());
         }),
       ),
     ),
       i.addSetting((a) =>
         a.setName("Create .txt files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateTxt).onChange(async (n) => {
-            ((this.plugin.settings.doCreateTxt = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateTxt = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Load .json files").addToggle((r) =>
           r.setValue(this.plugin.settings.doLoadJson).onChange(async (n) => {
-            ((this.plugin.settings.doLoadJson = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doLoadJson = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Create .json files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateJson).onChange(async (n) => {
-            ((this.plugin.settings.doCreateJson = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateJson = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Load .xml files").addToggle((r) =>
           r.setValue(this.plugin.settings.doLoadXml).onChange(async (n) => {
-            ((this.plugin.settings.doLoadXml = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doLoadXml = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Create .xml files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateXml).onChange(async (n) => {
-            ((this.plugin.settings.doCreateXml = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateXml = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Load .yaml/.yml files").addToggle((r) =>
           r.setValue(this.plugin.settings.doLoadYaml).onChange(async (n) => {
-            ((this.plugin.settings.doLoadYaml = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doLoadYaml = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Create .yaml files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateYaml).onChange(async (n) => {
-            ((this.plugin.settings.doCreateYaml = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateYaml = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Load .html files").addToggle((r) =>
           r.setValue(this.plugin.settings.doLoadHtml).onChange(async (n) => {
-            ((this.plugin.settings.doLoadHtml = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doLoadHtml = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Create .html files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateHtml).onChange(async (n) => {
-            ((this.plugin.settings.doCreateHtml = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateHtml = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Load .css files").addToggle((r) =>
           r.setValue(this.plugin.settings.doLoadCss).onChange(async (n) => {
-            ((this.plugin.settings.doLoadCss = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doLoadCss = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Create .css files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateCss).onChange(async (n) => {
-            ((this.plugin.settings.doCreateCss = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateCss = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Load .js files").addToggle((r) =>
           r.setValue(this.plugin.settings.doLoadJs).onChange(async (n) => {
-            ((this.plugin.settings.doLoadJs = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doLoadJs = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Create .js files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateJs).onChange(async (n) => {
-            ((this.plugin.settings.doCreateJs = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateJs = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Load .mjs files").addToggle((r) =>
           r.setValue(this.plugin.settings.doLoadMjs).onChange(async (n) => {
-            ((this.plugin.settings.doLoadMjs = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doLoadMjs = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Create .mjs files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateMjs).onChange(async (n) => {
-            ((this.plugin.settings.doCreateMjs = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateMjs = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Load .ts files").addToggle((r) =>
           r.setValue(this.plugin.settings.doLoadTs).onChange(async (n) => {
-            ((this.plugin.settings.doLoadTs = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doLoadTs = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Create .ts files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateTs).onChange(async (n) => {
-            ((this.plugin.settings.doCreateTs = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateTs = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Load .astro files").addToggle((r) =>
           r.setValue(this.plugin.settings.doLoadAstro).onChange(async (n) => {
-            ((this.plugin.settings.doLoadAstro = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doLoadAstro = n), await this.plugin.saveSettings());
           }),
         ),
       ),
       i.addSetting((a) =>
         a.setName("Create .astro files").addToggle((r) =>
           r.setValue(this.plugin.settings.doCreateAstro).onChange(async (n) => {
-            ((this.plugin.settings.doCreateAstro = n),
-              await this.plugin.saveSettings());
+            ((this.plugin.settings.doCreateAstro = n), await this.plugin.saveSettings());
           }),
         ),
       ));
@@ -922,8 +844,7 @@ var Y = class extends qe.PluginSettingTab {
     (d.addSetting((a) =>
       a.setName("Enable autosave for files").addToggle((r) =>
         r.setValue(this.plugin.settings.doAutosaveFiles).onChange(async (n) => {
-          ((this.plugin.settings.doAutosaveFiles = n),
-            await this.plugin.saveSettings());
+          ((this.plugin.settings.doAutosaveFiles = n), await this.plugin.saveSettings());
         }),
       ),
     ),
@@ -999,48 +920,39 @@ var G = class extends z.Plugin {
   }
   tryRegisterJson() {
     (this.settings.doLoadJson && this.registerExtensions([A], X),
-      this.settings.doCreateJson &&
-        this.registerContextMenuCommand(A, "file-braces"));
+      this.settings.doCreateJson && this.registerContextMenuCommand(A, "file-braces"));
   }
   tryRegisterXml() {
     (this.settings.doLoadXml && this.registerExtensions([j], c),
-      this.settings.doCreateXml &&
-        this.registerContextMenuCommand(j, "file-code"));
+      this.settings.doCreateXml && this.registerContextMenuCommand(j, "file-code"));
   }
   tryRegisterYaml() {
     (this.settings.doLoadYaml && this.registerExtensions([B, ce], x),
-      this.settings.doCreateYaml &&
-        this.registerContextMenuCommand(B, "file-text"));
+      this.settings.doCreateYaml && this.registerContextMenuCommand(B, "file-text"));
   }
   tryRegisterAstro() {
     (this.settings.doLoadAstro && this.registerExtensions([J], c),
-      this.settings.doCreateAstro &&
-        this.registerContextMenuCommand(J, "file-plus"));
+      this.settings.doCreateAstro && this.registerContextMenuCommand(J, "file-plus"));
   }
   tryRegisterTs() {
     (this.settings.doLoadTs && this.registerExtensions([H], c),
-      this.settings.doCreateTs &&
-        this.registerContextMenuCommand(H, "file-type"));
+      this.settings.doCreateTs && this.registerContextMenuCommand(H, "file-type"));
   }
   tryRegisterCss() {
     (this.settings.doLoadCss && this.registerExtensions([F], c),
-      this.settings.doCreateCss &&
-        this.registerContextMenuCommand(F, "file-sliders"));
+      this.settings.doCreateCss && this.registerContextMenuCommand(F, "file-sliders"));
   }
   tryRegisterHtml() {
     (this.settings.doLoadHtml && this.registerExtensions([K], c),
-      this.settings.doCreateHtml &&
-        this.registerContextMenuCommand(K, "file-up"));
+      this.settings.doCreateHtml && this.registerContextMenuCommand(K, "file-up"));
   }
   tryRegisterJs() {
     (this.settings.doLoadJs && this.registerExtensions([ee], c),
-      this.settings.doCreateJs &&
-        this.registerContextMenuCommand(ee, "file-code"));
+      this.settings.doCreateJs && this.registerContextMenuCommand(ee, "file-code"));
   }
   tryRegisterMjs() {
     (this.settings.doLoadMjs && this.registerExtensions([te], c),
-      this.settings.doCreateMjs &&
-        this.registerContextMenuCommand(te, "file-code"));
+      this.settings.doCreateMjs && this.registerContextMenuCommand(te, "file-code"));
   }
   onunload() {}
   async loadSettings() {
@@ -1058,8 +970,7 @@ var G = class extends z.Plugin {
             .setIcon(o)
             .setSection("action")
             .onClick(async () => {
-              (console.log(d == null ? void 0 : d.path),
-                d && (await this.createFile(d.path, s)));
+              (console.log(d == null ? void 0 : d.path), d && (await this.createFile(d.path, s)));
             });
         });
       }),

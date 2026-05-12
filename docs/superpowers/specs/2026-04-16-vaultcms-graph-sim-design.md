@@ -19,12 +19,12 @@ Transform the portfolio site from a single-page static showcase into a content-d
 
 ## 2. Sub-Project Decomposition
 
-| # | Sub-project | Depends on | Ships when |
-|---|-------------|-----------|-----------|
-| **A** | VaultCMS + content pipeline | — | `vendor/vault/` populated; blog renders from submodule |
-| **B** | Portfolio data migration (JSON/TS → markdown) | A | Projects/Experience/Education/Gallery/About render from markdown collections |
-| **C** | Graph view (r3f) + `/graph` page + per-page mini-graph | A, B | `/graph` live; mini-graph widget on post/project pages |
-| **D** | Simulation engine + 4 new sims (Magnetic, Lorenz, Gray-Scott, Kuramoto-Sivashinsky) + Singularity port from `react-shaders` to r3f | — | Engine + sims + `/sim/[name]` playgrounds live; Home hero renders ported Singularity (Magnetic swap later) |
+| #     | Sub-project                                                                                                                        | Depends on | Ships when                                                                                                 |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------- |
+| **A** | VaultCMS + content pipeline                                                                                                        | —          | `vendor/vault/` populated; blog renders from submodule                                                     |
+| **B** | Portfolio data migration (JSON/TS → markdown)                                                                                      | A          | Projects/Experience/Education/Gallery/About render from markdown collections                               |
+| **C** | Graph view (r3f) + `/graph` page + per-page mini-graph                                                                             | A, B       | `/graph` live; mini-graph widget on post/project pages                                                     |
+| **D** | Simulation engine + 4 new sims (Magnetic, Lorenz, Gray-Scott, Kuramoto-Sivashinsky) + Singularity port from `react-shaders` to r3f | —          | Engine + sims + `/sim/[name]` playgrounds live; Home hero renders ported Singularity (Magnetic swap later) |
 
 A and D run in parallel (no shared files). B starts after A is merged. C starts after B is merged.
 
@@ -70,11 +70,11 @@ A and D run in parallel (no shared files). B starts after A is merged. C starts 
 
 **Privacy boundaries:**
 
-| Boundary | What crosses | What doesn't |
-|----------|-------------|--------------|
-| Main Obsidian → PortfolioVault | Blog files matching `.stignore` whitelist; referenced attachments | Personal notes, Daily/, Tokens.md, Trackers/ |
-| PortfolioVault → Astro CI | Full PortfolioVault tree (public-safe by construction) | Zero access to main vault |
-| Clippings → public site | Frontmatter `preview` field only (popover excerpt) | Full clipping body stays private unless `publish: true` |
+| Boundary                       | What crosses                                                      | What doesn't                                            |
+| ------------------------------ | ----------------------------------------------------------------- | ------------------------------------------------------- |
+| Main Obsidian → PortfolioVault | Blog files matching `.stignore` whitelist; referenced attachments | Personal notes, Daily/, Tokens.md, Trackers/            |
+| PortfolioVault → Astro CI      | Full PortfolioVault tree (public-safe by construction)            | Zero access to main vault                               |
+| Clippings → public site        | Frontmatter `preview` field only (popover excerpt)                | Full clipping body stays private unless `publish: true` |
 
 Defaults: `publish: false`, `share: false` on every clipping. Public exposure is opt-in per clipping.
 
@@ -136,10 +136,10 @@ Attachments/**/*.excalidraw.md  filter=lfs diff=lfs merge=lfs -text
 `src/content/config.ts` registers seven collections, all loading from `vendor/vault`:
 
 ```ts
-import { defineCollection, z } from 'astro:content'
-import { glob } from 'astro/loaders'
+import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
 
-const BASE = './vendor/vault'
+const BASE = "./vendor/vault";
 
 const blogSchema = z.object({
   title: z.string(),
@@ -151,9 +151,9 @@ const blogSchema = z.object({
   updated: z.coerce.date().optional(),
   series: z.string().optional(),
   preview: z.string().optional(),
-  audience: z.array(z.enum(['dev','student','general'])).optional(),
+  audience: z.array(z.enum(["dev", "student", "general"])).optional(),
   topics: z.array(z.string()).optional(),
-})
+});
 
 const roleSchema = z.object({
   role: z.string(),
@@ -164,14 +164,14 @@ const roleSchema = z.object({
   tags: z.array(z.string()).optional(),
   summary: z.string(),
   graph_node: z.boolean().default(true),
-})
+});
 
 const companySchema = z.object({
   name: z.string(),
   url: z.string().url().optional(),
   logo: z.string().optional(),
   graph_node: z.boolean().default(false),
-})
+});
 
 const projectSchema = z.object({
   title: z.string(),
@@ -182,9 +182,9 @@ const projectSchema = z.object({
   images: z.array(z.string()).optional(),
   cover: z.string().optional(),
   links: z.array(z.object({ icon: z.string(), url: z.string().url() })).optional(),
-  status: z.enum(['active','shipped','archived']).default('shipped'),
+  status: z.enum(["active", "shipped", "archived"]).default("shipped"),
   graph_node: z.boolean().default(true),
-})
+});
 
 const educationSchema = z.object({
   institution: z.string(),
@@ -195,7 +195,7 @@ const educationSchema = z.object({
   tags: z.array(z.string()).optional(),
   summary: z.string(),
   graph_node: z.boolean().default(true),
-})
+});
 
 const gallerySchema = z.object({
   title: z.string(),
@@ -204,7 +204,7 @@ const gallerySchema = z.object({
   image: z.string(),
   tags: z.array(z.string()).optional(),
   graph_node: z.boolean().default(true),
-})
+});
 
 const clippingSchema = z.object({
   title: z.string(),
@@ -214,23 +214,47 @@ const clippingSchema = z.object({
   publish: z.boolean().default(false),
   share: z.boolean().default(false),
   graph_node: z.boolean().default(true),
-})
+});
 
 const aboutSchema = z.object({
   title: z.string(),
   tagline: z.string(),
-})
+});
 
 export const collections = {
-  blog:      defineCollection({ loader: glob({ pattern: 'Blogs/**/*.md',                      base: BASE }), schema: blogSchema }),
-  projects:  defineCollection({ loader: glob({ pattern: 'Portfolio/Projects/**/*.md',          base: BASE }), schema: projectSchema }),
-  roles:     defineCollection({ loader: glob({ pattern: 'Portfolio/Experience/*.md',           base: BASE }), schema: roleSchema }),
-  companies: defineCollection({ loader: glob({ pattern: 'Portfolio/Experience/Companies/*.md', base: BASE }), schema: companySchema }),
-  education: defineCollection({ loader: glob({ pattern: 'Portfolio/Education/**/*.md',         base: BASE }), schema: educationSchema }),
-  gallery:   defineCollection({ loader: glob({ pattern: 'Portfolio/Gallery/**/*.md',           base: BASE }), schema: gallerySchema }),
-  clippings: defineCollection({ loader: glob({ pattern: 'References/Clippings/**/*.md',        base: BASE }), schema: clippingSchema }),
-  about:     defineCollection({ loader: glob({ pattern: 'Portfolio/About.md',                  base: BASE }), schema: aboutSchema }),
-}
+  blog: defineCollection({
+    loader: glob({ pattern: "Blogs/**/*.md", base: BASE }),
+    schema: blogSchema,
+  }),
+  projects: defineCollection({
+    loader: glob({ pattern: "Portfolio/Projects/**/*.md", base: BASE }),
+    schema: projectSchema,
+  }),
+  roles: defineCollection({
+    loader: glob({ pattern: "Portfolio/Experience/*.md", base: BASE }),
+    schema: roleSchema,
+  }),
+  companies: defineCollection({
+    loader: glob({ pattern: "Portfolio/Experience/Companies/*.md", base: BASE }),
+    schema: companySchema,
+  }),
+  education: defineCollection({
+    loader: glob({ pattern: "Portfolio/Education/**/*.md", base: BASE }),
+    schema: educationSchema,
+  }),
+  gallery: defineCollection({
+    loader: glob({ pattern: "Portfolio/Gallery/**/*.md", base: BASE }),
+    schema: gallerySchema,
+  }),
+  clippings: defineCollection({
+    loader: glob({ pattern: "References/Clippings/**/*.md", base: BASE }),
+    schema: clippingSchema,
+  }),
+  about: defineCollection({
+    loader: glob({ pattern: "Portfolio/About.md", base: BASE }),
+    schema: aboutSchema,
+  }),
+};
 ```
 
 ### 4.4 Remark plugins
@@ -274,11 +298,11 @@ Scripts in portfolio repo `package.json`:
 ```json
 {
   "scripts": {
-    "dev":          "astro dev",
-    "build":        "astro build",
-    "preview":      "astro preview",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
     "publish-blog": "bash scripts/publish-blog.sh",
-    "sync-graph":   "tsx scripts/build-graph-index.ts"
+    "sync-graph": "tsx scripts/build-graph-index.ts"
   }
 }
 ```
@@ -304,6 +328,7 @@ git push
 ```
 
 Build pipeline order:
+
 1. `git submodule update --init --recursive`
 2. `git lfs pull` (both portfolio and vendor/vault)
 3. `pnpm install`
@@ -336,6 +361,7 @@ Build pipeline order:
 Migrates narrative portfolio content from `src/data/*.json` + `src/data/*.ts` into markdown notes under `~/repos/PortfolioVault/Portfolio/`.
 
 **Migrates:**
+
 - `projects.json` + `projectsData.ts` → `Portfolio/Projects/<slug>.md` (one per project)
 - `experience.json` + `experienceData.ts` → `Portfolio/Experience/<slug>.md` (E2: one per role) + `Portfolio/Experience/Companies/<slug>.md` (R2: one per company)
 - `educationData.ts` → `Portfolio/Education/<slug>.md`
@@ -343,6 +369,7 @@ Migrates narrative portfolio content from `src/data/*.json` + `src/data/*.ts` in
 - `aboutData.ts` → `Portfolio/About.md` (title + tagline in frontmatter; 4 paragraphs as body)
 
 **Stays as code:**
+
 - `homeData.ts` (shader tuning constants, gradients, taglines)
 - `navigationData.ts` (routing config)
 - `skillIcons.json` + `skillIcons.ts` (icon registry)
@@ -410,6 +437,7 @@ graph_node: false
 ### 5.6 Cleanup
 
 After migration verified:
+
 - Delete `src/data/projects.json`, `projectsData.ts`, `experience.json`, `experienceData.ts`, `educationData.ts`, `gallery.json`, `galleryData.ts`, `aboutData.ts`.
 - Delete `src/content/.obsidian/`, `src/content/_bases/`, `src/content/_GUIDE.md` (obsolete VaultCMS-in-repo scaffold).
 - Delete `src/content/blog/coming-soon.md` (replaced by vault Blogs).
@@ -427,22 +455,22 @@ After migration verified:
 
 ```ts
 type Node = {
-  id: string                 // '<kind>/<slug>'
-  kind: 'blog'|'project'|'role'|'education'|'gallery'|'clipping'
-  title: string
-  tags: string[]
-  date?: string              // ISO
-  url: string                // routing target
-  preview?: string           // for popover
-}
+  id: string; // '<kind>/<slug>'
+  kind: "blog" | "project" | "role" | "education" | "gallery" | "clipping";
+  title: string;
+  tags: string[];
+  date?: string; // ISO
+  url: string; // routing target
+  preview?: string; // for popover
+};
 
 type Edge = {
-  source: string
-  target: string
-  type: 'wikilink'|'shared-tag'|'manual'
-  weight: number
-  tag?: string               // for shared-tag edges
-}
+  source: string;
+  target: string;
+  type: "wikilink" | "shared-tag" | "manual";
+  weight: number;
+  tag?: string; // for shared-tag edges
+};
 ```
 
 **Edge rules:**
@@ -574,24 +602,24 @@ src/scenes/
 
 ```ts
 interface Sim<Config = unknown, State = unknown> {
-  id: string
-  title: string
-  description: string                                  // rendered in HelpOverlay
-  defaults: Config
-  presets: Record<string, Partial<Config>>
-  schema: LevaSchema
+  id: string;
+  title: string;
+  description: string; // rendered in HelpOverlay
+  defaults: Config;
+  presets: Record<string, Partial<Config>>;
+  schema: LevaSchema;
   Scene: React.FC<{
-    config: Config
-    perf: 'low'|'mid'|'high'
-    symmetry: SymmetryConfig
-  }>
-  init(config: Config, perf: PerfTier): State
-  step(state: State, dt: number): void
-  dispose(state: State): void
-  symmetryApplies(type: 'C'|'D'|'none', order: number): boolean
+    config: Config;
+    perf: "low" | "mid" | "high";
+    symmetry: SymmetryConfig;
+  }>;
+  init(config: Config, perf: PerfTier): State;
+  step(state: State, dt: number): void;
+  dispose(state: State): void;
+  symmetryApplies(type: "C" | "D" | "none", order: number): boolean;
 }
 
-type SymmetryConfig = { type: 'none'|'C'|'D'; order: number }
+type SymmetryConfig = { type: "none" | "C" | "D"; order: number };
 ```
 
 ### 7.4 Symmetry — constrained initial conditions
@@ -666,14 +694,14 @@ Sliders expose `order` (1–12) and `type` (C/D/none). Per-sim `symmetryApplies(
 
 Per-sim mid-tier budget estimate:
 
-| Sim | Compute/frame | Notes |
-|-----|--------------|-------|
-| Magnetic (GPU particles 2k) | ~0.8ms | |
-| Lorenz (CPU 500 trails) | ~0.3ms | |
-| Gray-Scott (GPU 256² × 4 sub) | ~1.2ms | |
-| Kuramoto-Sivashinsky (GPU 512 pts × 4 sub ETDRK4) | ~1.5ms | |
-| Rendering overhead (shared) | ~2–3ms | |
-| **Total active (1 sim)** | **~4–5ms** | 11ms headroom at 60fps |
+| Sim                                               | Compute/frame | Notes                  |
+| ------------------------------------------------- | ------------- | ---------------------- |
+| Magnetic (GPU particles 2k)                       | ~0.8ms        |                        |
+| Lorenz (CPU 500 trails)                           | ~0.3ms        |                        |
+| Gray-Scott (GPU 256² × 4 sub)                     | ~1.2ms        |                        |
+| Kuramoto-Sivashinsky (GPU 512 pts × 4 sub ETDRK4) | ~1.5ms        |                        |
+| Rendering overhead (shared)                       | ~2–3ms        |                        |
+| **Total active (1 sim)**                          | **~4–5ms**    | 11ms headroom at 60fps |
 
 Low tier halves every budget. Safe on older iGPUs and mobile.
 
@@ -746,37 +774,37 @@ One route per sim. Shipped as part of sub-project D:
 
 ## 9. Risk Register
 
-| Risk | Severity | Mitigation |
-|------|---------|-----------|
-| Main vault sync loss → blog history stranded | High | rsync one-way (main → PV); main stays canonical; PV commits reconstructable |
-| rsync `--delete` wipes PV-native content | High | Paths scoped per `rsync` call; `Portfolio/` never an rsync target |
-| Sync-conflict file silently published | Med | `.stignore` + astro content glob exclude + CI warn step |
-| Submodule detached HEAD confusion | Med | `publish-blog` script fully automates bump |
-| Wikilink dead-link flood during partial sparse checkout | Med | warn-only by default; `--strict` flag for CI-fail when needed |
-| Excalidraw CLI slow on cold build | Low | cache SVGs by content hash in `node_modules/.cache/excalidraw/` |
-| Graph worker blocks main on huge graphs | Low | worker isolated; edge weight threshold + LOD collapse shared-tag edges below threshold |
-| r3f WebGL context loss (`max contexts` browser limit) | Med | single app-wide canvas architecture (D2) keeps count at 1 |
-| Shader compile failure on old iGPU | Med | precompile on init, catch, fall back to static scene placeholder |
-| KS ETDRK4 instability at extreme params | Med | clamp sliders to tested stable ranges; restart button |
-| Leva in prod exposes interaction target for scrapers | Low | mount lazily on intent; hidden on mobile |
-| Graph privacy leak via clipping title | Med | private clippings appear (if at all) as opaque titleless nodes |
-| Vault repo LFS quota exceeded | Low | monitor; prune unused attachments via `sync-attachments.mjs` |
+| Risk                                                    | Severity | Mitigation                                                                             |
+| ------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
+| Main vault sync loss → blog history stranded            | High     | rsync one-way (main → PV); main stays canonical; PV commits reconstructable            |
+| rsync `--delete` wipes PV-native content                | High     | Paths scoped per `rsync` call; `Portfolio/` never an rsync target                      |
+| Sync-conflict file silently published                   | Med      | `.stignore` + astro content glob exclude + CI warn step                                |
+| Submodule detached HEAD confusion                       | Med      | `publish-blog` script fully automates bump                                             |
+| Wikilink dead-link flood during partial sparse checkout | Med      | warn-only by default; `--strict` flag for CI-fail when needed                          |
+| Excalidraw CLI slow on cold build                       | Low      | cache SVGs by content hash in `node_modules/.cache/excalidraw/`                        |
+| Graph worker blocks main on huge graphs                 | Low      | worker isolated; edge weight threshold + LOD collapse shared-tag edges below threshold |
+| r3f WebGL context loss (`max contexts` browser limit)   | Med      | single app-wide canvas architecture (D2) keeps count at 1                              |
+| Shader compile failure on old iGPU                      | Med      | precompile on init, catch, fall back to static scene placeholder                       |
+| KS ETDRK4 instability at extreme params                 | Med      | clamp sliders to tested stable ranges; restart button                                  |
+| Leva in prod exposes interaction target for scrapers    | Low      | mount lazily on intent; hidden on mobile                                               |
+| Graph privacy leak via clipping title                   | Med      | private clippings appear (if at all) as opaque titleless nodes                         |
+| Vault repo LFS quota exceeded                           | Low      | monitor; prune unused attachments via `sync-attachments.mjs`                           |
 
 ---
 
 ## 10. Open Decisions Resolved
 
-| # | Decision | Chosen |
-|---|----------|--------|
-| 1 | CI provider | GitHub Actions + GitHub Pages |
-| 2 | LFS for vault | Enabled (PNG, JPG, PDF, excalidraw) |
-| 3 | Blog RSS feed | `@astrojs/rss` |
-| 4 | Sitemap + robots | `@astrojs/sitemap` + static `robots.txt` |
-| 5 | Analytics | Umami |
-| 6 | Clipping privacy default | `publish: false`, `share: false` |
-| 7 | Leva keyboard toggle | `L` |
-| 8 | Home default sim | Singularity first, Magnetic after polish |
-| 9 | `/sim/[name]` playground pages | Ship as part of sub-project D |
+| #   | Decision                       | Chosen                                   |
+| --- | ------------------------------ | ---------------------------------------- |
+| 1   | CI provider                    | GitHub Actions + GitHub Pages            |
+| 2   | LFS for vault                  | Enabled (PNG, JPG, PDF, excalidraw)      |
+| 3   | Blog RSS feed                  | `@astrojs/rss`                           |
+| 4   | Sitemap + robots               | `@astrojs/sitemap` + static `robots.txt` |
+| 5   | Analytics                      | Umami                                    |
+| 6   | Clipping privacy default       | `publish: false`, `share: false`         |
+| 7   | Leva keyboard toggle           | `L`                                      |
+| 8   | Home default sim               | Singularity first, Magnetic after polish |
+| 9   | `/sim/[name]` playground pages | Ship as part of sub-project D            |
 
 ---
 

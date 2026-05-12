@@ -8,8 +8,7 @@
    ======================================== */
 
 /* Default behavior: Hide title bar, show on hover (when auto-hide-title-bar-reveal) */
-body:not(.always-show-title-bar).auto-hide-title-bar-reveal
-  .view-header-title-container {
+body:not(.always-show-title-bar).auto-hide-title-bar-reveal .view-header-title-container {
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
 }
@@ -17,8 +16,7 @@ body:not(.always-show-title-bar).auto-hide-title-bar-reveal
 body:not(.always-show-title-bar).auto-hide-title-bar-reveal
   .view-header:hover
   .view-header-title-container,
-body:not(.always-show-title-bar).auto-hide-title-bar-reveal
-  .view-header-title-container:hover {
+body:not(.always-show-title-bar).auto-hide-title-bar-reveal .view-header-title-container:hover {
   opacity: 1;
 }
 
@@ -284,21 +282,13 @@ body:not(.is-mobile).auto-hide-other-nav-headers-reveal
 }
 
 /* Hide other nav headers */
-body.auto-hide-other-nav-headers-hide
-  .workspace-leaf-content[data-type="tag"]
-  .nav-header,
+body.auto-hide-other-nav-headers-hide .workspace-leaf-content[data-type="tag"] .nav-header,
 body.auto-hide-other-nav-headers-hide
   .workspace-leaf-content[data-type="outgoing-link"]
   .nav-header,
-body.auto-hide-other-nav-headers-hide
-  .workspace-leaf-content[data-type="backlink"]
-  .nav-header,
-body.auto-hide-other-nav-headers-hide
-  .workspace-leaf-content[data-type="outline"]
-  .nav-header,
-body.auto-hide-other-nav-headers-hide
-  .workspace-leaf-content[data-type="bookmarks"]
-  .nav-header {
+body.auto-hide-other-nav-headers-hide .workspace-leaf-content[data-type="backlink"] .nav-header,
+body.auto-hide-other-nav-headers-hide .workspace-leaf-content[data-type="outline"] .nav-header,
+body.auto-hide-other-nav-headers-hide .workspace-leaf-content[data-type="bookmarks"] .nav-header {
   display: none;
 }
 
@@ -363,15 +353,13 @@ body.auto-hide-right-tab-headers-hide
    ======================================== */
 
 /* Auto-collapse ribbon (Adrenaline style - collapses to thin strip until hover) */
-body:not(.is-mobile).auto-collapse-ribbon
-  .workspace-ribbon.side-dock-ribbon.mod-left {
+body:not(.is-mobile).auto-collapse-ribbon .workspace-ribbon.side-dock-ribbon.mod-left {
   flex-basis: 20px;
   transition: flex-basis 0.5s ease;
   background: var(--background-secondary) !important;
 }
 
-body:not(.is-mobile).auto-collapse-ribbon
-  .workspace-ribbon.side-dock-ribbon.mod-left:hover {
+body:not(.is-mobile).auto-collapse-ribbon .workspace-ribbon.side-dock-ribbon.mod-left:hover {
   flex-basis: 44px;
   transition: flex-basis 0.1s ease;
   background: var(--background-secondary) !important;
@@ -384,8 +372,7 @@ body:not(.is-mobile).auto-collapse-ribbon .workspace-ribbon.mod-left:before {
   background-color: var(--background-secondary) !important;
 }
 
-body:not(.is-mobile).auto-collapse-ribbon
-  .workspace-ribbon.mod-left:hover:before {
+body:not(.is-mobile).auto-collapse-ribbon .workspace-ribbon.mod-left:hover:before {
   width: 44px !important;
   transition: width 0.1s ease;
   background-color: var(--background-secondary) !important;
@@ -636,19 +623,13 @@ body:not(.is-mobile).hider-help-button-reveal
    ======================================== */
 
 body.hider-vault .workspace-sidedock-vault-profile,
-body.hider-vault:not(.is-mobile)
-  .workspace-split.mod-left-split
-  .workspace-sidedock-vault-profile {
+body.hider-vault:not(.is-mobile) .workspace-split.mod-left-split .workspace-sidedock-vault-profile {
   display: none;
 }
 
 /* Ensure help button area has fully opaque background */
-body.hider-vault:not(.is-mobile)
-  .mod-sidedock.mod-left-split
-  .workspace-drawer-vault-actions,
-body.hider-vault:not(.is-mobile)
-  .workspace-split.mod-left-split
-  .workspace-drawer-vault-actions {
+body.hider-vault:not(.is-mobile) .mod-sidedock.mod-left-split .workspace-drawer-vault-actions,
+body.hider-vault:not(.is-mobile) .workspace-split.mod-left-split .workspace-drawer-vault-actions {
   position: relative;
   z-index: 1;
   background-color: var(--background-secondary) !important;
@@ -682,9 +663,7 @@ body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
 /* Only apply overflow: hidden when there's actually a single tab */
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
   .mod-root
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .workspace-tab-header-container {
   max-height: 0;
   opacity: 0;
@@ -692,9 +671,7 @@ body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
 }
 
 /* OS-specific offsets for view-actions and view-header-left */
-body:not(
-    .is-mobile
-  ).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows {
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows {
   --view-actions-right-offset: 130px;
 }
 
@@ -703,12 +680,8 @@ body:not(.is-mobile).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos {
 }
 
 /* Base transition for view header elements to match sidebar animation */
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .view-header
-  .view-actions,
-body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .view-header
-  .view-header-left {
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .view-header .view-actions,
+body:not(.is-mobile).auto-hide-tab-bar-when-single-tab .view-header .view-header-left {
   transition:
     padding-right 0.3s ease,
     padding-left 0.3s ease;
@@ -718,9 +691,7 @@ body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
 body:not(
     .is-mobile
   ).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows.is-right-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header
   .view-actions {
   padding-right: var(--view-actions-right-offset) !important;
@@ -730,9 +701,7 @@ body:not(
 body:not(
     .is-mobile
   ).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos.is-left-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header
   .view-header-left {
   padding-left: var(--view-header-left-offset) !important;
@@ -740,9 +709,7 @@ body:not(
 
 /* Make view-header draggable when tab bar is hidden (single tab) */
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header {
   position: relative;
   -webkit-app-region: drag !important;
@@ -752,9 +719,7 @@ body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
 body:not(
     .is-mobile
   ).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows.is-right-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header {
   -webkit-app-region: no-drag !important;
 }
@@ -763,9 +728,7 @@ body:not(
 body:not(
     .is-mobile
   ).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-windows.is-right-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header::before {
   content: "";
   position: absolute;
@@ -782,9 +745,7 @@ body:not(
 body:not(
     .is-mobile
   ).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos.is-left-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header {
   -webkit-app-region: no-drag !important;
 }
@@ -793,9 +754,7 @@ body:not(
 body:not(
     .is-mobile
   ).auto-hide-tab-bar-when-single-tab.auto-hide-tab-bar-macos.is-left-sidebar-collapsed
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header::before {
   content: "";
   position: absolute;
@@ -810,39 +769,27 @@ body:not(
 
 /* Make interactive elements in view-header non-draggable and above pseudo-element */
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header
   .view-action,
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header
   .view-header-title,
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header
   button,
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header
   .clickable-icon,
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header
   .view-header-left,
 body:not(.is-mobile).auto-hide-tab-bar-when-single-tab
-  .workspace-tabs:not(.mod-stacked):not(
-    :has(.workspace-tab-header:nth-of-type(2))
-  )
+  .workspace-tabs:not(.mod-stacked):not(:has(.workspace-tab-header:nth-of-type(2)))
   .view-header
   .view-actions {
   position: relative;
@@ -880,13 +827,11 @@ body.hider-right-sidebar-button-hide .sidebar-toggle-button.mod-right {
 body:not(.is-mobile).hider-left-sidebar-button-reveal
   .workspace-ribbon.mod-left:hover
   .sidebar-toggle-button.mod-left,
-body:not(.is-mobile).hider-left-sidebar-button-reveal
-  .sidebar-toggle-button.mod-left:hover {
+body:not(.is-mobile).hider-left-sidebar-button-reveal .sidebar-toggle-button.mod-left:hover {
   opacity: 1;
 }
 
-body:not(.is-mobile).hider-left-sidebar-button-reveal
-  .sidebar-toggle-button.mod-left {
+body:not(.is-mobile).hider-left-sidebar-button-reveal .sidebar-toggle-button.mod-left {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -895,13 +840,11 @@ body:not(.is-mobile).hider-left-sidebar-button-reveal
 body:not(.is-mobile).hider-right-sidebar-button-reveal
   .workspace-ribbon.mod-right:hover
   .sidebar-toggle-button.mod-right,
-body:not(.is-mobile).hider-right-sidebar-button-reveal
-  .sidebar-toggle-button.mod-right:hover {
+body:not(.is-mobile).hider-right-sidebar-button-reveal .sidebar-toggle-button.mod-right:hover {
   opacity: 1;
 }
 
-body:not(.is-mobile).hider-right-sidebar-button-reveal
-  .sidebar-toggle-button.mod-right {
+body:not(.is-mobile).hider-right-sidebar-button-reveal .sidebar-toggle-button.mod-right {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -911,9 +854,7 @@ body:not(.is-mobile).hider-right-sidebar-button-reveal
   --frame-left-space: 60px;
 }
 
-.hider-left-sidebar-button-hide.mod-macos.is-hidden-frameless:not(
-    .is-popout-window
-  )
+.hider-left-sidebar-button-hide.mod-macos.is-hidden-frameless:not(.is-popout-window)
   .workspace
   .workspace-tabs.mod-top-right-space
   .workspace-tab-header-container {
@@ -954,9 +895,7 @@ body.hider-scroll-reveal.ui-tweaker-scrollbar-hover ::-webkit-scrollbar-thumb,
   background-color: var(--scrollbar-thumb-bg) !important;
 }
 
-body.theme-dark.hider-scroll-reveal
-  .ui-tweaker-scrollbar-hover
-  ::-webkit-scrollbar-thumb {
+body.theme-dark.hider-scroll-reveal .ui-tweaker-scrollbar-hover ::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
@@ -1019,10 +958,8 @@ body:not(.is-mobile).ui-tweaker-deemphasize-properties .metadata-container {
     opacity 0.3s ease;
 }
 
-body:not(.is-mobile).ui-tweaker-deemphasize-properties
-  .metadata-container:hover,
-body:not(.is-mobile).ui-tweaker-deemphasize-properties
-  .metadata-container:focus-within {
+body:not(.is-mobile).ui-tweaker-deemphasize-properties .metadata-container:hover,
+body:not(.is-mobile).ui-tweaker-deemphasize-properties .metadata-container:focus-within {
   filter: grayscale(0);
   opacity: 1;
 }
@@ -1062,8 +999,7 @@ body:not(.is-mobile).hide-tab-list-icon-reveal .workspace-tab-header-tab-list {
   transition: opacity 0.3s ease;
 }
 
-body:not(.is-mobile).hide-tab-list-icon-reveal
-  .workspace-tab-header-tab-list:hover {
+body:not(.is-mobile).hide-tab-list-icon-reveal .workspace-tab-header-tab-list:hover {
   opacity: 1;
 }
 
@@ -1078,8 +1014,7 @@ body:not(.is-mobile).hide-new-tab-icon-reveal .workspace-tab-header-new-tab {
   transition: opacity 0.3s ease;
 }
 
-body:not(.is-mobile).hide-new-tab-icon-reveal
-  .workspace-tab-header-new-tab:hover {
+body:not(.is-mobile).hide-new-tab-icon-reveal .workspace-tab-header-new-tab:hover {
   opacity: 1;
 }
 
@@ -1099,8 +1034,7 @@ body:not(.is-mobile).hide-tab-close-button-reveal
 body:not(.is-mobile).hide-tab-close-button-reveal
   .workspace-tab-header:hover
   .workspace-tab-header-inner-close-button,
-body:not(.is-mobile).hide-tab-close-button-reveal
-  .workspace-tab-header-inner-close-button:hover {
+body:not(.is-mobile).hide-tab-close-button-reveal .workspace-tab-header-inner-close-button:hover {
   opacity: 1 !important;
 }
 
@@ -1108,30 +1042,24 @@ body:not(.is-mobile).hide-tab-close-button-reveal
    Desktop Hide Buttons
    ======================================== */
 
-.hide-button-new-note
-  .clickable-icon.nav-action-button:has(.svg-icon.lucide-edit) {
+.hide-button-new-note .clickable-icon.nav-action-button:has(.svg-icon.lucide-edit) {
   display: none;
 }
 
-.hide-button-new-folder
-  .clickable-icon.nav-action-button:has(.svg-icon.lucide-folder-plus) {
+.hide-button-new-folder .clickable-icon.nav-action-button:has(.svg-icon.lucide-folder-plus) {
   display: none;
 }
 
-.hide-button-sort-order
-  .clickable-icon.nav-action-button:has(.svg-icon.lucide-sort-asc) {
+.hide-button-sort-order .clickable-icon.nav-action-button:has(.svg-icon.lucide-sort-asc) {
   display: none;
 }
 
-.hide-button-auto-reveal
-  .clickable-icon.nav-action-button:has(.svg-icon.lucide-gallery-vertical) {
+.hide-button-auto-reveal .clickable-icon.nav-action-button:has(.svg-icon.lucide-gallery-vertical) {
   display: none;
 }
 
-.hide-button-collapse-all
-  .clickable-icon.nav-action-button:has(.svg-icon.lucide-chevrons-up-down),
-.hide-button-collapse-all
-  .clickable-icon.nav-action-button:has(.svg-icon.lucide-chevrons-down-up) {
+.hide-button-collapse-all .clickable-icon.nav-action-button:has(.svg-icon.lucide-chevrons-up-down),
+.hide-button-collapse-all .clickable-icon.nav-action-button:has(.svg-icon.lucide-chevrons-down-up) {
   display: none;
 }
 
@@ -1149,24 +1077,16 @@ body:not(.is-mobile).hide-tab-close-button-reveal
 /* Colors are applied via inline styles in ExplorerManager.ts when custom colors are set */
 /* No CSS rules here to avoid interfering with default icon styling */
 
-.hide-button-reading-mode
-  .view-header
-  .clickable-icon.view-action:has(.svg-icon.lucide-book-open),
-.hide-button-reading-mode
-  .view-header
-  .clickable-icon.view-action:has(.svg-icon.lucide-edit-3) {
+.hide-button-reading-mode .view-header .clickable-icon.view-action:has(.svg-icon.lucide-book-open),
+.hide-button-reading-mode .view-header .clickable-icon.view-action:has(.svg-icon.lucide-edit-3) {
   display: none;
 }
 
-.hide-button-bookmarked
-  .view-header
-  .clickable-icon.view-action:has(.svg-icon.lucide-bookmark) {
+.hide-button-bookmarked .view-header .clickable-icon.view-action:has(.svg-icon.lucide-bookmark) {
   display: none;
 }
 
-.hide-button-search-settings
-  .search-row
-  .clickable-icon:has(.svg-icon.lucide-sliders-horizontal) {
+.hide-button-search-settings .search-row .clickable-icon:has(.svg-icon.lucide-sliders-horizontal) {
   display: none;
 }
 
@@ -1184,13 +1104,11 @@ body:not(.is-mobile).hide-tab-close-button-reveal
    Mobile Hide Buttons
    ======================================== */
 
-.hide-button-mobile-navbar-action-back
-  .mobile-navbar-action.mobile-navbar-action-back {
+.hide-button-mobile-navbar-action-back .mobile-navbar-action.mobile-navbar-action-back {
   display: none;
 }
 
-.hide-button-mobile-navbar-action-forward
-  .mobile-navbar-action.mobile-navbar-action-forward {
+.hide-button-mobile-navbar-action-forward .mobile-navbar-action.mobile-navbar-action-forward {
   display: none;
 }
 
@@ -1199,18 +1117,15 @@ body:not(.is-mobile).hide-tab-close-button-reveal
   display: none;
 }
 
-.hide-button-mobile-navbar-action-new-tab
-  .mobile-navbar-action.mobile-navbar-action-new-tab {
+.hide-button-mobile-navbar-action-new-tab .mobile-navbar-action.mobile-navbar-action-new-tab {
   display: none;
 }
 
-.hide-button-mobile-navbar-action-tabs
-  .mobile-navbar-action.mobile-navbar-action-tabs {
+.hide-button-mobile-navbar-action-tabs .mobile-navbar-action.mobile-navbar-action-tabs {
   display: none;
 }
 
-.hide-button-mobile-navbar-action-menu
-  .mobile-navbar-action.mobile-navbar-action-menu {
+.hide-button-mobile-navbar-action-menu .mobile-navbar-action.mobile-navbar-action-menu {
   display: none;
 }
 
@@ -1237,16 +1152,12 @@ body.hide-mobile-title .minimal-tab-title-visible .view-header-title-container {
 .hide-mobile-sync-icon.is-mobile
   .workspace-drawer.mod-right
   .workspace-drawer-header
-  .workspace-drawer-header-icon.sync-status-icon:not(
-    .ui-tweaker-sync-replacement
-  ),
+  .workspace-drawer-header-icon.sync-status-icon:not(.ui-tweaker-sync-replacement),
 .hide-mobile-sync-icon.is-mobile
   .workspace-drawer.mod-right
   .workspace-drawer-header
   .clickable-icon.sync-status-icon:not(.ui-tweaker-sync-replacement),
-.hide-mobile-sync-icon.is-mobile
-  .status-bar
-  > .plugin-sync:not(.ui-tweaker-sync-replacement) {
+.hide-mobile-sync-icon.is-mobile .status-bar > .plugin-sync:not(.ui-tweaker-sync-replacement) {
   display: none !important;
 }
 
@@ -1258,9 +1169,7 @@ body.hide-mobile-title .minimal-tab-title-visible .view-header-title-container {
   display: none;
 }
 
-.swap-mobile-new-tab-icon
-  .mobile-navbar-action-new-tab
-  .clickable-icon::before {
+.swap-mobile-new-tab-icon .mobile-navbar-action-new-tab .clickable-icon::before {
   content: "";
   display: inline-block;
   width: 24px;
@@ -1472,22 +1381,16 @@ body:not(.is-mobile).hider-tabs-windows
 }
 
 /* Graph & Canvas controls stay clear of window buttons (only when right sidebar is closed) */
-body:not(.is-mobile).hider-tabs-windows
-  .workspace:not(.is-right-sidedock-open)
-  .graph-controls {
+body:not(.is-mobile).hider-tabs-windows .workspace:not(.is-right-sidedock-open) .graph-controls {
   top: var(--controls-offset) !important;
 }
 
-body:not(.is-mobile).hider-tabs-windows
-  .workspace:not(.is-right-sidedock-open)
-  .canvas-controls {
+body:not(.is-mobile).hider-tabs-windows .workspace:not(.is-right-sidedock-open) .canvas-controls {
   top: var(--controls-offset) !important;
 }
 
 /* Push entire toolbar to the right of minimize/maximize/close (only when right sidebar is closed) */
-body:not(.is-mobile).hider-tabs-windows
-  .workspace:not(.is-right-sidedock-open)
-  .bases-toolbar {
+body:not(.is-mobile).hider-tabs-windows .workspace:not(.is-right-sidedock-open) .bases-toolbar {
   padding-right: var(--toolbar-right-offset) !important;
 }
 
@@ -1525,9 +1428,7 @@ body:not(.is-mobile).hider-tabs-macos .inline-title {
 }
 
 /* Only apply bump when tab bar is hidden */
-body:not(.is-mobile).hider-tabs-macos
-  .workspace-leaf-content[data-type="markdown"]
-  .inline-title {
+body:not(.is-mobile).hider-tabs-macos .workspace-leaf-content[data-type="markdown"] .inline-title {
   margin-top: var(--drag-bump) !important;
 }
 
@@ -1541,9 +1442,7 @@ body:not(.is-mobile).hider-tabs-macos
 }
 
 /* Push entire toolbar to the right of Mac window buttons (only when left sidebar is closed) */
-body:not(.is-mobile).hider-tabs-macos
-  .workspace:not(.is-left-sidedock-open)
-  .bases-toolbar {
+body:not(.is-mobile).hider-tabs-macos .workspace:not(.is-left-sidedock-open) .bases-toolbar {
   padding-left: var(--toolbar-left-offset) !important;
 }
 
@@ -1599,9 +1498,7 @@ body:not(.is-mobile).hider-tabs-neutral
    ======================================== */
 
 /* Hide help button when replacement is enabled or when helpButton is set to "hide" */
-body.ui-tweaker-hide-help-button
-  .workspace-drawer-vault-actions
-  .clickable-icon:has(svg.help) {
+body.ui-tweaker-hide-help-button .workspace-drawer-vault-actions .clickable-icon:has(svg.help) {
   display: none !important;
 }
 
@@ -1620,9 +1517,7 @@ body.ui-tweaker-hide-sync-button.is-mobile
 body.ui-tweaker-hide-sync-button.is-mobile
   .workspace-drawer.mod-right
   .workspace-drawer-header
-  .workspace-drawer-header-icon.sync-status-icon:not(
-    .ui-tweaker-sync-replacement
-  ),
+  .workspace-drawer-header-icon.sync-status-icon:not(.ui-tweaker-sync-replacement),
 body.ui-tweaker-hide-sync-button.is-mobile
   .workspace-drawer.mod-right
   .workspace-drawer-header
@@ -1646,9 +1541,7 @@ body.ui-tweaker-hide-sync-button.is-mobile
 }
 
 /* Ensure the sync replacement is on the far right if we're not cloning */
-body.ui-tweaker-sync-replacement-enabled
-  .workspace-drawer.mod-right
-  .workspace-drawer-header {
+body.ui-tweaker-sync-replacement-enabled .workspace-drawer.mod-right .workspace-drawer-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2252,9 +2145,7 @@ div.ui-tweaker-status-bar-row-disabled span.ui-tweaker-status-bar-row-preview {
   opacity: 0.3;
 }
 
-div.ui-tweaker-status-bar-row-hidden:not(
-    div.ui-tweaker-status-bar-row-disabled
-  ) {
+div.ui-tweaker-status-bar-row-hidden:not(div.ui-tweaker-status-bar-row-disabled) {
   color: var(--text-faint);
   opacity: 0.75;
 }
@@ -2296,9 +2187,7 @@ div.ui-tweaker-status-bar-row-hidden:not(div.ui-tweaker-status-bar-row-disabled)
    ======================================== */
 
 /* Hide default icons in minimal mode if NOT custom */
-.metadata-property.ui-tweaker-property-minimal:not(
-    .ui-tweaker-property-custom-icon
-  )
+.metadata-property.ui-tweaker-property-minimal:not(.ui-tweaker-property-custom-icon)
   .metadata-property-icon {
   display: none !important;
 }

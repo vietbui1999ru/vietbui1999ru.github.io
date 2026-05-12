@@ -11,8 +11,7 @@ var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if ((from && typeof from === "object") || typeof from === "function") {
@@ -38,8 +37,7 @@ var __toESM = (mod, isNodeMode, target) => (
     mod,
   )
 );
-var __toCommonJS = (mod) =>
-  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
@@ -161,13 +159,11 @@ var ZenModeSettingTab = class extends import_obsidian2.PluginSettingTab {
           "When enabled, the exit button is hidden on desktop but reveals itself on hover as long as the zen mode exit button is on.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.autoHideButtonOnDesktop)
-            .onChange((value) => {
-              this.plugin.settings.autoHideButtonOnDesktop = value;
-              void this.plugin.saveSettings();
-              this.plugin.refresh();
-            }),
+          toggle.setValue(this.plugin.settings.autoHideButtonOnDesktop).onChange((value) => {
+            this.plugin.settings.autoHideButtonOnDesktop = value;
+            void this.plugin.saveSettings();
+            this.plugin.refresh();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -175,13 +171,11 @@ var ZenModeSettingTab = class extends import_obsidian2.PluginSettingTab {
         .setName("Hide properties in zen mode")
         .setDesc("Hide properties when zen mode is active.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.hideProperties)
-            .onChange((value) => {
-              this.plugin.settings.hideProperties = value;
-              void this.plugin.saveSettings();
-              this.plugin.refresh();
-            }),
+          toggle.setValue(this.plugin.settings.hideProperties).onChange((value) => {
+            this.plugin.settings.hideProperties = value;
+            void this.plugin.saveSettings();
+            this.plugin.refresh();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -189,13 +183,11 @@ var ZenModeSettingTab = class extends import_obsidian2.PluginSettingTab {
         .setName("Hide inline title in zen mode")
         .setDesc("Hide the inline title (note title) when zen mode is active.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.hideInlineTitle)
-            .onChange((value) => {
-              this.plugin.settings.hideInlineTitle = value;
-              void this.plugin.saveSettings();
-              this.plugin.refresh();
-            }),
+          toggle.setValue(this.plugin.settings.hideInlineTitle).onChange((value) => {
+            this.plugin.settings.hideInlineTitle = value;
+            void this.plugin.saveSettings();
+            this.plugin.refresh();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -203,13 +195,11 @@ var ZenModeSettingTab = class extends import_obsidian2.PluginSettingTab {
         .setName("Hide status bar in zen mode")
         .setDesc("Hide the status bar when zen mode is active.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.hideStatusBar)
-            .onChange((value) => {
-              this.plugin.settings.hideStatusBar = value;
-              void this.plugin.saveSettings();
-              this.plugin.refresh();
-            }),
+          toggle.setValue(this.plugin.settings.hideStatusBar).onChange((value) => {
+            this.plugin.settings.hideStatusBar = value;
+            void this.plugin.saveSettings();
+            this.plugin.refresh();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -217,13 +207,11 @@ var ZenModeSettingTab = class extends import_obsidian2.PluginSettingTab {
         .setName("Hide linked mentions in zen mode")
         .setDesc("Hide linked mentions when zen mode is active.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.hideLinkedMentions)
-            .onChange((value) => {
-              this.plugin.settings.hideLinkedMentions = value;
-              void this.plugin.saveSettings();
-              this.plugin.refresh();
-            }),
+          toggle.setValue(this.plugin.settings.hideLinkedMentions).onChange((value) => {
+            this.plugin.settings.hideLinkedMentions = value;
+            void this.plugin.saveSettings();
+            this.plugin.refresh();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -231,13 +219,11 @@ var ZenModeSettingTab = class extends import_obsidian2.PluginSettingTab {
         .setName("Hide scroll bar in zen mode")
         .setDesc("Hide scroll bar when zen mode is active.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.hideScrollBar)
-            .onChange((value) => {
-              this.plugin.settings.hideScrollBar = value;
-              void this.plugin.saveSettings();
-              this.plugin.refresh();
-            }),
+          toggle.setValue(this.plugin.settings.hideScrollBar).onChange((value) => {
+            this.plugin.settings.hideScrollBar = value;
+            void this.plugin.saveSettings();
+            this.plugin.refresh();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -277,13 +263,11 @@ var ZenModeSettingTab = class extends import_obsidian2.PluginSettingTab {
         .setName("Focused file mode")
         .setDesc("Only show the active file in zen mode, hide all other panes.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.focusedFileMode)
-            .onChange((value) => {
-              this.plugin.settings.focusedFileMode = value;
-              void this.plugin.saveSettings();
-              this.plugin.refresh();
-            }),
+          toggle.setValue(this.plugin.settings.focusedFileMode).onChange((value) => {
+            this.plugin.settings.focusedFileMode = value;
+            void this.plugin.saveSettings();
+            this.plugin.refresh();
+          }),
         );
     });
   }
@@ -334,22 +318,13 @@ var ZenMode = class extends import_obsidian3.Plugin {
         `${this.settings.bottomPadding}px`,
       );
       if (this.settings.zenMode) {
-        document.body.classList.toggle(
-          "zenmode-hide-properties",
-          this.settings.hideProperties,
-        );
-        document.body.classList.toggle(
-          "zenmode-hide-status-bar",
-          this.settings.hideStatusBar,
-        );
+        document.body.classList.toggle("zenmode-hide-properties", this.settings.hideProperties);
+        document.body.classList.toggle("zenmode-hide-status-bar", this.settings.hideStatusBar);
         document.body.classList.toggle(
           "zenmode-hide-linked-mentions",
           this.settings.hideLinkedMentions,
         );
-        document.body.classList.toggle(
-          "zenmode-hide-scroll-bar",
-          this.settings.hideScrollBar,
-        );
+        document.body.classList.toggle("zenmode-hide-scroll-bar", this.settings.hideScrollBar);
       } else {
         document.body.classList.remove("zenmode-hide-properties");
         document.body.classList.remove("zenmode-hide-status-bar");
@@ -443,10 +418,7 @@ var ZenMode = class extends import_obsidian3.Plugin {
       this.buttonContainer.remove();
     }
     if (this.visualViewportResizeHandler && window.visualViewport) {
-      window.visualViewport.removeEventListener(
-        "resize",
-        this.visualViewportResizeHandler,
-      );
+      window.visualViewport.removeEventListener("resize", this.visualViewportResizeHandler);
     }
     if (this.settings.zenMode) {
       this.settings.zenMode = false;
@@ -478,10 +450,7 @@ var ZenMode = class extends import_obsidian3.Plugin {
       return;
     }
     const app = this.app;
-    if (
-      app.workspace.leftSplit == void 0 ||
-      app.workspace.rightSplit == void 0
-    ) {
+    if (app.workspace.leftSplit == void 0 || app.workspace.rightSplit == void 0) {
       return;
     }
     if (!this.settings.zenMode) {
@@ -524,10 +493,7 @@ var ZenMode = class extends import_obsidian3.Plugin {
       this.visualViewportResizeHandler = () => {
         this.adjustButtonPosition();
       };
-      window.visualViewport.addEventListener(
-        "resize",
-        this.visualViewportResizeHandler,
-      );
+      window.visualViewport.addEventListener("resize", this.visualViewportResizeHandler);
     }
   }
   /**
@@ -537,22 +503,15 @@ var ZenMode = class extends import_obsidian3.Plugin {
    */
   adjustButtonPosition() {
     var _a;
-    if (
-      !this.buttonContainer ||
-      !document.body.classList.contains("is-mobile")
-    ) {
+    if (!this.buttonContainer || !document.body.classList.contains("is-mobile")) {
       return;
     }
     const viewportHeight =
-      ((_a = window.visualViewport) == null ? void 0 : _a.height) ||
-      window.innerHeight;
+      ((_a = window.visualViewport) == null ? void 0 : _a.height) || window.innerHeight;
     const windowHeight = window.outerHeight;
     const navigationBarHeight = Math.max(0, windowHeight - viewportHeight);
     const minBottomOffset = 60;
-    const calculatedOffset = Math.max(
-      minBottomOffset,
-      navigationBarHeight + 10,
-    );
+    const calculatedOffset = Math.max(minBottomOffset, navigationBarHeight + 10);
     setCssProps(this.buttonContainer, { bottom: `${calculatedOffset}px` });
   }
   /**
@@ -571,10 +530,7 @@ var ZenMode = class extends import_obsidian3.Plugin {
         this.hasButton = true;
       }
       this.buttonContainer.classList.add("zenmode-button-visible");
-      this.buttonContainer.classList.toggle(
-        "zenmode-button-moved-up",
-        !isMobile,
-      );
+      this.buttonContainer.classList.toggle("zenmode-button-moved-up", !isMobile);
       if (
         this.settings.autoHideButtonOnDesktop &&
         !isMobile &&
@@ -582,15 +538,11 @@ var ZenMode = class extends import_obsidian3.Plugin {
       ) {
         this.buttonContainer.classList.add("zenmode-button-auto-hide");
         if (!this._hasShownInitialHighlight) {
-          this.buttonContainer.classList.add(
-            "zenmode-button-initial-highlight",
-          );
+          this.buttonContainer.classList.add("zenmode-button-initial-highlight");
           this._hasShownInitialHighlight = true;
           const timeout1 = window.setTimeout(() => {
             if (this.buttonContainer) {
-              this.buttonContainer.classList.remove(
-                "zenmode-button-initial-highlight",
-              );
+              this.buttonContainer.classList.remove("zenmode-button-initial-highlight");
               const timeout2 = window.setTimeout(() => {
                 if (this.buttonContainer) {
                   this.buttonContainer.classList.add("zenmode-button-fade-out");
@@ -603,9 +555,7 @@ var ZenMode = class extends import_obsidian3.Plugin {
         }
       } else {
         this.buttonContainer.classList.remove("zenmode-button-auto-hide");
-        this.buttonContainer.classList.remove(
-          "zenmode-button-initial-highlight",
-        );
+        this.buttonContainer.classList.remove("zenmode-button-initial-highlight");
         this.buttonContainer.classList.remove("zenmode-button-fade-out");
       }
       this.adjustButtonPosition();
@@ -623,8 +573,7 @@ var ZenMode = class extends import_obsidian3.Plugin {
     var _a;
     if (!leaf) return null;
     const leafWithContainer = leaf;
-    const leafContainer =
-      (_a = leafWithContainer.containerEl) != null ? _a : null;
+    const leafContainer = (_a = leafWithContainer.containerEl) != null ? _a : null;
     if (!leafContainer) return null;
     const tabContainer = leafContainer.closest(".workspace-tabs");
     if (!tabContainer || !(tabContainer instanceof HTMLElement)) return null;
@@ -651,9 +600,7 @@ var ZenMode = class extends import_obsidian3.Plugin {
         }
         const leafWithContainer = leaf;
         if (leafWithContainer.containerEl) {
-          const tabHeader = leafWithContainer.containerEl.querySelector(
-            ".workspace-tab-header",
-          );
+          const tabHeader = leafWithContainer.containerEl.querySelector(".workspace-tab-header");
           if (tabHeader && tabHeader instanceof HTMLElement) {
             if (
               tabHeader.classList.contains("is-pinned") ||
@@ -680,24 +627,17 @@ var ZenMode = class extends import_obsidian3.Plugin {
    * Looks for tabs with the 'is-active' class or visible active tab headers.
    */
   findActiveTabContainerFromDOM() {
-    const activeTabHeader = document.querySelector(
-      ".workspace-tab-header.is-active",
-    );
+    const activeTabHeader = document.querySelector(".workspace-tab-header.is-active");
     if (activeTabHeader) {
       const tabContainer = activeTabHeader.closest(".workspace-tabs");
       if (tabContainer && tabContainer instanceof HTMLElement) {
         return tabContainer;
       }
     }
-    const allTabContainers = Array.from(
-      document.querySelectorAll(".workspace-tabs"),
-    );
+    const allTabContainers = Array.from(document.querySelectorAll(".workspace-tabs"));
     for (const container of allTabContainers) {
       const el = container;
-      if (
-        el.offsetParent !== null &&
-        !el.classList.contains("zenmode-tab-hidden")
-      ) {
+      if (el.offsetParent !== null && !el.classList.contains("zenmode-tab-hidden")) {
         return el;
       }
     }
@@ -730,9 +670,7 @@ var ZenMode = class extends import_obsidian3.Plugin {
     }
     await this.revealPinnedTabIfExists();
     if (!this._tabContainersCache) {
-      this._tabContainersCache = Array.from(
-        document.querySelectorAll(".workspace-tabs"),
-      );
+      this._tabContainersCache = Array.from(document.querySelectorAll(".workspace-tabs"));
     }
     const allTabContainers = this._tabContainersCache;
     let activeTabContainer = null;
@@ -797,10 +735,7 @@ var ZenMode = class extends import_obsidian3.Plugin {
         if (this.settings.focusedFileMode) {
           await this.revealPinnedTabIfExists();
         }
-        if (
-          this.settings.fullscreen &&
-          document.documentElement.requestFullscreen
-        ) {
+        if (this.settings.fullscreen && document.documentElement.requestFullscreen) {
           try {
             await document.documentElement.requestFullscreen();
             await new Promise((resolve) => requestAnimationFrame(resolve));

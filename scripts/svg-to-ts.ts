@@ -92,8 +92,7 @@ function processSVGFiles(files: SVGFile[]): ProcessedFile[] {
 
 function formatSummary(processed: ProcessedFile[]): string {
   const lines = processed.map(
-    (f) =>
-      `- ${f.fileName} → ${f.tsFileName} (${f.pathCount} paths, viewBox="${f.viewBox}")`,
+    (f) => `- ${f.fileName} → ${f.tsFileName} (${f.pathCount} paths, viewBox="${f.viewBox}")`,
   );
   return [`Processed ${processed.length} SVG file(s):`, ...lines].join("\n");
 }

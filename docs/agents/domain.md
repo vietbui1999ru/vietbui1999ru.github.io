@@ -2,10 +2,10 @@
 
 **Layout:** Single-context
 
-| File | Purpose |
-|------|---------|
+| File         | Purpose                                        |
+| ------------ | ---------------------------------------------- |
 | `CONTEXT.md` | Shared domain language between devs and agents |
-| `docs/adr/`  | Architecture Decision Records |
+| `docs/adr/`  | Architecture Decision Records                  |
 
 ## Agent instructions
 
@@ -22,11 +22,14 @@
 **Date:** YYYY-MM-DD
 
 ## Context
+
 What problem or question led to this decision?
 
 ## Decision
+
 What was decided?
 
 ## Consequences
+
 Positive, negative, or neutral implications.
 ```

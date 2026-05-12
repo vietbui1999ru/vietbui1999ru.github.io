@@ -46,11 +46,7 @@ export function Marquee3D({
               className="group relative aspect-square w-full overflow-hidden rounded-xl border border-border/60 bg-card/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               onClick={() => onImageClick?.(img)}
             >
-              <img
-                src={img.src}
-                alt={img.alt ?? img.id}
-                className="h-full w-full object-cover"
-              />
+              <img src={img.src} alt={img.alt ?? img.id} className="h-full w-full object-cover" />
             </button>
           ))}
         </div>
@@ -86,10 +82,7 @@ export function Marquee3D({
         }}
       >
         {columnGroups.map((colImages, colIndex) => (
-          <div
-            key={colIndex}
-            className="h-[40vh] min-h-64 max-h-[40vh] overflow-hidden shrink-0"
-          >
+          <div key={colIndex} className="h-[40vh] min-h-64 max-h-[40vh] overflow-hidden shrink-0">
             <div
               className="marquee3d-column flex flex-col gap-4 shrink-0"
               style={{

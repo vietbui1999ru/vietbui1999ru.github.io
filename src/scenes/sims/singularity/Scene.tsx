@@ -1,9 +1,9 @@
-import React, { useRef, useMemo } from 'react'
-import { useFrame } from '@react-three/fiber'
-import { shaderMaterial } from '@react-three/drei'
-import * as THREE from 'three'
-import type { SingularityConfig } from './index'
-import type { PerfTier, SymmetryConfig } from '@/scenes/engine/types'
+import React, { useRef, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import { shaderMaterial } from "@react-three/drei";
+import * as THREE from "three";
+import type { SingularityConfig } from "./index";
+import type { PerfTier, SymmetryConfig } from "@/scenes/engine/types";
 
 // ---------------------------------------------------------------------------
 // Vertex shader — fullscreen quad in NDC.
@@ -18,7 +18,7 @@ void main() {
   vUv = uv;
   gl_Position = vec4(position.xy, 0.0, 1.0);
 }
-`
+`;
 
 // ---------------------------------------------------------------------------
 // Fragment shader — faithful port of src/components/shaders/Singularity.tsx.
@@ -85,7 +85,7 @@ void main() {
 
   gl_FragColor = 1.0 - exp(-innerExp / denom * u_intensity);
 }
-`
+`;
 
 // ---------------------------------------------------------------------------
 // ShaderMaterial via drei (auto-attaches to mesh, hot-reloadable)
@@ -102,27 +102,29 @@ const SingularityMaterial = shaderMaterial(
   },
   vertexShader,
   fragmentShader,
-)
+);
 
 // Extend three.js namespace so JSX can reference <singularityMaterial />
 // (drei extend call done at module load time)
-import { extend } from '@react-three/fiber'
-extend({ SingularityMaterial })
+import { extend } from "@react-three/fiber";
+extend({ SingularityMaterial });
 
 // TypeScript JSX element declaration
-declare module '@react-three/fiber' {
+declare module "@react-three/fiber" {
   interface ThreeElements {
     singularityMaterial: React.PropsWithChildren<{
-      ref?: React.Ref<THREE.ShaderMaterial & {
-        u_time: number
-        u_resolution: THREE.Vector2
-        u_speed: number
-        u_intensity: number
-        u_size: number
-        u_waveStrength: number
-        u_colorShift: number
-      }>
-    }>
+      ref?: React.Ref<
+        THREE.ShaderMaterial & {
+          u_time: number;
+          u_resolution: THREE.Vector2;
+          u_speed: number;
+          u_intensity: number;
+          u_size: number;
+          u_waveStrength: number;
+          u_colorShift: number;
+        }
+      >;
+    }>;
   }
 }
 
@@ -131,9 +133,9 @@ declare module '@react-three/fiber' {
 // ---------------------------------------------------------------------------
 
 export interface SingularitySceneProps {
-  config: SingularityConfig
-  perf: PerfTier
-  symmetry: SymmetryConfig
+  config: SingularityConfig;
+  perf: PerfTier;
+  symmetry: SymmetryConfig;
 }
 
 /**
@@ -145,15 +147,17 @@ export interface SingularitySceneProps {
  * `u_time` is driven by the r3f frame clock.
  */
 export function SingularityScene({ config }: SingularitySceneProps): React.ReactElement {
-  const matRef = useRef<THREE.ShaderMaterial & {
-    u_time: number
-    u_resolution: THREE.Vector2
-    u_speed: number
-    u_intensity: number
-    u_size: number
-    u_waveStrength: number
-    u_colorShift: number
-  }>(null)
+  const matRef = useRef<
+    THREE.ShaderMaterial & {
+      u_time: number;
+      u_resolution: THREE.Vector2;
+      u_speed: number;
+      u_intensity: number;
+      u_size: number;
+      u_waveStrength: number;
+      u_colorShift: number;
+    }
+  >(null);
 
   // Keep uniforms in sync with leva config
   const uniforms = useMemo(
@@ -165,18 +169,18 @@ export function SingularityScene({ config }: SingularitySceneProps): React.React
       u_colorShift: config.colorShift,
     }),
     [config],
-  )
+  );
 
   useFrame(({ clock, size }) => {
-    if (!matRef.current) return
-    matRef.current.u_time = clock.getElapsedTime()
-    matRef.current.u_resolution.set(size.width, size.height)
-    matRef.current.u_speed = uniforms.u_speed
-    matRef.current.u_intensity = uniforms.u_intensity
-    matRef.current.u_size = uniforms.u_size
-    matRef.current.u_waveStrength = uniforms.u_waveStrength
-    matRef.current.u_colorShift = uniforms.u_colorShift
-  })
+    if (!matRef.current) return;
+    matRef.current.u_time = clock.getElapsedTime();
+    matRef.current.u_resolution.set(size.width, size.height);
+    matRef.current.u_speed = uniforms.u_speed;
+    matRef.current.u_intensity = uniforms.u_intensity;
+    matRef.current.u_size = uniforms.u_size;
+    matRef.current.u_waveStrength = uniforms.u_waveStrength;
+    matRef.current.u_colorShift = uniforms.u_colorShift;
+  });
 
   return (
     // Fullscreen quad: PlaneGeometry covers NDC [-1,1] × [-1,1] at z=0
@@ -184,5 +188,5 @@ export function SingularityScene({ config }: SingularitySceneProps): React.React
       <planeGeometry args={[2, 2]} />
       <singularityMaterial ref={matRef} />
     </mesh>
-  )
+  );
 }

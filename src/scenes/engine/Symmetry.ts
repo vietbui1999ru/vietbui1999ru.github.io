@@ -18,12 +18,12 @@
  * Points start at angle 0 (positive x-axis) and progress counter-clockwise.
  */
 export function cyclicRing(n: number, radius: number): Array<[number, number]> {
-  const points: Array<[number, number]> = []
+  const points: Array<[number, number]> = [];
   for (let i = 0; i < n; i++) {
-    const angle = (2 * Math.PI * i) / n
-    points.push([radius * Math.cos(angle), radius * Math.sin(angle)])
+    const angle = (2 * Math.PI * i) / n;
+    points.push([radius * Math.cos(angle), radius * Math.sin(angle)]);
   }
-  return points
+  return points;
 }
 
 /**
@@ -32,9 +32,9 @@ export function cyclicRing(n: number, radius: number): Array<[number, number]> {
  * reflections across the x-axis (y → -y), giving the D_n dihedral arrangement.
  */
 export function dihedralRing(n: number, radius: number): Array<[number, number]> {
-  const base = cyclicRing(n, radius)
-  const reflected: Array<[number, number]> = base.map(([x, y]) => [x, -y])
-  return [...base, ...reflected]
+  const base = cyclicRing(n, radius);
+  const reflected: Array<[number, number]> = base.map(([x, y]) => [x, -y]);
+  return [...base, ...reflected];
 }
 
 // ---------------------------------------------------------------------------
@@ -58,27 +58,27 @@ export function cnMask(
   n: number,
   base: (x: number, y: number) => number,
 ): Float32Array {
-  const mask = new Float32Array(size * size)
+  const mask = new Float32Array(size * size);
   for (let j = 0; j < size; j++) {
     for (let i = 0; i < size; i++) {
       // Map pixel to [-1, 1]
-      const x = (i / (size - 1)) * 2 - 1
-      const y = (j / (size - 1)) * 2 - 1
+      const x = (i / (size - 1)) * 2 - 1;
+      const y = (j / (size - 1)) * 2 - 1;
 
       // Average over all C_n rotations
-      let sum = 0
+      let sum = 0;
       for (let k = 0; k < n; k++) {
-        const angle = (2 * Math.PI * k) / n
-        const cos = Math.cos(angle)
-        const sin = Math.sin(angle)
-        const rx = cos * x - sin * y
-        const ry = sin * x + cos * y
-        sum += base(rx, ry)
+        const angle = (2 * Math.PI * k) / n;
+        const cos = Math.cos(angle);
+        const sin = Math.sin(angle);
+        const rx = cos * x - sin * y;
+        const ry = sin * x + cos * y;
+        sum += base(rx, ry);
       }
-      mask[j * size + i] = sum / n
+      mask[j * size + i] = sum / n;
     }
   }
-  return mask
+  return mask;
 }
 
 /**
@@ -99,31 +99,31 @@ export function dnMask(
   n: number,
   base: (x: number, y: number) => number,
 ): Float32Array {
-  const mask = new Float32Array(size * size)
+  const mask = new Float32Array(size * size);
   for (let j = 0; j < size; j++) {
     for (let i = 0; i < size; i++) {
-      const x = (i / (size - 1)) * 2 - 1
-      const y = (j / (size - 1)) * 2 - 1
+      const x = (i / (size - 1)) * 2 - 1;
+      const y = (j / (size - 1)) * 2 - 1;
 
       // D_n = C_n + reflection: average over all 2n group elements
-      let sum = 0
+      let sum = 0;
       for (let k = 0; k < n; k++) {
-        const angle = (2 * Math.PI * k) / n
-        const cos = Math.cos(angle)
-        const sin = Math.sin(angle)
+        const angle = (2 * Math.PI * k) / n;
+        const cos = Math.cos(angle);
+        const sin = Math.sin(angle);
 
         // Rotation
-        const rx = cos * x - sin * y
-        const ry = sin * x + cos * y
-        sum += base(rx, ry)
+        const rx = cos * x - sin * y;
+        const ry = sin * x + cos * y;
+        sum += base(rx, ry);
 
         // Rotation of reflection (reflect y first, then rotate)
-        const rrx = cos * x + sin * y
-        const rry = sin * x - cos * y
-        sum += base(rrx, rry)
+        const rrx = cos * x + sin * y;
+        const rry = sin * x - cos * y;
+        sum += base(rrx, rry);
       }
-      mask[j * size + i] = sum / (2 * n)
+      mask[j * size + i] = sum / (2 * n);
     }
   }
-  return mask
+  return mask;
 }

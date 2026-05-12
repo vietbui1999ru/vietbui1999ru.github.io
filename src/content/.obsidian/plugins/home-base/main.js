@@ -12,14 +12,11 @@ var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __commonJS = (cb, mod) =>
   function __require() {
     return (
-      mod ||
-        (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod),
-      mod.exports
+      mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports
     );
   };
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if ((from && typeof from === "object") || typeof from === "function") {
@@ -45,8 +42,7 @@ var __toESM = (mod, isNodeMode, target) => (
     mod,
   )
 );
-var __toCommonJS = (mod) =>
-  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/.pnpm/obsidian-daily-notes-interf_8d9fc24b0fc622d94fd11fa5e9b185b3/node_modules/obsidian-daily-notes-interface/dist/main.js
 var require_main = __commonJS({
@@ -66,9 +62,7 @@ var require_main = __commonJS({
       const periodicNotes = window.app.plugins.getPlugin("periodic-notes");
       return (
         periodicNotes &&
-        ((_b =
-          (_a = periodicNotes.settings) == null ? void 0 : _a[periodicity]) ==
-        null
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a[periodicity]) == null
           ? void 0
           : _b.enabled)
       );
@@ -82,10 +76,8 @@ var require_main = __commonJS({
             format: format2,
             folder: folder2,
             template: template2,
-          } = ((_b =
-            (_a = plugins.getPlugin("periodic-notes")) == null
-              ? void 0
-              : _a.settings) == null
+          } = ((_b = (_a = plugins.getPlugin("periodic-notes")) == null ? void 0 : _a.settings) ==
+          null
             ? void 0
             : _b.daily) || {};
           return {
@@ -96,9 +88,8 @@ var require_main = __commonJS({
         }
         const { folder, format, template } =
           ((_d =
-            (_c = internalPlugins.getPluginById("daily-notes")) == null
-              ? void 0
-              : _c.instance) == null
+            (_c = internalPlugins.getPluginById("daily-notes")) == null ? void 0 : _c.instance) ==
+          null
             ? void 0
             : _d.options) || {};
         return {
@@ -115,38 +106,24 @@ var require_main = __commonJS({
       try {
         const pluginManager = window.app.plugins;
         const calendarSettings =
-          (_a = pluginManager.getPlugin("calendar")) == null
-            ? void 0
-            : _a.options;
+          (_a = pluginManager.getPlugin("calendar")) == null ? void 0 : _a.options;
         const periodicNotesSettings =
-          (_c =
-            (_b = pluginManager.getPlugin("periodic-notes")) == null
-              ? void 0
-              : _b.settings) == null
+          (_c = (_b = pluginManager.getPlugin("periodic-notes")) == null ? void 0 : _b.settings) ==
+          null
             ? void 0
             : _c.weekly;
         if (shouldUsePeriodicNotesSettings("weekly")) {
           return {
             format: periodicNotesSettings.format || DEFAULT_WEEKLY_NOTE_FORMAT,
-            folder:
-              ((_d = periodicNotesSettings.folder) == null
-                ? void 0
-                : _d.trim()) || "",
-            template:
-              ((_e = periodicNotesSettings.template) == null
-                ? void 0
-                : _e.trim()) || "",
+            folder: ((_d = periodicNotesSettings.folder) == null ? void 0 : _d.trim()) || "",
+            template: ((_e = periodicNotesSettings.template) == null ? void 0 : _e.trim()) || "",
           };
         }
         const settings = calendarSettings || {};
         return {
           format: settings.weeklyNoteFormat || DEFAULT_WEEKLY_NOTE_FORMAT,
-          folder:
-            ((_f = settings.weeklyNoteFolder) == null ? void 0 : _f.trim()) ||
-            "",
-          template:
-            ((_g = settings.weeklyNoteTemplate) == null ? void 0 : _g.trim()) ||
-            "",
+          folder: ((_f = settings.weeklyNoteFolder) == null ? void 0 : _f.trim()) || "",
+          template: ((_g = settings.weeklyNoteTemplate) == null ? void 0 : _g.trim()) || "",
         };
       } catch (err) {
         console.info("No custom weekly note settings found!", err);
@@ -159,17 +136,15 @@ var require_main = __commonJS({
         const settings =
           (shouldUsePeriodicNotesSettings("monthly") &&
             ((_b =
-              (_a = pluginManager.getPlugin("periodic-notes")) == null
-                ? void 0
-                : _a.settings) == null
+              (_a = pluginManager.getPlugin("periodic-notes")) == null ? void 0 : _a.settings) ==
+            null
               ? void 0
               : _b.monthly)) ||
           {};
         return {
           format: settings.format || DEFAULT_MONTHLY_NOTE_FORMAT,
           folder: ((_c = settings.folder) == null ? void 0 : _c.trim()) || "",
-          template:
-            ((_d = settings.template) == null ? void 0 : _d.trim()) || "",
+          template: ((_d = settings.template) == null ? void 0 : _d.trim()) || "",
         };
       } catch (err) {
         console.info("No custom monthly note settings found!", err);
@@ -182,17 +157,15 @@ var require_main = __commonJS({
         const settings =
           (shouldUsePeriodicNotesSettings("quarterly") &&
             ((_b =
-              (_a = pluginManager.getPlugin("periodic-notes")) == null
-                ? void 0
-                : _a.settings) == null
+              (_a = pluginManager.getPlugin("periodic-notes")) == null ? void 0 : _a.settings) ==
+            null
               ? void 0
               : _b.quarterly)) ||
           {};
         return {
           format: settings.format || DEFAULT_QUARTERLY_NOTE_FORMAT,
           folder: ((_c = settings.folder) == null ? void 0 : _c.trim()) || "",
-          template:
-            ((_d = settings.template) == null ? void 0 : _d.trim()) || "",
+          template: ((_d = settings.template) == null ? void 0 : _d.trim()) || "",
         };
       } catch (err) {
         console.info("No custom quarterly note settings found!", err);
@@ -205,17 +178,15 @@ var require_main = __commonJS({
         const settings =
           (shouldUsePeriodicNotesSettings("yearly") &&
             ((_b =
-              (_a = pluginManager.getPlugin("periodic-notes")) == null
-                ? void 0
-                : _a.settings) == null
+              (_a = pluginManager.getPlugin("periodic-notes")) == null ? void 0 : _a.settings) ==
+            null
               ? void 0
               : _b.yearly)) ||
           {};
         return {
           format: settings.format || DEFAULT_YEARLY_NOTE_FORMAT,
           folder: ((_c = settings.folder) == null ? void 0 : _c.trim()) || "",
-          template:
-            ((_d = settings.template) == null ? void 0 : _d.trim()) || "",
+          template: ((_d = settings.template) == null ? void 0 : _d.trim()) || "",
         };
       } catch (err) {
         console.info("No custom yearly note settings found!", err);
@@ -237,8 +208,7 @@ var require_main = __commonJS({
     }
     function basename(fullPath) {
       let base = fullPath.substring(fullPath.lastIndexOf("/") + 1);
-      if (base.lastIndexOf(".") != -1)
-        base = base.substring(0, base.lastIndexOf("."));
+      if (base.lastIndexOf(".") != -1) base = base.substring(0, base.lastIndexOf("."));
       return base;
     }
     async function ensureFolderExists(path) {
@@ -266,18 +236,12 @@ var require_main = __commonJS({
         return Promise.resolve(["", null]);
       }
       try {
-        const templateFile = metadataCache.getFirstLinkpathDest(
-          templatePath,
-          "",
-        );
+        const templateFile = metadataCache.getFirstLinkpathDest(templatePath, "");
         const contents = await vault.cachedRead(templateFile);
         const IFoldInfo = window.app.foldManager.load(templateFile);
         return [contents, IFoldInfo];
       } catch (err) {
-        console.error(
-          `Failed to read the daily note template '${templatePath}'`,
-          err,
-        );
+        console.error(`Failed to read the daily note template '${templatePath}'`, err);
         new obsidian.Notice("Failed to read the daily note template");
         return ["", null];
       }
@@ -293,8 +257,7 @@ var require_main = __commonJS({
       if (granularity === "week") {
         const cleanFormat = removeEscapedCharacters(format);
         return (
-          /w{1,2}/i.test(cleanFormat) &&
-          (/M{1,4}/.test(cleanFormat) || /D{1,4}/.test(cleanFormat))
+          /w{1,2}/i.test(cleanFormat) && (/M{1,4}/.test(cleanFormat) || /D{1,4}/.test(cleanFormat))
         );
       }
       return false;
@@ -367,14 +330,8 @@ var require_main = __commonJS({
                 return currentDate.format(format);
               },
             )
-            .replace(
-              /{{\s*yesterday\s*}}/gi,
-              date.clone().subtract(1, "day").format(format),
-            )
-            .replace(
-              /{{\s*tomorrow\s*}}/gi,
-              date.clone().add(1, "d").format(format),
-            ),
+            .replace(/{{\s*yesterday\s*}}/gi, date.clone().subtract(1, "day").format(format))
+            .replace(/{{\s*tomorrow\s*}}/gi, date.clone().add(1, "d").format(format)),
         );
         app.foldManager.save(createdFile, IFoldInfo);
         return createdFile;
@@ -390,13 +347,9 @@ var require_main = __commonJS({
     function getAllDailyNotes2() {
       const { vault } = window.app;
       const { folder } = getDailyNoteSettings();
-      const dailyNotesFolder = vault.getAbstractFileByPath(
-        obsidian.normalizePath(folder),
-      );
+      const dailyNotesFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
       if (!dailyNotesFolder) {
-        throw new DailyNotesFolderMissingError(
-          "Failed to find daily notes folder",
-        );
+        throw new DailyNotesFolderMissingError("Failed to find daily notes folder");
       }
       const dailyNotes = {};
       obsidian.Vault.recurseChildren(dailyNotesFolder, (note) => {
@@ -488,13 +441,9 @@ var require_main = __commonJS({
       }
       const { vault } = window.app;
       const { folder } = getWeeklyNoteSettings();
-      const weeklyNotesFolder = vault.getAbstractFileByPath(
-        obsidian.normalizePath(folder),
-      );
+      const weeklyNotesFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
       if (!weeklyNotesFolder) {
-        throw new WeeklyNotesFolderMissingError(
-          "Failed to find weekly notes folder",
-        );
+        throw new WeeklyNotesFolderMissingError("Failed to find weekly notes folder");
       }
       obsidian.Vault.recurseChildren(weeklyNotesFolder, (note) => {
         if (note instanceof obsidian.TFile) {
@@ -558,13 +507,9 @@ var require_main = __commonJS({
       }
       const { vault } = window.app;
       const { folder } = getMonthlyNoteSettings();
-      const monthlyNotesFolder = vault.getAbstractFileByPath(
-        obsidian.normalizePath(folder),
-      );
+      const monthlyNotesFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
       if (!monthlyNotesFolder) {
-        throw new MonthlyNotesFolderMissingError(
-          "Failed to find monthly notes folder",
-        );
+        throw new MonthlyNotesFolderMissingError("Failed to find monthly notes folder");
       }
       obsidian.Vault.recurseChildren(monthlyNotesFolder, (note) => {
         if (note instanceof obsidian.TFile) {
@@ -628,13 +573,9 @@ var require_main = __commonJS({
       }
       const { vault } = window.app;
       const { folder } = getQuarterlyNoteSettings();
-      const quarterlyFolder = vault.getAbstractFileByPath(
-        obsidian.normalizePath(folder),
-      );
+      const quarterlyFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
       if (!quarterlyFolder) {
-        throw new QuarterlyNotesFolderMissingError(
-          "Failed to find quarterly notes folder",
-        );
+        throw new QuarterlyNotesFolderMissingError("Failed to find quarterly notes folder");
       }
       obsidian.Vault.recurseChildren(quarterlyFolder, (note) => {
         if (note instanceof obsidian.TFile) {
@@ -698,13 +639,9 @@ var require_main = __commonJS({
       }
       const { vault } = window.app;
       const { folder } = getYearlyNoteSettings();
-      const yearlyNotesFolder = vault.getAbstractFileByPath(
-        obsidian.normalizePath(folder),
-      );
+      const yearlyNotesFolder = vault.getAbstractFileByPath(obsidian.normalizePath(folder));
       if (!yearlyNotesFolder) {
-        throw new YearlyNotesFolderMissingError(
-          "Failed to find yearly notes folder",
-        );
+        throw new YearlyNotesFolderMissingError("Failed to find yearly notes folder");
       }
       obsidian.Vault.recurseChildren(yearlyNotesFolder, (note) => {
         if (note instanceof obsidian.TFile) {
@@ -727,8 +664,7 @@ var require_main = __commonJS({
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
       return (
         periodicNotes &&
-        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.daily) ==
-        null
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.daily) == null
           ? void 0
           : _b.enabled)
       );
@@ -742,8 +678,7 @@ var require_main = __commonJS({
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
       return (
         periodicNotes &&
-        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.weekly) ==
-        null
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.weekly) == null
           ? void 0
           : _b.enabled)
       );
@@ -754,8 +689,7 @@ var require_main = __commonJS({
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
       return (
         periodicNotes &&
-        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.monthly) ==
-        null
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.monthly) == null
           ? void 0
           : _b.enabled)
       );
@@ -766,8 +700,7 @@ var require_main = __commonJS({
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
       return (
         periodicNotes &&
-        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.quarterly) ==
-        null
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.quarterly) == null
           ? void 0
           : _b.enabled)
       );
@@ -778,8 +711,7 @@ var require_main = __commonJS({
       const periodicNotes = app.plugins.getPlugin("periodic-notes");
       return (
         periodicNotes &&
-        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.yearly) ==
-        null
+        ((_b = (_a = periodicNotes.settings) == null ? void 0 : _a.yearly) == null
           ? void 0
           : _b.enabled)
       );
@@ -1027,8 +959,7 @@ var WorkspaceSuggest = class extends import_obsidian.AbstractInputSuggest {
   getSuggestions(query) {
     var _a, _b, _c;
     const workspacesPlugin =
-      (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
-      null
+      (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null
         ? void 0
         : _b.workspaces;
     if (
@@ -1039,9 +970,7 @@ var WorkspaceSuggest = class extends import_obsidian.AbstractInputSuggest {
     }
     const workspaces = Object.keys(workspacesPlugin.instance.workspaces);
     const lowerQuery = query.toLowerCase();
-    return workspaces.filter((workspace) =>
-      workspace.toLowerCase().includes(lowerQuery),
-    );
+    return workspaces.filter((workspace) => workspace.toLowerCase().includes(lowerQuery));
   }
   renderSuggestion(workspace, el) {
     el.createEl("div", { text: workspace });
@@ -1065,8 +994,7 @@ var CommandSuggest = class extends import_obsidian2.AbstractInputSuggest {
     const lowerQuery = query.toLowerCase();
     const commands = [];
     const appWithCommands = this.app;
-    const allCommands =
-      (_a = appWithCommands.commands) == null ? void 0 : _a.commands;
+    const allCommands = (_a = appWithCommands.commands) == null ? void 0 : _a.commands;
     if (allCommands) {
       for (const command of Object.values(allCommands)) {
         if (
@@ -1099,8 +1027,7 @@ var CommandSuggest = class extends import_obsidian2.AbstractInputSuggest {
 function getCommandById(app, commandId) {
   var _a;
   const appWithCommands = app;
-  const commands =
-    (_a = appWithCommands.commands) == null ? void 0 : _a.commands;
+  const commands = (_a = appWithCommands.commands) == null ? void 0 : _a.commands;
   return commands == null ? void 0 : commands[commandId];
 }
 function executeCommand(app, commandId) {
@@ -1108,10 +1035,7 @@ function executeCommand(app, commandId) {
   if (!commandId) return false;
   const appWithCommands = app;
   const result =
-    (_b =
-      (_a = appWithCommands.commands) == null
-        ? void 0
-        : _a.executeCommandById) == null
+    (_b = (_a = appWithCommands.commands) == null ? void 0 : _a.executeCommandById) == null
       ? void 0
       : _b.call(_a, commandId);
   return result !== false;
@@ -1135,9 +1059,7 @@ var IconPicker = class extends import_obsidian3.Modal {
       searchSetting.setName("Search");
     }
     searchSetting.addSearch((searchField) => {
-      searchField
-        .setPlaceholder("Search icons...")
-        .onChange(() => this.updateSearchResults());
+      searchField.setPlaceholder("Search icons...").onChange(() => this.updateSearchResults());
       searchField.inputEl.enterKeyHint = "go";
       this.searchField = searchField;
     });
@@ -1239,10 +1161,7 @@ var IconPicker = class extends import_obsidian3.Modal {
     }
     if (this.searchResults.length === 0) {
       this.searchResultsSetting.addExtraButton((button) => {
-        button.extraSettingsEl.addClasses([
-          "iconic-invisible",
-          "iconic-search-result",
-        ]);
+        button.extraSettingsEl.addClasses(["iconic-invisible", "iconic-search-result"]);
       });
     }
   }
@@ -1302,30 +1221,25 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
               dropdown.addOption(type, type);
             }
           }
-          dropdown
-            .setValue(activeType || "File" /* File */)
-            .onChange(async (value) => {
-              if (isMobile) {
-                this.plugin.settings.mobileHomeBaseType = value;
-              } else {
-                this.plugin.settings.homeBaseType = value;
+          dropdown.setValue(activeType || "File" /* File */).onChange(async (value) => {
+            if (isMobile) {
+              this.plugin.settings.mobileHomeBaseType = value;
+            } else {
+              this.plugin.settings.homeBaseType = value;
+            }
+            await this.plugin.saveSettings();
+            const scrollContainer =
+              containerEl.closest(".vertical-tab-content") ||
+              containerEl.closest(".settings-content") ||
+              containerEl.parentElement;
+            const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
+            this.display();
+            requestAnimationFrame(() => {
+              if (scrollContainer) {
+                scrollContainer.scrollTop = scrollTop;
               }
-              await this.plugin.saveSettings();
-              const scrollContainer =
-                containerEl.closest(".vertical-tab-content") ||
-                containerEl.closest(".settings-content") ||
-                containerEl.parentElement;
-              const scrollTop =
-                (scrollContainer == null
-                  ? void 0
-                  : scrollContainer.scrollTop) || 0;
-              this.display();
-              requestAnimationFrame(() => {
-                if (scrollContainer) {
-                  scrollContainer.scrollTop = scrollTop;
-                }
-              });
             });
+          });
           if (pluginDisabled) {
             setting.descEl.createDiv({
               text: "The required plugin has not been enabled or configured for this type.",
@@ -1339,8 +1253,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
         let desc = "";
         let placeholder = "";
         if (activeType === "File" /* File */) {
-          desc =
-            "The file to open as your home base (supports .md, .mdx, .canvas, .base)";
+          desc = "The file to open as your home base (supports .md, .mdx, .canvas, .base)";
           placeholder = "Path to home base file";
         } else if (activeType === "Workspace" /* Workspace */) {
           desc = "The workspace to load as your home base";
@@ -1402,16 +1315,13 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
         .setName("Open on startup")
         .setDesc("Open the home base when launching Obsidian")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.openOnStartup)
-            .onChange(async (value) => {
-              this.plugin.settings.openOnStartup = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.openOnStartup).onChange(async (value) => {
+            this.plugin.settings.openOnStartup = value;
+            await this.plugin.saveSettings();
+          });
         });
       if ((0, import_obsidian4.requireApiVersion)("1.11.0")) {
-        const nativeOpenBehavior =
-          this.plugin.homeService.getNativeOpenBehavior();
+        const nativeOpenBehavior = this.plugin.homeService.getNativeOpenBehavior();
         if (nativeOpenBehavior) {
           setting.descEl.createDiv({
             text: `Note: This will override Obsidian's native "Default file to open" setting (currently set to "${nativeOpenBehavior}").`,
@@ -1428,12 +1338,10 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
           for (const [value, label] of Object.entries(OPENING_MODE_OPTIONS)) {
             dropdown.addOption(value, label);
           }
-          dropdown
-            .setValue(this.plugin.settings.openMode)
-            .onChange(async (value) => {
-              this.plugin.settings.openMode = value;
-              await this.plugin.saveSettings();
-            });
+          dropdown.setValue(this.plugin.settings.openMode).onChange(async (value) => {
+            this.plugin.settings.openMode = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     generalGroup.addSetting((setting) => {
@@ -1444,12 +1352,10 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
           for (const [value, label] of Object.entries(OPENING_MODE_OPTIONS)) {
             dropdown.addOption(value, label);
           }
-          dropdown
-            .setValue(this.plugin.settings.manualOpenMode)
-            .onChange(async (value) => {
-              this.plugin.settings.manualOpenMode = value;
-              await this.plugin.saveSettings();
-            });
+          dropdown.setValue(this.plugin.settings.manualOpenMode).onChange(async (value) => {
+            this.plugin.settings.manualOpenMode = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     generalGroup.addSetting((setting) => {
@@ -1460,42 +1366,32 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
           for (const [value, label] of Object.entries(VIEW_MODE_OPTIONS)) {
             dropdown.addOption(value, label);
           }
-          dropdown
-            .setValue(this.plugin.settings.openViewMode)
-            .onChange(async (value) => {
-              this.plugin.settings.openViewMode = value;
-              await this.plugin.saveSettings();
-            });
+          dropdown.setValue(this.plugin.settings.openViewMode).onChange(async (value) => {
+            this.plugin.settings.openViewMode = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     generalGroup.addSetting((setting) => {
       setting
         .setName("Revert view on close")
-        .setDesc(
-          "When navigating away from the home base, restore the default view",
-        )
+        .setDesc("When navigating away from the home base, restore the default view")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.revertView)
-            .onChange(async (value) => {
-              this.plugin.settings.revertView = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.revertView).onChange(async (value) => {
+            this.plugin.settings.revertView = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     generalGroup.addSetting((setting) => {
       setting
         .setName("Auto-scroll")
-        .setDesc(
-          "When opening the home base, scroll to the bottom and focus on the last line",
-        )
+        .setDesc("When opening the home base, scroll to the bottom and focus on the last line")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.autoScroll)
-            .onChange(async (value) => {
-              this.plugin.settings.autoScroll = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.autoScroll).onChange(async (value) => {
+            this.plugin.settings.autoScroll = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     generalGroup.addSetting((setting) => {
@@ -1503,28 +1399,22 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
         .setName("Hide release notes")
         .setDesc("Never display release notes when Obsidian updates")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.hideReleaseNotes)
-            .onChange(async (value) => {
-              this.plugin.settings.hideReleaseNotes = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.hideReleaseNotes).onChange(async (value) => {
+            this.plugin.settings.hideReleaseNotes = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
-    const tabGroup = new import_obsidian4.SettingGroup(containerEl).setHeading(
-      "Tab Behavior",
-    );
+    const tabGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("Tab Behavior");
     tabGroup.addSetting((setting) => {
       setting
         .setName("Open home base when all tabs are closed")
         .setDesc("When you close all tabs, automatically open the home base")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.openWhenAllTabsClosed)
-            .onChange(async (value) => {
-              this.plugin.settings.openWhenAllTabsClosed = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.openWhenAllTabsClosed).onChange(async (value) => {
+            this.plugin.settings.openWhenAllTabsClosed = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     tabGroup.addSetting((setting) => {
@@ -1534,45 +1424,36 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
           'Open home base instead of new empty tabs (works independently of "open home base when all tabs are closed")',
         )
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.replaceNewTab)
-            .onChange(async (value) => {
-              this.plugin.settings.replaceNewTab = value;
-              await this.plugin.saveSettings();
-              const scrollContainer =
-                containerEl.closest(".vertical-tab-content") ||
-                containerEl.closest(".settings-content") ||
-                containerEl.parentElement;
-              const scrollTop =
-                (scrollContainer == null
-                  ? void 0
-                  : scrollContainer.scrollTop) || 0;
-              this.display();
-              requestAnimationFrame(() => {
-                if (scrollContainer) {
-                  scrollContainer.scrollTop = scrollTop;
-                }
-              });
+          toggle.setValue(this.plugin.settings.replaceNewTab).onChange(async (value) => {
+            this.plugin.settings.replaceNewTab = value;
+            await this.plugin.saveSettings();
+            const scrollContainer =
+              containerEl.closest(".vertical-tab-content") ||
+              containerEl.closest(".settings-content") ||
+              containerEl.parentElement;
+            const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
+            this.display();
+            requestAnimationFrame(() => {
+              if (scrollContainer) {
+                scrollContainer.scrollTop = scrollTop;
+              }
             });
+          });
         });
     });
     if (this.plugin.settings.replaceNewTab) {
       tabGroup.addSetting((setting) => {
         setting
           .setName("New tab replacement mode")
-          .setDesc(
-            "When to replace new tabs (only when no tabs are open, or always)",
-          )
+          .setDesc("When to replace new tabs (only when no tabs are open, or always)")
           .addDropdown((dropdown) => {
             for (const [value, label] of Object.entries(NEW_TAB_MODE_OPTIONS)) {
               dropdown.addOption(value, label);
             }
-            dropdown
-              .setValue(this.plugin.settings.newTabMode)
-              .onChange(async (value) => {
-                this.plugin.settings.newTabMode = value;
-                await this.plugin.saveSettings();
-              });
+            dropdown.setValue(this.plugin.settings.newTabMode).onChange(async (value) => {
+              this.plugin.settings.newTabMode = value;
+              await this.plugin.saveSettings();
+            });
           });
       });
       tabGroup.addSetting((setting) => {
@@ -1592,9 +1473,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
                   containerEl.closest(".settings-content") ||
                   containerEl.parentElement;
                 const scrollTop =
-                  (scrollContainer == null
-                    ? void 0
-                    : scrollContainer.scrollTop) || 0;
+                  (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
                 this.display();
                 requestAnimationFrame(() => {
                   if (scrollContainer) {
@@ -1605,8 +1484,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
           });
       });
       if (this.plugin.settings.useDifferentFileForNewTab) {
-        const desktopType =
-          this.plugin.settings.newTabType || "File"; /* File */
+        const desktopType = this.plugin.settings.newTabType || "File"; /* File */
         const desktopValue = this.plugin.settings.newTabValue || "";
         tabGroup.addSetting((setting) => {
           setting
@@ -1638,9 +1516,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
                   containerEl.closest(".settings-content") ||
                   containerEl.parentElement;
                 const scrollTop =
-                  (scrollContainer == null
-                    ? void 0
-                    : scrollContainer.scrollTop) || 0;
+                  (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
                 this.display();
                 requestAnimationFrame(() => {
                   if (scrollContainer) {
@@ -1661,8 +1537,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
             let desc = "";
             let placeholder = "";
             if (desktopType === "File" /* File */) {
-              desc =
-                "The file to open for new tabs (supports .md, .mdx, .canvas, .base)";
+              desc = "The file to open for new tabs (supports .md, .mdx, .canvas, .base)";
               placeholder = "Path to new tab file";
             } else if (desktopType === "Workspace" /* Workspace */) {
               desc = "The workspace to load for new tabs";
@@ -1692,9 +1567,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
                   new FilePathSuggest(this.app, text.inputEl);
                 } else if (desktopType === "Workspace" /* Workspace */) {
                   new WorkspaceSuggest(this.app, text.inputEl);
-                } else if (
-                  desktopType === "Random in folder" /* RandomFolder */
-                ) {
+                } else if (desktopType === "Random in folder" /* RandomFolder */) {
                   new FolderSuggest(this.app, text.inputEl);
                 }
                 text
@@ -1709,37 +1582,28 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
         }
       }
     }
-    const uiGroup = new import_obsidian4.SettingGroup(containerEl).setHeading(
-      "UI Features",
-    );
+    const uiGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("UI Features");
     uiGroup.addSetting((setting) => {
       setting
         .setName("Sticky home icon")
-        .setDesc(
-          "Show a home icon in the tab bar that stays pinned to the left (desktop only)",
-        )
+        .setDesc("Show a home icon in the tab bar that stays pinned to the left (desktop only)")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.showStickyHomeIcon)
-            .onChange(async (value) => {
-              this.plugin.settings.showStickyHomeIcon = value;
-              await this.plugin.saveSettings();
-              this.plugin.updateStickyTabIcon();
-              const scrollContainer =
-                containerEl.closest(".vertical-tab-content") ||
-                containerEl.closest(".settings-content") ||
-                containerEl.parentElement;
-              const scrollTop =
-                (scrollContainer == null
-                  ? void 0
-                  : scrollContainer.scrollTop) || 0;
-              this.display();
-              requestAnimationFrame(() => {
-                if (scrollContainer) {
-                  scrollContainer.scrollTop = scrollTop;
-                }
-              });
+          toggle.setValue(this.plugin.settings.showStickyHomeIcon).onChange(async (value) => {
+            this.plugin.settings.showStickyHomeIcon = value;
+            await this.plugin.saveSettings();
+            this.plugin.updateStickyTabIcon();
+            const scrollContainer =
+              containerEl.closest(".vertical-tab-content") ||
+              containerEl.closest(".settings-content") ||
+              containerEl.parentElement;
+            const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
+            this.display();
+            requestAnimationFrame(() => {
+              if (scrollContainer) {
+                scrollContainer.scrollTop = scrollTop;
+              }
             });
+          });
         });
     });
     if (this.plugin.settings.showStickyHomeIcon) {
@@ -1776,44 +1640,35 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
             "Hide the sticky home tab header when it's open, using the sticky icon as the tab indicator",
           )
           .addToggle((toggle) => {
-            toggle
-              .setValue(this.plugin.settings.hideHomeTabHeader)
-              .onChange(async (value) => {
-                this.plugin.settings.hideHomeTabHeader = value;
-                await this.plugin.saveSettings();
-                this.plugin.stickyTabService.updateTabHeaders();
-              });
+            toggle.setValue(this.plugin.settings.hideHomeTabHeader).onChange(async (value) => {
+              this.plugin.settings.hideHomeTabHeader = value;
+              await this.plugin.saveSettings();
+              this.plugin.stickyTabService.updateTabHeaders();
+            });
           });
       });
     }
-    const mobileGroup = new import_obsidian4.SettingGroup(
-      containerEl,
-    ).setHeading("Mobile");
+    const mobileGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("Mobile");
     mobileGroup.addSetting((setting) => {
       setting
         .setName("Separate mobile home base")
         .setDesc("Use a different home base on mobile devices")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.separateMobile)
-            .onChange(async (value) => {
-              this.plugin.settings.separateMobile = value;
-              await this.plugin.saveSettings();
-              const scrollContainer =
-                containerEl.closest(".vertical-tab-content") ||
-                containerEl.closest(".settings-content") ||
-                containerEl.parentElement;
-              const scrollTop =
-                (scrollContainer == null
-                  ? void 0
-                  : scrollContainer.scrollTop) || 0;
-              this.display();
-              requestAnimationFrame(() => {
-                if (scrollContainer) {
-                  scrollContainer.scrollTop = scrollTop;
-                }
-              });
+          toggle.setValue(this.plugin.settings.separateMobile).onChange(async (value) => {
+            this.plugin.settings.separateMobile = value;
+            await this.plugin.saveSettings();
+            const scrollContainer =
+              containerEl.closest(".vertical-tab-content") ||
+              containerEl.closest(".settings-content") ||
+              containerEl.parentElement;
+            const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
+            this.display();
+            requestAnimationFrame(() => {
+              if (scrollContainer) {
+                scrollContainer.scrollTop = scrollTop;
+              }
             });
+          });
         });
     });
     if (this.plugin.settings.separateMobile) {
@@ -1822,8 +1677,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
           .setName("Mobile home base")
           .setDesc("What to open as your home base on mobile")
           .addDropdown((dropdown) => {
-            const mobileType =
-              this.plugin.settings.mobileHomeBaseType || "File"; /* File */
+            const mobileType = this.plugin.settings.mobileHomeBaseType || "File"; /* File */
             let pluginDisabled = false;
             for (const type of Object.values(HomeBaseType)) {
               if (!this.plugin.hasRequiredPlugin(type)) {
@@ -1848,10 +1702,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
                 containerEl.closest(".vertical-tab-content") ||
                 containerEl.closest(".settings-content") ||
                 containerEl.parentElement;
-              const scrollTop =
-                (scrollContainer == null
-                  ? void 0
-                  : scrollContainer.scrollTop) || 0;
+              const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
               this.display();
               requestAnimationFrame(() => {
                 if (scrollContainer) {
@@ -1867,9 +1718,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
             }
           });
       });
-      if (
-        !UNCHANGEABLE_TYPES.includes(this.plugin.settings.mobileHomeBaseType)
-      ) {
+      if (!UNCHANGEABLE_TYPES.includes(this.plugin.settings.mobileHomeBaseType)) {
         mobileGroup.addSetting((setting) => {
           const mobileType = this.plugin.settings.mobileHomeBaseType;
           let desc = "";
@@ -1924,13 +1773,11 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
         .setName("Replace mobile new tab button")
         .setDesc("Change the mobile new tab button to a home icon")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.replaceMobileNewTab)
-            .onChange(async (value) => {
-              this.plugin.settings.replaceMobileNewTab = value;
-              await this.plugin.saveSettings();
-              this.plugin.updateMobileButton();
-            });
+          toggle.setValue(this.plugin.settings.replaceMobileNewTab).onChange(async (value) => {
+            this.plugin.settings.replaceMobileNewTab = value;
+            await this.plugin.saveSettings();
+            this.plugin.updateMobileButton();
+          });
         });
     });
     if (this.plugin.settings.useDifferentFileForNewTab) {
@@ -1939,31 +1786,25 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
           .setName("Separate mobile new tab")
           .setDesc("Use a different new tab file on mobile devices")
           .addToggle((toggle) => {
-            toggle
-              .setValue(this.plugin.settings.newTabSeparateMobile)
-              .onChange(async (value) => {
-                this.plugin.settings.newTabSeparateMobile = value;
-                await this.plugin.saveSettings();
-                const scrollContainer =
-                  containerEl.closest(".vertical-tab-content") ||
-                  containerEl.closest(".settings-content") ||
-                  containerEl.parentElement;
-                const scrollTop =
-                  (scrollContainer == null
-                    ? void 0
-                    : scrollContainer.scrollTop) || 0;
-                this.display();
-                requestAnimationFrame(() => {
-                  if (scrollContainer) {
-                    scrollContainer.scrollTop = scrollTop;
-                  }
-                });
+            toggle.setValue(this.plugin.settings.newTabSeparateMobile).onChange(async (value) => {
+              this.plugin.settings.newTabSeparateMobile = value;
+              await this.plugin.saveSettings();
+              const scrollContainer =
+                containerEl.closest(".vertical-tab-content") ||
+                containerEl.closest(".settings-content") ||
+                containerEl.parentElement;
+              const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
+              this.display();
+              requestAnimationFrame(() => {
+                if (scrollContainer) {
+                  scrollContainer.scrollTop = scrollTop;
+                }
               });
+            });
           });
       });
       if (this.plugin.settings.newTabSeparateMobile) {
-        const mobileType =
-          this.plugin.settings.mobileNewTabType || "File"; /* File */
+        const mobileType = this.plugin.settings.mobileNewTabType || "File"; /* File */
         const mobileValue = this.plugin.settings.mobileNewTabValue || "";
         mobileGroup.addSetting((setting) => {
           setting
@@ -1995,9 +1836,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
                   containerEl.closest(".settings-content") ||
                   containerEl.parentElement;
                 const scrollTop =
-                  (scrollContainer == null
-                    ? void 0
-                    : scrollContainer.scrollTop) || 0;
+                  (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
                 this.display();
                 requestAnimationFrame(() => {
                   if (scrollContainer) {
@@ -2024,8 +1863,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
               desc = "The workspace to load for new tabs on mobile";
               placeholder = "Workspace name";
             } else if (mobileType === "Random in folder" /* RandomFolder */) {
-              desc =
-                "The folder to pick a random file from for new tabs on mobile";
+              desc = "The folder to pick a random file from for new tabs on mobile";
               placeholder = "Folder path";
             } else if (mobileType === "Journal" /* Journal */) {
               desc = "The journal name for new tabs on mobile";
@@ -2049,9 +1887,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
                   new FilePathSuggest(this.app, text.inputEl);
                 } else if (mobileType === "Workspace" /* Workspace */) {
                   new WorkspaceSuggest(this.app, text.inputEl);
-                } else if (
-                  mobileType === "Random in folder" /* RandomFolder */
-                ) {
+                } else if (mobileType === "Random in folder" /* RandomFolder */) {
                   new FolderSuggest(this.app, text.inputEl);
                 }
                 text
@@ -2066,9 +1902,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
         }
       }
     }
-    const automationGroup = new import_obsidian4.SettingGroup(
-      containerEl,
-    ).setHeading("Automation");
+    const automationGroup = new import_obsidian4.SettingGroup(containerEl).setHeading("Automation");
     automationGroup.addSetting((setting) => {
       const commandId = this.plugin.settings.commandOnOpen;
       const command = commandId ? getCommandById(this.app, commandId) : void 0;
@@ -2097,10 +1931,7 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
                 containerEl.closest(".vertical-tab-content") ||
                 containerEl.closest(".settings-content") ||
                 containerEl.parentElement;
-              const scrollTop =
-                (scrollContainer == null
-                  ? void 0
-                  : scrollContainer.scrollTop) || 0;
+              const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
               this.display();
               requestAnimationFrame(() => {
                 if (scrollContainer) {
@@ -2117,31 +1948,26 @@ var HomeBaseSettingTab = class extends import_obsidian4.PluginSettingTab {
           "Wait before creating periodic or journal notes to allow git sync to finish pulling existing notes. Only applies when a note doesn't already exist.",
         )
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.waitForGitSync)
-            .onChange(async (value) => {
-              this.plugin.settings.waitForGitSync = value;
-              await this.plugin.saveSettings();
-              this.display();
-            });
+          toggle.setValue(this.plugin.settings.waitForGitSync).onChange(async (value) => {
+            this.plugin.settings.waitForGitSync = value;
+            await this.plugin.saveSettings();
+            this.display();
+          });
         });
     });
     if (this.plugin.settings.waitForGitSync) {
       automationGroup.addSetting((setting) => {
         setting
           .setName("Git sync timeout (seconds)")
-          .setDesc(
-            "How long to wait for git sync to finish before creating a new note",
-          )
+          .setDesc("How long to wait for git sync to finish before creating a new note")
           .addText((text) => {
             var _a;
             text.inputEl.type = "number";
             text
               .setPlaceholder("3")
               .setValue(
-                ((_a = this.plugin.settings.gitSyncTimeout) == null
-                  ? void 0
-                  : _a.toString()) || "3",
+                ((_a = this.plugin.settings.gitSyncTimeout) == null ? void 0 : _a.toString()) ||
+                  "3",
               )
               .onChange(async (value) => {
                 const numValue = parseInt(value);
@@ -2195,9 +2021,7 @@ function pathsEqual(path1, path2) {
 function leafHasFile(leaf, filePath) {
   var _a, _b;
   const state =
-    (_b = (_a = leaf.view) == null ? void 0 : _a.getState) == null
-      ? void 0
-      : _b.call(_a);
+    (_b = (_a = leaf.view) == null ? void 0 : _a.getState) == null ? void 0 : _b.call(_a);
   const leafFile = state == null ? void 0 : state.file;
   if (!leafFile) return false;
   return pathsEqual(leafFile, filePath);
@@ -2217,9 +2041,7 @@ function randomFile(app, root) {
       const pattern = root.toLowerCase();
       files = allFiles.filter((f) => {
         const fileName = f.name.toLowerCase();
-        return (
-          fileName === pattern || fileName === pattern.replace(/\.md$/, "")
-        );
+        return fileName === pattern || fileName === pattern.replace(/\.md$/, "");
       });
     }
   } else {
@@ -2302,14 +2124,11 @@ async function getPeriodicNote(kind, plugin) {
     return null;
   }
   const date = (0, import_obsidian6.moment)().startOf(info.noun);
-  const communityPlugins =
-    ((_a = plugin.app.plugins) == null ? void 0 : _a.plugins) || {};
+  const communityPlugins = ((_a = plugin.app.plugins) == null ? void 0 : _a.plugins) || {};
   const periodicNotesPlugin = communityPlugins["periodic-notes"];
   const isLegacy =
     !periodicNotesPlugin ||
-    (
-      ((_b = periodicNotesPlugin.manifest) == null ? void 0 : _b.version) || "0"
-    ).startsWith("0");
+    (((_b = periodicNotesPlugin.manifest) == null ? void 0 : _b.version) || "0").startsWith("0");
   let note = null;
   if (isLegacy) {
     let all = info.getAll();
@@ -2327,8 +2146,7 @@ async function getPeriodicNote(kind, plugin) {
       note = await info.create(date);
     }
   } else {
-    (_d = (_c = periodicNotesPlugin.cache) == null ? void 0 : _c.initialize) ==
-    null
+    (_d = (_c = periodicNotesPlugin.cache) == null ? void 0 : _c.initialize) == null
       ? void 0
       : _d.call(_c);
     note =
@@ -2344,9 +2162,7 @@ async function getPeriodicNote(kind, plugin) {
         5e3,
       );
       await delay(plugin.settings.gitSyncTimeout * 1e3);
-      (_h =
-        (_g = periodicNotesPlugin.cache) == null ? void 0 : _g.initialize) ==
-      null
+      (_h = (_g = periodicNotesPlugin.cache) == null ? void 0 : _g.initialize) == null
         ? void 0
         : _h.call(_g);
       note =
@@ -2370,20 +2186,14 @@ async function getPeriodicNote(kind, plugin) {
 }
 async function getJournalNote(journalName, plugin) {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
-  const communityPlugins =
-    ((_a = plugin.app.plugins) == null ? void 0 : _a.plugins) || {};
+  const communityPlugins = ((_a = plugin.app.plugins) == null ? void 0 : _a.plugins) || {};
   const journals = communityPlugins["journals"];
   if (!journals) return null;
   try {
-    const journal =
-      (_b = journals.getJournal) == null
-        ? void 0
-        : _b.call(journals, journalName);
+    const journal = (_b = journals.getJournal) == null ? void 0 : _b.call(journals, journalName);
     if (!journal) return null;
     const origAutoCreate =
-      (_d = (_c = journal.config) == null ? void 0 : _c.value) == null
-        ? void 0
-        : _d.autoCreate;
+      (_d = (_c = journal.config) == null ? void 0 : _c.value) == null ? void 0 : _d.autoCreate;
     (_e = journals.reprocessNotes) == null ? void 0 : _e.call(journals);
     if ((_f = journal.config) == null ? void 0 : _f.value) {
       journal.config.value.autoCreate = true;
@@ -2392,9 +2202,7 @@ async function getJournalNote(journalName, plugin) {
     if ((_h = journal.config) == null ? void 0 : _h.value) {
       journal.config.value.autoCreate = origAutoCreate;
     }
-    const today = (0, import_obsidian6.moment)()
-      .locale("custom-journal-locale")
-      .startOf("day");
+    const today = (0, import_obsidian6.moment)().locale("custom-journal-locale").startOf("day");
     let note = (_i = journal.get) == null ? void 0 : _i.call(journal, today);
     if (!note && plugin.settings.waitForGitSync) {
       new import_obsidian6.Notice(
@@ -2406,8 +2214,7 @@ async function getJournalNote(journalName, plugin) {
       note = (_k = journal.get) == null ? void 0 : _k.call(journal, today);
     }
     if (!note) return null;
-    const path =
-      (_l = journal.getNotePath) == null ? void 0 : _l.call(journal, note);
+    const path = (_l = journal.getNotePath) == null ? void 0 : _l.call(journal, note);
     return path ? path.replace(/\.md$/, "") : null;
   } catch (e) {
     return null;
@@ -2432,8 +2239,7 @@ function resolvePathSync(type, value, app) {
       return null;
     }
     default:
-      return type === "Random in folder" /* RandomFolder */ ||
-        type === "New note" /* NewNote */
+      return type === "Random in folder" /* RandomFolder */ || type === "New note" /* NewNote */
         ? null
         : value || null;
   }
@@ -2530,9 +2336,7 @@ var HomeBaseService = class {
       file = getFileByPath(this.app, resolvedPath);
     }
     if (!file) {
-      const untrimmedPath = resolvedPath.endsWith(".md")
-        ? resolvedPath
-        : `${resolvedPath}.md`;
+      const untrimmedPath = resolvedPath.endsWith(".md") ? resolvedPath : `${resolvedPath}.md`;
       file = getFileByPath(this.app, untrimmedPath);
       if (!file && homeBaseSettings.type === "File" /* File */) {
         return false;
@@ -2545,8 +2349,7 @@ var HomeBaseService = class {
       await this.detachAllLeaves();
     } else if (mode === "replace-last") {
       const activeLeaf =
-        (_a = this.app.workspace.getActiveViewOfType(import_obsidian7.View)) ==
-        null
+        (_a = this.app.workspace.getActiveViewOfType(import_obsidian7.View)) == null
           ? void 0
           : _a.leaf;
       if (activeLeaf) {
@@ -2560,10 +2363,7 @@ var HomeBaseService = class {
     const existingLeaf = this.findExistingHomeBaseLeaf(file);
     if (existingLeaf && mode !== "replace-all") {
       const viewState = existingLeaf.getViewState();
-      if (
-        viewState.pinned === true &&
-        this.plugin.settings.showStickyHomeIcon
-      ) {
+      if (viewState.pinned === true && this.plugin.settings.showStickyHomeIcon) {
       } else {
         this.app.workspace.setActiveLeaf(existingLeaf);
         await this.configureView(existingLeaf, file);
@@ -2574,9 +2374,7 @@ var HomeBaseService = class {
       }
     }
     const newLeaf =
-      mode === "retain"
-        ? this.app.workspace.getLeaf("tab")
-        : this.app.workspace.getLeaf(false);
+      mode === "retain" ? this.app.workspace.getLeaf("tab") : this.app.workspace.getLeaf(false);
     if (!newLeaf) {
       return false;
     }
@@ -2594,8 +2392,7 @@ var HomeBaseService = class {
   async openWorkspace(workspaceName) {
     var _a, _b, _c;
     const workspacePlugin =
-      (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
-      null
+      (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null
         ? void 0
         : _b.workspaces;
     if (
@@ -2613,8 +2410,7 @@ var HomeBaseService = class {
    */
   async openGraph() {
     var _a, _b;
-    await ((_b =
-      (_a = this.app.commands) == null ? void 0 : _a.executeCommandById) == null
+    await ((_b = (_a = this.app.commands) == null ? void 0 : _a.executeCommandById) == null
       ? void 0
       : _b.call(_a, "graph:open"));
     return true;
@@ -2655,11 +2451,7 @@ var HomeBaseService = class {
       this.runCommandOnOpen();
       return true;
     }
-    const resolvedPath = await computeHomeBasePath(
-      settings.type,
-      settings.value,
-      this.plugin,
-    );
+    const resolvedPath = await computeHomeBasePath(settings.type, settings.value, this.plugin);
     if (!resolvedPath) {
       console.warn(
         "[Home Base] Could not resolve path for new tab:",
@@ -2731,10 +2523,7 @@ var HomeBaseService = class {
   async configureView(leaf, file) {
     const settings = this.plugin.settings;
     const view = leaf.view;
-    if (
-      !isMarkdownLike(file) ||
-      !(view instanceof import_obsidian7.MarkdownView)
-    ) {
+    if (!isMarkdownLike(file) || !(view instanceof import_obsidian7.MarkdownView)) {
       return;
     }
     const state = view.getState();
@@ -2775,11 +2564,7 @@ var HomeBaseService = class {
    */
   async revertView() {
     const settings = this.plugin.settings;
-    if (
-      !settings.revertView ||
-      !this.lastView ||
-      settings.openViewMode === "default"
-    ) {
+    if (!settings.revertView || !this.lastView || settings.openViewMode === "default") {
       return;
     }
     const view = this.lastView.deref();
@@ -2805,9 +2590,7 @@ var HomeBaseService = class {
     const config = this.app.vault.config;
     const mode = (config == null ? void 0 : config.defaultViewMode) || "source";
     const source =
-      (config == null ? void 0 : config.livePreview) !== void 0
-        ? !config.livePreview
-        : false;
+      (config == null ? void 0 : config.livePreview) !== void 0 ? !config.livePreview : false;
     if (
       view.leaf.getViewState().type === "markdown" &&
       (mode !== state.mode || source !== state.source)
@@ -2835,9 +2618,7 @@ var HomeBaseService = class {
   findExistingHomeBaseLeaf(file) {
     if (!file) return null;
     const homeBasePath = file.path;
-    const leaves = LEAF_TYPES.flatMap((type) =>
-      this.app.workspace.getLeavesOfType(type),
-    );
+    const leaves = LEAF_TYPES.flatMap((type) => this.app.workspace.getLeavesOfType(type));
     for (const leaf of leaves) {
       if (leafHasFile(leaf, homeBasePath)) {
         return leaf;
@@ -2917,9 +2698,7 @@ var HomeBaseService = class {
         return true;
       }
       await this.openGraph();
-      await new Promise((resolve) =>
-        setTimeout(resolve, GRAPH_COMMAND_FALLBACK_DELAY),
-      );
+      await new Promise((resolve) => setTimeout(resolve, GRAPH_COMMAND_FALLBACK_DELAY));
       ghostTab2 = this.findGraphGhostTab();
       if (ghostTab2) {
         this.ghostLeaves.add(ghostTab2);
@@ -3011,11 +2790,7 @@ var HomeBaseService = class {
    */
   getHomeBaseFile() {
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const path = resolvePathSync(
-      homeBaseSettings.type,
-      homeBaseSettings.value,
-      this.app,
-    );
+    const path = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.app);
     if (!path) return null;
     return getFileByPath(this.app, path);
   }
@@ -3052,10 +2827,7 @@ var HomeBaseService = class {
     layout.active = "e7a7b303c61786dc";
     await this.app.workspace.changeLayout(layout);
     if (import_obsidian7.Platform.isMobile) {
-      (_b =
-        (_a = this.app.workspace.rightSplit) == null
-          ? void 0
-          : _a.updateInfo) == null
+      (_b = (_a = this.app.workspace.rightSplit) == null ? void 0 : _a.updateInfo) == null
         ? void 0
         : _b.call(_a);
     }
@@ -3081,15 +2853,9 @@ var HomeBaseService = class {
         container = leafAny.containerEl || null;
       }
       if (container) {
-        const rootWorkspace = container.closest(
-          ".workspace-split.mod-vertical.mod-root",
-        );
-        const leftSidebar = container.closest(
-          ".workspace-split.mod-left-split",
-        );
-        const rightSidebar = container.closest(
-          ".workspace-split.mod-right-split",
-        );
+        const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
+        const leftSidebar = container.closest(".workspace-split.mod-left-split");
+        const rightSidebar = container.closest(".workspace-split.mod-right-split");
         if (rootWorkspace && !leftSidebar && !rightSidebar) {
           leavesToClose.push(leaf);
         }
@@ -3131,16 +2897,13 @@ var HomeBaseService = class {
   isFocusedOnHomeBase() {
     var _a, _b;
     const activeLeaf =
-      (_a = this.app.workspace.getActiveViewOfType(import_obsidian7.View)) ==
-      null
+      (_a = this.app.workspace.getActiveViewOfType(import_obsidian7.View)) == null
         ? void 0
         : _a.leaf;
     if (!activeLeaf) return false;
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
     if (homeBaseSettings.type === "Graph view" /* Graph */) {
-      return (
-        ((_b = activeLeaf.view) == null ? void 0 : _b.getViewType()) === "graph"
-      );
+      return ((_b = activeLeaf.view) == null ? void 0 : _b.getViewType()) === "graph";
     }
     const homeBaseFile = this.getHomeBaseFile();
     if (!homeBaseFile) return false;
@@ -3151,11 +2914,7 @@ var HomeBaseService = class {
    */
   homeBaseExists() {
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const path = resolvePathSync(
-      homeBaseSettings.type,
-      homeBaseSettings.value,
-      this.app,
-    );
+    const path = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.app);
     if (!path) return false;
     return getFileByPath(this.app, path) !== null;
   }
@@ -3199,10 +2958,7 @@ var HomeBaseService = class {
     if (!isSupportedExtension(activeFile.extension.toLowerCase())) {
       return false;
     }
-    if (
-      this.plugin.settings.separateMobile &&
-      import_obsidian7.Platform.isMobile
-    ) {
+    if (this.plugin.settings.separateMobile && import_obsidian7.Platform.isMobile) {
       this.plugin.settings.mobileHomeBaseType = "File" /* File */;
       this.plugin.settings.mobileHomeBaseValue = activeFile.path;
     } else {
@@ -3229,13 +2985,8 @@ var HomeBaseService = class {
       return;
     }
     const homeBaseSettings = this.plugin.getHomeBaseSettings();
-    const homeBasePath = resolvePathSync(
-      homeBaseSettings.type,
-      homeBaseSettings.value,
-      this.app,
-    );
-    if (!homeBasePath && homeBaseSettings.type !== "Graph view" /* Graph */)
-      return;
+    const homeBasePath = resolvePathSync(homeBaseSettings.type, homeBaseSettings.value, this.app);
+    if (!homeBasePath && homeBaseSettings.type !== "Graph view" /* Graph */) return;
     const isRandom =
       homeBaseSettings.type === "Random file" /* Random */ ||
       homeBaseSettings.type === "Random in folder" /* RandomFolder */ ||
@@ -3333,10 +3084,7 @@ var NewTabService = class {
           if (markdownView.file) {
             const file = markdownView.file;
             const configDir = this.app.vault.configDir;
-            if (
-              file.path.includes("release") ||
-              file.path.includes(configDir)
-            ) {
+            if (file.path.includes("release") || file.path.includes(configDir)) {
               const container = markdownView.containerEl;
               if (container && container.querySelector(".release-notes")) {
                 exceptLeaf = leaf;
@@ -3392,11 +3140,7 @@ var NewTabService = class {
     var _a;
     const windowAny = window;
     const capacitor = windowAny.Capacitor;
-    if (
-      (_a = capacitor == null ? void 0 : capacitor.Plugins) == null
-        ? void 0
-        : _a.App
-    ) {
+    if ((_a = capacitor == null ? void 0 : capacitor.Plugins) == null ? void 0 : _a.App) {
       try {
         const launchUrl = await capacitor.Plugins.App.getLaunchUrl();
         if (launchUrl == null ? void 0 : launchUrl.url) {
@@ -3503,18 +3247,14 @@ var NewTabService = class {
   async replaceEmptyTab(leaf, isAllTabsClosed = false) {
     if (!isAllTabsClosed) {
       if (this.plugin.settings.replaceNewTab !== true) {
-        console.debug(
-          "[Home Base] replaceEmptyTab: replaceNewTab is not true, aborting",
-        );
+        console.debug("[Home Base] replaceEmptyTab: replaceNewTab is not true, aborting");
         return;
       }
     }
     await new Promise((resolve) => setTimeout(resolve, PLUGIN_RACE_DELAY));
     if (!isAllTabsClosed) {
       if (this.plugin.settings.replaceNewTab !== true) {
-        console.debug(
-          "[Home Base] replaceEmptyTab: replaceNewTab changed during delay, aborting",
-        );
+        console.debug("[Home Base] replaceEmptyTab: replaceNewTab changed during delay, aborting");
         return;
       }
     } else {
@@ -3526,9 +3266,7 @@ var NewTabService = class {
       }
     }
     if (!this.isEmptyTab(leaf)) {
-      console.debug(
-        "[Home Base] replaceEmptyTab: Tab is no longer empty, skipping",
-      );
+      console.debug("[Home Base] replaceEmptyTab: Tab is no longer empty, skipping");
       return;
     }
     const settings = isAllTabsClosed
@@ -3542,11 +3280,7 @@ var NewTabService = class {
       newTabMode: this.plugin.settings.newTabMode,
       useDifferentFileForNewTab: this.plugin.settings.useDifferentFileForNewTab,
     });
-    const success = await this.plugin.homeService.openInLeafWithSettings(
-      leaf,
-      settings,
-      true,
-    );
+    const success = await this.plugin.homeService.openInLeafWithSettings(leaf, settings, true);
     if (!success) {
       console.warn("[Home Base] Failed to open file:", settings);
     } else {
@@ -3557,9 +3291,7 @@ var NewTabService = class {
    * Force check for empty workspace and open home base
    */
   async openIfEmpty() {
-    const activeView = this.app.workspace.getActiveViewOfType(
-      import_obsidian8.View,
-    );
+    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian8.View);
     const activeLeaf = activeView == null ? void 0 : activeView.leaf;
     if (!activeLeaf) return;
     if (this.isEmptyTab(activeLeaf) && this.isOnlyTab(activeLeaf)) {
@@ -3613,9 +3345,7 @@ var StickyTabService = class {
    */
   updateWorkspaceClass(enabled) {
     const applyToDocument = (doc) => {
-      const mainWorkspace = doc.querySelector(
-        ".workspace-split.mod-vertical.mod-root",
-      );
+      const mainWorkspace = doc.querySelector(".workspace-split.mod-vertical.mod-root");
       if (!mainWorkspace) return;
       if (enabled) {
         mainWorkspace.classList.add("home-base-sticky-icon-enabled");
@@ -3684,10 +3414,7 @@ var StickyTabService = class {
                   this.plugin.settings.stickyIconName = icon;
                   await this.plugin.saveSettings();
                   if (this.stickyIconEl) {
-                    (0, import_obsidian9.setIcon)(
-                      this.stickyIconEl,
-                      icon || "home",
-                    );
+                    (0, import_obsidian9.setIcon)(this.stickyIconEl, icon || "home");
                   }
                 })();
               },
@@ -3699,17 +3426,13 @@ var StickyTabService = class {
     });
     const ensureIconInPlace = () => {
       if (!this.stickyIconEl) return;
-      const mainWorkspace2 = document.querySelector(
-        ".workspace-split.mod-vertical.mod-root",
-      );
+      const mainWorkspace2 = document.querySelector(".workspace-split.mod-vertical.mod-root");
       if (!mainWorkspace2) return;
       const tabHeaderContainerInner = mainWorkspace2.querySelector(
         ".workspace-tab-header-container-inner",
       );
       if (!tabHeaderContainerInner) return;
-      const allIcons = tabHeaderContainerInner.querySelectorAll(
-        `.${STICKY_ICON_CLASS}`,
-      );
+      const allIcons = tabHeaderContainerInner.querySelectorAll(`.${STICKY_ICON_CLASS}`);
       allIcons.forEach((icon) => {
         if (icon !== this.stickyIconEl) {
           icon.remove();
@@ -3718,10 +3441,7 @@ var StickyTabService = class {
       if (tabHeaderContainerInner.contains(this.stickyIconEl)) {
         return;
       }
-      tabHeaderContainerInner.insertBefore(
-        this.stickyIconEl,
-        tabHeaderContainerInner.firstChild,
-      );
+      tabHeaderContainerInner.insertBefore(this.stickyIconEl, tabHeaderContainerInner.firstChild);
       this.updateActiveState();
       this.updateTabHeaders();
       this.updateWorkspaceClass(true);
@@ -3748,20 +3468,15 @@ var StickyTabService = class {
         this.plugin.app.workspace.on("layout-change", this.layoutChangeHandler),
       );
     }
-    const mainWorkspace = document.querySelector(
-      ".workspace-split.mod-vertical.mod-root",
-    );
+    const mainWorkspace = document.querySelector(".workspace-split.mod-vertical.mod-root");
     if (mainWorkspace) {
       const containerObserver = new MutationObserver(() => {
-        if (!this.stickyIconEl || !this.plugin.settings.showStickyHomeIcon)
-          return;
+        if (!this.stickyIconEl || !this.plugin.settings.showStickyHomeIcon) return;
         const tabHeaderContainerInner = mainWorkspace.querySelector(
           ".workspace-tab-header-container-inner",
         );
         if (tabHeaderContainerInner) {
-          const allIcons = tabHeaderContainerInner.querySelectorAll(
-            `.${STICKY_ICON_CLASS}`,
-          );
+          const allIcons = tabHeaderContainerInner.querySelectorAll(`.${STICKY_ICON_CLASS}`);
           allIcons.forEach((icon) => {
             if (icon !== this.stickyIconEl) {
               icon.remove();
@@ -3794,20 +3509,14 @@ var StickyTabService = class {
       return;
     }
     this.tabHeaderObserver = new MutationObserver((mutations) => {
-      if (
-        !this.plugin.settings.showStickyHomeIcon ||
-        !this.plugin.settings.hideHomeTabHeader
-      ) {
+      if (!this.plugin.settings.showStickyHomeIcon || !this.plugin.settings.hideHomeTabHeader) {
         return;
       }
       let hasNewHeaders = false;
       for (const mutation of mutations) {
         if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
           for (const node of Array.from(mutation.addedNodes)) {
-            if (
-              node instanceof HTMLElement &&
-              node.classList.contains("workspace-tab-header")
-            ) {
+            if (node instanceof HTMLElement && node.classList.contains("workspace-tab-header")) {
               hasNewHeaders = true;
               break;
             }
@@ -3828,31 +3537,19 @@ var StickyTabService = class {
             container = leafAny.containerEl || null;
           }
           if (container) {
-            const rootWorkspace = container.closest(
-              ".workspace-split.mod-vertical.mod-root",
-            );
-            const leftSidebar = container.closest(
-              ".workspace-split.mod-left-split",
-            );
-            const rightSidebar = container.closest(
-              ".workspace-split.mod-right-split",
-            );
+            const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
+            const leftSidebar = container.closest(".workspace-split.mod-left-split");
+            const rightSidebar = container.closest(".workspace-split.mod-right-split");
             if (rootWorkspace && !leftSidebar && !rightSidebar) {
               if (this.plugin.homeService.isGhostLeaf(leaf)) {
                 const tabHeader = this.getTabHeaderForLeaf(leaf);
                 if (tabHeader && tabHeader.parentElement) {
                   const parent = tabHeader.parentElement;
-                  if (
-                    parent &&
-                    parent.classList.contains(
-                      "workspace-tab-header-container-inner",
-                    )
-                  ) {
+                  if (parent && parent.classList.contains("workspace-tab-header-container-inner")) {
                     const tabHeaderExtended = tabHeader;
                     if (parent.contains(tabHeader)) {
                       tabHeaderExtended._homeBaseParent = parent;
-                      tabHeaderExtended._homeBaseNextSibling =
-                        tabHeader.nextSibling;
+                      tabHeaderExtended._homeBaseNextSibling = tabHeader.nextSibling;
                       tabHeader.remove();
                     }
                   }
@@ -3873,9 +3570,7 @@ var StickyTabService = class {
           });
     };
     const observeAllWindows = () => {
-      const containers = document.querySelectorAll(
-        ".workspace-tab-header-container-inner",
-      );
+      const containers = document.querySelectorAll(".workspace-tab-header-container-inner");
       containers.forEach(observeContainer);
       this.plugin.app.workspace.iterateAllLeaves((leaf) => {
         var _a, _b;
@@ -3884,9 +3579,7 @@ var StickyTabService = class {
             ? void 0
             : _b.ownerDocument;
         if (doc && doc !== document) {
-          const windowContainers = doc.querySelectorAll(
-            ".workspace-tab-header-container-inner",
-          );
+          const windowContainers = doc.querySelectorAll(".workspace-tab-header-container-inner");
           windowContainers.forEach(observeContainer);
         }
       });
@@ -3895,14 +3588,10 @@ var StickyTabService = class {
     const setupWorkspaceObserver = (win) => {
       const doc = win.document;
       const workspaceObserver = new MutationObserver(() => {
-        const newContainers = doc.querySelectorAll(
-          ".workspace-tab-header-container-inner",
-        );
+        const newContainers = doc.querySelectorAll(".workspace-tab-header-container-inner");
         newContainers.forEach(observeContainer);
       });
-      const mainWorkspace = doc.querySelector(
-        ".workspace-split.mod-vertical.mod-root",
-      );
+      const mainWorkspace = doc.querySelector(".workspace-split.mod-vertical.mod-root");
       if (mainWorkspace) {
         workspaceObserver.observe(mainWorkspace, {
           childList: true,
@@ -3956,15 +3645,9 @@ var StickyTabService = class {
         container = leafAny.containerEl || null;
       }
       if (container) {
-        const rootWorkspace = container.closest(
-          ".workspace-split.mod-vertical.mod-root",
-        );
-        const leftSidebar = container.closest(
-          ".workspace-split.mod-left-split",
-        );
-        const rightSidebar = container.closest(
-          ".workspace-split.mod-right-split",
-        );
+        const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
+        const leftSidebar = container.closest(".workspace-split.mod-left-split");
+        const rightSidebar = container.closest(".workspace-split.mod-right-split");
         if (rootWorkspace && !leftSidebar && !rightSidebar) {
           const tabHeader = this.getTabHeaderForLeaf(leaf);
           if (tabHeader) {
@@ -4072,10 +3755,7 @@ var StickyTabService = class {
     this.sidebarObserver = new MutationObserver((mutations) => {
       let shouldUpdate = false;
       mutations.forEach((mutation) => {
-        if (
-          mutation.type === "attributes" &&
-          mutation.attributeName === "class"
-        ) {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
           shouldUpdate = true;
         }
       });
@@ -4097,8 +3777,7 @@ var StickyTabService = class {
    * Toggle the sticky icon visibility
    */
   async toggle() {
-    this.plugin.settings.showStickyHomeIcon =
-      !this.plugin.settings.showStickyHomeIcon;
+    this.plugin.settings.showStickyHomeIcon = !this.plugin.settings.showStickyHomeIcon;
     await this.plugin.saveSettings();
     this.update();
     this.updateTabHeaders();
@@ -4119,10 +3798,7 @@ var StickyTabService = class {
    * Internal method that actually updates the tab headers
    */
   _doUpdateTabHeaders() {
-    if (
-      !this.plugin.settings.showStickyHomeIcon ||
-      !this.plugin.settings.hideHomeTabHeader
-    ) {
+    if (!this.plugin.settings.showStickyHomeIcon || !this.plugin.settings.hideHomeTabHeader) {
       this.plugin.app.workspace.iterateAllLeaves((leaf) => {
         const tabHeader = this.getTabHeaderForLeaf(leaf);
         if (tabHeader) {
@@ -4163,15 +3839,9 @@ var StickyTabService = class {
         container = leafAny.containerEl || null;
       }
       if (container) {
-        const rootWorkspace = container.closest(
-          ".workspace-split.mod-vertical.mod-root",
-        );
-        const leftSidebar = container.closest(
-          ".workspace-split.mod-left-split",
-        );
-        const rightSidebar = container.closest(
-          ".workspace-split.mod-right-split",
-        );
+        const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
+        const leftSidebar = container.closest(".workspace-split.mod-left-split");
+        const rightSidebar = container.closest(".workspace-split.mod-right-split");
         if (rootWorkspace && !leftSidebar && !rightSidebar) {
           if (this.plugin.homeService.isGhostLeaf(leaf)) {
             const tabHeader = this.getTabHeaderForLeaf(leaf);
@@ -4184,10 +3854,7 @@ var StickyTabService = class {
     });
     ghostTabHeadersToRemove.forEach(({ tabHeader }) => {
       const parent = tabHeader.parentElement;
-      if (
-        parent &&
-        parent.classList.contains("workspace-tab-header-container-inner")
-      ) {
+      if (parent && parent.classList.contains("workspace-tab-header-container-inner")) {
         const tabHeaderExtended = tabHeader;
         if (parent.contains(tabHeader)) {
           tabHeaderExtended._homeBaseParent = parent;
@@ -4216,15 +3883,9 @@ var StickyTabService = class {
           container = leafAny.containerEl || null;
         }
         if (container) {
-          const rootWorkspace = container.closest(
-            ".workspace-split.mod-vertical.mod-root",
-          );
-          const leftSidebar = container.closest(
-            ".workspace-split.mod-left-split",
-          );
-          const rightSidebar = container.closest(
-            ".workspace-split.mod-right-split",
-          );
+          const rootWorkspace = container.closest(".workspace-split.mod-vertical.mod-root");
+          const leftSidebar = container.closest(".workspace-split.mod-left-split");
+          const rightSidebar = container.closest(".workspace-split.mod-right-split");
           if (rootWorkspace && !leftSidebar && !rightSidebar) {
             const isGhostTab = this.plugin.homeService.isGhostLeaf(leaf);
             const tabHeader = this.getTabHeaderForLeaf(leaf);
@@ -4249,12 +3910,8 @@ var StickyTabService = class {
               }
               const isGraphHome =
                 homeBaseSettings.type === "Graph view" /* Graph */ &&
-                ((_a = leaf.view) == null ? void 0 : _a.getViewType()) ===
-                  "graph";
-              if (
-                (homeBasePath && leafHasFile(leaf, homeBasePath)) ||
-                isGraphHome
-              ) {
+                ((_a = leaf.view) == null ? void 0 : _a.getViewType()) === "graph";
+              if ((homeBasePath && leafHasFile(leaf, homeBasePath)) || isGraphHome) {
                 tabHeader.classList.add("is-home-base-tab");
               } else {
                 tabHeader.classList.remove("is-home-base-tab");
@@ -4284,9 +3941,7 @@ var StickyTabService = class {
         : _c.ownerDocument) || document;
     const activeLeaf = this.plugin.app.workspace.getMostRecentLeaf();
     const isActive = leaf === activeLeaf;
-    const tabHeaders = doc.querySelectorAll(
-      `.workspace-tab-header[data-type="${viewType}"]`,
-    );
+    const tabHeaders = doc.querySelectorAll(`.workspace-tab-header[data-type="${viewType}"]`);
     if (isActive) {
       const activeHeader = doc.querySelector(".workspace-tab-header.is-active");
       if (activeHeader && activeHeader.getAttribute("data-type") === viewType) {
@@ -4359,8 +4014,7 @@ var StickyTabService = class {
     if (!homeBasePath) return;
     const homeBaseFile = getFileByPath(this.plugin.app, homeBasePath);
     if (!homeBaseFile) return;
-    const homeBaseLeaf =
-      this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
+    const homeBaseLeaf = this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
     if (homeBaseLeaf) {
       homeBaseLeaf.setPinned(true);
     }
@@ -4378,8 +4032,7 @@ var StickyTabService = class {
     if (!homeBasePath) return;
     const homeBaseFile = getFileByPath(this.plugin.app, homeBasePath);
     if (!homeBaseFile) return;
-    const homeBaseLeaf =
-      this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
+    const homeBaseLeaf = this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
     if (homeBaseLeaf) {
       homeBaseLeaf.setPinned(false);
     }
@@ -4397,8 +4050,7 @@ var StickyTabService = class {
     if (!homeBasePath) return false;
     const homeBaseFile = getFileByPath(this.plugin.app, homeBasePath);
     if (!homeBaseFile) return false;
-    const homeBaseLeaf =
-      this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
+    const homeBaseLeaf = this.plugin.homeService.findExistingHomeBaseLeaf(homeBaseFile);
     if (!homeBaseLeaf) return false;
     const viewState = homeBaseLeaf.getViewState();
     return viewState.pinned === true;
@@ -4451,9 +4103,7 @@ async function migrateLegacySettings(plugin) {
   }
   if (settings.keepExistingTabs !== void 0) {
     if (plugin.settings.openMode === DEFAULT_SETTINGS.openMode) {
-      plugin.settings.openMode = settings.keepExistingTabs
-        ? "retain"
-        : "replace-all";
+      plugin.settings.openMode = settings.keepExistingTabs ? "retain" : "replace-all";
       needsSave = true;
     }
     delete settings.keepExistingTabs;
@@ -4577,13 +4227,8 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
       name: "Open",
       callback: () => {
         const homeBaseSettings = this.getHomeBaseSettings();
-        if (
-          !homeBaseSettings.value &&
-          homeBaseSettings.type === "File" /* File */
-        ) {
-          new import_obsidian11.Notice(
-            "No home base configured. Set one in settings.",
-          );
+        if (!homeBaseSettings.value && homeBaseSettings.type === "File" /* File */) {
+          new import_obsidian11.Notice("No home base configured. Set one in settings.");
           return;
         }
         void this.homeService.openHomeBase({
@@ -4634,11 +4279,7 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
    */
   async loadSettings() {
     const data = await this.loadData();
-    this.settings = Object.assign(
-      {},
-      DEFAULT_SETTINGS,
-      data != null ? data : {},
-    );
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, data != null ? data : {});
   }
   /**
    * Get the active home base settings (mobile or desktop)
@@ -4663,10 +4304,7 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
     if (!this.settings.useDifferentFileForNewTab) {
       return this.getHomeBaseSettings();
     }
-    if (
-      this.settings.newTabSeparateMobile &&
-      import_obsidian11.Platform.isMobile
-    ) {
+    if (this.settings.newTabSeparateMobile && import_obsidian11.Platform.isMobile) {
       return {
         type: this.settings.mobileNewTabType || "File" /* File */,
         value: this.settings.mobileNewTabValue || "",
@@ -4740,8 +4378,7 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
     try {
       this.app.nvOrig_runOpeningBehavior = this.app.runOpeningBehavior;
       this.app.runOpeningBehavior = async (path) => {
-        const openInitially =
-          this.settings.openOnStartup && !this.hasUrlParams();
+        const openInitially = this.settings.openOnStartup && !this.hasUrlParams();
         if (openInitially) {
           this.openingBehaviorRan = true;
           const mode = this.settings.openMode;
@@ -4810,9 +4447,7 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
       case "Workspace" /* Workspace */:
         return (
           ((_c =
-            (_b =
-              (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
-            null
+            (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null
               ? void 0
               : _b.workspaces) == null
             ? void 0
@@ -4821,17 +4456,14 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
       case "Graph view" /* Graph */:
         return (
           ((_f =
-            (_e =
-              (_d = this.app.internalPlugins) == null ? void 0 : _d.plugins) ==
-            null
+            (_e = (_d = this.app.internalPlugins) == null ? void 0 : _d.plugins) == null
               ? void 0
               : _e.graph) == null
             ? void 0
             : _f.enabled) === true
         );
       case "Journal" /* Journal */:
-        return !!((_h =
-          (_g = this.app.plugins) == null ? void 0 : _g.plugins) == null
+        return !!((_h = (_g = this.app.plugins) == null ? void 0 : _g.plugins) == null
           ? void 0
           : _h["journals"]);
       case "Daily Note" /* DailyNote */:
@@ -4848,31 +4480,11 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
    * Check if periodic notes are available for the given type
    */
   hasRequiredPeriodicity(type) {
-    var _a,
-      _b,
-      _c,
-      _d,
-      _e,
-      _f,
-      _g,
-      _h,
-      _i,
-      _j,
-      _k,
-      _l,
-      _m,
-      _n,
-      _o,
-      _p,
-      _q,
-      _r,
-      _s;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s;
     if (type === "Daily Note" /* DailyNote */) {
       const coreDailyNotes =
         ((_c =
-          (_b =
-            (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
-          null
+          (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null
             ? void 0
             : _b["daily-notes"]) == null
           ? void 0
@@ -4886,17 +4498,14 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
           : _e["periodic-notes"];
       if (periodicNotes2) {
         const version2 =
-          ((_f = periodicNotes2 == null ? void 0 : periodicNotes2.manifest) ==
-          null
+          ((_f = periodicNotes2 == null ? void 0 : periodicNotes2.manifest) == null
             ? void 0
             : _f.version) || "0";
         const isLegacy2 = version2.startsWith("0");
         if (isLegacy2) {
           return (
             ((_h =
-              (_g =
-                periodicNotes2 == null ? void 0 : periodicNotes2.settings) ==
-              null
+              (_g = periodicNotes2 == null ? void 0 : periodicNotes2.settings) == null
                 ? void 0
                 : _g["daily"]) == null
               ? void 0
@@ -4905,10 +4514,7 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
         } else {
           const calendarSet =
             (_j =
-              (_i =
-                periodicNotes2 == null
-                  ? void 0
-                  : periodicNotes2.calendarSetManager) == null
+              (_i = periodicNotes2 == null ? void 0 : periodicNotes2.calendarSetManager) == null
                 ? void 0
                 : _i.getActiveSet) == null
               ? void 0
@@ -4960,18 +4566,14 @@ var HomeBasePlugin = class extends import_obsidian11.Plugin {
       if (!noun) return false;
       const calendarSet =
         (_r =
-          (_q =
-            periodicNotes == null
-              ? void 0
-              : periodicNotes.calendarSetManager) == null
+          (_q = periodicNotes == null ? void 0 : periodicNotes.calendarSetManager) == null
             ? void 0
             : _q.getActiveSet) == null
           ? void 0
           : _r.call(_q);
       return (
-        ((_s = calendarSet == null ? void 0 : calendarSet[noun]) == null
-          ? void 0
-          : _s.enabled) === true
+        ((_s = calendarSet == null ? void 0 : calendarSet[noun]) == null ? void 0 : _s.enabled) ===
+        true
       );
     }
   }

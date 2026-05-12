@@ -1,6 +1,6 @@
-import React from 'react'
-import type { PerfTier, SceneId, SymmetryConfig } from './types'
-import { sceneMap } from '../registry'
+import React from "react";
+import type { PerfTier, SceneId, SymmetryConfig } from "./types";
+import { sceneMap } from "../registry";
 
 /**
  * Renders the Scene component matching `activeSceneId`, forwarding
@@ -13,17 +13,22 @@ import { sceneMap } from '../registry'
  * evaluate server-side — no React.lazy / Suspense needed.
  */
 export interface SceneHostProps {
-  activeSceneId: SceneId
-  config: unknown
-  perf: PerfTier
-  symmetry: SymmetryConfig
+  activeSceneId: SceneId;
+  config: unknown;
+  perf: PerfTier;
+  symmetry: SymmetryConfig;
 }
 
-type SceneProps = { config: unknown; perf: PerfTier; symmetry: SymmetryConfig }
+type SceneProps = { config: unknown; perf: PerfTier; symmetry: SymmetryConfig };
 
-export function SceneHost({ activeSceneId, config, perf, symmetry }: SceneHostProps): React.ReactElement {
-  const mod = sceneMap[activeSceneId]
-  if (!mod) return <></>
-  const Scene = mod.Scene as React.FC<SceneProps>
-  return <Scene config={config} perf={perf} symmetry={symmetry} />
+export function SceneHost({
+  activeSceneId,
+  config,
+  perf,
+  symmetry,
+}: SceneHostProps): React.ReactElement {
+  const mod = sceneMap[activeSceneId];
+  if (!mod) return <></>;
+  const Scene = mod.Scene as React.FC<SceneProps>;
+  return <Scene config={config} perf={perf} symmetry={symmetry} />;
 }

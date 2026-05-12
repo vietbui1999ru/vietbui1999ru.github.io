@@ -32,9 +32,7 @@
 
 /* Hides vault name */
 .zenmode-active .workspace-sidedock-vault-profile,
-body.hider-vault:not(.is-mobile)
-  .workspace-split.mod-left-split
-  .workspace-sidedock-vault-profile {
+body.hider-vault:not(.is-mobile) .workspace-split.mod-left-split .workspace-sidedock-vault-profile {
   display: none;
 }
 
@@ -137,16 +135,13 @@ body:not(.is-mobile) .zenmode-button-auto-hide.zenmode-button-fade-out:hover {
 
 /* Ensure button inside is also visible when container is hovered */
 body:not(.is-mobile) .zenmode-button-auto-hide:hover button,
-body:not(.is-mobile)
-  .zenmode-button-auto-hide.zenmode-button-fade-out:hover
-  button {
+body:not(.is-mobile) .zenmode-button-auto-hide.zenmode-button-fade-out:hover button {
   opacity: 1;
 }
 
 /* Initial highlight animation when entering Zen mode with auto-hide enabled */
 /* Use higher specificity to override auto-hide base state */
-body:not(.is-mobile)
-  .zenmode-button-auto-hide.zenmode-button-initial-highlight {
+body:not(.is-mobile) .zenmode-button-auto-hide.zenmode-button-initial-highlight {
   opacity: 1;
 }
 

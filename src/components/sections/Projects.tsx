@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Carousel,
-  Card as CarouselCard,
-  BlurImage,
-} from "@/components/ui/CardsCarousel";
+import { Carousel, Card as CarouselCard, BlurImage } from "@/components/ui/CardsCarousel";
 import type { Card } from "@/components/ui/CardsCarousel";
 import { AppleHelloMyWorkEffect } from "@/components/ui/apple-hello-effect";
 import {
@@ -55,13 +51,7 @@ function gradientForIndex(
   };
 }
 
-function ProjectImageGallery({
-  images,
-  title,
-}: {
-  images: string[];
-  title: string;
-}) {
+function ProjectImageGallery({ images, title }: { images: string[]; title: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -81,7 +71,10 @@ function ProjectImageGallery({
   const scroll = (direction: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollBy({ left: direction === "left" ? -el.clientWidth : el.clientWidth, behavior: "smooth" });
+    el.scrollBy({
+      left: direction === "left" ? -el.clientWidth : el.clientWidth,
+      behavior: "smooth",
+    });
   };
 
   useEffect(() => {
@@ -130,8 +123,15 @@ function ProjectImageGallery({
         onScroll={updateScrollState}
       >
         {images.map((src, i) => (
-          <div key={i} className="relative h-[18rem] w-full flex-shrink-0 snap-center overflow-hidden rounded-xl bg-black">
-            <BlurImage src={src} alt={`${title} preview ${i + 1}`} className="h-full w-full object-contain" />
+          <div
+            key={i}
+            className="relative h-[18rem] w-full flex-shrink-0 snap-center overflow-hidden rounded-xl bg-black"
+          >
+            <BlurImage
+              src={src}
+              alt={`${title} preview ${i + 1}`}
+              className="h-full w-full object-contain"
+            />
           </div>
         ))}
       </div>
@@ -170,9 +170,7 @@ function projectToCarouselCard(
         {normalizedImages.length > 1 && (
           <ProjectImageGallery images={normalizedImages} title={project.title} />
         )}
-        <p className="text-muted-foreground text-sm leading-relaxed">
-          {project.content}
-        </p>
+        <p className="text-muted-foreground text-sm leading-relaxed">{project.content}</p>
         {project.badges && project.badges.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {project.badges.map((badge) => (
@@ -213,13 +211,15 @@ const Projects = () => {
 
   return (
     <section id="projects" className="relative min-h-screen w-full">
-      <div data-section-id="projects" aria-hidden="true" className="absolute inset-0 pointer-events-none" />
+      <div
+        data-section-id="projects"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloMyWorkEffect className="w-full" />
-          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-            {PROJECTS_TITLE}
-          </p>
+          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">{PROJECTS_TITLE}</p>
         </header>
 
         <Carousel

@@ -3,14 +3,7 @@
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { Card3D } from "@/components/ui/Card3D";
 import { AnimatePresence, motion } from "framer-motion";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
@@ -82,9 +75,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
   };
 
   return (
-    <CarouselContext.Provider
-      value={{ onCardClose: handleCardClose, currentIndex }}
-    >
+    <CarouselContext.Provider value={{ onCardClose: handleCardClose, currentIndex }}>
       <div className="relative w-full">
         <div
           className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-6 [scrollbar-width:none] md:py-10 snap-x snap-mandatory"
@@ -265,11 +256,7 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
           {card.background ? (
             card.background
           ) : card.src ? (
-            <BlurImage
-              alt={card.title}
-              className="h-full w-full object-cover"
-              src={card.src}
-            />
+            <BlurImage alt={card.title} className="h-full w-full object-cover" src={card.src} />
           ) : null}
         </div>
       </motion.button>

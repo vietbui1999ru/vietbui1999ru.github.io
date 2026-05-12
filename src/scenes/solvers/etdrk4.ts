@@ -18,25 +18,25 @@
 /** Safe phi1 = (exp(c) - 1) / c with Taylor fallback near c=0 */
 function phi1(c: number): number {
   if (Math.abs(c) < 1e-8) {
-    return 1 + c / 2 + (c * c) / 6 + (c * c * c) / 24
+    return 1 + c / 2 + (c * c) / 6 + (c * c * c) / 24;
   }
-  return (Math.exp(c) - 1) / c
+  return (Math.exp(c) - 1) / c;
 }
 
 /** phi2 = (exp(c) - 1 - c) / c² with Taylor fallback */
 function phi2(c: number): number {
   if (Math.abs(c) < 1e-8) {
-    return 0.5 + c / 6 + (c * c) / 24 + (c * c * c) / 120
+    return 0.5 + c / 6 + (c * c) / 24 + (c * c * c) / 120;
   }
-  return (Math.exp(c) - 1 - c) / (c * c)
+  return (Math.exp(c) - 1 - c) / (c * c);
 }
 
 /** phi3 = (exp(c) - 1 - c - c²/2) / c³ with Taylor fallback */
 function phi3(c: number): number {
   if (Math.abs(c) < 1e-8) {
-    return 1 / 6 + c / 24 + (c * c) / 120 + (c * c * c) / 720
+    return 1 / 6 + c / 24 + (c * c) / 120 + (c * c * c) / 720;
   }
-  return (Math.exp(c) - 1 - c - (c * c) / 2) / (c * c * c)
+  return (Math.exp(c) - 1 - c - (c * c) / 2) / (c * c * c);
 }
 
 /**
@@ -56,36 +56,36 @@ export function etdrk4Step(
   u: number,
   dt: number,
 ): number {
-  const c  = L * dt
-  const ch = L * dt * 0.5
+  const c = L * dt;
+  const ch = L * dt * 0.5;
 
-  const E  = Math.exp(c)
-  const E2 = Math.exp(ch)
+  const E = Math.exp(c);
+  const E2 = Math.exp(ch);
 
-  const p1h = phi1(ch)
-  const p1  = phi1(c)
-  const p2  = phi2(c)
-  const p3  = phi3(c)
+  const p1h = phi1(ch);
+  const p1 = phi1(c);
+  const p2 = phi2(c);
+  const p3 = phi3(c);
 
-  const half = dt * 0.5
+  const half = dt * 0.5;
 
-  const Na = N(t, u)
-  const a = E2 * u + p1h * half * Na
+  const Na = N(t, u);
+  const a = E2 * u + p1h * half * Na;
 
-  const Nb = N(t + half, a)
-  const b = E2 * u + p1h * half * Nb
+  const Nb = N(t + half, a);
+  const b = E2 * u + p1h * half * Nb;
 
-  const Nc = N(t + half, b)
-  const c_ = E2 * a + p1h * half * (2 * Nc - Na)
+  const Nc = N(t + half, b);
+  const c_ = E2 * a + p1h * half * (2 * Nc - Na);
 
-  const Nd = N(t + dt, c_)
+  const Nd = N(t + dt, c_);
 
   const uNew =
     E * u +
     dt * (p1 - 3 * p2 + 4 * p3) * Na +
     dt * (2 * p2 - 4 * p3) * Nb +
     dt * (2 * p2 - 4 * p3) * Nc +
-    dt * (-p2 + 4 * p3) * Nd
+    dt * (-p2 + 4 * p3) * Nd;
 
-  return uNew
+  return uNew;
 }

@@ -19,12 +19,7 @@ export type GalleryItem = {
   href?: string;
 };
 
-export const GALLERY_ITEMS: GalleryItem[] = (
-  galleryJson.items as GalleryItem[]
-).map((item) => ({
+export const GALLERY_ITEMS: GalleryItem[] = (galleryJson.items as GalleryItem[]).map((item) => ({
   ...item,
-  image:
-    item.image != null
-      ? (LOCAL_GALLERY_IMAGE_MAP[item.image] ?? item.image)
-      : undefined,
+  image: item.image != null ? (LOCAL_GALLERY_IMAGE_MAP[item.image] ?? item.image) : undefined,
 }));

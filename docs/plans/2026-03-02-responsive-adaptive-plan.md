@@ -160,9 +160,7 @@ const MobileBottomNav = () => {
               href={item.href}
               className={cn(
                 "flex flex-col items-center justify-center gap-0.5 py-2 min-w-[44px] min-h-[44px] touch-manipulation transition-colors",
-                isActive
-                  ? "text-[#D92D48] dark:text-[#FA689A]"
-                  : "text-muted-foreground",
+                isActive ? "text-[#D92D48] dark:text-[#FA689A]" : "text-muted-foreground",
               )}
             >
               <Icon className="size-5" />
@@ -266,8 +264,7 @@ git commit -m "feat: wire MobileBottomNav into layout with responsive padding"
 Change line 65 from:
 
 ```tsx
-className =
-  "text-7xl font-medium text-center text-foreground drop-shadow-md md:text-7xl";
+className = "text-7xl font-medium text-center text-foreground drop-shadow-md md:text-7xl";
 ```
 
 to:
@@ -307,12 +304,7 @@ Replace the entire component body (the return statement starting at line 44) wit
 if (!items.length) return null;
 
 return (
-  <div
-    className={cn(
-      "relative w-full max-w-4xl mx-auto flex flex-col gap-8",
-      className,
-    )}
-  >
+  <div className={cn("relative w-full max-w-4xl mx-auto flex flex-col gap-8", className)}>
     {/* Spine: left on mobile, center on md+ */}
     <div
       className={cn(
@@ -365,13 +357,9 @@ return (
               )}
             >
               <div className="mb-2 space-y-1">
-                <h3 className="font-semibold leading-tight text-sm md:text-base">
-                  {item.title}
-                </h3>
+                <h3 className="font-semibold leading-tight text-sm md:text-base">{item.title}</h3>
                 {item.subtitle && (
-                  <p className="text-[11px] md:text-xs text-muted-foreground">
-                    {item.subtitle}
-                  </p>
+                  <p className="text-[11px] md:text-xs text-muted-foreground">{item.subtitle}</p>
                 )}
                 {item.date && (
                   <p className="text-[11px] uppercase tracking-wide text-muted-foreground/80">
@@ -462,15 +450,8 @@ return (
             <div className="md:hidden pl-12 pr-2">{content}</div>
 
             {/* Desktop: two-column zig-zag */}
-            <div
-              className={cn(
-                "hidden md:flex w-full",
-                isRight && "md:flex-row-reverse",
-              )}
-            >
-              <div className={cn("w-1/2", isRight ? "pl-10" : "pr-10")}>
-                {content}
-              </div>
+            <div className={cn("hidden md:flex w-full", isRight && "md:flex-row-reverse")}>
+              <div className={cn("w-1/2", isRight ? "pl-10" : "pr-10")}>{content}</div>
               <div className="w-1/2" />
             </div>
           </li>
@@ -794,12 +775,8 @@ const [isMobile, setIsMobile] = useState(false);
 const [reducedMotion, setReducedMotion] = useState(false);
 
 useEffect(() => {
-  setIsMobile(
-    window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768,
-  );
-  setReducedMotion(
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
+  setIsMobile(window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768);
+  setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 }, []);
 
 const effectiveGrid = isMobile ? Math.min(grid, 20) : grid;

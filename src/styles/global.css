@@ -171,7 +171,9 @@
     button:active,
     [role="button"]:active {
       @apply scale-[0.97] opacity-80;
-      transition: transform 0.1s ease, opacity 0.1s ease;
+      transition:
+        transform 0.1s ease,
+        opacity 0.1s ease;
     }
   }
 
@@ -271,23 +273,42 @@
 }
 
 @keyframes lava-card-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-250%); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-250%);
+  }
 }
 
 @keyframes lava-card-wobble {
-  0% { border-radius: 38% 52% 75% 36% / 50% 40% 50% 60%; }
-  50% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
-  100% { border-radius: 38% 52% 75% 36% / 50% 40% 50% 60%; }
+  0% {
+    border-radius: 38% 52% 75% 36% / 50% 40% 50% 60%;
+  }
+  50% {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+  }
+  100% {
+    border-radius: 38% 52% 75% 36% / 50% 40% 50% 60%;
+  }
 }
 
 /* Disable filter + animation on mobile (touch) and reduced-motion */
 @media (pointer: coarse) {
-  .lava-card-lava { filter: none; }
-  .lava-card-blob { animation: none !important; }
+  .lava-card-lava {
+    filter: none;
+  }
+  .lava-card-blob {
+    animation: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .lava-card-lava { filter: none; }
-  .lava-card-blob { animation: none !important; }
+  .lava-card-lava {
+    filter: none;
+  }
+  .lava-card-blob {
+    animation: none !important;
+  }
 }

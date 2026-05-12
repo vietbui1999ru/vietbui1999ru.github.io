@@ -2,10 +2,7 @@
 
 import { BriefcaseBusiness } from "lucide-react";
 import { AppleHelloExperienceEffect } from "@/components/ui/apple-hello-effect";
-import {
-  TimelineLayout,
-  type TimelineItem,
-} from "@/components/ui/TimelineLayout";
+import { TimelineLayout, type TimelineItem } from "@/components/ui/TimelineLayout";
 import { EXPERIENCE_ITEMS, type ExperienceTag } from "@/data/experienceData";
 
 type ExperienceJobLike = {
@@ -20,10 +17,7 @@ type ExperienceCompanyLike = {
   jobs?: Array<ExperienceJobLike | ExperienceCompanyLike>;
 };
 
-function collectTimelineItems(
-  companyLike: ExperienceCompanyLike,
-  output: TimelineItem[],
-) {
+function collectTimelineItems(companyLike: ExperienceCompanyLike, output: TimelineItem[]) {
   const companyName = companyLike.company ?? "Unknown";
   const jobs = Array.isArray(companyLike.jobs) ? companyLike.jobs : [];
 
@@ -61,9 +55,7 @@ function collectTimelineItems(
       description: entry.content ?? "",
       tags,
       icon: <BriefcaseBusiness className="h-3 w-3" />,
-      status: date.toLowerCase().includes("present")
-        ? "in-progress"
-        : "completed",
+      status: date.toLowerCase().includes("present") ? "in-progress" : "completed",
     });
   });
 }
@@ -77,7 +69,11 @@ const ExperienceTimeline = () => {
 
   return (
     <section id="experience" className="relative min-h-screen w-full">
-      <div data-section-id="experience" aria-hidden="true" className="absolute inset-0 pointer-events-none" />
+      <div
+        data-section-id="experience"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloExperienceEffect className="w-full" />

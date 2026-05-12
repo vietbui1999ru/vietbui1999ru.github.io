@@ -1,15 +1,15 @@
-import type { SimModule, SymmetryType } from '@/scenes/engine/types'
-import { LorenzScene, LORENZ_LEVA_SCHEMA } from './Scene'
-import type { LorenzConfig } from './Scene'
-import { LORENZ_PRESETS } from './presets'
+import type { SimModule, SymmetryType } from "@/scenes/engine/types";
+import { LorenzScene, LORENZ_LEVA_SCHEMA } from "./Scene";
+import type { LorenzConfig } from "./Scene";
+import { LORENZ_PRESETS } from "./presets";
 
 const LorenzModule: SimModule<LorenzConfig> = {
-  id: 'lorenz',
-  title: 'Lorenz Attractor',
+  id: "lorenz",
+  title: "Lorenz Attractor",
   description:
-    'Three-variable ODE system (Lorenz 1963) that exhibits deterministic chaos. ' +
-    'Two butterfly-like attractor wings at classical parameters σ=10, ρ=28, β=8/3. ' +
-    'RK4 integration; positive Lyapunov exponent makes initially-nearby trajectories diverge.',
+    "Three-variable ODE system (Lorenz 1963) that exhibits deterministic chaos. " +
+    "Two butterfly-like attractor wings at classical parameters σ=10, ρ=28, β=8/3. " +
+    "RK4 integration; positive Lyapunov exponent makes initially-nearby trajectories diverge.",
 
   defaults: {
     sigma: 10,
@@ -31,8 +31,8 @@ const LorenzModule: SimModule<LorenzConfig> = {
    * for even-order double-scroll mirroring. Disable for order < 1.
    */
   symmetryApplies(type: SymmetryType, order: number): boolean {
-    return type === 'C' && order >= 1
+    return type === "C" && order >= 1;
   },
-}
+};
 
-export default LorenzModule
+export default LorenzModule;

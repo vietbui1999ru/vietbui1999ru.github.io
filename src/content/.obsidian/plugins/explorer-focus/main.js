@@ -9,8 +9,7 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if ((from && typeof from === "object") || typeof from === "function") {
@@ -23,8 +22,7 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toCommonJS = (mod) =>
-  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
@@ -53,9 +51,7 @@ var import_obsidian = require("obsidian");
 
 // node_modules/.pnpm/monkey-around@3.0.0/node_modules/monkey-around/dist/index.mjs
 function around(obj, factories) {
-  const removers = Object.keys(factories).map((key) =>
-    around1(obj, key, factories[key]),
-  );
+  const removers = Object.keys(factories).map((key) => around1(obj, key, factories[key]));
   return removers.length === 1
     ? removers[0]
     : function () {
@@ -109,9 +105,7 @@ function patchFileExplorer(plugin) {
     try {
       const prototype = Object.getPrototypeOf(fileExplorer);
       if (typeof prototype.getSortedFolderItems !== "function") {
-        throw new Error(
-          "getSortedFolderItems method not found on file explorer prototype",
-        );
+        throw new Error("getSortedFolderItems method not found on file explorer prototype");
       }
       plugin.register(
         around(prototype, {
@@ -166,14 +160,11 @@ function patchFileExplorer(plugin) {
 function getFileExplorer(plugin) {
   var _a;
   const fileExplorerContainer =
-    (_a = plugin.app.workspace.getLeavesOfType("file-explorer")) == null
-      ? void 0
-      : _a.first();
+    (_a = plugin.app.workspace.getLeavesOfType("file-explorer")) == null ? void 0 : _a.first();
   return fileExplorerContainer == null ? void 0 : fileExplorerContainer.view;
 }
 function getAllFileExplorers(plugin) {
-  const fileExplorerLeaves =
-    plugin.app.workspace.getLeavesOfType("file-explorer");
+  const fileExplorerLeaves = plugin.app.workspace.getLeavesOfType("file-explorer");
   return fileExplorerLeaves.map((leaf) => leaf.view);
 }
 
@@ -257,8 +248,7 @@ var AutoHideModal = class extends import_obsidian3.Modal {
         button.setButtonText("Add").onClick(() => {
           var _a2, _b, _c;
           const value =
-            (_b = (_a2 = this.addInput) == null ? void 0 : _a2.getValue()) ==
-            null
+            (_b = (_a2 = this.addInput) == null ? void 0 : _a2.getValue()) == null
               ? void 0
               : _b.trim();
           if (value) {
@@ -268,9 +258,7 @@ var AutoHideModal = class extends import_obsidian3.Modal {
           }
         }),
       );
-    (_a = this.modalEl.querySelector(".modal-button-container")) == null
-      ? void 0
-      : _a.remove();
+    (_a = this.modalEl.querySelector(".modal-button-container")) == null ? void 0 : _a.remove();
     const buttonContainer = this.modalEl.createDiv({
       cls: "modal-button-container",
     });
@@ -308,23 +296,19 @@ var ExplorerFocusSettingTab = class extends import_obsidian4.PluginSettingTab {
     const generalGroup = new import_obsidian4.SettingGroup(containerEl);
     generalGroup.addSetting((setting) => {
       setting.setName("Show right-click menu option").addToggle((toggle) =>
-        toggle
-          .setValue(this.plugin.settings.showRightClickMenu)
-          .onChange(async (value) => {
-            this.plugin.settings.showRightClickMenu = value;
-            await this.plugin.saveSettings();
-          }),
+        toggle.setValue(this.plugin.settings.showRightClickMenu).onChange(async (value) => {
+          this.plugin.settings.showRightClickMenu = value;
+          await this.plugin.saveSettings();
+        }),
       );
     });
     generalGroup.addSetting((setting) => {
       setting.setName("Show file explorer icon").addToggle((toggle) =>
-        toggle
-          .setValue(this.plugin.settings.showFileExplorerIcon)
-          .onChange(async (value) => {
-            this.plugin.settings.showFileExplorerIcon = value;
-            await this.plugin.saveSettings();
-            this.plugin.updateFileExplorerIcon();
-          }),
+        toggle.setValue(this.plugin.settings.showFileExplorerIcon).onChange(async (value) => {
+          this.plugin.settings.showFileExplorerIcon = value;
+          await this.plugin.saveSettings();
+          this.plugin.updateFileExplorerIcon();
+        }),
       );
     });
     generalGroup.addSetting((setting) => {
@@ -347,9 +331,7 @@ var ExplorerFocusSettingTab = class extends import_obsidian4.PluginSettingTab {
               if (this.plugin.isFocus) {
                 const fileExplorers = getAllFileExplorers(this.plugin);
                 fileExplorers.forEach((fileExplorer) => {
-                  if (
-                    fileExplorer == null ? void 0 : fileExplorer.requestSort
-                  ) {
+                  if (fileExplorer == null ? void 0 : fileExplorer.requestSort) {
                     fileExplorer.requestSort();
                   }
                 });
@@ -377,18 +359,16 @@ var ExplorerFocusSettingTab = class extends import_obsidian4.PluginSettingTab {
           });
       });
     }
-    const autoHideGroup = new import_obsidian4.SettingGroup(
-      containerEl,
-    ).setHeading("Auto-hide folders");
+    const autoHideGroup = new import_obsidian4.SettingGroup(containerEl).setHeading(
+      "Auto-hide folders",
+    );
     autoHideGroup.addSetting((setting) => {
       var _a;
-      const autoHidePaths = (
-        (_a = this.plugin.settings.autoHidePaths) != null ? _a : []
-      ).filter((p) => p.trim().length > 0);
-      const descFragment = document.createDocumentFragment();
-      descFragment.appendText(
-        "These folders are always hidden from the file explorer.",
+      const autoHidePaths = ((_a = this.plugin.settings.autoHidePaths) != null ? _a : []).filter(
+        (p) => p.trim().length > 0,
       );
+      const descFragment = document.createDocumentFragment();
+      descFragment.appendText("These folders are always hidden from the file explorer.");
       if (autoHidePaths.length > 0) {
         const list = descFragment.createEl("ul");
         autoHidePaths.forEach((p) => {
@@ -452,11 +432,7 @@ function registerCommands(plugin) {
         } else {
           const file = plugin.app.workspace.getActiveFile();
           if (file == null ? void 0 : file.path) {
-            const focusPath = getFocusPath(
-              file.path,
-              plugin.settings.focusLevel,
-              plugin.settings,
-            );
+            const focusPath = getFocusPath(file.path, plugin.settings.focusLevel, plugin.settings);
             plugin.enterFocus(focusPath);
           }
         }
@@ -493,8 +469,7 @@ function findNavButtonsContainer(fileExplorerView) {
   if (container) {
     return container;
   }
-  const existingButtons =
-    fileExplorerView.querySelectorAll(".nav-action-button");
+  const existingButtons = fileExplorerView.querySelectorAll(".nav-action-button");
   if (existingButtons.length > 0) {
     const firstButton = existingButtons[0];
     const parent = firstButton.parentElement;
@@ -502,9 +477,7 @@ function findNavButtonsContainer(fileExplorerView) {
       parent &&
       (parent.classList.contains("nav-buttons-container") ||
         parent.classList.contains("nav-header-button-container") ||
-        Array.from(parent.children).some((el) =>
-          el.classList.contains("nav-action-button"),
-        ))
+        Array.from(parent.children).some((el) => el.classList.contains("nav-action-button")))
     ) {
       return parent;
     }
@@ -520,17 +493,12 @@ function findNavButtonsContainer(fileExplorerView) {
     }
     return viewHeader;
   }
-  const navFilesContainer = fileExplorerView.querySelector(
-    ".nav-files-container",
-  );
+  const navFilesContainer = fileExplorerView.querySelector(".nav-files-container");
   if (navFilesContainer) {
-    let mobileButtonContainer = fileExplorerView.querySelector(
-      ".explorer-focus-mobile-buttons",
-    );
+    let mobileButtonContainer = fileExplorerView.querySelector(".explorer-focus-mobile-buttons");
     if (!mobileButtonContainer) {
       mobileButtonContainer = document.createElement("div");
-      mobileButtonContainer.className =
-        "nav-buttons-container explorer-focus-mobile-buttons";
+      mobileButtonContainer.className = "nav-buttons-container explorer-focus-mobile-buttons";
       mobileButtonContainer.setCssProps({
         display: "flex",
         alignItems: "center",
@@ -544,13 +512,10 @@ function findNavButtonsContainer(fileExplorerView) {
     }
     return mobileButtonContainer;
   }
-  let topContainer = fileExplorerView.querySelector(
-    ".explorer-focus-mobile-buttons",
-  );
+  let topContainer = fileExplorerView.querySelector(".explorer-focus-mobile-buttons");
   if (!topContainer) {
     topContainer = document.createElement("div");
-    topContainer.className =
-      "nav-buttons-container explorer-focus-mobile-buttons";
+    topContainer.className = "nav-buttons-container explorer-focus-mobile-buttons";
     topContainer.setCssProps({
       display: "flex",
       alignItems: "center",
@@ -577,10 +542,7 @@ function createFileExplorerIcon(plugin) {
   svg.setAttribute("stroke-linecap", "round");
   svg.setAttribute("stroke-linejoin", "round");
   svg.setAttribute("class", "svg-icon lucide-focus");
-  const circle = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "circle",
-  );
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
   circle.setAttribute("cx", "12");
   circle.setAttribute("cy", "12");
   circle.setAttribute("r", "3");
@@ -607,9 +569,7 @@ function insertFileExplorerIcon(icon, navButtonsContainer) {
   const allIcons = Array.from(
     navButtonsContainer.querySelectorAll(".clickable-icon.nav-action-button"),
   );
-  const defaultIcons = allIcons.filter(
-    (el) => !el.classList.contains("cmdr") && el !== icon,
-  );
+  const defaultIcons = allIcons.filter((el) => !el.classList.contains("cmdr") && el !== icon);
   const cmdrIcons = Array.from(navButtonsContainer.querySelectorAll(".cmdr"));
   if (cmdrIcons.length > 0) {
     navButtonsContainer.insertBefore(icon, cmdrIcons[0]);
@@ -754,9 +714,7 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
     }
     for (const [topLevel, paths] of topLevelFolders) {
       const isInFocusPath =
-        topLevel === focusedTopLevel ||
-        ancestorPaths.has(topLevel) ||
-        focusedPath === topLevel;
+        topLevel === focusedTopLevel || ancestorPaths.has(topLevel) || focusedPath === topLevel;
       if (!isInFocusPath) {
         for (const path of paths) {
           const vEl = fileExplorer.fileItems[path];
@@ -768,9 +726,7 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
           const vEl = fileExplorer.fileItems[path];
           if (!(vEl == null ? void 0 : vEl.el)) continue;
           const shouldShow =
-            path === focusedPath ||
-            path.startsWith(focusedPath + "/") ||
-            ancestorPaths.has(path);
+            path === focusedPath || path.startsWith(focusedPath + "/") || ancestorPaths.has(path);
           this.updateItemVisibility(vEl, shouldShow);
         }
       }
@@ -811,19 +767,14 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
         } else {
           const file = this.app.workspace.getActiveFile();
           if (file == null ? void 0 : file.path) {
-            const focusPath = getFocusPath(
-              file.path,
-              this.settings.focusLevel,
-              this.settings,
-            );
+            const focusPath = getFocusPath(file.path, this.settings.focusLevel, this.settings);
             this.enterFocus(focusPath);
           }
         }
       }
     };
     const addIconToFileExplorer = () => {
-      const fileExplorerLeaves =
-        this.app.workspace.getLeavesOfType("file-explorer");
+      const fileExplorerLeaves = this.app.workspace.getLeavesOfType("file-explorer");
       if (fileExplorerLeaves.length === 0) {
         return;
       }
@@ -832,10 +783,7 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
       if (!navButtonsContainer) {
         return;
       }
-      if (
-        this.fileExplorerIcon &&
-        navButtonsContainer.contains(this.fileExplorerIcon)
-      ) {
+      if (this.fileExplorerIcon && navButtonsContainer.contains(this.fileExplorerIcon)) {
         return;
       }
       if (this.fileExplorerIcon && this.fileExplorerIcon.parentElement) {
@@ -888,8 +836,7 @@ var ExplorerFocusPlugin = class extends import_obsidian5.Plugin {
       return;
     }
     if (!this.fileExplorerIcon.parentElement) {
-      const fileExplorerLeaves =
-        this.app.workspace.getLeavesOfType("file-explorer");
+      const fileExplorerLeaves = this.app.workspace.getLeavesOfType("file-explorer");
       if (fileExplorerLeaves.length > 0) {
         const fileExplorerView = fileExplorerLeaves[0].view.containerEl;
         const navButtonsContainer = findNavButtonsContainer(fileExplorerView);

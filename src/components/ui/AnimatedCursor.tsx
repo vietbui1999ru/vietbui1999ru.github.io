@@ -70,9 +70,7 @@ export function AnimatedCursor({
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const interactive = target.closest(
-        "a, button, [role='button'], input, select, textarea",
-      );
+      const interactive = target.closest("a, button, [role='button'], input, select, textarea");
       setIsPointer(!!interactive);
     };
 
@@ -93,10 +91,7 @@ export function AnimatedCursor({
   if (!isVisible) return null;
 
   return (
-    <div
-      className="pointer-events-none fixed left-0 top-0 z-[100000000]"
-      aria-hidden
-    >
+    <div className="pointer-events-none fixed left-0 top-0 z-[100000000]" aria-hidden>
       <div
         ref={dotRef}
         className={cn(

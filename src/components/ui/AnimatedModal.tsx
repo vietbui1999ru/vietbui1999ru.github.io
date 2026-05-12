@@ -2,14 +2,7 @@
 
 import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import type React from "react";
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
@@ -23,11 +16,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
 
-  return (
-    <ModalContext.Provider value={{ open, setOpen }}>
-      {children}
-    </ModalContext.Provider>
-  );
+  return <ModalContext.Provider value={{ open, setOpen }}>{children}</ModalContext.Provider>;
 };
 
 export const useModal = () => {
@@ -67,13 +56,7 @@ export const ModalTrigger = ({
 const FOCUSABLE_SELECTOR =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
-export const ModalBody = ({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) => {
+export const ModalBody = ({ children, className }: { children: ReactNode; className?: string }) => {
   const { open } = useModal();
 
   useEffect(() => {
@@ -94,9 +77,7 @@ export const ModalBody = ({
     const modal = modalRef.current;
     if (!modal) return;
 
-    const focusable = Array.from(
-      modal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
-    );
+    const focusable = Array.from(modal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
 
     if (focusable.length > 0) {
       focusable[0].focus();
@@ -211,11 +192,7 @@ export const ModalContent = ({
   children: ReactNode;
   className?: string;
 }) => {
-  return (
-    <div className={cn("flex flex-col flex-1 p-8 md:p-10", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("flex flex-col flex-1 p-8 md:p-10", className)}>{children}</div>;
 };
 
 export const ModalFooter = ({
@@ -225,16 +202,7 @@ export const ModalFooter = ({
   children: ReactNode;
   className?: string;
 }) => {
-  return (
-    <div
-      className={cn(
-        "flex justify-end p-4 bg-muted",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cn("flex justify-end p-4 bg-muted", className)}>{children}</div>;
 };
 
 const Overlay = ({ className }: { className?: string }) => {

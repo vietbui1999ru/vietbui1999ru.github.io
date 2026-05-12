@@ -11,8 +11,7 @@ function ensureGooFilter() {
 
   const svg = document.createElementNS(SVG_NS, "svg");
   svg.setAttribute("aria-hidden", "true");
-  svg.style.cssText =
-    "position:absolute;width:0;height:0;overflow:hidden;pointer-events:none";
+  svg.style.cssText = "position:absolute;width:0;height:0;overflow:hidden;pointer-events:none";
 
   const defs = document.createElementNS(SVG_NS, "defs");
   const filter = document.createElementNS(SVG_NS, "filter");
@@ -62,9 +61,7 @@ function createBlobConfigs(): BlobConfig[] {
   return Array.from({ length: 5 }, (_, i) => {
     const size = Math.max(28, 44 + i * 10 + (Math.random() * 12 - 6));
     const isLeft = i % 2 === 0;
-    const hBase = isLeft
-      ? Math.random() * 25 + 15
-      : Math.random() * 25 + 55;
+    const hBase = isLeft ? Math.random() * 25 + 15 : Math.random() * 25 + 55;
     return {
       width: size,
       height: size * (0.9 + Math.random() * 0.25),
@@ -79,7 +76,9 @@ function createBlobConfigs(): BlobConfig[] {
 }
 
 export function LavaLampBackground({ fromColor, toColor }: LavaLampBackgroundProps) {
-  useEffect(() => { ensureGooFilter(); }, []);
+  useEffect(() => {
+    ensureGooFilter();
+  }, []);
 
   const gradient = `linear-gradient(-206deg, ${fromColor} 0%, ${toColor} 100%)`;
   // Empty dep array — configs are stable for the lifetime of this component instance
@@ -89,24 +88,32 @@ export function LavaLampBackground({ fromColor, toColor }: LavaLampBackgroundPro
     <div className="lava-card" style={{ backgroundImage: gradient }}>
       <div className="lava-card-lamp">
         <div className="lava-card-lava">
-          {blobs.map(({ width, height, bottom, left, right, floatDuration, wobbleDuration, delay }, i) => (
-            <div
-              key={i}
-              className="lava-card-blob"
-              style={{
-                width,
-                height,
-                bottom,
-                left,
-                right,
-                backgroundImage: gradient,
-                animation: `lava-card-wobble ${wobbleDuration}s ease-in-out alternate infinite, lava-card-float ${floatDuration}s ease-in-out infinite`,
-                animationDelay: `${delay}s`,
-              }}
-            />
-          ))}
-          <div className="lava-card-blob lava-card-blob-top" style={{ backgroundImage: gradient }} />
-          <div className="lava-card-blob lava-card-blob-bottom" style={{ backgroundImage: gradient }} />
+          {blobs.map(
+            ({ width, height, bottom, left, right, floatDuration, wobbleDuration, delay }, i) => (
+              <div
+                key={i}
+                className="lava-card-blob"
+                style={{
+                  width,
+                  height,
+                  bottom,
+                  left,
+                  right,
+                  backgroundImage: gradient,
+                  animation: `lava-card-wobble ${wobbleDuration}s ease-in-out alternate infinite, lava-card-float ${floatDuration}s ease-in-out infinite`,
+                  animationDelay: `${delay}s`,
+                }}
+              />
+            ),
+          )}
+          <div
+            className="lava-card-blob lava-card-blob-top"
+            style={{ backgroundImage: gradient }}
+          />
+          <div
+            className="lava-card-blob lava-card-blob-bottom"
+            style={{ backgroundImage: gradient }}
+          />
         </div>
       </div>
     </div>

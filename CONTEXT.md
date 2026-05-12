@@ -33,18 +33,14 @@ These terms are **interchangeable**. "Simulation" is the physics/math concept;
 "scene" is the Three.js/r3f rendering wrapper around it. They are always 1:1.
 
 Prefer:
+
 - `scene` in engine context (SceneId, SceneHost, SceneRouter)
 - `sim` in URL and module context (`/sim/[name]`, `sims/` directory)
 
 ### SceneId
 
 ```typescript
-type SceneId =
-  | 'singularity'
-  | 'lorenz'
-  | 'magnetic'
-  | 'gray-scott'
-  | 'kuramoto-sivashinsky'
+type SceneId = "singularity" | "lorenz" | "magnetic" | "gray-scott" | "kuramoto-sivashinsky";
 ```
 
 Lowercase kebab-case string. The canonical identifier for a simulation everywhere
@@ -54,18 +50,18 @@ Lowercase kebab-case string. The canonical identifier for a simulation everywher
 
 The contract every simulation must satisfy. Key exports:
 
-| Export | Type | Purpose |
-|--------|------|---------|
-| `id` | `SceneId` | Unique identifier |
-| `title` | `string` | Human-readable name |
-| `description` | `string` | One-line description |
-| `defaults` | `Config` | Default parameter values |
-| `presets` | `Preset[]` | Named parameter overrides |
-| `schema` | `LevaSchema` | Leva GUI definition |
-| `Scene` | `React.FC` | r3f scene component |
-| `init()` | `() => State` | Create initial CPU state |
-| `step()` | `(state, config, dt) => void` | Advance one frame (CPU sims) |
-| `dispose()` | `() => void` | Release GPU/CPU resources |
+| Export              | Type                             | Purpose                         |
+| ------------------- | -------------------------------- | ------------------------------- |
+| `id`                | `SceneId`                        | Unique identifier               |
+| `title`             | `string`                         | Human-readable name             |
+| `description`       | `string`                         | One-line description            |
+| `defaults`          | `Config`                         | Default parameter values        |
+| `presets`           | `Preset[]`                       | Named parameter overrides       |
+| `schema`            | `LevaSchema`                     | Leva GUI definition             |
+| `Scene`             | `React.FC`                       | r3f scene component             |
+| `init()`            | `() => State`                    | Create initial CPU state        |
+| `step()`            | `(state, config, dt) => void`    | Advance one frame (CPU sims)    |
+| `dispose()`         | `() => void`                     | Release GPU/CPU resources       |
 | `symmetryApplies()` | `(s: SymmetryConfig) => boolean` | Validate symmetry applicability |
 
 ### SceneRegistry
@@ -125,24 +121,24 @@ analytically from `time` and `uv` uniforms. Stateless between frames.
 
 ## Numerical Solvers (`src/scenes/solvers/`)
 
-| Module | Algorithm | Use case |
-|--------|-----------|----------|
-| `rk4` | 4-stage Runge-Kutta | General ODEs |
-| `verlet` | Velocity-Verlet (symplectic) | Hamiltonian systems, Lorentz force |
-| `etdrk4` | Exponential time-differencing RK4 | Stiff PDEs (Kuramoto) |
-| `fft` | FFT wrapper (fft.js) | Spectral methods (Kuramoto, Gray-Scott) |
-| `gpuCompute` | GPU texture ping-pong | Any GPUComputeSim |
+| Module       | Algorithm                         | Use case                                |
+| ------------ | --------------------------------- | --------------------------------------- |
+| `rk4`        | 4-stage Runge-Kutta               | General ODEs                            |
+| `verlet`     | Velocity-Verlet (symplectic)      | Hamiltonian systems, Lorentz force      |
+| `etdrk4`     | Exponential time-differencing RK4 | Stiff PDEs (Kuramoto)                   |
+| `fft`        | FFT wrapper (fft.js)              | Spectral methods (Kuramoto, Gray-Scott) |
+| `gpuCompute` | GPU texture ping-pong             | Any GPUComputeSim                       |
 
 ---
 
 ## Symmetry System
 
-| Term | Values | Meaning |
-|------|--------|---------|
-| `SymmetryType` | `'none' \| 'C' \| 'D'` | Group family |
-| `SymmetryConfig` | `{ type, order }` | Full specification |
-| C_n | cyclic, order n | n-fold rotational symmetry |
-| D_n | dihedral, order n | n rotations + n reflections |
+| Term             | Values                 | Meaning                     |
+| ---------------- | ---------------------- | --------------------------- |
+| `SymmetryType`   | `'none' \| 'C' \| 'D'` | Group family                |
+| `SymmetryConfig` | `{ type, order }`      | Full specification          |
+| C_n              | cyclic, order n        | n-fold rotational symmetry  |
+| D_n              | dihedral, order n      | n rotations + n reflections |
 
 `symmetryApplies()` guards against physically meaningless combinations.
 Singularity and Kuramoto-Sivashinsky disable symmetry entirely.
@@ -155,6 +151,7 @@ Singularity and Kuramoto-Sivashinsky disable symmetry entirely.
 based on GPU capability detection (RGBA32F support, renderer score).
 
 All simulations must degrade gracefully across tiers:
+
 - Reduce grid resolution, particle count, or substeps for lower tiers
 - `GPUComputeSim`: prefer RGBA32F, fall back to RGBA16F
 
@@ -177,15 +174,15 @@ Portfolio sections (in scroll order):
 
 ## Naming Conventions
 
-| Thing | Convention | Example |
-|-------|-----------|---------|
-| SimModule id | kebab-case | `'gray-scott'` |
-| SimModule title | Title Case | `"Gray-Scott Reaction-Diffusion"` |
-| Presets constant | `MODULE_PRESETS` | `GRAY_SCOTT_PRESETS` |
-| Leva schema constant | `MODULE_LEVA_SCHEMA` | `GRAY_SCOTT_LEVA_SCHEMA` |
-| Config type | `PascalCaseConfig` | `GrayScottConfig` |
-| Scene component | `PascalCase.tsx` | `Scene.tsx` inside `sims/grayScott/` |
-| Sim directory | camelCase | `sims/grayScott/`, `sims/kuramotoSivashinsky/` |
-| Data constants | `UPPER_SNAKE_CASE` | `SCROLL_ACTIVE_THRESHOLD` |
-| React components | PascalCase | `SceneHost.tsx`, `AnimatedCursor.tsx` |
-| Hooks | `useNoun` | `useScrollSpy`, `useIsMobileOrTouch` |
+| Thing                | Convention           | Example                                        |
+| -------------------- | -------------------- | ---------------------------------------------- |
+| SimModule id         | kebab-case           | `'gray-scott'`                                 |
+| SimModule title      | Title Case           | `"Gray-Scott Reaction-Diffusion"`              |
+| Presets constant     | `MODULE_PRESETS`     | `GRAY_SCOTT_PRESETS`                           |
+| Leva schema constant | `MODULE_LEVA_SCHEMA` | `GRAY_SCOTT_LEVA_SCHEMA`                       |
+| Config type          | `PascalCaseConfig`   | `GrayScottConfig`                              |
+| Scene component      | `PascalCase.tsx`     | `Scene.tsx` inside `sims/grayScott/`           |
+| Sim directory        | camelCase            | `sims/grayScott/`, `sims/kuramotoSivashinsky/` |
+| Data constants       | `UPPER_SNAKE_CASE`   | `SCROLL_ACTIVE_THRESHOLD`                      |
+| React components     | PascalCase           | `SceneHost.tsx`, `AnimatedCursor.tsx`          |
+| Hooks                | `useNoun`            | `useScrollSpy`, `useIsMobileOrTouch`           |

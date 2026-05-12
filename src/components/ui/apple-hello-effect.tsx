@@ -69,10 +69,7 @@ function InViewHandwritingAnimation({
     >
       <svg
         key={cycle}
-        className={cn(
-          "h-12 w-auto shrink-0 text-foreground sm:h-16 md:h-24",
-          svgClassName,
-        )}
+        className={cn("h-12 w-auto shrink-0 text-foreground sm:h-16 md:h-24", svgClassName)}
         fill="none"
         viewBox={viewBox}
         style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}
@@ -118,9 +115,7 @@ function InViewHandwritingAnimation({
                 }
                 transition={transition}
                 onAnimationComplete={
-                  index === entries.length - 1 && inView
-                    ? onAnimationComplete
-                    : undefined
+                  index === entries.length - 1 && inView ? onAnimationComplete : undefined
                 }
               />
             );
@@ -166,12 +161,7 @@ function AppleHelloContactEffect(props: HandwritingProps) {
 
 function AppleHelloBlogEffect(props: HandwritingProps) {
   return (
-    <InViewHandwritingAnimation
-      {...props}
-      paths={myBlogPaths}
-      label="Blog"
-      viewBox="0 0 164 39"
-    />
+    <InViewHandwritingAnimation {...props} paths={myBlogPaths} label="Blog" viewBox="0 0 164 39" />
   );
 }
 

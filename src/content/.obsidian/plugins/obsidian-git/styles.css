@@ -117,12 +117,8 @@
   align-items: center;
 }
 
-.workspace-leaf-content[data-type="git-view"]
-  .tree-item-self:hover
-  .clickable-icon,
-.workspace-leaf-content[data-type="git-history-view"]
-  .tree-item-self:hover
-  .clickable-icon {
+.workspace-leaf-content[data-type="git-view"] .tree-item-self:hover .clickable-icon,
+.workspace-leaf-content[data-type="git-history-view"] .tree-item-self:hover .clickable-icon {
   color: var(--icon-color-hover);
 }
 

@@ -31,11 +31,7 @@ function SkillsMarquee() {
           >
             {group.type}
           </h3>
-          <Marquee
-            reverse={index % 2 === 1}
-            duration={35}
-            className="mx-auto max-w-5xl py-1"
-          >
+          <Marquee reverse={index % 2 === 1} duration={35} className="mx-auto max-w-5xl py-1">
             {group.skills.map((skill) => (
               <SkillBadge
                 key={skill.name}

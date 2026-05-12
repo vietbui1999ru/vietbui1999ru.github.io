@@ -141,10 +141,8 @@ body.hider-tabs .home-base-sticky-icon {
 }
 
 /* When tab container inner is hidden via display:none */
-.workspace-tab-header-container-inner[style*="display: none"]
-  .home-base-sticky-icon,
-.workspace-tab-header-container-inner[style*="display:none"]
-  .home-base-sticky-icon {
+.workspace-tab-header-container-inner[style*="display: none"] .home-base-sticky-icon,
+.workspace-tab-header-container-inner[style*="display:none"] .home-base-sticky-icon {
   display: none !important;
 }
 
@@ -178,9 +176,7 @@ body.hider-tabs .home-base-sticky-icon {
 }
 
 /* Add Lucide house icon as replacement */
-.home-base-mobile-enabled
-  .mobile-navbar-action-new-tab
-  .clickable-icon::before {
+.home-base-mobile-enabled .mobile-navbar-action-new-tab .clickable-icon::before {
   content: "";
   display: inline-block;
   width: 24px;
