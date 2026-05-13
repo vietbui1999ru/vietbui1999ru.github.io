@@ -7,15 +7,11 @@ import { cn } from "@/lib/utils";
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 const PHASE_MS = 900; // 900ms out + 900ms in = 1800ms total
 
+// These element types are never scrambled — they snap to the new value at phase boundary
+const STATIC_TAGS = new Set(["h1", "h2", "h3", "h4", "h5", "h6", "img", "figure", "picture"]);
+
 function randomChar() {
   return CHARS[Math.floor(Math.random() * CHARS.length)];
-}
-
-function extractText(html: string): string {
-  if (typeof document === "undefined") return html.replace(/<[^>]*>/g, "");
-  const div = document.createElement("div");
-  div.innerHTML = DOMPurify.sanitize(html);
-  return div.textContent ?? "";
 }
 
 /**
@@ -27,17 +23,36 @@ function buildFrame(source: string, maxLen: number, progress: number): string {
   let result = "";
   for (let i = 0; i < maxLen; i++) {
     const char = source[i] ?? " ";
-    // Always preserve whitespace — keeps word-level wrapping intact
     if (char === " " || char === "\n" || char === "\t") {
       result += char;
       continue;
     }
-    // Distance from the nearest edge (0 = outermost, halfLen = center)
     const distFromEdge = Math.min(i, maxLen - 1 - i);
     const resolved = halfLen === 0 || distFromEdge / halfLen <= progress;
     result += resolved ? char : randomChar();
   }
   return result;
+}
+
+type ChildInfo =
+  | { kind: "static"; html: string }
+  | { kind: "animated"; tag: string; textLen: number };
+
+/** Pre-compute per-element animation metadata once, not on every frame. */
+function parseChildInfo(div: HTMLElement): ChildInfo[] {
+  return Array.from(div.children).map((child) => {
+    const tag = child.tagName.toLowerCase();
+    if (STATIC_TAGS.has(tag)) return { kind: "static", html: child.outerHTML };
+    return { kind: "animated", tag, textLen: (child.textContent ?? "").length };
+  });
+}
+
+/** Concatenate text content of all non-static top-level children. */
+function collectAnimatableText(div: HTMLElement): string {
+  return Array.from(div.children)
+    .filter((el) => !STATIC_TAGS.has(el.tagName.toLowerCase()))
+    .map((el) => el.textContent ?? "")
+    .join("");
 }
 
 interface ScrambleTextProps {
@@ -81,9 +96,16 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
       return;
     }
 
-    const fromText = extractText(prevHtmlRef.current);
-    const toText = extractText(html);
+    // Parse both sides once — DOMPurify + DOM walk happen here, not on every frame
+    const fromDiv = document.createElement("div");
+    fromDiv.innerHTML = DOMPurify.sanitize(prevHtmlRef.current);
+    const toDiv = document.createElement("div");
+    toDiv.innerHTML = cleanHtml;
+
+    const fromText = collectAnimatableText(fromDiv);
+    const toText = collectAnimatableText(toDiv);
     const maxLen = Math.max(fromText.length, toText.length);
+    const toChildInfo = parseChildInfo(toDiv);
 
     const el = containerRef.current;
 
@@ -102,10 +124,19 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
       const source = phase === "out" ? fromText : toText;
       const scrambled = buildFrame(source, maxLen, progress);
 
-      // Block display + word wrapping keeps scrambled text inside the locked container
-      setDisplayHtml(
-        `<span style="display:block;word-break:break-word;white-space:normal">${scrambled}</span>`
-      );
+      // Static elements render verbatim; animated elements get scrambled plain text
+      let animOffset = 0;
+      let result = "";
+      for (const info of toChildInfo) {
+        if (info.kind === "static") {
+          result += info.html;
+        } else {
+          const chunk = scrambled.slice(animOffset, animOffset + info.textLen);
+          animOffset += info.textLen;
+          result += `<${info.tag} style="word-break:break-word;white-space:normal">${chunk}</${info.tag}>`;
+        }
+      }
+      setDisplayHtml(result || cleanHtml);
 
       if (progress < 1) {
         rafRef.current = requestAnimationFrame(step);
