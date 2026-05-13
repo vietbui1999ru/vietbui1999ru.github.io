@@ -43,6 +43,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Cache Astro + excalidraw build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            .astro
+            .cache
+          key: astro-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'astro.config.ts') }}-${{ hashFiles('src/**/*') }}-${{ github.sha }}
+          restore-keys: |
+            astro-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'astro.config.ts') }}-${{ hashFiles('src/**/*') }}-
+            astro-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'astro.config.ts') }}-
+            astro-${{ runner.os }}-
+
       - name: Build site
         run: pnpm run build
 
