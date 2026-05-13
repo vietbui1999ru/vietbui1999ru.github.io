@@ -16,9 +16,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          ssh-key: ${{ secrets.VAULT_DEPLOY_KEY }}
+
+      - name: Load vault deploy key
+        env:
+          VAULT_DEPLOY_KEY: ${{ secrets.VAULT_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$VAULT_DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Checkout submodules
+        run: git submodule update --init --recursive --depth=1
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
