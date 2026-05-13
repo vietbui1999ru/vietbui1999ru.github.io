@@ -9,6 +9,9 @@ import Blog from "@/components/sections/Blog";
 import Gallery from "@/components/sections/Gallery";
 import Contact from "@/components/sections/Contact";
 import { getCollection } from "astro:content";
+import path from "node:path";
+import { createAssetAdapters } from "@/lib/remark/adapters";
+import type { GalleryItem } from "@/data/galleryData";
 
 const blogPosts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
@@ -21,6 +24,34 @@ const blogPosts = (await getCollection("blog"))
     date: p.data.date,
     draft: p.data.draft,
   }));
+
+const { copyAsset } = createAssetAdapters({
+  attachmentsRoot: path.join(process.cwd(), "vendor", "vault", "Attachments"),
+  publicRoot: path.join(process.cwd(), "public"),
+  excalidrawCacheDir: path.join(process.cwd(), ".cache", "excalidraw"),
+});
+
+const galleryItems: GalleryItem[] = (await getCollection("gallery"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((item) => {
+    let image: string | undefined;
+    if (item.data.image) {
+      try {
+        image = copyAsset(item.data.image, "gallery");
+      } catch {
+        console.warn(`[gallery] image not found in Attachments: ${item.data.image}`);
+      }
+    }
+    return {
+      id: item.id,
+      title: item.data.title,
+      description: item.data.description,
+      image,
+      href: item.data.href,
+      tags: item.data.tags,
+      order: item.data.order,
+    };
+  });
 ---
 
 <BaseLayout>
@@ -29,7 +60,7 @@ const blogPosts = (await getCollection("blog"))
   <Projects client:load />
   <Experience client:load />
   <Education client:load />
-  <Gallery client:load />
+  <Gallery client:load items={galleryItems} />
   <Blog client:load posts={blogPosts} />
   <Contact client:load />
 </BaseLayout>
