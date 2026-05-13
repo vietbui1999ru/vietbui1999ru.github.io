@@ -7,6 +7,7 @@ import { getPerfTier } from "./PerfController";
 
 const SCENE_OFF = "none" as const;
 type SceneSelection = SceneId | typeof SCENE_OFF;
+const SCENE_STORAGE_KEY = "portfolio:activeScene";
 
 const registry = createAppSceneRegistry();
 const defaultSymmetry: SymmetryConfig = { type: "none", order: 1 };
@@ -20,6 +21,18 @@ function deriveRouteHint(): SceneId {
   return "singularity";
 }
 
+function readPersistedScene(): SceneSelection | null {
+  try {
+    const stored = localStorage.getItem(SCENE_STORAGE_KEY);
+    if (stored && (stored === SCENE_OFF || sceneMap[stored as SceneId])) {
+      return stored as SceneSelection;
+    }
+  } catch {
+    // localStorage unavailable (private browsing, etc.)
+  }
+  return null;
+}
+
 function isSimEnabled(): boolean {
   if (typeof window === "undefined") return false;
   const p = window.location.pathname;
@@ -27,7 +40,9 @@ function isSimEnabled(): boolean {
 }
 
 function SimCanvas(): React.ReactElement {
-  const defaultScene = deriveRouteHint();
+  const routeHint = deriveRouteHint();
+  // Prefer persisted choice; fall back to route hint (so /sim/lorenz still works on first visit)
+  const initialScene: SceneSelection = readPersistedScene() ?? routeHint;
   const [perf, setPerf] = useState<PerfTier>("mid");
 
   useEffect(() => {
@@ -35,8 +50,17 @@ function SimCanvas(): React.ReactElement {
   }, []);
 
   const { scene } = useControls("Scene", {
-    scene: { value: defaultScene, options: sceneOptions },
+    scene: { value: initialScene, options: sceneOptions },
   });
+
+  // Persist whenever the user changes the scene
+  useEffect(() => {
+    try {
+      localStorage.setItem(SCENE_STORAGE_KEY, scene as string);
+    } catch {
+      // ignore write errors
+    }
+  }, [scene]);
 
   const selection = scene as SceneSelection;
   if (selection === SCENE_OFF) return <></>;

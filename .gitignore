@@ -34,5 +34,8 @@ pnpm-debug.log*
 .worktrees/
 .claude/worktrees/
 
+# Playwright MCP output
+.playwright-mcp/
+
 # Style guides (local authoring aids, not for publication)
 docs/style-guides/
