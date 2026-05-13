@@ -2,6 +2,7 @@
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
+import fs from "node:fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import remarkCallout from "@r4ai/remark-callout";
@@ -32,6 +33,25 @@ const { copyAsset, resolveExcalidraw } = createAssetAdapters({
 });
 
 const wikilinkIndex = buildWikilinkIndex(path.join(vaultRoot, "Blogs"));
+
+// Pre-copy gallery images at config-load time so they land in public/ before
+// Astro does the public/ → dist/ copy (SSG page rendering is too late).
+const GALLERY_IMAGE_RE = /^image:\s*"?([^"'\n][^\n]*?)"?\s*$/m;
+const galleryDir = path.join(vaultRoot, "Gallery");
+if (fs.existsSync(galleryDir)) {
+  for (const file of fs.readdirSync(galleryDir)) {
+    if (!file.endsWith(".md")) continue;
+    const content = fs.readFileSync(path.join(galleryDir, file), "utf-8");
+    const m = content.match(GALLERY_IMAGE_RE);
+    if (!m) continue;
+    const filename = m[1].trim();
+    try {
+      copyAsset(filename, "gallery");
+    } catch {
+      console.warn(`[gallery] image not found in Attachments: ${filename}`);
+    }
+  }
+}
 
 export default defineConfig({
   site,
