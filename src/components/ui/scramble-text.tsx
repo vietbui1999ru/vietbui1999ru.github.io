@@ -81,7 +81,7 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
+      { threshold: 0 }
     );
     observer.observe(el);
     return () => observer.disconnect();

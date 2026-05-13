@@ -18,8 +18,6 @@ interface BlogVariantTabsProps {
 export default function BlogVariantTabs({ storageId, proseClass }: BlogVariantTabsProps) {
   const [tabs, setTabs] = useState<TabData[]>([]);
   const [activeIdx, setActiveIdx] = useState(0);
-  const [scrambleKey, setScrambleKey] = useState(0);
-
   // Read pre-rendered HTML from hidden storage div (Astro renders it at build time)
   useEffect(() => {
     const storage = document.getElementById(storageId);
@@ -36,9 +34,8 @@ export default function BlogVariantTabs({ storageId, proseClass }: BlogVariantTa
 
   const handleTabClick = useCallback(
     (idx: number) => {
-      if (idx === activeIdx) return; // no-op same tab
+      if (idx === activeIdx) return;
       setActiveIdx(idx);
-      setScrambleKey((k) => k + 1); // new key interrupts + restarts scramble animation
     },
     [activeIdx]
   );
@@ -49,7 +46,7 @@ export default function BlogVariantTabs({ storageId, proseClass }: BlogVariantTa
   }
 
   if (tabs.length === 1) {
-    return <ScrambleText key={scrambleKey} html={tabs[0].html} className={proseClass} />;
+    return <ScrambleText html={tabs[0].html} className={proseClass} />;
   }
 
   return (
@@ -74,7 +71,6 @@ export default function BlogVariantTabs({ storageId, proseClass }: BlogVariantTa
       </div>
 
       <ScrambleText
-        key={scrambleKey}
         html={tabs[activeIdx].html}
         className={proseClass}
       />
