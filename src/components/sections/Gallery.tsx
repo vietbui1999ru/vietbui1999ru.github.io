@@ -164,11 +164,11 @@ const Gallery = ({ items }: GalleryProps) => {
                   >
                     <X className="h-5 w-5" />
                   </button>
-                  <div className="overflow-hidden rounded-2xl mb-4">
+                  <div className="flex items-center justify-center overflow-hidden rounded-2xl mb-4 bg-muted/30">
                     <img
                       src={activeImage.src}
                       alt={activeImage.alt ?? activeImage.id}
-                      className="w-full h-full max-h-[60vh] md:max-h-[400px] object-cover"
+                      className="w-auto h-auto max-w-full max-h-[60vh] md:max-h-[70vh] object-contain"
                     />
                   </div>
                   {activeImage.title && (
