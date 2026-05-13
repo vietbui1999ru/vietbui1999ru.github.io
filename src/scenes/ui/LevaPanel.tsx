@@ -72,13 +72,15 @@ export function LevaPanel(): React.ReactElement {
   const { hidden } = useLevaPanelVisibility();
 
   return (
-    <Leva
-      hidden={hidden}
-      collapsed={false}
-      theme={{
-        sizes: { rootWidth: "280px" },
-      }}
-    />
+    <div style={{ position: "relative", zIndex: 10000000 }}>
+      <Leva
+        hidden={hidden}
+        collapsed={false}
+        theme={{
+          sizes: { rootWidth: "280px" },
+        }}
+      />
+    </div>
   );
 }
 
