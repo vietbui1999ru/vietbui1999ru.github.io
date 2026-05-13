@@ -25,13 +25,4 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run fmt
 
-      # Optimize all PNGs with https://pngquant.org/
-      - run: sudo apt-get update && sudo apt-get install -y pngquant
-      - name: Run pngquant
-        run: |
-          shopt -s globstar
-          pngquant -f --ext .png -- **/*.png
-
-      # Limiting the runner's permissions and pinning the autofix action to a specific commit hash instead of a tag is not required,
-      # but makes our workflow more resilient against supply chain attacks
       - uses: autofix-ci/action@7a166d7532b277f34e16238930461bf77f9d7ed8
