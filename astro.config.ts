@@ -5,6 +5,8 @@ import { defineConfig } from "astro/config";
 import path from "path";
 import { fileURLToPath } from "url";
 import remarkCallout from "@r4ai/remark-callout";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import { remarkPreview } from "./src/lib/remark/preview";
 import { remarkEmbeds } from "./src/lib/remark/embeds";
 import { remarkWikilinks } from "./src/lib/remark/wikilinks";
@@ -24,7 +26,7 @@ const base = process.env.BASE || "/";
 const vaultRoot = getVaultRoot(__dirname);
 
 const { copyAsset, resolveExcalidraw } = createAssetAdapters({
-  attachmentsRoot: path.join(vaultRoot, "Attachments", "Images"),
+  attachmentsRoot: path.join(vaultRoot, "Attachments"),
   publicRoot: path.resolve(__dirname, "public"),
   excalidrawCacheDir: path.resolve(__dirname, ".cache/excalidraw"),
 });
@@ -43,10 +45,11 @@ export default defineConfig({
     },
     remarkPlugins: [
       remarkCallout,
+      remarkMath,
       remarkPreview,
       [
         remarkEmbeds,
-        { attachmentsRoot: path.join(vaultRoot, "Attachments", "Images"), copyAsset, resolveExcalidraw },
+        { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw },
       ],
       [
         remarkWikilinks,
@@ -57,6 +60,7 @@ export default defineConfig({
         },
       ],
     ],
+    rehypePlugins: [rehypeKatex],
   },
   vite: {
     plugins: [tailwindcss()],

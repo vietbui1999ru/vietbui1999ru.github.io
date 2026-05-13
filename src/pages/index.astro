@@ -26,7 +26,7 @@ const blogPosts = (await getCollection("blog"))
   }));
 
 const { copyAsset } = createAssetAdapters({
-  attachmentsRoot: path.join(process.cwd(), "vendor", "vault", "Attachments", "Images"),
+  attachmentsRoot: path.join(process.cwd(), "vendor", "vault", "Attachments"),
   publicRoot: path.join(process.cwd(), "public"),
   excalidrawCacheDir: path.join(process.cwd(), ".cache", "excalidraw"),
 });
