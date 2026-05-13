@@ -24,7 +24,7 @@ const base = process.env.BASE || "/";
 const vaultRoot = getVaultRoot(__dirname);
 
 const { copyAsset, resolveExcalidraw } = createAssetAdapters({
-  attachmentsRoot: path.join(vaultRoot, "Attachments"),
+  attachmentsRoot: path.join(vaultRoot, "Attachments", "Images"),
   publicRoot: path.resolve(__dirname, "public"),
   excalidrawCacheDir: path.resolve(__dirname, ".cache/excalidraw"),
 });
@@ -46,7 +46,7 @@ export default defineConfig({
       remarkPreview,
       [
         remarkEmbeds,
-        { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw },
+        { attachmentsRoot: path.join(vaultRoot, "Attachments", "Images"), copyAsset, resolveExcalidraw },
       ],
       [
         remarkWikilinks,
