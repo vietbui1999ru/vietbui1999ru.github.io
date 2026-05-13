@@ -126,7 +126,7 @@ const Gallery = ({ items }: GalleryProps) => {
           />
         ) : (
           <p className="text-center text-muted-foreground py-16">
-            Add images to galleryData.ts to see the 3D marquee.
+            No gallery items yet — add items to ~/repos/Obsidian/gallery/ and run sync-full.sh.
           </p>
         )}
 
