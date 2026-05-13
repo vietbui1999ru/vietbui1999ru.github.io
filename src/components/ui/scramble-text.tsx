@@ -38,11 +38,16 @@ type ChildInfo =
   | { kind: "static"; html: string }
   | { kind: "animated"; tag: string; textLen: number };
 
+/** True for elements that should never scramble (headers, images, image-containing blocks). */
+function isStaticElement(el: Element): boolean {
+  return STATIC_TAGS.has(el.tagName.toLowerCase()) || el.querySelector("img") !== null;
+}
+
 /** Pre-compute per-element animation metadata once, not on every frame. */
 function parseChildInfo(div: HTMLElement): ChildInfo[] {
   return Array.from(div.children).map((child) => {
+    if (isStaticElement(child)) return { kind: "static", html: child.outerHTML };
     const tag = child.tagName.toLowerCase();
-    if (STATIC_TAGS.has(tag)) return { kind: "static", html: child.outerHTML };
     return { kind: "animated", tag, textLen: (child.textContent ?? "").length };
   });
 }
@@ -50,7 +55,7 @@ function parseChildInfo(div: HTMLElement): ChildInfo[] {
 /** Concatenate text content of all non-static top-level children. */
 function collectAnimatableText(div: HTMLElement): string {
   return Array.from(div.children)
-    .filter((el) => !STATIC_TAGS.has(el.tagName.toLowerCase()))
+    .filter((el) => !isStaticElement(el))
     .map((el) => el.textContent ?? "")
     .join("");
 }
