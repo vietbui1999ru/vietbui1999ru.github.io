@@ -53,9 +53,7 @@ const Gallery = ({ items }: GalleryProps) => {
     };
   }, [activeImage]);
 
-  const allTags = Array.from(
-    new Set(items.flatMap((item) => item.tags ?? []))
-  ).sort();
+  const allTags = Array.from(new Set(items.flatMap((item) => item.tags ?? []))).sort();
 
   const filteredItems =
     activeTag === null ? items : items.filter((item) => item.tags?.includes(activeTag));
@@ -95,7 +93,7 @@ const Gallery = ({ items }: GalleryProps) => {
                 "px-3 py-1 rounded-full text-sm border transition-colors",
                 activeTag === null
                   ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background text-foreground border-border hover:bg-muted"
+                  : "bg-background text-foreground border-border hover:bg-muted",
               )}
             >
               All
@@ -109,7 +107,7 @@ const Gallery = ({ items }: GalleryProps) => {
                   "px-3 py-1 rounded-full text-sm border transition-colors",
                   activeTag === tag
                     ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background text-foreground border-border hover:bg-muted"
+                    : "bg-background text-foreground border-border hover:bg-muted",
                 )}
               >
                 {tag}

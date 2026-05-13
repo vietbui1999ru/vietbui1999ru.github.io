@@ -12,24 +12,25 @@
 
 ## File Map
 
-| Action | Path | Responsibility |
-|--------|------|---------------|
-| Modify | `src/content/schemas.ts` | Add `order`, `href` to `gallerySchema`; make `date`/`image` optional |
-| Modify | `src/content/config.ts` | Register `gallery` collection from `vendor/vault/Gallery` |
-| Create | `vendor/vault/Gallery/sample.md` | Seed item for local build testing |
-| Modify | `src/data/galleryData.ts` | Update `GalleryItem` type; remove JSON/GALLERY_ITEMS exports |
-| Modify | `src/components/sections/Gallery.tsx` | Accept `items` prop; add tag filter chips |
-| Modify | `src/pages/index.astro` | Fetch gallery collection, resolve images, pass props |
-| Modify | `~/repos/Obsidian/scripts/sync-to-portfolio.sh` | Add `gallery/` rsync target |
-| Modify | `~/repos/Obsidian/scripts/sync-attachments.mjs` | Add `Gallery/` to scan roots |
-| Create | `~/repos/Obsidian/gallery/.gitkeep` | Seed the personal vault folder |
-| Delete | `src/data/gallery.json` | Replaced by vault collection |
+| Action | Path                                            | Responsibility                                                       |
+| ------ | ----------------------------------------------- | -------------------------------------------------------------------- |
+| Modify | `src/content/schemas.ts`                        | Add `order`, `href` to `gallerySchema`; make `date`/`image` optional |
+| Modify | `src/content/config.ts`                         | Register `gallery` collection from `vendor/vault/Gallery`            |
+| Create | `vendor/vault/Gallery/sample.md`                | Seed item for local build testing                                    |
+| Modify | `src/data/galleryData.ts`                       | Update `GalleryItem` type; remove JSON/GALLERY_ITEMS exports         |
+| Modify | `src/components/sections/Gallery.tsx`           | Accept `items` prop; add tag filter chips                            |
+| Modify | `src/pages/index.astro`                         | Fetch gallery collection, resolve images, pass props                 |
+| Modify | `~/repos/Obsidian/scripts/sync-to-portfolio.sh` | Add `gallery/` rsync target                                          |
+| Modify | `~/repos/Obsidian/scripts/sync-attachments.mjs` | Add `Gallery/` to scan roots                                         |
+| Create | `~/repos/Obsidian/gallery/.gitkeep`             | Seed the personal vault folder                                       |
+| Delete | `src/data/gallery.json`                         | Replaced by vault collection                                         |
 
 ---
 
 ## Task 1: Update gallerySchema
 
 **Files:**
+
 - Modify: `src/content/schemas.ts`
 
 `gallerySchema` already exists but is missing `order` and `href`. Update it in-place — the `GalleryEntry` type alias at the bottom updates automatically.
@@ -72,6 +73,7 @@ git commit -m "feat(gallery): add order, href to gallerySchema; make date/image 
 ## Task 2: Register gallery content collection
 
 **Files:**
+
 - Modify: `src/content/config.ts`
 
 - [ ] **Step 1: Add gallery collection**
@@ -116,6 +118,7 @@ git commit -m "feat(gallery): register gallery content collection from vendor/va
 ## Task 3: Seed local Gallery folder for testing
 
 **Files:**
+
 - Create: `vendor/vault/Gallery/sample.md`
 
 The `glob` loader will silently return zero items if the directory doesn't exist, but it needs the directory to be present before the first build. Create a real sample item so the collection, schema, and image pipeline can all be tested end-to-end.
@@ -167,6 +170,7 @@ git commit -m "chore: bump vendor/vault — add Gallery collection"
 ## Task 4: Update GalleryItem type and galleryData.ts
 
 **Files:**
+
 - Modify: `src/data/galleryData.ts`
 
 The `Gallery.tsx` component will receive a `GalleryItem[]` prop. Update the type to match the new schema and remove the JSON-based data exports.
@@ -205,6 +209,7 @@ Expected: errors about `Gallery.tsx` still importing `GALLERY_ITEMS` — those g
 ## Task 5: Refactor Gallery.tsx — accept props + tag filter chips
 
 **Files:**
+
 - Modify: `src/components/sections/Gallery.tsx`
 
 Replace self-import of `GALLERY_ITEMS` with an `items` prop. Add `activeTag` state and filter chips above the 3D marquee.
@@ -238,7 +243,7 @@ const Gallery = ({ items }: GalleryProps) => {
 After the existing `useState` declarations (around line 14–16 in the original), add:
 
 ```tsx
-  const [activeTag, setActiveTag] = useState<string | null>(null);
+const [activeTag, setActiveTag] = useState<string | null>(null);
 ```
 
 - [ ] **Step 3: Replace GALLERY_ITEMS usage with filtered items**
@@ -246,59 +251,59 @@ After the existing `useState` declarations (around line 14–16 in the original)
 Replace the `marqueeImages` derivation (was using `GALLERY_ITEMS`):
 
 ```tsx
-  const allTags = Array.from(
-    new Set(items.flatMap((item) => item.tags ?? []))
-  ).sort();
+const allTags = Array.from(new Set(items.flatMap((item) => item.tags ?? []))).sort();
 
-  const filteredItems =
-    activeTag === null ? items : items.filter((item) => item.tags?.includes(activeTag));
+const filteredItems =
+  activeTag === null ? items : items.filter((item) => item.tags?.includes(activeTag));
 
-  const marqueeImages: Marquee3DImage[] = filteredItems
-    .filter((item) => item.image)
-    .map((item) => ({
-      id: item.id,
-      src: item.image!,
-      alt: item.title ?? item.id,
-      title: item.title,
-      description: item.description,
-      href: item.href,
-    }));
+const marqueeImages: Marquee3DImage[] = filteredItems
+  .filter((item) => item.image)
+  .map((item) => ({
+    id: item.id,
+    src: item.image!,
+    alt: item.title ?? item.id,
+    title: item.title,
+    description: item.description,
+    href: item.href,
+  }));
 ```
 
 - [ ] **Step 4: Add tag filter chips to the render — insert after `<header>` closing tag**
 
 ```tsx
-        {allTags.length > 0 && (
-          <div className="flex flex-wrap gap-2 justify-center mb-8">
-            <button
-              type="button"
-              onClick={() => setActiveTag(null)}
-              className={cn(
-                "px-3 py-1 rounded-full text-sm border transition-colors",
-                activeTag === null
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background text-foreground border-border hover:bg-muted"
-              )}
-            >
-              All
-            </button>
-            {allTags.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => setActiveTag((prev) => (prev === tag ? null : tag))}
-                className={cn(
-                  "px-3 py-1 rounded-full text-sm border transition-colors",
-                  activeTag === tag
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background text-foreground border-border hover:bg-muted"
-                )}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
+{
+  allTags.length > 0 && (
+    <div className="flex flex-wrap gap-2 justify-center mb-8">
+      <button
+        type="button"
+        onClick={() => setActiveTag(null)}
+        className={cn(
+          "px-3 py-1 rounded-full text-sm border transition-colors",
+          activeTag === null
+            ? "bg-primary text-primary-foreground border-primary"
+            : "bg-background text-foreground border-border hover:bg-muted",
         )}
+      >
+        All
+      </button>
+      {allTags.map((tag) => (
+        <button
+          key={tag}
+          type="button"
+          onClick={() => setActiveTag((prev) => (prev === tag ? null : tag))}
+          className={cn(
+            "px-3 py-1 rounded-full text-sm border transition-colors",
+            activeTag === tag
+              ? "bg-primary text-primary-foreground border-primary"
+              : "bg-background text-foreground border-border hover:bg-muted",
+          )}
+        >
+          {tag}
+        </button>
+      ))}
+    </div>
+  );
+}
 ```
 
 - [ ] **Step 5: Verify types compile**
@@ -321,6 +326,7 @@ git commit -m "feat(gallery): accept items prop; add single-select tag filter ch
 ## Task 6: Wire index.astro — fetch, resolve images, pass props
 
 **Files:**
+
 - Modify: `src/pages/index.astro`
 
 Fetch the `gallery` collection, resolve each `image` filename to a public URL via `copyAsset`, sort by `order`, and pass the result to `<Gallery items={...} client:load />`.
@@ -370,10 +376,13 @@ const galleryItems: GalleryItem[] = (await getCollection("gallery"))
 - [ ] **Step 3: Pass items prop to Gallery**
 
 Replace:
+
 ```astro
   <Gallery client:load />
 ```
+
 With:
+
 ```astro
   <Gallery client:load items={galleryItems} />
 ```
@@ -398,6 +407,7 @@ git commit -m "feat(gallery): fetch vault collection, resolve images, pass items
 ## Task 7: Update sync pipeline + seed personal vault folder
 
 **Files:**
+
 - Modify: `~/repos/Obsidian/scripts/sync-to-portfolio.sh`
 - Modify: `~/repos/Obsidian/scripts/sync-attachments.mjs`
 - Create: `~/repos/Obsidian/gallery/.gitkeep`
@@ -426,20 +436,17 @@ rsync -av --delete \
 In `sync-attachments.mjs`, replace:
 
 ```js
-const scanRoots = [
-  path.join(vaultDir, 'Blogs'),
-  path.join(vaultDir, 'References', 'Clippings'),
-]
+const scanRoots = [path.join(vaultDir, "Blogs"), path.join(vaultDir, "References", "Clippings")];
 ```
 
 With:
 
 ```js
 const scanRoots = [
-  path.join(vaultDir, 'Blogs'),
-  path.join(vaultDir, 'References', 'Clippings'),
-  path.join(vaultDir, 'Gallery'),
-]
+  path.join(vaultDir, "Blogs"),
+  path.join(vaultDir, "References", "Clippings"),
+  path.join(vaultDir, "Gallery"),
+];
 ```
 
 - [ ] **Step 4: Commit sync scripts in the Obsidian vault repo**
@@ -456,6 +463,7 @@ git push
 ## Task 8: Delete gallery.json and final cleanup
 
 **Files:**
+
 - Delete: `src/data/gallery.json`
 
 - [ ] **Step 1: Delete gallery.json**
