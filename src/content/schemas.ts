@@ -82,7 +82,13 @@ export const aboutSchema = z.object({
   tagline: z.string(),
 });
 
+export const blogVariantSchema = z.object({
+  style_label: z.string(),
+  parent_slug: z.string(),
+});
+
 export type BlogEntry = z.infer<typeof blogSchema>;
+export type BlogVariantEntry = z.infer<typeof blogVariantSchema>;
 export type RoleEntry = z.infer<typeof roleSchema>;
 export type CompanyEntry = z.infer<typeof companySchema>;
 export type ProjectEntry = z.infer<typeof projectSchema>;

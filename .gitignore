@@ -33,3 +33,6 @@ pnpm-debug.log*
 # Git worktrees
 .worktrees/
 .claude/worktrees/
+
+# Style guides (local authoring aids, not for publication)
+docs/style-guides/

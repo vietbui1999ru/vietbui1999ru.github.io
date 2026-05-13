@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
+import BlogVariantTabs from "@/components/blog/BlogVariantTabs";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
@@ -13,6 +14,28 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
+// Load all variants for this post
+const allVariants = await getCollection("blog-variants", (v) =>
+  v.data.parent_slug === entry.id
+);
+
+// Render each variant's Content component for use in the template below
+const renderedVariants = await Promise.all(
+  allVariants.map(async (v) => {
+    const { Content: VC } = await render(v);
+    return { label: v.data.style_label, Content: VC };
+  })
+);
+
+// Ensure AI variant is second if present (after Original)
+const aiIdx = renderedVariants.findIndex((v) => v.label.toLowerCase() === "ai");
+if (aiIdx > 0) {
+  const [aiVariant] = renderedVariants.splice(aiIdx, 1);
+  renderedVariants.unshift(aiVariant);
+}
+
+const storageId = "blog-variant-storage";
+
 const wordCount = (entry.body ?? "").trim().split(/\s+/).length;
 const readingTime = `${Math.max(1, Math.round(wordCount / 200))} min read`;
 const formattedDate = entry.data.date.toLocaleDateString("en-US", {
@@ -20,6 +43,16 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
   month: "long",
   day: "numeric",
 });
+
+const proseClass =
+  "prose prose-neutral dark:prose-invert " +
+  "prose-headings:font-semibold prose-headings:tracking-tight " +
+  "prose-a:text-primary prose-a:no-underline hover:prose-a:underline " +
+  "prose-code:before:content-none prose-code:after:content-none " +
+  "prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 " +
+  "prose-code:bg-secondary prose-code:text-secondary-foreground prose-code:font-normal " +
+  "prose-pre:rounded-lg prose-pre:border prose-pre:border-border " +
+  "max-w-none";
 ---
 
 <BaseLayout>
@@ -68,18 +101,26 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
       )}
     </header>
 
-    <div
-      class="prose prose-neutral dark:prose-invert
-             prose-headings:font-semibold prose-headings:tracking-tight
-             prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-             prose-code:before:content-none prose-code:after:content-none
-             prose-code:rounded prose-code:px-1.5 prose-code:py-0.5
-             prose-code:bg-secondary prose-code:text-secondary-foreground prose-code:font-normal
-             prose-pre:rounded-lg prose-pre:border prose-pre:border-border
-             max-w-none"
-    >
-      <Content />
+    <!--
+      Hidden storage: Astro renders all variant HTML at build time.
+      BlogVariantTabs reads innerHTML from each [data-variant-label] node on mount.
+    -->
+    <div id={storageId} style="display:none" aria-hidden="true">
+      <div data-variant-label="Original">
+        <Content />
+      </div>
+      {renderedVariants.map(({ label, Content: VC }) => (
+        <div data-variant-label={label}>
+          <VC />
+        </div>
+      ))}
     </div>
+
+    <BlogVariantTabs
+      client:load
+      storageId={storageId}
+      proseClass={proseClass}
+    />
   </div>
   </div>
 </BaseLayout>
