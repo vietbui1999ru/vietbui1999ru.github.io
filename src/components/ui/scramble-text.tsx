@@ -5,14 +5,12 @@ import DOMPurify from "dompurify";
 import { cn } from "@/lib/utils";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-// 700ms total: 350ms scramble-out + 350ms scramble-in
-const PHASE_MS = 350;
+const PHASE_MS = 900; // 900ms out + 900ms in = 1800ms total
 
 function randomChar() {
   return CHARS[Math.floor(Math.random() * CHARS.length)];
 }
 
-// Strip tags to get plain text for scramble animation
 function extractText(html: string): string {
   if (typeof document === "undefined") return html.replace(/<[^>]*>/g, "");
   const div = document.createElement("div");
@@ -20,8 +18,30 @@ function extractText(html: string): string {
   return div.textContent ?? "";
 }
 
+/**
+ * Build a scrambled string that resolves from both ends toward the center.
+ * Whitespace characters are always preserved so the text wraps naturally.
+ */
+function buildFrame(source: string, maxLen: number, progress: number): string {
+  const halfLen = Math.floor(maxLen / 2);
+  let result = "";
+  for (let i = 0; i < maxLen; i++) {
+    const char = source[i] ?? " ";
+    // Always preserve whitespace — keeps word-level wrapping intact
+    if (char === " " || char === "\n" || char === "\t") {
+      result += char;
+      continue;
+    }
+    // Distance from the nearest edge (0 = outermost, halfLen = center)
+    const distFromEdge = Math.min(i, maxLen - 1 - i);
+    const resolved = halfLen === 0 || distFromEdge / halfLen <= progress;
+    result += resolved ? char : randomChar();
+  }
+  return result;
+}
+
 interface ScrambleTextProps {
-  /** Pre-rendered HTML string — sanitized before rendering. */
+  /** Pre-rendered HTML string — sanitized before use. */
   html: string;
   className?: string;
 }
@@ -35,7 +55,7 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
   const prevHtmlRef = useRef(html);
   const rafRef = useRef<number | null>(null);
 
-  // Viewport gate: only animate content on screen
+  // Viewport gate — only animate when visible
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -47,7 +67,6 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
     return () => observer.disconnect();
   }, []);
 
-  // Scramble effect — triggered by html prop change (parent increments key)
   useEffect(() => {
     if (rafRef.current !== null) {
       cancelAnimationFrame(rafRef.current);
@@ -65,25 +84,27 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
     const fromText = extractText(prevHtmlRef.current);
     const toText = extractText(html);
     const maxLen = Math.max(fromText.length, toText.length);
+
+    const el = containerRef.current;
+
+    // Lock container height before swapping content to prevent page reflow
+    if (el) {
+      el.style.height = `${el.offsetHeight}px`;
+      el.style.overflow = "hidden";
+    }
+
     let phase: "out" | "in" = "out";
     let startTime: number | null = null;
 
     function step(ts: number) {
       if (startTime === null) startTime = ts;
-      const elapsed = ts - startTime;
-      const progress = Math.min(elapsed / PHASE_MS, 1);
-      const resolved = Math.floor(progress * maxLen);
+      const progress = Math.min((ts - startTime) / PHASE_MS, 1);
       const source = phase === "out" ? fromText : toText;
+      const scrambled = buildFrame(source, maxLen, progress);
 
-      // Resolve left-to-right; scramble the rest
-      let scrambled = "";
-      for (let i = 0; i < maxLen; i++) {
-        scrambled += i < resolved ? (source[i] ?? "") : randomChar();
-      }
-
-      // Plain text scramble frame — no HTML injection risk
+      // Block display + word wrapping keeps scrambled text inside the locked container
       setDisplayHtml(
-        `<span aria-hidden="true" style="white-space:pre-wrap;font-family:inherit">${scrambled}</span>`
+        `<span style="display:block;word-break:break-word;white-space:normal">${scrambled}</span>`
       );
 
       if (progress < 1) {
@@ -93,15 +114,27 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
         startTime = null;
         rafRef.current = requestAnimationFrame(step);
       } else {
+        // Animation done — restore real HTML and release height lock
         setDisplayHtml(cleanHtml);
         prevHtmlRef.current = html;
+        if (el) {
+          el.style.height = "";
+          el.style.overflow = "";
+        }
         rafRef.current = null;
       }
     }
 
     rafRef.current = requestAnimationFrame(step);
+
     return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        if (el) {
+          el.style.height = "";
+          el.style.overflow = "";
+        }
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [html, isVisible]);
