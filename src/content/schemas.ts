@@ -59,8 +59,10 @@ export const educationSchema = z.object({
 export const gallerySchema = z.object({
   title: z.string(),
   description: z.string().optional(),
-  date: z.coerce.date(),
-  image: z.string(),
+  image: z.string().optional(),
+  order: z.number().int(),
+  date: z.coerce.date().optional(),
+  href: z.string().optional(),
   tags: z.array(z.string()).optional(),
   graph_node: z.boolean().default(true),
 });
