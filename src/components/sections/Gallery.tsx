@@ -4,16 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AppleHelloGalleryEffect } from "@/components/ui/apple-hello-effect";
 import { Marquee3D, type Marquee3DImage } from "@/components/ui/Marquee3D";
-import { GALLERY_SECTION_TITLE, GALLERY_SECTION_SUBTITLE, GALLERY_ITEMS } from "@/data/galleryData";
+import { GALLERY_SECTION_SUBTITLE, type GalleryItem } from "@/data/galleryData";
 import { Card3D } from "@/components/ui/Card3D";
 import { X, ExternalLink } from "lucide-react";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { cn } from "@/lib/utils";
 
-const Gallery = () => {
+interface GalleryProps {
+  items: GalleryItem[];
+}
+
+const Gallery = ({ items }: GalleryProps) => {
   const [activeImage, setActiveImage] = useState<Marquee3DImage | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(4);
   const resizeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [activeTag, setActiveTag] = useState<string | null>(null);
 
   useEffect(() => {
     const update = () => {
@@ -47,16 +53,23 @@ const Gallery = () => {
     };
   }, [activeImage]);
 
-  const marqueeImages: Marquee3DImage[] = GALLERY_ITEMS.filter((item) => item.image).map(
-    (item) => ({
+  const allTags = Array.from(
+    new Set(items.flatMap((item) => item.tags ?? []))
+  ).sort();
+
+  const filteredItems =
+    activeTag === null ? items : items.filter((item) => item.tags?.includes(activeTag));
+
+  const marqueeImages: Marquee3DImage[] = filteredItems
+    .filter((item) => item.image)
+    .map((item) => ({
       id: item.id,
       src: item.image!,
       alt: item.title ?? item.id,
       title: item.title,
       description: item.description,
       href: item.href,
-    }),
-  );
+    }));
 
   return (
     <section id="gallery" className="relative min-h-screen w-full">
@@ -72,6 +85,38 @@ const Gallery = () => {
             {GALLERY_SECTION_SUBTITLE}
           </p>
         </header>
+
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap gap-2 justify-center mb-8">
+            <button
+              type="button"
+              onClick={() => setActiveTag(null)}
+              className={cn(
+                "px-3 py-1 rounded-full text-sm border transition-colors",
+                activeTag === null
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background text-foreground border-border hover:bg-muted"
+              )}
+            >
+              All
+            </button>
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setActiveTag((prev) => (prev === tag ? null : tag))}
+                className={cn(
+                  "px-3 py-1 rounded-full text-sm border transition-colors",
+                  activeTag === tag
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background text-foreground border-border hover:bg-muted"
+                )}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
 
         {marqueeImages.length > 0 ? (
           <Marquee3D

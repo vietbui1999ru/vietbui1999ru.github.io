@@ -1,25 +1,12 @@
-/**
- * Gallery section content
- * Data loaded from gallery.json for easy editing
- */
-
-import galleryJson from "./gallery.json";
-
-/** Legacy public/ paths → bundled src URLs (add entries when moving more local images). */
-const LOCAL_GALLERY_IMAGE_MAP: Record<string, string> = {};
-
-export const GALLERY_SECTION_TITLE = galleryJson.title;
-export const GALLERY_SECTION_SUBTITLE = galleryJson.subtitle;
+export const GALLERY_SECTION_SUBTITLE = "Photos and visual projects.";
 
 export type GalleryItem = {
   id: string;
-  title?: string;
+  title: string;
   description?: string;
+  /** Resolved public URL (e.g. /gallery-assets/image.jpg). Undefined if no image. */
   image?: string;
   href?: string;
+  tags?: string[];
+  order: number;
 };
-
-export const GALLERY_ITEMS: GalleryItem[] = (galleryJson.items as GalleryItem[]).map((item) => ({
-  ...item,
-  image: item.image != null ? (LOCAL_GALLERY_IMAGE_MAP[item.image] ?? item.image) : undefined,
-}));
