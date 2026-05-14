@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Carousel,
-  Card as CarouselCard,
-  BlurImage,
-} from "@/components/ui/CardsCarousel";
+import { Carousel, Card as CarouselCard, BlurImage } from "@/components/ui/CardsCarousel";
 import type { Card } from "@/components/ui/CardsCarousel";
 import { AppleHelloMyWorkEffect } from "@/components/ui/apple-hello-effect";
 import { SkillBadge } from "@/components/ui/SkillBadge";
@@ -65,13 +61,7 @@ function gradientForIndex(
   return { fromColor, toColor };
 }
 
-function ProjectImageGallery({
-  images,
-  title,
-}: {
-  images: string[];
-  title: string;
-}) {
+function ProjectImageGallery({ images, title }: { images: string[]; title: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -118,12 +108,10 @@ function ProjectImageGallery({
         onClick={() => scroll("left")}
         className={cn(
           "absolute inset-y-0 left-0 z-10 flex items-center pl-3 transition-[filter,opacity]",
-          canScrollLeft
-            ? "cursor-pointer opacity-100"
-            : "cursor-default opacity-50 blur-[2px]",
+          canScrollLeft ? "cursor-pointer opacity-100" : "cursor-default opacity-50 blur-[2px]",
         )}
       >
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black/70 text-white">
           <ChevronLeft className="h-6 w-6" />
         </div>
       </button>
@@ -133,18 +121,16 @@ function ProjectImageGallery({
         onClick={() => scroll("right")}
         className={cn(
           "absolute inset-y-0 right-0 z-10 flex items-center pr-3 transition-[filter,opacity]",
-          canScrollRight
-            ? "cursor-pointer opacity-100"
-            : "cursor-default opacity-50 blur-[2px]",
+          canScrollRight ? "cursor-pointer opacity-100" : "cursor-default opacity-50 blur-[2px]",
         )}
       >
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black/70 text-white">
           <ChevronRight className="h-6 w-6" />
         </div>
       </button>
       <div
         ref={scrollRef}
-        className="no-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto px-8 py-4"
+        className="no-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto px-3 sm:px-8 py-4"
         onScroll={updateScrollState}
       >
         {images.map((src, i) => (
@@ -193,14 +179,9 @@ function projectToCarouselCard(
           </div>
         )}
         {normalizedImages.length > 1 && (
-          <ProjectImageGallery
-            images={normalizedImages}
-            title={project.title}
-          />
+          <ProjectImageGallery images={normalizedImages} title={project.title} />
         )}
-        <p className="text-muted-foreground text-sm leading-relaxed">
-          {project.content}
-        </p>
+        <p className="text-muted-foreground text-sm leading-relaxed">{project.content}</p>
         {project.badges && project.badges.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {project.badges.map((badge) => (
@@ -244,9 +225,7 @@ const Projects = () => {
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloMyWorkEffect className="w-full" />
-          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-            {PROJECTS_TITLE}
-          </p>
+          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">{PROJECTS_TITLE}</p>
         </header>
 
         <Carousel

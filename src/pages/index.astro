@@ -26,10 +26,10 @@ const blogPosts = (await getCollection("blog"))
 <BaseLayout>
   <Home client:load />
   <About client:load />
-  <Projects client:load />
-  <Experience client:load />
-  <Education client:load />
-  <Gallery client:load />
-  <Blog client:load posts={blogPosts} />
-  <Contact client:load />
+  <Projects client:visible />
+  <Experience client:visible />
+  <Education client:visible />
+  <Gallery client:visible />
+  <Blog client:visible posts={blogPosts} />
+  <Contact client:visible />
 </BaseLayout>

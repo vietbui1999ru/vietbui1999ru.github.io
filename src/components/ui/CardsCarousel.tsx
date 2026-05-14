@@ -3,14 +3,7 @@
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { Card3D } from "@/components/ui/Card3D";
 import { AnimatePresence, motion } from "framer-motion";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
@@ -78,11 +71,10 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
   const handleCardClose = (index: number) => {
     if (carouselRef.current) {
-      const cardWidth =
-        typeof window !== "undefined" && window.innerWidth < 768 ? 160 : 224;
-      const gap =
-        typeof window !== "undefined" && window.innerWidth < 768 ? 4 : 8;
-      const scrollPosition = (cardWidth + gap) * (index + 1);
+      // w-44 = 176px on mobile, w-56 = 224px on md+; gap-4 = 16px
+      const cardWidth = typeof window !== "undefined" && window.innerWidth < 768 ? 176 : 224;
+      const gap = 16;
+      const scrollPosition = (cardWidth + gap) * index;
       carouselRef.current.scrollTo({
         left: scrollPosition,
         behavior: "smooth",
@@ -92,9 +84,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
   };
 
   return (
-    <CarouselContext.Provider
-      value={{ onCardClose: handleCardClose, currentIndex }}
-    >
+    <CarouselContext.Provider value={{ onCardClose: handleCardClose, currentIndex }}>
       <div className="relative w-full">
         <div
           className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-6 [scrollbar-width:none] md:py-10 snap-x snap-mandatory"
@@ -109,7 +99,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
           <div
             className={cn(
-              "flex flex-row justify-start gap-4 pl-4",
+              "flex flex-row justify-start gap-4 pl-3 sm:pl-4",
               "mx-auto w-full max-w-[var(--content-max)]",
             )}
           >
@@ -124,7 +114,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                     ease: "easeOut",
                   },
                 }}
-                className="rounded-3xl last:pr-[5%] md:last:pr-[33%] snap-start"
+                className="rounded-3xl last:pr-[10%] md:last:pr-[33%] snap-start"
                 initial={{
                   opacity: 0,
                   y: 20,
@@ -182,14 +172,14 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
       }
     }
 
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    const prev = document.body.style.overflow;
+    if (open) document.body.style.overflow = "hidden";
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      if (open) document.body.style.overflow = prev;
+    };
   }, [open, handleClose]);
 
   useOnClickOutside(containerRef as React.RefObject<HTMLElement>, handleClose);

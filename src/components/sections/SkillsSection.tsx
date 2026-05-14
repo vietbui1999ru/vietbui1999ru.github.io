@@ -31,11 +31,7 @@ function SkillsMarquee() {
           >
             {group.type}
           </h3>
-          <Marquee
-            reverse={index % 2 === 1}
-            duration={35}
-            className="mx-auto max-w-5xl py-1"
-          >
+          <Marquee reverse={index % 2 === 1} duration={35} className="mx-auto max-w-5xl py-1">
             {group.skills.map((skill) => (
               <SkillBadge
                 key={skill.name}
@@ -70,7 +66,7 @@ function ResumeViewer() {
       <a
         href={RESUME_PATH}
         download
-        className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10"
+        className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10 min-h-[44px]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +102,7 @@ export function SkillsSection() {
             type="button"
             onClick={() => setView("skills")}
             className={cn(
-              "rounded-full px-5 py-1.5 text-sm font-medium transition-all",
+              "rounded-full px-5 py-2.5 text-sm font-medium transition-all min-h-[44px]",
               view === "skills"
                 ? "bg-white/15 text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
@@ -118,7 +114,7 @@ export function SkillsSection() {
             type="button"
             onClick={() => setView("resume")}
             className={cn(
-              "rounded-full px-5 py-1.5 text-sm font-medium transition-all",
+              "rounded-full px-5 py-2.5 text-sm font-medium transition-all min-h-[44px]",
               view === "resume"
                 ? "bg-white/15 text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
