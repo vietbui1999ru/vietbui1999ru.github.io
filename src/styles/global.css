@@ -61,8 +61,8 @@
 }
 
 :root {
-  /* Content width: ~80% of viewport, capped at 96rem (1536px) */
-  --content-max: min(80vw, 96rem);
+  /* Content width: fluid from 288px (very small phones) to 96rem (desktop). 94vw gives ~387px on S21 Ultra (412px). */
+  --content-max: clamp(288px, 94vw, 96rem);
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -218,7 +218,27 @@
 
 @utility section-content {
   max-width: var(--content-max);
-  @apply mx-auto w-full px-4 py-16 sm:px-6 sm:py-24;
+  @apply mx-auto w-full;
+  padding-inline: clamp(1rem, 4vw, 1.5rem);
+  padding-block: clamp(3rem, 8vw, 6rem);
+}
+
+/* fluid-heading: scales from ~22px on 320px to 40.5px on wide desktop */
+@utility text-fluid-heading {
+  font-size: clamp(1.25rem, 4.5vw + 0.25rem, 2.25rem);
+  line-height: 1.2;
+}
+
+/* fluid-subheading: scales from ~16px to 20px */
+@utility text-fluid-subheading {
+  font-size: clamp(0.9rem, 2vw + 0.375rem, 1.125rem);
+  line-height: 1.5;
+}
+
+/* fluid-hero: for taglines / large hero copy */
+@utility text-fluid-hero {
+  font-size: clamp(1.125rem, 3.5vw + 0.375rem, 1.875rem);
+  line-height: 1.35;
 }
 
 @utility no-scrollbar {

@@ -4,6 +4,7 @@ import { AppCanvas } from "./Canvas";
 import type { SceneId, SymmetryConfig, PerfTier } from "./types";
 import { createAppSceneRegistry, registeredModules, sceneMap } from "../registry";
 import { getPerfTier } from "./PerfController";
+import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
 
 const SCENE_OFF = "none" as const;
 type SceneSelection = SceneId | typeof SCENE_OFF;
@@ -80,6 +81,7 @@ function SimCanvas(): React.ReactElement {
 }
 
 export default function AppCanvasIsland(): React.ReactElement {
-  if (!isSimEnabled()) return <></>;
+  const isMobile = useIsMobileOrTouch();
+  if (isMobile || !isSimEnabled()) return <></>;
   return <SimCanvas />;
 }

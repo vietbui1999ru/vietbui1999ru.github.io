@@ -17,7 +17,7 @@ const MobileBottomNav = () => {
       className="fixed bottom-0 left-0 right-0 z-[9999999] md:hidden border-t border-border bg-background/80 backdrop-blur-lg"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
-      <div className="flex items-center justify-around px-1">
+      <div className="flex items-center overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1">
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activeHash === item.href;
@@ -27,12 +27,12 @@ const MobileBottomNav = () => {
               href={pathname === "/" ? item.href : "/" + item.href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex flex-col items-center justify-center gap-0.5 py-2 min-w-[44px] min-h-[44px] touch-manipulation transition-colors",
+                "flex flex-col items-center justify-center gap-0.5 py-2 shrink-0 w-16 min-h-[44px] touch-manipulation transition-colors",
                 isActive ? NAV_ACTIVE_CLASS : "text-muted-foreground",
               )}
             >
-              <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="text-[9px] sm:text-[10px] leading-tight">{item.shortLabel}</span>
+              <Icon className="h-5 w-5" />
+              <span className="text-[10px] leading-tight">{item.shortLabel}</span>
             </a>
           );
         })}

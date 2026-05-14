@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
 
 export type VectorFieldFn = (x: number, y: number) => [number, number];
 
@@ -68,14 +69,10 @@ export function VectorFieldBackground({
   const effectiveFadeEndRef = useRef(800);
   const cursorEnabled = cursorAttraction > 0;
 
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobileOrTouch = useIsMobileOrTouch();
 
-  useEffect(() => {
-    setIsMobile(window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768);
-  }, []);
-
-  const effectiveGrid = isMobile ? Math.min(grid, 20) : grid;
-  const effectiveCursorEnabled = cursorEnabled && !isMobile;
+  const effectiveGrid = isMobileOrTouch ? Math.min(grid, 20) : grid;
+  const effectiveCursorEnabled = cursorEnabled && !isMobileOrTouch;
 
   useEffect(() => {
     const h = typeof window !== "undefined" ? window.innerHeight * 0.85 : 800;
@@ -250,6 +247,8 @@ export function VectorFieldBackground({
     draw();
     return () => cancelAnimationFrame(rafRef.current);
   }, [draw]);
+
+  if (isMobileOrTouch) return null;
 
   return (
     <div className={cn("pointer-events-none fixed inset-0 z-0 contain-[paint]", className)}>

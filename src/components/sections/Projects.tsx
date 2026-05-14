@@ -13,6 +13,7 @@ import { Github, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PROJECTS_ITEMS, PROJECTS_TITLE } from "@/data/projectsData";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const cleaned = hex.replace("#", "");
@@ -143,6 +144,7 @@ function projectToCarouselCard(
   project: (typeof PROJECTS_ITEMS)[number],
   index: number,
   total: number,
+  isMobile = false,
 ): Card {
   const { fromColor, toColor } = gradientForIndex(index, total);
   const normalizedImages: string[] =
@@ -152,8 +154,17 @@ function projectToCarouselCard(
         ? [project.image]
         : [];
 
+  const background = isMobile ? (
+    <div
+      className="absolute inset-0"
+      style={{ background: `linear-gradient(135deg, ${fromColor}, ${toColor})` }}
+    />
+  ) : (
+    <LavaLampBackground fromColor={fromColor} toColor={toColor} />
+  );
+
   return {
-    background: <LavaLampBackground fromColor={fromColor} toColor={toColor} />,
+    background,
     title: project.title,
     category: project.badges?.[0] ?? "Project",
     content: (
@@ -204,9 +215,10 @@ function projectToCarouselCard(
 }
 
 const Projects = () => {
+  const isMobile = useIsMobileOrTouch();
   const total = PROJECTS_ITEMS.length;
   const carouselCards = PROJECTS_ITEMS.map((project, index) =>
-    projectToCarouselCard(project, index, total),
+    projectToCarouselCard(project, index, total, isMobile),
   );
 
   return (
