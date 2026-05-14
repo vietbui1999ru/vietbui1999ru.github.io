@@ -148,6 +148,7 @@
     @apply font-sans overscroll-y-none scroll-smooth;
     font-size: 1.125rem; /* 18px base for larger global type */
     scroll-padding-top: 100px;
+    overflow-x: clip; /* root element overflow propagates to viewport — stops horizontal dead space */
   }
   body {
     @apply font-sans bg-background text-foreground;

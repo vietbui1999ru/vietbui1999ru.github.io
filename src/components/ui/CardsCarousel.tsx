@@ -78,7 +78,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
     <CarouselContext.Provider value={{ onCardClose: handleCardClose, currentIndex }}>
       <div className="relative w-full">
         <div
-          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-6 [scrollbar-width:none] md:py-10 snap-x snap-mandatory"
+          className="flex w-full overflow-x-scroll overscroll-x-contain scroll-smooth py-6 [scrollbar-width:none] md:py-10 snap-x snap-mandatory"
           onScroll={checkScrollability}
           ref={carouselRef}
         >

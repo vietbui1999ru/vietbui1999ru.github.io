@@ -120,7 +120,7 @@ function ProjectImageGallery({ images, title }: { images: string[]; title: strin
       </button>
       <div
         ref={scrollRef}
-        className="no-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto px-3 sm:px-8 py-4"
+        className="no-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain px-3 sm:px-8 py-4"
         onScroll={updateScrollState}
       >
         {images.map((src, i) => (
