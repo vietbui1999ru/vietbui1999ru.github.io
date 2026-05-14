@@ -90,7 +90,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
           <div
             className={cn(
-              "flex flex-row justify-start gap-4 pl-4",
+              "flex flex-row justify-start gap-4 pl-3 sm:pl-4",
               "mx-auto w-full max-w-[var(--content-max)]",
             )}
           >
@@ -105,7 +105,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
                     ease: "easeOut",
                   },
                 }}
-                className="rounded-3xl last:pr-[5%] md:last:pr-[33%] snap-start"
+                className="rounded-3xl last:pr-[10%] md:last:pr-[33%] snap-start"
                 initial={{
                   opacity: 0,
                   y: 20,
@@ -163,14 +163,14 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
       }
     }
 
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    const prev = document.body.style.overflow;
+    if (open) document.body.style.overflow = "hidden";
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      if (open) document.body.style.overflow = prev;
+    };
   }, [open, handleClose]);
 
   useOnClickOutside(containerRef as React.RefObject<HTMLElement>, handleClose);

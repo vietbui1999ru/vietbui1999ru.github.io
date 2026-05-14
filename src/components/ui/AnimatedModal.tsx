@@ -43,7 +43,7 @@ export const ModalTrigger = ({
     <button
       type="button"
       className={cn(
-        "px-4 py-2 rounded-md text-foreground text-center relative overflow-hidden",
+        "px-4 py-2 rounded-md text-foreground text-center relative overflow-hidden min-h-[44px]",
         className,
       )}
       onClick={() => setOpen(true)}
@@ -56,15 +56,17 @@ export const ModalTrigger = ({
 const FOCUSABLE_SELECTOR =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
+
 export const ModalBody = ({ children, className }: { children: ReactNode; className?: string }) => {
   const { open } = useModal();
 
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
   }, [open]);
 
   const modalRef = useRef<HTMLDivElement>(null);

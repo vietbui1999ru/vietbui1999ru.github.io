@@ -100,7 +100,7 @@ function ProjectImageGallery({ images, title }: { images: string[]; title: strin
           canScrollLeft ? "cursor-pointer opacity-100" : "cursor-default opacity-50 blur-[2px]",
         )}
       >
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black/70 text-white">
           <ChevronLeft className="h-6 w-6" />
         </div>
       </button>
@@ -113,13 +113,13 @@ function ProjectImageGallery({ images, title }: { images: string[]; title: strin
           canScrollRight ? "cursor-pointer opacity-100" : "cursor-default opacity-50 blur-[2px]",
         )}
       >
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black/70 text-white">
           <ChevronRight className="h-6 w-6" />
         </div>
       </button>
       <div
         ref={scrollRef}
-        className="no-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto px-8 py-4"
+        className="no-scrollbar flex w-full snap-x snap-mandatory overflow-x-auto px-3 sm:px-8 py-4"
         onScroll={updateScrollState}
       >
         {images.map((src, i) => (

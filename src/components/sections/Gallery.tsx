@@ -155,11 +155,11 @@ const Gallery = ({ items }: GalleryProps) => {
                     transition: { duration: 0.2 },
                   }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
-                  className="rounded-3xl bg-card p-6 md:p-8 border shadow-xl"
+                  className="relative rounded-3xl bg-card p-6 pt-16 md:p-8 md:pt-16 border shadow-xl"
                 >
                   <button
                     type="button"
-                    className="sticky top-4 right-0 ml-auto flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4"
+                    className="absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground"
                     onClick={() => setActiveImage(null)}
                   >
                     <X className="h-5 w-5" />
@@ -182,7 +182,7 @@ const Gallery = ({ items }: GalleryProps) => {
                       href={activeImage.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                      className="inline-flex items-center gap-1 text-sm text-primary hover:underline min-h-[44px]"
                     >
                       View link
                       <ExternalLink className="h-3 w-3" />

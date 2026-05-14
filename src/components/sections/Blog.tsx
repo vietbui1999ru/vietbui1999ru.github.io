@@ -114,7 +114,7 @@ const Blog = ({ posts }: BlogProps) => {
                   </p>
                   <a
                     href={`/blog/${post.slug}`}
-                    className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "inline-flex")}
+                    className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "inline-flex min-h-[44px]")}
                   >
                     Read more
                   </a>
@@ -129,7 +129,7 @@ const Blog = ({ posts }: BlogProps) => {
         </div>
 
         <div className="mt-8 text-center">
-          <a href="/blog" className={cn(buttonVariants({ variant: "outline" }), "inline-flex")}>
+          <a href="/blog" className={cn(buttonVariants({ variant: "outline" }), "inline-flex min-h-[44px]")}>
             View all posts
           </a>
         </div>

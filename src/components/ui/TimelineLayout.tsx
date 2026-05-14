@@ -153,7 +153,7 @@ export function TimelineLayout({
                           rel="noopener noreferrer"
                           className={cn(
                             pillClass,
-                            "transition-colors hover:border-white/25 hover:bg-white/[0.1]",
+                            "flex items-center transition-colors hover:border-white/25 hover:bg-white/[0.1] min-h-[44px]",
                           )}
                           title={tip}
                         >

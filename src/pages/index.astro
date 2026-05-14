@@ -58,10 +58,10 @@ const galleryItems: GalleryItem[] = (await getCollection("gallery"))
 <BaseLayout>
   <Home client:load />
   <About client:load />
-  <Projects client:load />
-  <Experience client:load />
-  <Education client:load />
-  <Gallery client:load items={galleryItems} />
-  <Blog client:load posts={blogPosts} />
-  <Contact client:load />
+  <Projects client:visible />
+  <Experience client:visible />
+  <Education client:visible />
+  <Gallery client:visible items={galleryItems} />
+  <Blog client:visible posts={blogPosts} />
+  <Contact client:visible />
 </BaseLayout>
