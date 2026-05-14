@@ -29,14 +29,14 @@ export interface WikilinkOptions {
   strict?: boolean;
 }
 
-const LINK_REGEX = /\[\[([^\[\]|]+)(?:\|([^\[\]]+))?\]\]/g;
+const LINK_REGEX = /\[\[([^[\]|]+)(?:\|([^[\]]+))?\]\]/g;
 
 function slugify(raw: string): string {
   return raw
     .trim()
     .toLowerCase()
     .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9\-]/g, "");
+    .replace(/[^a-z0-9-]/g, "");
 }
 
 function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined {

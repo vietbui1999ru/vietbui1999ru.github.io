@@ -2,7 +2,7 @@
 
 import { AppleHelloAboutMeEffect } from "@/components/ui/apple-hello-effect";
 import { Separator } from "@/components/ui/separator";
-import { ABOUT_PARAGRAPHS, ABOUT_TAGLINE } from "@/data/aboutData";
+import { ABOUT_PARAGRAPHS } from "@/data/aboutData";
 import { AboutParagraphReveal } from "./AboutParagraphReveal";
 import { SkillsSection } from "./SkillsSection";
 

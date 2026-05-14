@@ -161,8 +161,6 @@ export function VectorFieldBackground({
     const yMin = -5;
     const yMax = 5;
     const yOffset = (scrollY * 0.015) % (yMax - yMin);
-    const toScreenX = (x: number) => ((x - xMin) / (xMax - xMin)) * width;
-    const toScreenY = (y: number) => ((y - (yMin + yOffset)) / (yMax - yMin)) * height;
     const toWorldX = (sx: number) => xMin + (sx / width) * (xMax - xMin);
     const toWorldY = (sy: number) => yMin + yOffset + (sy / height) * (yMax - yMin);
 

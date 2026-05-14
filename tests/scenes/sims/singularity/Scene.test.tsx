@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
-import React, { Suspense } from "react";
+import React from "react";
 
 // ---------------------------------------------------------------------------
 // Mock heavy r3f dependencies so jsdom can import the Scene module

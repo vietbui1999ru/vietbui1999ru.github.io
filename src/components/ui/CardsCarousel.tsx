@@ -268,7 +268,6 @@ export interface BlurImageProps {
   src: string;
   alt?: string;
   className?: string;
-  fill?: boolean;
   width?: number;
   height?: number;
 }
@@ -279,7 +278,6 @@ export const BlurImage = ({
   src,
   className,
   alt,
-  fill,
   ...rest
 }: BlurImageProps) => {
   const [isLoading, setLoading] = useState(true);
