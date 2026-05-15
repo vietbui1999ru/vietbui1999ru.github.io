@@ -19,7 +19,6 @@ const MobileBottomNav = () => {
     >
       <div
         className="flex items-center overflow-x-auto overscroll-x-contain scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1"
-        style={{ touchAction: "pan-x" }}
       >
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
