@@ -8,6 +8,7 @@ import { GALLERY_SECTION_SUBTITLE, type GalleryItem } from "@/data/galleryData";
 import { Card3D } from "@/components/ui/Card3D";
 import { X, ExternalLink } from "lucide-react";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import { cn } from "@/lib/utils";
 
 interface GalleryProps {
@@ -39,19 +40,15 @@ const Gallery = ({ items }: GalleryProps) => {
   }, []);
 
   useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () => setActiveImage(null));
+  useScrollLock(!!activeImage);
 
   useEffect(() => {
     if (!activeImage) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActiveImage(null);
     };
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.style.overflow = prev;
-      window.removeEventListener("keydown", onKeyDown);
-    };
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [activeImage]);
 
   const allTags = Array.from(new Set(items.flatMap((item) => item.tags ?? []))).sort();

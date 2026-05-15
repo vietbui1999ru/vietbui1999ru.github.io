@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 interface ModalContextType {
   open: boolean;
@@ -59,14 +60,7 @@ const FOCUSABLE_SELECTOR =
 export const ModalBody = ({ children, className }: { children: ReactNode; className?: string }) => {
   const { open } = useModal();
 
-  useEffect(() => {
-    if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
+  useScrollLock(open);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const { setOpen } = useModal();
@@ -79,12 +73,10 @@ export const ModalBody = ({ children, className }: { children: ReactNode; classN
     if (!modal) return;
 
     const focusable = Array.from(modal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
-
-    if (focusable.length > 0) {
-      focusable[0].focus();
-    }
+    focusable[0]?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { e.preventDefault(); setOpen(false); return; }
       if (e.key !== "Tab") return;
 
       const current = document.activeElement as HTMLElement;
@@ -92,21 +84,15 @@ export const ModalBody = ({ children, className }: { children: ReactNode; classN
       const last = focusable[focusable.length - 1];
 
       if (e.shiftKey) {
-        if (current === first) {
-          e.preventDefault();
-          last?.focus();
-        }
+        if (current === first) { e.preventDefault(); last?.focus(); }
       } else {
-        if (current === last) {
-          e.preventDefault();
-          first?.focus();
-        }
+        if (current === last) { e.preventDefault(); first?.focus(); }
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [open]);
+  }, [open, setOpen]);
 
   const dragControls = useDragControls();
 

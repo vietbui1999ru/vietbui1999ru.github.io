@@ -5,7 +5,7 @@ import { SiAstro, SiShadcnui } from "@icons-pack/react-simple-icons";
 
 export function BuiltWithBadge() {
   return (
-    <div className="flex justify-center py-6 pb-safe">
+    <div className="flex justify-center py-6">
       <div className="relative overflow-hidden rounded-full border border-border/60 bg-muted/30 px-4 py-2">
         <motion.span
           aria-hidden="true"

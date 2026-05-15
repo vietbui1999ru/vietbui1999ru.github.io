@@ -25,7 +25,11 @@ Dead constants in `src/data/homeData.ts` (exported, never consumed):
 Dead constants in `src/data/aboutData.ts`:
 - `ABOUT_TITLE`, `SKILLS_SECTION_TITLE`, `SkillType` (type)
 
-Duplicate logic: `apple-hello-effect.tsx` lines 129–199 — 7 identical wrapper functions, each a single-prop-diff call to `InViewHandwritingAnimation`. Could be a data-driven factory.
+Duplicate logic: `apple-hello-effect.tsx` lines 129–199 — 7 identical wrapper functions, each a single-prop-diff call to `InViewHandwritingAnimation`. Could be a data-driven factory. Still present as of 2026-05-15.
+
+**Recurring pattern (2026-05-15 review):**
+- `document.body.style.overflow` managed independently by Gallery.tsx, CardsCarousel.tsx, AnimatedModal.tsx — all use local `prev` snapshot pattern. Works correctly but fragile: if two modals open simultaneously from different components, the second close will restore `"hidden"` not `""`. No shared scroll-lock utility exists.
+- `useMotionValue` / `useTransform` hooks called unconditionally before `if (isTouchDevice) return` early exit in `t-shaped-engineer-tooltip.tsx` — Rules of Hooks technically safe (hooks always called), but wasteful on touch.
 
 **Why:** These are confirmed to exist as of this review date.
-**How to apply:** Skip re-auditing these specific files in future reviews; focus on whether they've been cleaned up.
+**How to apply:** Skip re-auditing the 2026-05-14 dead code list; note duplicate overflow pattern is unresolved and spreading.

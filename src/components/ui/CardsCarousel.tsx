@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 export interface CarouselProps {
   items: React.ReactNode[];
@@ -156,21 +157,13 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
     onCardClose(index);
   }, [index, onCardClose]);
 
+  useScrollLock(open);
+
   useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        handleClose();
-      }
-    }
-
-    const prev = document.body.style.overflow;
-    if (open) document.body.style.overflow = "hidden";
-
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") handleClose(); };
     window.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      if (open) document.body.style.overflow = prev;
-    };
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, handleClose]);
 
   useOnClickOutside(containerRef as React.RefObject<HTMLElement>, handleClose);
