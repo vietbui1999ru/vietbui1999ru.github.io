@@ -3,20 +3,26 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
 import BlogVariantTabs from "@/components/blog/BlogVariantTabs";
 
+function toSlug(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
   return blogEntries.map((entry) => ({
-    params: { slug: entry.id },
+    params: { slug: toSlug(entry.id) },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const entrySlug = toSlug(entry.id);
 
-// Load all variants for this post
+// Match variants by slugified id — variant files store parent_slug as a slug,
+// while entry.id is the raw filename (may contain spaces/special chars).
 const allVariants = await getCollection("blog-variants", (v) =>
-  v.data.parent_slug === entry.id
+  v.data.parent_slug === entrySlug || v.data.parent_slug === entry.id
 );
 
 // Render each variant's Content component for use in the template below
