@@ -40,7 +40,9 @@ const galleryItems: GalleryItem[] = (await getCollection("gallery"))
       try {
         image = copyAsset(item.data.image, "gallery");
       } catch {
-        console.warn(`[gallery] image not found in Attachments: ${item.data.image}`);
+        console.warn(
+          `[gallery] image not found in Attachments: ${item.data.image}`,
+        );
       }
     }
     return {
@@ -58,10 +60,10 @@ const galleryItems: GalleryItem[] = (await getCollection("gallery"))
 <BaseLayout>
   <Home client:load />
   <About client:load />
+  <Blog client:visible posts={blogPosts} />
   <Projects client:visible />
+  <Gallery client:visible items={galleryItems} />
   <Experience client:visible />
   <Education client:visible />
-  <Gallery client:visible items={galleryItems} />
-  <Blog client:visible posts={blogPosts} />
   <Contact client:visible />
 </BaseLayout>
