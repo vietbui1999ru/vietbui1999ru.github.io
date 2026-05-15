@@ -61,15 +61,13 @@ function InViewHandwritingAnimation({
   return (
     <div
       ref={ref}
-      className={cn(
-        "relative w-full max-w-xs sm:max-w-md md:max-w-2xl mx-auto flex justify-center",
-        className,
-      )}
+      className={cn("relative mx-auto flex w-full justify-center", className)}
+      style={{ maxWidth: "clamp(260px, 80vw, 672px)" }}
       data-name={label}
     >
       <svg
         key={cycle}
-        className={cn("h-12 w-auto shrink-0 text-foreground sm:h-16 md:h-24", svgClassName)}
+        className={cn("h-auto w-full text-foreground", svgClassName)}
         fill="none"
         viewBox={viewBox}
         style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}
