@@ -45,10 +45,11 @@ const Gallery = ({ items }: GalleryProps) => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActiveImage(null);
     };
+    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [activeImage]);
@@ -132,14 +133,15 @@ const Gallery = ({ items }: GalleryProps) => {
 
         <AnimatePresence>
           {activeImage && (
-            <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto p-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
-              />
+            <motion.div
+              key="gallery-modal"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto p-4"
+            >
+              <div className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg" />
               <Card3D
                 active={true}
                 maxTilt={8}
@@ -190,7 +192,7 @@ const Gallery = ({ items }: GalleryProps) => {
                   )}
                 </motion.div>
               </Card3D>
-            </div>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

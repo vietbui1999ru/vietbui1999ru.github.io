@@ -179,14 +179,15 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
     <>
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto p-4">
-            <motion.div
-              animate={{ opacity: 1 }}
-              className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
-              exit={{ opacity: 0 }}
-              initial={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            />
+          <motion.div
+            key={`carousel-modal-${card.title}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto p-4"
+          >
+            <div className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg" />
             <Card3D
               active={open}
               maxTilt={8}
@@ -229,7 +230,7 @@ export const Card = ({ card, index, layout = false }: CardProps) => {
                 <div className="py-10">{card.content}</div>
               </motion.div>
             </Card3D>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
       <motion.button
