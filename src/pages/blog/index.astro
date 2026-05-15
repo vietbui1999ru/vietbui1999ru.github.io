@@ -1,10 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-
-function toSlug(s: string): string {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
+import { toSlug } from "@/lib/utils";
 
 const posts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)

@@ -2,10 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
 import BlogVariantTabs from "@/components/blog/BlogVariantTabs";
-
-function toSlug(s: string): string {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
+import { toSlug } from "@/lib/utils";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
