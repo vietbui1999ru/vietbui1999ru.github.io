@@ -12,7 +12,18 @@ import { cn } from "@/lib/utils";
 import { PROJECTS_ITEMS, type ProjectItem } from "@/data/projectsData";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
-import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
+
+function useIsSmallScreen(breakpoint = 768): boolean {
+  const [small, setSmall] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    setSmall(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setSmall(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [breakpoint]);
+  return small;
+}
 
 // ── color helpers (same palette as Projects.tsx) ──────────────────────────────
 
@@ -100,7 +111,7 @@ function ImageGallery({ images, title }: { images: string[]; title: string }) {
 function ProjectGridCard({ project, index, total }: { project: ProjectItem; index: number; total: number }) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobileOrTouch();
+  const isSmall = useIsSmallScreen();
 
   const { fromColor, toColor } = gradientForIndex(index, total);
   const images = project.images?.length ? project.images : project.image ? [project.image] : [];
@@ -115,7 +126,7 @@ function ProjectGridCard({ project, index, total }: { project: ProjectItem; inde
     return () => window.removeEventListener("keydown", handler);
   }, [open, handleClose]);
 
-  const background = isMobile
+  const background = isSmall
     ? <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${fromColor}, ${toColor})` }} />
     : <LavaLampBackground fromColor={fromColor} toColor={toColor} />;
 
