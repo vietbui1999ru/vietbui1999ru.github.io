@@ -143,7 +143,7 @@ const Contact = () => {
           </ModalBody>
         </Modal>
       </div>
-      <div className="mt-auto">
+      <div className="mt-auto pb-12">
         <BuiltWithBadge />
       </div>
     </section>

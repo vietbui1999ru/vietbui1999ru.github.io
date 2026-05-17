@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { ProjectsGrid } from "@/components/projects/ProjectsGrid";
+---
+
+<BaseLayout>
+  <div class="w-full flex-1 bg-background">
+    <div class="mx-auto w-full max-w-[var(--content-max)] px-4 py-24 sm:px-6">
+      <a
+        href="/#projects"
+        class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-10 transition-colors"
+      >
+        ← Back
+      </a>
+      <h1 class="text-4xl font-bold mb-10">Projects</h1>
+      <ProjectsGrid client:load />
+    </div>
+  </div>
+</BaseLayout>

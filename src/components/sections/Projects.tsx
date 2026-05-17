@@ -239,6 +239,12 @@ const Projects = () => {
             <CarouselCard key={card.title} card={card} index={index} layout />
           ))}
         />
+
+        <div className="mt-8 text-center">
+          <a href="/projects" className={cn(buttonVariants({ variant: "outline" }), "inline-flex min-h-[44px]")}>
+            View all projects
+          </a>
+        </div>
       </div>
     </section>
   );
