@@ -88,10 +88,10 @@ const Gallery = ({ items }: GalleryProps) => {
               type="button"
               onClick={() => setActiveTag(null)}
               className={cn(
-                "px-3 py-1 rounded-full text-sm border transition-colors",
+                "px-3 py-1 rounded-full text-sm font-medium transition-colors",
                 activeTag === null
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background text-foreground border-border hover:bg-muted",
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
               )}
             >
               All
@@ -102,10 +102,10 @@ const Gallery = ({ items }: GalleryProps) => {
                 type="button"
                 onClick={() => setActiveTag((prev) => (prev === tag ? null : tag))}
                 className={cn(
-                  "px-3 py-1 rounded-full text-sm border transition-colors",
+                  "px-3 py-1 rounded-full text-sm font-medium transition-colors",
                   activeTag === tag
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background text-foreground border-border hover:bg-muted",
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
                 )}
               >
                 {tag}
