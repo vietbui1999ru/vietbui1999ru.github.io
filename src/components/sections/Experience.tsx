@@ -34,13 +34,14 @@ function collectTimelineItems(companyLike: ExperienceCompanyLike, output: Timeli
       return;
     }
 
-    const title = entry.name?.trim();
+    const job = entry as ExperienceJobLike;
+    const title = job.name?.trim();
     if (!title) return;
 
-    const date = entry.date ?? "";
+    const date = job.date ?? "";
     const tags =
-      Array.isArray(entry.tags) && entry.tags.length > 0
-        ? entry.tags.map((t) => ({
+      Array.isArray(job.tags) && job.tags.length > 0
+        ? job.tags.map((t: ExperienceTag) => ({
             label: t.name,
             href: t.url,
             title: t.tooltip,
@@ -52,7 +53,7 @@ function collectTimelineItems(companyLike: ExperienceCompanyLike, output: Timeli
       date,
       title,
       subtitle: companyName,
-      description: entry.content ?? "",
+      description: job.content ?? "",
       tags,
       icon: <BriefcaseBusiness className="h-3 w-3" />,
       status: date.toLowerCase().includes("present") ? "in-progress" : "completed",

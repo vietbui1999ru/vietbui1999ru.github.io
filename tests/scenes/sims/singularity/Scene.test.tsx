@@ -51,7 +51,7 @@ describe("singularityModule", () => {
   });
 
   it("defaults contain all 5 uniform keys", () => {
-    const d = singularityModule.defaults as Record<string, unknown>;
+    const d = singularityModule.defaults as unknown as Record<string, unknown>;
     expect(d).toHaveProperty("speed");
     expect(d).toHaveProperty("intensity");
     expect(d).toHaveProperty("size");
@@ -86,7 +86,7 @@ describe("SINGULARITY_PRESETS", () => {
 
   it("each preset is a partial config with at least one key", () => {
     for (const [name, preset] of Object.entries(SINGULARITY_PRESETS)) {
-      expect(Object.keys(preset).length).toBeGreaterThan(0, `Preset "${name}" is empty`);
+      expect(Object.keys(preset).length, `Preset "${name}" is empty`).toBeGreaterThan(0);
     }
   });
 });
