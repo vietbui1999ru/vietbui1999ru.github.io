@@ -24,6 +24,7 @@ const blogPosts = (await getCollection("blog"))
     date: p.data.date,
     draft: p.data.draft,
     tags: p.data.tags,
+    cover: p.data.cover,
   }));
 
 const { copyAsset } = createAssetAdapters({

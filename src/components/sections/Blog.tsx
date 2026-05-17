@@ -14,6 +14,7 @@ export type BlogPost = {
   date: Date;
   draft?: boolean;
   tags?: string[];
+  cover?: string;
 };
 
 type BlogProps = {
@@ -73,9 +74,16 @@ const Blog = ({ posts }: BlogProps) => {
                 <Card3D active maxTilt={8} className="h-full">
                   <a
                     href={`/blog/${post.slug}`}
-                    className="group flex flex-col h-full rounded-xl border bg-card/60 p-5 shadow-sm
-                      hover:border-primary/40 hover:shadow-md transition-all duration-200 gap-3"
+                    className="group flex flex-col h-full rounded-xl border bg-card/60 overflow-hidden shadow-sm
+                      hover:border-primary/40 hover:shadow-md transition-all duration-200"
                   >
+                    <div className="aspect-video w-full overflow-hidden bg-muted/40 flex-shrink-0">
+                      {post.cover
+                        ? <img src={post.cover} alt={post.title} className="w-full h-full object-cover" loading="lazy" />
+                        : <div className="w-full h-full bg-gradient-to-br from-muted/60 to-muted/20" />
+                      }
+                    </div>
+                    <div className="flex flex-col flex-1 p-5 gap-3">
                     <p className="text-xs uppercase tracking-wide text-muted-foreground/80">Post</p>
                     <h3 className="font-semibold leading-tight text-base md:text-lg line-clamp-2 group-hover:text-primary transition-colors">
                       {post.title}
@@ -92,6 +100,7 @@ const Blog = ({ posts }: BlogProps) => {
                           {t}
                         </span>
                       ))}
+                    </div>
                     </div>
                   </a>
                 </Card3D>
