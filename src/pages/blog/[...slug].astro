@@ -70,7 +70,12 @@ const proseClass =
       ← Blog
     </a>
 
-    <div class="xl:grid xl:grid-cols-[minmax(0,65ch)_200px] xl:gap-14 xl:items-start">
+    <div class="xl:grid xl:grid-cols-[200px_minmax(0,65ch)] xl:gap-14 xl:items-start">
+      <aside class="hidden xl:block">
+        <div class="sticky top-24">
+          <TableOfContents contentId="blog-content" client:load />
+        </div>
+      </aside>
       <div id="blog-content" class="min-w-0">
         <header class="mb-10">
           <h1 class="text-4xl font-bold tracking-tight mb-3" style="font-family: var(--font-serif)">
@@ -131,12 +136,6 @@ const proseClass =
 
         <GiscusComments client:visible />
       </div>
-
-      <aside class="hidden xl:block">
-        <div class="sticky top-24">
-          <TableOfContents contentId="blog-content" client:load />
-        </div>
-      </aside>
     </div>
   </div>
   </div>
