@@ -70,6 +70,21 @@ const proseClass =
       ← Blog
     </a>
 
+    <!--
+      Hidden storage lives outside #blog-content so TableOfContents
+      doesn't find duplicate headings from every pre-rendered variant.
+    -->
+    <div id={storageId} style="display:none" aria-hidden="true">
+      <div data-variant-label="Original">
+        <Content />
+      </div>
+      {renderedVariants.map(({ label, Content: VC }) => (
+        <div data-variant-label={label}>
+          <VC />
+        </div>
+      ))}
+    </div>
+
     <div class="xl:grid xl:grid-cols-[200px_minmax(0,65ch)] xl:gap-14 xl:items-start">
       <aside class="hidden xl:block">
         <div class="sticky top-24">
@@ -112,21 +127,6 @@ const proseClass =
             </div>
           )}
         </header>
-
-        <!--
-          Hidden storage: Astro renders all variant HTML at build time.
-          BlogVariantTabs reads innerHTML from each [data-variant-label] node on mount.
-        -->
-        <div id={storageId} style="display:none" aria-hidden="true">
-          <div data-variant-label="Original">
-            <Content />
-          </div>
-          {renderedVariants.map(({ label, Content: VC }) => (
-            <div data-variant-label={label}>
-              <VC />
-            </div>
-          ))}
-        </div>
 
         <BlogVariantTabs
           client:load
