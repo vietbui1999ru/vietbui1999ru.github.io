@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
 import BlogVariantTabs from "@/components/blog/BlogVariantTabs";
 import { GiscusComments } from "@/components/blog/GiscusComments";
+import { TableOfContents } from "@/components/blog/TableOfContents";
 import { toSlug } from "@/lib/utils";
 
 export async function getStaticPaths() {
@@ -61,7 +62,7 @@ const proseClass =
 
 <BaseLayout>
   <div class="w-full flex-1 bg-background">
-  <div class="mx-auto w-full max-w-prose px-4 pt-16 pb-24 sm:px-6">
+  <div class="mx-auto w-full max-w-6xl px-4 pt-16 pb-24 sm:px-6">
     <a
       href="/blog"
       class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-10 transition-colors"
@@ -69,64 +70,74 @@ const proseClass =
       ← Blog
     </a>
 
-    <header class="mb-10">
-      <h1 class="text-4xl font-bold tracking-tight mb-3" style="font-family: var(--font-serif)">
-        {entry.data.title}
-      </h1>
-      <p class="text-muted-foreground text-base mb-4">
-        {entry.data.description}
-      </p>
-      <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-        <time datetime={entry.data.date.toISOString()}>{formattedDate}</time>
-        {readingTime && <span>·</span>}
-        {readingTime && <span>{readingTime}</span>}
-        {entry.data.updated && (
-          <>
-            <span>·</span>
-            <span>
-              Updated{" "}
-              {entry.data.updated.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
-          </>
-        )}
-      </div>
-      {entry.data.tags && entry.data.tags.length > 0 && (
-        <div class="flex flex-wrap gap-2 mt-4">
-          {entry.data.tags.map((tag) => (
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
-              {tag}
-            </span>
+    <div class="xl:grid xl:grid-cols-[minmax(0,65ch)_200px] xl:gap-14 xl:items-start">
+      <div id="blog-content" class="min-w-0">
+        <header class="mb-10">
+          <h1 class="text-4xl font-bold tracking-tight mb-3" style="font-family: var(--font-serif)">
+            {entry.data.title}
+          </h1>
+          <p class="text-muted-foreground text-base mb-4">
+            {entry.data.description}
+          </p>
+          <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+            <time datetime={entry.data.date.toISOString()}>{formattedDate}</time>
+            {readingTime && <span>·</span>}
+            {readingTime && <span>{readingTime}</span>}
+            {entry.data.updated && (
+              <>
+                <span>·</span>
+                <span>
+                  Updated{" "}
+                  {entry.data.updated.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </>
+            )}
+          </div>
+          {entry.data.tags && entry.data.tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mt-4">
+              {entry.data.tags.map((tag) => (
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        <!--
+          Hidden storage: Astro renders all variant HTML at build time.
+          BlogVariantTabs reads innerHTML from each [data-variant-label] node on mount.
+        -->
+        <div id={storageId} style="display:none" aria-hidden="true">
+          <div data-variant-label="Original">
+            <Content />
+          </div>
+          {renderedVariants.map(({ label, Content: VC }) => (
+            <div data-variant-label={label}>
+              <VC />
+            </div>
           ))}
         </div>
-      )}
-    </header>
 
-    <!--
-      Hidden storage: Astro renders all variant HTML at build time.
-      BlogVariantTabs reads innerHTML from each [data-variant-label] node on mount.
-    -->
-    <div id={storageId} style="display:none" aria-hidden="true">
-      <div data-variant-label="Original">
-        <Content />
+        <BlogVariantTabs
+          client:load
+          storageId={storageId}
+          proseClass={proseClass}
+        />
+
+        <GiscusComments client:visible />
       </div>
-      {renderedVariants.map(({ label, Content: VC }) => (
-        <div data-variant-label={label}>
-          <VC />
+
+      <aside class="hidden xl:block">
+        <div class="sticky top-24">
+          <TableOfContents contentId="blog-content" client:load />
         </div>
-      ))}
+      </aside>
     </div>
-
-    <BlogVariantTabs
-      client:load
-      storageId={storageId}
-      proseClass={proseClass}
-    />
-
-    <GiscusComments client:visible />
   </div>
   </div>
 </BaseLayout>

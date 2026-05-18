@@ -30,12 +30,14 @@ export default function BlogVariantTabs({ storageId, proseClass }: BlogVariantTa
     setTabs(parsed);
     storage.setAttribute("aria-hidden", "true");
     storage.style.display = "none";
+    window.dispatchEvent(new CustomEvent("variant-change"));
   }, [storageId]);
 
   const handleTabClick = useCallback(
     (idx: number) => {
       if (idx === activeIdx) return;
       setActiveIdx(idx);
+      window.dispatchEvent(new CustomEvent("variant-change"));
     },
     [activeIdx]
   );
