@@ -87,6 +87,15 @@
       ]
     },
     {
+      "title": "Dotfiles — Neovim + tmux + Kitty Development Environment",
+      "content": "I maintain a fully declarative macOS development environment managed with GNU Stow. Neovim is configured in Lua with LSP, Treesitter, and a plugin ecosystem tuned for TypeScript, Go, Rust, and Python workflows. tmux session layout is scripted with persistent named workspaces and a custom status bar. Kitty terminal config covers font ligatures, GPU-accelerated rendering, and per-app opacity. zsh config layers p10k prompt, per-project env injection via direnv, and a curated set of shell functions. AeroSpace handles tiling window management with workspace bindings mirrored in the ZMK keymap layer. Stow symlinks keep all configs version-controlled without manual copy-paste.",
+      "tags": ["Config", "Developer Tools", "Homelab"],
+      "badges": ["Neovim", "Lua", "tmux", "Kitty", "zsh", "GNU Stow", "AeroSpace", "direnv", "macOS"],
+      "links": [
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/dotfiles" }
+      ]
+    },
+    {
       "title": "Dota 2 Stats Dashboard",
       "content": "I built a Dota 2 stats dashboard that fetches player and match data from the OpenDota API. The dashboard list view links to individual detail pages with unique URLs per item. Includes at least two charts visualizing different aspects of the dataset with a toggle to show/hide visualizations, and a loading screen while data is being fetched.",
       "tags": ["JavaScript", "Full-Stack", "Gaming"],
