@@ -2,6 +2,100 @@
   "title": "What I've been working on recently",
   "items": [
     {
+      "title": "ResumeLoop — AI Job Hunt Dashboard",
+      "content": "I built a personal job hunt dashboard that turns Obsidian job-description clips into tailored, ATS-optimized DOCX resumes. Supports AI fit scoring per job, cover letter generation, inline resume chat, and LinkedIn outreach drafting. Multi-provider LLM abstraction (Anthropic, OpenAI, Gemini, Groq, Ollama) via Vercel AI SDK. Dual database backends — SQLite locally, Neon Postgres in cloud. Deployed on AWS ECS Fargate behind an ALB with zero-downtime rolling deploys and ECS circuit-breaker auto-rollback. 172 TypeScript files, 51 API routes, 609 job descriptions in corpus.",
+      "tags": ["TypeScript", "Full-Stack", "AI/ML"],
+      "badges": [
+        "Next.js 14", "TypeScript", "Vercel AI SDK", "NextAuth v5",
+        "SQLite", "Neon Postgres", "Prisma", "Docker",
+        "AWS ECS Fargate", "GitHub Actions", "LibreOffice"
+      ],
+      "links": [
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/ResumeLoop" },
+        { "icon": "fas fa-external-link-alt", "url": "https://resumeloop.me" }
+      ]
+    },
+    {
+      "title": "llm-wiki — LLM-Maintained AI Engineering Knowledge Base",
+      "content": "I built a personal knowledge base on AI and agent engineering, maintained collaboratively with an LLM. Sources are ingested via Claude Code, which writes structured wiki pages (summaries, entities, concepts, comparisons, syntheses), cross-links them, and catches contradictions. A post-commit hook keeps a LightRAG graph index current automatically — Obsidian wikilink structure is injected as extraction hints, reducing LLM token cost ~40–55% per page. Three retrieval paths: qmd (BM25 + vector, in-session), wiki-chat (local graph TUI, qwen2.5:3b, free), and wiki-mcp (MCP server for OpenCode/Claude Code). The system compounds over time — each ingest enriches existing pages rather than siloing new ones.",
+      "tags": ["AI/ML", "Python", "Developer Tools"],
+      "badges": [
+        "Python", "LightRAG", "Claude Code", "qmd", "ollama",
+        "BM25", "RAG", "MCP", "Git", "uv"
+      ],
+      "links": [
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/llm-wiki" }
+      ]
+    },
+    {
+      "title": "Java Spring Boot Bookshelf with Open Library API",
+      "content": "I built a modular bookshelf application using Spring Boot and Spring Modulith with compiler-enforced module boundary verification. Queries the Open Library API for book search and cover images, caching results in Redis. Module structure separates catalog, openlibrary client, and web layers — cross-module access rules are asserted by modularity tests (ModularityTests) that run as part of the standard test suite. Docker Compose manages Redis automatically at dev startup.",
+      "tags": ["Java", "Full-Stack", "Backend"],
+      "badges": [
+        "Java 17", "Spring Boot", "Spring Modulith", "Spring MVC",
+        "Spring Data Redis", "Redis", "Docker", "Gradle", "Open Library API"
+      ],
+      "links": [
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/local-bookshelf" }
+      ]
+    },
+    {
+      "title": "Amazon Price Drop Monitor with Slack Notifications",
+      "content": "I built a full-stack Amazon price monitoring service that scrapes a configurable product list on a periodic schedule, persists every observed price, and fires Slack or console notifications when a drop crosses a configured threshold. Playwright + playwright-stealth handles anti-bot fingerprinting via a 5-selector cascade. A 4-phase asyncio scheduler handles force-check queue drain, scheduled price injection, normal scraping, and cleanup. Advisory lock (pg_try_advisory_xact_lock) + notified flag prevents duplicate notifications across restarts. A React + Vite dashboard renders per-product price history with source badges (amazon/self/simulated) and dashed lines for injected data points.",
+      "tags": ["Python", "Full-Stack", "DevOps"],
+      "badges": [
+        "Python", "FastAPI", "Playwright", "PostgreSQL", "Redis",
+        "SQLAlchemy", "Alembic", "React", "Vite", "Docker", "GitHub Actions"
+      ],
+      "links": [
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/amazon-product-scraper-notifier" }
+      ]
+    },
+    {
+      "title": "MLH PE Hackathon — URL Shortener with SRE Practices",
+      "content": "Built a URL shortener service with full SRE practices for the MLH Production Engineering hackathon. Flask + Peewee + PostgreSQL REST API with full CRUD for users, URLs, and click events. Scaled from 45% error rate at 200 connections to 0% errors at 500 VUs (p95 200ms) by layering Gunicorn multi-worker instances, Nginx load balancing across 6 containers, Redis URL caching, and connection pooling — keeping total pool connections (6×15=90) well within Postgres max_connections. Observability stack: structured JSON logging, Prometheus metrics, Grafana four-golden-signals dashboards, Alertmanager with Discord notifications. 30 pytest tests at 66% coverage; CI/CD blocks deploys on test failure.",
+      "tags": ["Python", "DevOps", "Backend"],
+      "badges": [
+        "Python", "Flask", "Peewee", "PostgreSQL", "Redis",
+        "Nginx", "Gunicorn", "Prometheus", "Grafana", "Docker", "GitHub Actions", "k6"
+      ],
+      "links": [
+        { "icon": "fab fa-youtube", "url": "https://www.youtube.com/watch?v=zFr2aNbNSyI" },
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/PE-Hackathon-Meme-efied-2026" }
+      ]
+    },
+    {
+      "images": [
+        "https://github.com/vietbui1999ru/zmk-config/raw/main/keymap-drawer/eyelash_corne.svg"
+      ],
+      "title": "ZMK Keymap — Eyelash Corne (Colemak-DH Migration)",
+      "content": "I designed a 42-key split keyboard layout on ZMK firmware for the Eyelash Corne with nice!nano (nRF52840, BT 5.0). Eight layers: QWERTY base, Colemak-DH alpha swap, numbers + AeroSpace workspace bindings, symbols, Vim-style navigation, pre-prefixed tmux bindings, media/RGB, and function keys. Thumb cluster uses tap/hold for layer access without losing home row comfort. Three deliberate toggle combos (Q+P, E+I, Z+/) with 50ms timeout to prevent misfires. Goal: migrate to Colemak-DH at 140 WPM while preserving muscle memory on existing tools.",
+      "tags": ["Embedded", "Hardware", "Config"],
+      "badges": ["ZMK", "nRF52840", "Bluetooth 5.0", "Colemak-DH", "nice!nano", "Keymap Drawer"],
+      "links": [
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/zmk-config" }
+      ]
+    },
+
+    {
+      "title": "claude-tui — Rust Terminal Dashboard for Claude Code Usage",
+      "content": "I built a local-only terminal dashboard for monitoring Claude Code token usage and costs — no API keys, no network calls, no telemetry. A background daemon scans ~/.claude/projects/**/*.jsonl with incremental byte-offset cursors (only new lines per cycle), parses usage records, deduplicates via UUID v5, and stores them in a local SQLite (WAL mode). A ratatui TUI connects over a Unix domain socket (JSON-RPC 2.0, 0600 permissions) to render token charts with 7/30/90-day ranges, cost breakdowns by model and project, model comparison, live session monitor, and configurable budget gauges. Async Rust with tokio cancellation tokens for graceful shutdown.",
+      "tags": ["Rust", "Systems", "Developer Tools"],
+      "badges": ["Rust", "tokio", "ratatui", "SQLite", "Unix sockets", "JSON-RPC 2.0"],
+      "links": [
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/claude-tui" }
+      ]
+    },
+    {
+      "title": "Dota 2 Stats Dashboard",
+      "content": "I built a Dota 2 stats dashboard that fetches player and match data from the OpenDota API. The dashboard list view links to individual detail pages with unique URLs per item. Includes at least two charts visualizing different aspects of the dataset with a toggle to show/hide visualizations, and a loading screen while data is being fetched.",
+      "tags": ["JavaScript", "Full-Stack", "Gaming"],
+      "badges": ["JavaScript", "React", "OpenDota API", "REST API"],
+      "links": [
+        { "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/Dota-Dashboard" }
+      ]
+    },
+    {
       "images": [
         "https://raw.githubusercontent.com/vietbui1999ru/omega-sigma-alpha-4983/main/docs/dashboard-screenshot.png",
         "https://raw.githubusercontent.com/vietbui1999ru/omega-sigma-alpha-4983/main/docs/mrr_accuracy_comparison.png"
@@ -61,7 +155,7 @@
       "content": "I Architected multi-VM infrastructure managing 15+ devices with 99.5% uptime through automated health monitoring, Prometheus metrics, and systematic capacity planning. Deployed Grafana dashboards for real-time monitoring, reducing MTTR by 50% through automated alerting on system hardware and software anomalies.",
       "tags": ["DevOps", "Homelab", "Infrastructure"],
       "badges": ["Proxmox", "Prometheus", "Grafana", "Terraform", "Ansible", "WireGuard", "Docker", "Nginx", "Bash"],
-      "links": [{ "icon": "fab fa-github", "url": "" }]
+      "links": [{ "icon": "fab fa-github", "url": "https://github.com/vietbui1999ru/homelab-scripts" }]
     },
     {
       "title": "LangChain AI-assisted College Student Course Scheduler and Planner",
