@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
 import BlogVariantTabs from "@/components/blog/BlogVariantTabs";
+import { GiscusComments } from "@/components/blog/GiscusComments";
 import { toSlug } from "@/lib/utils";
 
 export async function getStaticPaths() {
@@ -124,6 +125,8 @@ const proseClass =
       storageId={storageId}
       proseClass={proseClass}
     />
+
+    <GiscusComments client:visible />
   </div>
   </div>
 </BaseLayout>
