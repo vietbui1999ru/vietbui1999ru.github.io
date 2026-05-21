@@ -51,7 +51,7 @@ const Projects = () => {
             className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {PROJECTS_ITEMS.map((project) => (
-              <div key={project.title} className="snap-start flex-shrink-0 w-[calc(33.333%-14px)] min-w-[260px]">
+              <div key={project.title} className="snap-start flex-shrink-0 w-[calc(100%-60px)] min-w-[200px] sm:w-[calc(33.333%-14px)] sm:min-w-[260px]">
                 <ProjectCard project={project} />
               </div>
             ))}
