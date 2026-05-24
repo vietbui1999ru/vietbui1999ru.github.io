@@ -17,8 +17,7 @@ import {
   SINGULARITY_SIZE_RESIZE_FACTOR,
   VIET_GRADIENT,
 } from "@/data/homeData";
-
-const GITLAB_PROFILE_URL = "https://gitlab.com/vietbui1999ru";
+import { OWNER } from "@/config/owner";
 
 const Home = () => {
   const [singularitySpeed, setSingularitySpeed] = useState(1.0);
@@ -65,11 +64,9 @@ const Home = () => {
     const handleScroll = () => {
       const t = Math.min(1, window.scrollY / (window.innerHeight / 2));
       const v =
-        SINGULARITY_SCROLL_MIN +
-        (SINGULARITY_SCROLL_MAX - SINGULARITY_SCROLL_MIN) * (1 - t);
+        SINGULARITY_SCROLL_MIN + (SINGULARITY_SCROLL_MAX - SINGULARITY_SCROLL_MIN) * (1 - t);
       const sizeMax = SINGULARITY_SCROLL_MAX * SINGULARITY_SIZE_RESIZE_FACTOR;
-      const sizeV =
-        SINGULARITY_SCROLL_MIN + (sizeMax - SINGULARITY_SCROLL_MIN) * (1 - t);
+      const sizeV = SINGULARITY_SCROLL_MIN + (sizeMax - SINGULARITY_SCROLL_MIN) * (1 - t);
       setSingularitySpeed(v);
       setSingularityIntensity(v);
       setSingularitySize(sizeV);
@@ -126,25 +123,20 @@ const Home = () => {
               neon: true,
             }}
           />
-          <p className="text-2xl md:text-3xl text-muted-foreground">
-            {HOME_TAGLINE}
-          </p>
+          <p className="text-2xl md:text-3xl text-muted-foreground">{HOME_TAGLINE}</p>
           <div className="mt-4 flex justify-center">
             <div className="flex flex-col items-center gap-3">
               <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Magnetic strength={18}>
                   <a
-                    href="https://github.com/vietbui1999ru"
+                    href={OWNER.social.github.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-medium shadow-md backdrop-blur transition hover:border-white/30 hover:bg-white/5"
-                    aria-label="View Viet Bui's GitHub profile"
+                    aria-label={`View ${OWNER.name}'s GitHub profile`}
                     onMouseMove={(event) => {
-                      const bounds =
-                        event.currentTarget.getBoundingClientRect();
-                      const relativeX =
-                        (event.clientX - bounds.left) /
-                        Math.max(bounds.width, 1);
+                      const bounds = event.currentTarget.getBoundingClientRect();
+                      const relativeX = (event.clientX - bounds.left) / Math.max(bounds.width, 1);
                       const clampedX = Math.min(Math.max(relativeX, 0), 1);
                       const angle = 180 + clampedX * 180;
                       setGithubGradientAngle(angle);
@@ -158,23 +150,20 @@ const Home = () => {
                         backgroundImage: `linear-gradient(${githubGradientAngle}deg, #f5f5f5, #d4d4d8, #a1a1aa)`,
                       }}
                     >
-                      My GitHub profile
+                      {OWNER.social.github.label}
                     </span>
                   </a>
                 </Magnetic>
                 <Magnetic strength={18}>
                   <a
-                    href={GITLAB_PROFILE_URL}
+                    href={OWNER.social.gitlab.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-medium shadow-md backdrop-blur transition hover:border-white/30 hover:bg-white/5"
-                    aria-label="View Viet Bui's GitLab profile"
+                    aria-label={`View ${OWNER.name}'s GitLab profile`}
                     onMouseMove={(event) => {
-                      const bounds =
-                        event.currentTarget.getBoundingClientRect();
-                      const relativeX =
-                        (event.clientX - bounds.left) /
-                        Math.max(bounds.width, 1);
+                      const bounds = event.currentTarget.getBoundingClientRect();
+                      const relativeX = (event.clientX - bounds.left) / Math.max(bounds.width, 1);
                       const clampedX = Math.min(Math.max(relativeX, 0), 1);
                       const angle = 180 + clampedX * 180;
                       setGitlabGradientAngle(angle);
@@ -188,24 +177,26 @@ const Home = () => {
                         backgroundImage: `linear-gradient(${gitlabGradientAngle}deg, #fff7ed, #fdba74, #fb923c)`,
                       }}
                     >
-                      My GitLab profile
+                      {OWNER.social.gitlab.label}
                     </span>
                   </a>
                 </Magnetic>
               </div>
+              {OWNER.availability.open && (
               <button
                 type="button"
                 className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-1.5 text-xs font-medium text-emerald-100 shadow-sm backdrop-blur-sm"
-                aria-label="Open to new opportunities and challenges"
+                aria-label={OWNER.availability.text}
               >
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.35)]" />
                 </span>
                 <span className="whitespace-nowrap">
-                  open to new opportunities &amp; challenges
+                  {OWNER.availability.text}
                 </span>
               </button>
+              )}
             </div>
           </div>
         </div>

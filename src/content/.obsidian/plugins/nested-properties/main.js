@@ -35,9 +35,7 @@ if you want to view the source, please visit the github repository of this plugi
     return obj;
   }
   function extractDefault(module) {
-    return module && module.__esModule && "default" in module
-      ? module.default
-      : module;
+    return module && module.__esModule && "default" in module ? module.default : module;
   }
   const OBSIDIAN_BUILT_IN_MODULE_NAMES = [
     "obsidian",
@@ -120,12 +118,7 @@ var H = (n, e) => () => (e || n((e = { exports: {} }).exports, e), e.exports),
   };
 var Ft = (n, e, t) => (
     (t = n != null ? Vn(qn(n)) : {}),
-    Dt(
-      e || !n || !n.__esModule
-        ? he(t, "default", { value: n, enumerable: !0 })
-        : t,
-      n,
-    )
+    Dt(e || !n || !n.__esModule ? he(t, "default", { value: n, enumerable: !0 }) : t, n)
   ),
   Xn = (n) => Dt(he({}, "__esModule", { value: !0 }), n);
 var jt = H((_r, _t) => {
@@ -140,10 +133,7 @@ var jt = H((_r, _t) => {
     var t = typeof n;
     if (t === "string" && n.length > 0) return ti(n);
     if (t === "number" && isFinite(n)) return e.long ? ii(n) : ni(n);
-    throw new Error(
-      "val is not a non-empty string or a valid number. val=" +
-        JSON.stringify(n),
-    );
+    throw new Error("val is not a non-empty string or a valid number. val=" + JSON.stringify(n));
   };
   function ti(n) {
     if (((n = String(n)), !(n.length > 100))) {
@@ -250,8 +240,7 @@ var Qe = H((Br, Bt) => {
       (t.formatters = {}));
     function e(d) {
       let p = 0;
-      for (let f = 0; f < d.length; f++)
-        ((p = (p << 5) - p + d.charCodeAt(f)), (p |= 0));
+      for (let f = 0; f < d.length; f++) ((p = (p << 5) - p + d.charCodeAt(f)), (p |= 0));
       return t.colors[Math.abs(p) % t.colors.length];
     }
     (s(e, "selectColor"), (t.selectColor = e));
@@ -297,11 +286,7 @@ var Qe = H((Br, Bt) => {
           configurable: !1,
           get: s(
             () =>
-              f !== null
-                ? f
-                : (h !== t.namespaces &&
-                    ((h = t.namespaces), (m = t.enabled(d))),
-                  m),
+              f !== null ? f : (h !== t.namespaces && ((h = t.namespaces), (m = t.enabled(d))), m),
             "get",
           ),
           set: s((g) => {
@@ -325,8 +310,7 @@ var Qe = H((Br, Bt) => {
         .replace(/\s+/g, ",")
         .split(",")
         .filter(Boolean);
-      for (let f of p)
-        f[0] === "-" ? t.skips.push(f.slice(1)) : t.names.push(f);
+      for (let f of p) f[0] === "-" ? t.skips.push(f.slice(1)) : t.names.push(f);
     }
     s(r, "enable");
     function o(d, p) {
@@ -483,8 +467,7 @@ var Wt = H((I, Te) => {
         document.documentElement.style.WebkitAppearance) ||
       (typeof window < "u" &&
         window.console &&
-        (window.console.firebug ||
-          (window.console.exception && window.console.table))) ||
+        (window.console.firebug || (window.console.exception && window.console.table))) ||
       (typeof navigator < "u" &&
         navigator.userAgent &&
         (n = navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/)) &&
@@ -530,10 +513,7 @@ var Wt = H((I, Te) => {
     try {
       n = I.storage.getItem("debug") || I.storage.getItem("DEBUG");
     } catch {}
-    return (
-      !n && typeof process < "u" && "env" in process && (n = process.env.DEBUG),
-      n
-    );
+    return (!n && typeof process < "u" && "env" in process && (n = process.env.DEBUG), n);
   }
   s(li, "load");
   function ci() {
@@ -570,14 +550,10 @@ var Vt = H((Ur, Ut) => {
     ie;
   B("no-color") || B("no-colors") || B("color=false")
     ? (ie = !1)
-    : (B("color") || B("colors") || B("color=true") || B("color=always")) &&
-      (ie = !0);
-  "FORCE_COLOR" in R &&
-    (ie = R.FORCE_COLOR.length === 0 || parseInt(R.FORCE_COLOR, 10) !== 0);
+    : (B("color") || B("colors") || B("color=true") || B("color=always")) && (ie = !0);
+  "FORCE_COLOR" in R && (ie = R.FORCE_COLOR.length === 0 || parseInt(R.FORCE_COLOR, 10) !== 0);
   function pi(n) {
-    return n === 0
-      ? !1
-      : { level: n, hasBasic: !0, has256: n >= 2, has16m: n >= 3 };
+    return n === 0 ? !1 : { level: n, hasBasic: !0, has256: n >= 2, has16m: n >= 3 };
   }
   s(pi, "translateLevel");
   function fi(n) {
@@ -597,9 +573,8 @@ var Vt = H((Ur, Ut) => {
         : 1;
     }
     if ("CI" in R)
-      return ["TRAVIS", "CIRCLECI", "APPVEYOR", "GITLAB_CI"].some(
-        (t) => t in R,
-      ) || R.CI_NAME === "codeship"
+      return ["TRAVIS", "CIRCLECI", "APPVEYOR", "GITLAB_CI"].some((t) => t in R) ||
+        R.CI_NAME === "codeship"
         ? 1
         : e;
     if ("TEAMCITY_VERSION" in R)
@@ -616,9 +591,8 @@ var Vt = H((Ur, Ut) => {
     }
     return /-256(color)?$/i.test(R.TERM)
       ? 2
-      : /^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(
-            R.TERM,
-          ) || "COLORTERM" in R
+      : /^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(R.TERM) ||
+          "COLORTERM" in R
         ? 1
         : (R.TERM === "dumb", e);
   }
@@ -653,11 +627,10 @@ var Gt = H((S, Le) => {
     n &&
       (n.stderr || n).level >= 2 &&
       (S.colors = [
-        20, 21, 26, 27, 32, 33, 38, 39, 40, 41, 42, 43, 44, 45, 56, 57, 62, 63,
-        68, 69, 74, 75, 76, 77, 78, 79, 80, 81, 92, 93, 98, 99, 112, 113, 128,
-        129, 134, 135, 148, 149, 160, 161, 162, 163, 164, 165, 166, 167, 168,
-        169, 170, 171, 172, 173, 178, 179, 184, 185, 196, 197, 198, 199, 200,
-        201, 202, 203, 204, 205, 206, 207, 208, 209, 214, 215, 220, 221,
+        20, 21, 26, 27, 32, 33, 38, 39, 40, 41, 42, 43, 44, 45, 56, 57, 62, 63, 68, 69, 74, 75, 76,
+        77, 78, 79, 80, 81, 92, 93, 98, 99, 112, 113, 128, 129, 134, 135, 148, 149, 160, 161, 162,
+        163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 178, 179, 184, 185, 196, 197, 198,
+        199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 214, 215, 220, 221,
       ]);
   } catch {}
   S.inspectOpts = Object.keys(process.env)
@@ -681,9 +654,7 @@ var Gt = H((S, Le) => {
       );
     }, {});
   function gi() {
-    return "colors" in S.inspectOpts
-      ? !!S.inspectOpts.colors
-      : hi.isatty(process.stderr.fd);
+    return "colors" in S.inspectOpts ? !!S.inspectOpts.colors : hi.isatty(process.stderr.fd);
   }
   s(gi, "useColors");
   function mi(n) {
@@ -730,8 +701,7 @@ var Gt = H((S, Le) => {
   function wi(n) {
     n.inspectOpts = {};
     let e = Object.keys(S.inspectOpts);
-    for (let t = 0; t < e.length; t++)
-      n.inspectOpts[e[t]] = S.inspectOpts[e[t]];
+    for (let t = 0; t < e.length; t++) n.inspectOpts[e[t]] = S.inspectOpts[e[t]];
   }
   s(wi, "init");
   Le.exports = Qe()(S);
@@ -749,17 +719,11 @@ var Gt = H((S, Le) => {
     );
   };
   Kt.O = function (n) {
-    return (
-      (this.inspectOpts.colors = this.useColors),
-      Oe.inspect(n, this.inspectOpts)
-    );
+    return ((this.inspectOpts.colors = this.useColors), Oe.inspect(n, this.inspectOpts));
   };
 });
 var qt = H((Gr, tt) => {
-  typeof process > "u" ||
-  process.type === "renderer" ||
-  process.browser === !0 ||
-  process.__nwjs
+  typeof process > "u" || process.type === "renderer" || process.browser === !0 || process.__nwjs
     ? (tt.exports = Wt())
     : (tt.exports = Gt());
 });
@@ -769,20 +733,15 @@ var Rn = H((Ue, Pn) => {
       ? e(Ue)
       : typeof define == "function" && define.amd
         ? define(["exports"], e)
-        : ((n = typeof globalThis < "u" ? globalThis : n || self),
-          e((n.compareVersions = {})));
+        : ((n = typeof globalThis < "u" ? globalThis : n || self), e((n.compareVersions = {})));
   })(Ue, function (n) {
     "use strict";
     let e =
         /^[v^~<>=]*?(\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+)(?:\.([x*]|\d+))?(?:-([\da-z\-]+(?:\.[\da-z\-]+)*))?(?:\+[\da-z\-]+(?:\.[\da-z\-]+)*)?)?)?$/i,
       t = s((g) => {
-        if (typeof g != "string")
-          throw new TypeError("Invalid argument expected string");
+        if (typeof g != "string") throw new TypeError("Invalid argument expected string");
         let y = g.match(e);
-        if (!y)
-          throw new Error(
-            `Invalid argument not valid semver ('${g}' received)`,
-          );
+        if (!y) throw new Error(`Invalid argument not valid semver ('${g}' received)`);
         return (y.shift(), y);
       }, "validateAndParse"),
       i = s((g) => g === "*" || g === "x" || g === "X", "isWildcard"),
@@ -790,10 +749,7 @@ var Rn = H((Ue, Pn) => {
         let y = parseInt(g, 10);
         return isNaN(y) ? g : y;
       }, "tryParse"),
-      o = s(
-        (g, y) => (typeof g != typeof y ? [String(g), String(y)] : [g, y]),
-        "forceType",
-      ),
+      o = s((g, y) => (typeof g != typeof y ? [String(g), String(y)] : [g, y]), "forceType"),
       a = s((g, y) => {
         if (i(g) || i(y)) return 0;
         let [A, w] = o(r(g), r(y));
@@ -812,15 +768,7 @@ var Rn = H((Ue, Pn) => {
           C = A.pop(),
           T = w.pop(),
           x = l(A, w);
-        return x !== 0
-          ? x
-          : C && T
-            ? l(C.split("."), T.split("."))
-            : C || T
-              ? C
-                ? -1
-                : 1
-              : 0;
+        return x !== 0 ? x : C && T ? l(C.split("."), T.split(".")) : C || T ? (C ? -1 : 1) : 0;
       }, "compareVersions"),
       c = s((g, y, A) => {
         f(A);
@@ -838,9 +786,7 @@ var Rn = H((Ue, Pn) => {
       p = Object.keys(d),
       f = s((g) => {
         if (typeof g != "string")
-          throw new TypeError(
-            `Invalid operator type, expected string but got ${typeof g}`,
-          );
+          throw new TypeError(`Invalid operator type, expected string but got ${typeof g}`);
         if (p.indexOf(g) === -1)
           throw new Error(`Invalid operator, expected one of ${p.join("|")}`);
       }, "assertValidOperator"),
@@ -863,22 +809,12 @@ var Rn = H((Ue, Pn) => {
           [P, O, F, , xe] = t(y),
           de = [C, T, x],
           E = [P, O ?? "x", F ?? "x"];
-        if (
-          xe &&
-          (!M || l(de, E) !== 0 || l(M.split("."), xe.split(".")) === -1)
-        )
-          return !1;
+        if (xe && (!M || l(de, E) !== 0 || l(M.split("."), xe.split(".")) === -1)) return !1;
         let N = E.findIndex((k) => k !== "0") + 1,
           U = w === "~" ? 2 : N > 1 ? N : 1;
-        return !(
-          l(de.slice(0, U), E.slice(0, U)) !== 0 ||
-          l(de.slice(U), E.slice(U)) === -1
-        );
+        return !(l(de.slice(0, U), E.slice(0, U)) !== 0 || l(de.slice(U), E.slice(U)) === -1);
       }, "satisfies"),
-      m = s(
-        (g) => typeof g == "string" && /^[v\d]/.test(g) && e.test(g),
-        "validate",
-      ),
+      m = s((g) => typeof g == "string" && /^[v\d]/.test(g) && e.test(g), "validate"),
       v = s(
         (g) =>
           typeof g == "string" &&
@@ -940,15 +876,11 @@ var K = class {
   eventRefsMap = new Map();
   off(e, t) {
     let i = this.eventRefsMap.get(e);
-    i &&
-      (Ze(i, (r) => r.callback !== t),
-      i.length === 0 && this.eventRefsMap.delete(e));
+    i && (Ze(i, (r) => r.callback !== t), i.length === 0 && this.eventRefsMap.delete(e));
   }
   offref(e) {
     let t = this.eventRefsMap.get(e.name);
-    t &&
-      (Ze(t, (i) => i !== e),
-      t.length === 0 && this.eventRefsMap.delete(e.name));
+    t && (Ze(t, (i) => i !== e), t.length === 0 && this.eventRefsMap.delete(e.name));
   }
   on(e, t, i) {
     let r = this.eventRefsMap.get(e);
@@ -1144,9 +1076,7 @@ var Jt = "An unhandled error occurred executing async operation",
       s(this, "SilentError");
     }
     constructor(e) {
-      (super(e),
-        (this.name = "SilentError"),
-        Error.captureStackTrace?.(this, n));
+      (super(e), (this.name = "SilentError"), Error.captureStackTrace?.(this, n));
     }
   };
 function Zt(n) {
@@ -1527,10 +1457,7 @@ function at() {
 s(at, "getApp");
 function ye(n, e, t) {
   let r = n ?? Ei() ?? globalThis;
-  return (
-    (r.obsidianDevUtilsState ??= {}),
-    (r.obsidianDevUtilsState[e] ??= new st(t))
-  );
+  return ((r.obsidianDevUtilsState ??= {}), (r.obsidianDevUtilsState[e] ??= new st(t)));
 }
 s(ye, "getObsidianDevUtilsState");
 function Ei() {
@@ -1775,8 +1702,7 @@ var Pi = [
 ];
 function Ie(n, e) {
   if (n === e) return !0;
-  if (typeof n != "object" || typeof e != "object" || n === null || e === null)
-    return !1;
+  if (typeof n != "object" || typeof e != "object" || n === null || e === null) return !1;
   let t = n.constructor,
     i = e.constructor;
   if (t !== i) return !1;
@@ -2020,10 +1946,7 @@ var b = s((n) => typeof n == "string", "isString"),
     });
   }, "copy"),
   zi = /###/g,
-  fn = s(
-    (n) => (n && n.indexOf("###") > -1 ? n.replace(zi, ".") : n),
-    "cleanKey",
-  ),
+  fn = s((n) => (n && n.indexOf("###") > -1 ? n.replace(zi, ".") : n), "cleanKey"),
   hn = s((n) => !n || b(n), "canNotTraverseDeeper"),
   Ce = s((n, e, t) => {
     let i = b(e) ? e.split(".") : e,
@@ -2070,19 +1993,13 @@ var b = s((n) => typeof n == "string", "isString"),
       i !== "__proto__" &&
         i !== "constructor" &&
         (i in n
-          ? b(n[i]) ||
-            n[i] instanceof String ||
-            b(e[i]) ||
-            e[i] instanceof String
+          ? b(n[i]) || n[i] instanceof String || b(e[i]) || e[i] instanceof String
             ? t && (n[i] = e[i])
             : Cn(n[i], e[i], t)
           : (n[i] = e[i]));
     return n;
   }, "deepExtend"),
-  J = s(
-    (n) => n.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"),
-    "regexEscape",
-  ),
+  J = s((n) => n.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"), "regexEscape"),
   Ki = {
     "&": "&amp;",
     "<": "&lt;",
@@ -2097,9 +2014,7 @@ var b = s((n) => typeof n == "string", "isString"),
       s(this, "RegExpCache");
     }
     constructor(e) {
-      ((this.capacity = e),
-        (this.regExpMap = new Map()),
-        (this.regExpQueue = []));
+      ((this.capacity = e), (this.regExpMap = new Map()), (this.regExpQueue = []));
     }
     getRegExp(e) {
       let t = this.regExpMap.get(e);
@@ -2120,9 +2035,7 @@ var b = s((n) => typeof n == "string", "isString"),
     ((e = e || ""), (t = t || ""));
     let i = qi.filter((a) => e.indexOf(a) < 0 && t.indexOf(a) < 0);
     if (i.length === 0) return !0;
-    let r = Yi.getRegExp(
-        `(${i.map((a) => (a === "?" ? "\\?" : a)).join("|")})`,
-      ),
+    let r = Yi.getRegExp(`(${i.map((a) => (a === "?" ? "\\?" : a)).join("|")})`),
       o = !r.test(n);
     if (!o) {
       let a = n.indexOf(t);
@@ -2141,11 +2054,7 @@ var b = s((n) => typeof n == "string", "isString"),
         l = "";
       for (let u = o; u < i.length; ++u)
         if ((u !== o && (l += t), (l += i[u]), (a = r[l]), a !== void 0)) {
-          if (
-            ["string", "number", "boolean"].indexOf(typeof a) > -1 &&
-            u < i.length - 1
-          )
-            continue;
+          if (["string", "number", "boolean"].indexOf(typeof a) > -1 && u < i.length - 1) continue;
           o += u - o + 1;
           break;
         }
@@ -2206,11 +2115,7 @@ var b = s((n) => typeof n == "string", "isString"),
       });
     }
     clone(e) {
-      return (
-        (e = e || this.options),
-        (e.prefix = e.prefix || this.prefix),
-        new n(this.logger, e)
-      );
+      return ((e = e || this.options), (e.prefix = e.prefix || this.prefix), new n(this.logger, e));
     }
   },
   W = new At(),
@@ -2259,10 +2164,8 @@ var b = s((n) => typeof n == "string", "isString"),
       (super(),
         (this.data = e || {}),
         (this.options = t),
-        this.options.keySeparator === void 0 &&
-          (this.options.keySeparator = "."),
-        this.options.ignoreJSONStructure === void 0 &&
-          (this.options.ignoreJSONStructure = !0));
+        this.options.keySeparator === void 0 && (this.options.keySeparator = "."),
+        this.options.ignoreJSONStructure === void 0 && (this.options.ignoreJSONStructure = !0));
     }
     addNamespaces(e) {
       this.options.ns.indexOf(e) < 0 && this.options.ns.push(e);
@@ -2272,10 +2175,7 @@ var b = s((n) => typeof n == "string", "isString"),
       t > -1 && this.options.ns.splice(t, 1);
     }
     getResource(e, t, i, r = {}) {
-      let o =
-          r.keySeparator !== void 0
-            ? r.keySeparator
-            : this.options.keySeparator,
+      let o = r.keySeparator !== void 0 ? r.keySeparator : this.options.keySeparator,
         a =
           r.ignoreJSONStructure !== void 0
             ? r.ignoreJSONStructure
@@ -2284,12 +2184,7 @@ var b = s((n) => typeof n == "string", "isString"),
       e.indexOf(".") > -1
         ? (l = e.split("."))
         : ((l = [e, t]),
-          i &&
-            (Array.isArray(i)
-              ? l.push(...i)
-              : b(i) && o
-                ? l.push(...i.split(o))
-                : l.push(i)));
+          i && (Array.isArray(i) ? l.push(...i) : b(i) && o ? l.push(...i.split(o)) : l.push(i)));
       let u = $e(this.data, l);
       return (
         !u &&
@@ -2301,10 +2196,7 @@ var b = s((n) => typeof n == "string", "isString"),
       );
     }
     addResource(e, t, i, r, o = { silent: !1 }) {
-      let a =
-          o.keySeparator !== void 0
-            ? o.keySeparator
-            : this.options.keySeparator,
+      let a = o.keySeparator !== void 0 ? o.keySeparator : this.options.keySeparator,
         l = [e, t];
       (i && (l = l.concat(a ? i.split(a) : i)),
         e.indexOf(".") > -1 && ((l = e.split(".")), (r = t), (t = l[1])),
@@ -2314,14 +2206,12 @@ var b = s((n) => typeof n == "string", "isString"),
     }
     addResources(e, t, i, r = { silent: !1 }) {
       for (let o in i)
-        (b(i[o]) || Array.isArray(i[o])) &&
-          this.addResource(e, t, o, i[o], { silent: !0 });
+        (b(i[o]) || Array.isArray(i[o])) && this.addResource(e, t, o, i[o], { silent: !0 });
       r.silent || this.emit("added", e, t, i);
     }
     addResourceBundle(e, t, i, r, o, a = { silent: !1, skipCopy: !1 }) {
       let l = [e, t];
-      (e.indexOf(".") > -1 &&
-        ((l = e.split(".")), (r = i), (i = t), (t = l[1])),
+      (e.indexOf(".") > -1 && ((l = e.split(".")), (r = i), (i = t), (t = l[1])),
         this.addNamespaces(t));
       let u = $e(this.data, l) || {};
       (a.skipCopy || (i = JSON.parse(JSON.stringify(i))),
@@ -2345,9 +2235,7 @@ var b = s((n) => typeof n == "string", "isString"),
     }
     hasLanguageSomeTranslations(e) {
       let t = this.getDataByLanguage(e);
-      return !!((t && Object.keys(t)) || []).find(
-        (r) => t[r] && Object.keys(t[r]).length > 0,
-      );
+      return !!((t && Object.keys(t)) || []).find((r) => t[r] && Object.keys(t[r]).length > 0);
     }
     toJSON() {
       return this.data;
@@ -2374,8 +2262,7 @@ function Zi() {
     t;
   return (
     (e.get = (i, r) => (
-      t?.revoke?.(),
-      r === xn ? n : (n.push(r), (t = Proxy.revocable(i, e)), t.proxy)
+      t?.revoke?.(), r === xn ? n : (n.push(r), (t = Proxy.revocable(i, e)), t.proxy)
     )),
     Proxy.revocable(Object.create(null), e).proxy
   );
@@ -2388,17 +2275,13 @@ function le(n, e) {
   if (t.length > 1 && r) {
     let o = e?.ns,
       a = Array.isArray(o) ? o : null;
-    if (a && a.length > 1 && a.slice(1).includes(t[0]))
-      return `${t[0]}${r}${t.slice(1).join(i)}`;
+    if (a && a.length > 1 && a.slice(1).includes(t[0])) return `${t[0]}${r}${t.slice(1).join(i)}`;
   }
   return t.join(i);
 }
 s(le, "keysFromSelector");
 var mn = {},
-  ht = s(
-    (n) => !b(n) && typeof n != "boolean" && typeof n != "number",
-    "shouldHandleAsObject",
-  ),
+  ht = s((n) => !b(n) && typeof n != "boolean" && typeof n != "number", "shouldHandleAsObject"),
   je = class n extends ce {
     static {
       s(this, "Translator");
@@ -2419,8 +2302,7 @@ var mn = {},
           this,
         ),
         (this.options = t),
-        this.options.keySeparator === void 0 &&
-          (this.options.keySeparator = "."),
+        this.options.keySeparator === void 0 && (this.options.keySeparator = "."),
         (this.logger = W.create("translator")));
     }
     changeLanguage(e) {
@@ -2435,13 +2317,9 @@ var mn = {},
       return !(i.returnObjects === !1 && o);
     }
     extractFromKey(e, t) {
-      let i =
-        t.nsSeparator !== void 0 ? t.nsSeparator : this.options.nsSeparator;
+      let i = t.nsSeparator !== void 0 ? t.nsSeparator : this.options.nsSeparator;
       i === void 0 && (i = ":");
-      let r =
-          t.keySeparator !== void 0
-            ? t.keySeparator
-            : this.options.keySeparator,
+      let r = t.keySeparator !== void 0 ? t.keySeparator : this.options.keySeparator,
         o = t.ns || this.options.defaultNS || [],
         a = i && e.indexOf(i) > -1,
         l =
@@ -2454,8 +2332,7 @@ var mn = {},
         let u = e.match(this.interpolator.nestingRegexp);
         if (u && u.length > 0) return { key: e, namespaces: b(o) ? [o] : o };
         let c = e.split(i);
-        ((i !== r || (i === r && this.options.ns.indexOf(c[0]) > -1)) &&
-          (o = c.shift()),
+        ((i !== r || (i === r && this.options.ns.indexOf(c[0]) > -1)) && (o = c.shift()),
           (e = c.join(r)));
       }
       return { key: e, namespaces: b(o) ? [o] : o };
@@ -2476,14 +2353,8 @@ var mn = {},
         (e = e.map((E) =>
           typeof E == "function" ? le(E, { ...this.options, ...r }) : String(E),
         )));
-      let o =
-          r.returnDetails !== void 0
-            ? r.returnDetails
-            : this.options.returnDetails,
-        a =
-          r.keySeparator !== void 0
-            ? r.keySeparator
-            : this.options.keySeparator,
+      let o = r.returnDetails !== void 0 ? r.returnDetails : this.options.returnDetails,
+        a = r.keySeparator !== void 0 ? r.keySeparator : this.options.keySeparator,
         { key: l, namespaces: u } = this.extractFromKey(e[e.length - 1], r),
         c = u[u.length - 1],
         d = r.nsSeparator !== void 0 ? r.nsSeparator : this.options.nsSeparator;
@@ -2522,10 +2393,7 @@ var mn = {},
         C = r.count !== void 0 && !b(r.count),
         T = n.hasDefaultValue(r),
         x = C ? this.pluralResolver.getSuffix(p, r.count, r) : "",
-        M =
-          r.ordinal && C
-            ? this.pluralResolver.getSuffix(p, r.count, { ordinal: !1 })
-            : "",
+        M = r.ordinal && C ? this.pluralResolver.getSuffix(p, r.count, { ordinal: !1 }) : "",
         P = C && !r.ordinal && r.count === 0,
         O =
           (P && r[`defaultValue${this.options.pluralSeparator}zero`]) ||
@@ -2539,15 +2407,11 @@ var mn = {},
       if (w && F && xe && y.indexOf(de) < 0 && !(b(A) && Array.isArray(F))) {
         if (!r.returnObjects && !this.options.returnObjects) {
           this.options.returnedObjectHandler ||
-            this.logger.warn(
-              "accessing an object - but returnObjects options is not enabled!",
-            );
+            this.logger.warn("accessing an object - but returnObjects options is not enabled!");
           let E = this.options.returnedObjectHandler
             ? this.options.returnedObjectHandler(v, F, { ...r, ns: u })
             : `key '${l} (${this.language})' returned an object instead of string.`;
-          return o
-            ? ((h.res = E), (h.usedParams = this.getUsedParamsDetails(r)), h)
-            : E;
+          return o ? ((h.res = E), (h.usedParams = this.getUsedParamsDetails(r)), h) : E;
         }
         if (a) {
           let E = Array.isArray(F),
@@ -2576,23 +2440,12 @@ var mn = {},
         (!this.isValidLookup(m) && T && ((E = !0), (m = O)),
           this.isValidLookup(m) || ((N = !0), (m = l)));
         let k =
-            (r.missingKeyNoValueFallbackToKey ||
-              this.options.missingKeyNoValueFallbackToKey) &&
-            N
+            (r.missingKeyNoValueFallbackToKey || this.options.missingKeyNoValueFallbackToKey) && N
               ? void 0
               : m,
           j = T && O !== m && this.options.updateMissing;
         if (N || E || j) {
-          if (
-            (this.logger.log(
-              j ? "updateKey" : "missingKey",
-              p,
-              c,
-              l,
-              j ? O : m,
-            ),
-            a)
-          ) {
+          if ((this.logger.log(j ? "updateKey" : "missingKey", p, c, l, j ? O : m), a)) {
             let $ = this.resolve(l, { ...r, keySeparator: !1 });
             $ &&
               $.res &&
@@ -2609,9 +2462,7 @@ var mn = {},
             for (let $ = 0; $ < ke.length; $++) pe.push(ke[$]);
           else
             this.options.saveMissingTo === "all"
-              ? (pe = this.languageUtils.toResolveHierarchy(
-                  r.lng || this.language,
-                ))
+              ? (pe = this.languageUtils.toResolveHierarchy(r.lng || this.language))
               : pe.push(r.lng || this.language);
           let Pt = s(($, V, fe) => {
             let Rt = T && fe !== m ? fe : k;
@@ -2636,10 +2487,7 @@ var mn = {},
               : Pt(pe, l, O));
         }
         ((m = this.extendTranslation(m, e, r, h, i)),
-          N &&
-            m === l &&
-            this.options.appendNamespaceToMissingKey &&
-            (m = `${c}${d}${l}`),
+          N && m === l && this.options.appendNamespaceToMissingKey && (m = `${c}${d}${l}`),
           (N || E) &&
             this.options.parseMissingKeyHandler &&
             (m = this.options.parseMissingKeyHandler(
@@ -2648,9 +2496,7 @@ var mn = {},
               r,
             )));
       }
-      return o
-        ? ((h.res = m), (h.usedParams = this.getUsedParamsDetails(r)), h)
-        : m;
+      return o ? ((h.res = m), (h.usedParams = this.getUsedParamsDetails(r)), h) : m;
     }
     extendTranslation(e, t, i, r, o) {
       if (this.i18nFormat?.parse)
@@ -2685,12 +2531,7 @@ var mn = {},
         if (
           (this.options.interpolation.defaultVariables &&
             (d = { ...this.options.interpolation.defaultVariables, ...d }),
-          (e = this.interpolator.interpolate(
-            e,
-            d,
-            i.lng || this.language || r.usedLng,
-            i,
-          )),
+          (e = this.interpolator.interpolate(e, d, i.lng || this.language || r.usedLng, i)),
           u)
         ) {
           let p = e.match(this.interpolator.nestingRegexp),
@@ -2741,9 +2582,7 @@ var mn = {},
       return (
         b(e) && (e = [e]),
         Array.isArray(e) &&
-          (e = e.map((u) =>
-            typeof u == "function" ? le(u, { ...this.options, ...t }) : u,
-          )),
+          (e = e.map((u) => (typeof u == "function" ? le(u, { ...this.options, ...t }) : u))),
         e.forEach((u) => {
           if (this.isValidLookup(i)) return;
           let c = this.extractFromKey(u, t),
@@ -2759,10 +2598,7 @@ var mn = {},
               t.context !== "",
             v = t.lngs
               ? t.lngs
-              : this.languageUtils.toResolveHierarchy(
-                  t.lng || this.language,
-                  t.fallbackLng,
-                );
+              : this.languageUtils.toResolveHierarchy(t.lng || this.language, t.fallbackLng);
           p.forEach((g) => {
             this.isValidLookup(i) ||
               ((l = g),
@@ -2778,8 +2614,7 @@ var mn = {},
                 if (this.isValidLookup(i)) return;
                 a = y;
                 let A = [d];
-                if (this.i18nFormat?.addLookupKeys)
-                  this.i18nFormat.addLookupKeys(A, d, y, g, t);
+                if (this.i18nFormat?.addLookupKeys) this.i18nFormat.addLookupKeys(A, d, y, g, t);
                 else {
                   let C;
                   f && (C = this.pluralResolver.getSuffix(y, t.count, t));
@@ -2799,17 +2634,14 @@ var mn = {},
                       f &&
                         (t.ordinal &&
                           C.indexOf(x) === 0 &&
-                          A.push(
-                            M + C.replace(x, this.options.pluralSeparator),
-                          ),
+                          A.push(M + C.replace(x, this.options.pluralSeparator)),
                         A.push(M + C),
                         h && A.push(M + T)));
                   }
                 }
                 let w;
                 for (; (w = A.pop()); )
-                  this.isValidLookup(i) ||
-                    ((o = w), (i = this.getResource(y, g, w, t)));
+                  this.isValidLookup(i) || ((o = w), (i = this.getResource(y, g, w, t)));
               }));
           });
         }),
@@ -2903,18 +2735,13 @@ var mn = {},
           t || (this.options.lowerCaseLng ? e.toLowerCase() : e)
         );
       }
-      return this.options.cleanCode || this.options.lowerCaseLng
-        ? e.toLowerCase()
-        : e;
+      return this.options.cleanCode || this.options.lowerCaseLng ? e.toLowerCase() : e;
     }
     isSupportedCode(e) {
       return (
-        (this.options.load === "languageOnly" ||
-          this.options.nonExplicitSupportedLngs) &&
+        (this.options.load === "languageOnly" || this.options.nonExplicitSupportedLngs) &&
           (e = this.getLanguagePartFromCode(e)),
-        !this.supportedLngs ||
-          !this.supportedLngs.length ||
-          this.supportedLngs.indexOf(e) > -1
+        !this.supportedLngs || !this.supportedLngs.length || this.supportedLngs.indexOf(e) > -1
       );
     }
     getBestMatchFromCodes(e) {
@@ -2952,12 +2779,7 @@ var mn = {},
     }
     getFallbackCodes(e, t) {
       if (!e) return [];
-      if (
-        (typeof e == "function" && (e = e(t)),
-        b(e) && (e = [e]),
-        Array.isArray(e))
-      )
-        return e;
+      if ((typeof e == "function" && (e = e(t)), b(e) && (e = [e]), Array.isArray(e))) return e;
       if (!t) return e.default || [];
       let i = e[t];
       return (
@@ -2969,28 +2791,21 @@ var mn = {},
       );
     }
     toResolveHierarchy(e, t) {
-      let i = this.getFallbackCodes(
-          (t === !1 ? [] : t) || this.options.fallbackLng || [],
-          e,
-        ),
+      let i = this.getFallbackCodes((t === !1 ? [] : t) || this.options.fallbackLng || [], e),
         r = [],
         o = s((a) => {
           a &&
             (this.isSupportedCode(a)
               ? r.push(a)
-              : this.logger.warn(
-                  `rejecting language code not found in supportedLngs: ${a}`,
-                ));
+              : this.logger.warn(`rejecting language code not found in supportedLngs: ${a}`));
         }, "addCode");
       return (
         b(e) && (e.indexOf("-") > -1 || e.indexOf("_") > -1)
-          ? (this.options.load !== "languageOnly" &&
-              o(this.formatLanguageCode(e)),
+          ? (this.options.load !== "languageOnly" && o(this.formatLanguageCode(e)),
             this.options.load !== "languageOnly" &&
               this.options.load !== "currentOnly" &&
               o(this.getScriptPartFromCode(e)),
-            this.options.load !== "currentOnly" &&
-              o(this.getLanguagePartFromCode(e)))
+            this.options.load !== "currentOnly" && o(this.getLanguagePartFromCode(e)))
           : b(e) && o(this.formatLanguageCode(e)),
         i.forEach((a) => {
           r.indexOf(a) < 0 && o(this.formatLanguageCode(a));
@@ -3002,10 +2817,7 @@ var mn = {},
   yn = { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 },
   bn = {
     select: s((n) => (n === 1 ? "one" : "other"), "select"),
-    resolvedOptions: s(
-      () => ({ pluralCategories: ["one", "other"] }),
-      "resolvedOptions",
-    ),
+    resolvedOptions: s(() => ({ pluralCategories: ["one", "other"] }), "resolvedOptions"),
   },
   vt = class {
     static {
@@ -3030,10 +2842,7 @@ var mn = {},
         a = new Intl.PluralRules(i, { type: r });
       } catch {
         if (typeof Intl > "u")
-          return (
-            this.logger.error("No Intl support, please use an Intl polyfill!"),
-            bn
-          );
+          return (this.logger.error("No Intl support, please use an Intl polyfill!"), bn);
         if (!e.match(/-|_/)) return bn;
         let u = this.languageUtils.getLanguagePartFromCode(e);
         a = this.getRule(u, t);
@@ -3042,10 +2851,7 @@ var mn = {},
     }
     needsPlural(e, t = {}) {
       let i = this.getRule(e, t);
-      return (
-        i || (i = this.getRule("dev", t)),
-        i?.resolvedOptions().pluralCategories.length > 1
-      );
+      return (i || (i = this.getRule("dev", t)), i?.resolvedOptions().pluralCategories.length > 1);
     }
     getPluralFormsOfKey(e, t, i = {}) {
       return this.getSuffixes(e, i).map((r) => `${t}${r}`);
@@ -3069,16 +2875,12 @@ var mn = {},
       let r = this.getRule(e, i);
       return r
         ? `${this.options.prepend}${i.ordinal ? `ordinal${this.options.prepend}` : ""}${r.select(t)}`
-        : (this.logger.warn(`no plural rule found for: ${e}`),
-          this.getSuffix("dev", t, i));
+        : (this.logger.warn(`no plural rule found for: ${e}`), this.getSuffix("dev", t, i));
     }
   },
   An = s((n, e, t, i = ".", r = !0) => {
     let o = Vi(n, e, t);
-    return (
-      !o && r && b(t) && ((o = bt(n, t, i)), o === void 0 && (o = bt(e, t, i))),
-      o
-    );
+    return (!o && r && b(t) && ((o = bt(n, t, i)), o === void 0 && (o = bt(e, t, i))), o);
   }, "deepFindWithDefaults"),
   gt = s((n) => n.replace(/\$/g, "$$$$"), "regexSafe"),
   We = class {
@@ -3132,8 +2934,7 @@ var mn = {},
     }
     resetRegExp() {
       let e = s(
-        (t, i) =>
-          t?.source === i ? ((t.lastIndex = 0), t) : new RegExp(i, "g"),
+        (t, i) => (t?.source === i ? ((t.lastIndex = 0), t) : new RegExp(i, "g")),
         "getOrResetRegExp",
       );
       ((this.regexp = e(this.regexp, `${this.prefix}(.+?)${this.suffix}`)),
@@ -3157,13 +2958,7 @@ var mn = {},
           {},
         c = s((h) => {
           if (h.indexOf(this.formatSeparator) < 0) {
-            let y = An(
-              t,
-              u,
-              h,
-              this.options.keySeparator,
-              this.options.ignoreJSONStructure,
-            );
+            let y = An(t, u, h, this.options.keySeparator, this.options.ignoreJSONStructure);
             return this.alwaysFormat
               ? this.format(y, void 0, i, { ...r, ...t, interpolationkey: h })
               : y;
@@ -3172,22 +2967,14 @@ var mn = {},
             v = m.shift().trim(),
             g = m.join(this.formatSeparator).trim();
           return this.format(
-            An(
-              t,
-              u,
-              v,
-              this.options.keySeparator,
-              this.options.ignoreJSONStructure,
-            ),
+            An(t, u, v, this.options.keySeparator, this.options.ignoreJSONStructure),
             g,
             i,
             { ...r, ...t, interpolationkey: v },
           );
         }, "handleFormat");
       this.resetRegExp();
-      let d =
-          r?.missingInterpolationHandler ||
-          this.options.missingInterpolationHandler,
+      let d = r?.missingInterpolationHandler || this.options.missingInterpolationHandler,
         p =
           r?.interpolation?.skipOnVariables !== void 0
             ? r.interpolation.skipOnVariables
@@ -3200,10 +2987,7 @@ var mn = {},
           },
           {
             regex: this.regexp,
-            safeValue: s(
-              (h) => (this.escapeValue ? gt(this.escape(h)) : gt(h)),
-              "safeValue",
-            ),
+            safeValue: s((h) => (this.escapeValue ? gt(this.escape(h)) : gt(h)), "safeValue"),
           },
         ].forEach((h) => {
           for (l = 0; (o = h.regex.exec(e)); ) {
@@ -3212,23 +2996,19 @@ var mn = {},
               if (typeof d == "function") {
                 let g = d(e, o, r);
                 a = b(g) ? g : "";
-              } else if (r && Object.prototype.hasOwnProperty.call(r, m))
-                a = "";
+              } else if (r && Object.prototype.hasOwnProperty.call(r, m)) a = "";
               else if (p) {
                 a = o[0];
                 continue;
               } else
-                (this.logger.warn(
-                  `missed to pass in variable ${m} for interpolating ${e}`,
-                ),
+                (this.logger.warn(`missed to pass in variable ${m} for interpolating ${e}`),
                   (a = ""));
             else !b(a) && !this.useRawValueToEscape && (a = pn(a));
             let v = h.safeValue(a);
             if (
               ((e = e.replace(o[0], v)),
               p
-                ? ((h.regex.lastIndex += a.length),
-                  (h.regex.lastIndex -= o[0].length))
+                ? ((h.regex.lastIndex += a.length), (h.regex.lastIndex -= o[0].length))
                 : (h.regex.lastIndex = 0),
               l++,
               l >= this.maxReplaces)
@@ -3257,18 +3037,12 @@ var mn = {},
             ((a = JSON.parse(f)), c && (a = { ...c, ...a }));
           } catch (v) {
             return (
-              this.logger.warn(
-                `failed parsing options string in nesting for key ${u}`,
-                v,
-              ),
+              this.logger.warn(`failed parsing options string in nesting for key ${u}`, v),
               `${u}${d}${f}`
             );
           }
           return (
-            a.defaultValue &&
-              a.defaultValue.indexOf(this.prefix) > -1 &&
-              delete a.defaultValue,
-            u
+            a.defaultValue && a.defaultValue.indexOf(this.prefix) > -1 && delete a.defaultValue, u
           );
         }, "handleHasOptions");
       for (; (r = this.nestingRegexp.exec(e)); ) {
@@ -3277,9 +3051,7 @@ var mn = {},
           (a = a.replace && !b(a.replace) ? a.replace : a),
           (a.applyPostProcessor = !1),
           delete a.defaultValue);
-        let c = /{.*}/.test(r[1])
-          ? r[1].lastIndexOf("}") + 1
-          : r[1].indexOf(this.formatSeparator);
+        let c = /{.*}/.test(r[1]) ? r[1].lastIndexOf("}") + 1 : r[1].indexOf(this.formatSeparator);
         if (
           (c !== -1 &&
             ((u = r[1]
@@ -3293,9 +3065,7 @@ var mn = {},
         )
           return o;
         (b(o) || (o = pn(o)),
-          o ||
-            (this.logger.warn(`missed to resolve ${r[1]} for nesting ${e}`),
-            (o = "")),
+          o || (this.logger.warn(`missed to resolve ${r[1]} for nesting ${e}`), (o = "")),
           u.length &&
             (o = u.reduce(
               (d, p) =>
@@ -3549,9 +3319,7 @@ var mn = {},
       if (u.length === 2) {
         try {
           let c = u(e, t);
-          c && typeof c.then == "function"
-            ? c.then((d) => l(null, d)).catch(l)
-            : l(null, c);
+          c && typeof c.then == "function" ? c.then((d) => l(null, d)).catch(l) : l(null, c);
         } catch (c) {
           l(c);
         }
@@ -3562,13 +3330,10 @@ var mn = {},
     prepareLoading(e, t, i = {}, r) {
       if (!this.backend)
         return (
-          this.logger.warn(
-            "No backend was added via i18next.use. Will not load resources.",
-          ),
+          this.logger.warn("No backend was added via i18next.use. Will not load resources."),
           r && r()
         );
-      (b(e) && (e = this.languageUtils.toResolveHierarchy(e)),
-        b(t) && (t = [t]));
+      (b(e) && (e = this.languageUtils.toResolveHierarchy(e)), b(t) && (t = [t]));
       let o = this.queueLoad(e, t, i, r);
       if (!o.toLoad.length) return (o.pending.length || r(), null);
       o.toLoad.forEach((a) => {
@@ -3586,14 +3351,8 @@ var mn = {},
         r = i[0],
         o = i[1];
       this.read(r, o, "read", void 0, void 0, (a, l) => {
-        (a &&
-          this.logger.warn(
-            `${t}loading namespace ${o} for language ${r} failed`,
-            a,
-          ),
-          !a &&
-            l &&
-            this.logger.log(`${t}loaded namespace ${o} for language ${r}`, l),
+        (a && this.logger.warn(`${t}loading namespace ${o} for language ${r} failed`, a),
+          !a && l && this.logger.log(`${t}loaded namespace ${o} for language ${r}`, l),
           this.loaded(e, a, l));
       });
     }
@@ -3616,9 +3375,7 @@ var mn = {},
             try {
               let d;
               (c.length === 5 ? (d = c(e, t, i, r, u)) : (d = c(e, t, i, r)),
-                d && typeof d.then == "function"
-                  ? d.then((p) => l(null, p)).catch(l)
-                  : l(null, d));
+                d && typeof d.then == "function" ? d.then((p) => l(null, p)).catch(l) : l(null, d));
             } catch (d) {
               l(d);
             }
@@ -3717,9 +3474,7 @@ var mn = {},
     () =>
       !!(
         (typeof globalThis < "u" && globalThis[kn]) ||
-        (typeof process < "u" &&
-          process.env &&
-          process.env.I18NEXT_NO_SUPPORT_NOTICE)
+        (typeof process < "u" && process.env && process.env.I18NEXT_NO_SUPPORT_NOTICE)
       ),
     "getSupportNoticeShown",
   ),
@@ -3733,9 +3488,7 @@ var mn = {},
         n?.modules?.backend?.constructor?.name?.indexOf("Locize") > 0 ||
         (n?.options?.backend?.backends &&
           n.options.backend.backends.some(
-            (e) =>
-              e?.name?.indexOf("Locize") > 0 ||
-              e?.constructor?.name?.indexOf("Locize") > 0,
+            (e) => e?.name?.indexOf("Locize") > 0 || e?.constructor?.name?.indexOf("Locize") > 0,
           )) ||
         n?.options?.backend?.projectId ||
         (n?.options?.backend?.backendOptions &&
@@ -3777,13 +3530,10 @@ var mn = {},
           ...i.interpolation,
           ...this.options.interpolation,
         }),
-        e.keySeparator !== void 0 &&
-          (this.options.userDefinedKeySeparator = e.keySeparator),
-        e.nsSeparator !== void 0 &&
-          (this.options.userDefinedNsSeparator = e.nsSeparator),
+        e.keySeparator !== void 0 && (this.options.userDefinedKeySeparator = e.keySeparator),
+        e.nsSeparator !== void 0 && (this.options.userDefinedNsSeparator = e.nsSeparator),
         typeof this.options.overloadTranslationOptionHandler != "function" &&
-          (this.options.overloadTranslationOptionHandler =
-            i.overloadTranslationOptionHandler),
+          (this.options.overloadTranslationOptionHandler = i.overloadTranslationOptionHandler),
         this.options.showSupportNotice !== !1 &&
           !or(this) &&
           !ir() &&
@@ -3793,10 +3543,7 @@ var mn = {},
               "\u{1F310} i18next is made possible by our own product, Locize \u2014 consider powering your project with managed localization (AI, CDN, integrations): https://locize.com \u{1F499}",
             ),
           rr()));
-      let r = s(
-        (c) => (c ? (typeof c == "function" ? new c() : c) : null),
-        "createClassOnDemand",
-      );
+      let r = s((c) => (c ? (typeof c == "function" ? new c() : c) : null), "createClassOnDemand");
       if (!this.options.isClone) {
         this.modules.logger
           ? W.init(r(this.modules.logger), this.options)
@@ -3823,19 +3570,12 @@ var mn = {},
               this.options.interpolation.format === i.interpolation.format) &&
             ((p.formatter = r(c)),
             p.formatter.init && p.formatter.init(p, this.options),
-            (this.options.interpolation.format = p.formatter.format.bind(
-              p.formatter,
-            ))),
+            (this.options.interpolation.format = p.formatter.format.bind(p.formatter))),
           (p.interpolator = new We(this.options)),
           (p.utils = {
             hasLoadedNamespace: this.hasLoadedNamespace.bind(this),
           }),
-          (p.backendConnector = new Ct(
-            r(this.modules.backend),
-            p.resourceStore,
-            p,
-            this.options,
-          )),
+          (p.backendConnector = new Ct(r(this.modules.backend), p.resourceStore, p, this.options)),
           p.backendConnector.on("*", (h, ...m) => {
             this.emit(h, ...m);
           }),
@@ -3857,36 +3597,24 @@ var mn = {},
       if (
         ((this.format = this.options.interpolation.format),
         t || (t = Me),
-        this.options.fallbackLng &&
-          !this.services.languageDetector &&
-          !this.options.lng)
+        this.options.fallbackLng && !this.services.languageDetector && !this.options.lng)
       ) {
-        let c = this.services.languageUtils.getFallbackCodes(
-          this.options.fallbackLng,
-        );
+        let c = this.services.languageUtils.getFallbackCodes(this.options.fallbackLng);
         c.length > 0 && c[0] !== "dev" && (this.options.lng = c[0]);
       }
       (!this.services.languageDetector &&
         !this.options.lng &&
-        this.logger.warn(
-          "init: no languageDetector is used and no lng is defined",
+        this.logger.warn("init: no languageDetector is used and no lng is defined"),
+        ["getResource", "hasResourceBundle", "getResourceBundle", "getDataByLanguage"].forEach(
+          (c) => {
+            this[c] = (...d) => this.store[c](...d);
+          },
         ),
-        [
-          "getResource",
-          "hasResourceBundle",
-          "getResourceBundle",
-          "getDataByLanguage",
-        ].forEach((c) => {
-          this[c] = (...d) => this.store[c](...d);
-        }),
-        [
-          "addResource",
-          "addResources",
-          "addResourceBundle",
-          "removeResourceBundle",
-        ].forEach((c) => {
-          this[c] = (...d) => (this.store[c](...d), this);
-        }));
+        ["addResource", "addResources", "addResourceBundle", "removeResourceBundle"].forEach(
+          (c) => {
+            this[c] = (...d) => (this.store[c](...d), this);
+          },
+        ));
       let l = we(),
         u = s(() => {
           let c = s((d, p) => {
@@ -3897,22 +3625,15 @@ var mn = {},
                   "init: i18next is already initialized. You should call init just once!",
                 ),
               (this.isInitialized = !0),
-              this.options.isClone ||
-                this.logger.log("initialized", this.options),
+              this.options.isClone || this.logger.log("initialized", this.options),
               this.emit("initialized", this.options),
               l.resolve(p),
               t(d, p));
           }, "finish");
-          if (this.languages && !this.isInitialized)
-            return c(null, this.t.bind(this));
+          if (this.languages && !this.isInitialized) return c(null, this.t.bind(this));
           this.changeLanguage(this.options.lng, c);
         }, "load");
-      return (
-        this.options.resources || !this.options.initAsync
-          ? u()
-          : setTimeout(u, 0),
-        l
-      );
+      return (this.options.resources || !this.options.initAsync ? u() : setTimeout(u, 0), l);
     }
     loadResources(e, t = Me) {
       let i = t,
@@ -3973,8 +3694,7 @@ var mn = {},
         );
       return (
         e.type === "backend" && (this.modules.backend = e),
-        (e.type === "logger" || (e.log && e.warn && e.error)) &&
-          (this.modules.logger = e),
+        (e.type === "logger" || (e.log && e.warn && e.error)) && (this.modules.logger = e),
         e.type === "languageDetector" && (this.modules.languageDetector = e),
         e.type === "i18nFormat" && (this.modules.i18nFormat = e),
         e.type === "postProcessor" && En.addPostProcessor(e),
@@ -3987,10 +3707,7 @@ var mn = {},
       if (!(!e || !this.languages) && !(["cimode", "dev"].indexOf(e) > -1)) {
         for (let t = 0; t < this.languages.length; t++) {
           let i = this.languages[t];
-          if (
-            !(["cimode", "dev"].indexOf(i) > -1) &&
-            this.store.hasLanguageSomeTranslations(i)
-          ) {
+          if (!(["cimode", "dev"].indexOf(i) > -1) && this.store.hasLanguageSomeTranslations(i)) {
             this.resolvedLanguage = i;
             break;
           }
@@ -4007,8 +3724,7 @@ var mn = {},
       this.emit("languageChanging", e);
       let r = s((l) => {
           ((this.language = l),
-            (this.languages =
-              this.services.languageUtils.toResolveHierarchy(l)),
+            (this.languages = this.services.languageUtils.toResolveHierarchy(l)),
             (this.resolvedLanguage = void 0),
             this.setResolvedLanguage(l));
         }, "setLngProps"),
@@ -4029,9 +3745,7 @@ var mn = {},
           let u = b(l) ? l : l && l[0],
             c = this.store.hasLanguageSomeTranslations(u)
               ? u
-              : this.services.languageUtils.getBestMatchFromCodes(
-                  b(l) ? [l] : l,
-                );
+              : this.services.languageUtils.getBestMatchFromCodes(b(l) ? [l] : l);
           (c &&
             (this.language || r(c),
             this.translator.language || this.translator.changeLanguage(c),
@@ -4041,13 +3755,9 @@ var mn = {},
             }));
         }, "setLng");
       return (
-        !e &&
-        this.services.languageDetector &&
-        !this.services.languageDetector.async
+        !e && this.services.languageDetector && !this.services.languageDetector.async
           ? a(this.services.languageDetector.detect())
-          : !e &&
-              this.services.languageDetector &&
-              this.services.languageDetector.async
+          : !e && this.services.languageDetector && this.services.languageDetector.async
             ? this.services.languageDetector.detect.length === 0
               ? this.services.languageDetector.detect().then(a)
               : this.services.languageDetector.detect(a)
@@ -4059,15 +3769,12 @@ var mn = {},
       let r = s((o, a, ...l) => {
         let u;
         (typeof a != "object"
-          ? (u = this.options.overloadTranslationOptionHandler(
-              [o, a].concat(l),
-            ))
+          ? (u = this.options.overloadTranslationOptionHandler([o, a].concat(l)))
           : (u = { ...a }),
           (u.lng = u.lng || r.lng),
           (u.lngs = u.lngs || r.lngs),
           (u.ns = u.ns || r.ns),
-          u.keyPrefix !== "" &&
-            (u.keyPrefix = u.keyPrefix || i || r.keyPrefix));
+          u.keyPrefix !== "" && (u.keyPrefix = u.keyPrefix || i || r.keyPrefix));
         let c = { ...this.options, ...u };
         typeof u.keyPrefix == "function" && (u.keyPrefix = le(u.keyPrefix, c));
         let d = this.options.keySeparator || ".",
@@ -4075,22 +3782,14 @@ var mn = {},
         return (
           u.keyPrefix && Array.isArray(o)
             ? (p = o.map(
-                (f) => (
-                  typeof f == "function" && (f = le(f, c)),
-                  `${u.keyPrefix}${d}${f}`
-                ),
+                (f) => (typeof f == "function" && (f = le(f, c)), `${u.keyPrefix}${d}${f}`),
               ))
             : (typeof o == "function" && (o = le(o, c)),
               (p = u.keyPrefix ? `${u.keyPrefix}${d}${o}` : o)),
           this.t(p, u)
         );
       }, "fixedT");
-      return (
-        b(e) ? (r.lng = e) : (r.lngs = e),
-        (r.ns = t),
-        (r.keyPrefix = i),
-        r
-      );
+      return (b(e) ? (r.lng = e) : (r.lngs = e), (r.ns = t), (r.keyPrefix = i), r);
     }
     t(...e) {
       return this.translator?.translate(...e);
@@ -4104,11 +3803,7 @@ var mn = {},
     hasLoadedNamespace(e, t = {}) {
       if (!this.isInitialized)
         return (
-          this.logger.warn(
-            "hasLoadedNamespace: i18next was not initialized",
-            this.languages,
-          ),
-          !1
+          this.logger.warn("hasLoadedNamespace: i18next was not initialized", this.languages), !1
         );
       if (!this.languages || !this.languages.length)
         return (
@@ -4154,10 +3849,7 @@ var mn = {},
       let i = we();
       b(e) && (e = [e]);
       let r = this.options.preload || [],
-        o = e.filter(
-          (a) =>
-            r.indexOf(a) < 0 && this.services.languageUtils.isSupportedCode(a),
-        );
+        o = e.filter((a) => r.indexOf(a) < 0 && this.services.languageUtils.isSupportedCode(a));
       return o.length
         ? ((this.options.preload = r.concat(o)),
           this.loadResources((a) => {
@@ -4249,8 +3941,7 @@ var mn = {},
         i = this.services?.languageUtils || new Be(mt());
       return e.toLowerCase().indexOf("-latn") > 1
         ? "ltr"
-        : t.indexOf(i.getLanguagePartFromCode(e)) > -1 ||
-            e.toLowerCase().indexOf("-arab") > 1
+        : t.indexOf(i.getLanguagePartFromCode(e)) > -1 || e.toLowerCase().indexOf("-arab") > 1
           ? "rtl"
           : "ltr";
     }
@@ -4264,8 +3955,7 @@ var mn = {},
       let r = { ...this.options, ...e, isClone: !0 },
         o = new n(r);
       if (
-        ((e.debug !== void 0 || e.prefix !== void 0) &&
-          (o.logger = o.logger.clone(e)),
+        ((e.debug !== void 0 || e.prefix !== void 0) && (o.logger = o.logger.clone(e)),
         ["store", "services", "language"].forEach((l) => {
           o[l] = this[l];
         }),
@@ -4278,10 +3968,7 @@ var mn = {},
         let l = Object.keys(this.store.data).reduce(
           (u, c) => (
             (u[c] = { ...this.store.data[c] }),
-            (u[c] = Object.keys(u[c]).reduce(
-              (d, p) => ((d[p] = { ...u[c][p] }), d),
-              u[c],
-            )),
+            (u[c] = Object.keys(u[c]).reduce((d, p) => ((d[p] = { ...u[c][p] }), d), u[c])),
             u
           ),
           {},
@@ -4363,8 +4050,7 @@ var He = {
     dataview: {
       itemsPerPage: "Items per page:",
       jumpToPage: "Jump to page:",
-      pageHeader:
-        "Page {{pageNumber}} of {{totalPages}}, Total items: {{totalItems}}",
+      pageHeader: "Page {{pageNumber}} of {{totalPages}}, Total items: {{totalItems}}",
     },
     metadataCache: {
       getBacklinksForFilePath: "Get backlinks for {{filePath}}",
@@ -4372,8 +4058,7 @@ var He = {
     notices: {
       attachmentIsStillUsed:
         "Attachment {{attachmentPath}} is still used by other notes. It will not be deleted.",
-      unhandledError:
-        "An unhandled error occurred. Please check the console for more information.",
+      unhandledError: "An unhandled error occurred. Please check the console for more information.",
     },
     queue: { flushQueue: "Flush queue" },
     renameDeleteHandler: {
@@ -4422,9 +4107,7 @@ async function Tt(n, e = !0) {
       initAsync: e,
       interpolation: { escapeValue: !1 },
       lng: (0, On.getLanguage)(),
-      resources: Object.fromEntries(
-        Object.entries(n).map(([t, i]) => [t, { [Tn]: i }]),
-      ),
+      resources: Object.fromEntries(Object.entries(n).map(([t, i]) => [t, { [Tn]: i }])),
       returnEmptyString: !1,
       returnNull: !1,
     }),
@@ -4524,13 +4207,10 @@ var Ve = class extends Ke.Plugin {
     Fe(this.manifest.id, 1)(e, ...t);
   }
   async onExternalSettingsChange() {
-    (await super.onExternalSettingsChange?.(),
-      await this._settingsManager?.loadFromFile(!1));
+    (await super.onExternalSettingsChange?.(), await this._settingsManager?.loadFromFile(!1));
   }
   async onload() {
-    (await super.onload(),
-      await this.onloadImpl(),
-      un(this.afterLoad.bind(this)));
+    (await super.onload(), await this.onloadImpl(), un(this.afterLoad.bind(this)));
   }
   onunload() {
     (super.onunload(),
@@ -4579,20 +4259,8 @@ var Ve = class extends Ke.Plugin {
       this.register(en(this.handleAsyncError.bind(this))),
       (this._settingsManager = this.createSettingsManager()),
       this._settingsManager &&
-        (ft(
-          this,
-          this._settingsManager.on(
-            "loadSettings",
-            this.onLoadSettings.bind(this),
-          ),
-        ),
-        ft(
-          this,
-          this._settingsManager.on(
-            "saveSettings",
-            this.onSaveSettings.bind(this),
-          ),
-        )),
+        (ft(this, this._settingsManager.on("loadSettings", this.onLoadSettings.bind(this))),
+        ft(this, this._settingsManager.on("saveSettings", this.onSaveSettings.bind(this)))),
       await this._settingsManager?.loadFromFile(!0),
       (this._settingsTab = this.createSettingsTab()),
       this._settingsTab && this.addSettingTab(this._settingsTab));
@@ -4651,12 +4319,7 @@ function lr(n, e, t) {
           return Object.getPrototypeOf(n)[e].apply(this, arguments);
         },
     a = t(o);
-  return (
-    i && Object.setPrototypeOf(a, i),
-    Object.setPrototypeOf(l, a),
-    (n[e] = l),
-    u
-  );
+  return (i && Object.setPrototypeOf(a, i), Object.setPrototypeOf(l, a), (n[e] = l), u);
   function l(...c) {
     return (a === o && n[e] === l && u(), a.apply(this, c));
   }
@@ -4717,23 +4380,15 @@ var $n = 40,
     track = null;
     onload() {
       ((this.track = createDiv("nested-properties-floating-scrollbar")),
-        (this.thumb = this.track.createDiv(
-          "nested-properties-floating-scrollbar-thumb",
-        )),
+        (this.thumb = this.track.createDiv("nested-properties-floating-scrollbar-thumb")),
         document.body.appendChild(this.track),
         this.registerDomEvent(
           this.track,
           "wheel",
           (i) => {
-            if (
-              !this.activeEl ||
-              this.activeEl.scrollWidth <= this.activeEl.clientWidth
-            )
-              return;
+            if (!this.activeEl || this.activeEl.scrollWidth <= this.activeEl.clientWidth) return;
             let r = i.deltaX || i.deltaY;
-            ((this.activeEl.scrollLeft += r),
-              i.preventDefault(),
-              i.stopPropagation());
+            ((this.activeEl.scrollLeft += r), i.preventDefault(), i.stopPropagation());
           },
           { passive: !1 },
         ),
@@ -4748,8 +4403,7 @@ var $n = 40,
           document.activeElement instanceof HTMLTextAreaElement ||
           (document.activeElement instanceof HTMLElement &&
             document.activeElement.isContentEditable) ||
-          ((this.activeEl.scrollLeft += i.key === "ArrowLeft" ? -$n : $n),
-          i.preventDefault());
+          ((this.activeEl.scrollLeft += i.key === "ArrowLeft" ? -$n : $n), i.preventDefault());
       }),
         t.registerAllDocumentsDomEvent(
           "scroll",
@@ -4774,8 +4428,7 @@ var $n = 40,
     }
     onunload() {
       (this.activeEl &&
-        (this.activeEl.removeEventListener("scroll", this.syncThumb),
-        (this.activeEl = null)),
+        (this.activeEl.removeEventListener("scroll", this.syncThumb), (this.activeEl = null)),
         this.track?.remove(),
         (this.track = null),
         (this.thumb = null));
@@ -4796,11 +4449,9 @@ var $n = 40,
       }
       if (
         (o !== this.activeEl &&
-          (this.activeEl &&
-            this.activeEl.removeEventListener("scroll", this.syncThumb),
+          (this.activeEl && this.activeEl.removeEventListener("scroll", this.syncThumb),
           (this.activeEl = o),
-          this.activeEl &&
-            this.activeEl.addEventListener("scroll", this.syncThumb)),
+          this.activeEl && this.activeEl.addEventListener("scroll", this.syncThumb)),
         !this.activeEl)
       ) {
         this.track.classList.remove("is-visible");
@@ -4846,8 +4497,7 @@ var $n = 40,
       }
       s(l, "onMouseMove");
       function u() {
-        (document.removeEventListener("mousemove", l),
-          document.removeEventListener("mouseup", u));
+        (document.removeEventListener("mousemove", l), document.removeEventListener("mouseup", u));
       }
       (s(u, "onMouseUp"),
         a(o(t)),
@@ -4859,10 +4509,7 @@ var $n = 40,
       let t = this.activeEl.scrollWidth - this.activeEl.clientWidth;
       if (t <= 0) return;
       let i = this.track.clientWidth,
-        r = Math.max(
-          ur,
-          (this.activeEl.clientWidth / this.activeEl.scrollWidth) * i,
-        ),
+        r = Math.max(ur, (this.activeEl.clientWidth / this.activeEl.scrollWidth) * i),
         o = (this.activeEl.scrollLeft / t) * (i - r);
       (this.thumb.style.setProperty("--thumb-width", `${String(r)}px`),
         this.thumb.style.setProperty("--thumb-left", `${String(o)}px`));
@@ -4900,11 +4547,9 @@ var Ye = class extends Bn.Modal {
         text: "Your text data is not compatible. It will be adapted to fit the new format.",
       }));
     let e = this.contentEl.createDiv({ cls: "modal-button-container" });
-    (e
-      .createEl("button", { cls: "mod-cta", text: "Update" })
-      .addEventListener("click", () => {
-        ((this.confirmed = !0), this.close());
-      }),
+    (e.createEl("button", { cls: "mod-cta", text: "Update" }).addEventListener("click", () => {
+      ((this.confirmed = !0), this.close());
+    }),
       e.createEl("button", { text: "Cancel" }).addEventListener("click", () => {
         this.close();
       }));
@@ -4965,13 +4610,7 @@ function fr(n) {
 }
 s(fr, "convertToDate");
 function hr(n) {
-  return Array.isArray(n)
-    ? n
-    : n !== null && typeof n == "object"
-      ? [n]
-      : n == null
-        ? []
-        : [n];
+  return Array.isArray(n) ? n : n !== null && typeof n == "object" ? [n] : n == null ? [] : [n];
 }
 s(hr, "convertToMixedList");
 function gr(n) {
@@ -5031,45 +4670,27 @@ var Z = "list",
         (this._objectWidget = {
           icon: "lucide-braces",
           name: s(() => "Object", "name"),
-          render: s(
-            (i, r, o) => this.renderComplexWidget(i, r, o, ue),
-            "render",
-          ),
+          render: s((i, r, o) => this.renderComplexWidget(i, r, o, ue), "render"),
           type: ue,
-          validate: s(
-            (i) => i !== null && typeof i == "object" && !Array.isArray(i),
-            "validate",
-          ),
+          validate: s((i) => i !== null && typeof i == "object" && !Array.isArray(i), "validate"),
         }),
-        (this.app.metadataTypeManager.registeredTypeWidgets[Z] =
-          this.mixedListWidget),
-        (this.app.metadataTypeManager.registeredTypeWidgets[ue] =
-          this.objectWidget),
-        (this._listWidget =
-          this.app.metadataTypeManager.registeredTypeWidgets.multitext),
+        (this.app.metadataTypeManager.registeredTypeWidgets[Z] = this.mixedListWidget),
+        (this.app.metadataTypeManager.registeredTypeWidgets[ue] = this.objectWidget),
+        (this._listWidget = this.app.metadataTypeManager.registeredTypeWidgets.multitext),
         Ge(this, this.listWidget, {
           validate: s((i) => (r) => this.validateListWidget(i, r), "validate"),
         }),
         Ge(this, this.app.metadataTypeManager, {
-          getTypeInfo: s(
-            (i) => (r, o) => this.getTypeInfo(i, r, o),
-            "getTypeInfo",
-          ),
+          getTypeInfo: s((i) => (r, o) => this.getTypeInfo(i, r, o), "getTypeInfo"),
         }));
       let t = this.app.metadataTypeManager.getWidget("unknown");
       (Ge(this, t, {
-        render: s(
-          (i) => (r, o, a) => this.renderUnknownWidget(i, r, o, a),
-          "render",
-        ),
+        render: s((i) => (r, o, a) => this.renderUnknownWidget(i, r, o, a), "render"),
       }),
         this.register(() => {
           (delete this.app.metadataTypeManager.registeredTypeWidgets[Z],
             delete this.app.metadataTypeManager.registeredTypeWidgets[ue]);
-          for (let i of document.querySelectorAll(
-            ".nested-properties-header-actions",
-          ))
-            i.remove();
+          for (let i of document.querySelectorAll(".nested-properties-header-actions")) i.remove();
           this.reloadAllProperties();
         }),
         (this.floatingScrollbar = this.addChild(new qe(this.app))),
@@ -5079,8 +4700,7 @@ var Z = "list",
       for (let t of this.app.workspace.getLeavesOfType("markdown"))
         if (t.view instanceof L.MarkdownView) {
           let i = t.view.metadataEditor.serialize();
-          (t.view.metadataEditor.synchronize({}),
-            t.view.metadataEditor.synchronize(i));
+          (t.view.metadataEditor.synchronize({}), t.view.metadataEditor.synchronize(i));
         }
     }
     async changeType(t, i, r, o) {
@@ -5088,8 +4708,7 @@ var Z = "list",
         let l = new Ye(this.app, t.name());
         if ((l.open(), !(await l.waitForResult()))) return;
       }
-      (document.activeElement instanceof HTMLElement &&
-        document.activeElement.blur(),
+      (document.activeElement instanceof HTMLElement && document.activeElement.blur(),
         this.widgetTypeOverrides.set(i, t.type));
       let a = Wn(r, t.type);
       a === r ? this.reloadAllProperties() : o(a);
@@ -5136,9 +4755,7 @@ var Z = "list",
       wr(t, i, a);
     }
     renderComplexWidget(t, i, r, o) {
-      o === Z && !Array.isArray(i)
-        ? (i = [])
-        : o === ue && (!z(i) || Array.isArray(i)) && (i = {});
+      o === Z && !Array.isArray(i) ? (i = []) : o === ue && (!z(i) || Array.isArray(i)) && (i = {});
       let a = `${r.sourcePath}:${r.key}`,
         l = t.closest(".metadata-property");
       if (l instanceof HTMLElement) {
@@ -5146,9 +4763,7 @@ var Z = "list",
         (l.classList.add("nested-properties-collapsible"),
           l.setAttribute("data-path", a),
           c || l.classList.add("is-collapsed"));
-        let d = l.querySelector(
-          ".metadata-property-key .metadata-property-icon",
-        );
+        let d = l.querySelector(".metadata-property-key .metadata-property-icon");
         d instanceof HTMLElement &&
           (0, L.setIcon)(d, o === Z ? "lucide-list-tree" : "lucide-braces");
         let p = l.querySelector(".metadata-property-key");
@@ -5173,10 +4788,7 @@ var Z = "list",
         }),
         setTimeout(() => {
           let c = u.closest(".metadata-container");
-          if (
-            (c instanceof HTMLElement && vr(c, this.expandedPaths),
-            this.pendingFocusKey)
-          ) {
+          if ((c instanceof HTMLElement && vr(c, this.expandedPaths), this.pendingFocusKey)) {
             let d = this.pendingFocusKey;
             this.pendingFocusKey = null;
             for (let p of u.querySelectorAll(".metadata-property-key-input"))
@@ -5230,8 +4842,7 @@ var Z = "list",
           C = y.createSpan({ cls: "metadata-property-icon" });
         ((0, L.setIcon)(C, w.icon),
           C.addEventListener("click", (P) => {
-            (P.stopPropagation(),
-              this.showNestedPropertyMenu(P, c, i, r, l, u));
+            (P.stopPropagation(), this.showNestedPropertyMenu(P, c, i, r, l, u));
           }));
         let T = y.createEl("input", {
           attr: { readonly: "", tabindex: "-1" },
@@ -5269,8 +4880,7 @@ var Z = "list",
         a &&
           l &&
           d.addEventListener("click", (f) => {
-            (f.stopPropagation(),
-              this.showNestedPropertyMenu(f, i, r, o, a, l));
+            (f.stopPropagation(), this.showNestedPropertyMenu(f, i, r, o, a, l));
           }));
       let p = u.createEl("input", {
         attr: { readonly: "", tabindex: "-1" },
@@ -5280,9 +4890,7 @@ var Z = "list",
       p.size = Math.max(1, r.length);
     }
     renderNestedValue(t, i, r, o, a) {
-      Array.isArray(i)
-        ? this.renderArray(t, i, r, o, a)
-        : this.renderObject(t, i, r, o, a);
+      Array.isArray(i) ? this.renderArray(t, i, r, o, a) : this.renderObject(t, i, r, o, a);
     }
     renderObject(t, i, r, o, a) {
       for (let [l, u] of Object.entries(i))
@@ -5332,9 +4940,7 @@ var Z = "list",
           d.setTitle("Property type").setIcon("lucide-info").setSection("type");
           let p = d.setSubmenu(),
             f = this.getWidget(i, r, o);
-          for (let h of Object.values(
-            this.app.metadataTypeManager.registeredTypeWidgets,
-          ))
+          for (let h of Object.values(this.app.metadataTypeManager.registeredTypeWidgets))
             (h.reservedKeys && !h.reservedKeys.contains(r)) ||
               p.addItem((m) => {
                 m.setTitle(h.name())
@@ -5353,10 +4959,7 @@ var Z = "list",
             .setSection("action")
             .onClick(
               q(async () => {
-                (await navigator.clipboard.writeText(
-                  JSON.stringify({ [r]: o }),
-                ),
-                  l());
+                (await navigator.clipboard.writeText(JSON.stringify({ [r]: o })), l());
               }),
             );
         }),
@@ -5391,11 +4994,7 @@ var Z = "list",
         }),
         c.addItem((d) => {
           (d.dom.addClass("is-warning"),
-            d
-              .setTitle("Remove")
-              .setIcon("lucide-trash-2")
-              .setSection("danger")
-              .onClick(l));
+            d.setTitle("Remove").setIcon("lucide-trash-2").setSection("danger").onClick(l));
         }),
         c.showAtMouseEvent(t));
     }
@@ -5416,10 +5015,7 @@ function zn(n, e, t, i, r) {
     cls: "nested-properties-summary",
     text: Array.isArray(e) ? "[ ... ]" : "{ ... }",
   }).addEventListener("click", (a) => {
-    (a.stopPropagation(),
-      a.preventDefault(),
-      t.classList.remove("is-collapsed"),
-      r.add(i));
+    (a.stopPropagation(), a.preventDefault(), t.classList.remove("is-collapsed"), r.add(i));
   });
 }
 s(zn, "createSummary");
@@ -5446,8 +5042,7 @@ function vr(n, e) {
     r.addEventListener("click", (o) => {
       (o.stopPropagation(), o.preventDefault());
       let a = n.querySelectorAll(".nested-properties-collapsible");
-      (a.length > 0 &&
-      Array.from(a).every((u) => u.classList.contains("is-collapsed"))
+      (a.length > 0 && Array.from(a).every((u) => u.classList.contains("is-collapsed"))
         ? Ar(n, e)
         : br(n, e),
         Un(r, n));
@@ -5475,9 +5070,7 @@ function Cr(n, e, t, i) {
       });
       a.focus();
       function l() {
-        (r.empty(),
-          (0, L.setIcon)(r, "plus"),
-          r.createSpan({ text: "Add property" }));
+        (r.empty(), (0, L.setIcon)(r, "plus"), r.createSpan({ text: "Add property" }));
       }
       s(l, "restoreButton");
       function u(c) {
@@ -5504,9 +5097,7 @@ function Cr(n, e, t, i) {
 s(Cr, "renderAddPropertyButton");
 function Un(n, e) {
   let t = e.querySelectorAll(".nested-properties-collapsible"),
-    i =
-      t.length > 0 &&
-      Array.from(t).every((r) => r.classList.contains("is-collapsed"));
+    i = t.length > 0 && Array.from(t).every((r) => r.classList.contains("is-collapsed"));
   (n.setAttribute(
     "aria-label",
     i ? "Expand all nested properties" : "Collapse all nested properties",

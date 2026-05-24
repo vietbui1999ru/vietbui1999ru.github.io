@@ -8,8 +8,7 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if ((from && typeof from === "object") || typeof from === "function") {
@@ -22,8 +21,7 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toCommonJS = (mod) =>
-  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/main.ts
 var main_exports = {};
@@ -173,51 +171,19 @@ var UIManager = class {
   applyStyles() {
     var _a;
     const body = document.body;
-    this.applyVisibilityState(
-      body,
-      "auto-hide-title-bar",
-      this.settings.titleBar,
-      true,
-    );
+    this.applyVisibilityState(body, "auto-hide-title-bar", this.settings.titleBar, true);
     this.applyVisibilityState(
       body,
       "auto-hide-file-explorer-nav-header",
       this.settings.fileExplorerNavHeader,
     );
-    this.applyVisibilityState(
-      body,
-      "auto-hide-other-nav-headers",
-      this.settings.otherNavHeaders,
-    );
-    this.applyVisibilityState(
-      body,
-      "auto-hide-left-tab-headers",
-      this.settings.leftTabHeaders,
-    );
-    this.applyVisibilityState(
-      body,
-      "auto-hide-right-tab-headers",
-      this.settings.rightTabHeaders,
-    );
-    this.applyVisibilityState(
-      body,
-      "auto-hide-vault-switcher",
-      this.settings.vaultSwitcher,
-    );
-    this.applyVisibilityState(
-      body,
-      "hider-help-button",
-      this.settings.helpButton,
-    );
-    this.applyVisibilityState(
-      body,
-      "auto-hide-settings-button",
-      this.settings.settingsButton,
-    );
-    body.classList.toggle(
-      "auto-collapse-ribbon",
-      this.settings.ribbonRevealOnHover,
-    );
+    this.applyVisibilityState(body, "auto-hide-other-nav-headers", this.settings.otherNavHeaders);
+    this.applyVisibilityState(body, "auto-hide-left-tab-headers", this.settings.leftTabHeaders);
+    this.applyVisibilityState(body, "auto-hide-right-tab-headers", this.settings.rightTabHeaders);
+    this.applyVisibilityState(body, "auto-hide-vault-switcher", this.settings.vaultSwitcher);
+    this.applyVisibilityState(body, "hider-help-button", this.settings.helpButton);
+    this.applyVisibilityState(body, "auto-hide-settings-button", this.settings.settingsButton);
+    body.classList.toggle("auto-collapse-ribbon", this.settings.ribbonRevealOnHover);
     body.classList.toggle(
       "ui-tweaker-sync-replacement-enabled",
       (_a = this.settings.syncButtonReplacement) == null ? void 0 : _a.enabled,
@@ -225,23 +191,12 @@ var UIManager = class {
     body.classList.toggle("hider-tabs", this.settings.tabBar);
     if (this.settings.tabBar) {
       const os = this.detectOS();
-      body.classList.remove(
-        "hider-tabs-windows",
-        "hider-tabs-macos",
-        "hider-tabs-neutral",
-      );
+      body.classList.remove("hider-tabs-windows", "hider-tabs-macos", "hider-tabs-neutral");
       body.classList.add(`hider-tabs-${os}`);
     } else {
-      body.classList.remove(
-        "hider-tabs-windows",
-        "hider-tabs-macos",
-        "hider-tabs-neutral",
-      );
+      body.classList.remove("hider-tabs-windows", "hider-tabs-macos", "hider-tabs-neutral");
     }
-    body.classList.toggle(
-      "auto-hide-tab-bar-when-single-tab",
-      this.settings.tabBarHideWhenSingle,
-    );
+    body.classList.toggle("auto-hide-tab-bar-when-single-tab", this.settings.tabBarHideWhenSingle);
     if (this.settings.tabBarHideWhenSingle) {
       const os = this.detectOS();
       body.classList.remove(
@@ -270,49 +225,16 @@ var UIManager = class {
       );
     }
     body.classList.toggle("hide-button-new-note", this.settings.newNoteButton);
-    body.classList.toggle(
-      "hide-button-new-folder",
-      this.settings.newFolderButton,
-    );
-    body.classList.toggle(
-      "hide-button-sort-order",
-      this.settings.sortOrderButton,
-    );
-    body.classList.toggle(
-      "hide-button-auto-reveal",
-      this.settings.autoRevealButton,
-    );
-    body.classList.toggle(
-      "hide-button-collapse-all",
-      this.settings.collapseAllButton,
-    );
-    body.classList.toggle(
-      "hide-button-reading-mode",
-      this.settings.readingModeButton,
-    );
-    body.classList.toggle(
-      "hide-button-bookmarked",
-      this.settings.bookmarkedButton,
-    );
-    body.classList.toggle(
-      "hide-button-search-settings",
-      this.settings.searchSettingsButton,
-    );
-    this.applyVisibilityState(
-      body,
-      "hide-tab-list-icon",
-      this.settings.tabListIcon,
-    );
-    this.applyVisibilityState(
-      body,
-      "hide-new-tab-icon",
-      this.settings.newTabIcon,
-    );
-    this.applyVisibilityState(
-      body,
-      "hide-tab-close-button",
-      this.settings.tabCloseButton,
-    );
+    body.classList.toggle("hide-button-new-folder", this.settings.newFolderButton);
+    body.classList.toggle("hide-button-sort-order", this.settings.sortOrderButton);
+    body.classList.toggle("hide-button-auto-reveal", this.settings.autoRevealButton);
+    body.classList.toggle("hide-button-collapse-all", this.settings.collapseAllButton);
+    body.classList.toggle("hide-button-reading-mode", this.settings.readingModeButton);
+    body.classList.toggle("hide-button-bookmarked", this.settings.bookmarkedButton);
+    body.classList.toggle("hide-button-search-settings", this.settings.searchSettingsButton);
+    this.applyVisibilityState(body, "hide-tab-list-icon", this.settings.tabListIcon);
+    this.applyVisibilityState(body, "hide-new-tab-icon", this.settings.newTabIcon);
+    this.applyVisibilityState(body, "hide-tab-close-button", this.settings.tabCloseButton);
     body.classList.toggle("hider-status", this.settings.statusBar);
     this.applyVisibilityState(body, "hider-scroll", this.settings.scrollBars);
     if (this.settings.scrollBars === "reveal") {
@@ -331,32 +253,14 @@ var UIManager = class {
       this.settings.rightSidebarToggleButton,
     );
     body.classList.toggle("hider-tooltips", this.settings.tooltips);
-    body.classList.toggle(
-      "hider-search-suggestions",
-      this.settings.searchSuggestions,
-    );
-    body.classList.toggle(
-      "hider-search-counts",
-      this.settings.searchTermCounts,
-    );
+    body.classList.toggle("hider-search-suggestions", this.settings.searchSuggestions);
+    body.classList.toggle("hider-search-counts", this.settings.searchTermCounts);
     body.classList.toggle("hider-meta", this.settings.propertiesInReadingView);
-    body.classList.toggle(
-      "ui-tweaker-deemphasize-properties",
-      this.settings.deemphasizeProperties,
-    );
-    body.classList.toggle(
-      "metadata-heading-off",
-      this.settings.propertiesInHeading,
-    );
-    body.classList.toggle(
-      "metadata-add-property-off",
-      this.settings.addPropertyButton,
-    );
+    body.classList.toggle("ui-tweaker-deemphasize-properties", this.settings.deemphasizeProperties);
+    body.classList.toggle("metadata-heading-off", this.settings.propertiesInHeading);
+    body.classList.toggle("metadata-add-property-off", this.settings.addPropertyButton);
     body.classList.toggle("hider-instructions", this.settings.instructions);
-    body.classList.toggle(
-      "hide-icon-mobile-chevrons",
-      this.settings.mobileChevronsIcon,
-    );
+    body.classList.toggle("hide-icon-mobile-chevrons", this.settings.mobileChevronsIcon);
     body.classList.toggle(
       "hide-button-mobile-navbar-action-back",
       this.settings.navigateBackButton,
@@ -373,52 +277,23 @@ var UIManager = class {
       "hide-button-mobile-navbar-action-new-tab",
       this.settings.mobileNewTabButton,
     );
-    body.classList.toggle(
-      "hide-button-mobile-navbar-action-tabs",
-      this.settings.openTabButton,
-    );
-    body.classList.toggle(
-      "hide-button-mobile-navbar-action-menu",
-      this.settings.ribbonMenuButton,
-    );
-    body.classList.toggle(
-      "swap-mobile-new-tab-icon",
-      this.settings.swapMobileNewTabIcon,
-    );
+    body.classList.toggle("hide-button-mobile-navbar-action-tabs", this.settings.openTabButton);
+    body.classList.toggle("hide-button-mobile-navbar-action-menu", this.settings.ribbonMenuButton);
+    body.classList.toggle("swap-mobile-new-tab-icon", this.settings.swapMobileNewTabIcon);
     body.classList.toggle("hide-mobile-title", this.settings.hideMobileTitle);
-    body.classList.toggle(
-      "hide-mobile-sync-icon",
-      this.settings.hideMobileSyncIcon,
-    );
-    body.classList.toggle(
-      "hider-status-mobile",
-      this.settings.hideStatusBarMobile,
-    );
+    body.classList.toggle("hide-mobile-sync-icon", this.settings.hideMobileSyncIcon);
+    body.classList.toggle("hider-status-mobile", this.settings.hideStatusBarMobile);
     const orderClasses = Array.from(body.classList).filter((cls) =>
       cls.startsWith("order-navbar-button-nth-child-"),
     );
     orderClasses.forEach((cls) => body.classList.remove(cls));
-    body.classList.add(
-      `order-navbar-button-nth-child-1-${this.settings.navigateButtonPosition}`,
-    );
-    body.classList.add(
-      `order-navbar-button-nth-child-2-${this.settings.navigationButtonPosition}`,
-    );
-    body.classList.add(
-      `order-navbar-button-nth-child-3-${this.settings.quickSwitcherPosition}`,
-    );
-    body.classList.add(
-      `order-navbar-button-nth-child-4-${this.settings.newTabPosition}`,
-    );
-    body.classList.add(
-      `order-navbar-button-nth-child-5-${this.settings.openTabsPosition}`,
-    );
-    body.classList.add(
-      `order-navbar-button-nth-child-6-${this.settings.ribbonMenuPosition}`,
-    );
-    const maskValue = getVaultSwitcherMask(
-      this.settings.vaultSwitcherBackgroundTransparency,
-    );
+    body.classList.add(`order-navbar-button-nth-child-1-${this.settings.navigateButtonPosition}`);
+    body.classList.add(`order-navbar-button-nth-child-2-${this.settings.navigationButtonPosition}`);
+    body.classList.add(`order-navbar-button-nth-child-3-${this.settings.quickSwitcherPosition}`);
+    body.classList.add(`order-navbar-button-nth-child-4-${this.settings.newTabPosition}`);
+    body.classList.add(`order-navbar-button-nth-child-5-${this.settings.openTabsPosition}`);
+    body.classList.add(`order-navbar-button-nth-child-6-${this.settings.ribbonMenuPosition}`);
+    const maskValue = getVaultSwitcherMask(this.settings.vaultSwitcherBackgroundTransparency);
     setCssProps(body, {
       "--auto-hide-vault-switcher-bg-transparency": String(
         this.settings.vaultSwitcherBackgroundTransparency,
@@ -428,17 +303,9 @@ var UIManager = class {
   }
   applyVisibilityState(body, className, state, useAlwaysShow = false) {
     if (useAlwaysShow) {
-      body.classList.remove(
-        "always-show-title-bar",
-        `${className}-hide`,
-        `${className}-reveal`,
-      );
+      body.classList.remove("always-show-title-bar", `${className}-hide`, `${className}-reveal`);
     } else {
-      body.classList.remove(
-        `${className}-show`,
-        `${className}-hide`,
-        `${className}-reveal`,
-      );
+      body.classList.remove(`${className}-show`, `${className}-hide`, `${className}-reveal`);
     }
     if (state === "show") {
       if (useAlwaysShow) {
@@ -459,8 +326,7 @@ var UIManager = class {
         return false;
       }
       return (
-        element.scrollHeight > element.clientHeight ||
-        element.scrollWidth > element.clientWidth
+        element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth
       );
     };
     const hoveredElements = /* @__PURE__ */ new Set();
@@ -472,19 +338,14 @@ var UIManager = class {
       });
       hoveredElements.clear();
       let element = target;
-      while (
-        element &&
-        element !== document.body &&
-        element !== document.documentElement
-      ) {
+      while (element && element !== document.body && element !== document.documentElement) {
         if (isScrollable(element)) {
           const rect = element.getBoundingClientRect();
           const scrollbarArea = 25;
           const isInVerticalScrollbarArea =
             e.clientX >= rect.right - scrollbarArea && e.clientX <= rect.right;
           const isInHorizontalScrollbarArea =
-            e.clientY >= rect.bottom - scrollbarArea &&
-            e.clientY <= rect.bottom;
+            e.clientY >= rect.bottom - scrollbarArea && e.clientY <= rect.bottom;
           if (isInVerticalScrollbarArea || isInHorizontalScrollbarArea) {
             element.classList.add("ui-tweaker-scrollbar-hover");
             hoveredElements.add(element);
@@ -529,18 +390,11 @@ var UIManager = class {
       var _a, _b;
       const workspace2 = this.plugin.app.workspace;
       const rightSidebarCollapsed =
-        ((_a = workspace2.rightSplit) == null ? void 0 : _a.collapsed) !==
-        false;
+        ((_a = workspace2.rightSplit) == null ? void 0 : _a.collapsed) !== false;
       const leftSidebarCollapsed =
         ((_b = workspace2.leftSplit) == null ? void 0 : _b.collapsed) !== false;
-      document.body.classList.toggle(
-        "is-right-sidebar-collapsed",
-        rightSidebarCollapsed,
-      );
-      document.body.classList.toggle(
-        "is-left-sidebar-collapsed",
-        leftSidebarCollapsed,
-      );
+      document.body.classList.toggle("is-right-sidebar-collapsed", rightSidebarCollapsed);
+      document.body.classList.toggle("is-left-sidebar-collapsed", leftSidebarCollapsed);
     };
     let checkTimeout = null;
     const debouncedCheck = () => {
@@ -578,10 +432,7 @@ var UIManager = class {
       this.sidebarObserver = new MutationObserver((mutations) => {
         let shouldCheck = false;
         mutations.forEach((mutation) => {
-          if (
-            mutation.type === "attributes" &&
-            mutation.attributeName === "class"
-          ) {
+          if (mutation.type === "attributes" && mutation.attributeName === "class") {
             shouldCheck = true;
           }
         });
@@ -608,10 +459,7 @@ var UIManager = class {
       this.sidebarObserver.disconnect();
       this.sidebarObserver = null;
     }
-    document.body.classList.remove(
-      "is-right-sidebar-collapsed",
-      "is-left-sidebar-collapsed",
-    );
+    document.body.classList.remove("is-right-sidebar-collapsed", "is-left-sidebar-collapsed");
     document.body.classList.remove(
       "auto-hide-tab-bar-windows",
       "auto-hide-tab-bar-macos",
@@ -654,24 +502,17 @@ var UIManager = class {
 // src/commands.ts
 function registerCommands(context) {
   const { plugin, settings, saveSettings, refresh } = context;
-  registerToggleCommand(
-    plugin,
-    "toggle-title-bar",
-    "Toggle title bar",
-    async () => {
-      settings.titleBar = toggleVisibilityState(settings.titleBar);
-      await saveSettings();
-      refresh();
-    },
-  );
+  registerToggleCommand(plugin, "toggle-title-bar", "Toggle title bar", async () => {
+    settings.titleBar = toggleVisibilityState(settings.titleBar);
+    await saveSettings();
+    refresh();
+  });
   registerToggleCommand(
     plugin,
     "toggle-file-explorer-nav-header",
     "Toggle file explorer navigation header",
     async () => {
-      settings.fileExplorerNavHeader = toggleVisibilityState(
-        settings.fileExplorerNavHeader,
-      );
+      settings.fileExplorerNavHeader = toggleVisibilityState(settings.fileExplorerNavHeader);
       await saveSettings();
       refresh();
     },
@@ -681,65 +522,41 @@ function registerCommands(context) {
     "toggle-other-nav-headers",
     "Toggle other navigation headers",
     async () => {
-      settings.otherNavHeaders = toggleVisibilityState(
-        settings.otherNavHeaders,
-      );
+      settings.otherNavHeaders = toggleVisibilityState(settings.otherNavHeaders);
       await saveSettings();
       refresh();
     },
   );
-  registerToggleCommand(
-    plugin,
-    "toggle-left-tab-headers",
-    "Toggle left tab headers",
-    async () => {
-      settings.leftTabHeaders = toggleVisibilityState(settings.leftTabHeaders);
-      await saveSettings();
-      refresh();
-    },
-  );
+  registerToggleCommand(plugin, "toggle-left-tab-headers", "Toggle left tab headers", async () => {
+    settings.leftTabHeaders = toggleVisibilityState(settings.leftTabHeaders);
+    await saveSettings();
+    refresh();
+  });
   registerToggleCommand(
     plugin,
     "toggle-right-tab-headers",
     "Toggle right tab headers",
     async () => {
-      settings.rightTabHeaders = toggleVisibilityState(
-        settings.rightTabHeaders,
-      );
+      settings.rightTabHeaders = toggleVisibilityState(settings.rightTabHeaders);
       await saveSettings();
       refresh();
     },
   );
-  registerToggleCommand(
-    plugin,
-    "toggle-vault-switcher",
-    "Toggle vault switcher",
-    async () => {
-      settings.vaultSwitcher = toggleVisibilityState(settings.vaultSwitcher);
-      await saveSettings();
-      refresh();
-    },
-  );
-  registerToggleCommand(
-    plugin,
-    "toggle-help-button",
-    "Toggle help button",
-    async () => {
-      settings.helpButton = toggleVisibilityState(settings.helpButton);
-      await saveSettings();
-      refresh();
-    },
-  );
-  registerToggleCommand(
-    plugin,
-    "toggle-settings-button",
-    "Toggle settings button",
-    async () => {
-      settings.settingsButton = toggleVisibilityState(settings.settingsButton);
-      await saveSettings();
-      refresh();
-    },
-  );
+  registerToggleCommand(plugin, "toggle-vault-switcher", "Toggle vault switcher", async () => {
+    settings.vaultSwitcher = toggleVisibilityState(settings.vaultSwitcher);
+    await saveSettings();
+    refresh();
+  });
+  registerToggleCommand(plugin, "toggle-help-button", "Toggle help button", async () => {
+    settings.helpButton = toggleVisibilityState(settings.helpButton);
+    await saveSettings();
+    refresh();
+  });
+  registerToggleCommand(plugin, "toggle-settings-button", "Toggle settings button", async () => {
+    settings.settingsButton = toggleVisibilityState(settings.settingsButton);
+    await saveSettings();
+    refresh();
+  });
   plugin.addCommand({
     id: "open-settings",
     name: "Open settings",
@@ -750,25 +567,17 @@ function registerCommands(context) {
       if (settingApi) {
         (_a = settingApi.open) == null ? void 0 : _a.call(settingApi);
         const pluginInstance = plugin;
-        if (
-          ((_b = pluginInstance.settingTab) == null ? void 0 : _b.id) &&
-          settingApi.openTabById
-        ) {
+        if (((_b = pluginInstance.settingTab) == null ? void 0 : _b.id) && settingApi.openTabById) {
           settingApi.openTabById(pluginInstance.settingTab.id);
         }
       }
     },
   });
-  registerToggleCommand(
-    plugin,
-    "toggle-tab-bar",
-    "Toggle tab bar",
-    async () => {
-      settings.tabBar = !settings.tabBar;
-      await saveSettings();
-      refresh();
-    },
-  );
+  registerToggleCommand(plugin, "toggle-tab-bar", "Toggle tab bar", async () => {
+    settings.tabBar = !settings.tabBar;
+    await saveSettings();
+    refresh();
+  });
   registerToggleCommand(
     plugin,
     "toggle-tab-bar-single",
@@ -779,16 +588,11 @@ function registerCommands(context) {
       refresh();
     },
   );
-  registerToggleCommand(
-    plugin,
-    "toggle-new-note-button",
-    "Toggle new note button",
-    async () => {
-      settings.newNoteButton = !settings.newNoteButton;
-      await saveSettings();
-      refresh();
-    },
-  );
+  registerToggleCommand(plugin, "toggle-new-note-button", "Toggle new note button", async () => {
+    settings.newNoteButton = !settings.newNoteButton;
+    await saveSettings();
+    refresh();
+  });
   registerToggleCommand(
     plugin,
     "toggle-new-folder-button",
@@ -849,64 +653,37 @@ function registerCommands(context) {
       refresh();
     },
   );
-  registerToggleCommand(
-    plugin,
-    "toggle-tab-list-icon",
-    "Toggle tab list icon",
-    async () => {
-      settings.tabListIcon = toggleVisibilityState(settings.tabListIcon);
-      await saveSettings();
-      refresh();
-    },
-  );
-  registerToggleCommand(
-    plugin,
-    "toggle-new-tab-icon",
-    "Toggle new tab icon",
-    async () => {
-      settings.newTabIcon = toggleVisibilityState(settings.newTabIcon);
-      await saveSettings();
-      refresh();
-    },
-  );
-  registerToggleCommand(
-    plugin,
-    "toggle-tab-close-button",
-    "Toggle tab close button",
-    async () => {
-      settings.tabCloseButton = toggleVisibilityState(settings.tabCloseButton);
-      await saveSettings();
-      refresh();
-    },
-  );
-  registerToggleCommand(
-    plugin,
-    "toggle-status-bar",
-    "Toggle status bar",
-    async () => {
-      settings.statusBar = !settings.statusBar;
-      await saveSettings();
-      refresh();
-    },
-  );
-  registerToggleCommand(
-    plugin,
-    "toggle-scroll-bars",
-    "Toggle scroll bars",
-    async () => {
-      settings.scrollBars = toggleVisibilityState(settings.scrollBars);
-      await saveSettings();
-      refresh();
-    },
-  );
+  registerToggleCommand(plugin, "toggle-tab-list-icon", "Toggle tab list icon", async () => {
+    settings.tabListIcon = toggleVisibilityState(settings.tabListIcon);
+    await saveSettings();
+    refresh();
+  });
+  registerToggleCommand(plugin, "toggle-new-tab-icon", "Toggle new tab icon", async () => {
+    settings.newTabIcon = toggleVisibilityState(settings.newTabIcon);
+    await saveSettings();
+    refresh();
+  });
+  registerToggleCommand(plugin, "toggle-tab-close-button", "Toggle tab close button", async () => {
+    settings.tabCloseButton = toggleVisibilityState(settings.tabCloseButton);
+    await saveSettings();
+    refresh();
+  });
+  registerToggleCommand(plugin, "toggle-status-bar", "Toggle status bar", async () => {
+    settings.statusBar = !settings.statusBar;
+    await saveSettings();
+    refresh();
+  });
+  registerToggleCommand(plugin, "toggle-scroll-bars", "Toggle scroll bars", async () => {
+    settings.scrollBars = toggleVisibilityState(settings.scrollBars);
+    await saveSettings();
+    refresh();
+  });
   registerToggleCommand(
     plugin,
     "toggle-left-sidebar-toggle-button",
     "Toggle left sidebar toggle button",
     async () => {
-      settings.leftSidebarToggleButton = toggleVisibilityState(
-        settings.leftSidebarToggleButton,
-      );
+      settings.leftSidebarToggleButton = toggleVisibilityState(settings.leftSidebarToggleButton);
       await saveSettings();
       refresh();
     },
@@ -916,23 +693,16 @@ function registerCommands(context) {
     "toggle-right-sidebar-toggle-button",
     "Toggle right sidebar toggle button",
     async () => {
-      settings.rightSidebarToggleButton = toggleVisibilityState(
-        settings.rightSidebarToggleButton,
-      );
+      settings.rightSidebarToggleButton = toggleVisibilityState(settings.rightSidebarToggleButton);
       await saveSettings();
       refresh();
     },
   );
-  registerToggleCommand(
-    plugin,
-    "toggle-tooltips",
-    "Toggle tooltips",
-    async () => {
-      settings.tooltips = !settings.tooltips;
-      await saveSettings();
-      refresh();
-    },
-  );
+  registerToggleCommand(plugin, "toggle-tooltips", "Toggle tooltips", async () => {
+    settings.tooltips = !settings.tooltips;
+    await saveSettings();
+    refresh();
+  });
   registerToggleCommand(
     plugin,
     "toggle-search-suggestions",
@@ -993,16 +763,11 @@ function registerCommands(context) {
       refresh();
     },
   );
-  registerToggleCommand(
-    plugin,
-    "toggle-instructions",
-    "Toggle instructions",
-    async () => {
-      settings.instructions = !settings.instructions;
-      await saveSettings();
-      refresh();
-    },
-  );
+  registerToggleCommand(plugin, "toggle-instructions", "Toggle instructions", async () => {
+    settings.instructions = !settings.instructions;
+    await saveSettings();
+    refresh();
+  });
   registerToggleCommand(
     plugin,
     "toggle-mobile-chevrons-icon",
@@ -1053,16 +818,11 @@ function registerCommands(context) {
       refresh();
     },
   );
-  registerToggleCommand(
-    plugin,
-    "toggle-open-tab-button",
-    "Toggle open tab button",
-    async () => {
-      settings.openTabButton = !settings.openTabButton;
-      await saveSettings();
-      refresh();
-    },
-  );
+  registerToggleCommand(plugin, "toggle-open-tab-button", "Toggle open tab button", async () => {
+    settings.openTabButton = !settings.openTabButton;
+    await saveSettings();
+    refresh();
+  });
   registerToggleCommand(
     plugin,
     "toggle-ribbon-menu-button",
@@ -1108,14 +868,7 @@ var TabRenderer = class {
     await this.plugin.saveSettings();
     this.plugin.refresh();
   }
-  createDropdownSetting(
-    container,
-    name,
-    description,
-    value,
-    options,
-    onChange,
-  ) {
+  createDropdownSetting(container, name, description, value, options, onChange) {
     return new import_obsidian2.Setting(container)
       .setName(name)
       .setDesc(description)
@@ -1144,16 +897,7 @@ var TabRenderer = class {
         return toggle;
       });
   }
-  createSliderSetting(
-    container,
-    name,
-    description,
-    value,
-    min,
-    max,
-    step,
-    onChange,
-  ) {
+  createSliderSetting(container, name, description, value, min, max, step, onChange) {
     return new import_obsidian2.Setting(container)
       .setName(name)
       .setDesc(description)
@@ -1183,9 +927,7 @@ var TabRenderer = class {
         .setTooltip("Reset tab to defaults")
         .onClick(async () => {
           keys.forEach((key) => {
-            this.plugin.settings[key] = JSON.parse(
-              JSON.stringify(DEFAULT_SETTINGS[key]),
-            );
+            this.plugin.settings[key] = JSON.parse(JSON.stringify(DEFAULT_SETTINGS[key]));
           });
           if (onReset) {
             await onReset();
@@ -1211,12 +953,7 @@ var CommandPickerModal = class extends import_obsidian3.FuzzySuggestModal {
       try {
         const commands = commandRegistry.listCommands();
         for (const command of commands) {
-          if (
-            command &&
-            command.id &&
-            command.name &&
-            !commandMap.has(command.id)
-          ) {
+          if (command && command.id && command.name && !commandMap.has(command.id)) {
             commandMap.set(command.id, {
               id: command.id,
               name: command.name,
@@ -1225,9 +962,7 @@ var CommandPickerModal = class extends import_obsidian3.FuzzySuggestModal {
         }
       } catch (e) {}
     }
-    return Array.from(commandMap.values()).sort((a, b) =>
-      a.name.localeCompare(b.name),
-    );
+    return Array.from(commandMap.values()).sort((a, b) => a.name.localeCompare(b.name));
   }
   getItemText(item) {
     return item.name;
@@ -1520,17 +1255,13 @@ var HiderTab = class extends TabRenderer {
           "Collapse the left ribbon to a thin strip until hover. Elegantly expands on hover.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.getSettings().ribbonRevealOnHover)
-            .onChange((value) => {
-              this.getSettings().ribbonRevealOnHover = value;
-              void this.saveSettings();
-            }),
+          toggle.setValue(this.getSettings().ribbonRevealOnHover).onChange((value) => {
+            this.getSettings().ribbonRevealOnHover = value;
+            void this.saveSettings();
+          }),
         );
     });
-    const navigationGroup = new import_obsidian5.SettingGroup(
-      container,
-    ).setHeading("Navigation");
+    const navigationGroup = new import_obsidian5.SettingGroup(container).setHeading("Navigation");
     this.addToggleSetting(
       navigationGroup,
       "Hide tab bar",
@@ -1567,9 +1298,9 @@ var HiderTab = class extends TabRenderer {
       'Hide "Search settings" button in search pane.',
       "searchSettingsButton",
     );
-    const vaultProfileGroup = new import_obsidian5.SettingGroup(
-      container,
-    ).setHeading("Vault profile area");
+    const vaultProfileGroup = new import_obsidian5.SettingGroup(container).setHeading(
+      "Vault profile area",
+    );
     this.addVisibilitySetting(
       vaultProfileGroup,
       "Vault switcher",
@@ -1606,9 +1337,7 @@ var HiderTab = class extends TabRenderer {
             }),
         );
     });
-    const tabIconsGroup = new import_obsidian5.SettingGroup(
-      container,
-    ).setHeading("Tab icons");
+    const tabIconsGroup = new import_obsidian5.SettingGroup(container).setHeading("Tab icons");
     this.addVisibilitySetting(
       tabIconsGroup,
       "Hide tab list icon",
@@ -1627,9 +1356,9 @@ var HiderTab = class extends TabRenderer {
       "Hides the close button on tabs. You can still close tabs with middle click or other methods.",
       "tabCloseButton",
     );
-    const statusUIGroup = new import_obsidian5.SettingGroup(
-      container,
-    ).setHeading("Status & UI elements");
+    const statusUIGroup = new import_obsidian5.SettingGroup(container).setHeading(
+      "Status & UI elements",
+    );
     this.addToggleSetting(
       statusUIGroup,
       "Hide status bar",
@@ -1654,21 +1383,14 @@ var HiderTab = class extends TabRenderer {
       "Hides the right sidebar toggle button.",
       "rightSidebarToggleButton",
     );
-    this.addToggleSetting(
-      statusUIGroup,
-      "Hide tooltips",
-      "Hides all tooltips.",
-      "tooltips",
-    );
+    this.addToggleSetting(statusUIGroup, "Hide tooltips", "Hides all tooltips.", "tooltips");
     this.addToggleSetting(
       statusUIGroup,
       "Hide instructions",
       "Hides instructional tips in modals.",
       "instructions",
     );
-    const searchGroup = new import_obsidian5.SettingGroup(container).setHeading(
-      "Search",
-    );
+    const searchGroup = new import_obsidian5.SettingGroup(container).setHeading("Search");
     this.addToggleSetting(
       searchGroup,
       "Hide search suggestions",
@@ -1681,9 +1403,7 @@ var HiderTab = class extends TabRenderer {
       "Hides the number of matches within each search result.",
       "searchTermCounts",
     );
-    const propertiesGroup = new import_obsidian5.SettingGroup(
-      container,
-    ).setHeading("Properties");
+    const propertiesGroup = new import_obsidian5.SettingGroup(container).setHeading("Properties");
     this.addToggleSetting(
       propertiesGroup,
       "Hide properties in Reading view",
@@ -1716,8 +1436,7 @@ var HiderTab = class extends TabRenderer {
         .setDesc(desc)
         .addDropdown((dropdown) => {
           const currentValue = this.getSettings()[key];
-          const stringValue =
-            typeof currentValue === "string" ? currentValue : "show";
+          const stringValue = typeof currentValue === "string" ? currentValue : "show";
           dropdown
             .addOption("show", "Show")
             .addOption("hide", "Hide")
@@ -1736,12 +1455,10 @@ var HiderTab = class extends TabRenderer {
         .setName(name)
         .setDesc(desc)
         .addToggle((toggle) =>
-          toggle
-            .setValue(Boolean(this.getSettings()[key]))
-            .onChange((value) => {
-              this.getSettings()[key] = value;
-              void this.saveSettings();
-            }),
+          toggle.setValue(Boolean(this.getSettings()[key])).onChange((value) => {
+            this.getSettings()[key] = value;
+            void this.saveSettings();
+          }),
         );
     });
   }
@@ -1762,25 +1479,20 @@ var HiderTab = class extends TabRenderer {
           "Replace the help button with a custom icon and command. This will hide the original help button and show your custom button instead.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(settings.helpButtonReplacement.enabled)
-            .onChange((value) => {
-              settings.helpButtonReplacement.enabled = value;
-              dependentSettings.forEach((el) => {
-                el.style.display = value ? "" : "none";
-              });
-              void this.saveSettings();
-            }),
+          toggle.setValue(settings.helpButtonReplacement.enabled).onChange((value) => {
+            settings.helpButtonReplacement.enabled = value;
+            dependentSettings.forEach((el) => {
+              el.style.display = value ? "" : "none";
+            });
+            void this.saveSettings();
+          }),
         );
     });
     const getCommandName = (commandId) => {
       if (!commandId) return "Select command...";
       try {
         const commandRegistry = this.app.commands;
-        if (
-          commandRegistry &&
-          typeof commandRegistry.listCommands === "function"
-        ) {
+        if (commandRegistry && typeof commandRegistry.listCommands === "function") {
           const commands = commandRegistry.listCommands();
           const command = commands.find((cmd) => cmd && cmd.id === commandId);
           if (command == null ? void 0 : command.name) {
@@ -1800,17 +1512,13 @@ var HiderTab = class extends TabRenderer {
     };
     group.addSetting((setting) => {
       dependentSettings.push(setting.settingEl);
-      setting.settingEl.style.display = settings.helpButtonReplacement.enabled
-        ? ""
-        : "none";
+      setting.settingEl.style.display = settings.helpButtonReplacement.enabled ? "" : "none";
       setting
         .setName("Command")
         .setDesc("Select the command to execute when the button is clicked")
         .addButton((button) =>
           button
-            .setButtonText(
-              getCommandName(settings.helpButtonReplacement.commandId),
-            )
+            .setButtonText(getCommandName(settings.helpButtonReplacement.commandId))
             .onClick(() => {
               const modal = new CommandPickerModal(this.app, (commandId) => {
                 settings.helpButtonReplacement.commandId = commandId;
@@ -1823,18 +1531,13 @@ var HiderTab = class extends TabRenderer {
     });
     group.addSetting((setting) => {
       dependentSettings.push(setting.settingEl);
-      setting.settingEl.style.display = settings.helpButtonReplacement.enabled
-        ? ""
-        : "none";
+      setting.settingEl.style.display = settings.helpButtonReplacement.enabled ? "" : "none";
       setting
         .setName("Icon")
         .setDesc("Select the icon to display on the button")
         .addButton((button) =>
           button
-            .setButtonText(
-              getIconName(settings.helpButtonReplacement.iconId) ||
-                "Select icon...",
-            )
+            .setButtonText(getIconName(settings.helpButtonReplacement.iconId) || "Select icon...")
             .onClick(() => {
               const modal = new IconPickerModal(this.app, (iconId) => {
                 settings.helpButtonReplacement.iconId = iconId;
@@ -1913,34 +1616,27 @@ async function chooseNewCommand(plugin) {
       commandSelected = true;
       const commands = plugin.app.commands;
       const command =
-        (_a = commands == null ? void 0 : commands.commands) == null
-          ? void 0
-          : _a[commandId];
+        (_a = commands == null ? void 0 : commands.commands) == null ? void 0 : _a[commandId];
       setTimeout(() => {
         commandModal.close();
       }, 0);
-      const displayName =
-        (command == null ? void 0 : command.name) || "Custom Command";
+      const displayName = (command == null ? void 0 : command.name) || "Custom Command";
       const iconModal = new IconPickerModal(plugin.app, (iconId) => {
         iconSelected = true;
         iconModal.close();
         setTimeout(() => {
           let nameSelected = false;
-          const nameModal = new NamePickerModal(
-            plugin.app,
-            displayName,
-            (customName) => {
-              nameSelected = true;
-              nameModal.close();
-              resolve({
-                id: commandId,
-                icon: iconId,
-                name: customName,
-                displayName,
-                mode: "any",
-              });
-            },
-          );
+          const nameModal = new NamePickerModal(plugin.app, displayName, (customName) => {
+            nameSelected = true;
+            nameModal.close();
+            resolve({
+              id: commandId,
+              icon: iconId,
+              name: customName,
+              displayName,
+              mode: "any",
+            });
+          });
           nameModal.onClose = () => {
             setTimeout(() => {
               if (!nameSelected && iconSelected && commandSelected) {
@@ -2021,9 +1717,7 @@ var TabBarTab = class extends TabRenderer {
                 var _a;
                 try {
                   const pair = await chooseNewCommand(this.plugin);
-                  await ((_a = this.plugin.tabBarManager) == null
-                    ? void 0
-                    : _a.addCommand(pair));
+                  await ((_a = this.plugin.tabBarManager) == null ? void 0 : _a.addCommand(pair));
                   this.render(container);
                 } catch (e) {}
               })();
@@ -2042,8 +1736,7 @@ var TabBarTab = class extends TabRenderer {
         "click",
         (e) => {
           const target = e.target;
-          const isChevronClick =
-            target.closest(".ui-tweaker-collapse-icon") !== null;
+          const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
           const isExtraButton =
             target.closest(".extra-setting-button") !== null ||
             target.closest(".clickable-icon.extra-setting-button") !== null;
@@ -2064,8 +1757,7 @@ var TabBarTab = class extends TabRenderer {
         "click",
         (e) => {
           const target = e.target;
-          const isChevronClick =
-            target.closest(".ui-tweaker-collapse-icon") !== null;
+          const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
           const isExtraButton =
             target.closest(".extra-setting-button") !== null ||
             target.closest(".clickable-icon.extra-setting-button") !== null;
@@ -2101,8 +1793,7 @@ var TabBarTab = class extends TabRenderer {
         justifyContent: "center",
       });
       nameEl.insertBefore(chevronContainer, nameEl.firstChild);
-      let isExpanded =
-        (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
+      let isExpanded = (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
       (0, import_obsidian7.setIcon)(
         chevronContainer,
         isExpanded ? "chevrons-down-up" : "chevrons-up-down",
@@ -2158,9 +1849,7 @@ var TabBarTab = class extends TabRenderer {
               newName = currentName;
             }
             pair.name = newName;
-            (_a2 = this.plugin.tabBarManager) == null
-              ? void 0
-              : _a2.updateButtonNames();
+            (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.updateButtonNames();
             void (async () => {
               await this.saveSettings();
               this.render(container);
@@ -2206,18 +1895,14 @@ var TabBarTab = class extends TabRenderer {
                 if (iconId && iconId !== pair.icon) {
                   pair.icon = iconId;
                   await this.saveSettings();
-                  (_a2 = this.plugin.tabBarManager) == null
-                    ? void 0
-                    : _a2.reorder();
+                  (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
                   this.render(container);
                 }
               })();
             });
             modal.open();
           });
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         })
         .addExtraButton((button) => {
           button.setIcon("chevron-up");
@@ -2234,9 +1919,7 @@ var TabBarTab = class extends TabRenderer {
                 var _a2;
                 arrayMoveMutable(settings.tabBarCommands, index, index - 1);
                 await this.saveSettings();
-                (_a2 = this.plugin.tabBarManager) == null
-                  ? void 0
-                  : _a2.reorder();
+                (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
                 this.render(container);
                 requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
@@ -2254,9 +1937,7 @@ var TabBarTab = class extends TabRenderer {
             button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
             setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
           }
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         })
         .addExtraButton((button) => {
           button.setIcon("chevron-down");
@@ -2273,9 +1954,7 @@ var TabBarTab = class extends TabRenderer {
                 var _a2;
                 arrayMoveMutable(settings.tabBarCommands, index, index + 1);
                 await this.saveSettings();
-                (_a2 = this.plugin.tabBarManager) == null
-                  ? void 0
-                  : _a2.reorder();
+                (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
                 this.render(container);
                 requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
@@ -2293,9 +1972,7 @@ var TabBarTab = class extends TabRenderer {
             button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
             setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
           }
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         })
         .addExtraButton((button) => {
           button.setIcon("trash");
@@ -2307,15 +1984,11 @@ var TabBarTab = class extends TabRenderer {
               var _a2;
               settings.tabBarCommands.splice(index, 1);
               await this.saveSettings();
-              await ((_a2 = this.plugin.tabBarManager) == null
-                ? void 0
-                : _a2.removeCommand(pair));
+              await ((_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.removeCommand(pair));
               this.render(container);
             })();
           });
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         });
     });
     group.addSetting((setting) => {
@@ -2331,9 +2004,7 @@ var TabBarTab = class extends TabRenderer {
             .addOption("mobile", "Mobile only")
             .addOption(appId, "This device");
           const currentValue =
-            pair.mode === "any" ||
-            pair.mode === "desktop" ||
-            pair.mode === "mobile"
+            pair.mode === "any" || pair.mode === "desktop" || pair.mode === "mobile"
               ? pair.mode
               : appId;
           dropdown.setValue(currentValue);
@@ -2346,9 +2017,7 @@ var TabBarTab = class extends TabRenderer {
               this.render(container);
             })();
           });
-          dropdown.selectEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          dropdown.selectEl.addEventListener("click", (e) => e.stopPropagation());
         });
     });
     group.addSetting((setting) => {
@@ -2372,8 +2041,7 @@ var TabBarTab = class extends TabRenderer {
           if (hasColor) {
             setTimeout(() => {
               const colorPickerEl =
-                controlEl.querySelector(".color-picker") ||
-                controlEl.lastElementChild;
+                controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
               const resetButton = controlEl.createEl("button", {
                 cls: "clickable-icon ui-tweaker-color-reset",
                 attr: { "aria-label": "Reset to default color" },
@@ -2387,16 +2055,12 @@ var TabBarTab = class extends TabRenderer {
                 void (async () => {
                   var _a2;
                   pair.color = void 0;
-                  const iconButton = container.querySelector(
-                    `[data-command-id="${pair.id}"]`,
-                  );
+                  const iconButton = container.querySelector(`[data-command-id="${pair.id}"]`);
                   if (iconButton) {
                     iconButton.style.removeProperty("color");
                   }
                   await this.saveSettings();
-                  (_a2 = this.plugin.tabBarManager) == null
-                    ? void 0
-                    : _a2.reorder();
+                  (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
                   this.render(container);
                 })();
               });
@@ -2413,9 +2077,7 @@ var TabBarTab = class extends TabRenderer {
             } else {
               pair.color = value;
             }
-            const iconButton = container.querySelector(
-              `[data-command-id="${pair.id}"]`,
-            );
+            const iconButton = container.querySelector(`[data-command-id="${pair.id}"]`);
             if (iconButton) {
               if (pair.color && pair.color !== "#000000") {
                 setCssProps(iconButton, { color: pair.color });
@@ -2426,9 +2088,7 @@ var TabBarTab = class extends TabRenderer {
             void (async () => {
               var _a2;
               await this.saveSettings();
-              (_a2 = this.plugin.tabBarManager) == null
-                ? void 0
-                : _a2.reorder();
+              (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
               this.render(container);
             })();
           });
@@ -2448,11 +2108,7 @@ var TabBarTab = class extends TabRenderer {
         .addButton((button) => {
           const currentToggleIcon = pair.toggleIcon || "None";
           button
-            .setButtonText(
-              currentToggleIcon === "None"
-                ? "Set toggle icon..."
-                : currentToggleIcon,
-            )
+            .setButtonText(currentToggleIcon === "None" ? "Set toggle icon..." : currentToggleIcon)
             .onClick(() => {
               const modal = new IconPickerModal(this.app, (iconId) => {
                 void (async () => {
@@ -2463,9 +2119,7 @@ var TabBarTab = class extends TabRenderer {
                     pair.toggleIcon = void 0;
                   }
                   await this.saveSettings();
-                  (_a = this.plugin.tabBarManager) == null
-                    ? void 0
-                    : _a.reorder();
+                  (_a = this.plugin.tabBarManager) == null ? void 0 : _a.reorder();
                   this.render(container);
                 })();
               });
@@ -2475,8 +2129,7 @@ var TabBarTab = class extends TabRenderer {
           if (hasToggleIcon) {
             setTimeout(() => {
               const controlEl = setting.controlEl;
-              const buttonEl =
-                controlEl.querySelector("button") || controlEl.lastElementChild;
+              const buttonEl = controlEl.querySelector("button") || controlEl.lastElementChild;
               const resetButton = controlEl.createEl("button", {
                 cls: "clickable-icon ui-tweaker-toggle-icon-reset",
                 attr: { "aria-label": "Reset toggle icon" },
@@ -2497,9 +2150,7 @@ var TabBarTab = class extends TabRenderer {
                   var _a;
                   pair.toggleIcon = void 0;
                   await this.saveSettings();
-                  (_a = this.plugin.tabBarManager) == null
-                    ? void 0
-                    : _a.reorder();
+                  (_a = this.plugin.tabBarManager) == null ? void 0 : _a.reorder();
                   this.render(container);
                   requestAnimationFrame(() => {
                     scrollContainer.scrollTop = scrollPos;
@@ -2534,9 +2185,7 @@ var TabBarTab = class extends TabRenderer {
               var _a2;
               pair.showOnFileTypes = value.trim() || void 0;
               await this.saveSettings();
-              (_a2 = this.plugin.tabBarManager) == null
-                ? void 0
-                : _a2.reorder();
+              (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
             })();
           });
           text.inputEl.addEventListener("click", (e) => e.stopPropagation());
@@ -2559,9 +2208,7 @@ var TabBarTab = class extends TabRenderer {
               var _a2;
               pair.hideOnFileTypes = value.trim() || void 0;
               await this.saveSettings();
-              (_a2 = this.plugin.tabBarManager) == null
-                ? void 0
-                : _a2.reorder();
+              (_a2 = this.plugin.tabBarManager) == null ? void 0 : _a2.reorder();
             })();
           });
           text.inputEl.addEventListener("click", (e) => e.stopPropagation());
@@ -2570,8 +2217,7 @@ var TabBarTab = class extends TabRenderer {
     });
     setTimeout(() => {
       var _a;
-      const savedExpanded =
-        (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
+      const savedExpanded = (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
       otherSettings.forEach((settingEl) => {
         setCssProps(settingEl, { display: savedExpanded ? "" : "none" });
       });
@@ -2602,9 +2248,7 @@ var StatusBarTab = class extends TabRenderer {
       settings.statusBarItems = [];
     }
     const wrapper = container.createDiv("ui-tweaker-status-bar-rows-wrapper");
-    const rowsContainer = wrapper.createDiv(
-      "ui-tweaker-status-bar-rows-container",
-    );
+    const rowsContainer = wrapper.createDiv("ui-tweaker-status-bar-rows-container");
     settings.statusBarItems.forEach((item, index) => {
       if (item.type === "existing") {
         this.renderExistingRow(
@@ -2615,13 +2259,7 @@ var StatusBarTab = class extends TabRenderer {
           settings.statusBarItems.length,
         );
       } else {
-        this.renderCustomRow(
-          rowsContainer,
-          item,
-          settings,
-          index,
-          settings.statusBarItems.length,
-        );
+        this.renderCustomRow(rowsContainer, item, settings, index, settings.statusBarItems.length);
       }
     });
     if (settings.statusBarItems.length > 0) {
@@ -2655,9 +2293,7 @@ var StatusBarTab = class extends TabRenderer {
                     container.closest(".settings-content") ||
                     container.parentElement;
                   const scrollTop =
-                    (scrollContainer == null
-                      ? void 0
-                      : scrollContainer.scrollTop) || 0;
+                    (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
                   this.render(container);
                   requestAnimationFrame(() => {
                     if (scrollContainer) {
@@ -2675,14 +2311,11 @@ var StatusBarTab = class extends TabRenderer {
    */
   renderExistingRow(rowsContainer, item, settings, index, totalItems) {
     var _a;
-    const statusBarContainer =
-      (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl;
+    const statusBarContainer = (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl;
     const actualElement =
       statusBarContainer == null
         ? void 0
-        : statusBarContainer.querySelector(
-            `[data-ui-tweaker-status-bar-id="${item.id}"]`,
-          );
+        : statusBarContainer.querySelector(`[data-ui-tweaker-status-bar-id="${item.id}"]`);
     const exists = !!actualElement;
     const entry = rowsContainer.createDiv("ui-tweaker-status-bar-row");
     entry.addClass("ui-tweaker-row");
@@ -2722,22 +2355,13 @@ var StatusBarTab = class extends TabRenderer {
     );
     lockSpan.addEventListener("click", (e) => {
       e.stopPropagation();
-      this.toggleLock(
-        item,
-        lockSpan,
-        index,
-        totalItems,
-        rowsContainer,
-        settings,
-      );
+      this.toggleLock(item, lockSpan, index, totalItems, rowsContainer, settings);
     });
     (0, import_obsidian8.setIcon)(lockSpan, lockIcon);
     if (item.sticky) {
       lockSpan.addClass("ui-tweaker-locked");
     }
-    const visibilitySpan = entry.createSpan(
-      "ui-tweaker-status-bar-row-visibility",
-    );
+    const visibilitySpan = entry.createSpan("ui-tweaker-status-bar-row-visibility");
     if (item.type === "custom") {
       visibilitySpan.setAttribute("aria-label", "Delete item");
       visibilitySpan.addClass("mod-warning");
@@ -2754,10 +2378,7 @@ var StatusBarTab = class extends TabRenderer {
       visibilitySpan.addEventListener("click", () => {
         this.toggleVisibility(item, visibilitySpan, entry);
       });
-      (0, import_obsidian8.setIcon)(
-        visibilitySpan,
-        item.hidden ? "eye-off" : "eye",
-      );
+      (0, import_obsidian8.setIcon)(visibilitySpan, item.hidden ? "eye-off" : "eye");
     }
   }
   /**
@@ -2774,8 +2395,7 @@ var StatusBarTab = class extends TabRenderer {
     );
     const titleSpan = entry.createSpan("ui-tweaker-status-bar-row-title");
     const displayName = item.displayName || item.name;
-    const nameText =
-      item.name === displayName ? item.name : `${item.name} (${displayName})`;
+    const nameText = item.name === displayName ? item.name : `${item.name} (${displayName})`;
     titleSpan.textContent = nameText;
     titleSpan.addEventListener("dblclick", () => {
       const currentName = item.name;
@@ -2793,11 +2413,8 @@ var StatusBarTab = class extends TabRenderer {
         let newName = input.value.trim();
         if (!newName) newName = currentName;
         item.name = newName;
-        (_a = this.plugin.statusBarManager) == null
-          ? void 0
-          : _a.updateButtonNames();
-        titleSpan.textContent =
-          newName === displayName ? newName : `${newName} (${displayName})`;
+        (_a = this.plugin.statusBarManager) == null ? void 0 : _a.updateButtonNames();
+        titleSpan.textContent = newName === displayName ? newName : `${newName} (${displayName})`;
         void this.saveSettings();
       };
       input.addEventListener("keydown", (e) => {
@@ -2813,17 +2430,13 @@ var StatusBarTab = class extends TabRenderer {
     });
     const previewSpan = entry.createSpan("ui-tweaker-status-bar-row-preview");
     if (item.icon) {
-      const previewIcon = previewSpan.createSpan(
-        "status-bar-item mod-clickable",
-      );
+      const previewIcon = previewSpan.createSpan("status-bar-item mod-clickable");
       (0, import_obsidian8.setIcon)(previewIcon, item.icon);
       if (item.color && item.color !== "#000000") {
         setCssProps(previewIcon, { color: item.color });
       }
     }
-    const resetColorContainer = entry.createSpan(
-      "ui-tweaker-status-bar-row-reset-color",
-    );
+    const resetColorContainer = entry.createSpan("ui-tweaker-status-bar-row-reset-color");
     if (item.color) {
       const resetButton = resetColorContainer.createEl("button", {
         cls: "clickable-icon ui-tweaker-color-reset",
@@ -2845,9 +2458,7 @@ var StatusBarTab = class extends TabRenderer {
         }
       });
     }
-    const colorPickerContainer = entry.createSpan(
-      "ui-tweaker-status-bar-row-color-picker",
-    );
+    const colorPickerContainer = entry.createSpan("ui-tweaker-status-bar-row-color-picker");
     const colorPickerEl = colorPickerContainer.createDiv();
     const colorPicker = new import_obsidian8.ColorComponent(colorPickerEl);
     colorPicker.setValue(item.color || "#000000");
@@ -2883,10 +2494,7 @@ var StatusBarTab = class extends TabRenderer {
       var _a;
       e.stopPropagation();
       item.mdOnly = !item.mdOnly;
-      (0, import_obsidian8.setIcon)(
-        mdOnlySpan,
-        item.mdOnly ? "file-check" : "file-x",
-      );
+      (0, import_obsidian8.setIcon)(mdOnlySpan, item.mdOnly ? "file-check" : "file-x");
       mdOnlySpan.setAttribute(
         "aria-label",
         item.mdOnly
@@ -2901,10 +2509,7 @@ var StatusBarTab = class extends TabRenderer {
       (_a = this.plugin.statusBarManager) == null ? void 0 : _a.reorder();
       void this.saveSettings();
     });
-    (0, import_obsidian8.setIcon)(
-      mdOnlySpan,
-      item.mdOnly ? "file-check" : "file-x",
-    );
+    (0, import_obsidian8.setIcon)(mdOnlySpan, item.mdOnly ? "file-check" : "file-x");
     if (item.mdOnly) {
       mdOnlySpan.addClass("ui-tweaker-active");
     }
@@ -2923,22 +2528,13 @@ var StatusBarTab = class extends TabRenderer {
     );
     lockSpan.addEventListener("click", (e) => {
       e.stopPropagation();
-      this.toggleLock(
-        item,
-        lockSpan,
-        index,
-        totalItems,
-        rowsContainer,
-        settings,
-      );
+      this.toggleLock(item, lockSpan, index, totalItems, rowsContainer, settings);
     });
     (0, import_obsidian8.setIcon)(lockSpan, lockIcon);
     if (item.sticky) {
       lockSpan.addClass("ui-tweaker-locked");
     }
-    const visibilitySpan = entry.createSpan(
-      "ui-tweaker-status-bar-row-visibility",
-    );
+    const visibilitySpan = entry.createSpan("ui-tweaker-status-bar-row-visibility");
     if (item.type === "custom") {
       visibilitySpan.setAttribute("aria-label", "Delete item");
       visibilitySpan.addClass("mod-warning");
@@ -2955,41 +2551,23 @@ var StatusBarTab = class extends TabRenderer {
       visibilitySpan.addEventListener("click", () => {
         this.toggleVisibility(item, visibilitySpan, entry);
       });
-      (0, import_obsidian8.setIcon)(
-        visibilitySpan,
-        item.hidden ? "eye-off" : "eye",
-      );
+      (0, import_obsidian8.setIcon)(visibilitySpan, item.hidden ? "eye-off" : "eye");
     }
   }
   /**
    * Toggle lock position based on current position
    */
-  toggleLock(
-    item,
-    lockSpan,
-    currentIndex,
-    totalItems,
-    rowsContainer,
-    settings,
-  ) {
+  toggleLock(item, lockSpan, currentIndex, totalItems, rowsContainer, settings) {
     var _a;
     if (!item.sticky) {
       item.sticky = "right";
-      const oldIndex = settings.statusBarItems.findIndex(
-        (i) => i.id === item.id,
-      );
+      const oldIndex = settings.statusBarItems.findIndex((i) => i.id === item.id);
       if (oldIndex !== -1) {
-        arrayMoveMutable2(
-          settings.statusBarItems,
-          oldIndex,
-          settings.statusBarItems.length - 1,
-        );
+        arrayMoveMutable2(settings.statusBarItems, oldIndex, settings.statusBarItems.length - 1);
       }
     } else if (item.sticky === "right") {
       item.sticky = "left";
-      const oldIndex = settings.statusBarItems.findIndex(
-        (i) => i.id === item.id,
-      );
+      const oldIndex = settings.statusBarItems.findIndex((i) => i.id === item.id);
       if (oldIndex !== -1) {
         arrayMoveMutable2(settings.statusBarItems, oldIndex, 0);
       }
@@ -3025,15 +2603,11 @@ var StatusBarTab = class extends TabRenderer {
    */
   async removeItem(rowsContainer, item, settings) {
     var _a;
-    const entry = rowsContainer.querySelector(
-      `[data-ui-tweaker-id="${item.id}"]`,
-    );
+    const entry = rowsContainer.querySelector(`[data-ui-tweaker-id="${item.id}"]`);
     if (entry) {
       rowsContainer.removeChild(entry);
     }
-    await ((_a = this.plugin.statusBarManager) == null
-      ? void 0
-      : _a.removeItem(item));
+    await ((_a = this.plugin.statusBarManager) == null ? void 0 : _a.removeItem(item));
     void this.saveSettings();
   }
   /**
@@ -3043,9 +2617,7 @@ var StatusBarTab = class extends TabRenderer {
     var _a, _b;
     if (dragging) return;
     dragging = true;
-    const entry = rowsContainer.querySelector(
-      `[data-ui-tweaker-id="${item.id}"]`,
-    );
+    const entry = rowsContainer.querySelector(`[data-ui-tweaker-id="${item.id}"]`);
     if (!entry) return;
     const stationaryRow = entry;
     stationaryRow.addClass("ui-tweaker-status-bar-row-clone");
@@ -3058,16 +2630,12 @@ var StatusBarTab = class extends TabRenderer {
     });
     if (item.hidden) movableRow.addClass("ui-tweaker-status-bar-row-hidden");
     if (item.type === "existing") {
-      const statusBarContainer =
-        (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl;
+      const statusBarContainer = (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl;
       const actualElement =
         statusBarContainer == null
           ? void 0
-          : statusBarContainer.querySelector(
-              `[data-ui-tweaker-id="${item.id}"]`,
-            );
-      if (!actualElement)
-        movableRow.addClass("ui-tweaker-status-bar-row-disabled");
+          : statusBarContainer.querySelector(`[data-ui-tweaker-id="${item.id}"]`);
+      if (!actualElement) movableRow.addClass("ui-tweaker-status-bar-row-disabled");
     }
     const wrapper =
       rowsContainer.closest(".ui-tweaker-status-bar-rows-wrapper") ||
@@ -3086,18 +2654,13 @@ var StatusBarTab = class extends TabRenderer {
     movableRow.createSpan("ui-tweaker-status-bar-row-handle");
     const dragTitle = movableRow.createSpan("ui-tweaker-status-bar-row-title");
     dragTitle.textContent = item.name;
-    const dragPreview = movableRow.createSpan(
-      "ui-tweaker-status-bar-row-preview",
-    );
+    const dragPreview = movableRow.createSpan("ui-tweaker-status-bar-row-preview");
     if (item.type === "existing") {
-      const statusBarContainer =
-        (_b = this.plugin.app.statusBar) == null ? void 0 : _b.containerEl;
+      const statusBarContainer = (_b = this.plugin.app.statusBar) == null ? void 0 : _b.containerEl;
       const actualElement =
         statusBarContainer == null
           ? void 0
-          : statusBarContainer.querySelector(
-              `[data-ui-tweaker-status-bar-id="${item.id}"]`,
-            );
+          : statusBarContainer.querySelector(`[data-ui-tweaker-status-bar-id="${item.id}"]`);
       if (actualElement) {
         const cloned = actualElement.cloneNode(true);
         cloned.removeAttribute("aria-label");
@@ -3109,9 +2672,7 @@ var StatusBarTab = class extends TabRenderer {
         dragPreview.appendChild(cloned);
       }
     } else if (item.icon) {
-      const previewIcon = dragPreview.createSpan(
-        "status-bar-item clickable-icon",
-      );
+      const previewIcon = dragPreview.createSpan("status-bar-item clickable-icon");
       (0, import_obsidian8.setIcon)(previewIcon, item.icon);
       previewIcon.removeAttribute("aria-label");
       previewIcon.removeAttribute("title");
@@ -3130,13 +2691,8 @@ var StatusBarTab = class extends TabRenderer {
           ? "corner-right-up"
           : "unlock";
     (0, import_obsidian8.setIcon)(dragLock, lockIcon);
-    const dragVisibility = movableRow.createSpan(
-      "ui-tweaker-status-bar-row-visibility",
-    );
-    (0, import_obsidian8.setIcon)(
-      dragVisibility,
-      item.hidden ? "eye-off" : "eye",
-    );
+    const dragVisibility = movableRow.createSpan("ui-tweaker-status-bar-row-visibility");
+    (0, import_obsidian8.setIcon)(dragVisibility, item.hidden ? "eye-off" : "eye");
     let offsetX = event.clientX - movableRow.getBoundingClientRect().left;
     let offsetY = event.clientY - movableRow.getBoundingClientRect().top;
     offsetX = offsetX + containerX;
@@ -3149,33 +2705,22 @@ var StatusBarTab = class extends TabRenderer {
         top: e.clientY - offsetY + "px",
       });
       const dist =
-        movableRow.getBoundingClientRect().top -
-        stationaryRow.getBoundingClientRect().top;
+        movableRow.getBoundingClientRect().top - stationaryRow.getBoundingClientRect().top;
       if (Math.abs(dist) > stationaryRow.offsetHeight * 0.75) {
         const dir = dist / Math.abs(dist);
-        const newIndex = Math.max(
-          0,
-          Math.min(index + dir, rowsContainer.children.length - 1),
-        );
+        const newIndex = Math.max(0, Math.min(index + dir, rowsContainer.children.length - 1));
         if (newIndex !== index) {
           rowsContainer.removeChild(stationaryRow);
           if (newIndex < rowsContainer.children.length) {
-            rowsContainer.insertBefore(
-              stationaryRow,
-              rowsContainer.children[newIndex],
-            );
+            rowsContainer.insertBefore(stationaryRow, rowsContainer.children[newIndex]);
           } else {
             rowsContainer.appendChild(stationaryRow);
           }
           if (settings.statusBarItems) {
-            const oldIndex = settings.statusBarItems.findIndex(
-              (i) => i.id === item.id,
-            );
+            const oldIndex = settings.statusBarItems.findIndex((i) => i.id === item.id);
             if (oldIndex !== -1 && oldIndex !== newIndex) {
               arrayMoveMutable2(settings.statusBarItems, oldIndex, newIndex);
-              (_a2 = this.plugin.statusBarManager) == null
-                ? void 0
-                : _a2.reorder();
+              (_a2 = this.plugin.statusBarManager) == null ? void 0 : _a2.reorder();
             }
           }
           index = newIndex;
@@ -3237,11 +2782,8 @@ var ExplorerTab = class extends TabRenderer {
                 ? void 0
                 : _b.querySelector("div.nav-buttons-container");
             if (navButtonsContainer) {
-              const buttons =
-                navButtonsContainer.querySelectorAll(".nav-action-button");
-              buttons.forEach((btn) =>
-                btn.classList.remove("ui-tweaker-explorer-button-hidden"),
-              );
+              const buttons = navButtonsContainer.querySelectorAll(".nav-action-button");
+              buttons.forEach((btn) => btn.classList.remove("ui-tweaker-explorer-button-hidden"));
             }
           });
           this.plugin.explorerManager.consolidateSettingsAndElements();
@@ -3284,9 +2826,7 @@ var ExplorerTab = class extends TabRenderer {
     addGroup.addSetting((setting) => {
       setting
         .setName("Add command")
-        .setDesc(
-          "Add a new command button to the file explorer navigation area",
-        )
+        .setDesc("Add a new command button to the file explorer navigation area")
         .addButton((button) => {
           const buttonEl = button.buttonEl;
           const iconContainer = buttonEl.createSpan({
@@ -3321,9 +2861,7 @@ var ExplorerTab = class extends TabRenderer {
                   };
                   settings.explorerButtonItems.push(item);
                   await this.saveSettings();
-                  (_a = this.plugin.explorerManager) == null
-                    ? void 0
-                    : _a.reorder();
+                  (_a = this.plugin.explorerManager) == null ? void 0 : _a.reorder();
                   this.render(container);
                 } catch (e) {}
               })();
@@ -3348,14 +2886,9 @@ var ExplorerTab = class extends TabRenderer {
     const renderNativeButton = (name, settingKey, colorKey) => {
       var _a, _b;
       const isHidden = settings[settingKey];
-      const color =
-        (_a = settings.nativeExplorerButtonColors) == null
-          ? void 0
-          : _a[colorKey];
+      const color = (_a = settings.nativeExplorerButtonColors) == null ? void 0 : _a[colorKey];
       const iconOverride =
-        (_b = settings.nativeExplorerButtonIcons) == null
-          ? void 0
-          : _b[colorKey];
+        (_b = settings.nativeExplorerButtonIcons) == null ? void 0 : _b[colorKey];
       group.addSetting((setting) => {
         setting
           .setName(name)
@@ -3370,16 +2903,11 @@ var ExplorerTab = class extends TabRenderer {
                 settings[settingKey] = !currentValue;
                 await this.saveSettings();
                 const newIsHidden = settings[settingKey];
-                (0, import_obsidian9.setIcon)(
-                  iconEl,
-                  newIsHidden ? "eye-off" : "eye",
-                );
+                (0, import_obsidian9.setIcon)(iconEl, newIsHidden ? "eye-off" : "eye");
                 button.setTooltip(newIsHidden ? "Show button" : "Hide button");
               })();
             });
-            button.extraSettingsEl.addEventListener("click", (e) =>
-              e.stopPropagation(),
-            );
+            button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
           });
         if (color) {
           setting.addColorPicker((colorPicker) => {
@@ -3389,15 +2917,12 @@ var ExplorerTab = class extends TabRenderer {
             setTimeout(() => {
               const colorInput = controlEl.querySelector('input[type="color"]');
               if (colorInput) {
-                colorInput.addEventListener("click", (e) =>
-                  e.stopPropagation(),
-                );
+                colorInput.addEventListener("click", (e) => e.stopPropagation());
               }
             }, 0);
             setTimeout(() => {
               const colorPickerEl =
-                controlEl.querySelector(".color-picker") ||
-                controlEl.lastElementChild;
+                controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
               const resetButton = controlEl.createEl("button", {
                 cls: "clickable-icon ui-tweaker-color-reset",
                 attr: { "aria-label": "Reset to default color" },
@@ -3465,17 +2990,13 @@ var ExplorerTab = class extends TabRenderer {
                 });
               })();
             });
-            button.buttonEl.addEventListener("click", (e) =>
-              e.stopPropagation(),
-            );
+            button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
           });
         }
         setting.addButton((button) => {
           const currentIcon = iconOverride || "Default";
           button
-            .setButtonText(
-              currentIcon === "Default" ? "Set icon..." : currentIcon,
-            )
+            .setButtonText(currentIcon === "Default" ? "Set icon..." : currentIcon)
             .onClick(() => {
               const modal = new IconPickerModal(this.app, (iconId) => {
                 void (async () => {
@@ -3505,8 +3026,7 @@ var ExplorerTab = class extends TabRenderer {
           if (iconOverride) {
             setTimeout(() => {
               const controlEl = setting.controlEl;
-              const buttonEl =
-                controlEl.querySelector("button") || controlEl.lastElementChild;
+              const buttonEl = controlEl.querySelector("button") || controlEl.lastElementChild;
               const resetButton = controlEl.createEl("button", {
                 cls: "clickable-icon ui-tweaker-icon-reset",
                 attr: { "aria-label": "Reset to default icon" },
@@ -3559,10 +3079,7 @@ var ExplorerTab = class extends TabRenderer {
       item.type === "custom" && item.commandId
         ? settings.explorerCommands.find((c) => c.id === item.commandId)
         : null;
-    const displayName =
-      item.type === "custom" && pair
-        ? pair.displayName || pair.name
-        : item.name;
+    const displayName = item.type === "custom" && pair ? pair.displayName || pair.name : item.name;
     const nativeButtonMap = {
       "native-newNote": { settingKey: "newNoteButton", colorKey: "newNote" },
       "native-newFolder": {
@@ -3582,11 +3099,8 @@ var ExplorerTab = class extends TabRenderer {
         colorKey: "collapseAll",
       },
     };
-    const nativeButtonInfo =
-      item.type === "native" ? nativeButtonMap[item.id] : null;
-    const isHidden = nativeButtonInfo
-      ? settings[nativeButtonInfo.settingKey]
-      : item.hidden;
+    const nativeButtonInfo = item.type === "native" ? nativeButtonMap[item.id] : null;
+    const isHidden = nativeButtonInfo ? settings[nativeButtonInfo.settingKey] : item.hidden;
     const color = nativeButtonInfo
       ? (_a = settings.nativeExplorerButtonColors) == null
         ? void 0
@@ -3639,8 +3153,7 @@ var ExplorerTab = class extends TabRenderer {
           "click",
           (e) => {
             const target = e.target;
-            const isChevronClick =
-              target.closest(".ui-tweaker-collapse-icon") !== null;
+            const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
             const isExtraButton =
               target.closest(".extra-setting-button") !== null ||
               target.closest(".clickable-icon.extra-setting-button") !== null;
@@ -3661,8 +3174,7 @@ var ExplorerTab = class extends TabRenderer {
           "click",
           (e) => {
             const target = e.target;
-            const isChevronClick =
-              target.closest(".ui-tweaker-collapse-icon") !== null;
+            const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
             const isExtraButton =
               target.closest(".extra-setting-button") !== null ||
               target.closest(".clickable-icon.extra-setting-button") !== null;
@@ -3702,8 +3214,7 @@ var ExplorerTab = class extends TabRenderer {
           justifyContent: "center",
         });
         nameEl.insertBefore(chevronContainer, nameEl.firstChild);
-        isExpanded =
-          (_a2 = this.expandedStates.get(item.id)) != null ? _a2 : false;
+        isExpanded = (_a2 = this.expandedStates.get(item.id)) != null ? _a2 : false;
         (0, import_obsidian9.setIcon)(
           chevronContainer,
           isExpanded ? "chevrons-down-up" : "chevrons-up-down",
@@ -3764,9 +3275,7 @@ var ExplorerTab = class extends TabRenderer {
               if (pair) {
                 pair.name = newName;
               }
-              (_a3 = this.plugin.explorerManager) == null
-                ? void 0
-                : _a3.updateButtonNames();
+              (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.updateButtonNames();
               void (async () => {
                 await this.saveSettings();
                 this.render(container);
@@ -3815,9 +3324,7 @@ var ExplorerTab = class extends TabRenderer {
                     pair.icon = iconId;
                     item.icon = iconId;
                     await this.saveSettings();
-                    (_a3 = this.plugin.explorerManager) == null
-                      ? void 0
-                      : _a3.reorder();
+                    (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
                     this.render(container);
                   }
                 })();
@@ -3837,13 +3344,9 @@ var ExplorerTab = class extends TabRenderer {
                     settings.nativeExplorerButtonIcons = {};
                   }
                   if (iconId) {
-                    settings.nativeExplorerButtonIcons[
-                      nativeButtonInfo.colorKey
-                    ] = iconId;
+                    settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = iconId;
                   } else {
-                    settings.nativeExplorerButtonIcons[
-                      nativeButtonInfo.colorKey
-                    ] = void 0;
+                    settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = void 0;
                   }
                   await this.saveSettings();
                   (_a3 = this.plugin.explorerManager) == null
@@ -3857,15 +3360,9 @@ var ExplorerTab = class extends TabRenderer {
           } else {
             setCssProps(button.extraSettingsEl, { display: "none" });
           }
-          button.extraSettingsEl.addEventListener("mouseenter", (e) =>
-            e.stopPropagation(),
-          );
-          button.extraSettingsEl.addEventListener("mouseleave", (e) =>
-            e.stopPropagation(),
-          );
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("mouseenter", (e) => e.stopPropagation());
+          button.extraSettingsEl.addEventListener("mouseleave", (e) => e.stopPropagation());
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         })
         .addExtraButton((button) => {
           button.setIcon("chevron-up");
@@ -3880,15 +3377,9 @@ var ExplorerTab = class extends TabRenderer {
               const scrollPos = scrollContainer.scrollTop;
               void (async () => {
                 var _a3;
-                arrayMoveMutable3(
-                  settings.explorerButtonItems,
-                  index,
-                  index - 1,
-                );
+                arrayMoveMutable3(settings.explorerButtonItems, index, index - 1);
                 await this.saveSettings();
-                (_a3 = this.plugin.explorerManager) == null
-                  ? void 0
-                  : _a3.reorder();
+                (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
                 this.render(container);
                 requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
@@ -3906,9 +3397,7 @@ var ExplorerTab = class extends TabRenderer {
             button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
             setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
           }
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         })
         .addExtraButton((button) => {
           button.setIcon("chevron-down");
@@ -3923,15 +3412,9 @@ var ExplorerTab = class extends TabRenderer {
               const scrollPos = scrollContainer.scrollTop;
               void (async () => {
                 var _a3;
-                arrayMoveMutable3(
-                  settings.explorerButtonItems,
-                  index,
-                  index + 1,
-                );
+                arrayMoveMutable3(settings.explorerButtonItems, index, index + 1);
                 await this.saveSettings();
-                (_a3 = this.plugin.explorerManager) == null
-                  ? void 0
-                  : _a3.reorder();
+                (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
                 this.render(container);
                 requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
@@ -3949,9 +3432,7 @@ var ExplorerTab = class extends TabRenderer {
             button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
             setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
           }
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         });
       if (item.type === "custom") {
         setting.addExtraButton((button) => {
@@ -3973,21 +3454,14 @@ var ExplorerTab = class extends TabRenderer {
                 }
               }
               await this.saveSettings();
-              (_a3 = this.plugin.explorerManager) == null
-                ? void 0
-                : _a3.reorder();
+              (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
               this.render(container);
             })();
           });
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         });
       }
-      if (
-        (item.type === "native" && nativeButtonInfo) ||
-        item.type === "external"
-      ) {
+      if ((item.type === "native" && nativeButtonInfo) || item.type === "external") {
         setting.addExtraButton((button) => {
           const iconEl = button.extraSettingsEl;
           (0, import_obsidian9.setIcon)(iconEl, isHidden ? "eye-off" : "eye");
@@ -3996,27 +3470,19 @@ var ExplorerTab = class extends TabRenderer {
             void (async () => {
               var _a3;
               if (item.type === "native" && nativeButtonInfo) {
-                settings[nativeButtonInfo.settingKey] =
-                  !settings[nativeButtonInfo.settingKey];
+                settings[nativeButtonInfo.settingKey] = !settings[nativeButtonInfo.settingKey];
                 item.hidden = settings[nativeButtonInfo.settingKey];
               } else if (item.type === "external") {
                 item.hidden = !item.hidden;
               }
               await this.saveSettings();
               const newIsHidden = item.hidden;
-              (0, import_obsidian9.setIcon)(
-                iconEl,
-                newIsHidden ? "eye-off" : "eye",
-              );
+              (0, import_obsidian9.setIcon)(iconEl, newIsHidden ? "eye-off" : "eye");
               button.setTooltip(newIsHidden ? "Show button" : "Hide button");
-              (_a3 = this.plugin.explorerManager) == null
-                ? void 0
-                : _a3.reorder();
+              (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
             })();
           });
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         });
       }
     });
@@ -4034,28 +3500,20 @@ var ExplorerTab = class extends TabRenderer {
               const controlEl = setting.controlEl;
               controlEl.addEventListener("click", (e) => e.stopPropagation());
               setTimeout(() => {
-                const colorInput = controlEl.querySelector(
-                  'input[type="color"]',
-                );
+                const colorInput = controlEl.querySelector('input[type="color"]');
                 if (colorInput) {
-                  colorInput.addEventListener("click", (e) =>
-                    e.stopPropagation(),
-                  );
+                  colorInput.addEventListener("click", (e) => e.stopPropagation());
                 }
               }, 0);
               if (hasColor) {
                 setTimeout(() => {
                   const colorPickerEl =
-                    controlEl.querySelector(".color-picker") ||
-                    controlEl.lastElementChild;
+                    controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
                   const resetButton = controlEl.createEl("button", {
                     cls: "clickable-icon ui-tweaker-color-reset",
                     attr: { "aria-label": "Reset to default color" },
                   });
-                  (0, import_obsidian9.setIcon)(
-                    resetButton,
-                    "lucide-rotate-cw",
-                  );
+                  (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
                   setCssProps(resetButton, { marginRight: "0.5rem" });
                   resetButton.addEventListener("click", (e) => {
                     e.stopPropagation();
@@ -4066,9 +3524,7 @@ var ExplorerTab = class extends TabRenderer {
                       if (!settings.nativeExplorerButtonColors) {
                         settings.nativeExplorerButtonColors = {};
                       }
-                      settings.nativeExplorerButtonColors[
-                        nativeButtonInfo.colorKey
-                      ] = void 0;
+                      settings.nativeExplorerButtonColors[nativeButtonInfo.colorKey] = void 0;
                       await this.saveSettings();
                       (_a2 = this.plugin.explorerManager) == null
                         ? void 0
@@ -4088,28 +3544,20 @@ var ExplorerTab = class extends TabRenderer {
                     settings.nativeExplorerButtonColors = {};
                   }
                   const newColor = value === "#000000" ? void 0 : value;
-                  settings.nativeExplorerButtonColors[
-                    nativeButtonInfo.colorKey
-                  ] = newColor;
+                  settings.nativeExplorerButtonColors[nativeButtonInfo.colorKey] = newColor;
                   await this.saveSettings();
                   (_a2 = this.plugin.explorerManager) == null
                     ? void 0
                     : _a2.applyNativeIconOverrides();
-                  const existingReset = controlEl.querySelector(
-                    ".ui-tweaker-color-reset",
-                  );
+                  const existingReset = controlEl.querySelector(".ui-tweaker-color-reset");
                   if (newColor && !existingReset) {
                     const colorPickerEl =
-                      controlEl.querySelector(".color-picker") ||
-                      controlEl.lastElementChild;
+                      controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
                     const resetButton = controlEl.createEl("button", {
                       cls: "clickable-icon ui-tweaker-color-reset",
                       attr: { "aria-label": "Reset to default color" },
                     });
-                    (0, import_obsidian9.setIcon)(
-                      resetButton,
-                      "lucide-rotate-cw",
-                    );
+                    (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
                     setCssProps(resetButton, { marginRight: "0.5rem" });
                     resetButton.addEventListener("click", (e) => {
                       e.stopPropagation();
@@ -4120,9 +3568,7 @@ var ExplorerTab = class extends TabRenderer {
                         if (!settings.nativeExplorerButtonColors) {
                           settings.nativeExplorerButtonColors = {};
                         }
-                        settings.nativeExplorerButtonColors[
-                          nativeButtonInfo.colorKey
-                        ] = void 0;
+                        settings.nativeExplorerButtonColors[nativeButtonInfo.colorKey] = void 0;
                         await this.saveSettings();
                         (_a3 = this.plugin.explorerManager) == null
                           ? void 0
@@ -4149,9 +3595,7 @@ var ExplorerTab = class extends TabRenderer {
             .addButton((button) => {
               const currentIcon = iconOverride || "Default";
               button
-                .setButtonText(
-                  currentIcon === "Default" ? "Set icon..." : currentIcon,
-                )
+                .setButtonText(currentIcon === "Default" ? "Set icon..." : currentIcon)
                 .onClick(() => {
                   const modal = new IconPickerModal(this.app, (iconId) => {
                     void (async () => {
@@ -4160,13 +3604,9 @@ var ExplorerTab = class extends TabRenderer {
                         settings.nativeExplorerButtonIcons = {};
                       }
                       if (iconId) {
-                        settings.nativeExplorerButtonIcons[
-                          nativeButtonInfo.colorKey
-                        ] = iconId;
+                        settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = iconId;
                       } else {
-                        settings.nativeExplorerButtonIcons[
-                          nativeButtonInfo.colorKey
-                        ] = void 0;
+                        settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = void 0;
                       }
                       await this.saveSettings();
                       (_a2 = this.plugin.explorerManager) == null
@@ -4177,23 +3617,16 @@ var ExplorerTab = class extends TabRenderer {
                   });
                   modal.open();
                 });
-              button.buttonEl.addEventListener("click", (e) =>
-                e.stopPropagation(),
-              );
+              button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
               if (hasIconOverride) {
                 setTimeout(() => {
                   const controlEl = setting.controlEl;
-                  const buttonEl =
-                    controlEl.querySelector("button") ||
-                    controlEl.lastElementChild;
+                  const buttonEl = controlEl.querySelector("button") || controlEl.lastElementChild;
                   const resetButton = controlEl.createEl("button", {
                     cls: "clickable-icon ui-tweaker-icon-override-reset",
                     attr: { "aria-label": "Reset icon override" },
                   });
-                  (0, import_obsidian9.setIcon)(
-                    resetButton,
-                    "lucide-rotate-cw",
-                  );
+                  (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
                   setCssProps(resetButton, { marginRight: "0.5rem" });
                   resetButton.addEventListener("click", (e) => {
                     e.stopPropagation();
@@ -4204,9 +3637,7 @@ var ExplorerTab = class extends TabRenderer {
                       if (!settings.nativeExplorerButtonIcons) {
                         settings.nativeExplorerButtonIcons = {};
                       }
-                      settings.nativeExplorerButtonIcons[
-                        nativeButtonInfo.colorKey
-                      ] = void 0;
+                      settings.nativeExplorerButtonIcons[nativeButtonInfo.colorKey] = void 0;
                       await this.saveSettings();
                       (_a2 = this.plugin.explorerManager) == null
                         ? void 0
@@ -4243,15 +3674,11 @@ var ExplorerTab = class extends TabRenderer {
                     pair.mode = value;
                     item.mode = value;
                     await this.saveSettings();
-                    (_a2 = this.plugin.explorerManager) == null
-                      ? void 0
-                      : _a2.reorder();
+                    (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
                     this.render(container);
                   })();
                 });
-              dropdown.selectEl.addEventListener("click", (e) =>
-                e.stopPropagation(),
-              );
+              dropdown.selectEl.addEventListener("click", (e) => e.stopPropagation());
             });
         });
         group.addSetting((setting) => {
@@ -4267,28 +3694,20 @@ var ExplorerTab = class extends TabRenderer {
               const controlEl = setting.controlEl;
               controlEl.addEventListener("click", (e) => e.stopPropagation());
               setTimeout(() => {
-                const colorInput = controlEl.querySelector(
-                  'input[type="color"]',
-                );
+                const colorInput = controlEl.querySelector('input[type="color"]');
                 if (colorInput) {
-                  colorInput.addEventListener("click", (e) =>
-                    e.stopPropagation(),
-                  );
+                  colorInput.addEventListener("click", (e) => e.stopPropagation());
                 }
               }, 0);
               if (hasColor) {
                 setTimeout(() => {
                   const colorPickerEl =
-                    controlEl.querySelector(".color-picker") ||
-                    controlEl.lastElementChild;
+                    controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
                   const resetButton = controlEl.createEl("button", {
                     cls: "clickable-icon ui-tweaker-color-reset",
                     attr: { "aria-label": "Reset to default color" },
                   });
-                  (0, import_obsidian9.setIcon)(
-                    resetButton,
-                    "lucide-rotate-cw",
-                  );
+                  (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
                   setCssProps(resetButton, { marginRight: "0.5rem" });
                   resetButton.addEventListener("click", (e) => {
                     e.stopPropagation();
@@ -4299,9 +3718,7 @@ var ExplorerTab = class extends TabRenderer {
                       pair.color = void 0;
                       item.color = void 0;
                       await this.saveSettings();
-                      (_a3 = this.plugin.explorerManager) == null
-                        ? void 0
-                        : _a3.reorder();
+                      (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
                       this.render(container);
                     })();
                   });
@@ -4325,21 +3742,15 @@ var ExplorerTab = class extends TabRenderer {
                   }
                 }
                 const controlEl2 = setting.controlEl;
-                const existingReset = controlEl2.querySelector(
-                  ".ui-tweaker-color-reset",
-                );
+                const existingReset = controlEl2.querySelector(".ui-tweaker-color-reset");
                 if (newColor && !existingReset) {
                   const colorPickerEl =
-                    controlEl2.querySelector(".color-picker") ||
-                    controlEl2.lastElementChild;
+                    controlEl2.querySelector(".color-picker") || controlEl2.lastElementChild;
                   const resetButton = controlEl2.createEl("button", {
                     cls: "clickable-icon ui-tweaker-color-reset",
                     attr: { "aria-label": "Reset to default color" },
                   });
-                  (0, import_obsidian9.setIcon)(
-                    resetButton,
-                    "lucide-rotate-cw",
-                  );
+                  (0, import_obsidian9.setIcon)(resetButton, "lucide-rotate-cw");
                   setCssProps(resetButton, { marginRight: "0.5rem" });
                   resetButton.addEventListener("click", (e) => {
                     e.stopPropagation();
@@ -4350,9 +3761,7 @@ var ExplorerTab = class extends TabRenderer {
                       pair.color = void 0;
                       item.color = void 0;
                       await this.saveSettings();
-                      (_a3 = this.plugin.explorerManager) == null
-                        ? void 0
-                        : _a3.reorder();
+                      (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
                       this.render(container);
                     })();
                   });
@@ -4365,9 +3774,7 @@ var ExplorerTab = class extends TabRenderer {
                 void (async () => {
                   var _a3;
                   await this.saveSettings();
-                  (_a3 = this.plugin.explorerManager) == null
-                    ? void 0
-                    : _a3.reorder();
+                  (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
                 })();
               });
             });
@@ -4386,9 +3793,7 @@ var ExplorerTab = class extends TabRenderer {
               const currentToggleIcon = pair.toggleIcon || "None";
               button
                 .setButtonText(
-                  currentToggleIcon === "None"
-                    ? "Set toggle icon..."
-                    : currentToggleIcon,
+                  currentToggleIcon === "None" ? "Set toggle icon..." : currentToggleIcon,
                 )
                 .onClick(() => {
                   const modal = new IconPickerModal(this.app, (iconId) => {
@@ -4402,17 +3807,13 @@ var ExplorerTab = class extends TabRenderer {
                         item.toggleIcon = void 0;
                       }
                       await this.saveSettings();
-                      (_a2 = this.plugin.explorerManager) == null
-                        ? void 0
-                        : _a2.reorder();
+                      (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
                       this.render(container);
                     })();
                   });
                   modal.open();
                 });
-              button.buttonEl.addEventListener("click", (e) =>
-                e.stopPropagation(),
-              );
+              button.buttonEl.addEventListener("click", (e) => e.stopPropagation());
             });
         });
         group.addSetting((setting) => {
@@ -4424,32 +3825,25 @@ var ExplorerTab = class extends TabRenderer {
             )
             .addToggle((toggle) => {
               var _a2;
-              toggle.setValue(
-                (_a2 = pair.useActiveClass) != null ? _a2 : false,
-              );
+              toggle.setValue((_a2 = pair.useActiveClass) != null ? _a2 : false);
               toggle.onChange((value) => {
                 void (async () => {
                   var _a3;
                   pair.useActiveClass = value;
                   item.useActiveClass = value;
                   await this.saveSettings();
-                  (_a3 = this.plugin.explorerManager) == null
-                    ? void 0
-                    : _a3.reorder();
+                  (_a3 = this.plugin.explorerManager) == null ? void 0 : _a3.reorder();
                   this.render(container);
                 })();
               });
-              toggle.toggleEl.addEventListener("click", (e) =>
-                e.stopPropagation(),
-              );
+              toggle.toggleEl.addEventListener("click", (e) => e.stopPropagation());
             });
         });
       }
     }
     setTimeout(() => {
       var _a2;
-      const savedExpanded =
-        (_a2 = this.expandedStates.get(item.id)) != null ? _a2 : false;
+      const savedExpanded = (_a2 = this.expandedStates.get(item.id)) != null ? _a2 : false;
       otherSettings.forEach((settingEl) => {
         setCssProps(settingEl, { display: savedExpanded ? "" : "none" });
       });
@@ -4466,8 +3860,7 @@ var ExplorerTab = class extends TabRenderer {
         "click",
         (e) => {
           const target = e.target;
-          const isChevronClick =
-            target.closest(".ui-tweaker-collapse-icon") !== null;
+          const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
           const isExtraButton =
             target.closest(".extra-setting-button") !== null ||
             target.closest(".clickable-icon.extra-setting-button") !== null;
@@ -4488,8 +3881,7 @@ var ExplorerTab = class extends TabRenderer {
         "click",
         (e) => {
           const target = e.target;
-          const isChevronClick =
-            target.closest(".ui-tweaker-collapse-icon") !== null;
+          const isChevronClick = target.closest(".ui-tweaker-collapse-icon") !== null;
           const isExtraButton =
             target.closest(".extra-setting-button") !== null ||
             target.closest(".clickable-icon.extra-setting-button") !== null;
@@ -4525,8 +3917,7 @@ var ExplorerTab = class extends TabRenderer {
         justifyContent: "center",
       });
       nameEl.insertBefore(chevronContainer, nameEl.firstChild);
-      let isExpanded =
-        (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
+      let isExpanded = (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
       (0, import_obsidian9.setIcon)(
         chevronContainer,
         isExpanded ? "chevrons-down-up" : "chevrons-up-down",
@@ -4582,9 +3973,7 @@ var ExplorerTab = class extends TabRenderer {
               newName = currentName;
             }
             pair.name = newName;
-            (_a2 = this.plugin.explorerManager) == null
-              ? void 0
-              : _a2.updateButtonNames();
+            (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.updateButtonNames();
             void (async () => {
               await this.saveSettings();
               this.render(container);
@@ -4630,18 +4019,14 @@ var ExplorerTab = class extends TabRenderer {
                 if (iconId && iconId !== pair.icon) {
                   pair.icon = iconId;
                   await this.saveSettings();
-                  (_a2 = this.plugin.explorerManager) == null
-                    ? void 0
-                    : _a2.reorder();
+                  (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
                   this.render(container);
                 }
               })();
             });
             modal.open();
           });
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         })
         .addExtraButton((button) => {
           button.setIcon("chevron-up");
@@ -4658,9 +4043,7 @@ var ExplorerTab = class extends TabRenderer {
                 var _a2;
                 arrayMoveMutable3(settings.explorerCommands, index, index - 1);
                 await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null
-                  ? void 0
-                  : _a2.reorder();
+                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
                 this.render(container);
                 requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
@@ -4678,9 +4061,7 @@ var ExplorerTab = class extends TabRenderer {
             button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
             setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
           }
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         })
         .addExtraButton((button) => {
           button.setIcon("chevron-down");
@@ -4697,9 +4078,7 @@ var ExplorerTab = class extends TabRenderer {
                 var _a2;
                 arrayMoveMutable3(settings.explorerCommands, index, index + 1);
                 await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null
-                  ? void 0
-                  : _a2.reorder();
+                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
                 this.render(container);
                 requestAnimationFrame(() => {
                   scrollContainer.scrollTop = scrollPos;
@@ -4717,9 +4096,7 @@ var ExplorerTab = class extends TabRenderer {
             button.extraSettingsEl.addClass("ui-tweaker-disabled-button");
             setCssProps(button.extraSettingsEl, { pointerEvents: "none" });
           }
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         })
         .addExtraButton((button) => {
           button.setIcon("trash");
@@ -4733,16 +4110,12 @@ var ExplorerTab = class extends TabRenderer {
               if (idx > -1) {
                 settings.explorerCommands.splice(idx, 1);
                 await this.saveSettings();
-                (_a2 = this.plugin.explorerManager) == null
-                  ? void 0
-                  : _a2.reorder();
+                (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
                 this.render(container);
               }
             })();
           });
-          button.extraSettingsEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          button.extraSettingsEl.addEventListener("click", (e) => e.stopPropagation());
         });
     });
     group.addSetting((setting) => {
@@ -4763,15 +4136,11 @@ var ExplorerTab = class extends TabRenderer {
                 var _a;
                 pair.mode = value;
                 await this.saveSettings();
-                (_a = this.plugin.explorerManager) == null
-                  ? void 0
-                  : _a.reorder();
+                (_a = this.plugin.explorerManager) == null ? void 0 : _a.reorder();
                 this.render(container);
               })();
             });
-          dropdown.selectEl.addEventListener("click", (e) =>
-            e.stopPropagation(),
-          );
+          dropdown.selectEl.addEventListener("click", (e) => e.stopPropagation());
         });
     });
     group.addSetting((setting) => {
@@ -4795,8 +4164,7 @@ var ExplorerTab = class extends TabRenderer {
           if (hasColor) {
             setTimeout(() => {
               const colorPickerEl =
-                controlEl.querySelector(".color-picker") ||
-                controlEl.lastElementChild;
+                controlEl.querySelector(".color-picker") || controlEl.lastElementChild;
               const resetButton = controlEl.createEl("button", {
                 cls: "clickable-icon ui-tweaker-color-reset",
                 attr: { "aria-label": "Reset to default color" },
@@ -4817,9 +4185,7 @@ var ExplorerTab = class extends TabRenderer {
                     iconButton.style.removeProperty("color");
                   }
                   await this.saveSettings();
-                  (_a2 = this.plugin.explorerManager) == null
-                    ? void 0
-                    : _a2.reorder();
+                  (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
                   this.render(container);
                 })();
               });
@@ -4833,9 +4199,7 @@ var ExplorerTab = class extends TabRenderer {
           colorPicker.onChange((value) => {
             const newColor = value === "#000000" ? void 0 : value;
             pair.color = newColor;
-            const iconButton = container.querySelector(
-              `[data-explorer-command-id="${pair.id}"]`,
-            );
+            const iconButton = container.querySelector(`[data-explorer-command-id="${pair.id}"]`);
             if (iconButton) {
               if (newColor && newColor !== "#000000") {
                 setCssProps(iconButton, { color: newColor });
@@ -4844,13 +4208,10 @@ var ExplorerTab = class extends TabRenderer {
               }
             }
             const controlEl2 = setting.controlEl;
-            const existingReset = controlEl2.querySelector(
-              ".ui-tweaker-color-reset",
-            );
+            const existingReset = controlEl2.querySelector(".ui-tweaker-color-reset");
             if (newColor && !existingReset) {
               const colorPickerEl =
-                controlEl2.querySelector(".color-picker") ||
-                controlEl2.lastElementChild;
+                controlEl2.querySelector(".color-picker") || controlEl2.lastElementChild;
               const resetButton = controlEl2.createEl("button", {
                 cls: "clickable-icon ui-tweaker-color-reset",
                 attr: { "aria-label": "Reset to default color" },
@@ -4871,9 +4232,7 @@ var ExplorerTab = class extends TabRenderer {
                     iconButton2.style.removeProperty("color");
                   }
                   await this.saveSettings();
-                  (_a2 = this.plugin.explorerManager) == null
-                    ? void 0
-                    : _a2.reorder();
+                  (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
                   this.render(container);
                 })();
               });
@@ -4888,9 +4247,7 @@ var ExplorerTab = class extends TabRenderer {
             void (async () => {
               var _a2;
               await this.saveSettings();
-              (_a2 = this.plugin.explorerManager) == null
-                ? void 0
-                : _a2.reorder();
+              (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
             })();
           });
         });
@@ -4909,11 +4266,7 @@ var ExplorerTab = class extends TabRenderer {
         .addButton((button) => {
           const currentToggleIcon = pair.toggleIcon || "None";
           button
-            .setButtonText(
-              currentToggleIcon === "None"
-                ? "Set toggle icon..."
-                : currentToggleIcon,
-            )
+            .setButtonText(currentToggleIcon === "None" ? "Set toggle icon..." : currentToggleIcon)
             .onClick(() => {
               const modal = new IconPickerModal(this.app, (iconId) => {
                 void (async () => {
@@ -4924,9 +4277,7 @@ var ExplorerTab = class extends TabRenderer {
                     pair.toggleIcon = void 0;
                   }
                   await this.saveSettings();
-                  (_a = this.plugin.explorerManager) == null
-                    ? void 0
-                    : _a.reorder();
+                  (_a = this.plugin.explorerManager) == null ? void 0 : _a.reorder();
                   this.render(container);
                 })();
               });
@@ -4936,8 +4287,7 @@ var ExplorerTab = class extends TabRenderer {
           if (hasToggleIcon) {
             setTimeout(() => {
               const controlEl = setting.controlEl;
-              const buttonEl =
-                controlEl.querySelector("button") || controlEl.lastElementChild;
+              const buttonEl = controlEl.querySelector("button") || controlEl.lastElementChild;
               const resetButton = controlEl.createEl("button", {
                 cls: "clickable-icon ui-tweaker-toggle-icon-reset",
                 attr: { "aria-label": "Reset toggle icon" },
@@ -4958,9 +4308,7 @@ var ExplorerTab = class extends TabRenderer {
                   var _a;
                   pair.toggleIcon = void 0;
                   await this.saveSettings();
-                  (_a = this.plugin.explorerManager) == null
-                    ? void 0
-                    : _a.reorder();
+                  (_a = this.plugin.explorerManager) == null ? void 0 : _a.reorder();
                   this.render(container);
                   requestAnimationFrame(() => {
                     scrollContainer.scrollTop = scrollPos;
@@ -4983,9 +4331,7 @@ var ExplorerTab = class extends TabRenderer {
       otherSettings.push(setting.settingEl);
       setting
         .setName("Use active class instead of icon swap")
-        .setDesc(
-          "When toggled on, add is-active class instead of swapping icon (explorer only)",
-        )
+        .setDesc("When toggled on, add is-active class instead of swapping icon (explorer only)")
         .addToggle((toggle) => {
           var _a;
           toggle.setValue((_a = pair.useActiveClass) != null ? _a : false);
@@ -4994,9 +4340,7 @@ var ExplorerTab = class extends TabRenderer {
               var _a2;
               pair.useActiveClass = value;
               await this.saveSettings();
-              (_a2 = this.plugin.explorerManager) == null
-                ? void 0
-                : _a2.reorder();
+              (_a2 = this.plugin.explorerManager) == null ? void 0 : _a2.reorder();
               this.render(container);
             })();
           });
@@ -5005,8 +4349,7 @@ var ExplorerTab = class extends TabRenderer {
     });
     setTimeout(() => {
       var _a;
-      const savedExpanded =
-        (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
+      const savedExpanded = (_a = this.expandedStates.get(pair.id)) != null ? _a : false;
       otherSettings.forEach((settingEl) => {
         setCssProps(settingEl, { display: savedExpanded ? "" : "none" });
       });
@@ -5107,9 +4450,9 @@ var MobileTab = class extends TabRenderer {
       "hideStatusBarMobile",
     );
     this.renderSyncButtonReplacement(container, mobileGroup);
-    const mobileNavGroup = new import_obsidian10.SettingGroup(
-      container,
-    ).setHeading("Mobile navigation menu");
+    const mobileNavGroup = new import_obsidian10.SettingGroup(container).setHeading(
+      "Mobile navigation menu",
+    );
     this.addPositionSetting(
       mobileNavGroup,
       '"Navigate back" button position',
@@ -5153,12 +4496,10 @@ var MobileTab = class extends TabRenderer {
         .setName(name)
         .setDesc(desc)
         .addToggle((toggle) =>
-          toggle
-            .setValue(Boolean(this.getSettings()[key]))
-            .onChange((value) => {
-              this.getSettings()[key] = value;
-              void this.saveSettings();
-            }),
+          toggle.setValue(Boolean(this.getSettings()[key])).onChange((value) => {
+            this.getSettings()[key] = value;
+            void this.saveSettings();
+          }),
         );
     });
   }
@@ -5172,8 +4513,7 @@ var MobileTab = class extends TabRenderer {
             dropdown.addOption(String(i), String(i));
           }
           const currentValue = this.getSettings()[key];
-          const stringValue =
-            typeof currentValue === "string" ? currentValue : "1";
+          const stringValue = typeof currentValue === "string" ? currentValue : "1";
           dropdown.setValue(stringValue).onChange((value) => {
             this.getSettings()[key] = value;
             void this.saveSettings();
@@ -5198,25 +4538,20 @@ var MobileTab = class extends TabRenderer {
           "Replace the sync button in the mobile sidebar with a custom icon and command. This will hide the original sync button and show your custom button instead.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(settings.syncButtonReplacement.enabled)
-            .onChange((value) => {
-              settings.syncButtonReplacement.enabled = value;
-              dependentSettings.forEach((el) => {
-                el.style.display = value ? "" : "none";
-              });
-              void this.saveSettings();
-            }),
+          toggle.setValue(settings.syncButtonReplacement.enabled).onChange((value) => {
+            settings.syncButtonReplacement.enabled = value;
+            dependentSettings.forEach((el) => {
+              el.style.display = value ? "" : "none";
+            });
+            void this.saveSettings();
+          }),
         );
     });
     const getCommandName = (commandId) => {
       if (!commandId) return "Select command...";
       try {
         const commandRegistry = this.app.commands;
-        if (
-          commandRegistry &&
-          typeof commandRegistry.listCommands === "function"
-        ) {
+        if (commandRegistry && typeof commandRegistry.listCommands === "function") {
           const commands = commandRegistry.listCommands();
           const command = commands.find((cmd) => cmd && cmd.id === commandId);
           if (command == null ? void 0 : command.name) {
@@ -5236,17 +4571,13 @@ var MobileTab = class extends TabRenderer {
     };
     group.addSetting((setting) => {
       dependentSettings.push(setting.settingEl);
-      setting.settingEl.style.display = settings.syncButtonReplacement.enabled
-        ? ""
-        : "none";
+      setting.settingEl.style.display = settings.syncButtonReplacement.enabled ? "" : "none";
       setting
         .setName("Command")
         .setDesc("Select the command to execute when the button is clicked")
         .addButton((button) =>
           button
-            .setButtonText(
-              getCommandName(settings.syncButtonReplacement.commandId),
-            )
+            .setButtonText(getCommandName(settings.syncButtonReplacement.commandId))
             .onClick(() => {
               const modal = new CommandPickerModal(this.app, (commandId) => {
                 settings.syncButtonReplacement.commandId = commandId;
@@ -5259,18 +4590,13 @@ var MobileTab = class extends TabRenderer {
     });
     group.addSetting((setting) => {
       dependentSettings.push(setting.settingEl);
-      setting.settingEl.style.display = settings.syncButtonReplacement.enabled
-        ? ""
-        : "none";
+      setting.settingEl.style.display = settings.syncButtonReplacement.enabled ? "" : "none";
       setting
         .setName("Icon")
         .setDesc("Select the icon to display on the button")
         .addButton((button) =>
           button
-            .setButtonText(
-              getIconName(settings.syncButtonReplacement.iconId) ||
-                "Select icon...",
-            )
+            .setButtonText(getIconName(settings.syncButtonReplacement.iconId) || "Select icon...")
             .onClick(() => {
               const modal = new IconPickerModal(this.app, (iconId) => {
                 settings.syncButtonReplacement.iconId = iconId;
@@ -5304,43 +4630,30 @@ var PropertiesTab = class extends TabRenderer {
     topGroup.addSetting((setting) => {
       setting
         .setName("Minimal property icons")
-        .setDesc(
-          "Hide the default property type icon and only show your custom icon.",
-        )
+        .setDesc("Hide the default property type icon and only show your custom icon.")
         .addToggle((toggle) => {
-          toggle
-            .setValue(settings.minimalPropertyIcons)
-            .onChange(async (value) => {
-              var _a2;
-              settings.minimalPropertyIcons = value;
-              await this.saveSettings();
-              (_a2 = this.plugin.propertiesManager) == null
-                ? void 0
-                : _a2.refresh();
-            });
+          toggle.setValue(settings.minimalPropertyIcons).onChange(async (value) => {
+            var _a2;
+            settings.minimalPropertyIcons = value;
+            await this.saveSettings();
+            (_a2 = this.plugin.propertiesManager) == null ? void 0 : _a2.refresh();
+          });
         });
     });
     topGroup.addSetting((setting) => {
       setting
         .setName("Right-click menu")
-        .setDesc(
-          'Add "Change icon" and "Remove icon" to the property context menu.',
-        )
+        .setDesc('Add "Change icon" and "Remove icon" to the property context menu.')
         .addToggle((toggle) => {
-          toggle
-            .setValue(settings.showPropertyMenuActions)
-            .onChange(async (value) => {
-              settings.showPropertyMenuActions = value;
-              await this.saveSettings();
-            });
+          toggle.setValue(settings.showPropertyMenuActions).onChange(async (value) => {
+            settings.showPropertyMenuActions = value;
+            await this.saveSettings();
+          });
         });
     });
-    const propGroup = new import_obsidian11.SettingGroup(container).setHeading(
-      "Property Icons",
-    );
+    const propGroup = new import_obsidian11.SettingGroup(container).setHeading("Property Icons");
     const metadataProps = Object.keys(
-      ((_a = this.app.metadataTypeManager) == null ? void 0 : _a.properties) ||
-        {},
+      ((_a = this.app.metadataTypeManager) == null ? void 0 : _a.properties) || {},
     );
     const savedProps = settings.propertyIconItems.map((i) => i.id);
     const allProperties = Array.from(
@@ -5363,15 +4676,10 @@ var PropertiesTab = class extends TabRenderer {
   renderPropertySetting(group, propName) {
     const settings = this.getSettings();
     const normalizedPropName = propName.toLowerCase();
-    let item = settings.propertyIconItems.find(
-      (i) => i.id.toLowerCase() === normalizedPropName,
-    );
+    let item = settings.propertyIconItems.find((i) => i.id.toLowerCase() === normalizedPropName);
     group.addSetting((setting) => {
       setting.setName(propName);
-      if (
-        (item == null ? void 0 : item.icon) ||
-        (item == null ? void 0 : item.color)
-      ) {
+      if ((item == null ? void 0 : item.icon) || (item == null ? void 0 : item.color)) {
         setting.addExtraButton((button) => {
           button
             .setIcon("lucide-rotate-ccw")
@@ -5383,9 +4691,7 @@ var PropertiesTab = class extends TabRenderer {
               );
               await this.saveSettings();
               if (this.container) this.render(this.container);
-              (_a = this.plugin.propertiesManager) == null
-                ? void 0
-                : _a.refresh();
+              (_a = this.plugin.propertiesManager) == null ? void 0 : _a.refresh();
             });
         });
       }
@@ -5402,9 +4708,7 @@ var PropertiesTab = class extends TabRenderer {
           setCssProps(iconEl, { opacity: "0.4" });
         }
         button.setTooltip(
-          (item == null ? void 0 : item.icon)
-            ? `Icon: ${item.icon} (click to change)`
-            : "Add icon",
+          (item == null ? void 0 : item.icon) ? `Icon: ${item.icon} (click to change)` : "Add icon",
         );
         button.onClick(() => {
           const modal = new IconPickerModal(this.app, async (iconId) => {
@@ -5428,17 +4732,13 @@ var PropertiesTab = class extends TabRenderer {
             }
             await this.saveSettings();
             if (this.container) this.render(this.container);
-            (_a = this.plugin.propertiesManager) == null
-              ? void 0
-              : _a.refresh();
+            (_a = this.plugin.propertiesManager) == null ? void 0 : _a.refresh();
           });
           modal.open();
         });
       });
       if (item == null ? void 0 : item.icon) {
-        const colorPicker = new import_obsidian11.ColorComponent(
-          setting.controlEl,
-        );
+        const colorPicker = new import_obsidian11.ColorComponent(setting.controlEl);
         colorPicker.setValue(item.color || "#000000");
         colorPicker.onChange(async (value) => {
           var _a;
@@ -5448,9 +4748,7 @@ var PropertiesTab = class extends TabRenderer {
           if (!currentItem) return;
           currentItem.color = value === "#000000" ? void 0 : value;
           await this.saveSettings();
-          const iconBtn = setting.settingEl.querySelector(
-            ".ui-tweaker-property-icon-btn",
-          );
+          const iconBtn = setting.settingEl.querySelector(".ui-tweaker-property-icon-btn");
           if (iconBtn) {
             if (currentItem.color) {
               setCssProps(iconBtn, { color: currentItem.color });
@@ -5517,9 +4815,7 @@ var UITweakerSettingTab = class extends import_obsidian12.PluginSettingTab {
     const tabsWrapper = containerEl.createDiv("ui-tweaker-settings-tabs");
     const navEl = tabsWrapper.createDiv("ui-tweaker-settings-tabs-nav");
     navEl.setAttribute("role", "tablist");
-    const contentWrapper = tabsWrapper.createDiv(
-      "ui-tweaker-settings-tabs-content",
-    );
+    const contentWrapper = tabsWrapper.createDiv("ui-tweaker-settings-tabs-content");
     tabs.forEach((tab) => {
       const buttonComponent = new import_obsidian12.ButtonComponent(navEl);
       buttonComponent.setButtonText(tab.name);
@@ -5679,27 +4975,15 @@ function matchesFileTypeFilter(leaf, showOnFileTypes, hideOnFileTypes) {
   const hideFilters = parseFileAndViewTypes(hideOnFileTypes);
   const fileExt = getFileExtension(leaf);
   const viewType = getViewType(leaf);
-  if (
-    hideFilters.fileTypes.length > 0 &&
-    fileExt &&
-    hideFilters.fileTypes.includes(fileExt)
-  ) {
+  if (hideFilters.fileTypes.length > 0 && fileExt && hideFilters.fileTypes.includes(fileExt)) {
     return false;
   }
-  if (
-    hideFilters.viewTypes.length > 0 &&
-    viewType &&
-    hideFilters.viewTypes.includes(viewType)
-  ) {
+  if (hideFilters.viewTypes.length > 0 && viewType && hideFilters.viewTypes.includes(viewType)) {
     return false;
   }
   if (showFilters.fileTypes.length > 0 || showFilters.viewTypes.length > 0) {
-    const matchesFileType = fileExt
-      ? showFilters.fileTypes.includes(fileExt)
-      : false;
-    const matchesViewType = viewType
-      ? showFilters.viewTypes.includes(viewType)
-      : false;
+    const matchesFileType = fileExt ? showFilters.fileTypes.includes(fileExt) : false;
+    const matchesViewType = viewType ? showFilters.viewTypes.includes(viewType) : false;
     return matchesFileType || matchesViewType;
   }
   return true;
@@ -5712,19 +4996,13 @@ function isModeActive(mode, plugin) {
   if (mode !== "any" && mode !== "desktop" && mode !== "mobile") {
     return mode === appId;
   }
-  return (
-    mode === "any" ||
-    (mode === "mobile" && isMobile) ||
-    (mode === "desktop" && !isMobile)
-  );
+  return mode === "any" || (mode === "mobile" && isMobile) || (mode === "desktop" && !isMobile);
 }
 function getCommandFromId(id, plugin) {
   var _a, _b;
   const commands = plugin.app.commands;
-  return (_b =
-    (_a = commands == null ? void 0 : commands.commands) == null
-      ? void 0
-      : _a[id]) != null
+  return (_b = (_a = commands == null ? void 0 : commands.commands) == null ? void 0 : _a[id]) !=
+    null
     ? _b
     : null;
 }
@@ -5739,14 +5017,9 @@ function isCommandChecked(id, plugin) {
   if (id === "editing-toolbar:hide-show-menu" || id === "hide-show-menu") {
     const plugins = plugin.app.plugins;
     const editingToolbarPlugin =
-      (_a = plugins == null ? void 0 : plugins.plugins) == null
-        ? void 0
-        : _a["editing-toolbar"];
+      (_a = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _a["editing-toolbar"];
     if (
-      ((_b =
-        editingToolbarPlugin == null
-          ? void 0
-          : editingToolbarPlugin.settings) == null
+      ((_b = editingToolbarPlugin == null ? void 0 : editingToolbarPlugin.settings) == null
         ? void 0
         : _b.cMenuVisibility) !== void 0
     ) {
@@ -5767,9 +5040,7 @@ function isCommandChecked(id, plugin) {
       commandToggleTracker.syncState(id, isChecked);
       return isChecked;
     } catch (e) {
-      return (_e = commandToggleTracker.getTrackedState(id)) != null
-        ? _e
-        : false;
+      return (_e = commandToggleTracker.getTrackedState(id)) != null ? _e : false;
     }
   }
   return (_f = commandToggleTracker.getTrackedState(id)) != null ? _f : false;
@@ -5826,9 +5097,7 @@ var TabBarManager = class {
         return;
       }
     }
-    if (
-      !matchesFileTypeFilter(leaf, pair.showOnFileTypes, pair.hideOnFileTypes)
-    ) {
+    if (!matchesFileTypeFilter(leaf, pair.showOnFileTypes, pair.hideOnFileTypes)) {
       return;
     }
     const initialIcon = this.getIconForToggleState(pair);
@@ -5901,9 +5170,7 @@ var TabBarManager = class {
   }
   removeButtonsFromAllLeaves() {
     requestAnimationFrame(() =>
-      this.plugin.app.workspace.iterateAllLeaves((leaf) =>
-        this.removeButtonsFromLeaf(leaf),
-      ),
+      this.plugin.app.workspace.iterateAllLeaves((leaf) => this.removeButtonsFromLeaf(leaf)),
     );
   }
   addButtonsToLeaf(leaf, refresh = false) {
@@ -5975,10 +5242,7 @@ var TabBarManager = class {
       return;
     }
     const isChecked = isCommandChecked(pair.id, this.plugin);
-    (0, import_obsidian14.setIcon)(
-      button,
-      isChecked ? pair.toggleIcon : pair.icon,
-    );
+    (0, import_obsidian14.setIcon)(button, isChecked ? pair.toggleIcon : pair.icon);
   }
   /**
    * Update all buttons for a specific command ID across all leaves
@@ -6058,9 +5322,7 @@ var StatusBarManager = class {
     this.plugin.app.workspace.onLayoutReady(() => {
       var _a, _b;
       this.container =
-        (_b =
-          (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl) !=
-        null
+        (_b = (_a = this.plugin.app.statusBar) == null ? void 0 : _a.containerEl) != null
           ? _b
           : null;
       if (!this.container) {
@@ -6105,16 +5367,10 @@ var StatusBarManager = class {
     this.customActions.forEach((action) => action.remove());
     this.customActions.clear();
     if (this.container) {
-      const managedButtons = this.container.querySelectorAll(
-        '[data-ui-tweaker-managed="true"]',
-      );
+      const managedButtons = this.container.querySelectorAll('[data-ui-tweaker-managed="true"]');
       managedButtons.forEach((btn) => btn.remove());
-      const hiddenItems = this.container.querySelectorAll(
-        ".ui-tweaker-status-bar-hidden",
-      );
-      hiddenItems.forEach((item) =>
-        item.removeClass("ui-tweaker-status-bar-hidden"),
-      );
+      const hiddenItems = this.container.querySelectorAll(".ui-tweaker-status-bar-hidden");
+      hiddenItems.forEach((item) => item.removeClass("ui-tweaker-status-bar-hidden"));
     }
   }
   /**
@@ -6151,16 +5407,11 @@ var StatusBarManager = class {
         (cls.startsWith("git-") && cls !== "git-changes-status-bar"),
     );
     if (pluginClass) {
-      if (
-        pluginClass.includes("obsidian-git") ||
-        pluginClass.startsWith("git-")
-      ) {
+      if (pluginClass.includes("obsidian-git") || pluginClass.startsWith("git-")) {
         if (allClasses.some((cls) => cls.startsWith("obsidian-git-statusbar-")))
           return "plugin-obsidian-git-status";
-        if (allClasses.includes("git-changes-status-bar"))
-          return "plugin-obsidian-git-changes";
-        const textContent =
-          (_a = element.textContent) == null ? void 0 : _a.trim();
+        if (allClasses.includes("git-changes-status-bar")) return "plugin-obsidian-git-changes";
+        const textContent = (_a = element.textContent) == null ? void 0 : _a.trim();
         const looksLikeBranch =
           textContent &&
           textContent.length > 0 &&
@@ -6174,9 +5425,7 @@ var StatusBarManager = class {
       }
       const stableClasses2 = allClasses.filter(
         (cls) =>
-          !this.isDynamicStateClass(cls) &&
-          !ignoredClasses.includes(cls) &&
-          cls !== pluginClass,
+          !this.isDynamicStateClass(cls) && !ignoredClasses.includes(cls) && cls !== pluginClass,
       );
       if (stableClasses2.length > 0) {
         return `${pluginClass}-${stableClasses2.join("-")}`;
@@ -6200,10 +5449,7 @@ var StatusBarManager = class {
     const parts = id.split(";");
     parts.pop();
     const fullName = parts.join(";");
-    if (
-      fullName.includes("obsidian-git-statusbar-") ||
-      fullName === "plugin-obsidian-git"
-    ) {
+    if (fullName.includes("obsidian-git-statusbar-") || fullName === "plugin-obsidian-git") {
       const savedItem = this.items.find((i) => i.id === id);
       if (
         savedItem &&
@@ -6246,11 +5492,7 @@ var StatusBarManager = class {
           skipNext = true;
           continue;
         }
-        if (
-          nextPart === "failed" &&
-          i < nameParts.length - 2 &&
-          nameParts[i + 2] === "init"
-        ) {
+        if (nextPart === "failed" && i < nameParts.length - 2 && nameParts[i + 2] === "init") {
           i += 2;
           continue;
         }
@@ -6269,20 +5511,17 @@ var StatusBarManager = class {
    */
   consolidateSettingsAndElements() {
     if (!this.container) return;
-    const existingElements = Array.from(this.container.children).filter(
-      (el) => {
-        const element = el;
-        if (element.classList.contains("ui-tweaker-status-bar-item"))
+    const existingElements = Array.from(this.container.children).filter((el) => {
+      const element = el;
+      if (element.classList.contains("ui-tweaker-status-bar-item")) return false;
+      if (element.getAttribute("data-ui-tweaker-managed") === "true") {
+        const id = element.getAttribute("data-ui-tweaker-status-bar-id");
+        if (!id || !this.items.some((item) => item.id === id)) {
           return false;
-        if (element.getAttribute("data-ui-tweaker-managed") === "true") {
-          const id = element.getAttribute("data-ui-tweaker-status-bar-id");
-          if (!id || !this.items.some((item) => item.id === id)) {
-            return false;
-          }
         }
-        return true;
-      },
-    );
+      }
+      return true;
+    });
     const savedItems = this.items.filter((item) => item.type === "existing");
     const savedItemsMap = new Map(savedItems.map((item) => [item.id, item]));
     const pluginElementCount = {};
@@ -6300,17 +5539,11 @@ var StatusBarManager = class {
       } else {
         const allClasses = Array.from(element.classList);
         canonicalName = this.generateCanonicalName(element, allClasses);
-        index =
-          canonicalName in pluginElementCount
-            ? pluginElementCount[canonicalName] + 1
-            : 1;
+        index = canonicalName in pluginElementCount ? pluginElementCount[canonicalName] + 1 : 1;
         id = `${canonicalName};${index}`;
         element.setAttribute("data-ui-tweaker-status-bar-id", id);
       }
-      pluginElementCount[canonicalName] = Math.max(
-        index,
-        pluginElementCount[canonicalName] || 0,
-      );
+      pluginElementCount[canonicalName] = Math.max(index, pluginElementCount[canonicalName] || 0);
       const savedItem = savedItemsMap.get(id);
       if (savedItem) {
         matchedSavedIds.add(id);
@@ -6383,8 +5616,7 @@ var StatusBarManager = class {
       if (item.hidden) {
         if (item.type === "existing") {
           const element = allExistingElements.find(
-            (el) =>
-              el.getAttribute("data-ui-tweaker-status-bar-id") === item.id,
+            (el) => el.getAttribute("data-ui-tweaker-status-bar-id") === item.id,
           );
           if (element) {
             element.addClass("ui-tweaker-status-bar-hidden");
@@ -6395,8 +5627,7 @@ var StatusBarManager = class {
       if (item.mdOnly && !isMarkdownView(activeLeaf)) {
         if (item.type === "existing") {
           const element = allExistingElements.find(
-            (el) =>
-              el.getAttribute("data-ui-tweaker-status-bar-id") === item.id,
+            (el) => el.getAttribute("data-ui-tweaker-status-bar-id") === item.id,
           );
           if (element) {
             element.addClass("ui-tweaker-status-bar-hidden");
@@ -6476,10 +5707,7 @@ var StatusBarManager = class {
     }
     btn.onclick = () => {
       const commands = this.plugin.app.commands;
-      if (
-        (commands == null ? void 0 : commands.executeCommandById) &&
-        item.commandId
-      ) {
+      if ((commands == null ? void 0 : commands.executeCommandById) && item.commandId) {
         void commands.executeCommandById(item.commandId);
       }
     };
@@ -6530,8 +5758,7 @@ var StatusBarManager = class {
     }
     const hasMarkdownFilter =
       pair.showOnFileTypes &&
-      (pair.showOnFileTypes.includes("md") ||
-        pair.showOnFileTypes.includes("mdx"));
+      (pair.showOnFileTypes.includes("md") || pair.showOnFileTypes.includes("mdx"));
     const mdOnly = hasMarkdownFilter ? true : false;
     const item = {
       id: `custom-${pair.id}`,
@@ -6633,8 +5860,7 @@ var ExplorerManager = class {
   cleanup() {
     this.observers.forEach((observer) => observer.disconnect());
     this.observers = [];
-    const explorers =
-      this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
       const navButtonsContainer =
@@ -6651,8 +5877,7 @@ var ExplorerManager = class {
     this.buttons.clear();
   }
   addButtonsToAllLeaves() {
-    const explorers =
-      this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       this.addButtonsToExplorer(leaf);
     });
@@ -6665,9 +5890,7 @@ var ExplorerManager = class {
    */
   migrateExplorerCommands() {}
   createOrUpdateExplorerButton(container, pair, leaf) {
-    const existingButton = container.querySelector(
-      `[data-explorer-command-id="${pair.id}"]`,
-    );
+    const existingButton = container.querySelector(`[data-explorer-command-id="${pair.id}"]`);
     if (existingButton) {
       existingButton.setAttribute("aria-label", pair.name);
       if (pair.color && pair.color !== "#000000") {
@@ -6763,19 +5986,13 @@ var ExplorerManager = class {
     }
     const allClasses = Array.from(element.classList);
     const ignoredClasses = ["clickable-icon", "nav-action-button"];
-    const stableClasses = allClasses.filter(
-      (cls) => !ignoredClasses.includes(cls),
-    );
+    const stableClasses = allClasses.filter((cls) => !ignoredClasses.includes(cls));
     const pluginClass = stableClasses.find(
       (cls) =>
-        cls.includes("plugin-") ||
-        cls.includes("commander") ||
-        cls.includes("explorer-focus"),
+        cls.includes("plugin-") || cls.includes("commander") || cls.includes("explorer-focus"),
     );
     if (pluginClass) {
-      const sanitizedAriaLabel = ariaLabel
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-");
+      const sanitizedAriaLabel = ariaLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-");
       return `external-${pluginClass}-${sanitizedAriaLabel}`;
     }
     const sanitized = ariaLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -6786,8 +6003,7 @@ var ExplorerManager = class {
    */
   consolidateSettingsAndElements() {
     var _a, _b;
-    const explorers =
-      this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
     if (explorers.length === 0) return;
     const firstExplorer = explorers[0];
     const navButtonsContainer =
@@ -6802,9 +6018,7 @@ var ExplorerManager = class {
         const commandId = element.getAttribute("data-explorer-command-id");
         if (
           !commandId ||
-          !this.plugin.settings.explorerButtonItems.some(
-            (item) => item.commandId === commandId,
-          )
+          !this.plugin.settings.explorerButtonItems.some((item) => item.commandId === commandId)
         ) {
           return false;
         }
@@ -6834,11 +6048,7 @@ var ExplorerManager = class {
       if (savedItemsMap.has(id)) {
         matchedSavedIds.add(id);
         const savedItem = savedItemsMap.get(id);
-        if (
-          !savedItem.name ||
-          savedItem.name === id ||
-          savedItem.name.startsWith("external-")
-        ) {
+        if (!savedItem.name || savedItem.name === id || savedItem.name.startsWith("external-")) {
           savedItem.name = ariaLabel || savedItem.name || id;
         }
         if (ariaLabel) {
@@ -6888,8 +6098,7 @@ var ExplorerManager = class {
    * Set up mutation observer to detect new external buttons
    */
   setupMutationObserver() {
-    const explorers =
-      this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
     if (explorers.length === 0) return;
     explorers.forEach((explorer) => {
       var _a, _b;
@@ -6936,8 +6145,7 @@ var ExplorerManager = class {
   reorder() {
     this.isReordering = true;
     this.observers.forEach((observer) => observer.disconnect());
-    const explorers =
-      this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
       const navButtonsContainer =
@@ -6945,9 +6153,7 @@ var ExplorerManager = class {
           ? void 0
           : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
-      const allButtons = Array.from(
-        navButtonsContainer.querySelectorAll(".nav-action-button"),
-      );
+      const allButtons = Array.from(navButtonsContainer.querySelectorAll(".nav-action-button"));
       const buttonMap = /* @__PURE__ */ new Map();
       allButtons.forEach((button) => {
         const ariaLabel = button.getAttribute("aria-label") || "";
@@ -7051,10 +6257,7 @@ var ExplorerManager = class {
       }
     } else if (pair.toggleIcon) {
       button.empty();
-      (0, import_obsidian16.setIcon)(
-        button,
-        isChecked ? pair.toggleIcon : pair.icon,
-      );
+      (0, import_obsidian16.setIcon)(button, isChecked ? pair.toggleIcon : pair.icon);
       button.classList.remove("is-active");
     }
     if (pair.color && pair.color !== "#000000") {
@@ -7067,8 +6270,7 @@ var ExplorerManager = class {
    * Update button names/tooltips for all existing buttons
    */
   updateButtonNames() {
-    const explorers =
-      this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
       const navButtonsContainer =
@@ -7077,9 +6279,7 @@ var ExplorerManager = class {
           : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
       for (const pair of this.plugin.settings.explorerCommands) {
-        const button = navButtonsContainer.querySelector(
-          `[data-explorer-command-id="${pair.id}"]`,
-        );
+        const button = navButtonsContainer.querySelector(`[data-explorer-command-id="${pair.id}"]`);
         if (button) {
           button.setAttribute("aria-label", pair.name);
           this.updateButtonToggleState(button, pair);
@@ -7091,12 +6291,9 @@ var ExplorerManager = class {
    * Update all buttons for a specific command ID across all explorers
    */
   updateAllButtonsForCommand(commandId) {
-    const pair = this.plugin.settings.explorerCommands.find(
-      (p) => p.id === commandId,
-    );
+    const pair = this.plugin.settings.explorerCommands.find((p) => p.id === commandId);
     if (!pair) return;
-    const explorers =
-      this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
       const navButtonsContainer =
@@ -7104,9 +6301,7 @@ var ExplorerManager = class {
           ? void 0
           : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
-      const button = navButtonsContainer.querySelector(
-        `[data-explorer-command-id="${commandId}"]`,
-      );
+      const button = navButtonsContainer.querySelector(`[data-explorer-command-id="${commandId}"]`);
       if (button) {
         this.updateButtonToggleState(button, pair);
       }
@@ -7116,8 +6311,7 @@ var ExplorerManager = class {
    * Refresh toggle states for all buttons
    */
   refreshToggleStates() {
-    const explorers =
-      this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
     explorers.forEach((leaf) => {
       var _a, _b;
       const navButtonsContainer =
@@ -7126,9 +6320,7 @@ var ExplorerManager = class {
           : _b.querySelector("div.nav-buttons-container");
       if (!navButtonsContainer) return;
       for (const pair of this.plugin.settings.explorerCommands) {
-        const button = navButtonsContainer.querySelector(
-          `[data-explorer-command-id="${pair.id}"]`,
-        );
+        const button = navButtonsContainer.querySelector(`[data-explorer-command-id="${pair.id}"]`);
         if (button && (pair.toggleIcon || pair.useActiveClass)) {
           this.updateButtonToggleState(button, pair);
         }
@@ -7139,8 +6331,7 @@ var ExplorerManager = class {
    * Apply icon overrides to native explorer buttons
    */
   applyNativeIconOverrides() {
-    const explorers =
-      this.plugin.app.workspace.getLeavesOfType("file-explorer");
+    const explorers = this.plugin.app.workspace.getLeavesOfType("file-explorer");
     const iconOverrides = this.plugin.settings.nativeExplorerButtonIcons;
     const defaultIcons = {
       "New note": { icon: "lucide-edit", key: "newNote" },
@@ -7168,8 +6359,7 @@ var ExplorerManager = class {
         const buttonInfo = defaultIcons[ariaLabel];
         if (!buttonInfo) return;
         const iconKey = buttonInfo.key;
-        const iconOverride =
-          iconOverrides == null ? void 0 : iconOverrides[iconKey];
+        const iconOverride = iconOverrides == null ? void 0 : iconOverrides[iconKey];
         const colorOverrides = this.plugin.settings.nativeExplorerButtonColors;
         const color = colorOverrides == null ? void 0 : colorOverrides[iconKey];
         button.empty();
@@ -7256,24 +6446,18 @@ var ButtonReplacer = class {
         .forEach((cls) => customButton.classList.add(cls));
     }
     if (this.options.stripClasses) {
-      this.options.stripClasses.forEach((cls) =>
-        customButton.classList.remove(cls),
-      );
+      this.options.stripClasses.forEach((cls) => customButton.classList.remove(cls));
     }
     customButton.onclick = null;
     const iconContainer =
-      ((_a = customButton.querySelector("svg")) == null
-        ? void 0
-        : _a.parentElement) || customButton;
+      ((_a = customButton.querySelector("svg")) == null ? void 0 : _a.parentElement) ||
+      customButton;
     try {
       const oldSvg = customButton.querySelector("svg");
       if (oldSvg) oldSvg.remove();
       (0, import_obsidian17.setIcon)(iconContainer, this.replacementIcon);
     } catch (e) {
-      console.error(
-        `[UI Tweaker] Failed to set icon ${this.replacementIcon}:`,
-        e,
-      );
+      console.error(`[UI Tweaker] Failed to set icon ${this.replacementIcon}:`, e);
       try {
         (0, import_obsidian17.setIcon)(iconContainer, "wrench");
       } catch (e2) {}
@@ -7295,9 +6479,7 @@ var ButtonReplacer = class {
         (_c = this.options.useCapture) != null ? _c : true,
       );
     }
-    (_d = originalBtn.parentElement) == null
-      ? void 0
-      : _d.insertBefore(customButton, originalBtn);
+    (_d = originalBtn.parentElement) == null ? void 0 : _d.insertBefore(customButton, originalBtn);
     this.customButton = customButton;
     this.originalButton = originalBtn;
     if (this.options.onAfterInstall) {
@@ -7306,9 +6488,7 @@ var ButtonReplacer = class {
   }
   tryFallbackInstall() {
     var _a, _b;
-    const fallbackParent = document.querySelector(
-      this.options.fallbackParentSelector,
-    );
+    const fallbackParent = document.querySelector(this.options.fallbackParentSelector);
     if (!fallbackParent) return;
     if (fallbackParent.querySelector(`[data-${this.options.uniqueId}]`)) return;
     const customButton = document.createElement("div");
@@ -7439,11 +6619,7 @@ var PropertiesManager = class {
   refresh() {
     this.plugin.app.workspace.iterateAllLeaves((leaf) => {
       const type = leaf.getViewState().type;
-      if (
-        type === "markdown" ||
-        type === "all-properties" ||
-        type === "file-properties"
-      ) {
+      if (type === "markdown" || type === "all-properties" || type === "file-properties") {
         this.refreshLeaf(leaf);
       }
     });
@@ -7619,67 +6795,54 @@ var PropertiesManager = class {
       (i) => i.id.toLowerCase() === normalizedPropName,
     );
     this.plugin.menuManager.reset();
-    this.plugin.menuManager.addItemAfter(
-      ["action.changeType", "action"],
-      (item) => {
-        item
-          .setTitle(
-            (setting == null ? void 0 : setting.icon)
-              ? "Change icon"
-              : "Add icon",
-          )
-          .setIcon("lucide-image-plus")
-          .onClick(() => {
-            const modal = new IconPickerModal(
-              this.plugin.app,
-              async (iconId) => {
-                let currentItem = this.plugin.settings.propertyIconItems.find(
-                  (i) => i.id.toLowerCase() === normalizedPropName,
-                );
-                if (!currentItem) {
-                  currentItem = { id: normalizedPropName };
-                  this.plugin.settings.propertyIconItems.push(currentItem);
-                }
-                currentItem.icon = iconId || void 0;
-                if (!currentItem.icon && !currentItem.color) {
-                  this.plugin.settings.propertyIconItems =
-                    this.plugin.settings.propertyIconItems.filter(
-                      (i) => i.id.toLowerCase() !== normalizedPropName,
-                    );
-                }
-                await this.plugin.saveSettings();
-                this.refresh();
-              },
+    this.plugin.menuManager.addItemAfter(["action.changeType", "action"], (item) => {
+      item
+        .setTitle((setting == null ? void 0 : setting.icon) ? "Change icon" : "Add icon")
+        .setIcon("lucide-image-plus")
+        .onClick(() => {
+          const modal = new IconPickerModal(this.plugin.app, async (iconId) => {
+            let currentItem = this.plugin.settings.propertyIconItems.find(
+              (i) => i.id.toLowerCase() === normalizedPropName,
             );
-            modal.open();
+            if (!currentItem) {
+              currentItem = { id: normalizedPropName };
+              this.plugin.settings.propertyIconItems.push(currentItem);
+            }
+            currentItem.icon = iconId || void 0;
+            if (!currentItem.icon && !currentItem.color) {
+              this.plugin.settings.propertyIconItems =
+                this.plugin.settings.propertyIconItems.filter(
+                  (i) => i.id.toLowerCase() !== normalizedPropName,
+                );
+            }
+            await this.plugin.saveSettings();
+            this.refresh();
           });
-      },
-    );
+          modal.open();
+        });
+    });
     if (setting == null ? void 0 : setting.icon) {
-      this.plugin.menuManager.addItemAfter(
-        ["action.changeType", "action"],
-        (item) => {
-          item
-            .setTitle("Remove icon")
-            .setIcon("lucide-trash")
-            .onClick(async () => {
-              const currentItem = this.plugin.settings.propertyIconItems.find(
-                (i) => i.id.toLowerCase() === normalizedPropName,
-              );
-              if (currentItem) {
-                currentItem.icon = void 0;
-                if (!currentItem.color) {
-                  this.plugin.settings.propertyIconItems =
-                    this.plugin.settings.propertyIconItems.filter(
-                      (i) => i.id.toLowerCase() !== normalizedPropName,
-                    );
-                }
-                await this.plugin.saveSettings();
-                this.refresh();
+      this.plugin.menuManager.addItemAfter(["action.changeType", "action"], (item) => {
+        item
+          .setTitle("Remove icon")
+          .setIcon("lucide-trash")
+          .onClick(async () => {
+            const currentItem = this.plugin.settings.propertyIconItems.find(
+              (i) => i.id.toLowerCase() === normalizedPropName,
+            );
+            if (currentItem) {
+              currentItem.icon = void 0;
+              if (!currentItem.color) {
+                this.plugin.settings.propertyIconItems =
+                  this.plugin.settings.propertyIconItems.filter(
+                    (i) => i.id.toLowerCase() !== normalizedPropName,
+                  );
               }
-            });
-        },
-      );
+              await this.plugin.saveSettings();
+              this.refresh();
+            }
+          });
+      });
     }
   }
   triggerViewUpdate(container) {
@@ -7712,10 +6875,7 @@ var PropertiesManager = class {
           needsUpdate = true;
         }
       } else {
-        if (
-          !el.classList.contains("ui-tweaker-emoji-icon") ||
-          el.textContent !== icon
-        ) {
+        if (!el.classList.contains("ui-tweaker-emoji-icon") || el.textContent !== icon) {
           needsUpdate = true;
         }
       }
@@ -7763,20 +6923,16 @@ var MenuManager = class {
     this.menu = null;
     this.queuedActions = [];
     const manager = this;
-    this.showAtPositionOriginal =
-      import_obsidian19.Menu.prototype.showAtPosition;
-    this.showAtPositionProxy = new Proxy(
-      import_obsidian19.Menu.prototype.showAtPosition,
-      {
-        apply(target, thisArg, argArray) {
-          manager.menu = thisArg;
-          if (manager.queuedActions.length > 0) {
-            manager.runQueuedActions();
-          }
-          return target.apply(thisArg, argArray);
-        },
+    this.showAtPositionOriginal = import_obsidian19.Menu.prototype.showAtPosition;
+    this.showAtPositionProxy = new Proxy(import_obsidian19.Menu.prototype.showAtPosition, {
+      apply(target, thisArg, argArray) {
+        manager.menu = thisArg;
+        if (manager.queuedActions.length > 0) {
+          manager.runQueuedActions();
+        }
+        return target.apply(thisArg, argArray);
       },
-    );
+    });
     import_obsidian19.Menu.prototype.showAtPosition = this.showAtPositionProxy;
   }
   /**
@@ -7850,12 +7006,8 @@ var MenuManager = class {
    * Restore original method.
    */
   unload() {
-    if (
-      import_obsidian19.Menu.prototype.showAtPosition ===
-      this.showAtPositionProxy
-    ) {
-      import_obsidian19.Menu.prototype.showAtPosition =
-        this.showAtPositionOriginal;
+    if (import_obsidian19.Menu.prototype.showAtPosition === this.showAtPositionProxy) {
+      import_obsidian19.Menu.prototype.showAtPosition = this.showAtPositionOriginal;
     }
   }
 };
@@ -7967,10 +7119,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         let needsSave = false;
         for (const pair of this.settings.tabBarCommands) {
           const pairWithOldProps = pair;
-          if (
-            pair.showOnFileTypes !== void 0 ||
-            pair.hideOnFileTypes !== void 0
-          ) {
+          if (pair.showOnFileTypes !== void 0 || pair.hideOnFileTypes !== void 0) {
             continue;
           }
           if (pairWithOldProps.mdOnly === true && !pair.showOnFileTypes) {
@@ -7978,11 +7127,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
             delete pairWithOldProps.mdOnly;
             needsSave = true;
           }
-          if (
-            pairWithOldProps.fileTypeFilter &&
-            !pair.showOnFileTypes &&
-            !pair.hideOnFileTypes
-          ) {
+          if (pairWithOldProps.fileTypeFilter && !pair.showOnFileTypes && !pair.hideOnFileTypes) {
             const filter = pairWithOldProps.fileTypeFilter;
             const parts = filter
               .split(",")
@@ -8038,9 +7183,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
     if (this.uiManager) {
       this.uiManager.updateSettings(this.settings);
     }
-    (_a = this.explorerManager) == null
-      ? void 0
-      : _a.applyNativeIconOverrides();
+    (_a = this.explorerManager) == null ? void 0 : _a.applyNativeIconOverrides();
     this.setupHelpButtonReplacement();
     this.updateSyncButtonCSS();
     if (this.isMobile) {
@@ -8053,11 +7196,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
   setupHelpButtonReplacement() {
     var _a, _b;
     this.updateHelpButtonCSS();
-    if (
-      !((_a = this.settings.helpButtonReplacement) == null
-        ? void 0
-        : _a.enabled)
-    ) {
+    if (!((_a = this.settings.helpButtonReplacement) == null ? void 0 : _a.enabled)) {
       (_b = this.helpButtonReplacer) == null ? void 0 : _b.uninstall();
       this.helpButtonReplacer = void 0;
       return;
@@ -8069,9 +7208,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         () => {
           var _a2;
           const commandId =
-            (_a2 = this.settings.helpButtonReplacement) == null
-              ? void 0
-              : _a2.commandId;
+            (_a2 = this.settings.helpButtonReplacement) == null ? void 0 : _a2.commandId;
           if (commandId) {
             void (async () => {
               try {
@@ -8082,9 +7219,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
                   throw new Error("Command execution not available");
                 }
               } catch (e) {
-                new import_obsidian20.Notice(
-                  `Failed to execute command: ${commandId}`,
-                );
+                new import_obsidian20.Notice(`Failed to execute command: ${commandId}`);
               }
             })();
           }
@@ -8120,21 +7255,14 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
     var _a;
     const shouldHideHelpButton =
       this.settings.helpButton === "hide" ||
-      ((_a = this.settings.helpButtonReplacement) == null
-        ? void 0
-        : _a.enabled);
-    document.body.classList.toggle(
-      "ui-tweaker-hide-help-button",
-      shouldHideHelpButton,
-    );
+      ((_a = this.settings.helpButtonReplacement) == null ? void 0 : _a.enabled);
+    document.body.classList.toggle("ui-tweaker-hide-help-button", shouldHideHelpButton);
   }
   setupSyncButtonReplacement() {
     var _a, _b;
     this.updateSyncButtonCSS();
     if (
-      !((_a = this.settings.syncButtonReplacement) == null
-        ? void 0
-        : _a.enabled) ||
+      !((_a = this.settings.syncButtonReplacement) == null ? void 0 : _a.enabled) ||
       !this.isMobile
     ) {
       (_b = this.syncButtonReplacer) == null ? void 0 : _b.uninstall();
@@ -8148,38 +7276,22 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
         () => {
           var _a2, _b2, _c, _d, _e;
           const commandId =
-            (_a2 = this.settings.syncButtonReplacement) == null
-              ? void 0
-              : _a2.commandId;
+            (_a2 = this.settings.syncButtonReplacement) == null ? void 0 : _a2.commandId;
           if (commandId) {
-            if (
-              commandId === "open-settings" ||
-              commandId === "ui-tweaker:open-settings"
-            ) {
+            if (commandId === "open-settings" || commandId === "ui-tweaker:open-settings") {
               const settingApi = this.app.setting;
               if (settingApi) {
                 (_b2 = settingApi.open) == null ? void 0 : _b2.call(settingApi);
-                if (
-                  ((_c = this.settingTab) == null ? void 0 : _c.id) &&
-                  settingApi.openTabById
-                ) {
+                if (((_c = this.settingTab) == null ? void 0 : _c.id) && settingApi.openTabById) {
                   settingApi.openTabById(this.settingTab.id);
                 }
               }
             } else {
-              (_e =
-                (_d = this.app.commands) == null
-                  ? void 0
-                  : _d.executeCommandById) == null
+              (_e = (_d = this.app.commands) == null ? void 0 : _d.executeCommandById) == null
                 ? void 0
                 : _e.call(_d, commandId).catch((error) => {
-                    console.warn(
-                      "[UI Tweaker] Error executing command:",
-                      error,
-                    );
-                    new import_obsidian20.Notice(
-                      `Failed to execute command: ${commandId}`,
-                    );
+                    console.warn("[UI Tweaker] Error executing command:", error);
+                    new import_obsidian20.Notice(`Failed to execute command: ${commandId}`);
                   });
             }
           }
@@ -8188,50 +7300,32 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
           survivalObserver: true,
           parentSelector: ".workspace-drawer.mod-right",
           uniqueId: "ui-tweaker-sync-replacement",
-          cssClass:
-            "ui-tweaker-sync-replacement workspace-drawer-header-icon mod-raised",
+          cssClass: "ui-tweaker-sync-replacement workspace-drawer-header-icon mod-raised",
           handleTouch: true,
-          stripClasses: [
-            "is-failed",
-            "is-error",
-            "is-warning",
-            "mod-error",
-            "mod-warning",
-          ],
-          fallbackParentSelector:
-            ".workspace-drawer.mod-right .workspace-drawer-header",
+          stripClasses: ["is-failed", "is-error", "is-warning", "mod-error", "mod-warning"],
+          fallbackParentSelector: ".workspace-drawer.mod-right .workspace-drawer-header",
           fallbackInsertBehavior: "end",
           onAfterInstall: (custom, original) => {
             if (original) {
               setCssProps(original, { display: "none" });
-              original.setAttribute(
-                "data-ui-tweaker-original-sync-hidden",
-                "true",
-              );
+              original.setAttribute("data-ui-tweaker-original-sync-hidden", "true");
             }
           },
           onBeforeUninstall: (custom) => {
-            const originals = document.querySelectorAll(
-              "[data-ui-tweaker-original-sync-hidden]",
-            );
+            const originals = document.querySelectorAll("[data-ui-tweaker-original-sync-hidden]");
             originals.forEach((el) => {
               el.style.removeProperty("display");
               el.removeAttribute("data-ui-tweaker-original-sync-hidden");
             });
           },
           findButton: (parent) => {
-            const drawerHeader = parent.querySelector(
-              ".workspace-drawer-header",
-            );
+            const drawerHeader = parent.querySelector(".workspace-drawer-header");
             if (!drawerHeader) return null;
             let syncButton = drawerHeader.querySelector(".sync-status-icon");
             if (!syncButton) {
-              const clickableIcons = Array.from(
-                drawerHeader.querySelectorAll(".clickable-icon"),
-              );
+              const clickableIcons = Array.from(drawerHeader.querySelectorAll(".clickable-icon"));
               for (const icon of clickableIcons) {
-                if (icon.querySelector("svg.refresh-cw-off, svg.refresh-cw"))
-                  return icon;
+                if (icon.querySelector("svg.refresh-cw-off, svg.refresh-cw")) return icon;
               }
             }
             return syncButton;
@@ -8248,10 +7342,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
   updateSyncButtonCSS() {
     var _a, _b;
     const shouldHide =
-      ((_b =
-        (_a = this.settings.syncButtonReplacement) == null
-          ? void 0
-          : _a.enabled) != null
+      ((_b = (_a = this.settings.syncButtonReplacement) == null ? void 0 : _a.enabled) != null
         ? _b
         : false) && this.isMobile;
     document.body.classList.toggle("ui-tweaker-hide-sync-button", shouldHide);
@@ -8274,9 +7365,7 @@ var UITweakerPlugin = class extends import_obsidian20.Plugin {
       attributes: true,
       attributeFilter: ["class"],
     });
-    this.registerEvent(
-      this.app.workspace.on("layout-change", refreshToggleStates),
-    );
+    this.registerEvent(this.app.workspace.on("layout-change", refreshToggleStates));
     const workspaceEl = document.querySelector(".workspace");
     if (workspaceEl) {
       const workspaceObserver = new MutationObserver(refreshToggleStates);

@@ -98,6 +98,7 @@ ssh-keygen -t ed25519 -f ~/.ssh/portfoliovault_deploy -N "" -C "portfoliovault-d
 ### Task A1: Install and configure vitest
 
 **Files:**
+
 - Modify: `package.json`
 - Create: `vitest.config.ts`
 - Create: `tests/setup.ts`
@@ -111,29 +112,29 @@ pnpm add -D vitest @vitest/ui @testing-library/react @testing-library/dom jsdom
 - [ ] **Step 2: Create `vitest.config.ts`**
 
 ```ts
-import { defineConfig } from 'vitest/config'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { defineConfig } from "vitest/config";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./tests/setup.ts'],
+    environment: "jsdom",
+    setupFiles: ["./tests/setup.ts"],
     globals: true,
-    include: ['tests/**/*.test.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
+    include: ["tests/**/*.test.{ts,tsx}", "src/**/*.test.{ts,tsx}"],
   },
   resolve: {
-    alias: { '@': path.resolve(__dirname, 'src') },
+    alias: { "@": path.resolve(__dirname, "src") },
   },
-})
+});
 ```
 
 - [ ] **Step 3: Create `tests/setup.ts`**
 
 ```ts
-import '@testing-library/dom'
+import "@testing-library/dom";
 ```
 
 - [ ] **Step 4: Add test scripts to `package.json`**
@@ -151,13 +152,13 @@ In `scripts`, add:
 Create `tests/harness.test.ts`:
 
 ```ts
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect } from "vitest";
 
-describe('vitest harness', () => {
-  it('runs', () => {
-    expect(1 + 1).toBe(2)
-  })
-})
+describe("vitest harness", () => {
+  it("runs", () => {
+    expect(1 + 1).toBe(2);
+  });
+});
 ```
 
 - [ ] **Step 6: Run it**
@@ -179,6 +180,7 @@ git commit -m "chore: add vitest + testing-library harness"
 ### Task A2: Extract zod schemas into a dedicated module
 
 **Files:**
+
 - Create: `src/content/schemas.ts`
 - Create: `tests/content/schemas.test.ts`
 
@@ -187,74 +189,89 @@ git commit -m "chore: add vitest + testing-library harness"
 Create `tests/content/schemas.test.ts`:
 
 ```ts
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect } from "vitest";
 import {
-  blogSchema, roleSchema, companySchema, projectSchema,
-  educationSchema, gallerySchema, clippingSchema, aboutSchema,
-} from '@/content/schemas'
+  blogSchema,
+  roleSchema,
+  companySchema,
+  projectSchema,
+  educationSchema,
+  gallerySchema,
+  clippingSchema,
+  aboutSchema,
+} from "@/content/schemas";
 
-describe('blogSchema', () => {
-  it('accepts minimal valid frontmatter', () => {
+describe("blogSchema", () => {
+  it("accepts minimal valid frontmatter", () => {
     const parsed = blogSchema.parse({
-      title: 'x', description: 'y', date: '2026-04-16',
-    })
-    expect(parsed.draft).toBe(false)
-  })
-  it('rejects missing title', () => {
-    expect(() => blogSchema.parse({ description: 'y', date: '2026-04-16' })).toThrow()
-  })
-  it('coerces date strings', () => {
-    const parsed = blogSchema.parse({ title: 'x', description: 'y', date: '2026-04-16' })
-    expect(parsed.date).toBeInstanceOf(Date)
-  })
-})
+      title: "x",
+      description: "y",
+      date: "2026-04-16",
+    });
+    expect(parsed.draft).toBe(false);
+  });
+  it("rejects missing title", () => {
+    expect(() => blogSchema.parse({ description: "y", date: "2026-04-16" })).toThrow();
+  });
+  it("coerces date strings", () => {
+    const parsed = blogSchema.parse({ title: "x", description: "y", date: "2026-04-16" });
+    expect(parsed.date).toBeInstanceOf(Date);
+  });
+});
 
-describe('roleSchema', () => {
-  it('requires role, company, date_start, summary', () => {
-    expect(() => roleSchema.parse({})).toThrow()
-  })
-  it('allows date_end null (current role)', () => {
+describe("roleSchema", () => {
+  it("requires role, company, date_start, summary", () => {
+    expect(() => roleSchema.parse({})).toThrow();
+  });
+  it("allows date_end null (current role)", () => {
     const parsed = roleSchema.parse({
-      role: 'r', company: 'c', date_start: '2026-01-01', date_end: null, summary: 's',
-    })
-    expect(parsed.date_end).toBeNull()
-  })
-  it('defaults graph_node to true', () => {
+      role: "r",
+      company: "c",
+      date_start: "2026-01-01",
+      date_end: null,
+      summary: "s",
+    });
+    expect(parsed.date_end).toBeNull();
+  });
+  it("defaults graph_node to true", () => {
     const parsed = roleSchema.parse({
-      role: 'r', company: 'c', date_start: '2026-01-01', summary: 's',
-    })
-    expect(parsed.graph_node).toBe(true)
-  })
-})
+      role: "r",
+      company: "c",
+      date_start: "2026-01-01",
+      summary: "s",
+    });
+    expect(parsed.graph_node).toBe(true);
+  });
+});
 
-describe('companySchema', () => {
-  it('defaults graph_node to false (R2)', () => {
-    const parsed = companySchema.parse({ name: 'c' })
-    expect(parsed.graph_node).toBe(false)
-  })
-})
+describe("companySchema", () => {
+  it("defaults graph_node to false (R2)", () => {
+    const parsed = companySchema.parse({ name: "c" });
+    expect(parsed.graph_node).toBe(false);
+  });
+});
 
-describe('clippingSchema', () => {
-  it('defaults publish + share to false', () => {
-    const parsed = clippingSchema.parse({ title: 't' })
-    expect(parsed.publish).toBe(false)
-    expect(parsed.share).toBe(false)
-    expect(parsed.graph_node).toBe(true)
-  })
-})
+describe("clippingSchema", () => {
+  it("defaults publish + share to false", () => {
+    const parsed = clippingSchema.parse({ title: "t" });
+    expect(parsed.publish).toBe(false);
+    expect(parsed.share).toBe(false);
+    expect(parsed.graph_node).toBe(true);
+  });
+});
 
-describe('projectSchema', () => {
-  it('defaults status to shipped', () => {
-    const parsed = projectSchema.parse({ title: 't', summary: 's', date: '2026-01-01' })
-    expect(parsed.status).toBe('shipped')
-  })
-})
+describe("projectSchema", () => {
+  it("defaults status to shipped", () => {
+    const parsed = projectSchema.parse({ title: "t", summary: "s", date: "2026-01-01" });
+    expect(parsed.status).toBe("shipped");
+  });
+});
 
-describe('aboutSchema', () => {
-  it('requires title + tagline', () => {
-    expect(() => aboutSchema.parse({ title: 't' })).toThrow()
-  })
-})
+describe("aboutSchema", () => {
+  it("requires title + tagline", () => {
+    expect(() => aboutSchema.parse({ title: "t" })).toThrow();
+  });
+});
 ```
 
 - [ ] **Step 2: Run tests — expect fail (module missing)**
@@ -265,7 +282,7 @@ Expected: FAIL, cannot resolve `@/content/schemas`.
 - [ ] **Step 3: Create `src/content/schemas.ts`**
 
 ```ts
-import { z } from 'astro:content'
+import { z } from "astro:content";
 
 export const blogSchema = z.object({
   title: z.string(),
@@ -277,9 +294,9 @@ export const blogSchema = z.object({
   updated: z.coerce.date().optional(),
   series: z.string().optional(),
   preview: z.string().optional(),
-  audience: z.array(z.enum(['dev', 'student', 'general'])).optional(),
+  audience: z.array(z.enum(["dev", "student", "general"])).optional(),
   topics: z.array(z.string()).optional(),
-})
+});
 
 export const roleSchema = z.object({
   role: z.string(),
@@ -290,14 +307,14 @@ export const roleSchema = z.object({
   tags: z.array(z.string()).optional(),
   summary: z.string(),
   graph_node: z.boolean().default(true),
-})
+});
 
 export const companySchema = z.object({
   name: z.string(),
   url: z.string().url().optional(),
   logo: z.string().optional(),
   graph_node: z.boolean().default(false),
-})
+});
 
 export const projectSchema = z.object({
   title: z.string(),
@@ -308,9 +325,9 @@ export const projectSchema = z.object({
   images: z.array(z.string()).optional(),
   cover: z.string().optional(),
   links: z.array(z.object({ icon: z.string(), url: z.string().url() })).optional(),
-  status: z.enum(['active', 'shipped', 'archived']).default('shipped'),
+  status: z.enum(["active", "shipped", "archived"]).default("shipped"),
   graph_node: z.boolean().default(true),
-})
+});
 
 export const educationSchema = z.object({
   institution: z.string(),
@@ -321,7 +338,7 @@ export const educationSchema = z.object({
   tags: z.array(z.string()).optional(),
   summary: z.string(),
   graph_node: z.boolean().default(true),
-})
+});
 
 export const gallerySchema = z.object({
   title: z.string(),
@@ -330,7 +347,7 @@ export const gallerySchema = z.object({
   image: z.string(),
   tags: z.array(z.string()).optional(),
   graph_node: z.boolean().default(true),
-})
+});
 
 export const clippingSchema = z.object({
   title: z.string(),
@@ -340,21 +357,21 @@ export const clippingSchema = z.object({
   publish: z.boolean().default(false),
   share: z.boolean().default(false),
   graph_node: z.boolean().default(true),
-})
+});
 
 export const aboutSchema = z.object({
   title: z.string(),
   tagline: z.string(),
-})
+});
 
-export type BlogEntry = z.infer<typeof blogSchema>
-export type RoleEntry = z.infer<typeof roleSchema>
-export type CompanyEntry = z.infer<typeof companySchema>
-export type ProjectEntry = z.infer<typeof projectSchema>
-export type EducationEntry = z.infer<typeof educationSchema>
-export type GalleryEntry = z.infer<typeof gallerySchema>
-export type ClippingEntry = z.infer<typeof clippingSchema>
-export type AboutEntry = z.infer<typeof aboutSchema>
+export type BlogEntry = z.infer<typeof blogSchema>;
+export type RoleEntry = z.infer<typeof roleSchema>;
+export type CompanyEntry = z.infer<typeof companySchema>;
+export type ProjectEntry = z.infer<typeof projectSchema>;
+export type EducationEntry = z.infer<typeof educationSchema>;
+export type GalleryEntry = z.infer<typeof gallerySchema>;
+export type ClippingEntry = z.infer<typeof clippingSchema>;
+export type AboutEntry = z.infer<typeof aboutSchema>;
 ```
 
 Note: `z` is re-exported by `astro:content` and uses the same zod version Astro ships; using `astro:content`'s `z` keeps Astro's special date coercion behavior available.
@@ -378,6 +395,7 @@ git commit -m "feat(content): add zod schemas for all 8 collections"
 ### Task A3: Add PortfolioVault as a git submodule with sparse-checkout
 
 **Files:**
+
 - Modify: `.gitmodules` (created by git)
 - Create: `vendor/vault/` (submodule checkout)
 - Create: `scripts/init-vault-submodule.sh`
@@ -436,6 +454,7 @@ git commit -m "feat(content): add PortfolioVault submodule with sparse-checkout"
 ### Task A4: remark-preview plugin (runs first, computes preview field)
 
 **Files:**
+
 - Create: `src/lib/remark/preview.ts`
 - Create: `tests/lib/remark/preview.test.ts`
 - Install: `mdast-util-to-string`, `unist-util-visit`, `unified` (transitive via Astro; verify)
@@ -451,39 +470,42 @@ pnpm add -D mdast-util-to-string unist-util-visit
 Create `tests/lib/remark/preview.test.ts`:
 
 ```ts
-import { describe, it, expect } from 'vitest'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import { remarkPreview } from '@/lib/remark/preview'
+import { describe, it, expect } from "vitest";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import { remarkPreview } from "@/lib/remark/preview";
 
 async function run(md: string, existing?: string) {
-  const file: any = { data: { astro: { frontmatter: existing ? { preview: existing } : {} } } }
-  await unified().use(remarkParse).use(remarkPreview).run(await unified().use(remarkParse).parse(md), file)
-  return file.data.astro.frontmatter.preview as string | undefined
+  const file: any = { data: { astro: { frontmatter: existing ? { preview: existing } : {} } } };
+  await unified()
+    .use(remarkParse)
+    .use(remarkPreview)
+    .run(await unified().use(remarkParse).parse(md), file);
+  return file.data.astro.frontmatter.preview as string | undefined;
 }
 
-describe('remark-preview', () => {
-  it('extracts first paragraph when preview absent', async () => {
-    const out = await run('# Heading\n\nFirst paragraph text here.\n\nSecond paragraph.')
-    expect(out).toBe('First paragraph text here.')
-  })
+describe("remark-preview", () => {
+  it("extracts first paragraph when preview absent", async () => {
+    const out = await run("# Heading\n\nFirst paragraph text here.\n\nSecond paragraph.");
+    expect(out).toBe("First paragraph text here.");
+  });
 
-  it('skips headings when looking for first paragraph', async () => {
-    const out = await run('## Skip\n\n### Also skip\n\nActual content paragraph.')
-    expect(out).toBe('Actual content paragraph.')
-  })
+  it("skips headings when looking for first paragraph", async () => {
+    const out = await run("## Skip\n\n### Also skip\n\nActual content paragraph.");
+    expect(out).toBe("Actual content paragraph.");
+  });
 
-  it('preserves explicit preview frontmatter', async () => {
-    const out = await run('First paragraph.', 'Custom preview override.')
-    expect(out).toBe('Custom preview override.')
-  })
+  it("preserves explicit preview frontmatter", async () => {
+    const out = await run("First paragraph.", "Custom preview override.");
+    expect(out).toBe("Custom preview override.");
+  });
 
-  it('caps preview at 280 chars', async () => {
-    const long = 'x'.repeat(500)
-    const out = await run(long)
-    expect(out?.length).toBeLessThanOrEqual(280)
-  })
-})
+  it("caps preview at 280 chars", async () => {
+    const long = "x".repeat(500);
+    const out = await run(long);
+    expect(out?.length).toBeLessThanOrEqual(280);
+  });
+});
 ```
 
 - [ ] **Step 3: Install `remark-parse` for the test runner**
@@ -500,28 +522,28 @@ Expected: FAIL, cannot resolve `@/lib/remark/preview`.
 - [ ] **Step 5: Implement `src/lib/remark/preview.ts`**
 
 ```ts
-import type { Plugin } from 'unified'
-import type { Root, Paragraph } from 'mdast'
-import { visit } from 'unist-util-visit'
-import { toString } from 'mdast-util-to-string'
+import type { Plugin } from "unified";
+import type { Root, Paragraph } from "mdast";
+import { visit } from "unist-util-visit";
+import { toString } from "mdast-util-to-string";
 
-const MAX_PREVIEW = 280
+const MAX_PREVIEW = 280;
 
 export const remarkPreview: Plugin<[], Root> = () => (tree, file) => {
-  const frontmatter = ((file.data.astro as any)?.frontmatter ?? {}) as Record<string, unknown>
-  if (typeof frontmatter.preview === 'string' && frontmatter.preview.length > 0) return
+  const frontmatter = ((file.data.astro as any)?.frontmatter ?? {}) as Record<string, unknown>;
+  if (typeof frontmatter.preview === "string" && frontmatter.preview.length > 0) return;
 
-  let first: Paragraph | undefined
-  visit(tree, 'paragraph', (node) => {
-    if (!first) first = node
-  })
-  if (!first) return
+  let first: Paragraph | undefined;
+  visit(tree, "paragraph", (node) => {
+    if (!first) first = node;
+  });
+  if (!first) return;
 
-  const raw = toString(first).trim()
-  const preview = raw.length > MAX_PREVIEW ? raw.slice(0, MAX_PREVIEW - 1).trimEnd() + '…' : raw
-  frontmatter.preview = preview
-  ;(file.data.astro as any).frontmatter = frontmatter
-}
+  const raw = toString(first).trim();
+  const preview = raw.length > MAX_PREVIEW ? raw.slice(0, MAX_PREVIEW - 1).trimEnd() + "…" : raw;
+  frontmatter.preview = preview;
+  (file.data.astro as any).frontmatter = frontmatter;
+};
 ```
 
 - [ ] **Step 6: Run test — expect pass**
@@ -539,6 +561,7 @@ git commit -m "feat(remark): add preview extraction plugin"
 ### Task A5: remark-wikilinks plugin
 
 **Files:**
+
 - Create: `src/lib/remark/wikilinks.ts`
 - Create: `tests/lib/remark/wikilinks.test.ts`
 
@@ -547,70 +570,82 @@ git commit -m "feat(remark): add preview extraction plugin"
 Create `tests/lib/remark/wikilinks.test.ts`:
 
 ```ts
-import { describe, it, expect, vi } from 'vitest'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import { remarkWikilinks } from '@/lib/remark/wikilinks'
-import type { WikilinkIndex } from '@/lib/remark/wikilinks'
+import { describe, it, expect, vi } from "vitest";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import { remarkWikilinks } from "@/lib/remark/wikilinks";
+import type { WikilinkIndex } from "@/lib/remark/wikilinks";
 
 const index: WikilinkIndex = {
-  posts: new Map([['hello-world', { kind: 'blog', url: '/blog/hello-world', title: 'Hello World' }]]),
-  projects: new Map([['stripe-mrr', { kind: 'project', url: '/projects/stripe-mrr', title: 'Stripe MRR' }]]),
+  posts: new Map([
+    ["hello-world", { kind: "blog", url: "/blog/hello-world", title: "Hello World" }],
+  ]),
+  projects: new Map([
+    ["stripe-mrr", { kind: "project", url: "/projects/stripe-mrr", title: "Stripe MRR" }],
+  ]),
   roles: new Map(),
   education: new Map(),
   gallery: new Map(),
-  clippings: new Map([['comptia-linux', {
-    kind: 'clipping',
-    url: '',
-    title: 'CompTIA Linux Guide',
-    preview: 'Short excerpt.',
-    source: 'https://example.com',
-    publish: false,
-    share: false,
-  }]]),
-}
+  clippings: new Map([
+    [
+      "comptia-linux",
+      {
+        kind: "clipping",
+        url: "",
+        title: "CompTIA Linux Guide",
+        preview: "Short excerpt.",
+        source: "https://example.com",
+        publish: false,
+        share: false,
+      },
+    ],
+  ]),
+};
 
 async function transform(md: string) {
-  const tree = unified().use(remarkParse).parse(md)
-  await unified().use(remarkParse).use(remarkWikilinks, { index, onDead: () => {} }).run(tree)
-  return tree
+  const tree = unified().use(remarkParse).parse(md);
+  await unified()
+    .use(remarkParse)
+    .use(remarkWikilinks, { index, onDead: () => {} })
+    .run(tree);
+  return tree;
 }
 
-describe('remark-wikilinks', () => {
+describe("remark-wikilinks", () => {
   it('rewrites internal blog wikilink to <a href="/blog/slug">', async () => {
-    const tree: any = await transform('See [[hello-world]] for more.')
-    const link = tree.children[0].children[1]
-    expect(link.type).toBe('link')
-    expect(link.url).toBe('/blog/hello-world')
-    expect(link.children[0].value).toBe('Hello World')
-  })
+    const tree: any = await transform("See [[hello-world]] for more.");
+    const link = tree.children[0].children[1];
+    expect(link.type).toBe("link");
+    expect(link.url).toBe("/blog/hello-world");
+    expect(link.children[0].value).toBe("Hello World");
+  });
 
-  it('supports alias syntax [[slug|alias]]', async () => {
-    const tree: any = await transform('Go see [[hello-world|this post]].')
-    const link = tree.children[0].children[1]
-    expect(link.url).toBe('/blog/hello-world')
-    expect(link.children[0].value).toBe('this post')
-  })
+  it("supports alias syntax [[slug|alias]]", async () => {
+    const tree: any = await transform("Go see [[hello-world|this post]].");
+    const link = tree.children[0].children[1];
+    expect(link.url).toBe("/blog/hello-world");
+    expect(link.children[0].value).toBe("this post");
+  });
 
-  it('wraps private clippings in NotePopover MDX node', async () => {
-    const tree: any = await transform('Read [[comptia-linux]] for reference.')
-    const node = tree.children[0].children[1]
-    expect(node.type).toBe('mdxJsxTextElement')
-    expect(node.name).toBe('NotePopover')
-    const preview = node.attributes.find((a: any) => a.name === 'preview').value
-    expect(preview).toBe('Short excerpt.')
-  })
+  it("wraps private clippings in NotePopover MDX node", async () => {
+    const tree: any = await transform("Read [[comptia-linux]] for reference.");
+    const node = tree.children[0].children[1];
+    expect(node.type).toBe("mdxJsxTextElement");
+    expect(node.name).toBe("NotePopover");
+    const preview = node.attributes.find((a: any) => a.name === "preview").value;
+    expect(preview).toBe("Short excerpt.");
+  });
 
-  it('invokes onDead callback for unknown targets and renders plain text', async () => {
-    const onDead = vi.fn()
-    const tree = unified().use(remarkParse).parse('Unknown [[does-not-exist]] link.')
-    await unified().use(remarkParse).use(remarkWikilinks, { index, onDead }).run(tree)
-    expect(onDead).toHaveBeenCalledWith('does-not-exist', expect.any(String))
-    const text = (tree as any).children[0].children[1]
-    expect(text.type).toBe('text')
-    expect(text.value).toBe('does-not-exist')
-  })
-})
+  it("invokes onDead callback for unknown targets and renders plain text", async () => {
+    const onDead = vi.fn();
+    const tree = unified().use(remarkParse).parse("Unknown [[does-not-exist]] link.");
+    await unified().use(remarkParse).use(remarkWikilinks, { index, onDead }).run(tree);
+    expect(onDead).toHaveBeenCalledWith("does-not-exist", expect.any(String));
+    const text = (tree as any).children[0].children[1];
+    expect(text.type).toBe("text");
+    expect(text.value).toBe("does-not-exist");
+  });
+});
 ```
 
 - [ ] **Step 2: Run test — expect fail**
@@ -621,104 +656,120 @@ Expected: FAIL.
 - [ ] **Step 3: Implement `src/lib/remark/wikilinks.ts`**
 
 ```ts
-import type { Plugin } from 'unified'
-import type { Root, Text, Paragraph, PhrasingContent } from 'mdast'
-import { visit, SKIP } from 'unist-util-visit'
+import type { Plugin } from "unified";
+import type { Root, Text, Paragraph, PhrasingContent } from "mdast";
+import { visit, SKIP } from "unist-util-visit";
 
 export type WikilinkTarget =
-  | { kind: 'blog'|'project'|'role'|'education'|'gallery'; url: string; title: string }
-  | { kind: 'clipping'; url: string; title: string; preview?: string; source?: string; publish: boolean; share: boolean }
+  | { kind: "blog" | "project" | "role" | "education" | "gallery"; url: string; title: string }
+  | {
+      kind: "clipping";
+      url: string;
+      title: string;
+      preview?: string;
+      source?: string;
+      publish: boolean;
+      share: boolean;
+    };
 
 export interface WikilinkIndex {
-  posts:      Map<string, WikilinkTarget>
-  projects:   Map<string, WikilinkTarget>
-  roles:      Map<string, WikilinkTarget>
-  education:  Map<string, WikilinkTarget>
-  gallery:    Map<string, WikilinkTarget>
-  clippings:  Map<string, WikilinkTarget>
+  posts: Map<string, WikilinkTarget>;
+  projects: Map<string, WikilinkTarget>;
+  roles: Map<string, WikilinkTarget>;
+  education: Map<string, WikilinkTarget>;
+  gallery: Map<string, WikilinkTarget>;
+  clippings: Map<string, WikilinkTarget>;
 }
 
 export interface WikilinkOptions {
-  index: WikilinkIndex
-  onDead?: (slug: string, sourceFile: string) => void
-  strict?: boolean
+  index: WikilinkIndex;
+  onDead?: (slug: string, sourceFile: string) => void;
+  strict?: boolean;
 }
 
-const LINK_REGEX = /\[\[([^\[\]|]+)(?:\|([^\[\]]+))?\]\]/g
+const LINK_REGEX = /\[\[([^\[\]|]+)(?:\|([^\[\]]+))?\]\]/g;
 
 function slugify(raw: string): string {
-  return raw.trim().toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9\-]/g, '')
+  return raw
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-]/g, "");
 }
 
 function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined {
-  const s = slugify(slug)
-  return index.posts.get(s)
-    ?? index.projects.get(s)
-    ?? index.roles.get(s)
-    ?? index.education.get(s)
-    ?? index.gallery.get(s)
-    ?? index.clippings.get(s)
+  const s = slugify(slug);
+  return (
+    index.posts.get(s) ??
+    index.projects.get(s) ??
+    index.roles.get(s) ??
+    index.education.get(s) ??
+    index.gallery.get(s) ??
+    index.clippings.get(s)
+  );
 }
 
 export const remarkWikilinks: Plugin<[WikilinkOptions], Root> = (opts) => {
-  const { index, onDead = () => {}, strict = false } = opts
+  const { index, onDead = () => {}, strict = false } = opts;
   return (tree, file) => {
-    visit(tree, 'text', (node: Text, idx, parent) => {
-      if (!parent || typeof idx !== 'number') return
-      const src = node.value
-      if (!src.includes('[[')) return
+    visit(tree, "text", (node: Text, idx, parent) => {
+      if (!parent || typeof idx !== "number") return;
+      const src = node.value;
+      if (!src.includes("[[")) return;
 
-      const out: PhrasingContent[] = []
-      let lastIndex = 0
-      LINK_REGEX.lastIndex = 0
+      const out: PhrasingContent[] = [];
+      let lastIndex = 0;
+      LINK_REGEX.lastIndex = 0;
       for (const match of src.matchAll(LINK_REGEX)) {
-        const [full, slugRaw, alias] = match
-        const mIdx = match.index ?? 0
-        if (mIdx > lastIndex) out.push({ type: 'text', value: src.slice(lastIndex, mIdx) })
-        lastIndex = mIdx + full.length
+        const [full, slugRaw, alias] = match;
+        const mIdx = match.index ?? 0;
+        if (mIdx > lastIndex) out.push({ type: "text", value: src.slice(lastIndex, mIdx) });
+        lastIndex = mIdx + full.length;
 
-        const target = resolve(index, slugRaw)
-        const display = (alias ?? target?.title ?? slugRaw).trim()
+        const target = resolve(index, slugRaw);
+        const display = (alias ?? target?.title ?? slugRaw).trim();
 
         if (!target) {
-          onDead(slugRaw.trim(), String(file.path ?? ''))
-          if (strict) throw new Error(`Dead wikilink: ${slugRaw} in ${file.path}`)
-          out.push({ type: 'text', value: display })
-          continue
+          onDead(slugRaw.trim(), String(file.path ?? ""));
+          if (strict) throw new Error(`Dead wikilink: ${slugRaw} in ${file.path}`);
+          out.push({ type: "text", value: display });
+          continue;
         }
 
-        if (target.kind === 'clipping' && !target.publish) {
+        if (target.kind === "clipping" && !target.publish) {
           out.push({
-            type: 'mdxJsxTextElement',
-            name: 'NotePopover',
+            type: "mdxJsxTextElement",
+            name: "NotePopover",
             attributes: [
-              { type: 'mdxJsxAttribute', name: 'title', value: target.title },
-              ...(target.preview ? [{ type: 'mdxJsxAttribute', name: 'preview', value: target.preview }] : []),
-              ...(target.source  ? [{ type: 'mdxJsxAttribute', name: 'source',  value: target.source  }] : []),
+              { type: "mdxJsxAttribute", name: "title", value: target.title },
+              ...(target.preview
+                ? [{ type: "mdxJsxAttribute", name: "preview", value: target.preview }]
+                : []),
+              ...(target.source
+                ? [{ type: "mdxJsxAttribute", name: "source", value: target.source }]
+                : []),
             ],
-            children: [{ type: 'text', value: display }],
-          } as any)
-          continue
+            children: [{ type: "text", value: display }],
+          } as any);
+          continue;
         }
 
         out.push({
-          type: 'link',
+          type: "link",
           url: target.url,
           title: null,
-          children: [{ type: 'text', value: display }],
-        })
+          children: [{ type: "text", value: display }],
+        });
       }
 
-      if (lastIndex < src.length) out.push({ type: 'text', value: src.slice(lastIndex) })
-      if (out.length === 0) return
+      if (lastIndex < src.length) out.push({ type: "text", value: src.slice(lastIndex) });
+      if (out.length === 0) return;
 
-      parent.children.splice(idx, 1, ...out)
-      return [SKIP, idx + out.length]
-    })
-  }
-}
+      parent.children.splice(idx, 1, ...out);
+      return [SKIP, idx + out.length];
+    });
+  };
+};
 ```
 
 - [ ] **Step 4: Run test — expect pass**
@@ -736,6 +787,7 @@ git commit -m "feat(remark): add wikilink resolver with popover + dead-link hand
 ### Task A6: remark-embeds plugin
 
 **Files:**
+
 - Create: `src/lib/remark/embeds.ts`
 - Create: `tests/lib/remark/embeds.test.ts`
 
@@ -744,60 +796,63 @@ git commit -m "feat(remark): add wikilink resolver with popover + dead-link hand
 Create `tests/lib/remark/embeds.test.ts`:
 
 ```ts
-import { describe, it, expect, vi } from 'vitest'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import { remarkEmbeds } from '@/lib/remark/embeds'
+import { describe, it, expect, vi } from "vitest";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import { remarkEmbeds } from "@/lib/remark/embeds";
 
 async function transform(md: string, opts: any) {
-  const tree = unified().use(remarkParse).parse(md)
-  await unified().use(remarkParse).use(remarkEmbeds, opts).run(tree, { path: '/vault/Blogs/my-post.md' } as any)
-  return tree
+  const tree = unified().use(remarkParse).parse(md);
+  await unified()
+    .use(remarkParse)
+    .use(remarkEmbeds, opts)
+    .run(tree, { path: "/vault/Blogs/my-post.md" } as any);
+  return tree;
 }
 
-describe('remark-embeds', () => {
-  it('rewrites ![[image.png]] to <img> with copy request', async () => {
-    const copyAsset = vi.fn().mockReturnValue('/blog-assets/my-post/image.png')
-    const resolveExcalidraw = vi.fn()
-    const tree: any = await transform('![[image.png]]', {
-      attachmentsRoot: '/vault/Attachments',
+describe("remark-embeds", () => {
+  it("rewrites ![[image.png]] to <img> with copy request", async () => {
+    const copyAsset = vi.fn().mockReturnValue("/blog-assets/my-post/image.png");
+    const resolveExcalidraw = vi.fn();
+    const tree: any = await transform("![[image.png]]", {
+      attachmentsRoot: "/vault/Attachments",
       copyAsset,
       resolveExcalidraw,
-    })
-    const para = tree.children[0]
-    const img = para.children[0]
-    expect(img.type).toBe('image')
-    expect(img.url).toBe('/blog-assets/my-post/image.png')
-    expect(copyAsset).toHaveBeenCalledWith('image.png', 'my-post')
-  })
+    });
+    const para = tree.children[0];
+    const img = para.children[0];
+    expect(img.type).toBe("image");
+    expect(img.url).toBe("/blog-assets/my-post/image.png");
+    expect(copyAsset).toHaveBeenCalledWith("image.png", "my-post");
+  });
 
-  it('rewrites ![[drawing.excalidraw.md]] to inline SVG', async () => {
-    const copyAsset = vi.fn()
-    const resolveExcalidraw = vi.fn().mockReturnValue('<svg data-test="ok"></svg>')
-    const tree: any = await transform('![[drawing.excalidraw.md]]', {
-      attachmentsRoot: '/vault/Attachments',
+  it("rewrites ![[drawing.excalidraw.md]] to inline SVG", async () => {
+    const copyAsset = vi.fn();
+    const resolveExcalidraw = vi.fn().mockReturnValue('<svg data-test="ok"></svg>');
+    const tree: any = await transform("![[drawing.excalidraw.md]]", {
+      attachmentsRoot: "/vault/Attachments",
       copyAsset,
       resolveExcalidraw,
-    })
-    const para = tree.children[0]
-    const html = para.children[0]
-    expect(html.type).toBe('html')
-    expect(html.value).toContain('<svg')
-    expect(resolveExcalidraw).toHaveBeenCalledWith('drawing.excalidraw.md')
-  })
+    });
+    const para = tree.children[0];
+    const html = para.children[0];
+    expect(html.type).toBe("html");
+    expect(html.value).toContain("<svg");
+    expect(resolveExcalidraw).toHaveBeenCalledWith("drawing.excalidraw.md");
+  });
 
-  it('leaves normal markdown image syntax alone', async () => {
-    const copyAsset = vi.fn()
-    const resolveExcalidraw = vi.fn()
-    const tree: any = await transform('![alt text](https://example.com/img.png)', {
-      attachmentsRoot: '/vault/Attachments',
+  it("leaves normal markdown image syntax alone", async () => {
+    const copyAsset = vi.fn();
+    const resolveExcalidraw = vi.fn();
+    const tree: any = await transform("![alt text](https://example.com/img.png)", {
+      attachmentsRoot: "/vault/Attachments",
       copyAsset,
       resolveExcalidraw,
-    })
-    expect(copyAsset).not.toHaveBeenCalled()
-    expect(tree.children[0].children[0].url).toBe('https://example.com/img.png')
-  })
-})
+    });
+    expect(copyAsset).not.toHaveBeenCalled();
+    expect(tree.children[0].children[0].url).toBe("https://example.com/img.png");
+  });
+});
 ```
 
 - [ ] **Step 2: Run test — expect fail**
@@ -808,67 +863,67 @@ Expected: FAIL.
 - [ ] **Step 3: Implement `src/lib/remark/embeds.ts`**
 
 ```ts
-import type { Plugin } from 'unified'
-import type { Root, Text, PhrasingContent } from 'mdast'
-import { visit, SKIP } from 'unist-util-visit'
-import path from 'node:path'
+import type { Plugin } from "unified";
+import type { Root, Text, PhrasingContent } from "mdast";
+import { visit, SKIP } from "unist-util-visit";
+import path from "node:path";
 
 export interface EmbedOptions {
-  attachmentsRoot: string
-  copyAsset: (filename: string, postSlug: string) => string
-  resolveExcalidraw: (filename: string) => string
+  attachmentsRoot: string;
+  copyAsset: (filename: string, postSlug: string) => string;
+  resolveExcalidraw: (filename: string) => string;
 }
 
-const EMBED_REGEX = /!\[\[([^\[\]]+)\]\]/g
+const EMBED_REGEX = /!\[\[([^\[\]]+)\]\]/g;
 
 function postSlugFromFilePath(filePath: string | undefined): string {
-  if (!filePath) return 'unknown'
-  const base = path.basename(filePath, path.extname(filePath))
-  return base
+  if (!filePath) return "unknown";
+  const base = path.basename(filePath, path.extname(filePath));
+  return base;
 }
 
 export const remarkEmbeds: Plugin<[EmbedOptions], Root> = (opts) => {
-  const { copyAsset, resolveExcalidraw } = opts
+  const { copyAsset, resolveExcalidraw } = opts;
   return (tree, file) => {
-    const postSlug = postSlugFromFilePath(file.path as string | undefined)
+    const postSlug = postSlugFromFilePath(file.path as string | undefined);
 
-    visit(tree, 'text', (node: Text, idx, parent) => {
-      if (!parent || typeof idx !== 'number') return
-      const src = node.value
-      if (!src.includes('![[')) return
+    visit(tree, "text", (node: Text, idx, parent) => {
+      if (!parent || typeof idx !== "number") return;
+      const src = node.value;
+      if (!src.includes("![[")) return;
 
-      const out: PhrasingContent[] = []
-      let lastIndex = 0
-      EMBED_REGEX.lastIndex = 0
+      const out: PhrasingContent[] = [];
+      let lastIndex = 0;
+      EMBED_REGEX.lastIndex = 0;
       for (const match of src.matchAll(EMBED_REGEX)) {
-        const [full, filename] = match
-        const mIdx = match.index ?? 0
-        if (mIdx > lastIndex) out.push({ type: 'text', value: src.slice(lastIndex, mIdx) })
-        lastIndex = mIdx + full.length
+        const [full, filename] = match;
+        const mIdx = match.index ?? 0;
+        if (mIdx > lastIndex) out.push({ type: "text", value: src.slice(lastIndex, mIdx) });
+        lastIndex = mIdx + full.length;
 
-        if (filename.endsWith('.excalidraw.md')) {
-          const svg = resolveExcalidraw(filename)
-          out.push({ type: 'html', value: svg } as any)
-          continue
+        if (filename.endsWith(".excalidraw.md")) {
+          const svg = resolveExcalidraw(filename);
+          out.push({ type: "html", value: svg } as any);
+          continue;
         }
 
-        const publicUrl = copyAsset(filename, postSlug)
+        const publicUrl = copyAsset(filename, postSlug);
         out.push({
-          type: 'image',
+          type: "image",
           url: publicUrl,
           title: null,
           alt: filename,
-        })
+        });
       }
 
-      if (lastIndex < src.length) out.push({ type: 'text', value: src.slice(lastIndex) })
-      if (out.length === 0) return
+      if (lastIndex < src.length) out.push({ type: "text", value: src.slice(lastIndex) });
+      if (out.length === 0) return;
 
-      parent.children.splice(idx, 1, ...out)
-      return [SKIP, idx + out.length]
-    })
-  }
-}
+      parent.children.splice(idx, 1, ...out);
+      return [SKIP, idx + out.length];
+    });
+  };
+};
 ```
 
 - [ ] **Step 4: Run test — expect pass**
@@ -886,6 +941,7 @@ git commit -m "feat(remark): add embed resolver for images + excalidraw"
 ### Task A7: Asset-copier + excalidraw renderer adapters (real filesystem side)
 
 **Files:**
+
 - Create: `src/lib/remark/adapters.ts`
 - Create: `tests/lib/remark/adapters.test.ts`
 
@@ -895,73 +951,81 @@ These adapters implement `copyAsset` and `resolveExcalidraw` against the real fi
 
 Create `tests/lib/remark/adapters.test.ts`:
 
-```ts
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import fs from 'node:fs'
-import path from 'node:path'
-import os from 'node:os'
-import { createAssetAdapters } from '@/lib/remark/adapters'
+````ts
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
+import os from "node:os";
+import { createAssetAdapters } from "@/lib/remark/adapters";
 
-let tmp: string
+let tmp: string;
 beforeEach(() => {
-  tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'embed-test-'))
-  fs.mkdirSync(path.join(tmp, 'vault/Attachments'), { recursive: true })
-  fs.mkdirSync(path.join(tmp, 'public'), { recursive: true })
-  fs.writeFileSync(path.join(tmp, 'vault/Attachments/image.png'), 'PNG_BYTES')
-  fs.writeFileSync(path.join(tmp, 'vault/Attachments/drawing.excalidraw.md'), '```compressed-json\n{"elements":[]}\n```')
-})
-afterEach(() => { fs.rmSync(tmp, { recursive: true, force: true }) })
+  tmp = fs.mkdtempSync(path.join(os.tmpdir(), "embed-test-"));
+  fs.mkdirSync(path.join(tmp, "vault/Attachments"), { recursive: true });
+  fs.mkdirSync(path.join(tmp, "public"), { recursive: true });
+  fs.writeFileSync(path.join(tmp, "vault/Attachments/image.png"), "PNG_BYTES");
+  fs.writeFileSync(
+    path.join(tmp, "vault/Attachments/drawing.excalidraw.md"),
+    '```compressed-json\n{"elements":[]}\n```',
+  );
+});
+afterEach(() => {
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
 
-describe('asset adapters', () => {
-  it('copyAsset places file under public/blog-assets/<slug>/ and returns public URL', () => {
+describe("asset adapters", () => {
+  it("copyAsset places file under public/blog-assets/<slug>/ and returns public URL", () => {
     const { copyAsset } = createAssetAdapters({
-      attachmentsRoot: path.join(tmp, 'vault/Attachments'),
-      publicRoot: path.join(tmp, 'public'),
-      excalidrawCacheDir: path.join(tmp, '.cache/excalidraw'),
-    })
-    const url = copyAsset('image.png', 'hello-world')
-    expect(url).toBe('/blog-assets/hello-world/image.png')
-    expect(fs.existsSync(path.join(tmp, 'public/blog-assets/hello-world/image.png'))).toBe(true)
-  })
+      attachmentsRoot: path.join(tmp, "vault/Attachments"),
+      publicRoot: path.join(tmp, "public"),
+      excalidrawCacheDir: path.join(tmp, ".cache/excalidraw"),
+    });
+    const url = copyAsset("image.png", "hello-world");
+    expect(url).toBe("/blog-assets/hello-world/image.png");
+    expect(fs.existsSync(path.join(tmp, "public/blog-assets/hello-world/image.png"))).toBe(true);
+  });
 
-  it('copyAsset is idempotent (hash-checked skip)', () => {
+  it("copyAsset is idempotent (hash-checked skip)", () => {
     const { copyAsset } = createAssetAdapters({
-      attachmentsRoot: path.join(tmp, 'vault/Attachments'),
-      publicRoot: path.join(tmp, 'public'),
-      excalidrawCacheDir: path.join(tmp, '.cache/excalidraw'),
-    })
-    copyAsset('image.png', 'hello-world')
-    const mtime1 = fs.statSync(path.join(tmp, 'public/blog-assets/hello-world/image.png')).mtimeMs
-    copyAsset('image.png', 'hello-world')
-    const mtime2 = fs.statSync(path.join(tmp, 'public/blog-assets/hello-world/image.png')).mtimeMs
-    expect(mtime2).toBe(mtime1)
-  })
+      attachmentsRoot: path.join(tmp, "vault/Attachments"),
+      publicRoot: path.join(tmp, "public"),
+      excalidrawCacheDir: path.join(tmp, ".cache/excalidraw"),
+    });
+    copyAsset("image.png", "hello-world");
+    const mtime1 = fs.statSync(path.join(tmp, "public/blog-assets/hello-world/image.png")).mtimeMs;
+    copyAsset("image.png", "hello-world");
+    const mtime2 = fs.statSync(path.join(tmp, "public/blog-assets/hello-world/image.png")).mtimeMs;
+    expect(mtime2).toBe(mtime1);
+  });
 
-  it('resolveExcalidraw returns SVG string (stub renderer)', () => {
+  it("resolveExcalidraw returns SVG string (stub renderer)", () => {
     const { resolveExcalidraw } = createAssetAdapters({
-      attachmentsRoot: path.join(tmp, 'vault/Attachments'),
-      publicRoot: path.join(tmp, 'public'),
-      excalidrawCacheDir: path.join(tmp, '.cache/excalidraw'),
+      attachmentsRoot: path.join(tmp, "vault/Attachments"),
+      publicRoot: path.join(tmp, "public"),
+      excalidrawCacheDir: path.join(tmp, ".cache/excalidraw"),
       renderExcalidraw: () => '<svg data-stub="1"></svg>',
-    })
-    const svg = resolveExcalidraw('drawing.excalidraw.md')
-    expect(svg).toContain('<svg')
-  })
+    });
+    const svg = resolveExcalidraw("drawing.excalidraw.md");
+    expect(svg).toContain("<svg");
+  });
 
-  it('resolveExcalidraw caches by content hash', () => {
-    let calls = 0
+  it("resolveExcalidraw caches by content hash", () => {
+    let calls = 0;
     const { resolveExcalidraw } = createAssetAdapters({
-      attachmentsRoot: path.join(tmp, 'vault/Attachments'),
-      publicRoot: path.join(tmp, 'public'),
-      excalidrawCacheDir: path.join(tmp, '.cache/excalidraw'),
-      renderExcalidraw: () => { calls++; return '<svg data-stub="1"></svg>' },
-    })
-    resolveExcalidraw('drawing.excalidraw.md')
-    resolveExcalidraw('drawing.excalidraw.md')
-    expect(calls).toBe(1)
-  })
-})
-```
+      attachmentsRoot: path.join(tmp, "vault/Attachments"),
+      publicRoot: path.join(tmp, "public"),
+      excalidrawCacheDir: path.join(tmp, ".cache/excalidraw"),
+      renderExcalidraw: () => {
+        calls++;
+        return '<svg data-stub="1"></svg>';
+      },
+    });
+    resolveExcalidraw("drawing.excalidraw.md");
+    resolveExcalidraw("drawing.excalidraw.md");
+    expect(calls).toBe(1);
+  });
+});
+````
 
 - [ ] **Step 2: Run test — expect fail**
 
@@ -971,57 +1035,57 @@ Expected: FAIL.
 - [ ] **Step 3: Implement `src/lib/remark/adapters.ts`**
 
 ```ts
-import fs from 'node:fs'
-import path from 'node:path'
-import crypto from 'node:crypto'
+import fs from "node:fs";
+import path from "node:path";
+import crypto from "node:crypto";
 
 export interface AdapterOptions {
-  attachmentsRoot: string
-  publicRoot: string
-  excalidrawCacheDir: string
-  renderExcalidraw?: (filepath: string) => string
+  attachmentsRoot: string;
+  publicRoot: string;
+  excalidrawCacheDir: string;
+  renderExcalidraw?: (filepath: string) => string;
 }
 
 function hashBuffer(buf: Buffer): string {
-  return crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16)
+  return crypto.createHash("sha256").update(buf).digest("hex").slice(0, 16);
 }
 
 function defaultRenderExcalidraw(_filepath: string): string {
-  return '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><text x="10" y="20">excalidraw placeholder</text></svg>'
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><text x="10" y="20">excalidraw placeholder</text></svg>';
 }
 
 export function createAssetAdapters(opts: AdapterOptions) {
-  const render = opts.renderExcalidraw ?? defaultRenderExcalidraw
+  const render = opts.renderExcalidraw ?? defaultRenderExcalidraw;
 
   function copyAsset(filename: string, postSlug: string): string {
-    const src = path.join(opts.attachmentsRoot, filename)
-    const destDir = path.join(opts.publicRoot, 'blog-assets', postSlug)
-    const dest = path.join(destDir, filename)
-    fs.mkdirSync(destDir, { recursive: true })
+    const src = path.join(opts.attachmentsRoot, filename);
+    const destDir = path.join(opts.publicRoot, "blog-assets", postSlug);
+    const dest = path.join(destDir, filename);
+    fs.mkdirSync(destDir, { recursive: true });
 
     if (fs.existsSync(dest)) {
-      const srcHash = hashBuffer(fs.readFileSync(src))
-      const destHash = hashBuffer(fs.readFileSync(dest))
-      if (srcHash === destHash) return `/blog-assets/${postSlug}/${filename}`
+      const srcHash = hashBuffer(fs.readFileSync(src));
+      const destHash = hashBuffer(fs.readFileSync(dest));
+      if (srcHash === destHash) return `/blog-assets/${postSlug}/${filename}`;
     }
-    fs.copyFileSync(src, dest)
-    return `/blog-assets/${postSlug}/${filename}`
+    fs.copyFileSync(src, dest);
+    return `/blog-assets/${postSlug}/${filename}`;
   }
 
   function resolveExcalidraw(filename: string): string {
-    const src = path.join(opts.attachmentsRoot, filename)
-    const buf = fs.readFileSync(src)
-    const hash = hashBuffer(buf)
-    const cacheFile = path.join(opts.excalidrawCacheDir, `${hash}.svg`)
-    if (fs.existsSync(cacheFile)) return fs.readFileSync(cacheFile, 'utf8')
+    const src = path.join(opts.attachmentsRoot, filename);
+    const buf = fs.readFileSync(src);
+    const hash = hashBuffer(buf);
+    const cacheFile = path.join(opts.excalidrawCacheDir, `${hash}.svg`);
+    if (fs.existsSync(cacheFile)) return fs.readFileSync(cacheFile, "utf8");
 
-    fs.mkdirSync(opts.excalidrawCacheDir, { recursive: true })
-    const svg = render(src)
-    fs.writeFileSync(cacheFile, svg, 'utf8')
-    return svg
+    fs.mkdirSync(opts.excalidrawCacheDir, { recursive: true });
+    const svg = render(src);
+    fs.writeFileSync(cacheFile, svg, "utf8");
+    return svg;
   }
 
-  return { copyAsset, resolveExcalidraw }
+  return { copyAsset, resolveExcalidraw };
 }
 ```
 
@@ -1040,6 +1104,7 @@ git commit -m "feat(remark): add filesystem adapters for asset copy + excalidraw
 ### Task A8: Wikilink index builder (pulls from Astro content collections)
 
 **Files:**
+
 - Create: `src/lib/remark/buildIndex.ts`
 - Create: `tests/lib/remark/buildIndex.test.ts`
 
@@ -1050,39 +1115,54 @@ This function builds the `WikilinkIndex` from Astro collections at build time.
 Create `tests/lib/remark/buildIndex.test.ts`:
 
 ```ts
-import { describe, it, expect } from 'vitest'
-import { buildWikilinkIndex } from '@/lib/remark/buildIndex'
+import { describe, it, expect } from "vitest";
+import { buildWikilinkIndex } from "@/lib/remark/buildIndex";
 
-describe('buildWikilinkIndex', () => {
-  it('indexes posts, projects, roles, and clippings by id', () => {
+describe("buildWikilinkIndex", () => {
+  it("indexes posts, projects, roles, and clippings by id", () => {
     const idx = buildWikilinkIndex({
-      blog: [{ id: 'hello-world', data: { title: 'Hello', draft: false } }],
-      projects: [{ id: 'mrr-dashboard', data: { title: 'MRR Dashboard' } }],
-      roles: [{ id: 'gitlab-oss', data: { role: 'OSS Contributor' } }],
+      blog: [{ id: "hello-world", data: { title: "Hello", draft: false } }],
+      projects: [{ id: "mrr-dashboard", data: { title: "MRR Dashboard" } }],
+      roles: [{ id: "gitlab-oss", data: { role: "OSS Contributor" } }],
       education: [],
       gallery: [],
-      clippings: [{
-        id: 'comptia-linux',
-        data: { title: 'CompTIA Linux', preview: 'excerpt', source: 'https://x', publish: false, share: false },
-      }],
-    } as any)
+      clippings: [
+        {
+          id: "comptia-linux",
+          data: {
+            title: "CompTIA Linux",
+            preview: "excerpt",
+            source: "https://x",
+            publish: false,
+            share: false,
+          },
+        },
+      ],
+    } as any);
 
-    expect(idx.posts.get('hello-world')?.url).toBe('/blog/hello-world')
-    expect(idx.projects.get('mrr-dashboard')?.url).toBe('/projects/mrr-dashboard')
-    expect(idx.roles.get('gitlab-oss')?.url).toBe('/experience/gitlab-oss')
-    expect(idx.clippings.get('comptia-linux')).toMatchObject({
-      kind: 'clipping', publish: false, share: false, preview: 'excerpt',
-    })
-  })
+    expect(idx.posts.get("hello-world")?.url).toBe("/blog/hello-world");
+    expect(idx.projects.get("mrr-dashboard")?.url).toBe("/projects/mrr-dashboard");
+    expect(idx.roles.get("gitlab-oss")?.url).toBe("/experience/gitlab-oss");
+    expect(idx.clippings.get("comptia-linux")).toMatchObject({
+      kind: "clipping",
+      publish: false,
+      share: false,
+      preview: "excerpt",
+    });
+  });
 
-  it('omits draft posts', () => {
+  it("omits draft posts", () => {
     const idx = buildWikilinkIndex({
-      blog: [{ id: 'draft', data: { title: 'Draft', draft: true } }],
-      projects: [], roles: [], education: [], gallery: [], clippings: [],
-    } as any)
-    expect(idx.posts.has('draft')).toBe(false)
-  })
-})
+      blog: [{ id: "draft", data: { title: "Draft", draft: true } }],
+      projects: [],
+      roles: [],
+      education: [],
+      gallery: [],
+      clippings: [],
+    } as any);
+    expect(idx.posts.has("draft")).toBe(false);
+  });
+});
 ```
 
 - [ ] **Step 2: Run test — expect fail**
@@ -1093,55 +1173,66 @@ Expected: FAIL.
 - [ ] **Step 3: Implement `src/lib/remark/buildIndex.ts`**
 
 ```ts
-import type { WikilinkIndex, WikilinkTarget } from './wikilinks'
+import type { WikilinkIndex, WikilinkTarget } from "./wikilinks";
 
 interface RawCollections {
-  blog:       Array<{ id: string; data: { title: string; draft?: boolean } }>
-  projects:   Array<{ id: string; data: { title: string } }>
-  roles:      Array<{ id: string; data: { role: string } }>
-  education:  Array<{ id: string; data: { institution: string } }>
-  gallery:    Array<{ id: string; data: { title: string } }>
-  clippings:  Array<{ id: string; data: { title: string; preview?: string; source?: string; publish: boolean; share: boolean } }>
+  blog: Array<{ id: string; data: { title: string; draft?: boolean } }>;
+  projects: Array<{ id: string; data: { title: string } }>;
+  roles: Array<{ id: string; data: { role: string } }>;
+  education: Array<{ id: string; data: { institution: string } }>;
+  gallery: Array<{ id: string; data: { title: string } }>;
+  clippings: Array<{
+    id: string;
+    data: { title: string; preview?: string; source?: string; publish: boolean; share: boolean };
+  }>;
 }
 
 export function buildWikilinkIndex(c: RawCollections): WikilinkIndex {
-  const posts = new Map<string, WikilinkTarget>()
+  const posts = new Map<string, WikilinkTarget>();
   for (const e of c.blog) {
-    if (e.data.draft) continue
-    posts.set(e.id, { kind: 'blog', url: `/blog/${e.id}`, title: e.data.title })
+    if (e.data.draft) continue;
+    posts.set(e.id, { kind: "blog", url: `/blog/${e.id}`, title: e.data.title });
   }
 
-  const projects = new Map<string, WikilinkTarget>()
+  const projects = new Map<string, WikilinkTarget>();
   for (const e of c.projects) {
-    projects.set(e.id, { kind: 'project', url: `/projects/${e.id}`, title: e.data.title })
+    projects.set(e.id, { kind: "project", url: `/projects/${e.id}`, title: e.data.title });
   }
 
-  const roles = new Map<string, WikilinkTarget>()
+  const roles = new Map<string, WikilinkTarget>();
   for (const e of c.roles) {
-    roles.set(e.id, { kind: 'role', url: `/experience/${e.id}`, title: e.data.role })
+    roles.set(e.id, { kind: "role", url: `/experience/${e.id}`, title: e.data.role });
   }
 
-  const education = new Map<string, WikilinkTarget>()
+  const education = new Map<string, WikilinkTarget>();
   for (const e of c.education) {
-    education.set(e.id, { kind: 'education', url: `/education/${e.id}`, title: e.data.institution })
+    education.set(e.id, {
+      kind: "education",
+      url: `/education/${e.id}`,
+      title: e.data.institution,
+    });
   }
 
-  const gallery = new Map<string, WikilinkTarget>()
+  const gallery = new Map<string, WikilinkTarget>();
   for (const e of c.gallery) {
-    gallery.set(e.id, { kind: 'gallery', url: `/gallery/${e.id}`, title: e.data.title })
+    gallery.set(e.id, { kind: "gallery", url: `/gallery/${e.id}`, title: e.data.title });
   }
 
-  const clippings = new Map<string, WikilinkTarget>()
+  const clippings = new Map<string, WikilinkTarget>();
   for (const e of c.clippings) {
-    const url = e.data.publish ? `/notes/${e.id}` : ''
+    const url = e.data.publish ? `/notes/${e.id}` : "";
     clippings.set(e.id, {
-      kind: 'clipping', url, title: e.data.title,
-      preview: e.data.preview, source: e.data.source,
-      publish: e.data.publish, share: e.data.share,
-    })
+      kind: "clipping",
+      url,
+      title: e.data.title,
+      preview: e.data.preview,
+      source: e.data.source,
+      publish: e.data.publish,
+      share: e.data.share,
+    });
   }
 
-  return { posts, projects, roles, education, gallery, clippings }
+  return { posts, projects, roles, education, gallery, clippings };
 }
 ```
 
@@ -1164,6 +1255,7 @@ git commit -m "feat(remark): add wikilink index builder from content collections
 ### Task A9: Expand `src/content/config.ts` to 8 collections and point at `vendor/vault`
 
 **Files:**
+
 - Modify: `src/content/config.ts`
 - Create: `tests/content/config.test.ts`
 
@@ -1172,17 +1264,26 @@ git commit -m "feat(remark): add wikilink index builder from content collections
 Create `tests/content/config.test.ts`:
 
 ```ts
-import { describe, it, expect } from 'vitest'
-import { collections } from '@/content/config'
+import { describe, it, expect } from "vitest";
+import { collections } from "@/content/config";
 
-describe('content collections', () => {
-  it('registers 8 named collections', () => {
-    const names = Object.keys(collections).sort()
-    expect(names).toEqual([
-      'about', 'blog', 'clippings', 'companies', 'education', 'gallery', 'projects', 'roles',
-    ].sort())
-  })
-})
+describe("content collections", () => {
+  it("registers 8 named collections", () => {
+    const names = Object.keys(collections).sort();
+    expect(names).toEqual(
+      [
+        "about",
+        "blog",
+        "clippings",
+        "companies",
+        "education",
+        "gallery",
+        "projects",
+        "roles",
+      ].sort(),
+    );
+  });
+});
 ```
 
 - [ ] **Step 2: Run test — expect fail (current config has only `blog`)**
@@ -1193,49 +1294,64 @@ Expected: FAIL.
 - [ ] **Step 3: Rewrite `src/content/config.ts`**
 
 ```ts
-import { defineCollection } from 'astro:content'
-import { glob } from 'astro/loaders'
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
 import {
-  blogSchema, projectSchema, roleSchema, companySchema,
-  educationSchema, gallerySchema, clippingSchema, aboutSchema,
-} from './schemas'
+  blogSchema,
+  projectSchema,
+  roleSchema,
+  companySchema,
+  educationSchema,
+  gallerySchema,
+  clippingSchema,
+  aboutSchema,
+} from "./schemas";
 
-const BASE = './vendor/vault'
+const BASE = "./vendor/vault";
 
 const blog = defineCollection({
-  loader: glob({ pattern: 'Blogs/**/*.md', base: BASE }),
+  loader: glob({ pattern: "Blogs/**/*.md", base: BASE }),
   schema: blogSchema,
-})
+});
 const projects = defineCollection({
-  loader: glob({ pattern: 'Portfolio/Projects/**/*.md', base: BASE }),
+  loader: glob({ pattern: "Portfolio/Projects/**/*.md", base: BASE }),
   schema: projectSchema,
-})
+});
 const roles = defineCollection({
-  loader: glob({ pattern: 'Portfolio/Experience/*.md', base: BASE }),
+  loader: glob({ pattern: "Portfolio/Experience/*.md", base: BASE }),
   schema: roleSchema,
-})
+});
 const companies = defineCollection({
-  loader: glob({ pattern: 'Portfolio/Experience/Companies/*.md', base: BASE }),
+  loader: glob({ pattern: "Portfolio/Experience/Companies/*.md", base: BASE }),
   schema: companySchema,
-})
+});
 const education = defineCollection({
-  loader: glob({ pattern: 'Portfolio/Education/**/*.md', base: BASE }),
+  loader: glob({ pattern: "Portfolio/Education/**/*.md", base: BASE }),
   schema: educationSchema,
-})
+});
 const gallery = defineCollection({
-  loader: glob({ pattern: 'Portfolio/Gallery/**/*.md', base: BASE }),
+  loader: glob({ pattern: "Portfolio/Gallery/**/*.md", base: BASE }),
   schema: gallerySchema,
-})
+});
 const clippings = defineCollection({
-  loader: glob({ pattern: 'References/Clippings/**/*.md', base: BASE }),
+  loader: glob({ pattern: "References/Clippings/**/*.md", base: BASE }),
   schema: clippingSchema,
-})
+});
 const about = defineCollection({
-  loader: glob({ pattern: 'Portfolio/About.md', base: BASE }),
+  loader: glob({ pattern: "Portfolio/About.md", base: BASE }),
   schema: aboutSchema,
-})
+});
 
-export const collections = { blog, projects, roles, companies, education, gallery, clippings, about }
+export const collections = {
+  blog,
+  projects,
+  roles,
+  companies,
+  education,
+  gallery,
+  clippings,
+  about,
+};
 ```
 
 - [ ] **Step 4: Run test — expect pass**
@@ -1258,6 +1374,7 @@ git commit -m "feat(content): expand to 8 collections loading from vendor/vault"
 ### Task A10: Wire remark plugins into `astro.config.ts`
 
 **Files:**
+
 - Modify: `astro.config.ts`
 - Create: `scripts/load-wikilink-index.mjs`
 
@@ -1267,83 +1384,87 @@ Because Astro markdown processing runs inside Vite at config eval time, we need 
 
 ```js
 // scripts/load-wikilink-index.mjs
-import fs from 'node:fs'
-import path from 'node:path'
-import matter from 'gray-matter'
+import fs from "node:fs";
+import path from "node:path";
+import matter from "gray-matter";
 
-const BASE = path.resolve('./vendor/vault')
+const BASE = path.resolve("./vendor/vault");
 
 function scanDir(dir, fn) {
-  if (!fs.existsSync(dir)) return
+  if (!fs.existsSync(dir)) return;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name)
-    if (entry.isDirectory()) scanDir(full, fn)
-    else if (entry.isFile() && full.endsWith('.md')) fn(full)
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) scanDir(full, fn);
+    else if (entry.isFile() && full.endsWith(".md")) fn(full);
   }
 }
 
 function idFromPath(root, filepath) {
-  const rel = path.relative(root, filepath)
-  return rel.replace(/\.md$/, '').replace(/\\/g, '/').split('/').pop()
+  const rel = path.relative(root, filepath);
+  return rel.replace(/\.md$/, "").replace(/\\/g, "/").split("/").pop();
 }
 
 export function loadIndex() {
   const index = {
-    posts:     new Map(),
-    projects:  new Map(),
-    roles:     new Map(),
+    posts: new Map(),
+    projects: new Map(),
+    roles: new Map(),
     education: new Map(),
-    gallery:   new Map(),
+    gallery: new Map(),
     clippings: new Map(),
-  }
+  };
 
-  scanDir(path.join(BASE, 'Blogs'), (f) => {
-    const { data } = matter(fs.readFileSync(f, 'utf8'))
-    if (data.draft) return
-    const id = idFromPath(path.join(BASE, 'Blogs'), f)
-    index.posts.set(id, { kind: 'blog', url: `/blog/${id}`, title: data.title ?? id })
-  })
+  scanDir(path.join(BASE, "Blogs"), (f) => {
+    const { data } = matter(fs.readFileSync(f, "utf8"));
+    if (data.draft) return;
+    const id = idFromPath(path.join(BASE, "Blogs"), f);
+    index.posts.set(id, { kind: "blog", url: `/blog/${id}`, title: data.title ?? id });
+  });
 
-  scanDir(path.join(BASE, 'Portfolio/Projects'), (f) => {
-    const { data } = matter(fs.readFileSync(f, 'utf8'))
-    const id = idFromPath(path.join(BASE, 'Portfolio/Projects'), f)
-    index.projects.set(id, { kind: 'project', url: `/projects/${id}`, title: data.title ?? id })
-  })
+  scanDir(path.join(BASE, "Portfolio/Projects"), (f) => {
+    const { data } = matter(fs.readFileSync(f, "utf8"));
+    const id = idFromPath(path.join(BASE, "Portfolio/Projects"), f);
+    index.projects.set(id, { kind: "project", url: `/projects/${id}`, title: data.title ?? id });
+  });
 
-  scanDir(path.join(BASE, 'Portfolio/Experience'), (f) => {
-    if (f.includes('/Companies/')) return
-    const { data } = matter(fs.readFileSync(f, 'utf8'))
-    const id = idFromPath(path.join(BASE, 'Portfolio/Experience'), f)
-    index.roles.set(id, { kind: 'role', url: `/experience/${id}`, title: data.role ?? id })
-  })
+  scanDir(path.join(BASE, "Portfolio/Experience"), (f) => {
+    if (f.includes("/Companies/")) return;
+    const { data } = matter(fs.readFileSync(f, "utf8"));
+    const id = idFromPath(path.join(BASE, "Portfolio/Experience"), f);
+    index.roles.set(id, { kind: "role", url: `/experience/${id}`, title: data.role ?? id });
+  });
 
-  scanDir(path.join(BASE, 'Portfolio/Education'), (f) => {
-    const { data } = matter(fs.readFileSync(f, 'utf8'))
-    const id = idFromPath(path.join(BASE, 'Portfolio/Education'), f)
-    index.education.set(id, { kind: 'education', url: `/education/${id}`, title: data.institution ?? id })
-  })
+  scanDir(path.join(BASE, "Portfolio/Education"), (f) => {
+    const { data } = matter(fs.readFileSync(f, "utf8"));
+    const id = idFromPath(path.join(BASE, "Portfolio/Education"), f);
+    index.education.set(id, {
+      kind: "education",
+      url: `/education/${id}`,
+      title: data.institution ?? id,
+    });
+  });
 
-  scanDir(path.join(BASE, 'Portfolio/Gallery'), (f) => {
-    const { data } = matter(fs.readFileSync(f, 'utf8'))
-    const id = idFromPath(path.join(BASE, 'Portfolio/Gallery'), f)
-    index.gallery.set(id, { kind: 'gallery', url: `/gallery/${id}`, title: data.title ?? id })
-  })
+  scanDir(path.join(BASE, "Portfolio/Gallery"), (f) => {
+    const { data } = matter(fs.readFileSync(f, "utf8"));
+    const id = idFromPath(path.join(BASE, "Portfolio/Gallery"), f);
+    index.gallery.set(id, { kind: "gallery", url: `/gallery/${id}`, title: data.title ?? id });
+  });
 
-  scanDir(path.join(BASE, 'References/Clippings'), (f) => {
-    const { data } = matter(fs.readFileSync(f, 'utf8'))
-    const id = idFromPath(path.join(BASE, 'References/Clippings'), f)
+  scanDir(path.join(BASE, "References/Clippings"), (f) => {
+    const { data } = matter(fs.readFileSync(f, "utf8"));
+    const id = idFromPath(path.join(BASE, "References/Clippings"), f);
     index.clippings.set(id, {
-      kind: 'clipping',
-      url: data.publish ? `/notes/${id}` : '',
+      kind: "clipping",
+      url: data.publish ? `/notes/${id}` : "",
       title: data.title ?? id,
       preview: data.preview,
       source: data.source,
       publish: data.publish ?? false,
       share: data.share ?? false,
-    })
-  })
+    });
+  });
 
-  return index
+  return index;
 }
 ```
 
@@ -1357,36 +1478,36 @@ pnpm add -D gray-matter
 
 ```ts
 // @ts-check
-import react from '@astrojs/react'
-import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'astro/config'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import sitemap from '@astrojs/sitemap'
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import sitemap from "@astrojs/sitemap";
 
-import { remarkPreview } from './src/lib/remark/preview.ts'
-import { remarkWikilinks } from './src/lib/remark/wikilinks.ts'
-import { remarkEmbeds } from './src/lib/remark/embeds.ts'
-import { createAssetAdapters } from './src/lib/remark/adapters.ts'
-import { loadIndex } from './scripts/load-wikilink-index.mjs'
+import { remarkPreview } from "./src/lib/remark/preview.ts";
+import { remarkWikilinks } from "./src/lib/remark/wikilinks.ts";
+import { remarkEmbeds } from "./src/lib/remark/embeds.ts";
+import { createAssetAdapters } from "./src/lib/remark/adapters.ts";
+import { loadIndex } from "./scripts/load-wikilink-index.mjs";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const site = process.env.VERCEL
-  ? process.env.VERCEL_ENV === 'production'
-    ? 'https://vietbui1999ru.github.io'
+  ? process.env.VERCEL_ENV === "production"
+    ? "https://vietbui1999ru.github.io"
     : `https://${process.env.VERCEL_URL}`
-  : (process.env.SITE ?? 'http://localhost:4321')
-const base = process.env.BASE || '/'
+  : (process.env.SITE ?? "http://localhost:4321");
+const base = process.env.BASE || "/";
 
-const wikilinkIndex = loadIndex()
-const deadLinks = new Set()
+const wikilinkIndex = loadIndex();
+const deadLinks = new Set();
 
 const adapters = createAssetAdapters({
-  attachmentsRoot: path.resolve('./vendor/vault/Attachments'),
-  publicRoot: path.resolve('./public'),
-  excalidrawCacheDir: path.resolve('./node_modules/.cache/excalidraw'),
-})
+  attachmentsRoot: path.resolve("./vendor/vault/Attachments"),
+  publicRoot: path.resolve("./public"),
+  excalidrawCacheDir: path.resolve("./node_modules/.cache/excalidraw"),
+});
 
 export default defineConfig({
   site,
@@ -1395,31 +1516,37 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkPreview,
-      [remarkWikilinks, {
-        index: wikilinkIndex,
-        onDead: (slug, file) => {
-          const key = `${slug}::${file}`
-          if (!deadLinks.has(key)) {
-            deadLinks.add(key)
-            console.warn(`[wikilink] dead: [[${slug}]] in ${file}`)
-          }
+      [
+        remarkWikilinks,
+        {
+          index: wikilinkIndex,
+          onDead: (slug, file) => {
+            const key = `${slug}::${file}`;
+            if (!deadLinks.has(key)) {
+              deadLinks.add(key);
+              console.warn(`[wikilink] dead: [[${slug}]] in ${file}`);
+            }
+          },
+          strict: process.env.STRICT_WIKILINKS === "1",
         },
-        strict: process.env.STRICT_WIKILINKS === '1',
-      }],
-      [remarkEmbeds, {
-        attachmentsRoot: path.resolve('./vendor/vault/Attachments'),
-        copyAsset: adapters.copyAsset,
-        resolveExcalidraw: adapters.resolveExcalidraw,
-      }],
+      ],
+      [
+        remarkEmbeds,
+        {
+          attachmentsRoot: path.resolve("./vendor/vault/Attachments"),
+          copyAsset: adapters.copyAsset,
+          resolveExcalidraw: adapters.resolveExcalidraw,
+        },
+      ],
     ],
   },
   vite: {
     plugins: [tailwindcss()],
     resolve: {
-      alias: { '@': path.resolve(__dirname, 'src') },
+      alias: { "@": path.resolve(__dirname, "src") },
     },
   },
-})
+});
 ```
 
 - [ ] **Step 3: Install `@astrojs/sitemap`**
@@ -1479,6 +1606,7 @@ git commit -m "feat(build): wire remark plugins (preview, wikilinks, embeds) int
 ### Task A11: Render clipping popovers with a client component
 
 **Files:**
+
 - Create: `src/components/ui/NotePopover.tsx`
 - Create: `src/components/ui/NotePopover.test.tsx`
 
@@ -1492,19 +1620,23 @@ In the clipping branch, replace the `mdxJsxTextElement` node with:
 
 ```ts
 out.push({
-  type: 'html',
-  value: `<a class="note-popover" data-title="${escapeAttr(target.title)}" ${target.preview ? `data-preview="${escapeAttr(target.preview)}" ` : ''}${target.source ? `data-source="${escapeAttr(target.source)}" ` : ''}>${escapeHtml(display)}</a>`,
-} as any)
+  type: "html",
+  value: `<a class="note-popover" data-title="${escapeAttr(target.title)}" ${target.preview ? `data-preview="${escapeAttr(target.preview)}" ` : ""}${target.source ? `data-source="${escapeAttr(target.source)}" ` : ""}>${escapeHtml(display)}</a>`,
+} as any);
 ```
 
 Add helper functions at the top of `src/lib/remark/wikilinks.ts`:
 
 ```ts
 function escapeAttr(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 function escapeHtml(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 ```
 
@@ -1514,13 +1646,13 @@ Replace the "wraps private clippings" test:
 
 ```ts
 it('wraps private clippings as <a class="note-popover"> html', async () => {
-  const tree: any = await transform('Read [[comptia-linux]] for reference.')
-  const node = tree.children[0].children[1]
-  expect(node.type).toBe('html')
-  expect(node.value).toContain('class="note-popover"')
-  expect(node.value).toContain('data-preview="Short excerpt."')
-  expect(node.value).toContain('data-source="https://example.com"')
-})
+  const tree: any = await transform("Read [[comptia-linux]] for reference.");
+  const node = tree.children[0].children[1];
+  expect(node.type).toBe("html");
+  expect(node.value).toContain('class="note-popover"');
+  expect(node.value).toContain('data-preview="Short excerpt."');
+  expect(node.value).toContain('data-source="https://example.com"');
+});
 ```
 
 - [ ] **Step 3: Run test — expect pass**
@@ -1533,24 +1665,35 @@ Expected: pass.
 Create `src/components/ui/NotePopover.test.tsx`:
 
 ```tsx
-import { describe, it, expect } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { NotePopover } from './NotePopover'
+import { describe, it, expect } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { NotePopover } from "./NotePopover";
 
-describe('NotePopover', () => {
-  it('renders text and shows preview on hover', () => {
-    render(<NotePopover title="CompTIA Linux" preview="Short excerpt." source="https://example.com">See note</NotePopover>)
-    expect(screen.getByText('See note')).toBeInTheDocument()
-    fireEvent.mouseEnter(screen.getByText('See note'))
-    expect(screen.getByText('Short excerpt.')).toBeInTheDocument()
-  })
+describe("NotePopover", () => {
+  it("renders text and shows preview on hover", () => {
+    render(
+      <NotePopover title="CompTIA Linux" preview="Short excerpt." source="https://example.com">
+        See note
+      </NotePopover>,
+    );
+    expect(screen.getByText("See note")).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByText("See note"));
+    expect(screen.getByText("Short excerpt.")).toBeInTheDocument();
+  });
 
-  it('has source link when source provided', () => {
-    render(<NotePopover title="x" preview="p" source="https://example.com">t</NotePopover>)
-    fireEvent.mouseEnter(screen.getByText('t'))
-    expect(screen.getByRole('link', { name: /source/i })).toHaveAttribute('href', 'https://example.com')
-  })
-})
+  it("has source link when source provided", () => {
+    render(
+      <NotePopover title="x" preview="p" source="https://example.com">
+        t
+      </NotePopover>,
+    );
+    fireEvent.mouseEnter(screen.getByText("t"));
+    expect(screen.getByRole("link", { name: /source/i })).toHaveAttribute(
+      "href",
+      "https://example.com",
+    );
+  });
+});
 ```
 
 Install testing-library matchers:
@@ -1562,8 +1705,8 @@ pnpm add -D @testing-library/jest-dom
 Update `tests/setup.ts`:
 
 ```ts
-import '@testing-library/dom'
-import '@testing-library/jest-dom/vitest'
+import "@testing-library/dom";
+import "@testing-library/jest-dom/vitest";
 ```
 
 - [ ] **Step 5: Run test — expect fail**
@@ -1574,22 +1717,22 @@ Expected: FAIL.
 - [ ] **Step 6: Implement `src/components/ui/NotePopover.tsx`**
 
 ```tsx
-import { useState } from 'react'
-import { cn } from '@/lib/utils'
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export interface NotePopoverProps {
-  title: string
-  preview?: string
-  source?: string
-  children: React.ReactNode
-  className?: string
+  title: string;
+  preview?: string;
+  source?: string;
+  children: React.ReactNode;
+  className?: string;
 }
 
 export function NotePopover({ title, preview, source, children, className }: NotePopoverProps) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   return (
     <span
-      className={cn('relative inline-block', className)}
+      className={cn("relative inline-block", className)}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       onFocus={() => setOpen(true)}
@@ -1623,10 +1766,10 @@ export function NotePopover({ title, preview, source, children, className }: Not
         </span>
       )}
     </span>
-  )
+  );
 }
 
-export default NotePopover
+export default NotePopover;
 ```
 
 - [ ] **Step 7: Create a hydration script for HTML-emitted popovers**
@@ -1634,30 +1777,28 @@ export default NotePopover
 Create `src/scripts/hydrate-note-popovers.ts`:
 
 ```ts
-import { createRoot } from 'react-dom/client'
-import { createElement } from 'react'
-import { NotePopover } from '@/components/ui/NotePopover'
+import { createRoot } from "react-dom/client";
+import { createElement } from "react";
+import { NotePopover } from "@/components/ui/NotePopover";
 
 export function hydrateNotePopovers(root: ParentNode = document) {
-  const anchors = root.querySelectorAll<HTMLAnchorElement>('a.note-popover')
+  const anchors = root.querySelectorAll<HTMLAnchorElement>("a.note-popover");
   for (const a of anchors) {
-    const title = a.dataset.title ?? ''
-    const preview = a.dataset.preview
-    const source = a.dataset.source
-    const text = a.textContent ?? ''
-    const mount = document.createElement('span')
-    a.replaceWith(mount)
-    createRoot(mount).render(
-      createElement(NotePopover, { title, preview, source }, text),
-    )
+    const title = a.dataset.title ?? "";
+    const preview = a.dataset.preview;
+    const source = a.dataset.source;
+    const text = a.textContent ?? "";
+    const mount = document.createElement("span");
+    a.replaceWith(mount);
+    createRoot(mount).render(createElement(NotePopover, { title, preview, source }, text));
   }
 }
 
-if (typeof window !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => hydrateNotePopovers())
+if (typeof window !== "undefined") {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => hydrateNotePopovers());
   } else {
-    hydrateNotePopovers()
+    hydrateNotePopovers();
   }
 }
 ```
@@ -1693,6 +1834,7 @@ git commit -m "feat(ui): NotePopover component + hydration for remark-emitted an
 ### Task A12: RSS feed for blog
 
 **Files:**
+
 - Create: `src/pages/rss.xml.ts`
 - Modify: `package.json`
 
@@ -1705,19 +1847,19 @@ pnpm add @astrojs/rss
 - [ ] **Step 2: Create `src/pages/rss.xml.ts`**
 
 ```ts
-import rss from '@astrojs/rss'
-import { getCollection } from 'astro:content'
-import type { APIContext } from 'astro'
+import rss from "@astrojs/rss";
+import { getCollection } from "astro:content";
+import type { APIContext } from "astro";
 
 export async function GET(context: APIContext) {
-  const posts = (await getCollection('blog'))
+  const posts = (await getCollection("blog"))
     .filter((p) => !p.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   return rss({
     title: "Viet Bui — Blog",
     description: "Notes on software, simulations, and automation.",
-    site: context.site ?? 'https://vietbui1999ru.github.io',
+    site: context.site ?? "https://vietbui1999ru.github.io",
     items: posts.map((p) => ({
       title: p.data.title,
       description: p.data.description,
@@ -1725,7 +1867,7 @@ export async function GET(context: APIContext) {
       link: `/blog/${p.id}/`,
       categories: p.data.tags ?? [],
     })),
-  })
+  });
 }
 ```
 
@@ -1744,6 +1886,7 @@ git commit -m "feat(blog): add RSS feed at /rss.xml"
 ### Task A13: Sitemap + robots.txt
 
 **Files:**
+
 - Modify: `astro.config.ts` (sitemap already wired in Task A10)
 - Create: `public/robots.txt`
 
@@ -1771,6 +1914,7 @@ git commit -m "feat(seo): add robots.txt pointing to sitemap-index"
 ### Task A14: Umami analytics
 
 **Files:**
+
 - Modify: `src/layouts/BaseLayout.astro`
 - Modify: `.env.example` (create if absent)
 
@@ -1820,6 +1964,7 @@ git commit -m "feat(analytics): env-gated Umami script in BaseLayout"
 ### Task A15: `scripts/publish-blog.sh` in portfolio repo
 
 **Files:**
+
 - Create: `scripts/publish-blog.sh`
 
 - [ ] **Step 1: Create the script**
@@ -2002,6 +2147,7 @@ Expected: main vault scripts execute; if vault has no new content, submodule bum
 ### Task A17: GitHub Actions workflow
 
 **Files:**
+
 - Create: `.github/workflows/deploy.yml`
 
 - [ ] **Step 1: Write the workflow**
@@ -2060,7 +2206,7 @@ jobs:
       - name: Build
         env:
           PUBLIC_UMAMI_SRC: ${{ secrets.UMAMI_SRC }}
-          PUBLIC_UMAMI_ID:  ${{ secrets.UMAMI_ID }}
+          PUBLIC_UMAMI_ID: ${{ secrets.UMAMI_ID }}
           SITE: https://vietbui1999ru.github.io
         run: pnpm build
 
@@ -2151,14 +2297,14 @@ fields:
 name: Role
 path_pattern: "Portfolio/Experience/{{slug}}.md"
 fields:
-  - { name: role,         type: text, required: true }
-  - { name: company,      type: text, required: true }
-  - { name: company_url,  type: url }
-  - { name: date_start,   type: date, required: true }
-  - { name: date_end,     type: date, nullable: true }
-  - { name: tags,         type: multi-tag }
-  - { name: summary,      type: text, required: true }
-  - { name: graph_node,   type: boolean, default: true }
+  - { name: role, type: text, required: true }
+  - { name: company, type: text, required: true }
+  - { name: company_url, type: url }
+  - { name: date_start, type: date, required: true }
+  - { name: date_end, type: date, nullable: true }
+  - { name: tags, type: multi-tag }
+  - { name: summary, type: text, required: true }
+  - { name: graph_node, type: boolean, default: true }
 ```
 
 - [ ] **Step 4: `company.yaml`, `project.yaml`, `education.yaml`, `gallery.yaml`, `clipping.yaml`**
@@ -2171,9 +2317,9 @@ Mirror the zod schemas from `src/content/schemas.ts`. Template: copy the structu
 name: Company
 path_pattern: "Portfolio/Experience/Companies/{{slug}}.md"
 fields:
-  - { name: name,       type: text, required: true }
-  - { name: url,        type: url }
-  - { name: logo,       type: text }
+  - { name: name, type: text, required: true }
+  - { name: url, type: url }
+  - { name: logo, type: text }
   - { name: graph_node, type: boolean, default: false }
 ```
 
@@ -2183,19 +2329,19 @@ fields:
 name: Project
 path_pattern: "Portfolio/Projects/{{slug}}.md"
 fields:
-  - { name: title,    type: text, required: true }
-  - { name: summary,  type: text, required: true }
-  - { name: date,     type: date, required: true }
-  - { name: tags,     type: multi-tag }
-  - { name: badges,   type: multi-tag }
-  - { name: images,   type: multi-text }
-  - { name: cover,    type: text }
+  - { name: title, type: text, required: true }
+  - { name: summary, type: text, required: true }
+  - { name: date, type: date, required: true }
+  - { name: tags, type: multi-tag }
+  - { name: badges, type: multi-tag }
+  - { name: images, type: multi-text }
+  - { name: cover, type: text }
   - name: links
     type: list
     fields:
       - { name: icon, type: text, required: true }
-      - { name: url,  type: url,  required: true }
-  - { name: status,     type: select, options: [active, shipped, archived], default: shipped }
+      - { name: url, type: url, required: true }
+  - { name: status, type: select, options: [active, shipped, archived], default: shipped }
   - { name: graph_node, type: boolean, default: true }
 ```
 
@@ -2206,13 +2352,13 @@ name: Education
 path_pattern: "Portfolio/Education/{{slug}}.md"
 fields:
   - { name: institution, type: text, required: true }
-  - { name: degree,      type: text, required: true }
-  - { name: field,       type: text }
-  - { name: date_start,  type: date, required: true }
-  - { name: date_end,    type: date, nullable: true }
-  - { name: tags,        type: multi-tag }
-  - { name: summary,     type: text, required: true }
-  - { name: graph_node,  type: boolean, default: true }
+  - { name: degree, type: text, required: true }
+  - { name: field, type: text }
+  - { name: date_start, type: date, required: true }
+  - { name: date_end, type: date, nullable: true }
+  - { name: tags, type: multi-tag }
+  - { name: summary, type: text, required: true }
+  - { name: graph_node, type: boolean, default: true }
 ```
 
 `gallery.yaml`:
@@ -2221,12 +2367,12 @@ fields:
 name: Gallery Item
 path_pattern: "Portfolio/Gallery/{{slug}}.md"
 fields:
-  - { name: title,       type: text, required: true }
+  - { name: title, type: text, required: true }
   - { name: description, type: text }
-  - { name: date,        type: date, required: true }
-  - { name: image,       type: text, required: true }
-  - { name: tags,        type: multi-tag }
-  - { name: graph_node,  type: boolean, default: true }
+  - { name: date, type: date, required: true }
+  - { name: image, type: text, required: true }
+  - { name: tags, type: multi-tag }
+  - { name: graph_node, type: boolean, default: true }
 ```
 
 `clipping.yaml`:
@@ -2235,13 +2381,13 @@ fields:
 name: Clipping
 path_pattern: "References/Clippings/{{slug}}.md"
 fields:
-  - { name: title,       type: text, required: true }
-  - { name: source,      type: url }
-  - { name: preview,     type: text, max_length: 280 }
-  - { name: tags,        type: multi-tag }
-  - { name: publish,     type: boolean, default: false }
-  - { name: share,       type: boolean, default: false }
-  - { name: graph_node,  type: boolean, default: true }
+  - { name: title, type: text, required: true }
+  - { name: source, type: url }
+  - { name: preview, type: text, max_length: 280 }
+  - { name: tags, type: multi-tag }
+  - { name: publish, type: boolean, default: false }
+  - { name: share, type: boolean, default: false }
+  - { name: graph_node, type: boolean, default: true }
 ```
 
 - [ ] **Step 5: Commit in PortfolioVault**
@@ -2256,6 +2402,7 @@ git push
 ### Task A19: Remove obsolete portfolio-side Obsidian scaffold
 
 **Files:**
+
 - Delete: `src/content/.obsidian/`
 - Delete: `src/content/_bases/`
 - Delete: `src/content/_GUIDE.md`
@@ -2288,6 +2435,7 @@ git commit -m "chore(content): remove obsolete in-repo VaultCMS scaffold (extern
 ### Task A20: Update `docs/OBSIDIAN_INTEGRATION.md`
 
 **Files:**
+
 - Modify: `docs/OBSIDIAN_INTEGRATION.md`
 
 - [ ] **Step 1: Replace the entire doc with the new three-repo workflow**
@@ -2357,6 +2505,7 @@ pnpm build
 ```
 
 Expected: tests all pass; build produces `dist/` with:
+
 - `dist/rss.xml`
 - `dist/sitemap-index.xml`
 - `dist/robots.txt`
@@ -2367,6 +2516,7 @@ Expected: tests all pass; build produces `dist/` with:
 
 Run: `pnpm preview`
 Open http://localhost:4321. Confirm:
+
 - Home page renders unchanged.
 - `/blog/2026-04-16-fixture` renders the fixture post; wikilink to itself works; nonexistent link rendered as plain text.
 - RSS feed (`/rss.xml`) has the fixture post.

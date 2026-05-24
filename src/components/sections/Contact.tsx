@@ -13,15 +13,8 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import {
-  Modal,
-  ModalTrigger,
-  ModalBody,
-  ModalContent,
-} from "@/components/ui/AnimatedModal";
-
-const LINKEDIN_URL = "https://linkedin.com/in/vietbui99";
-const DISCORD_URL = "https://discord.com/users/463366284940410910";
+import { Modal, ModalTrigger, ModalBody, ModalContent } from "@/components/ui/AnimatedModal";
+import { OWNER } from "@/config/owner";
 
 const Contact = () => {
   const email = CONTACT_BTN_LINK.replace(/^mailto:/i, "");
@@ -63,9 +56,7 @@ const Contact = () => {
       <div className="section-content">
         <header className="mb-12 flex flex-col justify-center items-center gap-4 text-center">
           <AppleHelloContactEffect className="w-full" />
-          <p className="mx-auto p-4 max-w-3xl text-lg text-muted-foreground">
-            {CONTACT_CONTENT}
-          </p>
+          <p className="mx-auto p-4 max-w-3xl text-lg text-muted-foreground">{CONTACT_CONTENT}</p>
         </header>
 
         <Modal>
@@ -88,9 +79,7 @@ const Contact = () => {
               </p>
               <div className="w-full max-w-md space-y-3">
                 <div className="w-full space-y-1 text-left">
-                  <div className="text-sm font-medium text-foreground">
-                    Email
-                  </div>
+                  <div className="text-sm font-medium text-foreground">Email</div>
                   <InputGroup className="w-full">
                     <InputGroupAddon>
                       <Mail className="size-4" />
@@ -108,11 +97,7 @@ const Contact = () => {
                         onClick={copyEmail}
                         aria-label={copied ? "Copied" : "Copy email"}
                       >
-                        {copied ? (
-                          <Check className="size-4" />
-                        ) : (
-                          <Copy className="size-4" />
-                        )}
+                        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
                       </InputGroupButton>
                     </InputGroupAddon>
                   </InputGroup>
@@ -122,7 +107,7 @@ const Contact = () => {
                 </div>
 
                 <a
-                  href={LINKEDIN_URL}
+                  href={OWNER.social.linkedin.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
@@ -134,7 +119,7 @@ const Contact = () => {
                   LinkedIn
                 </a>
                 <a
-                  href={DISCORD_URL}
+                  href={OWNER.social.discord.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(

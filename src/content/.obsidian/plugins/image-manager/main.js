@@ -14,8 +14,7 @@ var __esm = (fn, res) =>
     return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res);
   };
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if ((from && typeof from === "object") || typeof from === "function") {
@@ -41,8 +40,7 @@ var __toESM = (mod, isNodeMode, target) => (
     mod,
   )
 );
-var __toCommonJS = (mod) =>
-  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/modals/ConfirmModal.ts
 var ConfirmModal_exports = {};
@@ -50,13 +48,7 @@ __export(ConfirmModal_exports, {
   ConfirmModal: () => ConfirmModal,
   openConfirmModal: () => openConfirmModal,
 });
-function openConfirmModal(
-  app,
-  title,
-  message,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
-) {
+function openConfirmModal(app, title, message, confirmText = "Confirm", cancelText = "Cancel") {
   const modal = new ConfirmModal(app, title, message, confirmText, cancelText);
   return modal.openAndAwaitResult();
 }
@@ -65,13 +57,7 @@ var init_ConfirmModal = __esm({
   "src/modals/ConfirmModal.ts"() {
     import_obsidian14 = require("obsidian");
     ConfirmModal = class extends import_obsidian14.Modal {
-      constructor(
-        app,
-        title,
-        message,
-        confirmText = "Confirm",
-        cancelText = "Cancel",
-      ) {
+      constructor(app, title, message, confirmText = "Confirm", cancelText = "Cancel") {
         super(app);
         this.title = title;
         this.message = message;
@@ -305,19 +291,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         .setDesc("Where to save inserted images")
         .addDropdown((dropdown) => {
           dropdown
-            .addOption(
-              "obsidian" /* ObsidianDefault */,
-              "Use Obsidian's settings",
-            )
+            .addOption("obsidian" /* ObsidianDefault */, "Use Obsidian's settings")
             .addOption("same" /* SameFolder */, "Same folder as note")
-            .addOption(
-              "subfolder" /* Subfolder */,
-              "Subfolder (configure below)",
-            )
-            .addOption(
-              "vault" /* VaultFolder */,
-              "Vault folder (configure below)",
-            )
+            .addOption("subfolder" /* Subfolder */, "Subfolder (configure below)")
+            .addOption("vault" /* VaultFolder */, "Vault folder (configure below)")
             .setValue(this.plugin.settings.attachmentLocation)
             .onChange(async (value) => {
               this.plugin.settings.attachmentLocation = value;
@@ -326,10 +303,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
                 containerEl.closest(".vertical-tab-content") ||
                 containerEl.closest(".settings-content") ||
                 containerEl.parentElement;
-              const scrollTop =
-                (scrollContainer == null
-                  ? void 0
-                  : scrollContainer.scrollTop) || 0;
+              const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
               this.display();
               requestAnimationFrame(() => {
                 if (scrollContainer) {
@@ -340,16 +314,13 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         });
     });
     if (
-      this.plugin.settings.attachmentLocation !==
-        "obsidian" /* ObsidianDefault */ &&
+      this.plugin.settings.attachmentLocation !== "obsidian" /* ObsidianDefault */ &&
       this.plugin.settings.attachmentLocation !== "same" /* SameFolder */
     ) {
       group.addSetting((setting) => {
         setting
           .setName("Custom attachment path")
-          .setDesc(
-            'Path for attachments. Use "./" for relative to note, or "/" for vault root.',
-          )
+          .setDesc('Path for attachments. Use "./" for relative to note, or "/" for vault root.')
           .addText((text) => {
             text
               .setPlaceholder("./assets")
@@ -363,9 +334,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     }
   }
   renderImageServicesSettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
-      "Image services",
-    );
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Image services");
     group.addSetting((setting) => {
       setting
         .setName("Default provider")
@@ -434,33 +403,29 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     group.addSetting((setting) => {
       setting.setName("Pexels API key");
       if ((0, import_obsidian.requireApiVersion)("1.11.4")) {
-        setting
-          .setDesc("Choose a secret that contains your Pexels API key.")
-          .addComponent((el) => {
-            const obsidian = require("obsidian");
-            const SecretComponent = obsidian.SecretComponent;
-            const component = new SecretComponent(this.app, el);
-            component.setValue(this.plugin.settings.pexelsApiKeySecretId);
-            component.onChange((value) => {
-              void (async () => {
-                this.plugin.settings.pexelsApiKeySecretId = value;
-                await this.plugin.saveSettings();
-              })();
-            });
-            return component;
+        setting.setDesc("Choose a secret that contains your Pexels API key.").addComponent((el) => {
+          const obsidian = require("obsidian");
+          const SecretComponent = obsidian.SecretComponent;
+          const component = new SecretComponent(this.app, el);
+          component.setValue(this.plugin.settings.pexelsApiKeySecretId);
+          component.onChange((value) => {
+            void (async () => {
+              this.plugin.settings.pexelsApiKeySecretId = value;
+              await this.plugin.saveSettings();
+            })();
           });
+          return component;
+        });
       } else {
-        setting
-          .setDesc("Get your API key from https://www.pexels.com/api/new/")
-          .addText((text) => {
-            text
-              .setPlaceholder("Pexels API key")
-              .setValue(this.plugin.settings.pexelsApiKey)
-              .onChange(async (value) => {
-                this.plugin.settings.pexelsApiKey = value;
-                await this.plugin.saveSettings();
-              });
-          });
+        setting.setDesc("Get your API key from https://www.pexels.com/api/new/").addText((text) => {
+          text
+            .setPlaceholder("Pexels API key")
+            .setValue(this.plugin.settings.pexelsApiKey)
+            .onChange(async (value) => {
+              this.plugin.settings.pexelsApiKey = value;
+              await this.plugin.saveSettings();
+            });
+        });
       }
     });
     group.addSetting((setting) => {
@@ -482,17 +447,15 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
             return component;
           });
       } else {
-        setting
-          .setDesc("Get your API key from https://pixabay.com/api/docs/")
-          .addText((text) => {
-            text
-              .setPlaceholder("Pixabay API key")
-              .setValue(this.plugin.settings.pixabayApiKey)
-              .onChange(async (value) => {
-                this.plugin.settings.pixabayApiKey = value;
-                await this.plugin.saveSettings();
-              });
-          });
+        setting.setDesc("Get your API key from https://pixabay.com/api/docs/").addText((text) => {
+          text
+            .setPlaceholder("Pixabay API key")
+            .setValue(this.plugin.settings.pixabayApiKey)
+            .onChange(async (value) => {
+              this.plugin.settings.pixabayApiKey = value;
+              await this.plugin.saveSettings();
+            });
+        });
       }
     });
     group.addSetting((setting) => {
@@ -516,12 +479,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         .setName("Insert referral")
         .setDesc("Insert the reference text")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.insertReferral)
-            .onChange(async (value) => {
-              this.plugin.settings.insertReferral = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.insertReferral).onChange(async (value) => {
+            this.plugin.settings.insertReferral = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     group.addSetting((setting) => {
@@ -529,30 +490,24 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         .setName("Insert backlink")
         .setDesc("Insert a backlink in front of the reference text")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.insertBackLink)
-            .onChange(async (value) => {
-              this.plugin.settings.insertBackLink = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.insertBackLink).onChange(async (value) => {
+            this.plugin.settings.insertBackLink = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
   }
   renderPropertySettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
-      "Property insertion",
-    );
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Property insertion");
     group.addSetting((setting) => {
       setting
         .setName("Enable paste into properties")
         .setDesc("Allow pasting images directly into properties")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.enablePropertyPaste)
-            .onChange(async (value) => {
-              this.plugin.settings.enablePropertyPaste = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.enablePropertyPaste).onChange(async (value) => {
+            this.plugin.settings.enablePropertyPaste = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     group.addSetting((setting) => {
@@ -561,23 +516,11 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         .setDesc("How to format the image link in properties")
         .addDropdown((dropdown) => {
           dropdown
-            .addOption(
-              "obsidian" /* ObsidianDefault */,
-              "Use Obsidian's settings",
-            )
+            .addOption("obsidian" /* ObsidianDefault */, "Use Obsidian's settings")
             .addOption("path" /* Path */, "Plain path (path/to/image.jpg)")
-            .addOption(
-              "relative" /* RelativePath */,
-              "Relative path (./image.jpg)",
-            )
-            .addOption(
-              "wikilink" /* Wikilink */,
-              "Wikilink ([[path/to/image.jpg]])",
-            )
-            .addOption(
-              "markdown" /* Markdown */,
-              "Markdown (![](path/to/image.jpg))",
-            )
+            .addOption("relative" /* RelativePath */, "Relative path (./image.jpg)")
+            .addOption("wikilink" /* Wikilink */, "Wikilink ([[path/to/image.jpg]])")
+            .addOption("markdown" /* Markdown */, "Markdown (![](path/to/image.jpg))")
             .addOption("custom" /* Custom */, "Custom format")
             .setValue(this.plugin.settings.propertyLinkFormat)
             .onChange(async (value) => {
@@ -587,10 +530,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
                 containerEl.closest(".vertical-tab-content") ||
                 containerEl.closest(".settings-content") ||
                 containerEl.parentElement;
-              const scrollTop =
-                (scrollContainer == null
-                  ? void 0
-                  : scrollContainer.scrollTop) || 0;
+              const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
               this.display();
               requestAnimationFrame(() => {
                 if (scrollContainer) {
@@ -619,9 +559,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     group.addSetting((setting) => {
       setting
         .setName("Default property name")
-        .setDesc(
-          "Default property name when inserting to properties via command",
-        )
+        .setDesc("Default property name when inserting to properties via command")
         .addText((text) => {
           text
             .setPlaceholder("Banner")
@@ -635,9 +573,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     group.addSetting((setting) => {
       setting
         .setName("Default icon property name")
-        .setDesc(
-          "Default property name when inserting to icon property via command",
-        )
+        .setDesc("Default property name when inserting to icon property via command")
         .addText((text) => {
           text
             .setPlaceholder("Icon")
@@ -672,30 +608,23 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     group.addSetting((setting) => {
       setting
         .setName("Auto-convert remote images")
-        .setDesc(
-          "Automatically download and replace remote image urls with local files",
-        )
+        .setDesc("Automatically download and replace remote image urls with local files")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.autoConvertRemoteImages)
-            .onChange(async (value) => {
-              this.plugin.settings.autoConvertRemoteImages = value;
-              await this.plugin.saveSettings();
-              const scrollContainer =
-                containerEl.closest(".vertical-tab-content") ||
-                containerEl.closest(".settings-content") ||
-                containerEl.parentElement;
-              const scrollTop =
-                (scrollContainer == null
-                  ? void 0
-                  : scrollContainer.scrollTop) || 0;
-              this.display();
-              requestAnimationFrame(() => {
-                if (scrollContainer) {
-                  scrollContainer.scrollTop = scrollTop;
-                }
-              });
+          toggle.setValue(this.plugin.settings.autoConvertRemoteImages).onChange(async (value) => {
+            this.plugin.settings.autoConvertRemoteImages = value;
+            await this.plugin.saveSettings();
+            const scrollContainer =
+              containerEl.closest(".vertical-tab-content") ||
+              containerEl.closest(".settings-content") ||
+              containerEl.parentElement;
+            const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
+            this.display();
+            requestAnimationFrame(() => {
+              if (scrollContainer) {
+                scrollContainer.scrollTop = scrollTop;
+              }
             });
+          });
         });
     });
     if (this.plugin.settings.autoConvertRemoteImages) {
@@ -704,12 +633,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
           .setName("Convert on note open")
           .setDesc("Process remote images when opening a note")
           .addToggle((toggle) => {
-            toggle
-              .setValue(this.plugin.settings.convertOnNoteOpen)
-              .onChange(async (value) => {
-                this.plugin.settings.convertOnNoteOpen = value;
-                await this.plugin.saveSettings();
-              });
+            toggle.setValue(this.plugin.settings.convertOnNoteOpen).onChange(async (value) => {
+              this.plugin.settings.convertOnNoteOpen = value;
+              await this.plugin.saveSettings();
+            });
           });
       });
       group.addSetting((setting) => {
@@ -717,20 +644,16 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
           .setName("Convert on note save")
           .setDesc("Process remote images when saving a note")
           .addToggle((toggle) => {
-            toggle
-              .setValue(this.plugin.settings.convertOnNoteSave)
-              .onChange(async (value) => {
-                this.plugin.settings.convertOnNoteSave = value;
-                await this.plugin.saveSettings();
-              });
+            toggle.setValue(this.plugin.settings.convertOnNoteSave).onChange(async (value) => {
+              this.plugin.settings.convertOnNoteSave = value;
+              await this.plugin.saveSettings();
+            });
           });
       });
     }
   }
   renderRenameSettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
-      "Rename options",
-    );
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Rename options");
     group.addSetting((setting) => {
       setting
         .setName("Show image rename dialog automatically")
@@ -738,13 +661,11 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
           "Handle and rename images when they are added to the vault via paste or drag and drop",
         )
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.showRenameDialog)
-            .onChange(async (value) => {
-              this.plugin.settings.showRenameDialog = value;
-              await this.plugin.saveSettings();
-              this.refreshWithScrollPreserve(containerEl);
-            });
+          toggle.setValue(this.plugin.settings.showRenameDialog).onChange(async (value) => {
+            this.plugin.settings.showRenameDialog = value;
+            await this.plugin.saveSettings();
+            this.refreshWithScrollPreserve(containerEl);
+          });
         });
     });
     if (this.plugin.settings.showRenameDialog) {
@@ -753,12 +674,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
           .setName("Rename on paste")
           .setDesc("Handle and rename images when pasting into the editor")
           .addToggle((toggle) => {
-            toggle
-              .setValue(this.plugin.settings.enableRenameOnPaste)
-              .onChange(async (value) => {
-                this.plugin.settings.enableRenameOnPaste = value;
-                await this.plugin.saveSettings();
-              });
+            toggle.setValue(this.plugin.settings.enableRenameOnPaste).onChange(async (value) => {
+              this.plugin.settings.enableRenameOnPaste = value;
+              await this.plugin.saveSettings();
+            });
           });
       });
       group.addSetting((setting) => {
@@ -766,12 +685,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
           .setName("Rename on drag and drop")
           .setDesc("Handle and rename images when dropping into the editor")
           .addToggle((toggle) => {
-            toggle
-              .setValue(this.plugin.settings.enableRenameOnDrop)
-              .onChange(async (value) => {
-                this.plugin.settings.enableRenameOnDrop = value;
-                await this.plugin.saveSettings();
-              });
+            toggle.setValue(this.plugin.settings.enableRenameOnDrop).onChange(async (value) => {
+              this.plugin.settings.enableRenameOnDrop = value;
+              await this.plugin.saveSettings();
+            });
           });
       });
     }
@@ -782,12 +699,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
           "Automatically convert and rename remote images when files are changed in the background (by Git or other plugins). Warning: Turning this on may cause the rename modal to appear for images you've already processed on other devices during a sync.",
         )
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.processBackgroundChanges)
-            .onChange(async (value) => {
-              this.plugin.settings.processBackgroundChanges = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.processBackgroundChanges).onChange(async (value) => {
+            this.plugin.settings.processBackgroundChanges = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     group.addSetting((setting) => {
@@ -797,12 +712,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
           "Ask for image description, use as display text and kebab-case for file name (applies to note body insertions only, not properties)",
         )
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.enableDescriptiveImages)
-            .onChange(async (value) => {
-              this.plugin.settings.enableDescriptiveImages = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.enableDescriptiveImages).onChange(async (value) => {
+            this.plugin.settings.enableDescriptiveImages = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     group.addSetting((setting) => {
@@ -810,20 +723,16 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         .setName("Auto rename")
         .setDesc("Automatically rename without showing dialog (uses template)")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.autoRename)
-            .onChange(async (value) => {
-              this.plugin.settings.autoRename = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.autoRename).onChange(async (value) => {
+            this.plugin.settings.autoRename = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     group.addSetting((setting) => {
       setting
         .setName("Duplicate number delimiter")
-        .setDesc(
-          'Character(s) between name and number for duplicates (e.g., "-" gives "image-1")',
-        )
+        .setDesc('Character(s) between name and number for duplicates (e.g., "-" gives "image-1")')
         .addText((text) => {
           text
             .setPlaceholder("-")
@@ -837,16 +746,12 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     group.addSetting((setting) => {
       setting
         .setName("Duplicate number at start")
-        .setDesc(
-          'Put the duplicate number at the start ("1-image" instead of "image-1")',
-        )
+        .setDesc('Put the duplicate number at the start ("1-image" instead of "image-1")')
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.dupNumberAtStart)
-            .onChange(async (value) => {
-              this.plugin.settings.dupNumberAtStart = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.dupNumberAtStart).onChange(async (value) => {
+            this.plugin.settings.dupNumberAtStart = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     group.addSetting((setting) => {
@@ -854,12 +759,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         .setName("Disable rename notice")
         .setDesc("Do not show a notice after renaming an image")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.disableRenameNotice)
-            .onChange(async (value) => {
-              this.plugin.settings.disableRenameNotice = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.disableRenameNotice).onChange(async (value) => {
+            this.plugin.settings.disableRenameNotice = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
   }
@@ -883,8 +786,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
       containerEl.closest(".vertical-tab-content") ||
       containerEl.closest(".settings-content") ||
       containerEl.parentElement;
-    const scrollTop =
-      (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
+    const scrollTop = (scrollContainer == null ? void 0 : scrollContainer.scrollTop) || 0;
     this.display();
     requestAnimationFrame(() => {
       if (scrollContainer) {
@@ -893,9 +795,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     });
   }
   renderBannerSettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
-      "Banner images",
-    );
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Banner images");
     const currentDevice = this.getCurrentDevice();
     const deviceSettings = this.plugin.settings.banner[currentDevice];
     const defaultDeviceSettings = DEFAULT_BANNER_DEVICE_SETTINGS[currentDevice];
@@ -918,9 +818,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     group.addSetting((setting) => {
       setting
         .setName("Height")
-        .setDesc(
-          `Height of the banner on your ${currentDevice} device (in pixels)`,
-        )
+        .setDesc(`Height of the banner on your ${currentDevice} device (in pixels)`)
         .addText((text) => {
           text
             .setPlaceholder(String(defaultDeviceSettings.height))
@@ -1001,13 +899,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         .setName("Rounded corners")
         .setDesc("Enable rounded corners for the banner")
         .addToggle((toggle) => {
-          toggle
-            .setValue(deviceSettings.bannerRadiusEnabled)
-            .onChange(async (value) => {
-              this.plugin.settings.banner[currentDevice].bannerRadiusEnabled =
-                value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(deviceSettings.bannerRadiusEnabled).onChange(async (value) => {
+            this.plugin.settings.banner[currentDevice].bannerRadiusEnabled = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
     group.addSetting((setting) => {
@@ -1024,16 +919,13 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     group.addSetting((setting) => {
       setting
         .setName("Banner property")
-        .setDesc(
-          "Name of the banner property this plugin will look for in the properties",
-        )
+        .setDesc("Name of the banner property this plugin will look for in the properties")
         .addText((text) => {
           text
             .setPlaceholder("Banner")
             .setValue(propertySettings.imageProperty)
             .onChange(async (value) => {
-              this.plugin.settings.banner.properties.imageProperty =
-                value || "banner";
+              this.plugin.settings.banner.properties.imageProperty = value || "banner";
               await this.plugin.saveSettings();
             });
         });
@@ -1041,16 +933,13 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     group.addSetting((setting) => {
       setting
         .setName("Icon property")
-        .setDesc(
-          "Name of the icon property this plugin will look for in the properties",
-        )
+        .setDesc("Name of the icon property this plugin will look for in the properties")
         .addText((text) => {
           text
             .setPlaceholder("Icon")
             .setValue(propertySettings.iconProperty)
             .onChange(async (value) => {
-              this.plugin.settings.banner.properties.iconProperty =
-                value || "icon";
+              this.plugin.settings.banner.properties.iconProperty = value || "icon";
               await this.plugin.saveSettings();
             });
         });
@@ -1058,18 +947,13 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     group.addSetting((setting) => {
       setting
         .setName("Enable per-note banner hiding")
-        .setDesc(
-          "Allow disabling banners on a per-note basis using a properties field",
-        )
+        .setDesc("Allow disabling banners on a per-note basis using a properties field")
         .addToggle((toggle) => {
-          toggle
-            .setValue(propertySettings.hidePropertyEnabled)
-            .onChange(async (value) => {
-              this.plugin.settings.banner.properties.hidePropertyEnabled =
-                value;
-              await this.plugin.saveSettings();
-              this.refreshWithScrollPreserve(containerEl);
-            });
+          toggle.setValue(propertySettings.hidePropertyEnabled).onChange(async (value) => {
+            this.plugin.settings.banner.properties.hidePropertyEnabled = value;
+            await this.plugin.saveSettings();
+            this.refreshWithScrollPreserve(containerEl);
+          });
         });
     });
     if (propertySettings.hidePropertyEnabled) {
@@ -1084,8 +968,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
               .setPlaceholder("hideBanner")
               .setValue(propertySettings.hideProperty)
               .onChange(async (value) => {
-                this.plugin.settings.banner.properties.hideProperty =
-                  value || "";
+                this.plugin.settings.banner.properties.hideProperty = value || "";
                 await this.plugin.saveSettings();
               });
           });
@@ -1096,13 +979,11 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         .setName("Show icon")
         .setDesc("Enable or disable the icon")
         .addToggle((toggle) => {
-          toggle
-            .setValue(deviceSettings.iconEnabled)
-            .onChange(async (value) => {
-              this.plugin.settings.banner[currentDevice].iconEnabled = value;
-              await this.plugin.saveSettings();
-              this.refreshWithScrollPreserve(containerEl);
-            });
+          toggle.setValue(deviceSettings.iconEnabled).onChange(async (value) => {
+            this.plugin.settings.banner[currentDevice].iconEnabled = value;
+            await this.plugin.saveSettings();
+            this.refreshWithScrollPreserve(containerEl);
+          });
         });
     });
     if (deviceSettings.iconEnabled) {
@@ -1128,13 +1009,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
           .setName("Icon background")
           .setDesc("Enable or disable the icon background")
           .addToggle((toggle) => {
-            toggle
-              .setValue(deviceSettings.iconBackground)
-              .onChange(async (value) => {
-                this.plugin.settings.banner[currentDevice].iconBackground =
-                  value;
-                await this.plugin.saveSettings();
-              });
+            toggle.setValue(deviceSettings.iconBackground).onChange(async (value) => {
+              this.plugin.settings.banner[currentDevice].iconBackground = value;
+              await this.plugin.saveSettings();
+            });
           });
       });
       group.addSetting((setting) => {
@@ -1144,12 +1022,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
             "Show the border/background frame around the icon (disable to display just the icon graphic)",
           )
           .addToggle((toggle) => {
-            toggle
-              .setValue(deviceSettings.iconFrame)
-              .onChange(async (value) => {
-                this.plugin.settings.banner[currentDevice].iconFrame = value;
-                await this.plugin.saveSettings();
-              });
+            toggle.setValue(deviceSettings.iconFrame).onChange(async (value) => {
+              this.plugin.settings.banner[currentDevice].iconFrame = value;
+              await this.plugin.saveSettings();
+            });
           });
       });
       group.addSetting((setting) => {
@@ -1197,8 +1073,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
               .addOption("flex-end", "Right")
               .setValue(deviceSettings.iconAlignmentH)
               .onChange(async (value) => {
-                this.plugin.settings.banner[currentDevice].iconAlignmentH =
-                  value;
+                this.plugin.settings.banner[currentDevice].iconAlignmentH = value;
                 await this.plugin.saveSettings();
               });
           });
@@ -1214,8 +1089,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
               .addOption("flex-end", "Bottom")
               .setValue(deviceSettings.iconAlignmentV)
               .onChange(async (value) => {
-                this.plugin.settings.banner[currentDevice].iconAlignmentV =
-                  value;
+                this.plugin.settings.banner[currentDevice].iconAlignmentV = value;
                 await this.plugin.saveSettings();
               });
           });
@@ -1223,9 +1097,7 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
     }
   }
   renderAdvancedSettings(containerEl) {
-    const group = new import_obsidian.SettingGroup(containerEl).setHeading(
-      "Advanced",
-    );
+    const group = new import_obsidian.SettingGroup(containerEl).setHeading("Advanced");
     group.addSetting((setting) => {
       setting
         .setName("Supported file extensions")
@@ -1254,12 +1126,10 @@ var ImageManagerSettingTab = class extends import_obsidian.PluginSettingTab {
         .setName("Debug mode")
         .setDesc("Enable debug logging to console")
         .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.debugMode)
-            .onChange(async (value) => {
-              this.plugin.settings.debugMode = value;
-              await this.plugin.saveSettings();
-            });
+          toggle.setValue(this.plugin.settings.debugMode).onChange(async (value) => {
+            this.plugin.settings.debugMode = value;
+            await this.plugin.saveSettings();
+          });
         });
     });
   }
@@ -1288,10 +1158,7 @@ var StorageManager = class {
    */
   getAttachmentFolder(noteFile) {
     var _a, _b;
-    const notePath =
-      (_b = (_a = noteFile.parent) == null ? void 0 : _a.path) != null
-        ? _b
-        : "";
+    const notePath = (_b = (_a = noteFile.parent) == null ? void 0 : _a.path) != null ? _b : "";
     switch (this.settings.attachmentLocation) {
       case "same" /* SameFolder */:
         return notePath;
@@ -1300,9 +1167,7 @@ var StorageManager = class {
           this.joinPaths(notePath, this.settings.customAttachmentPath),
         );
       case "vault" /* VaultFolder */:
-        return (0, import_obsidian2.normalizePath)(
-          this.settings.customAttachmentPath,
-        );
+        return (0, import_obsidian2.normalizePath)(this.settings.customAttachmentPath);
       case "obsidian" /* ObsidianDefault */:
       default:
         return this.getObsidianAttachmentFolder(noteFile);
@@ -1315,23 +1180,15 @@ var StorageManager = class {
     var _a, _b, _c;
     const vaultConfig = this.app.vault.config;
     const attachmentFolderPath =
-      (_a = vaultConfig == null ? void 0 : vaultConfig.attachmentFolderPath) !=
-      null
-        ? _a
-        : "/";
-    const notePath =
-      (_c = (_b = noteFile.parent) == null ? void 0 : _b.path) != null
-        ? _c
-        : "";
+      (_a = vaultConfig == null ? void 0 : vaultConfig.attachmentFolderPath) != null ? _a : "/";
+    const notePath = (_c = (_b = noteFile.parent) == null ? void 0 : _b.path) != null ? _c : "";
     if (attachmentFolderPath === "/") {
       return "";
     } else if (attachmentFolderPath === "./") {
       return notePath;
     } else if (attachmentFolderPath.startsWith("./")) {
       const relativePath = attachmentFolderPath.slice(2);
-      return (0, import_obsidian2.normalizePath)(
-        this.joinPaths(notePath, relativePath),
-      );
+      return (0, import_obsidian2.normalizePath)(this.joinPaths(notePath, relativePath));
     } else {
       return (0, import_obsidian2.normalizePath)(attachmentFolderPath);
     }
@@ -1417,18 +1274,12 @@ var StorageManager = class {
       if (insertSize && insertSize.trim()) {
         const sizePart = `|${insertSize}`;
         if (displayText && displayText.trim()) {
-          imageLink = imageLink.replace(
-            /^!\[([^\]]*)\]/,
-            `![${displayText}${sizePart}]`,
-          );
+          imageLink = imageLink.replace(/^!\[([^\]]*)\]/, `![${displayText}${sizePart}]`);
         } else {
           const altMatch = imageLink.match(/^!\[([^\]]*)\]/);
           if (altMatch) {
             const alt = altMatch[1] || "";
-            imageLink = imageLink.replace(
-              /^!\[([^\]]*)\]/,
-              `![${alt}${sizePart}]`,
-            );
+            imageLink = imageLink.replace(/^!\[([^\]]*)\]/, `![${alt}${sizePart}]`);
           }
         }
       } else if (displayText && displayText.trim()) {
@@ -1458,14 +1309,12 @@ var StorageManager = class {
    */
   getRelativePath(from, to) {
     var _a, _b, _c, _d;
-    const fromDir =
-      (_b = (_a = from.parent) == null ? void 0 : _a.path) != null ? _b : "";
+    const fromDir = (_b = (_a = from.parent) == null ? void 0 : _a.path) != null ? _b : "";
     const toPath = to.path;
     if (!fromDir) {
       return toPath;
     }
-    const toDir =
-      (_d = (_c = to.parent) == null ? void 0 : _c.path) != null ? _d : "";
+    const toDir = (_d = (_c = to.parent) == null ? void 0 : _c.path) != null ? _d : "";
     if (fromDir === toDir) {
       return to.name;
     }
@@ -1504,17 +1353,7 @@ var StorageManager = class {
    * Check if a file is an image based on extension
    */
   isImageFile(file) {
-    const imageExtensions = [
-      "jpg",
-      "jpeg",
-      "png",
-      "gif",
-      "webp",
-      "svg",
-      "bmp",
-      "tiff",
-      "avif",
-    ];
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "tiff", "avif"];
     return imageExtensions.includes(file.extension.toLowerCase());
   }
   /**
@@ -1564,14 +1403,8 @@ function renderTemplate(template, variables, frontmatter) {
   let result = template;
   result = result.replace(/\{\{fileName\}\}/g, variables.fileName);
   result = result.replace(/\{\{dirName\}\}/g, variables.dirName);
-  result = result.replace(
-    /\{\{imageNameKey\}\}/g,
-    (_a = variables.imageNameKey) != null ? _a : "",
-  );
-  result = result.replace(
-    /\{\{firstHeading\}\}/g,
-    (_b = variables.firstHeading) != null ? _b : "",
-  );
+  result = result.replace(/\{\{imageNameKey\}\}/g, (_a = variables.imageNameKey) != null ? _a : "");
+  result = result.replace(/\{\{firstHeading\}\}/g, (_b = variables.firstHeading) != null ? _b : "");
   result = result.replace(/\{\{DATE:([^}]+)\}\}/g, (_, format) => {
     return formatDate(/* @__PURE__ */ new Date(), format);
   });
@@ -1583,8 +1416,7 @@ function renderTemplate(template, variables, frontmatter) {
       const value = frontmatter[key.trim()];
       if (value == null) return "";
       if (typeof value === "string") return value;
-      if (typeof value === "number" || typeof value === "boolean")
-        return String(value);
+      if (typeof value === "number" || typeof value === "boolean") return String(value);
       return "";
     });
   }
@@ -1629,10 +1461,7 @@ function buildTemplateVariables(app, activeFile) {
   }
   return {
     fileName: activeFile.basename,
-    dirName:
-      (_b = (_a = activeFile.parent) == null ? void 0 : _a.name) != null
-        ? _b
-        : "",
+    dirName: (_b = (_a = activeFile.parent) == null ? void 0 : _a.name) != null ? _b : "",
     imageNameKey: frontmatter == null ? void 0 : frontmatter.imageNameKey,
     firstHeading,
     date: formatDate(/* @__PURE__ */ new Date(), "YYYY-MM-DD"),
@@ -1737,10 +1566,7 @@ var RenameModal = class extends import_obsidian3.Modal {
   }
   getNewPath(name) {
     var _a, _b;
-    const folder =
-      (_b = (_a = this.imageFile.parent) == null ? void 0 : _a.path) != null
-        ? _b
-        : "";
+    const folder = (_b = (_a = this.imageFile.parent) == null ? void 0 : _a.path) != null ? _b : "";
     const extension = this.imageFile.extension;
     const fileName = `${name}.${extension}`;
     return folder ? `${folder}/${fileName}` : fileName;
@@ -1836,9 +1662,7 @@ var DescriptiveImageModal = class extends import_obsidian4.Modal {
     this.renderImagePreview(contentEl);
     new import_obsidian4.Setting(contentEl)
       .setName("Image description")
-      .setDesc(
-        "Describe this image. This will be used as display text and for the file name.",
-      )
+      .setDesc("Describe this image. This will be used as display text and for the file name.")
       .addText((text) => {
         this.descriptionInput = text.inputEl;
         text
@@ -1964,12 +1788,7 @@ var DescriptiveImageModal = class extends import_obsidian4.Modal {
 };
 function openDescriptiveImageModal(app, imageFile, suggestedDescription) {
   return new Promise((resolve) => {
-    const modal = new DescriptiveImageModal(
-      app,
-      imageFile,
-      resolve,
-      suggestedDescription,
-    );
+    const modal = new DescriptiveImageModal(app, imageFile, resolve, suggestedDescription);
     modal.open();
   });
 }
@@ -1998,12 +1817,7 @@ var ImageProcessor = class {
    * This is called from our event handlers (user-initiated action)
    * @param isPropertyInsertion - If true, skip descriptive images (only applies to note body)
    */
-  async processImageFile(
-    file,
-    activeFile,
-    showRenameModal = true,
-    isPropertyInsertion = false,
-  ) {
+  async processImageFile(file, activeFile, showRenameModal = true, isPropertyInsertion = false) {
     try {
       const arrayBuffer = await file.arrayBuffer();
       const extension = this.getExtension(file);
@@ -2015,18 +1829,11 @@ var ImageProcessor = class {
           extension,
           activeFile,
         );
-        const tempFile = await this.storageManager.saveFile(
-          arrayBuffer,
-          tempPath,
-        );
+        const tempFile = await this.storageManager.saveFile(arrayBuffer, tempPath);
         let finalName2;
         let displayText;
         if (this.settings.enableDescriptiveImages) {
-          const descResult = await openDescriptiveImageModal(
-            this.app,
-            tempFile,
-            suggestedName,
-          );
+          const descResult = await openDescriptiveImageModal(this.app, tempFile, suggestedName);
           if (descResult.cancelled) {
             await this.app.fileManager.trashFile(tempFile);
             return {
@@ -2040,11 +1847,7 @@ var ImageProcessor = class {
           finalName2 = descResult.fileName;
           displayText = descResult.description;
         } else {
-          const result = await openRenameModal(
-            this.app,
-            tempFile,
-            suggestedName,
-          );
+          const result = await openRenameModal(this.app, tempFile, suggestedName);
           if (result.cancelled) {
             await this.app.fileManager.trashFile(tempFile);
             return {
@@ -2057,11 +1860,7 @@ var ImageProcessor = class {
           }
           finalName2 = result.newName;
         }
-        const finalPath = await this.getDeduplicatedPath(
-          finalName2,
-          extension,
-          activeFile,
-        );
+        const finalPath = await this.getDeduplicatedPath(finalName2, extension, activeFile);
         await this.app.fileManager.renameFile(tempFile, finalPath);
         const abstractFile = this.app.vault.getAbstractFileByPath(finalPath);
         if (!(abstractFile instanceof import_obsidian5.TFile)) {
@@ -2085,15 +1884,8 @@ var ImageProcessor = class {
           success: true,
         };
       } else {
-        const finalPath = await this.getDeduplicatedPath(
-          finalName,
-          extension,
-          activeFile,
-        );
-        const savedFile = await this.storageManager.saveFile(
-          arrayBuffer,
-          finalPath,
-        );
+        const finalPath = await this.getDeduplicatedPath(finalName, extension, activeFile);
+        const savedFile = await this.storageManager.saveFile(arrayBuffer, finalPath);
         const linkText = this.storageManager.generateMarkdownLink(
           savedFile,
           activeFile.path,
@@ -2141,14 +1933,9 @@ var ImageProcessor = class {
         throw new Error(`Failed to download image: ${response.status}`);
       }
       const arrayBuffer = response.arrayBuffer;
-      const contentType =
-        (_a = response.headers["content-type"]) != null ? _a : "image/png";
-      const extension =
-        this.storageManager.getExtensionFromMimeType(contentType);
-      const suggestedName = this.generateNameWithSuffix(
-        activeFile,
-        suggestedNameOverride,
-      );
+      const contentType = (_a = response.headers["content-type"]) != null ? _a : "image/png";
+      const extension = this.storageManager.getExtensionFromMimeType(contentType);
+      const suggestedName = this.generateNameWithSuffix(activeFile, suggestedNameOverride);
       let finalName = suggestedName;
       if (showRenameModal && !this.settings.autoRename) {
         const tempPath = await this.storageManager.getAvailablePath(
@@ -2156,21 +1943,14 @@ var ImageProcessor = class {
           extension,
           activeFile,
         );
-        const tempFile = await this.storageManager.saveFile(
-          arrayBuffer,
-          tempPath,
-        );
+        const tempFile = await this.storageManager.saveFile(arrayBuffer, tempPath);
         let finalName2;
         let displayText;
         const shouldShowDescriptive =
           this.settings.enableDescriptiveImages &&
           (!isPropertyInsertion || this.settings.altTextProperty !== "");
         if (shouldShowDescriptive) {
-          const descResult = await openDescriptiveImageModal(
-            this.app,
-            tempFile,
-            suggestedName,
-          );
+          const descResult = await openDescriptiveImageModal(this.app, tempFile, suggestedName);
           if (descResult.cancelled) {
             await this.app.fileManager.trashFile(tempFile);
             return {
@@ -2184,11 +1964,7 @@ var ImageProcessor = class {
           finalName2 = descResult.fileName;
           displayText = descResult.description;
         } else {
-          const result = await openRenameModal(
-            this.app,
-            tempFile,
-            suggestedName,
-          );
+          const result = await openRenameModal(this.app, tempFile, suggestedName);
           if (result.cancelled) {
             await this.app.fileManager.trashFile(tempFile);
             return {
@@ -2201,11 +1977,7 @@ var ImageProcessor = class {
           }
           finalName2 = result.newName;
         }
-        const finalPath = await this.getDeduplicatedPath(
-          finalName2,
-          extension,
-          activeFile,
-        );
+        const finalPath = await this.getDeduplicatedPath(finalName2, extension, activeFile);
         await this.app.fileManager.renameFile(tempFile, finalPath);
         const abstractFile = this.app.vault.getAbstractFileByPath(finalPath);
         if (!(abstractFile instanceof import_obsidian5.TFile)) {
@@ -2219,9 +1991,7 @@ var ImageProcessor = class {
           this.settings.insertSize,
         );
         if (!this.settings.disableRenameNotice) {
-          new import_obsidian5.Notice(
-            `Image downloaded and saved as: ${renamedFile.name}`,
-          );
+          new import_obsidian5.Notice(`Image downloaded and saved as: ${renamedFile.name}`);
         }
         return {
           file: renamedFile,
@@ -2231,15 +2001,8 @@ var ImageProcessor = class {
           success: true,
         };
       } else {
-        const finalPath = await this.getDeduplicatedPath(
-          finalName,
-          extension,
-          activeFile,
-        );
-        const savedFile = await this.storageManager.saveFile(
-          arrayBuffer,
-          finalPath,
-        );
+        const finalPath = await this.getDeduplicatedPath(finalName, extension, activeFile);
+        const savedFile = await this.storageManager.saveFile(arrayBuffer, finalPath);
         const linkText = this.storageManager.generateMarkdownLink(
           savedFile,
           activeFile.path,
@@ -2247,9 +2010,7 @@ var ImageProcessor = class {
           this.settings.insertSize,
         );
         if (!this.settings.disableRenameNotice) {
-          new import_obsidian5.Notice(
-            `Image downloaded and saved as: ${savedFile.name}`,
-          );
+          new import_obsidian5.Notice(`Image downloaded and saved as: ${savedFile.name}`);
         }
         return {
           file: savedFile,
@@ -2276,10 +2037,7 @@ var ImageProcessor = class {
   generateNameWithSuffix(activeFile, suffix) {
     const variables = buildTemplateVariables(this.app, activeFile);
     const rendered = renderTemplate(this.settings.imageNameTemplate, variables);
-    const isMeaningful = isTemplateMeaningful(
-      rendered,
-      this.settings.dupNumberDelimiter,
-    );
+    const isMeaningful = isTemplateMeaningful(rendered, this.settings.dupNumberDelimiter);
     const base = isMeaningful ? rendered : "";
     if (base && suffix) {
       return `${base} - ${suffix}`;
@@ -2300,11 +2058,7 @@ var ImageProcessor = class {
    * Get a deduplicated file path
    */
   async getDeduplicatedPath(baseName, extension, activeFile) {
-    return await this.storageManager.getAvailablePath(
-      baseName,
-      extension,
-      activeFile,
-    );
+    return await this.storageManager.getAvailablePath(baseName, extension, activeFile);
   }
   /**
    * Get file extension from File object
@@ -2313,10 +2067,7 @@ var ImageProcessor = class {
     var _a;
     const nameParts = file.name.split(".");
     if (nameParts.length > 1) {
-      const nameExt =
-        (_a = nameParts[nameParts.length - 1]) == null
-          ? void 0
-          : _a.toLowerCase();
+      const nameExt = (_a = nameParts[nameParts.length - 1]) == null ? void 0 : _a.toLowerCase();
       if (nameExt) {
         return nameExt;
       }
@@ -2327,9 +2078,7 @@ var ImageProcessor = class {
    * Insert link text at cursor position
    */
   insertLinkAtCursor(linkText) {
-    const view = this.app.workspace.getActiveViewOfType(
-      import_obsidian5.MarkdownView,
-    );
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian5.MarkdownView);
     if (view == null ? void 0 : view.editor) {
       view.editor.replaceSelection(linkText);
     }
@@ -2339,9 +2088,7 @@ var ImageProcessor = class {
    */
   getActiveFile() {
     var _a;
-    const view = this.app.workspace.getActiveViewOfType(
-      import_obsidian5.MarkdownView,
-    );
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian5.MarkdownView);
     return (_a = view == null ? void 0 : view.file) != null ? _a : null;
   }
   /**
@@ -2354,11 +2101,7 @@ var ImageProcessor = class {
       let finalName = suggestedName;
       let displayText = "";
       if (this.settings.enableDescriptiveImages) {
-        const descResult = await openDescriptiveImageModal(
-          this.app,
-          imageFile,
-          suggestedName,
-        );
+        const descResult = await openDescriptiveImageModal(this.app, imageFile, suggestedName);
         if (descResult.cancelled) {
           return null;
         }
@@ -2371,11 +2114,7 @@ var ImageProcessor = class {
         }
         finalName = result.newName;
       }
-      const finalPath = await this.getDeduplicatedPath(
-        finalName,
-        extension,
-        activeFile,
-      );
+      const finalPath = await this.getDeduplicatedPath(finalName, extension, activeFile);
       await this.app.fileManager.renameFile(imageFile, finalPath);
       const abstractFile = this.app.vault.getAbstractFileByPath(finalPath);
       if (!(abstractFile instanceof import_obsidian5.TFile)) {
@@ -2478,9 +2217,7 @@ async function processMdxFrontMatter(app, file, callback) {
     }
     const frontmatter = { ...parsed.frontmatter };
     callback(frontmatter);
-    const newFrontmatterText = (0, import_obsidian6.stringifyYaml)(
-      frontmatter,
-    ).trim();
+    const newFrontmatterText = (0, import_obsidian6.stringifyYaml)(frontmatter).trim();
     const newContent = `---
 ${newFrontmatterText}
 ---
@@ -2502,14 +2239,7 @@ async function getFrontmatter(app, file) {
 
 // src/services/PropertyHandler.ts
 var PropertyHandler = class {
-  constructor(
-    app,
-    settings,
-    storageManager,
-    imageProcessor,
-    remoteService,
-    observable,
-  ) {
+  constructor(app, settings, storageManager, imageProcessor, remoteService, observable) {
     this.app = app;
     this.settings = settings;
     this.storageManager = storageManager;
@@ -2577,22 +2307,13 @@ var PropertyHandler = class {
    */
   formatPropertyLink(imageFile, noteFile) {
     if (this.settings.propertyLinkFormat === "obsidian" /* ObsidianDefault */) {
-      const generatedLink = this.app.fileManager.generateMarkdownLink(
-        imageFile,
-        noteFile.path,
-      );
+      const generatedLink = this.app.fileManager.generateMarkdownLink(imageFile, noteFile.path);
       if (generatedLink.startsWith("![") && generatedLink.includes("]]")) {
         return generatedLink.substring(1);
-      } else if (
-        generatedLink.startsWith("![") &&
-        generatedLink.includes("](")
-      ) {
+      } else if (generatedLink.startsWith("![") && generatedLink.includes("](")) {
         const match = generatedLink.match(/!\[.*?\]\((.*?)\)/);
         return match && match[1] ? match[1] : generatedLink;
-      } else if (
-        generatedLink.startsWith("[[") &&
-        generatedLink.endsWith("]]")
-      ) {
+      } else if (generatedLink.startsWith("[[") && generatedLink.endsWith("]]")) {
         return generatedLink;
       } else if (generatedLink.includes("](")) {
         const match = generatedLink.match(/\[.*?\]\((.*?)\)/);
@@ -2619,10 +2340,7 @@ var PropertyHandler = class {
       case "markdown" /* Markdown */:
         return `![](${encodeURI(pathToUse)})`;
       case "custom" /* Custom */:
-        return this.settings.customPropertyLinkFormat.replace(
-          /\{image-url\}/gi,
-          pathToUse,
-        );
+        return this.settings.customPropertyLinkFormat.replace(/\{image-url\}/gi, pathToUse);
       case "relative" /* RelativePath */:
       case "path" /* Path */:
       default:
@@ -2636,14 +2354,9 @@ var PropertyHandler = class {
     var _a;
     const vaultConfig = this.app.vault.config;
     const useMarkdownLinks =
-      (_a = vaultConfig == null ? void 0 : vaultConfig.useMarkdownLinks) != null
-        ? _a
-        : false;
+      (_a = vaultConfig == null ? void 0 : vaultConfig.useMarkdownLinks) != null ? _a : false;
     const useWikilinks = !useMarkdownLinks;
-    if (
-      useWikilinks &&
-      this.settings.propertyLinkFormat === "wikilink" /* Wikilink */
-    ) {
+    if (useWikilinks && this.settings.propertyLinkFormat === "wikilink" /* Wikilink */) {
       return toFile.name;
     }
     return this.storageManager.getRelativePath(fromFile, toFile);
@@ -2654,9 +2367,7 @@ var PropertyHandler = class {
   getPropertyValue(file, propertyName) {
     var _a;
     const cache = this.app.metadataCache.getFileCache(file);
-    return (_a = cache == null ? void 0 : cache.frontmatter) == null
-      ? void 0
-      : _a[propertyName];
+    return (_a = cache == null ? void 0 : cache.frontmatter) == null ? void 0 : _a[propertyName];
   }
   /**
    * Check if a property exists in frontmatter
@@ -2665,9 +2376,8 @@ var PropertyHandler = class {
     var _a;
     const cache = this.app.metadataCache.getFileCache(file);
     return (
-      ((_a = cache == null ? void 0 : cache.frontmatter) == null
-        ? void 0
-        : _a[propertyName]) !== void 0
+      ((_a = cache == null ? void 0 : cache.frontmatter) == null ? void 0 : _a[propertyName]) !==
+      void 0
     );
   }
   /**
@@ -2676,13 +2386,7 @@ var PropertyHandler = class {
    * @param remoteImage Optional RemoteImage object for generating referral text
    * @param suggestedNameOverride Optional override for suggested name (e.g., from search term)
    */
-  async insertImageFromUrl(
-    imageUrl,
-    noteFile,
-    propertyName,
-    remoteImage,
-    suggestedNameOverride,
-  ) {
+  async insertImageFromUrl(imageUrl, noteFile, propertyName, remoteImage, suggestedNameOverride) {
     const result = await this.imageProcessor.processImageUrl(
       imageUrl,
       noteFile,
@@ -2696,12 +2400,7 @@ var PropertyHandler = class {
     if (!result.success || !result.file) {
       throw new Error(result.error || "Failed to process image");
     }
-    await this.setPropertyValue(
-      noteFile,
-      propertyName,
-      result.file,
-      result.description,
-    );
+    await this.setPropertyValue(noteFile, propertyName, result.file, result.description);
     if (this.settings.appendReferral && remoteImage && this.remoteService) {
       const referralText = this.remoteService.generateReferralText(remoteImage);
       if (referralText) {
@@ -2844,10 +2543,7 @@ var PasteHandler = class {
       // isPropertyInsertion - skip descriptive images
     );
     if (result.success && result.file) {
-      const linkValue = this.propertyHandler.formatPropertyLink(
-        result.file,
-        activeFile,
-      );
+      const linkValue = this.propertyHandler.formatPropertyLink(result.file, activeFile);
       await this.propertyHandler.setPropertyValue(
         activeFile,
         propertyName,
@@ -2874,8 +2570,7 @@ var PasteHandler = class {
       if (inputEl) {
         if (this.settings.debugMode) {
           const currentValue =
-            inputEl instanceof HTMLInputElement ||
-            inputEl instanceof HTMLTextAreaElement
+            inputEl instanceof HTMLInputElement || inputEl instanceof HTMLTextAreaElement
               ? inputEl.value
               : inputEl.textContent || inputEl.innerText;
           console.debug("[Image Manager] Found input field, updating value", {
@@ -2884,10 +2579,7 @@ var PasteHandler = class {
             newValue: linkValue,
           });
         }
-        if (
-          inputEl instanceof HTMLInputElement ||
-          inputEl instanceof HTMLTextAreaElement
-        ) {
+        if (inputEl instanceof HTMLInputElement || inputEl instanceof HTMLTextAreaElement) {
           inputEl.value = linkValue;
         } else {
           inputEl.textContent = linkValue;
@@ -2914,9 +2606,7 @@ var PasteHandler = class {
               inputEl.blur();
               inputEl.dispatchEvent(blurEvent);
               setTimeout(() => {
-                const view = this.app.workspace.getActiveViewOfType(
-                  import_obsidian8.MarkdownView,
-                );
+                const view = this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
                 if (view == null ? void 0 : view.editor) {
                   view.editor.focus();
                 }
@@ -2925,9 +2615,7 @@ var PasteHandler = class {
           }
         }, 50);
       } else {
-        const view = this.app.workspace.getActiveViewOfType(
-          import_obsidian8.MarkdownView,
-        );
+        const view = this.app.workspace.getActiveViewOfType(import_obsidian8.MarkdownView);
         if (view == null ? void 0 : view.editor) {
           view.editor.focus();
         }
@@ -2962,10 +2650,7 @@ var PasteHandler = class {
   getPropertyName(element) {
     var _a;
     const propertyEl = element.closest(".metadata-property");
-    return (_a =
-      propertyEl == null
-        ? void 0
-        : propertyEl.getAttribute("data-property-key")) != null
+    return (_a = propertyEl == null ? void 0 : propertyEl.getAttribute("data-property-key")) != null
       ? _a
       : null;
   }
@@ -3018,11 +2703,7 @@ var DropHandler = class {
     for (let i = 0; i < imageFiles.length; i++) {
       const imageFile = imageFiles[i];
       if (!imageFile) continue;
-      const result = await this.imageProcessor.processImageFile(
-        imageFile,
-        activeFile,
-        true,
-      );
+      const result = await this.imageProcessor.processImageFile(imageFile, activeFile, true);
       if (result.success && result.linkText) {
         editor.replaceSelection(result.linkText);
       }
@@ -3054,8 +2735,7 @@ var RemoteImageService = class {
    * Search for images from the specified provider
    */
   async search(query, provider, page = 1) {
-    const targetProvider =
-      provider != null ? provider : this.settings.defaultProvider;
+    const targetProvider = provider != null ? provider : this.settings.defaultProvider;
     switch (targetProvider) {
       case "unsplash" /* Unsplash */:
         return await this.searchUnsplash(query, page);
@@ -3089,9 +2769,7 @@ var RemoteImageService = class {
     });
     if (response.status >= 400) {
       console.error("Unsplash API error:", response.status, response.text);
-      throw new Error(
-        `Unsplash search failed: ${response.status} - ${response.text}`,
-      );
+      throw new Error(`Unsplash search failed: ${response.status} - ${response.text}`);
     }
     const data = response.json;
     if (!data || !data.results) {
@@ -3105,15 +2783,10 @@ var RemoteImageService = class {
    * Get Pexels API key from SecretStorage or fall back to plaintext
    */
   getPexelsApiKey() {
-    if (
-      (0, import_obsidian9.requireApiVersion)("1.11.4") &&
-      this.settings.pexelsApiKeySecretId
-    ) {
+    if ((0, import_obsidian9.requireApiVersion)("1.11.4") && this.settings.pexelsApiKeySecretId) {
       const secretStorage = this.app.secretStorage;
       if (secretStorage) {
-        const secret = secretStorage.getSecret(
-          this.settings.pexelsApiKeySecretId,
-        );
+        const secret = secretStorage.getSecret(this.settings.pexelsApiKeySecretId);
         if (secret) {
           return secret;
         }
@@ -3125,15 +2798,10 @@ var RemoteImageService = class {
    * Get Pixabay API key from SecretStorage or fall back to plaintext
    */
   getPixabayApiKey() {
-    if (
-      (0, import_obsidian9.requireApiVersion)("1.11.4") &&
-      this.settings.pixabayApiKeySecretId
-    ) {
+    if ((0, import_obsidian9.requireApiVersion)("1.11.4") && this.settings.pixabayApiKeySecretId) {
       const secretStorage = this.app.secretStorage;
       if (secretStorage) {
-        const secret = secretStorage.getSecret(
-          this.settings.pixabayApiKeySecretId,
-        );
+        const secret = secretStorage.getSecret(this.settings.pixabayApiKeySecretId);
         if (secret) {
           return secret;
         }
@@ -3188,9 +2856,7 @@ var RemoteImageService = class {
         : "Pixabay API key is required. Please configure it in settings.";
       throw new Error(errorMsg);
     }
-    const orientation = this.mapPixabayOrientation(
-      this.settings.defaultOrientation,
-    );
+    const orientation = this.mapPixabayOrientation(this.settings.defaultOrientation);
     const params = new URLSearchParams({
       key: apiKey,
       q: query,
@@ -3247,15 +2913,12 @@ var RemoteImageService = class {
       return "";
     }
     const backlink =
-      this.settings.insertBackLink && image.pageUrl
-        ? `[Backlink](${image.pageUrl}) | `
-        : "";
+      this.settings.insertBackLink && image.pageUrl ? `[Backlink](${image.pageUrl}) | ` : "";
     let referral = "";
     switch (image.provider) {
       case "unsplash" /* Unsplash */:
         if (image.author && image.authorUrl) {
-          const utm =
-            "utm_source=Obsidian%20Image%20Manager&utm_medium=referral";
+          const utm = "utm_source=Obsidian%20Image%20Manager&utm_medium=referral";
           referral = `
 *${backlink}Photo by [${image.author}](${image.authorUrl}) on [Unsplash](https://unsplash.com/?${utm})*
 `;
@@ -3321,10 +2984,7 @@ var RemoteImageService = class {
       width: photo.width,
       height: photo.height,
       description:
-        (_b = (_a = photo.description) != null ? _a : photo.alt_description) !=
-        null
-          ? _b
-          : "",
+        (_b = (_a = photo.description) != null ? _a : photo.alt_description) != null ? _b : "",
       author: photo.user.name,
       authorUrl: photo.user.links.html,
       pageUrl: photo.links.html,
@@ -3405,11 +3065,7 @@ var LocalConversionService = class {
       return 0;
     }
     const content = await this.app.vault.read(file);
-    const { newContent, count } = await this.processContent(
-      content,
-      file,
-      isBackground,
-    );
+    const { newContent, count } = await this.processContent(content, file, isBackground);
     if (count > 0) {
       await this.app.vault.modify(file, newContent);
     }
@@ -3450,10 +3106,7 @@ var LocalConversionService = class {
           await this.app.fileManager.trashFile(tempFile);
           continue;
         }
-        newContent = newContent.replace(
-          image.fullMatch,
-          image.replacement(finalFile.path),
-        );
+        newContent = newContent.replace(image.fullMatch, image.replacement(finalFile.path));
         count++;
       } catch (error) {
         console.error(`Failed to convert image: ${image.url}`, error);
@@ -3520,10 +3173,7 @@ var LocalConversionService = class {
           replacement: (localPath) => {
             const savedFile = this.app.vault.getAbstractFileByPath(localPath);
             if (savedFile instanceof import_obsidian10.TFile) {
-              const link = this.storageManager.generateMarkdownLink(
-                savedFile,
-                sourceFileRef.path,
-              );
+              const link = this.storageManager.generateMarkdownLink(savedFile, sourceFileRef.path);
               if (alt && link.startsWith("![") && link.includes("]]")) {
                 return link.replace("]]", `|${alt}]]`);
               }
@@ -3538,10 +3188,7 @@ var LocalConversionService = class {
             }
             const localFile = this.app.vault.getAbstractFileByPath(localPath);
             if (localFile instanceof import_obsidian10.TFile) {
-              const relativePath = this.storageManager.getRelativePath(
-                sourceFileRef,
-                localFile,
-              );
+              const relativePath = this.storageManager.getRelativePath(sourceFileRef, localFile);
               return `![${alt}](${encodeURI(relativePath)})`;
             }
             return `![${alt}](${encodeURI(localPath)})`;
@@ -3609,9 +3256,7 @@ var LocalConversionService = class {
         "www.soundcloud.com",
       ];
       if (
-        nonImageDomains.some(
-          (domain) => hostname === domain || hostname.endsWith("." + domain),
-        )
+        nonImageDomains.some((domain) => hostname === domain || hostname.endsWith("." + domain))
       ) {
         return false;
       }
@@ -3632,10 +3277,7 @@ var LocalConversionService = class {
         method: "HEAD",
       });
       const contentType =
-        (_b =
-          (_a = response.headers["content-type"]) == null
-            ? void 0
-            : _a.toLowerCase()) != null
+        (_b = (_a = response.headers["content-type"]) == null ? void 0 : _a.toLowerCase()) != null
           ? _b
           : "";
       return contentType.startsWith("image/");
@@ -3654,31 +3296,20 @@ var LocalConversionService = class {
       if (response.status >= 400) {
         throw new Error(`HTTP ${response.status}`);
       }
-      const contentType =
-        (_a = response.headers["content-type"]) != null ? _a : "";
+      const contentType = (_a = response.headers["content-type"]) != null ? _a : "";
       if (!contentType.toLowerCase().startsWith("image/")) {
-        console.warn(
-          `Skipping ${url}: Content-Type is ${contentType}, not an image`,
-        );
+        console.warn(`Skipping ${url}: Content-Type is ${contentType}, not an image`);
         return null;
       }
-      const extension =
-        this.storageManager.getExtensionFromMimeType(contentType);
+      const extension = this.storageManager.getExtensionFromMimeType(contentType);
       const arrayBuffer = response.arrayBuffer;
       const urlPath = new URL(url).pathname;
       const urlFileName =
-        (_c =
-          (_b = urlPath.split("/").pop()) == null
-            ? void 0
-            : _b.split(".")[0]) != null
+        (_c = (_b = urlPath.split("/").pop()) == null ? void 0 : _b.split(".")[0]) != null
           ? _c
           : "image";
       const baseName = this.storageManager.sanitizeFileName(urlFileName);
-      const filePath = await this.storageManager.getAvailablePath(
-        baseName,
-        extension,
-        sourceFile,
-      );
+      const filePath = await this.storageManager.getAvailablePath(baseName, extension, sourceFile);
       await this.storageManager.saveFile(arrayBuffer, filePath);
       return filePath;
     } catch (error) {
@@ -3821,19 +3452,14 @@ var BannerService = class {
     if (!deviceSettings.enabled) {
       return null;
     }
-    if (
-      !this.settings.supportedExtensions.includes(file.extension) &&
-      file.extension !== "md"
-    ) {
+    if (!this.settings.supportedExtensions.includes(file.extension) && file.extension !== "md") {
       return null;
     }
-    const leafId =
-      (_a = view == null ? void 0 : view.leaf) == null ? void 0 : _a.id;
+    const leafId = (_a = view == null ? void 0 : view.leaf) == null ? void 0 : _a.id;
     if (!leafId) {
       return null;
     }
-    const oldData =
-      bannerDataStore.get(leafId) || this.createDefaultBannerData();
+    const oldData = bannerDataStore.get(leafId) || this.createDefaultBannerData();
     const newData = this.createDefaultBannerData(view, oldData.viewMode);
     if (file.extension === "md") {
       const cache = this.app.metadataCache.getFileCache(file);
@@ -3841,24 +3467,15 @@ var BannerService = class {
         const propertySettings2 = this.settings.banner.properties;
         const imageProp2 = propertySettings2.imageProperty;
         const iconProp2 = propertySettings2.iconProperty;
-        if (
-          propertySettings2.hidePropertyEnabled &&
-          propertySettings2.hideProperty
-        ) {
+        if (propertySettings2.hidePropertyEnabled && propertySettings2.hideProperty) {
           const hideProp = propertySettings2.hideProperty;
           const hideValue = cache.frontmatter[hideProp];
-          if (
-            hideValue === true ||
-            hideValue === "true" ||
-            hideValue === 1 ||
-            hideValue === "1"
-          ) {
+          if (hideValue === true || hideValue === "true" || hideValue === 1 || hideValue === "1") {
             return newData;
           }
         }
         const hasBannerProperty = cache.frontmatter[imageProp2] != null;
-        const hasIconProperty =
-          deviceSettings.iconEnabled && cache.frontmatter[iconProp2] != null;
+        const hasIconProperty = deviceSettings.iconEnabled && cache.frontmatter[iconProp2] != null;
         if (!hasBannerProperty && !hasIconProperty) {
           return newData;
         }
@@ -3872,12 +3489,7 @@ var BannerService = class {
     if (propertySettings.hidePropertyEnabled && propertySettings.hideProperty) {
       const hideProp = propertySettings.hideProperty;
       const hideValue = frontmatter[hideProp];
-      if (
-        hideValue === true ||
-        hideValue === "true" ||
-        hideValue === 1 ||
-        hideValue === "1"
-      ) {
+      if (hideValue === true || hideValue === "true" || hideValue === 1 || hideValue === "1") {
         return newData;
       }
     }
@@ -3893,9 +3505,7 @@ var BannerService = class {
       } else if (oldData.image !== newData.image) {
         newData.needsUpdate = true;
         newData.isImageChange = true;
-        if (
-          await this.isImagePropertiesUpdate(oldData.image, newData.image, view)
-        ) {
+        if (await this.isImagePropertiesUpdate(oldData.image, newData.image, view)) {
           newData.isImagePropsUpdate = true;
           newData.isImageChange = false;
         }
@@ -3935,19 +3545,12 @@ var BannerService = class {
     const bannerMissing =
       !!image &&
       containers.length > 0 &&
-      Array.from(containers).some(
-        (c) => !c.querySelector(`.${CSS_CLASSES.Main}`),
-      );
+      Array.from(containers).some((c) => !c.querySelector(`.${CSS_CLASSES.Main}`));
     if (bannerMissing) {
       data.needsUpdate = true;
       data.isImageChange = true;
     }
-    if (
-      !force &&
-      !data.needsUpdate &&
-      lastViewMode === viewMode &&
-      !bannerMissing
-    ) {
+    if (!force && !data.needsUpdate && lastViewMode === viewMode && !bannerMissing) {
       return;
     }
     if (containers.length === 0) {
@@ -3963,8 +3566,7 @@ var BannerService = class {
     }
     data.lastViewMode = viewMode;
     container.dataset.imBanner = "";
-    const leafId =
-      (_a = view == null ? void 0 : view.leaf) == null ? void 0 : _a.id;
+    const leafId = (_a = view == null ? void 0 : view.leaf) == null ? void 0 : _a.id;
     if (leafId) {
       bannerDataStore.set(leafId, data);
     }
@@ -4029,9 +3631,7 @@ var BannerService = class {
       let iconContainer = banner.querySelector(`.${CSS_CLASSES.Icon}`);
       const hasContainer = iconContainer !== null;
       if (hasContainer) {
-        iconContainer == null
-          ? void 0
-          : iconContainer.classList.add(CSS_CLASSES.Static);
+        iconContainer == null ? void 0 : iconContainer.classList.add(CSS_CLASSES.Static);
       }
       if (deviceSettings.iconEnabled && icon) {
         if (!hasContainer) {
@@ -4041,14 +3641,11 @@ var BannerService = class {
           iconContainer.appendChild(innerDiv);
           banner.prepend(iconContainer);
         }
-        const iconElement =
-          iconContainer == null ? void 0 : iconContainer.querySelector("div");
+        const iconElement = iconContainer == null ? void 0 : iconContainer.querySelector("div");
         if (!iconElement) continue;
         const iconData = await this.parseIcon(icon, view);
         let value =
-          ((_a = iconData.value) == null
-            ? void 0
-            : _a.replace(/([#.:[\\]"])/g, "\\$1")) || "";
+          ((_a = iconData.value) == null ? void 0 : _a.replace(/([#.:[\\]"])/g, "\\$1")) || "";
         iconElement.dataset.type = iconData.type;
         if (iconData.type === "link" /* Link */) {
           setCssProperties(iconElement, {
@@ -4108,9 +3705,7 @@ var BannerService = class {
   remove(view, data) {
     var _a;
     const targetView =
-      view || (data == null ? void 0 : data.filepath)
-        ? this.getActiveView()
-        : null;
+      view || (data == null ? void 0 : data.filepath) ? this.getActiveView() : null;
     if (!(targetView instanceof import_obsidian11.MarkdownView)) {
       return;
     }
@@ -4120,10 +3715,7 @@ var BannerService = class {
     }
     const targets = container.querySelectorAll(`.${CSS_CLASSES.Main}`);
     targets.forEach((t) => t.remove());
-    const leafId =
-      (_a = targetView == null ? void 0 : targetView.leaf) == null
-        ? void 0
-        : _a.id;
+    const leafId = (_a = targetView == null ? void 0 : targetView.leaf) == null ? void 0 : _a.id;
     if (leafId) {
       bannerDataStore.delete(leafId);
     }
@@ -4138,9 +3730,7 @@ var BannerService = class {
     const height = deviceSettings.height;
     const noteOffset = deviceSettings.noteOffset;
     const viewOffset = deviceSettings.viewOffset;
-    const radius = deviceSettings.bannerRadiusEnabled
-      ? deviceSettings.borderRadius
-      : [0, 0, 0, 0];
+    const radius = deviceSettings.bannerRadiusEnabled ? deviceSettings.borderRadius : [0, 0, 0, 0];
     const padding = deviceSettings.padding;
     const fade = deviceSettings.fade;
     const cssVars = {
@@ -4161,13 +3751,9 @@ var BannerService = class {
       cssVars["--im-banner-icon-align-v"] = deviceSettings.iconAlignmentV;
       cssVars["--im-banner-icon-offset-x"] = `${deviceSettings.iconOffsetX}px`;
       cssVars["--im-banner-icon-offset-y"] = `${deviceSettings.iconOffsetY}px`;
-      cssVars["--im-banner-icon-border"] = iconFrame
-        ? `${deviceSettings.iconBorder}px`
-        : "0px";
+      cssVars["--im-banner-icon-border"] = iconFrame ? `${deviceSettings.iconBorder}px` : "0px";
       cssVars["--im-banner-icon-background"] =
-        iconFrame && deviceSettings.iconBackground
-          ? "revert-layer"
-          : "transparent";
+        iconFrame && deviceSettings.iconBackground ? "revert-layer" : "transparent";
     }
     setCssProperties(document.body, cssVars);
     this.processAll(true);
@@ -4184,31 +3770,16 @@ var BannerService = class {
     let options = { x: 0, y: 0, repeatable: false };
     const wikilinkMatch = str.match(PATTERNS.Wikilink);
     if (wikilinkMatch) {
-      url =
-        (_b = (_a = wikilinkMatch[1]) == null ? void 0 : _a.trim()) != null
-          ? _b
-          : null;
-      displayText =
-        (_d = (_c = wikilinkMatch[3]) == null ? void 0 : _c.trim()) != null
-          ? _d
-          : null;
+      url = (_b = (_a = wikilinkMatch[1]) == null ? void 0 : _a.trim()) != null ? _b : null;
+      displayText = (_d = (_c = wikilinkMatch[3]) == null ? void 0 : _c.trim()) != null ? _d : null;
     }
     const markdownMatch = str.match(PATTERNS.Markdown);
     const markdownBareMatch = str.match(PATTERNS.MarkdownBare);
     if (markdownMatch) {
-      displayText =
-        (_f = (_e = markdownMatch[1]) == null ? void 0 : _e.trim()) != null
-          ? _f
-          : null;
-      url =
-        (_h = (_g = markdownMatch[2]) == null ? void 0 : _g.trim()) != null
-          ? _h
-          : null;
+      displayText = (_f = (_e = markdownMatch[1]) == null ? void 0 : _e.trim()) != null ? _f : null;
+      url = (_h = (_g = markdownMatch[2]) == null ? void 0 : _g.trim()) != null ? _h : null;
     } else if (markdownBareMatch) {
-      url =
-        (_j = (_i = markdownBareMatch[1]) == null ? void 0 : _i.trim()) != null
-          ? _j
-          : null;
+      url = (_j = (_i = markdownBareMatch[1]) == null ? void 0 : _i.trim()) != null ? _j : null;
       displayText = null;
     }
     if (!url) {
@@ -4228,10 +3799,7 @@ var BannerService = class {
       }
     }
     if (url.startsWith("file:")) {
-      url = url.replace(
-        /^file:\/{1,}/,
-        import_obsidian11.Platform.resourcePathPrefix,
-      );
+      url = url.replace(/^file:\/{1,}/, import_obsidian11.Platform.resourcePathPrefix);
       external = true;
     }
     const hashIndex = url.indexOf("#");
@@ -4261,22 +3829,14 @@ var BannerService = class {
       }
       if (!external) {
         if (view == null ? void 0 : view.file) {
-          const resolvedPath = this.app.metadataCache.getFirstLinkpathDest(
-            url,
-            view.file.path,
-          );
+          const resolvedPath = this.app.metadataCache.getFirstLinkpathDest(url, view.file.path);
           if (resolvedPath) {
             file = resolvedPath;
           }
         }
         if (!file) {
-          const files = vault
-            .getFiles()
-            .filter((f) => f.path === url || f.name === url);
-          file =
-            files.find((f) => f.path === url) ||
-            files.find((f) => f.name === url) ||
-            null;
+          const files = vault.getFiles().filter((f) => f.path === url || f.name === url);
+          file = files.find((f) => f.path === url) || files.find((f) => f.name === url) || null;
         }
         if (file) {
           url = vault.getResourcePath(file);
@@ -4286,10 +3846,7 @@ var BannerService = class {
     let type = null;
     try {
       const urlObj = new URL(url);
-      const extension =
-        (_n = urlObj.pathname.split(".").pop()) == null
-          ? void 0
-          : _n.toLowerCase();
+      const extension = (_n = urlObj.pathname.split(".").pop()) == null ? void 0 : _n.toLowerCase();
       const imageExtensions = ["jpg", "jpeg", "png", "gif", "svg", "webp"];
       const videoExtensions = ["mp4", "webm", "ogg", "ogv", "mov"];
       if (extension && imageExtensions.includes(extension)) {
@@ -4304,8 +3861,7 @@ var BannerService = class {
             method: "HEAD",
           });
           const contentType =
-            (response == null ? void 0 : response.headers["content-type"]) ||
-            null;
+            (response == null ? void 0 : response.headers["content-type"]) || null;
           if (contentType) {
             if (contentType.includes("image")) {
               type = "image" /* Image */;
@@ -4419,9 +3975,7 @@ var BannerService = class {
    * Get active markdown view
    */
   getActiveView() {
-    return this.app.workspace.getActiveViewOfType(
-      import_obsidian11.MarkdownView,
-    );
+    return this.app.workspace.getActiveViewOfType(import_obsidian11.MarkdownView);
   }
   /**
    * Create default banner data object
@@ -4447,9 +4001,7 @@ var BannerService = class {
    * Cleanup when plugin unloads
    */
   destroy() {
-    document
-      .querySelectorAll(`.${CSS_CLASSES.Main}`)
-      .forEach((el) => el.remove());
+    document.querySelectorAll(`.${CSS_CLASSES.Main}`).forEach((el) => el.remove());
     bannerDataStore.clear();
   }
 };
@@ -4457,13 +4009,7 @@ var BannerService = class {
 // src/modals/FilePickerModal.ts
 var import_obsidian12 = require("obsidian");
 var FilePickerModal = class extends import_obsidian12.Modal {
-  constructor(
-    app,
-    imageProcessor,
-    propertyHandler,
-    insertToProperty = false,
-    propertyName,
-  ) {
+  constructor(app, imageProcessor, propertyHandler, insertToProperty = false, propertyName) {
     super(app);
     this.imageProcessor = imageProcessor;
     this.propertyHandler = propertyHandler;
@@ -4500,9 +4046,7 @@ var FilePickerModal = class extends import_obsidian12.Modal {
       new import_obsidian12.Notice("No active file");
       return;
     }
-    const view = this.app.workspace.getActiveViewOfType(
-      import_obsidian12.MarkdownView,
-    );
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian12.MarkdownView);
     const editor = view == null ? void 0 : view.editor;
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i);
@@ -4511,9 +4055,7 @@ var FilePickerModal = class extends import_obsidian12.Modal {
       }
       if (this.insertToProperty) {
         if (!this.propertyName || this.propertyName.trim() === "") {
-          new import_obsidian12.Notice(
-            "Please specify a property name in settings",
-          );
+          new import_obsidian12.Notice("Please specify a property name in settings");
           return;
         }
         const result = await this.imageProcessor.processImageFile(
@@ -4525,11 +4067,7 @@ var FilePickerModal = class extends import_obsidian12.Modal {
           // isPropertyInsertion - skip descriptive images
         );
         if (result.success && result.file) {
-          await this.propertyHandler.setPropertyValue(
-            activeFile,
-            this.propertyName,
-            result.file,
-          );
+          await this.propertyHandler.setPropertyValue(activeFile, this.propertyName, result.file);
         }
       } else {
         const result = await this.imageProcessor.processImageFile(
@@ -4547,9 +4085,7 @@ var FilePickerModal = class extends import_obsidian12.Modal {
   }
   getActiveFile() {
     var _a;
-    const view = this.app.workspace.getActiveViewOfType(
-      import_obsidian12.MarkdownView,
-    );
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian12.MarkdownView);
     return (_a = view == null ? void 0 : view.file) != null ? _a : null;
   }
   onClose() {
@@ -4564,26 +4100,13 @@ function openFilePicker(
   insertToProperty = false,
   propertyName,
 ) {
-  new FilePickerModal(
-    app,
-    imageProcessor,
-    propertyHandler,
-    insertToProperty,
-    propertyName,
-  ).open();
+  new FilePickerModal(app, imageProcessor, propertyHandler, insertToProperty, propertyName).open();
 }
 
 // src/modals/RemoteSearchModal.ts
 var import_obsidian13 = require("obsidian");
 var RemoteSearchModal = class extends import_obsidian13.Modal {
-  constructor(
-    app,
-    settings,
-    remoteService,
-    imageProcessor,
-    propertyHandler,
-    options = {},
-  ) {
+  constructor(app, settings, remoteService, imageProcessor, propertyHandler, options = {}) {
     super(app);
     this.container = null;
     this.queryInput = null;
@@ -4700,9 +4223,7 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
           var _a2;
           if (e.key === "Enter") {
             e.preventDefault();
-            const query =
-              ((_a2 = this.queryInput) == null ? void 0 : _a2.value.trim()) ||
-              "";
+            const query = ((_a2 = this.queryInput) == null ? void 0 : _a2.value.trim()) || "";
             if (query) {
               void this.performSearch(query, true);
             } else if (
@@ -4717,16 +4238,14 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
           } else if (e.ctrlKey && e.key === "n") {
             e.preventDefault();
             if (this.currentResults.length > 0) {
-              this.selectedImage =
-                (this.selectedImage + 1) % this.currentResults.length;
+              this.selectedImage = (this.selectedImage + 1) % this.currentResults.length;
               this.renderResults();
             }
           } else if (e.ctrlKey && e.key === "p") {
             e.preventDefault();
             if (this.currentResults.length > 0) {
               this.selectedImage =
-                (this.selectedImage - 1 + this.currentResults.length) %
-                this.currentResults.length;
+                (this.selectedImage - 1 + this.currentResults.length) % this.currentResults.length;
               this.renderResults();
             }
           }
@@ -4876,18 +4395,10 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
       return;
     }
     try {
-      const downloadUrl = this.remoteService.getDownloadUrl(
-        image,
-        this.settings.defaultImageSize,
-      );
+      const downloadUrl = this.remoteService.getDownloadUrl(image, this.settings.defaultImageSize);
       if (this.options.insertToProperty) {
-        if (
-          !this.options.propertyName ||
-          this.options.propertyName.trim() === ""
-        ) {
-          new import_obsidian13.Notice(
-            "Please specify a property name in settings",
-          );
+        if (!this.options.propertyName || this.options.propertyName.trim() === "") {
+          new import_obsidian13.Notice("Please specify a property name in settings");
           return;
         }
         await this.propertyHandler.insertImageFromUrl(
@@ -4913,9 +4424,7 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
         if (result.success && result.linkText) {
           const referralText = this.remoteService.generateReferralText(image);
           const fullText = result.linkText + referralText;
-          const view = this.app.workspace.getActiveViewOfType(
-            import_obsidian13.MarkdownView,
-          );
+          const view = this.app.workspace.getActiveViewOfType(import_obsidian13.MarkdownView);
           if (view == null ? void 0 : view.editor) {
             view.editor.replaceSelection(fullText);
           }
@@ -4930,9 +4439,7 @@ var RemoteSearchModal = class extends import_obsidian13.Modal {
   }
   getActiveFile() {
     var _a;
-    const view = this.app.workspace.getActiveViewOfType(
-      import_obsidian13.MarkdownView,
-    );
+    const view = this.app.workspace.getActiveViewOfType(import_obsidian13.MarkdownView);
     return (_a = view == null ? void 0 : view.file) != null ? _a : null;
   }
   onClose() {
@@ -5010,14 +4517,9 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         secretStorage.setSecret(secretId, this.settings.pexelsApiKey);
         this.settings.pexelsApiKeySecretId = secretId;
         migrated = true;
-        console.info(
-          "[Image Manager] Successfully migrated Pexels API key to SecretStorage",
-        );
+        console.info("[Image Manager] Successfully migrated Pexels API key to SecretStorage");
       } catch (error) {
-        console.error(
-          "[Image Manager] Failed to migrate Pexels API key to SecretStorage:",
-          error,
-        );
+        console.error("[Image Manager] Failed to migrate Pexels API key to SecretStorage:", error);
         failures.push("Pexels");
       }
     }
@@ -5027,14 +4529,9 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         secretStorage.setSecret(secretId, this.settings.pixabayApiKey);
         this.settings.pixabayApiKeySecretId = secretId;
         migrated = true;
-        console.info(
-          "[Image Manager] Successfully migrated Pixabay API key to SecretStorage",
-        );
+        console.info("[Image Manager] Successfully migrated Pixabay API key to SecretStorage");
       } catch (error) {
-        console.error(
-          "[Image Manager] Failed to migrate Pixabay API key to SecretStorage:",
-          error,
-        );
+        console.error("[Image Manager] Failed to migrate Pixabay API key to SecretStorage:", error);
         failures.push("Pixabay");
       }
     }
@@ -5053,16 +4550,8 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
    * Initialize all services
    */
   initializeServices() {
-    this.storageManager = new StorageManager(
-      this.app,
-      this.settings,
-      this.settingsObservable,
-    );
-    this.remoteService = new RemoteImageService(
-      this.app,
-      this.settings,
-      this.settingsObservable,
-    );
+    this.storageManager = new StorageManager(this.app, this.settings, this.settingsObservable);
+    this.remoteService = new RemoteImageService(this.app, this.settings, this.settingsObservable);
     this.imageProcessor = new ImageProcessor(
       this.app,
       this.settings,
@@ -5097,11 +4586,7 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
       this.imageProcessor,
       this.settingsObservable,
     );
-    this.bannerService = new BannerService(
-      this.app,
-      this.settings,
-      this.settingsObservable,
-    );
+    this.bannerService = new BannerService(this.app, this.settings, this.settingsObservable);
   }
   /**
    * Register event handlers
@@ -5134,24 +4619,16 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         if (!file) {
           return;
         }
-        if (
-          this.settings.autoConvertRemoteImages &&
-          this.settings.convertOnNoteOpen
-        ) {
+        if (this.settings.autoConvertRemoteImages && this.settings.convertOnNoteOpen) {
           if (this.settings.supportedExtensions.includes(file.extension)) {
             void (async () => {
               await new Promise((resolve) => setTimeout(resolve, 500));
               const activeFile = this.app.workspace.getActiveFile();
               const isActiveFile = activeFile && activeFile.path === file.path;
               if (isActiveFile || this.settings.processBackgroundChanges) {
-                const count = await this.conversionService.processFile(
-                  file,
-                  !isActiveFile,
-                );
+                const count = await this.conversionService.processFile(file, !isActiveFile);
                 if (count > 0) {
-                  new import_obsidian15.Notice(
-                    `Converted ${count} remote image(s) to local`,
-                  );
+                  new import_obsidian15.Notice(`Converted ${count} remote image(s) to local`);
                 }
               }
             })();
@@ -5160,12 +4637,9 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         const deviceSettings = this.bannerService.getDeviceSettings();
         if (
           deviceSettings.enabled &&
-          (this.settings.supportedExtensions.includes(file.extension) ||
-            file.extension === "md")
+          (this.settings.supportedExtensions.includes(file.extension) || file.extension === "md")
         ) {
-          const view = this.app.workspace.getActiveViewOfType(
-            import_obsidian15.MarkdownView,
-          );
+          const view = this.app.workspace.getActiveViewOfType(import_obsidian15.MarkdownView);
           if (view instanceof import_obsidian15.MarkdownView) {
             void this.bannerService.process(file, view);
           }
@@ -5178,9 +4652,7 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         if (!deviceSettings.enabled) {
           return;
         }
-        const view = this.app.workspace.getActiveViewOfType(
-          import_obsidian15.MarkdownView,
-        );
+        const view = this.app.workspace.getActiveViewOfType(import_obsidian15.MarkdownView);
         if (
           view &&
           view.file &&
@@ -5193,23 +4665,15 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
     );
     this.registerEvent(
       this.app.metadataCache.on("changed", (file) => {
-        if (
-          this.settings.autoConvertRemoteImages &&
-          this.settings.convertOnNoteSave
-        ) {
+        if (this.settings.autoConvertRemoteImages && this.settings.convertOnNoteSave) {
           if (this.settings.supportedExtensions.includes(file.extension)) {
             void (async () => {
               const activeFile = this.app.workspace.getActiveFile();
               const isActiveFile = activeFile && activeFile.path === file.path;
               if (isActiveFile || this.settings.processBackgroundChanges) {
-                const count = await this.conversionService.processFile(
-                  file,
-                  !isActiveFile,
-                );
+                const count = await this.conversionService.processFile(file, !isActiveFile);
                 if (count > 0) {
-                  new import_obsidian15.Notice(
-                    `Converted ${count} remote image(s) to local`,
-                  );
+                  new import_obsidian15.Notice(`Converted ${count} remote image(s) to local`);
                 }
               }
             })();
@@ -5218,17 +4682,13 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         const deviceSettings = this.bannerService.getDeviceSettings();
         if (
           !deviceSettings.enabled ||
-          (!this.settings.supportedExtensions.includes(file.extension) &&
-            file.extension !== "md")
+          (!this.settings.supportedExtensions.includes(file.extension) && file.extension !== "md")
         ) {
           return;
         }
         this.app.workspace.iterateRootLeaves((leaf) => {
           const view = leaf.view;
-          if (
-            view instanceof import_obsidian15.MarkdownView &&
-            view.file === file
-          ) {
+          if (view instanceof import_obsidian15.MarkdownView && view.file === file) {
             void this.bannerService.process(file, view);
           }
         });
@@ -5335,9 +4795,7 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         }
         const count = await this.conversionService.processFile(file);
         if (count > 0) {
-          new import_obsidian15.Notice(
-            `Converted ${count} remote image(s) to local`,
-          );
+          new import_obsidian15.Notice(`Converted ${count} remote image(s) to local`);
         } else {
           new import_obsidian15.Notice("No remote images found");
         }
@@ -5347,10 +4805,9 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
       id: "convert-all-remote-images",
       name: "Convert all remote images",
       callback: async () => {
-        const { openConfirmModal: openConfirmModal2 } =
-          await Promise.resolve().then(
-            () => (init_ConfirmModal(), ConfirmModal_exports),
-          );
+        const { openConfirmModal: openConfirmModal2 } = await Promise.resolve().then(
+          () => (init_ConfirmModal(), ConfirmModal_exports),
+        );
         const result = await openConfirmModal2(
           this.app,
           "Convert All Remote Images",
@@ -5361,13 +4818,9 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
         if (!result.confirmed) {
           return;
         }
-        new import_obsidian15.Notice(
-          "Processing all files... This may take a while.",
-        );
+        new import_obsidian15.Notice("Processing all files... This may take a while.");
         const count = await this.conversionService.processAllFiles();
-        new import_obsidian15.Notice(
-          `Converted ${count} remote image(s) to local`,
-        );
+        new import_obsidian15.Notice(`Converted ${count} remote image(s) to local`);
       },
     });
   }
@@ -5376,11 +4829,7 @@ var ImageManagerPlugin = class extends import_obsidian15.Plugin {
    */
   async loadSettings() {
     const data = await this.loadData();
-    this.settings = Object.assign(
-      {},
-      DEFAULT_SETTINGS,
-      data != null ? data : {},
-    );
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, data != null ? data : {});
   }
   /**
    * Save settings to storage

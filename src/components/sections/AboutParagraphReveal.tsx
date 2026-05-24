@@ -8,10 +8,7 @@ import { TShapedEngineerTooltip } from "@/components/ui/t-shaped-engineer-toolti
 function useViewportSlideScale(basePx: number): number {
   const [slidePx, setSlidePx] = React.useState(basePx);
   React.useEffect(() => {
-    const update = () =>
-      setSlidePx(
-        Math.round((basePx / 800) * Math.min(window.innerWidth, 1920)),
-      );
+    const update = () => setSlidePx(Math.round((basePx / 800) * Math.min(window.innerWidth, 1920)));
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -34,9 +31,7 @@ export type AboutParagraphRevealConfig = {
 };
 
 // To make all words/paragraphs reveal at ~30-40% of scroll, set scrollOffsetEnd to 0.6 (i.e., 60% down is already fully revealed)
-const defaultConfig: Required<
-  Omit<AboutParagraphRevealConfig, "containerEnd">
-> & {
+const defaultConfig: Required<Omit<AboutParagraphRevealConfig, "containerEnd">> & {
   containerEnd?: number;
 } = {
   scrollOffsetStart: 0,
@@ -76,10 +71,7 @@ export function AboutParagraphReveal({
     offset:
       containerEnd != null
         ? (["start end", `start ${containerEnd}`] as const)
-        : ([
-            `${scrollOffsetStart * 100}% end`,
-            `${scrollOffsetEnd * 100}% start`,
-          ] as const),
+        : ([`${scrollOffsetStart * 100}% end`, `${scrollOffsetEnd * 100}% start`] as const),
   });
 
   const tokens = React.useMemo(() => {
@@ -164,11 +156,7 @@ function AboutParagraphRevealWord({
         x,
       }}
     >
-      {isTShapedWord ? (
-        <TShapedEngineerTooltip>{token.trim()}</TShapedEngineerTooltip>
-      ) : (
-        token
-      )}
+      {isTShapedWord ? <TShapedEngineerTooltip>{token.trim()}</TShapedEngineerTooltip> : token}
       {type === "words" ? "\u00A0" : null}
     </motion.span>
   );

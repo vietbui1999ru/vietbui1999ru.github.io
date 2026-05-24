@@ -3,9 +3,7 @@ var rr = Object.getOwnPropertyDescriptor;
 var or = Object.getOwnPropertyNames;
 var ar = Object.prototype.hasOwnProperty;
 var lr = (s, e, t) =>
-  e in s
-    ? Bt(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t })
-    : (s[e] = t);
+  e in s ? Bt(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : (s[e] = t);
 var _n = (s, e) => {
     for (var t in e) Bt(s, t, { get: e[t], enumerable: !0 });
   },
@@ -264,9 +262,7 @@ var ie = new Set(),
         if (!t && !js(e)) return;
         let n = ie.size,
           i = P(Vs);
-        if (
-          (n || ie.add(null), t && t.u && (t.u = Mn(e, t.u)), ie.add(this), n)
-        ) {
+        if ((n || ie.add(null), t && t.u && (t.u = Mn(e, t.u)), ie.add(this), n)) {
           P(i);
           return;
         }
@@ -282,11 +278,7 @@ var ie = new Set(),
     }
     static create(e, t) {
       let n = new _e();
-      return (
-        (e || t) &&
-          (n.must((e || (e = Me())).release(t || n.end)), xn.set(n, e)),
-        n
-      );
+      return ((e || t) && (n.must((e || (e = Me())).release(t || n.end)), xn.set(n, e)), n);
     }
     do(e) {
       return (dr(this._chain(), e), this);
@@ -308,11 +300,7 @@ var ie = new Set(),
     }
     result() {
       var e;
-      return (
-        this._done ||
-        ((e = U.cell) == null ? void 0 : e.recalcWhen(this, br)) ||
-        void 0
-      );
+      return this._done || ((e = U.cell) == null ? void 0 : e.recalcWhen(this, br)) || void 0;
     }
     get [Symbol.toStringTag]() {
       return "Job";
@@ -329,9 +317,7 @@ var ie = new Set(),
       return (this !== fe && (this._done = e), this.end(), this);
     }
     throw(e) {
-      return this._done
-        ? ((xn.get(this) || fe).asyncThrow(e), this)
-        : this._end(Rn(e));
+      return this._done ? ((xn.get(this) || fe).asyncThrow(e), this) : this._end(Rn(e));
     }
     return(e) {
       return this._end(jn(e));
@@ -385,8 +371,7 @@ var ie = new Set(),
                 r.result() || r.throw(o);
               },
             );
-          else if (K(i[Symbol.iterator]) && typeof i != "string")
-            r.run($n, i, r);
+          else if (K(i[Symbol.iterator]) && typeof i != "string") r.run($n, i, r);
           else throw new TypeError("Invalid value/return for start()");
         return r;
       } catch (o) {
@@ -502,11 +487,7 @@ function $n(s, e) {
               p = r;
             if (
               (h((m, y, b) => {
-                d ||
-                  ((d = !0),
-                  (l = m),
-                  (c = m === "next" ? y : b),
-                  g && p === r && a(m, c));
+                d || ((d = !0), (l = m), (c = m === "next" ? y : b), g && p === r && a(m, c));
               }),
               (g = !0),
               !d)
@@ -514,9 +495,7 @@ function $n(s, e) {
               return;
           } else {
             ((l = "throw"),
-              (c = new TypeError(
-                "Jobs must yield functions (or yield* Yielding<T>s)",
-              )));
+              (c = new TypeError("Jobs must yield functions (or yield* Yielding<T>s)")));
             continue;
           }
         }
@@ -531,8 +510,7 @@ function $n(s, e) {
 }
 function Ws(s = vr) {
   let e = Me();
-  return (t) =>
-    !e.result() && s.isOpen() ? (t && s.onReady(t, e), s.isReady()) : !1;
+  return (t) => (!e.result() && s.isOpen() ? (t && s.onReady(t, e), s.isReady()) : !1);
 }
 var Wt = "uneventful/is-stream";
 function Wn(s = U.job) {
@@ -540,10 +518,7 @@ function Wn(s = U.job) {
 }
 var Us = class {
     constructor(e) {
-      ((this._job = e),
-        (this._callbacks = void 0),
-        (this._isReady = !0),
-        (this._isPulling = !1));
+      ((this._job = e), (this._callbacks = void 0), (this._isReady = !0), (this._isPulling = !1));
     }
     isOpen() {
       var e;
@@ -556,11 +531,7 @@ var Us = class {
       if (!this.isOpen()) return this;
       let n = this._callbacks || (this._callbacks = new Map()),
         i = t.release(() => n.delete(e));
-      return (
-        this.isReady() && this && !n.size && Vn.add(this),
-        n.set(e, i),
-        this
-      );
+      return (this.isReady() && this && !n.size && Vn.add(this), n.set(e, i), this);
     }
     pause() {
       return ((this._isReady = !1), this);
@@ -620,9 +591,7 @@ function Ar(s) {
     for (let n = s.subscribers; n; n = n.nT) {
       let i = n.tgt;
       i.latestSource >= e ||
-        ((i.latestSource = e),
-        (t = i.queue) == null || t.add(i),
-        i.subscribers && Hn.push(i));
+        ((i.latestSource = e), (t = i.queue) == null || t.add(i), i.subscribers && Hn.push(i));
     }
 }
 function zn() {
@@ -751,18 +720,11 @@ var re = class {
     let t = U.cell || Y;
     if (t) {
       if (!t.queue) throw new Yt("Side-effects not allowed outside rules");
-      if (this.adding && this.adding.tgt === t)
-        throw new Qt("Can't update direct dependency");
-      if (this.validThrough === D || this.hasBeenRead())
-        throw new Yt("Value already used");
-    } else if (e)
-      (this.validThrough === D || Ve.length) && (++D, (Ve.length = 0));
+      if (this.adding && this.adding.tgt === t) throw new Qt("Can't update direct dependency");
+      if (this.validThrough === D || this.hasBeenRead()) throw new Yt("Value already used");
+    } else if (e) (this.validThrough === D || Ve.length) && (++D, (Ve.length = 0));
     else return !1;
-    return (
-      this.lastChanged === D || Ar(this),
-      this.sources && (this.sources.ts = 0),
-      !0
-    );
+    return (this.lastChanged === D || Ar(this), this.sources && (this.sources.ts = 0), !0);
   }
   setValue(e, t) {
     (this.shouldWrite(e !== this.value || t !== !!(this.flags & 16)) &&
@@ -773,9 +735,7 @@ var re = class {
   }
   setCalc(e) {
     this.shouldWrite(e !== this.compute) &&
-      ((this.flags |= 4),
-      (this.compute = e),
-      this.ctx || (this.ctx = he(null, this)));
+      ((this.flags |= 4), (this.compute = e), this.ctx || (this.ctx = he(null, this)));
   }
   hasBeenRead() {
     if (Ve.length) {
@@ -791,14 +751,10 @@ var re = class {
         for (let t = this.sources; t; t = t.nS) {
           let n = t.src;
           if (t.ts !== n.lastChanged) return this.doRecalc();
-          if (
-            !(n.subscribers && n.latestSource <= e) &&
-            (n.catchUp(), n.lastChanged > e)
-          )
+          if (!(n.subscribers && n.latestSource <= e) && (n.catchUp(), n.lastChanged > e))
             return this.doRecalc();
         }
-        for (let t = this.sources; t; t = t.nS)
-          t.src.validThrough !== D && Ve.push(t.src);
+        for (let t = this.sources; t; t = t.nS) t.src.validThrough !== D && Ve.push(t.src);
       } else return this.doRecalc();
   }
   doRecalc() {
@@ -807,10 +763,7 @@ var re = class {
       t = P(e);
     this.flags & 64 && ((n = e.job) == null || n.restart());
     for (let o = this.sources; o; o = o.nS)
-      ((o.ts = -1),
-        (o.old = o.src.adding),
-        (o.src.adding = o),
-        (this.sources = o));
+      ((o.ts = -1), (o.old = o.src.adding), (o.src.adding = o), (this.sources = o));
     this.flags |= 32;
     try {
       try {
@@ -819,13 +772,7 @@ var re = class {
           ((this.value = o), (this.lastChanged = D)),
           (this.flags &= -17));
       } catch (o) {
-        if (
-          ((this.flags |= 16),
-          (this.value = o),
-          (this.lastChanged = D),
-          Y === this)
-        )
-          throw o;
+        if (((this.flags |= 16), (this.value = o), (this.lastChanged = D), Y === this)) throw o;
       }
     } finally {
       ((this.flags &= -33),
@@ -838,10 +785,7 @@ var re = class {
       let o;
       for (let a = this.sources; a; ) {
         let l = a.pS;
-        ((a.src.adding = a.old),
-          (a.old = void 0),
-          a.ts === -1 ? si(a) : (o = a),
-          (a = l));
+        ((a.src.adding = a.old), (a.old = void 0), a.ts === -1 ? si(a) : (o = a), (a = l));
       }
       (this.sources = o) || this.becomeConstant();
     }
@@ -865,8 +809,7 @@ var re = class {
     e != this.queue &&
       (this.subscribers || e || !this.queue || ei(this),
       this.queue
-        ? (this.queue.has(this) && (e == null || e.add(this)),
-          this.queue.delete(this))
+        ? (this.queue.has(this) && (e == null || e.add(this)), this.queue.delete(this))
         : e && (e.add(this), this.subscribers || Zn(this)),
       (this.queue = e));
   }
@@ -928,8 +871,7 @@ var re = class {
         }
         if (o) return;
         o = i.job = de(M).do((l) => {
-          (Pe(l) ? n.setValue(xe(l), !0) : n.setValue(t, !1),
-            (i.job = o = void 0));
+          (Pe(l) ? n.setValue(xe(l), !0) : n.setValue(t, !1), (i.job = o = void 0));
         });
         let a = P(i);
         try {
@@ -1047,10 +989,7 @@ var zs = "use.me",
                   case 0:
                     return (Ue === o && at && at.push(l), c.v);
                   case 1:
-                    if (
-                      ((u = c.d),
-                      !u || a(() => u.k.every((d) => o(d) === u.c(d))))
-                    ) {
+                    if (((u = c.d), !u || a(() => u.k.every((d) => o(d) === u.c(d))))) {
                       c.s = 0;
                       break;
                     }
@@ -1067,9 +1006,7 @@ var zs = "use.me",
                   case 3:
                     throw c.v;
                   case 4:
-                    throw new Error(
-                      `Factory ${String(c.v)} didn't resolve ${String(l)}`,
-                    );
+                    throw new Error(`Factory ${String(c.v)} didn't resolve ${String(l)}`);
                 }
             }
           : (l) => Zs.this(l),
@@ -1106,10 +1043,7 @@ var zs = "use.me",
     }
     function t(i) {
       if (typeof i[zs] == "function") return i[zs](i);
-      if (n(i))
-        return typeof i.prototype[Xs] == "function"
-          ? i.prototype[Xs]()
-          : new i();
+      if (n(i)) return typeof i.prototype[Xs] == "function" ? i.prototype[Xs]() : new i();
       throw new ReferenceError(`No config for ${String(i)}`);
     }
     function n(i) {
@@ -1139,12 +1073,7 @@ function Pr(s, e, t) {
           return Object.getPrototypeOf(s)[e].apply(this, arguments);
         },
     o = t(r);
-  return (
-    n && Object.setPrototypeOf(o, n),
-    Object.setPrototypeOf(a, o),
-    (s[e] = a),
-    l
-  );
+  return (n && Object.setPrototypeOf(o, n), Object.setPrototypeOf(a, o), (s[e] = a), l);
   function a(...c) {
     return (o === r && s[e] === a && l(), o.apply(this, c));
   }
@@ -1224,8 +1153,7 @@ var li = class extends De.Component {
   addChild(s) {
     return (
       this.children.has(s) ||
-        (this.children.add(s),
-        this.loaded ? B(() => super.addChild(s)) : super.addChild(s)),
+        (this.children.add(s), this.loaded ? B(() => super.addChild(s)) : super.addChild(s)),
       s
     );
   }
@@ -1265,9 +1193,7 @@ var Rr = `.ophidian-dialog .dialog-text {
   zt = class extends De.Modal {
     constructor() {
       (super(ui),
-        (this.buttonContainerEl = this.modalEl.createDiv(
-          "modal-button-container",
-        )),
+        (this.buttonContainerEl = this.modalEl.createDiv("modal-button-container")),
         (this.styleEl = this.modalEl.createEl("style", { text: Rr })),
         (this.textContentEl = this.contentEl.createDiv("dialog-text")),
         (this.okButton = this.buttonContainerEl.createEl(
@@ -1276,8 +1202,7 @@ var Rr = `.ophidian-dialog .dialog-text {
           (s) => {
             s.addEventListener("click", async (e) => {
               var t;
-              (await ((t = this.onOK) == null ? void 0 : t.call(this, e))) ||
-                this.close();
+              (await ((t = this.onOK) == null ? void 0 : t.call(this, e))) || this.close();
             });
           },
         )),
@@ -1316,10 +1241,7 @@ var Rr = `.ophidian-dialog .dialog-text {
     }
     setContent(s) {
       return (
-        String.isString(s)
-          ? this.textContentEl.setText(s)
-          : this.textContentEl.appendChild(s),
-        this
+        String.isString(s) ? this.textContentEl.setText(s) : this.textContentEl.appendChild(s), this
       );
     }
     setTitle(s) {
@@ -1347,19 +1269,14 @@ var Rr = `.ophidian-dialog .dialog-text {
       (super(...arguments),
         (this.value = !1),
         (this.setting = this.contentEl.createDiv("is-mobile")),
-        (this.inputEl = this.setting.createEl(
-          "input",
-          { type: "text" },
-          (s) => {
-            s.addEventListener("keypress", async (e) => {
-              var t;
-              e.key === "Enter" &&
-                !e.isComposing &&
-                ((await ((t = this.onOK) == null ? void 0 : t.call(this, e))) ||
-                  this.close());
-            });
-          },
-        )));
+        (this.inputEl = this.setting.createEl("input", { type: "text" }, (s) => {
+          s.addEventListener("keypress", async (e) => {
+            var t;
+            e.key === "Enter" &&
+              !e.isComposing &&
+              ((await ((t = this.onOK) == null ? void 0 : t.call(this, e))) || this.close());
+          });
+        })));
     }
     onOK(s) {
       let { value: e } = this.inputEl;
@@ -1372,29 +1289,20 @@ var Rr = `.ophidian-dialog .dialog-text {
     handleInvalidEntry(s) {}
     setPlaceholder(s) {
       return (
-        s
-          ? (this.inputEl.placeholder = s)
-          : this.inputEl.removeAttribute("placeholder"),
-        this
+        s ? (this.inputEl.placeholder = s) : this.inputEl.removeAttribute("placeholder"), this
       );
     }
     setValue(s) {
       return ((this.inputEl.value = s), this);
     }
     setPattern(s) {
-      return (
-        (this.inputEl.pattern = s),
-        this.setValidator((e) => new RegExp(`^${s}$`).test(e))
-      );
+      return ((this.inputEl.pattern = s), this.setValidator((e) => new RegExp(`^${s}$`).test(e)));
     }
     setValidator(s) {
       return (
         (this.isValid = s),
         (this.inputEl.oninput = () =>
-          this.inputEl.setAttribute(
-            "aria-invalid",
-            "" + !s(this.inputEl.value),
-          )),
+          this.inputEl.setAttribute("aria-invalid", "" + !s(this.inputEl.value))),
         this
       );
     }
@@ -1434,9 +1342,7 @@ var en = class extends zt {
   ct = class {
     constructor(e, t) {
       Se(this, "aborted", !1);
-      ((this.progress = new en(() => (this.aborted = !0))
-        .setTitle(e)
-        .setContent(t)),
+      ((this.progress = new en(() => (this.aborted = !0)).setTitle(e).setContent(t)),
         this.progress.open());
     }
     async forEach(e, t) {
@@ -1509,8 +1415,7 @@ var qr = /^#[^\u2000-\u206F\u2E00-\u2E7F'!"#$%&()*+,.:;<=>?@^`{|}~\[\]\\\s]+$/,
             if ((r && l & 1) || !a || typeof a != "string") return a;
             if (o) {
               if (!a.startsWith("#") || !A.isTag(a)) return a;
-            } else if (/[ ,\n]/.test(a))
-              return this.inArray(a.split(/([, \n]+)/), !0).join("");
+            } else if (/[ ,\n]/.test(a)) return this.inArray(a.split(/([, \n]+)/), !0).join("");
             if (n[a]) return n[a];
             let c = a.toLowerCase();
             return n[c]
@@ -1571,10 +1476,7 @@ var di = (s) => (E(s) || T(s)) && !!s.anchor,
       Object.defineProperty(this, R, { value: e });
     }
     clone() {
-      let e = Object.create(
-        Object.getPrototypeOf(this),
-        Object.getOwnPropertyDescriptors(this),
-      );
+      let e = Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this));
       return (this.range && (e.range = this.range.slice()), e);
     }
   };
@@ -1591,8 +1493,7 @@ function X(s, e) {
       e,
     )),
     Je(s)
-      ? We(null, s.contents, e, Object.freeze([s])) === ut &&
-        (s.contents = null)
+      ? We(null, s.contents, e, Object.freeze([s])) === ut && (s.contents = null)
       : We(null, s, e, Object.freeze([])));
 }
 X.BREAK = je;
@@ -1691,8 +1592,7 @@ var Kr = {
         case "%TAG": {
           if (
             n.length !== 2 &&
-            (t(0, "%TAG directive should contain exactly two parts"),
-            n.length < 2)
+            (t(0, "%TAG directive should contain exactly two parts"), n.length < 2)
           )
             return !1;
           let [r, o] = n;
@@ -1700,10 +1600,7 @@ var Kr = {
         }
         case "%YAML": {
           if (((this.yaml.explicit = !0), n.length < 1))
-            return (
-              t(0, "%YAML directive should contain exactly one part"),
-              !1
-            );
+            return (t(0, "%YAML directive should contain exactly one part"), !1);
           let [r] = n;
           return r === "1.1" || r === "1.2"
             ? ((this.yaml.version = r), !0)
@@ -1720,8 +1617,7 @@ var Kr = {
         let o = e.slice(2, -1);
         return o === "!" || o === "!!"
           ? (t(`Verbatim tags aren't resolved, so ${e} is invalid.`), null)
-          : (e[e.length - 1] !== ">" && t("Verbatim tags must end with a >"),
-            o);
+          : (e[e.length - 1] !== ">" && t("Verbatim tags must end with a >"), o);
       }
       let [, n, i] = e.match(/^(.*!)([^!]*)$/);
       i || t(`The ${e} tag has no suffix`);
@@ -1794,12 +1690,9 @@ function pi(s, e) {
     setAnchors() {
       for (let r of t) {
         let o = n.get(r);
-        if (typeof o == "object" && o.anchor && (E(o.node) || T(o.node)))
-          o.node.anchor = o.anchor;
+        if (typeof o == "object" && o.anchor && (E(o.node) || T(o.node))) o.node.anchor = o.anchor;
         else {
-          let a = new Error(
-            "Failed to resolve repeated object (this should not happen)",
-          );
+          let a = new Error("Failed to resolve repeated object (this should not happen)");
           throw ((a.source = r), a);
         }
       }
@@ -1856,10 +1749,7 @@ var me = class extends ke {
   toString(e, t, n) {
     let i = `*${this.source}`;
     if (e) {
-      if (
-        (ss(this.source),
-        e.options.verifyAliasOrder && !e.anchors.has(this.source))
-      ) {
+      if ((ss(this.source), e.options.verifyAliasOrder && !e.anchors.has(this.source))) {
         let r = `Unresolved alias (the anchor must be set before the alias): ${this.source}`;
         throw new Error(r);
       }
@@ -1943,26 +1833,16 @@ function ge(s, e, t) {
     s instanceof Boolean ||
     (typeof BigInt == "function" && s instanceof BigInt)) &&
     (s = s.valueOf());
-  let {
-      aliasDuplicateObjects: r,
-      onAnchor: o,
-      onTagObj: a,
-      schema: l,
-      sourceObjects: c,
-    } = t,
+  let { aliasDuplicateObjects: r, onAnchor: o, onTagObj: a, schema: l, sourceObjects: c } = t,
     u;
   if (r && s && typeof s == "object") {
-    if (((u = c.get(s)), u))
-      return (u.anchor || (u.anchor = o(s)), new me(u.anchor));
+    if (((u = c.get(s)), u)) return (u.anchor || (u.anchor = o(s)), new me(u.anchor));
     ((u = { anchor: null, node: null }), c.set(s, u));
   }
   e && e.startsWith("!!") && (e = Ur + e.slice(2));
   let f = Jr(s, e, l.tags);
   if (!f) {
-    if (
-      (s && typeof s.toJSON == "function" && (s = s.toJSON()),
-      !s || typeof s != "object")
-    ) {
+    if ((s && typeof s.toJSON == "function" && (s = s.toJSON()), !s || typeof s != "object")) {
       let d = new v(s);
       return (u && (u.node = d), d);
     }
@@ -1991,8 +1871,7 @@ function ft(s, e, t) {
     sourceObjects: new Map(),
   });
 }
-var Ge = (s) =>
-    s == null || (typeof s == "object" && !!s[Symbol.iterator]().next().done),
+var Ge = (s) => s == null || (typeof s == "object" && !!s[Symbol.iterator]().next().done),
   ye = class extends ke {
     constructor(e, t) {
       (super(e),
@@ -2004,10 +1883,7 @@ var Ge = (s) =>
         }));
     }
     clone(e) {
-      let t = Object.create(
-        Object.getPrototypeOf(this),
-        Object.getOwnPropertyDescriptors(this),
-      );
+      let t = Object.create(Object.getPrototypeOf(this), Object.getOwnPropertyDescriptors(this));
       return (
         e && (t.schema = e),
         (t.items = t.items.map((n) => (C(n) || O(n) ? n.clone(e) : n))),
@@ -2021,12 +1897,8 @@ var Ge = (s) =>
         let [n, ...i] = e,
           r = this.get(n, !0);
         if (T(r)) r.addIn(i, t);
-        else if (r === void 0 && this.schema)
-          this.set(n, ft(this.schema, i, t));
-        else
-          throw new Error(
-            `Expected YAML collection at ${n}. Remaining path: ${i}`,
-          );
+        else if (r === void 0 && this.schema) this.set(n, ft(this.schema, i, t));
+        else throw new Error(`Expected YAML collection at ${n}. Remaining path: ${i}`);
       }
     }
     deleteIn(e) {
@@ -2039,26 +1911,14 @@ var Ge = (s) =>
     getIn(e, t) {
       let [n, ...i] = e,
         r = this.get(n, !0);
-      return i.length === 0
-        ? !t && E(r)
-          ? r.value
-          : r
-        : T(r)
-          ? r.getIn(i, t)
-          : void 0;
+      return i.length === 0 ? (!t && E(r) ? r.value : r) : T(r) ? r.getIn(i, t) : void 0;
     }
     hasAllNullValues(e) {
       return this.items.every((t) => {
         if (!O(t)) return !1;
         let n = t.value;
         return (
-          n == null ||
-          (e &&
-            E(n) &&
-            n.value == null &&
-            !n.commentBefore &&
-            !n.comment &&
-            !n.tag)
+          n == null || (e && E(n) && n.value == null && !n.commentBefore && !n.comment && !n.tag)
         );
       });
     }
@@ -2074,12 +1934,8 @@ var Ge = (s) =>
       else {
         let r = this.get(n, !0);
         if (T(r)) r.setIn(i, t);
-        else if (r === void 0 && this.schema)
-          this.set(n, ft(this.schema, i, t));
-        else
-          throw new Error(
-            `Expected YAML collection at ${n}. Remaining path: ${i}`,
-          );
+        else if (r === void 0 && this.schema) this.set(n, ft(this.schema, i, t));
+        else throw new Error(`Expected YAML collection at ${n}. Remaining path: ${i}`);
       }
     }
   };
@@ -2101,13 +1957,7 @@ function dt(
   s,
   e,
   t = "flow",
-  {
-    indentAtStart: n,
-    lineWidth: i = 80,
-    minContentWidth: r = 20,
-    onFold: o,
-    onOverflow: a,
-  } = {},
+  { indentAtStart: n, lineWidth: i = 80, minContentWidth: r = 20, onFold: o, onOverflow: a } = {},
 ) {
   if (!i || i < 0) return s;
   let l = Math.max(1 + r, 1 + i - e.length);
@@ -2168,8 +2018,7 @@ function dt(
       if (p >= f)
         if (h) (c.push(h), (f = h + l), (h = void 0));
         else if (t === ht) {
-          for (; d === " " || d === "	"; )
-            ((d = k), (k = s[(p += 1)]), (g = !0));
+          for (; d === " " || d === "	"; ) ((d = k), (k = s[(p += 1)]), (g = !0));
           let w = p > y + 1 ? p - 2 : m - 1;
           if (u[w]) return s;
           (c.push(w), (u[w] = !0), (f = w + l), (h = void 0));
@@ -2275,9 +2124,7 @@ function pt(s, e) {
                 o += "\\P";
                 break;
               default:
-                u.substr(0, 2) === "00"
-                  ? (o += "\\x" + u.substr(2))
-                  : (o += t.substr(l, 6));
+                u.substr(0, 2) === "00" ? (o += "\\x" + u.substr(2)) : (o += t.substr(l, 6));
             }
             ((l += 5), (a = l + 1));
           }
@@ -2368,11 +2215,7 @@ function os({ comment: s, type: e, value: t }, n, i, r) {
   let d = t.substring(h),
     g = d.indexOf(`
 `);
-  (g === -1
-    ? (f = "-")
-    : t === d || g !== d.length - 1
-      ? ((f = "+"), r && r())
-      : (f = ""),
+  (g === -1 ? (f = "-") : t === d || g !== d.length - 1 ? ((f = "+"), r && r()) : (f = ""),
     d &&
       ((t = t.slice(0, -d.length)),
       d[d.length - 1] ===
@@ -2420,9 +2263,7 @@ function Gr(s, e, t, n) {
   if ((a && /[\n[\]{},]/.test(r)) || (c && /[[\]{},]/.test(r))) return mt(r, e);
   if (
     !r ||
-    /^[\n\t ,[\]{}#&*!|>'"%@`]|^[?-]$|^[?-][ \t]|[\n:][ \t]|[ \t]\n|[\n\t ]#|[\n\t :]$/.test(
-      r,
-    )
+    /^[\n\t ,[\]{}#&*!|>'"%@`]|^[?-]$|^[?-][ \t]|[\n:][ \t]|[ \t]\n|[\n\t ]#|[\n\t :]$/.test(r)
   )
     return a ||
       c ||
@@ -2460,10 +2301,7 @@ ${l}`,
 }
 function we(s, e, t, n) {
   let { implicitKey: i, inFlow: r } = e,
-    o =
-      typeof s.value == "string"
-        ? s
-        : Object.assign({}, s, { value: String(s.value) }),
+    o = typeof s.value == "string" ? s : Object.assign({}, s, { value: String(s.value) }),
     { type: a } = s;
   a !== v.QUOTE_DOUBLE &&
     /[\x00-\x08\x0b-\x1f\x7f-\x9f\u{D800}-\u{DFFF}]/u.test(o.value) &&
@@ -2487,8 +2325,7 @@ function we(s, e, t, n) {
   if (c === null) {
     let { defaultKeyType: u, defaultStringType: f } = e.options,
       h = (i && u) || f;
-    if (((c = l(h)), c === null))
-      throw new Error(`Unsupported default string type ${h}`);
+    if (((c = l(h)), c === null)) throw new Error(`Unsupported default string type ${h}`);
   }
   return c;
 }
@@ -2545,8 +2382,7 @@ function Yr(s, e) {
     n = e.value;
     let i = s.filter((r) => r.identify && r.identify(n));
     t = i.find((r) => r.format === e.format) || i.find((r) => !r.format);
-  } else
-    ((n = e), (t = s.find((i) => i.nodeClass && n instanceof i.nodeClass)));
+  } else ((n = e), (t = s.find((i) => i.nodeClass && n instanceof i.nodeClass)));
   if (!t) {
     let i = n && n.constructor ? n.constructor.name : typeof n;
     throw new Error(`Tag not resolved for ${i} value`);
@@ -2567,12 +2403,8 @@ function ee(s, e, t, n) {
   if (H(s)) {
     if (e.doc.directives) return s.toString(e);
     if (!((i = e.resolvedAliases) === null || i === void 0) && i.has(s))
-      throw new TypeError(
-        "Cannot stringify circular structure without alias nodes",
-      );
-    (e.resolvedAliases
-      ? e.resolvedAliases.add(s)
-      : (e.resolvedAliases = new Set([s])),
+      throw new TypeError("Cannot stringify circular structure without alias nodes");
+    (e.resolvedAliases ? e.resolvedAliases.add(s) : (e.resolvedAliases = new Set([s])),
       (s = s.resolve(e.doc)));
   }
   let r,
@@ -2614,9 +2446,7 @@ function yi({ key: s, value: e }, t, n, i) {
     (!s ||
       (h && e == null && !t.inFlow) ||
       T(s) ||
-      (E(s)
-        ? s.type === v.BLOCK_FOLDED || s.type === v.BLOCK_LITERAL
-        : typeof s == "object"));
+      (E(s) ? s.type === v.BLOCK_FOLDED || s.type === v.BLOCK_LITERAL : typeof s == "object"));
   t = Object.assign({}, t, {
     allNullValues: !1,
     implicitKey: !d && (f || !r),
@@ -2640,11 +2470,7 @@ function yi({ key: s, value: e }, t, n, i) {
   if (t.inFlow) {
     if (r || e == null) return (g && n && n(), d ? `? ${m}` : m);
   } else if ((r && !f) || (e == null && d))
-    return (
-      (m = `? ${m}`),
-      h && !g ? (m += Z(m, t.indent, c(h))) : p && i && i(),
-      m
-    );
+    return ((m = `? ${m}`), h && !g ? (m += Z(m, t.indent, c(h))) : p && i && i(), m);
   (g && (h = null),
     d
       ? (h && (m += Z(m, t.indent, c(h))),
@@ -2705,11 +2531,7 @@ ${t.indent}`)
 `) &&
           (S = ""),
     (m += S + w),
-    t.inFlow
-      ? k && n && n()
-      : b && !k
-        ? (m += Z(m, t.indent, c(b)))
-        : p && i && i(),
+    t.inFlow ? k && n && n() : b && !k ? (m += Z(m, t.indent, c(b))) : p && i && i(),
     m
   );
 }
@@ -2722,8 +2544,7 @@ function an(s, e) {
 var wi = "<<";
 function us(s, e, { key: t, value: n }) {
   if (s && s.doc.schema.merge && Hr(t))
-    if (((n = H(n) ? n.resolve(s.doc) : n), z(n)))
-      for (let i of n.items) ln(s, e, i);
+    if (((n = H(n) ? n.resolve(s.doc) : n), z(n))) for (let i of n.items) ln(s, e, i);
     else if (Array.isArray(n)) for (let i of n) ln(s, e, i);
     else ln(s, e, n);
   else {
@@ -2745,8 +2566,7 @@ function us(s, e, { key: t, value: n }) {
   }
   return e;
 }
-var Hr = (s) =>
-  s === wi || (E(s) && s.value === wi && (!s.type || s.type === v.PLAIN));
+var Hr = (s) => s === wi || (E(s) && s.value === wi && (!s.type || s.type === v.PLAIN));
 function ln(s, e, t) {
   let n = s && H(t) ? t.resolve(s.doc) : t;
   if (!V(n)) throw new Error("Merge sources must be maps or map aliases");
@@ -2794,9 +2614,7 @@ function Ye(s, e, t) {
 }
 var L = class {
   constructor(e, t = null) {
-    (Object.defineProperty(this, R, { value: tn }),
-      (this.key = e),
-      (this.value = t));
+    (Object.defineProperty(this, R, { value: tn }), (this.key = e), (this.value = t));
   }
   clone(e) {
     let { key: t, value: n } = this;
@@ -2821,22 +2639,12 @@ var gt = {
 };
 function hs(s, e, t) {
   var n;
-  return (((n = e.inFlow) !== null && n !== void 0 ? n : s.flow) ? Zr : Xr)(
-    s,
-    e,
-    t,
-  );
+  return (((n = e.inFlow) !== null && n !== void 0 ? n : s.flow) ? Zr : Xr)(s, e, t);
 }
 function Xr(
   { comment: s, items: e },
   t,
-  {
-    blockItemPrefix: n,
-    flowChars: i,
-    itemIndent: r,
-    onChompKeep: o,
-    onComment: a,
-  },
+  { blockItemPrefix: n, flowChars: i, itemIndent: r, onChompKeep: o, onComment: a },
 ) {
   let {
       indent: l,
@@ -2888,11 +2696,7 @@ ${l}${p}`
     d
   );
 }
-function Zr(
-  { comment: s, items: e },
-  t,
-  { flowChars: n, itemIndent: i, onComment: r },
-) {
+function Zr({ comment: s, items: e }, t, { flowChars: n, itemIndent: i, onComment: r }) {
   let {
     indent: o,
     indentStep: a,
@@ -2907,15 +2711,10 @@ function Zr(
     let y = e[m],
       b = null;
     if (C(y))
-      (y.spaceBefore && h.push(""),
-        fs(t, h, y.commentBefore, !1),
-        y.comment && (b = y.comment));
+      (y.spaceBefore && h.push(""), fs(t, h, y.commentBefore, !1), y.comment && (b = y.comment));
     else if (O(y)) {
       let w = C(y.key) ? y.key : null;
-      w &&
-        (w.spaceBefore && h.push(""),
-        fs(t, h, w.commentBefore, !1),
-        w.comment && (u = !0));
+      w && (w.spaceBefore && h.push(""), fs(t, h, w.commentBefore, !1), w.comment && (u = !0));
       let S = C(y.value) ? y.value : null;
       S
         ? (S.comment && (b = S.comment), S.commentBefore && (u = !0))
@@ -2937,11 +2736,7 @@ function Zr(
     { start: g, end: p } = n;
   if (h.length === 0) d = g + p;
   else if (
-    (u ||
-      (u =
-        h.reduce((y, b) => y + b.length + 2, 2) >
-        ye.maxFlowStringSingleLineLength),
-    u)
+    (u || (u = h.reduce((y, b) => y + b.length + 2, 2) > ye.maxFlowStringSingleLineLength), u)
   ) {
     d = g;
     for (let m of h)
@@ -2964,8 +2759,7 @@ function fs({ indent: s, options: { commentString: e } }, t, n, i) {
 function Ee(s, e) {
   let t = E(e) ? e.value : e;
   for (let n of s)
-    if (O(n) && (n.key === e || n.key === t || (E(n.key) && n.key.value === t)))
-      return n;
+    if (O(n) && (n.key === e || n.key === t || (E(n.key) && n.key.value === t))) return n;
 }
 var x = class extends ye {
   constructor(e) {
@@ -2985,9 +2779,7 @@ var x = class extends ye {
       r = this.schema && this.schema.sortMapEntries;
     if (i) {
       if (!t) throw new Error(`Key ${n.key} already set`);
-      E(i.value) && is(n.value)
-        ? (i.value.value = n.value)
-        : (i.value = n.value);
+      E(i.value) && is(n.value) ? (i.value.value = n.value) : (i.value = n.value);
     } else if (r) {
       let o = this.items.findIndex((a) => r(n, a) < 0);
       o === -1 ? this.items.push(n) : this.items.splice(o, 0, n);
@@ -3017,10 +2809,7 @@ var x = class extends ye {
   toString(e, t, n) {
     if (!e) return JSON.stringify(this);
     for (let i of this.items)
-      if (!O(i))
-        throw new Error(
-          `Map items must all be pairs; found ${JSON.stringify(i)} instead`,
-        );
+      if (!O(i)) throw new Error(`Map items must all be pairs; found ${JSON.stringify(i)} instead`);
     return (
       !e.allNullValues &&
         this.hasAllNullValues(!1) &&
@@ -3045,10 +2834,7 @@ function eo(s, e, t) {
     };
   if (e instanceof Map) for (let [a, l] of e) o(a, l);
   else if (e && typeof e == "object") for (let a of Object.keys(e)) o(a, e[a]);
-  return (
-    typeof s.sortMapEntries == "function" && r.items.sort(s.sortMapEntries),
-    r
-  );
+  return (typeof s.sortMapEntries == "function" && r.items.sort(s.sortMapEntries), r);
 }
 var te = {
   collection: "map",
@@ -3086,8 +2872,7 @@ var q = class extends ye {
   }
   set(e, t) {
     let n = ds(e);
-    if (typeof n != "number")
-      throw new Error(`Expected a valid index, not ${e}.`);
+    if (typeof n != "number") throw new Error(`Expected a valid index, not ${e}.`);
     let i = this.items[n];
     E(i) && is(t) ? (i.value = t) : (this.items[n] = t);
   }
@@ -3158,8 +2943,7 @@ var Re = {
   tag: "tag:yaml.org,2002:null",
   test: /^(?:~|[Nn]ull|NULL)?$/,
   resolve: () => new v(null),
-  stringify: ({ source: s }, e) =>
-    s && Re.test.test(s) ? s : e.options.nullStr,
+  stringify: ({ source: s }, e) => (s && Re.test.test(s) ? s : e.options.nullStr),
 };
 var yt = {
   identify: (s) => typeof s == "boolean",
@@ -3221,18 +3005,12 @@ var ps = {
     resolve(s) {
       let e = new v(parseFloat(s)),
         t = s.indexOf(".");
-      return (
-        t !== -1 &&
-          s[s.length - 1] === "0" &&
-          (e.minFractionDigits = s.length - t - 1),
-        e
-      );
+      return (t !== -1 && s[s.length - 1] === "0" && (e.minFractionDigits = s.length - t - 1), e);
     },
     stringify: $,
   };
 var ys = (s) => typeof s == "bigint" || Number.isInteger(s),
-  cn = (s, e, t, { intAsBigInt: n }) =>
-    n ? BigInt(s) : parseInt(s.substring(e), t);
+  cn = (s, e, t, { intAsBigInt: n }) => (n ? BigInt(s) : parseInt(s.substring(e), t));
 function bi(s, e, t) {
   let { value: n } = s;
   return ys(n) && n >= 0 ? t + n.toString(e) : $(s);
@@ -3342,10 +3120,7 @@ var wt = {
     let o = t,
       a;
     if (typeof Buffer == "function")
-      a =
-        o instanceof Buffer
-          ? o.toString("base64")
-          : Buffer.from(o.buffer).toString("base64");
+      a = o instanceof Buffer ? o.toString("base64") : Buffer.from(o.buffer).toString("base64");
     else if (typeof btoa == "function") {
       let l = "";
       for (let c = 0; c < o.length; ++c) l += String.fromCharCode(o[c]);
@@ -3355,10 +3130,7 @@ var wt = {
         "This environment does not support writing binary tags; either Buffer or btoa is required",
       );
     if ((e || (e = v.BLOCK_LITERAL), e !== v.QUOTE_DOUBLE)) {
-      let l = Math.max(
-          n.options.lineWidth - n.indent.length,
-          n.options.minContentWidth,
-        ),
+      let l = Math.max(n.options.lineWidth - n.indent.length, n.options.minContentWidth),
         c = Math.ceil(a.length / l),
         u = new Array(c);
       for (let f = 0, h = 0; f < c; ++f, h += l) u[f] = a.substr(h, l);
@@ -3378,8 +3150,7 @@ function un(s, e) {
       let n = s.items[t];
       if (!O(n)) {
         if (V(n)) {
-          n.items.length > 1 &&
-            e("Each pair must have its own sequence indicator");
+          n.items.length > 1 && e("Each pair must have its own sequence indicator");
           let i = n.items[0] || new L(new v(null));
           if (
             (n.commentBefore &&
@@ -3447,12 +3218,7 @@ var Ne = class extends q {
     t && t.onCreate && t.onCreate(n);
     for (let i of this.items) {
       let r, o;
-      if (
-        (O(i)
-          ? ((r = j(i.key, "", t)), (o = j(i.value, r, t)))
-          : (r = j(i, "", t)),
-        n.has(r))
-      )
+      if ((O(i) ? ((r = j(i.key, "", t)), (o = j(i.value, r, t))) : (r = j(i, "", t)), n.has(r)))
         throw new Error("Ordered maps must not include duplicate keys");
       n.set(r, o);
     }
@@ -3483,11 +3249,7 @@ var vt = {
   },
 };
 function Ei({ value: s, source: e }, t) {
-  return e && (s ? hn : dn).test.test(e)
-    ? e
-    : s
-      ? t.options.trueStr
-      : t.options.falseStr;
+  return e && (s ? hn : dn).test.test(e) ? e : s ? t.options.trueStr : t.options.falseStr;
 }
 var hn = {
     identify: (s) => s === !0,
@@ -3549,11 +3311,7 @@ var Oi = {
 var St = (s) => typeof s == "bigint" || Number.isInteger(s);
 function ks(s, e, t, { intAsBigInt: n }) {
   let i = s[0];
-  if (
-    ((i === "-" || i === "+") && (e += 1),
-    (s = s.substring(e).replace(/_/g, "")),
-    n)
-  ) {
+  if (((i === "-" || i === "+") && (e += 1), (s = s.substring(e).replace(/_/g, "")), n)) {
     switch (t) {
       case 2:
         s = `0b${s}`;
@@ -3633,13 +3391,9 @@ var Ce = class extends x {
   }
   set(e, t) {
     if (typeof t != "boolean")
-      throw new Error(
-        `Expected boolean value for set(key, value) in a YAML set, not ${typeof t}`,
-      );
+      throw new Error(`Expected boolean value for set(key, value) in a YAML set, not ${typeof t}`);
     let n = Ee(this.items, e);
-    n && !t
-      ? this.items.splice(this.items.indexOf(n), 1)
-      : !n && t && this.items.push(new L(e));
+    n && !t ? this.items.splice(this.items.indexOf(n), 1) : !n && t && this.items.push(new L(e));
   }
   toJSON(e, t) {
     return super.toJSON(e, t, Set);
@@ -3670,8 +3424,7 @@ var kt = {
       i = new Ce(s);
     if (e && Symbol.iterator in Object(e))
       for (let r of e)
-        (typeof n == "function" && (r = n.call(e, r, r)),
-          i.items.push(Ye(r, null, t)));
+        (typeof n == "function" && (r = n.call(e, r, r)), i.items.push(Ye(r, null, t)));
     return i;
   },
 };
@@ -3697,9 +3450,7 @@ function _i(s) {
   return (
     e < 60
       ? r.unshift(0)
-      : ((e = (e - r[0]) / i),
-        r.unshift(e % i),
-        e >= 60 && ((e = (e - r[0]) / i), r.unshift(e))),
+      : ((e = (e - r[0]) / i), r.unshift(e % i), e >= 60 && ((e = (e - r[0]) / i), r.unshift(e))),
     n +
       r
         .map((o) => (o < 10 ? "0" + String(o) : String(o)))
@@ -3734,8 +3485,7 @@ var Es = {
     ),
     resolve(s) {
       let e = s.match(Qe.test);
-      if (!e)
-        throw new Error("!!timestamp expects a date, starting with yyyy-mm-dd");
+      if (!e) throw new Error("!!timestamp expects a date, starting with yyyy-mm-dd");
       let [, t, n, i, r, o, a] = e.map(Number),
         l = e[7] ? Number((e[7] + "00").substr(1, 3)) : 0,
         c = Date.UTC(t, n - 1, i, r || 0, o || 0, a || 0, l),
@@ -3746,31 +3496,9 @@ var Es = {
       }
       return new Date(c);
     },
-    stringify: ({ value: s }) =>
-      s.toISOString().replace(/((T00:00)?:00)?\.000Z$/, ""),
+    stringify: ({ value: s }) => s.toISOString().replace(/((T00:00)?:00)?\.000Z$/, ""),
   };
-var gn = [
-  te,
-  se,
-  Oe,
-  Re,
-  hn,
-  dn,
-  Ti,
-  Ai,
-  Li,
-  Ii,
-  Oi,
-  Ni,
-  Ci,
-  wt,
-  vt,
-  bt,
-  kt,
-  Es,
-  Os,
-  Qe,
-];
+var gn = [te, se, Oe, Re, hn, dn, Ti, Ai, Li, Ii, Oi, Ni, Ci, wt, vt, bt, kt, Es, Os, Qe];
 var xi = new Map([
     ["core", vi],
     ["failsafe", [te, se, Oe]],
@@ -3813,9 +3541,7 @@ function Ns(s, e) {
         .filter((i) => i !== "yaml11")
         .map((i) => JSON.stringify(i))
         .join(", ");
-      throw new Error(
-        `Unknown schema "${e}"; use one of ${n} or define customTags array`,
-      );
+      throw new Error(`Unknown schema "${e}"; use one of ${n} or define customTags array`);
     }
   if (Array.isArray(s)) for (let n of s) t = t.concat(n);
   else typeof s == "function" && (t = s(t.slice()));
@@ -3840,11 +3566,7 @@ var io = (s, e) => (s.key < e.key ? -1 : s.key > e.key ? 1 : 0),
       sortMapEntries: o,
       toStringDefaults: a,
     }) {
-      ((this.compat = Array.isArray(e)
-        ? Ns(e, "compat")
-        : e
-          ? Ns(null, e)
-          : null),
+      ((this.compat = Array.isArray(e) ? Ns(e, "compat") : e ? Ns(null, e) : null),
         (this.merge = !!n),
         (this.name = (typeof r == "string" && r) || "core"),
         (this.knownTags = i ? Mi : {}),
@@ -3856,10 +3578,7 @@ var io = (s, e) => (s.key < e.key ? -1 : s.key > e.key ? 1 : 0),
         (this.sortMapEntries = o === !0 ? io : o || null));
     }
     clone() {
-      let e = Object.create(
-        qe.prototype,
-        Object.getOwnPropertyDescriptors(this),
-      );
+      let e = Object.create(qe.prototype, Object.getOwnPropertyDescriptors(this));
       return ((e.tags = this.tags.slice()), e);
     }
   };
@@ -3882,9 +3601,7 @@ function $i(s, e) {
     a = null;
   if (s.contents) {
     if (C(s.contents)) {
-      if (
-        (s.contents.spaceBefore && n && t.push(""), s.contents.commentBefore)
-      ) {
+      if ((s.contents.spaceBefore && n && t.push(""), s.contents.commentBefore)) {
         let f = r(s.contents.commentBefore);
         t.push(oe(f, ""));
       }
@@ -3900,8 +3617,7 @@ function $i(s, e) {
   let l = s.comment;
   return (
     l && o && (l = l.replace(/^\n+/, "")),
-    l &&
-      ((!o || a) && t[t.length - 1] !== "" && t.push(""), t.push(oe(r(l), ""))),
+    l && ((!o || a) && t[t.length - 1] !== "" && t.push(""), t.push(oe(r(l), ""))),
     t.join(`
 `) +
       `
@@ -3953,9 +3669,7 @@ var ae = class {
         this.directives.yaml.explicit && (o = this.directives.yaml.version))
       : (this.directives = new _({ version: o })),
       this.setSchema(o, n),
-      e === void 0
-        ? (this.contents = null)
-        : (this.contents = this.createNode(e, i, n)));
+      e === void 0 ? (this.contents = null) : (this.contents = this.createNode(e, i, n)));
   }
   clone() {
     let e = Object.create(ae.prototype, { [R]: { value: ts } });
@@ -3967,9 +3681,7 @@ var ae = class {
       (e.options = Object.assign({}, this.options)),
       this.directives && (e.directives = this.directives.clone()),
       (e.schema = this.schema.clone()),
-      (e.contents = C(this.contents)
-        ? this.contents.clone(e.schema)
-        : this.contents),
+      (e.contents = C(this.contents) ? this.contents.clone(e.schema) : this.contents),
       this.range && (e.range = this.range.slice()),
       e
     );
@@ -3991,8 +3703,7 @@ var ae = class {
     let i;
     if (typeof t == "function") ((e = t.call({ "": e }, "", e)), (i = t));
     else if (Array.isArray(t)) {
-      let m = (b) =>
-          typeof b == "number" || b instanceof String || b instanceof Number,
+      let m = (b) => typeof b == "number" || b instanceof String || b instanceof Number,
         y = t.filter(m).map(String);
       (y.length > 0 && (t = t.concat(y)), (i = t));
     } else n === void 0 && t && ((n = t), (t = void 0));
@@ -4050,11 +3761,7 @@ var ae = class {
     return T(this.contents) ? this.contents.has(e) : !1;
   }
   hasIn(e) {
-    return Ge(e)
-      ? this.contents !== void 0
-      : T(this.contents)
-        ? this.contents.hasIn(e)
-        : !1;
+    return Ge(e) ? this.contents !== void 0 : T(this.contents) ? this.contents.hasIn(e) : !1;
   }
   set(e, t) {
     this.contents == null
@@ -4089,26 +3796,14 @@ var ae = class {
         break;
       default: {
         let i = JSON.stringify(e);
-        throw new Error(
-          `Expected '1.1', '1.2' or null as first argument, but found: ${i}`,
-        );
+        throw new Error(`Expected '1.1', '1.2' or null as first argument, but found: ${i}`);
       }
     }
     if (t.schema instanceof Object) this.schema = t.schema;
     else if (n) this.schema = new qe(Object.assign(n, t));
-    else
-      throw new Error(
-        "With a null YAML version, the { schema: Schema } option is required",
-      );
+    else throw new Error("With a null YAML version, the { schema: Schema } option is required");
   }
-  toJS({
-    json: e,
-    jsonArg: t,
-    mapAsMap: n,
-    maxAliasCount: i,
-    onAnchor: r,
-    reviver: o,
-  } = {}) {
+  toJS({ json: e, jsonArg: t, mapAsMap: n, maxAliasCount: i, onAnchor: r, reviver: o } = {}) {
     let a = {
         anchors: new Map(),
         doc: this,
@@ -4119,20 +3814,15 @@ var ae = class {
         stringify: ee,
       },
       l = j(this.contents, t || "", a);
-    if (typeof r == "function")
-      for (let { count: c, res: u } of a.anchors.values()) r(u, c);
+    if (typeof r == "function") for (let { count: c, res: u } of a.anchors.values()) r(u, c);
     return typeof o == "function" ? He(o, { "": l }, "", l) : l;
   }
   toJSON(e, t) {
     return this.toJS({ json: !0, jsonArg: e, mapAsMap: !1, onAnchor: t });
   }
   toString(e = {}) {
-    if (this.errors.length > 0)
-      throw new Error("Document with errors cannot be stringified");
-    if (
-      "indent" in e &&
-      (!Number.isInteger(e.indent) || Number(e.indent) <= 0)
-    ) {
+    if (this.errors.length > 0) throw new Error("Document with errors cannot be stringified");
+    if ("indent" in e && (!Number.isInteger(e.indent) || Number(e.indent) <= 0)) {
       let t = JSON.stringify(e.indent);
       throw new Error(`"indent" option must be a positive integer, not ${t}`);
     }
@@ -4145,11 +3835,7 @@ function ze(s) {
 }
 var Et = class extends Error {
     constructor(e, t, n, i) {
-      (super(),
-        (this.name = e),
-        (this.code = n),
-        (this.message = i),
-        (this.pos = t));
+      (super(), (this.name = e), (this.code = n), (this.message = i), (this.pos = t));
     }
   },
   W = class extends Et {
@@ -4168,9 +3854,7 @@ var Et = class extends Error {
     let { line: n, col: i } = t.linePos[0];
     t.message += ` at line ${n}, column ${i}`;
     let r = i - 1,
-      o = s
-        .substring(e.lineStarts[n - 1], e.lineStarts[n])
-        .replace(/[\n\r]+$/, "");
+      o = s.substring(e.lineStarts[n - 1], e.lineStarts[n]).replace(/[\n\r]+$/, "");
     if (r >= 60 && o.length > 80) {
       let a = Math.min(r - 39, o.length - 79);
       ((o = "\u2026" + o.substring(a)), (r -= a - 1));
@@ -4199,10 +3883,7 @@ ${c}
 `;
     }
   };
-function le(
-  s,
-  { flow: e, indicator: t, next: n, offset: i, onError: r, startOnNewline: o },
-) {
+function le(s, { flow: e, indicator: t, next: n, offset: i, onError: r, startOnNewline: o }) {
   let a = !1,
     l = o,
     c = o,
@@ -4249,10 +3930,7 @@ function le(
         break;
       }
       case "newline":
-        (l ? (u ? (u += S.source) : (a = !0)) : (f += S.source),
-          (l = !0),
-          (h = !0),
-          (c = !0));
+        (l ? (u ? (u += S.source) : (a = !0)) : (f += S.source), (l = !0), (h = !0), (c = !0));
         break;
       case "anchor":
         (g && r(S, "MULTIPLE_ANCHORS", "A node can have at most one anchor"),
@@ -4273,33 +3951,19 @@ function le(
       }
       case t:
         ((g || p) &&
-          r(
-            S,
-            "BAD_PROP_ORDER",
-            `Anchors and tags must be after the ${S.source} indicator`,
-          ),
-          y &&
-            r(
-              S,
-              "UNEXPECTED_TOKEN",
-              `Unexpected ${S.source} in ${e || "collection"}`,
-            ),
+          r(S, "BAD_PROP_ORDER", `Anchors and tags must be after the ${S.source} indicator`),
+          y && r(S, "UNEXPECTED_TOKEN", `Unexpected ${S.source} in ${e || "collection"}`),
           (y = S),
           (l = !1),
           (c = !1));
         break;
       case "comma":
         if (e) {
-          (m && r(S, "UNEXPECTED_TOKEN", `Unexpected , in ${e}`),
-            (m = S),
-            (l = !1),
-            (c = !1));
+          (m && r(S, "UNEXPECTED_TOKEN", `Unexpected , in ${e}`), (m = S), (l = !1), (c = !1));
           break;
         }
       default:
-        (r(S, "UNEXPECTED_TOKEN", `Unexpected ${S.type} token`),
-          (l = !1),
-          (c = !1));
+        (r(S, "UNEXPECTED_TOKEN", `Unexpected ${S.type} token`), (l = !1), (c = !1));
     }
   let k = s[s.length - 1],
     w = k ? k.offset + k.source.length : i;
@@ -4363,12 +4027,7 @@ function Nt(s, e, t) {
     n.indent === s &&
       (n.source === "]" || n.source === "}") &&
       Te(e) &&
-      t(
-        n,
-        "BAD_INDENT",
-        "Flow end indicator should be more indented than parent",
-        !0,
-      );
+      t(n, "BAD_INDENT", "Flow end indicator should be more indented than parent", !0);
   }
 }
 function Cs(s, e, t) {
@@ -4378,11 +4037,7 @@ function Cs(s, e, t) {
     typeof n == "function"
       ? n
       : (r, o) =>
-          r === o ||
-          (E(r) &&
-            E(o) &&
-            r.value === o.value &&
-            !(r.value === "<<" && s.schema.merge));
+          r === o || (E(r) && E(o) && r.value === o.value && !(r.value === "<<" && s.schema.merge));
   return e.some((r) => i(r.key, t));
 }
 var Bi = "All mapping items must start at the same column";
@@ -4422,15 +4077,9 @@ function Di({ composeNode: s, composeEmptyNode: e }, t, n, i) {
         continue;
       }
     } else
-      ((r = d.found) === null || r === void 0 ? void 0 : r.indent) !==
-        n.indent && i(a, "BAD_INDENT", Bi);
-    g &&
-      Te(u) &&
-      i(
-        u,
-        "MULTILINE_IMPLICIT_KEY",
-        "Implicit keys need to be on a single line",
-      );
+      ((r = d.found) === null || r === void 0 ? void 0 : r.indent) !== n.indent &&
+        i(a, "BAD_INDENT", Bi);
+    g && Te(u) && i(u, "MULTILINE_IMPLICIT_KEY", "Implicit keys need to be on a single line");
     let p = d.end,
       m = u ? s(t, u, d, i) : e(t, p, c, null, d, i);
     (t.schema.compat && Nt(n.indent, u, i),
@@ -4446,11 +4095,7 @@ function Di({ composeNode: s, composeEmptyNode: e }, t, n, i) {
       g &&
         ((h == null ? void 0 : h.type) === "block-map" &&
           !y.hasNewline &&
-          i(
-            a,
-            "BLOCK_AS_IMPLICIT_KEY",
-            "Nested mappings are not allowed in compact mappings",
-          ),
+          i(a, "BLOCK_AS_IMPLICIT_KEY", "Nested mappings are not allowed in compact mappings"),
         t.options.strict &&
           d.start < y.found.offset - 1024 &&
           i(
@@ -4463,12 +4108,7 @@ function Di({ composeNode: s, composeEmptyNode: e }, t, n, i) {
       let k = new L(m, b);
       (t.options.keepSourceTokens && (k.srcToken = l), o.items.push(k));
     } else {
-      (g &&
-        i(
-          m.range,
-          "MISSING_CHAR",
-          "Implicit map keys need to be followed by map values",
-        ),
+      (g && i(m.range, "MISSING_CHAR", "Implicit map keys need to be followed by map values"),
         y.comment &&
           (m.comment
             ? (m.comment +=
@@ -4496,11 +4136,7 @@ function ji({ composeNode: s, composeEmptyNode: e }, t, n, i) {
     if (((o = c.end), !c.found))
       if (c.anchor || c.tag || l)
         l && l.type === "block-seq"
-          ? i(
-              o,
-              "BAD_INDENT",
-              "All sequence items must start at the same column",
-            )
+          ? i(o, "BAD_INDENT", "All sequence items must start at the same column")
           : i(o, "MISSING_CHAR", "Sequence item without - indicator");
       else {
         c.comment && (r.comment = c.comment);
@@ -4590,12 +4226,8 @@ function Ri({ composeNode: s, composeEmptyNode: e }, t, n, i) {
           "Implicit keys of flow sequence pairs need to be on a single line",
         );
     }
-    if (g === 0)
-      w.comma && i(w.comma, "UNEXPECTED_TOKEN", `Unexpected , in ${o}`);
-    else if (
-      (w.comma || i(w.start, "MISSING_CHAR", `Missing , between ${o} items`),
-      w.comment)
-    ) {
+    if (g === 0) w.comma && i(w.comma, "UNEXPECTED_TOKEN", `Unexpected , in ${o}`);
+    else if ((w.comma || i(w.start, "MISSING_CHAR", `Missing , between ${o} items`), w.comment)) {
       let S = "";
       e: for (let N of m)
         switch (N.type) {
@@ -4621,9 +4253,7 @@ function Ri({ composeNode: s, composeEmptyNode: e }, t, n, i) {
     }
     if (!r && !b && !w.found) {
       let S = k ? s(t, k, w, i) : e(t, w.end, b, null, w, i);
-      (a.items.push(S),
-        (c = S.range[2]),
-        bn(k) && i(S.range, "BLOCK_IN_FLOW", wn));
+      (a.items.push(S), (c = S.range[2]), bn(k) && i(S.range, "BLOCK_IN_FLOW", wn));
     } else {
       let S = w.end,
         N = y ? s(t, y, w, i) : e(t, S, m, null, w, i);
@@ -4674,8 +4304,7 @@ function Ri({ composeNode: s, composeEmptyNode: e }, t, n, i) {
       let Ms = new L(N, et);
       if ((t.options.keepSourceTokens && (Ms.srcToken = p), r)) {
         let ne = a;
-        (Cs(t, ne.items, N) && i(S, "DUPLICATE_KEY", "Map keys must be unique"),
-          ne.items.push(Ms));
+        (Cs(t, ne.items, N) && i(S, "DUPLICATE_KEY", "Map keys must be unique"), ne.items.push(Ms));
       } else {
         let ne = new x(t.schema);
         ((ne.flow = !0), ne.items.push(Ms), a.items.push(ne));
@@ -4692,8 +4321,7 @@ function Ri({ composeNode: s, composeEmptyNode: e }, t, n, i) {
       p = l
         ? `${g} must end with a ${u}`
         : `${g} in block collection must be sufficiently indented and end with a ${u}`;
-    (i(c, l ? "MISSING_CHAR" : "BAD_INDENT", p),
-      f && f.source.length !== 1 && h.unshift(f));
+    (i(c, l ? "MISSING_CHAR" : "BAD_INDENT", p), f && f.source.length !== 1 && h.unshift(f));
   }
   if (h.length > 0) {
     let g = ce(h, d, t.options.strict, i);
@@ -4734,21 +4362,11 @@ function qi(s, e, t, n, i) {
     let h = e.schema.knownTags[o];
     if (h && h.collection === l)
       (e.schema.tags.push(Object.assign({}, h, { default: !1 })), (c = h));
-    else
-      return (
-        i(n, "TAG_RESOLVE_FAILED", `Unresolved tag: ${o}`, !0),
-        (r.tag = o),
-        r
-      );
+    else return (i(n, "TAG_RESOLVE_FAILED", `Unresolved tag: ${o}`, !0), (r.tag = o), r);
   }
   let u = c.resolve(r, (h) => i(n, "TAG_RESOLVE_FAILED", h), e.options),
     f = C(u) ? u : new v(u);
-  return (
-    (f.range = r.range),
-    (f.tag = o),
-    c != null && c.format && (f.format = c.format),
-    f
-  );
+  return ((f.range = r.range), (f.tag = o), c != null && c.format && (f.format = c.format), f);
 }
 function Ts(s, e, t) {
   let n = s.offset,
@@ -4779,8 +4397,7 @@ function Ts(s, e, t) {
     u = 0;
   for (let p = 0; p < a; ++p) {
     let [m, y] = o[p];
-    if (y === "" || y === "\r")
-      i.indent === 0 && m.length > l && (l = m.length);
+    if (y === "" || y === "\r") i.indent === 0 && m.length > l && (l = m.length);
     else {
       if (m.length < l) {
         let b =
@@ -4874,12 +4491,7 @@ function ro({ offset: s, props: e }, t, n) {
       !o && g ? (o = g) : l === -1 && (l = s + h);
     }
   }
-  l !== -1 &&
-    n(
-      l,
-      "UNEXPECTED_TOKEN",
-      `Block scalar header includes extra characters: ${i}`,
-    );
+  l !== -1 && n(l, "UNEXPECTED_TOKEN", `Block scalar header includes extra characters: ${i}`);
   let c = !1,
     u = "",
     f = i.length;
@@ -4940,11 +4552,7 @@ function As(s, e, t) {
       break;
     default:
       return (
-        t(
-          s,
-          "UNEXPECTED_TOKEN",
-          `Expected a flow scalar value, but found: ${i}`,
-        ),
+        t(s, "UNEXPECTED_TOKEN", `Expected a flow scalar value, but found: ${i}`),
         {
           value: "",
           type: null,
@@ -4980,10 +4588,7 @@ function ao(s, e) {
       break;
     }
   }
-  return (
-    t && e(0, "BAD_SCALAR_START", `Plain value cannot start with ${t}`),
-    Fi(s)
-  );
+  return (t && e(0, "BAD_SCALAR_START", `Plain value cannot start with ${t}`), Fi(s));
 }
 function lo(s, e) {
   return (
@@ -5154,18 +4759,9 @@ function vn(s, e, t, n) {
       type: r,
       comment: o,
       range: a,
-    } = e.type === "block-scalar"
-      ? Ts(e, s.options.strict, n)
-      : As(e, s.options.strict, n),
-    l = t
-      ? s.directives.tagName(t.source, (f) => n(t, "TAG_RESOLVE_FAILED", f))
-      : null,
-    c =
-      t && l
-        ? po(s.schema, i, l, t, n)
-        : e.type === "scalar"
-          ? mo(s, i, e, n)
-          : s.schema[J],
+    } = e.type === "block-scalar" ? Ts(e, s.options.strict, n) : As(e, s.options.strict, n),
+    l = t ? s.directives.tagName(t.source, (f) => n(t, "TAG_RESOLVE_FAILED", f)) : null,
+    c = t && l ? po(s.schema, i, l, t, n) : e.type === "scalar" ? mo(s, i, e, n) : s.schema[J],
     u;
   try {
     let f = c.resolve(i, (h) => n(t || e, "TAG_RESOLVE_FAILED", h), s.options);
@@ -5192,36 +4788,23 @@ function po(s, e, t, n, i) {
     if (!l.collection && l.tag === t)
       if (l.default && l.test) o.push(l);
       else return l;
-  for (let l of o)
-    if (!((r = l.test) === null || r === void 0) && r.test(e)) return l;
+  for (let l of o) if (!((r = l.test) === null || r === void 0) && r.test(e)) return l;
   let a = s.knownTags[t];
   return a && !a.collection
     ? (s.tags.push(Object.assign({}, a, { default: !1, test: void 0 })), a)
-    : (i(
-        n,
-        "TAG_RESOLVE_FAILED",
-        `Unresolved tag: ${t}`,
-        t !== "tag:yaml.org,2002:str",
-      ),
-      s[J]);
+    : (i(n, "TAG_RESOLVE_FAILED", `Unresolved tag: ${t}`, t !== "tag:yaml.org,2002:str"), s[J]);
 }
 function mo({ directives: s, schema: e }, t, n, i) {
   let r =
     e.tags.find((o) => {
       var a;
-      return (
-        o.default &&
-        ((a = o.test) === null || a === void 0 ? void 0 : a.test(t))
-      );
+      return o.default && ((a = o.test) === null || a === void 0 ? void 0 : a.test(t));
     }) || e[J];
   if (e.compat) {
     let o =
       e.compat.find((a) => {
         var l;
-        return (
-          a.default &&
-          ((l = a.test) === null || l === void 0 ? void 0 : l.test(t))
-        );
+        return a.default && ((l = a.test) === null || l === void 0 ? void 0 : l.test(t));
       }) || e[J];
     if (r.tag !== o.tag) {
       let a = s.tagString(r.tag),
@@ -5258,8 +4841,7 @@ function Sn(s, e, t, n) {
   switch (e.type) {
     case "alias":
       ((l = yo(s, e, n)),
-        (o || a) &&
-          n(e, "ALIAS_PROPS", "An alias node must not specify any properties"));
+        (o || a) && n(e, "ALIAS_PROPS", "An alias node must not specify any properties"));
       break;
     case "scalar":
     case "single-quoted-scalar":
@@ -5276,14 +4858,9 @@ function Sn(s, e, t, n) {
       throw (console.log(e), new Error(`Unsupporten token type: ${e.type}`));
   }
   return (
-    o &&
-      l.anchor === "" &&
-      n(o, "BAD_ALIAS", "Anchor cannot be an empty string"),
+    o && l.anchor === "" && n(o, "BAD_ALIAS", "Anchor cannot be an empty string"),
     i && (l.spaceBefore = !0),
-    r &&
-      (e.type === "scalar" && e.source === ""
-        ? (l.comment = r)
-        : (l.commentBefore = r)),
+    r && (e.type === "scalar" && e.source === "" ? (l.comment = r) : (l.commentBefore = r)),
     s.options.keepSourceTokens && (l.srcToken = e),
     l
   );
@@ -5305,11 +4882,7 @@ function yo({ options: s }, { offset: e, source: t, end: n }, i) {
   r.source === "" && i(e, "BAD_ALIAS", "Alias cannot be an empty string");
   let o = e + t.length,
     a = ce(n, o, s.strict, i);
-  return (
-    (r.range = [e, o, a.offset]),
-    a.comment && (r.comment = a.comment),
-    r
-  );
+  return ((r.range = [e, o, a.offset]), a.comment && (r.comment = a.comment), r);
 }
 function Vi(s, e, { offset: t, start: n, value: i, end: r }, o) {
   let a = Object.assign({ directives: e }, s),
@@ -5340,11 +4913,7 @@ function Vi(s, e, { offset: t, start: n, value: i, end: r }, o) {
     (l.contents = i ? Sn(c, i, u, o) : kn(c, u.end, n, null, u, o)));
   let f = l.contents.range[2],
     h = ce(r, f, !1, o);
-  return (
-    h.comment && (l.comment = h.comment),
-    (l.range = [t, f, h.offset]),
-    l
-  );
+  return (h.comment && (l.comment = h.comment), (l.range = [t, f, h.offset]), l);
 }
 function Ct(s) {
   if (typeof s == "number") return [s, s + 1];
@@ -5374,9 +4943,7 @@ function Ui(s) {
           (i = !1));
         break;
       case "%":
-        (((e = s[r + 1]) === null || e === void 0 ? void 0 : e[0]) !== "#" &&
-          (r += 1),
-          (n = !1));
+        (((e = s[r + 1]) === null || e === void 0 ? void 0 : e[0]) !== "#" && (r += 1), (n = !1));
         break;
       default:
         (n || (i = !0), (n = !1));
@@ -5393,9 +4960,7 @@ var Tt = class {
       (this.warnings = []),
       (this.onError = (t, n, i, r) => {
         let o = Ct(t);
-        r
-          ? this.warnings.push(new Ot(o, n, i))
-          : this.errors.push(new W(o, n, i));
+        r ? this.warnings.push(new Ot(o, n, i)) : this.errors.push(new W(o, n, i));
       }),
       (this.directives = new _({ version: e.version || gt.version })),
       (this.options = e));
@@ -5460,11 +5025,7 @@ ${o}`
         let t = Vi(this.options, this.directives, e, this.onError);
         (this.atDirectives &&
           !t.directives.marker &&
-          this.onError(
-            e,
-            "MISSING_CHAR",
-            "Missing directives-end indicator line",
-          ),
+          this.onError(e, "MISSING_CHAR", "Missing directives-end indicator line"),
           this.decorate(t, !1),
           this.doc && (yield this.doc),
           (this.doc = t),
@@ -5479,13 +5040,9 @@ ${o}`
         this.prelude.push(e.source);
         break;
       case "error": {
-        let t = e.source
-            ? `${e.message}: ${JSON.stringify(e.source)}`
-            : e.message,
+        let t = e.source ? `${e.message}: ${JSON.stringify(e.source)}` : e.message,
           n = new W(Ct(e), "UNEXPECTED_TOKEN", t);
-        this.atDirectives || !this.doc
-          ? this.errors.push(n)
-          : this.doc.errors.push(n);
+        this.atDirectives || !this.doc ? this.errors.push(n) : this.doc.errors.push(n);
         break;
       }
       case "doc-end": {
@@ -5494,12 +5051,7 @@ ${o}`
           this.errors.push(new W(Ct(e), "UNEXPECTED_TOKEN", n));
           break;
         }
-        let t = ce(
-          e.end,
-          e.offset + e.source.length,
-          this.doc.options.strict,
-          this.onError,
-        );
+        let t = ce(e.end, e.offset + e.source.length, this.doc.options.strict, this.onError);
         if ((this.decorate(this.doc, !0), t.comment)) {
           let n = this.doc.comment;
           this.doc.comment = n
@@ -5511,23 +5063,16 @@ ${t.comment}`
         break;
       }
       default:
-        this.errors.push(
-          new W(Ct(e), "UNEXPECTED_TOKEN", `Unsupported token ${e.type}`),
-        );
+        this.errors.push(new W(Ct(e), "UNEXPECTED_TOKEN", `Unsupported token ${e.type}`));
     }
   }
   *end(e = !1, t = -1) {
-    if (this.doc)
-      (this.decorate(this.doc, !0), yield this.doc, (this.doc = null));
+    if (this.doc) (this.decorate(this.doc, !0), yield this.doc, (this.doc = null));
     else if (e) {
       let n = Object.assign({ directives: this.directives }, this.options),
         i = new ae(void 0, n);
       (this.atDirectives &&
-        this.onError(
-          t,
-          "MISSING_CHAR",
-          "Missing directives-end indicator line",
-        ),
+        this.onError(t, "MISSING_CHAR", "Missing directives-end indicator line"),
         (i.range = [0, t, t]),
         this.decorate(i, !1),
         yield i);
@@ -5570,13 +5115,7 @@ function Ji(s, e = !0, t) {
 }
 function Wi(s, e) {
   var t;
-  let {
-      implicitKey: n = !1,
-      indent: i,
-      inFlow: r = !1,
-      offset: o = -1,
-      type: a = "PLAIN",
-    } = e,
+  let { implicitKey: n = !1, indent: i, inFlow: r = !1, offset: o = -1, type: a = "PLAIN" } = e,
     l = we(
       { type: a, value: s },
       {
@@ -5654,8 +5193,7 @@ function Gi(s, e, t = {}) {
         break;
       case "block-scalar": {
         let c = s.props[0];
-        if (c.type !== "block-scalar-header")
-          throw new Error("Invalid block scalar header");
+        if (c.type !== "block-scalar-header") throw new Error("Invalid block scalar header");
         o = c.source[0] === ">" ? "BLOCK_FOLDED" : "BLOCK_LITERAL";
         break;
       }
@@ -5696,8 +5234,7 @@ function wo(s, e) {
 `;
   if (s.type === "block-scalar") {
     let r = s.props[0];
-    if (r.type !== "block-scalar-header")
-      throw new Error("Invalid block scalar header");
+    if (r.type !== "block-scalar-header") throw new Error("Invalid block scalar header");
     ((r.source = n), (s.source = i));
   } else {
     let { offset: r } = s,
@@ -5738,8 +5275,7 @@ function En(s, e, t) {
     case "block-scalar": {
       let n = s.props.slice(1),
         i = e.length;
-      s.props[0].type === "block-scalar-header" &&
-        (i -= s.props[0].source.length);
+      s.props[0].type === "block-scalar-header" && (i -= s.props[0].source.length);
       for (let r of n) r.offset += i;
       (delete s.props, Object.assign(s, { type: t, source: e, end: n }));
       break;
@@ -5761,14 +5297,10 @@ function En(s, e, t) {
         i =
           "end" in s && Array.isArray(s.end)
             ? s.end.filter(
-                (r) =>
-                  r.type === "space" ||
-                  r.type === "comment" ||
-                  r.type === "newline",
+                (r) => r.type === "space" || r.type === "comment" || r.type === "newline",
               )
             : [];
-      for (let r of Object.keys(s))
-        r !== "type" && r !== "offset" && delete s[r];
+      for (let r of Object.keys(s)) r !== "type" && r !== "offset" && delete s[r];
       Object.assign(s, { type: t, indent: n, source: e, end: i });
     }
   }
@@ -5815,9 +5347,7 @@ var On = Symbol("break visit"),
   bo = Symbol("skip children"),
   Hi = Symbol("remove item");
 function Ae(s, e) {
-  ("type" in s &&
-    s.type === "document" &&
-    (s = { start: s.start, value: s.value }),
+  ("type" in s && s.type === "document" && (s = { start: s.start, value: s.value }),
     zi(Object.freeze([]), s, e));
 }
 Ae.BREAK = On;
@@ -5958,10 +5488,9 @@ function G(s) {
   }
 }
 var Xi = "0123456789ABCDEFabcdef".split(""),
-  Eo =
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-#;/?:@&=+$_.!~*'()".split(
-      "",
-    ),
+  Eo = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-#;/?:@&=+$_.!~*'()".split(
+    "",
+  ),
   Zi = ",[]{}".split(""),
   Oo = ` ,[]{}
 \r	`.split(""),
@@ -5981,9 +5510,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
         (this.pos = 0));
     }
     *lex(e, t = !1) {
-      (e &&
-        ((this.buffer = this.buffer ? this.buffer + e : e),
-        (this.lineEndPos = null)),
+      (e && ((this.buffer = this.buffer ? this.buffer + e : e), (this.lineEndPos = null)),
         (this.atEnd = !t));
       let n = this.next || "stream";
       for (; n && (t || this.hasChars(1)); ) n = yield* this.parseNext(n);
@@ -6050,8 +5577,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
           ? this.atEnd
             ? this.buffer.substring(this.pos)
             : null
-          : (this.buffer[e - 1] === "\r" && (e -= 1),
-            this.buffer.substring(this.pos, e))
+          : (this.buffer[e - 1] === "\r" && (e -= 1), this.buffer.substring(this.pos, e))
       );
     }
     hasChars(e) {
@@ -6092,10 +5618,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
     *parseStream() {
       let e = this.getLine();
       if (e === null) return this.setNext("stream");
-      if (
-        (e[0] === At && (yield* this.pushCount(1), (e = e.substring(1))),
-        e[0] === "%")
-      ) {
+      if ((e[0] === At && (yield* this.pushCount(1), (e = e.substring(1))), e[0] === "%")) {
         let t = e.length,
           n = e.indexOf("#");
         if (n !== -1) {
@@ -6108,19 +5631,11 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
           else break;
         }
         let i = (yield* this.pushCount(t)) + (yield* this.pushSpaces(!0));
-        return (
-          yield* this.pushCount(e.length - i),
-          this.pushNewline(),
-          "stream"
-        );
+        return (yield* this.pushCount(e.length - i), this.pushNewline(), "stream");
       }
       if (this.atLineEnd()) {
         let t = yield* this.pushSpaces(!0);
-        return (
-          yield* this.pushCount(e.length - t),
-          yield* this.pushNewline(),
-          "stream"
-        );
+        return (yield* this.pushCount(e.length - t), yield* this.pushNewline(), "stream");
       }
       return (yield Lt, yield* this.parseLineStart());
     }
@@ -6131,14 +5646,8 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
         if (!this.atEnd && !this.hasChars(4)) return this.setNext("line-start");
         let t = this.peek(3);
         if (t === "---" && G(this.charAt(3)))
-          return (
-            yield* this.pushCount(3),
-            (this.indentValue = 0),
-            (this.indentNext = 0),
-            "doc"
-          );
-        if (t === "..." && G(this.charAt(3)))
-          return (yield* this.pushCount(3), "stream");
+          return (yield* this.pushCount(3), (this.indentValue = 0), (this.indentNext = 0), "doc");
+        if (t === "..." && G(this.charAt(3))) return (yield* this.pushCount(3), "stream");
       }
       return (
         (this.indentValue = yield* this.pushSpaces(!1)),
@@ -6173,12 +5682,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
           return (yield* this.pushNewline(), yield* this.parseLineStart());
         case "{":
         case "[":
-          return (
-            yield* this.pushCount(1),
-            (this.flowKey = !1),
-            (this.flowLevel = 1),
-            "flow"
-          );
+          return (yield* this.pushCount(1), (this.flowKey = !1), (this.flowLevel = 1), "flow");
         case "}":
         case "]":
           return (yield* this.pushCount(1), "doc");
@@ -6213,21 +5717,13 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
       if (i === null) return this.setNext("flow");
       if (
         ((n !== -1 && n < this.indentNext && i[0] !== "#") ||
-          (n === 0 &&
-            (i.startsWith("---") || i.startsWith("...")) &&
-            G(i[3]))) &&
-        !(
-          n === this.indentNext - 1 &&
-          this.flowLevel === 1 &&
-          (i[0] === "]" || i[0] === "}")
-        )
+          (n === 0 && (i.startsWith("---") || i.startsWith("...")) && G(i[3]))) &&
+        !(n === this.indentNext - 1 && this.flowLevel === 1 && (i[0] === "]" || i[0] === "}"))
       )
         return ((this.flowLevel = 0), yield It, yield* this.parseLineStart());
       let r = 0;
       for (; i[r] === ","; )
-        ((r += yield* this.pushCount(1)),
-          (r += yield* this.pushSpaces(!0)),
-          (this.flowKey = !1));
+        ((r += yield* this.pushCount(1)), (r += yield* this.pushSpaces(!0)), (this.flowKey = !1));
       switch (((r += yield* this.pushIndicators()), i[r])) {
         case void 0:
           return "flow";
@@ -6235,12 +5731,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
           return (yield* this.pushCount(i.length - r), "flow");
         case "{":
         case "[":
-          return (
-            yield* this.pushCount(1),
-            (this.flowKey = !1),
-            (this.flowLevel += 1),
-            "flow"
-          );
+          return (yield* this.pushCount(1), (this.flowKey = !1), (this.flowLevel += 1), "flow");
         case "}":
         case "]":
           return (
@@ -6258,10 +5749,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
           let o = this.charAt(1);
           if (this.flowKey || G(o) || o === ",")
             return (
-              (this.flowKey = !1),
-              yield* this.pushCount(1),
-              yield* this.pushSpaces(!0),
-              "flow"
+              (this.flowKey = !1), yield* this.pushCount(1), yield* this.pushSpaces(!0), "flow"
             );
         }
         default:
@@ -6272,8 +5760,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
       let e = this.charAt(0),
         t = this.buffer.indexOf(e, this.pos + 1);
       if (e === "'")
-        for (; t !== -1 && this.buffer[t + 1] === "'"; )
-          t = this.buffer.indexOf("'", t + 2);
+        for (; t !== -1 && this.buffer[t + 1] === "'"; ) t = this.buffer.indexOf("'", t + 2);
       else
         for (; t !== -1; ) {
           let r = 0;
@@ -6303,10 +5790,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
         if (!this.atEnd) return this.setNext("quoted-scalar");
         t = this.buffer.length;
       }
-      return (
-        yield* this.pushToIndex(t + 1, !1),
-        this.flowLevel ? "flow" : "doc"
-      );
+      return (yield* this.pushToIndex(t + 1, !1), this.flowLevel ? "flow" : "doc");
     }
     *parseBlockScalarHeader() {
       ((this.blockScalarIndent = -1), (this.blockScalarKeep = !1));
@@ -6379,11 +5863,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
             e = i;
           else break;
         } while (!0);
-      return (
-        yield Xe,
-        yield* this.pushToIndex(e + 1, !0),
-        yield* this.parseLineStart()
-      );
+      return (yield Xe, yield* this.pushToIndex(e + 1, !0), yield* this.parseLineStart());
     }
     *parsePlainScalar() {
       let e = this.flowLevel > 0,
@@ -6428,23 +5908,17 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
         : (yield Xe, yield* this.pushToIndex(t + 1, !0), e ? "flow" : "doc");
     }
     *pushCount(e) {
-      return e > 0
-        ? (yield this.buffer.substr(this.pos, e), (this.pos += e), e)
-        : 0;
+      return e > 0 ? (yield this.buffer.substr(this.pos, e), (this.pos += e), e) : 0;
     }
     *pushToIndex(e, t) {
       let n = this.buffer.slice(this.pos, e);
-      return n
-        ? (yield n, (this.pos += n.length), n.length)
-        : (t && (yield ""), 0);
+      return n ? (yield n, (this.pos += n.length), n.length) : (t && (yield ""), 0);
     }
     *pushIndicators() {
       switch (this.charAt(0)) {
         case "!":
           return (
-            (yield* this.pushTag()) +
-            (yield* this.pushSpaces(!0)) +
-            (yield* this.pushIndicators())
+            (yield* this.pushTag()) + (yield* this.pushSpaces(!0)) + (yield* this.pushIndicators())
           );
         case "&":
           return (
@@ -6478,11 +5952,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
           t = this.buffer[e];
         for (; t; )
           if (Eo.includes(t)) t = this.buffer[++e];
-          else if (
-            t === "%" &&
-            Xi.includes(this.buffer[e + 1]) &&
-            Xi.includes(this.buffer[e + 2])
-          )
+          else if (t === "%" && Xi.includes(this.buffer[e + 1]) && Xi.includes(this.buffer[e + 2]))
             t = this.buffer[(e += 3)];
           else break;
         return yield* this.pushToIndex(e, !1);
@@ -6507,10 +5977,7 @@ var Xi = "0123456789ABCDEFabcdef".split(""),
       do n = this.buffer[++t];
       while (n === " " || (e && n === "	"));
       let i = t - this.pos;
-      return (
-        i > 0 && (yield this.buffer.substr(this.pos, i), (this.pos = t)),
-        i
-      );
+      return (i > 0 && (yield this.buffer.substr(this.pos, i), (this.pos = t)), i);
     }
     *pushUntil(e) {
       let t = this.pos,
@@ -6592,10 +6059,7 @@ function Mt(s) {
       case "newline":
         break e;
     }
-  for (
-    ;
-    ((e = s[++t]) === null || e === void 0 ? void 0 : e.type) === "space";
-  );
+  for (; ((e = s[++t]) === null || e === void 0 ? void 0 : e.type) === "space"; );
   return s.splice(t, s.length);
 }
 function er(s) {
@@ -6639,8 +6103,7 @@ var $t = class {
     }
     let t = Nn(e);
     if (t)
-      if (t === "scalar")
-        ((this.atNewLine = !1), (this.atScalar = !0), (this.type = "scalar"));
+      if (t === "scalar") ((this.atNewLine = !1), (this.atScalar = !0), (this.type = "scalar"));
       else {
         switch (((this.type = t), yield* this.step(), t)) {
           case "newline":
@@ -6731,9 +6194,7 @@ var $t = class {
         switch (
           (t.type === "block-scalar"
             ? (t.indent = "indent" in n ? n.indent : 0)
-            : t.type === "flow-collection" &&
-              n.type === "document" &&
-              (t.indent = 0),
+            : t.type === "flow-collection" && n.type === "document" && (t.indent = 0),
           t.type === "flow-collection" && er(t),
           n.type)
         ) {
@@ -6746,8 +6207,7 @@ var $t = class {
           case "block-map": {
             let i = n.items[n.items.length - 1];
             if (i.value) {
-              (n.items.push({ start: [], key: t, sep: [] }),
-                (this.onKeyLine = !0));
+              (n.items.push({ start: [], key: t, sep: [] }), (this.onKeyLine = !0));
               return;
             } else if (i.sep) i.value = t;
             else {
@@ -6775,9 +6235,7 @@ var $t = class {
             (yield* this.pop(), yield* this.pop(t));
         }
         if (
-          (n.type === "document" ||
-            n.type === "block-map" ||
-            n.type === "block-seq") &&
+          (n.type === "document" || n.type === "block-map" || n.type === "block-seq") &&
           (t.type === "block-map" || t.type === "block-seq")
         ) {
           let i = t.items[t.items.length - 1];
@@ -6786,13 +6244,8 @@ var $t = class {
             !i.value &&
             i.start.length > 0 &&
             !Tn(i.start) &&
-            (t.indent === 0 ||
-              i.start.every(
-                (r) => r.type !== "comment" || r.indent < t.indent,
-              )) &&
-            (n.type === "document"
-              ? (n.end = i.start)
-              : n.items.push({ start: i.start }),
+            (t.indent === 0 || i.start.every((r) => r.type !== "comment" || r.indent < t.indent)) &&
+            (n.type === "document" ? (n.end = i.start) : n.items.push({ start: i.start }),
             t.items.splice(-1, 1));
         }
       }
@@ -6815,8 +6268,7 @@ var $t = class {
       case "doc-mode":
       case "doc-start": {
         let e = { type: "document", offset: this.offset, start: [] };
-        (this.type === "doc-start" && e.start.push(this.sourceToken),
-          this.stack.push(e));
+        (this.type === "doc-start" && e.start.push(this.sourceToken), this.stack.push(e));
         return;
       }
     }
@@ -6831,9 +6283,7 @@ var $t = class {
     if (e.value) return yield* this.lineEnd(e);
     switch (this.type) {
       case "doc-start": {
-        Tn(e.start)
-          ? (yield* this.pop(), yield* this.step())
-          : e.start.push(this.sourceToken);
+        Tn(e.start) ? (yield* this.pop(), yield* this.step()) : e.start.push(this.sourceToken);
         return;
       }
       case "anchor":
@@ -6859,9 +6309,7 @@ var $t = class {
       let t = _s(this.peek(2)),
         n = Mt(t),
         i;
-      e.end
-        ? ((i = e.end), i.push(this.sourceToken), delete e.end)
-        : (i = [this.sourceToken]);
+      e.end ? ((i = e.end), i.push(this.sourceToken), delete e.end) : (i = [this.sourceToken]);
       let r = {
         type: "block-map",
         offset: e.offset,
@@ -6879,12 +6327,7 @@ var $t = class {
         e.props.push(this.sourceToken);
         return;
       case "scalar":
-        if (
-          ((e.source = this.source),
-          (this.atNewLine = !0),
-          (this.indent = 0),
-          this.onNewLine)
-        ) {
+        if (((e.source = this.source), (this.atNewLine = !0), (this.indent = 0), this.onNewLine)) {
           let t =
             this.source.indexOf(`
 `) + 1;
@@ -6914,8 +6357,7 @@ var $t = class {
           (r == null ? void 0 : r.type) === "comment"
             ? i == null || i.push(this.sourceToken)
             : e.items.push({ start: [this.sourceToken] });
-        } else
-          n.sep ? n.sep.push(this.sourceToken) : n.start.push(this.sourceToken);
+        } else n.sep ? n.sep.push(this.sourceToken) : n.start.push(this.sourceToken);
         return;
       case "space":
       case "comment":
@@ -6924,14 +6366,9 @@ var $t = class {
         else {
           if (this.atIndentedComment(n.start, e.indent)) {
             let i = e.items[e.items.length - 2],
-              r =
-                (t = i == null ? void 0 : i.value) === null || t === void 0
-                  ? void 0
-                  : t.end;
+              r = (t = i == null ? void 0 : i.value) === null || t === void 0 ? void 0 : t.end;
             if (Array.isArray(r)) {
-              (Array.prototype.push.apply(r, n.start),
-                r.push(this.sourceToken),
-                e.items.pop());
+              (Array.prototype.push.apply(r, n.start), r.push(this.sourceToken), e.items.pop());
               return;
             }
           }
@@ -6940,14 +6377,12 @@ var $t = class {
         return;
     }
     if (this.indent >= e.indent) {
-      let i =
-        !this.onKeyLine && this.indent === e.indent && (n.sep || Tn(n.start));
+      let i = !this.onKeyLine && this.indent === e.indent && (n.sep || Tn(n.start));
       switch (this.type) {
         case "anchor":
         case "tag":
           i || n.value
-            ? (e.items.push({ start: [this.sourceToken] }),
-              (this.onKeyLine = !0))
+            ? (e.items.push({ start: [this.sourceToken] }), (this.onKeyLine = !0))
             : n.sep
               ? n.sep.push(this.sourceToken)
               : n.start.push(this.sourceToken);
@@ -6976,11 +6411,7 @@ var $t = class {
               indent: this.indent,
               items: [{ start: [], key: null, sep: [this.sourceToken] }],
             });
-          else if (
-            ue(n.start, "explicit-key-ind") &&
-            tr(n.key) &&
-            !ue(n.sep, "newline")
-          ) {
+          else if (ue(n.start, "explicit-key-ind") && tr(n.key) && !ue(n.sep, "newline")) {
             let r = Mt(n.start),
               o = n.key,
               a = n.sep;
@@ -7002,8 +6433,7 @@ var $t = class {
         case "double-quoted-scalar": {
           let r = this.flowScalar(this.type);
           i || n.value
-            ? (e.items.push({ start: [], key: r, sep: [] }),
-              (this.onKeyLine = !0))
+            ? (e.items.push({ start: [], key: r, sep: [] }), (this.onKeyLine = !0))
             : n.sep
               ? this.stack.push(r)
               : (Object.assign(n, { key: r, sep: [] }), (this.onKeyLine = !0));
@@ -7043,14 +6473,9 @@ var $t = class {
         else {
           if (this.atIndentedComment(n.start, e.indent)) {
             let i = e.items[e.items.length - 2],
-              r =
-                (t = i == null ? void 0 : i.value) === null || t === void 0
-                  ? void 0
-                  : t.end;
+              r = (t = i == null ? void 0 : i.value) === null || t === void 0 ? void 0 : t.end;
             if (Array.isArray(r)) {
-              (Array.prototype.push.apply(r, n.start),
-                r.push(this.sourceToken),
-                e.items.pop());
+              (Array.prototype.push.apply(r, n.start), r.push(this.sourceToken), e.items.pop());
               return;
             }
           }
@@ -7288,10 +6713,7 @@ function An(s, e = {}) {
       );
       break;
     }
-  return (
-    n && t && (o.errors.forEach(yn(s, t)), o.warnings.forEach(yn(s, t))),
-    o
-  );
+  return (n && t && (o.errors.forEach(yn(s, t)), o.warnings.forEach(yn(s, t))), o);
 }
 var xs = class {
   constructor(e, t, n, i) {
@@ -7311,9 +6733,7 @@ var xs = class {
     } of this.tagPositions) {
       if (i.slice(r.offset, o.offset) !== a) {
         let l = `File ${this.filename} has changed; skipping`;
-        (new Ln.Notice(l),
-          console.error(l),
-          console.debug(i.slice(r.offset, o.offset), a));
+        (new Ln.Notice(l), console.error(l), console.debug(i.slice(r.offset, o.offset), a));
         return;
       }
       i = e.inString(i, r.offset);
@@ -7339,9 +6759,7 @@ var xs = class {
     let o = !1,
       a = r.toJSON();
     function l(u, f, h = !1) {
-      (_t.setScalarValue(u.srcToken, f, { afterKey: h }),
-        (o = !0),
-        (u.value = f));
+      (_t.setScalarValue(u.srcToken, f, { afterKey: h }), (o = !0), (u.value = f));
     }
     function c(u, f) {
       let h = r.get(u, !0);
@@ -7368,8 +6786,7 @@ var xs = class {
 async function sr(s, e, t = e) {
   let n = await Ao(e, t);
   if (n === !1) return;
-  if (!n || n === e)
-    return new Le.Notice("Unchanged or empty tag: No changes made.");
+  if (!n || n === e) return new Le.Notice("Unchanged or empty tag: No changes made.");
   let i = new A(e),
     r = new A(n),
     o = new Zt(i, r),
@@ -7383,9 +6800,7 @@ async function sr(s, e, t = e) {
     await u.forEach(c, async (h) => {
       ((u.message = "Processing " + h.basename), (await h.renamed(o)) && f++);
     }),
-    new Le.Notice(
-      `Operation ${u.aborted ? "cancelled" : "complete"}: ${f} file(s) updated`,
-    )
+    new Le.Notice(`Operation ${u.aborted ? "cancelled" : "complete"}: ${f} file(s) updated`)
   );
 }
 function To(s) {
@@ -7399,11 +6814,8 @@ async function In(s, e) {
       let { frontmatter: r, tags: o } = s.metadataCache.getCache(i) || {};
       o = (o || []).filter((c) => c.tag && e.matches(c.tag)).reverse();
       let a = ((0, Le.parseFrontMatterTags)(r) || []).filter(e.matches),
-        l = ((0, Le.parseFrontMatterAliases)(r) || [])
-          .filter(A.isTag)
-          .filter(e.matches);
-      (o.length || a.length || l.length) &&
-        t.push(new xs(s, i, o, a.length + l.length));
+        l = ((0, Le.parseFrontMatterAliases)(r) || []).filter(A.isTag).filter(e.matches);
+      (o.length || a.length || l.length) && t.push(new xs(s, i, o, a.length + l.length));
     }),
     !n.aborted)
   )
@@ -7416,12 +6828,8 @@ async function Ao(s, e = s) {
       `Enter new name (must be a valid Obsidian tag name):
 `,
     )
-    .setPattern(
-      "[^\u2000-\u206F\u2E00-\u2E7F'!\"#$%&\\(\\)*+,.:;<=>?@^`\\{\\|\\}~\\[\\]\\\\\\s]+",
-    )
-    .onInvalidEntry(
-      (t) => new Le.Notice(`"${t}" is not a valid Obsidian tag name`),
-    )
+    .setPattern("[^\u2000-\u206F\u2E00-\u2E7F'!\"#$%&\\(\\)*+,.:;<=>?@^`\\{\\|\\}~\\[\\]\\\\\\s]+")
+    .onInvalidEntry((t) => new Le.Notice(`"${t}" is not a valid Obsidian tag name`))
     .setValue(e)
     .prompt();
 }
@@ -7472,9 +6880,7 @@ var Ps = class extends I.Plugin {
     if (!o) {
       let l = new A(t).name.split("/").join(" "),
         c = this.app.fileManager.getNewFileParent(
-          ((a = this.app.workspace.getActiveFile()) == null
-            ? void 0
-            : a.path) || "",
+          ((a = this.app.workspace.getActiveFile()) == null ? void 0 : a.path) || "",
         ),
         u = this.app.vault.getAvailablePath(c.getParentPrefix() + l, "md");
       o = await this.app.vault.create(
@@ -7522,8 +6928,7 @@ var Ps = class extends I.Plugin {
         new Ze(this, {
           hoverSource: "preview",
           selector: 'a.tag[href^="#"]',
-          container:
-            ".markdown-preview-view, .markdown-embed, .workspace-leaf-content",
+          container: ".markdown-preview-view, .markdown-embed, .workspace-leaf-content",
           toTag(r) {
             return r.getAttribute("href");
           },
@@ -7532,8 +6937,7 @@ var Ps = class extends I.Plugin {
       this.addChild(
         new Ze(this, {
           hoverSource: "preview",
-          selector:
-            '.metadata-property[data-property-key="tags"] .multi-select-pill',
+          selector: '.metadata-property[data-property-key="tags"] .multi-select-pill',
           container: ".metadata-properties",
           mergeMenu: !0,
           toTag(r) {
@@ -7609,11 +7013,7 @@ var Ps = class extends I.Plugin {
       ));
     let t = (r, o, a = app.dragManager.draggable, l) => {
       var f;
-      if (
-        (a == null ? void 0 : a.source) !== "tag-wrangler" ||
-        r.defaultPrevented
-      )
-        return;
+      if ((a == null ? void 0 : a.source) !== "tag-wrangler" || r.defaultPrevented) return;
       let c =
           (f = o.find(
             ".tag-pane-tag-text, tag-pane-tag-text, .tag-pane-tag .tree-item-inner-text",
@@ -7662,8 +7062,7 @@ var Ps = class extends I.Plugin {
           return function () {
             let a = r.call(this),
               l = new Set(Object.keys(a).map((c) => c.toLowerCase()));
-            for (let c of i.tagPages.keys())
-              l.has(c) || (a[i.tagPages.get(c).tag] = 0);
+            for (let c of i.tagPages.keys()) l.has(c) || (a[i.tagPages.get(c).tag] = 0);
             return a;
           };
         },
@@ -7679,28 +7078,19 @@ var Ps = class extends I.Plugin {
             this.updatePage(this.app.vault.getAbstractFileByPath(r), o);
         }),
           this.registerEvent(
-            n.on("changed", (r, o, a) =>
-              this.updatePage(r, a == null ? void 0 : a.frontmatter),
-            ),
+            n.on("changed", (r, o, a) => this.updatePage(r, a == null ? void 0 : a.frontmatter)),
           ),
-          this.registerEvent(
-            this.app.vault.on("delete", (r) => this.updatePage(r)),
-          ),
+          this.registerEvent(this.app.vault.on("delete", (r) => this.updatePage(r))),
           app.workspace.getLeavesOfType("tag").forEach((r) => {
             var o, a;
-            (a =
-              (o = r == null ? void 0 : r.view) == null
-                ? void 0
-                : o.requestUpdateTags) == null || a.call(o);
+            (a = (o = r == null ? void 0 : r.view) == null ? void 0 : o.requestUpdateTags) ==
+              null || a.call(o);
           }));
       }));
   }
   updatePage(t, n) {
     var r;
-    let i =
-      ((r = (0, I.parseFrontMatterAliases)(n)) == null
-        ? void 0
-        : r.filter(A.isTag)) || [];
+    let i = ((r = (0, I.parseFrontMatterAliases)(n)) == null ? void 0 : r.filter(A.isTag)) || [];
     if (this.pageAliases.has(t)) {
       let o = new Set(i || []);
       for (let a of this.pageAliases.get(t)) {
@@ -7725,34 +7115,19 @@ var Ps = class extends I.Plugin {
   }
   onMenu(t, n) {
     let i = ir(t),
-      r = n.find(
-        ".tag-pane-tag-text, .tag-pane-tag .tree-item-inner-text",
-      ).textContent,
+      r = n.find(".tag-pane-tag-text, .tag-pane-tag .tree-item-inner-text").textContent,
       o = n.parentElement.parentElement.find(".collapse-icon");
     if ((this.setupMenu(i, r, o), o)) {
       let u = function (f) {
           var h;
-          for (let d of (h = c.children) != null ? h : c.vChildren.children)
-            d.setCollapsed(f);
+          for (let d of (h = c.children) != null ? h : c.vChildren.children) d.setCollapsed(f);
         },
         a = r.split("/").slice(0, -1).join("/"),
         l = this.leafView(n.matchParent(".workspace-leaf")),
         c = a ? l.tagDoms["#" + a.toLowerCase()] : l.root;
       i.addItem(
-        be(
-          "tag-hierarchy",
-          "vertical-three-dots",
-          "Collapse tags at this level",
-          () => u(!0),
-        ),
-      ).addItem(
-        be(
-          "tag-hierarchy",
-          "expand-vertically",
-          "Expand tags at this level",
-          () => u(!1),
-        ),
-      );
+        be("tag-hierarchy", "vertical-three-dots", "Collapse tags at this level", () => u(!0)),
+      ).addItem(be("tag-hierarchy", "expand-vertically", "Expand tags at this level", () => u(!1)));
     }
   }
   setupMenu(t, n, i = !1) {
@@ -7762,9 +7137,7 @@ var Ps = class extends I.Plugin {
       a = o && o.instance,
       l = a && a.getGlobalSearchQuery(),
       c = this.app.plugins.plugins["smart-random-note"];
-    (t.addItem(
-      be("tag-rename", "pencil", "Rename #" + n, () => this.rename(n)),
-    ),
+    (t.addItem(be("tag-rename", "pencil", "Rename #" + n, () => this.rename(n))),
       r
         ? t.addItem(
             be("tag-page", "popup-open", "Open tag page", (u) =>
@@ -7784,28 +7157,20 @@ var Ps = class extends I.Plugin {
         ),
         l &&
           t.addItem(
-            be(
-              "tag-search",
-              "sheets-in-box",
-              "Require #" + n + " in search",
-              () => a.openGlobalSearch(l + " tag:#" + n),
+            be("tag-search", "sheets-in-box", "Require #" + n + " in search", () =>
+              a.openGlobalSearch(l + " tag:#" + n),
             ),
           ),
         t.addItem(
-          be(
-            "tag-search",
-            "crossed-star",
-            "Exclude #" + n + " from search",
-            () => a.openGlobalSearch(l + " -tag:#" + n),
+          be("tag-search", "crossed-star", "Exclude #" + n + " from search", () =>
+            a.openGlobalSearch(l + " -tag:#" + n),
           ),
         )),
       c &&
         t.addItem(
           be("tag-random", "dice", "Open random note", async () => {
             let u = await In(this.app, new A(n));
-            c.openRandomNote(
-              u.map((f) => this.app.vault.getAbstractFileByPath(f.filename)),
-            );
+            c.openRandomNote(u.map((f) => this.app.vault.getAbstractFileByPath(f.filename)));
           }),
         ),
       this.app.workspace.trigger("tag-wrangler:contextmenu", t, n, {
@@ -7842,13 +7207,7 @@ var Ze = class extends I.Component {
     (super(), (this.opts = t), (this.plugin = e));
   }
   onload() {
-    let {
-      selector: e,
-      container: t,
-      hoverSource: n,
-      toTag: i,
-      mergeMenu: r,
-    } = this.opts;
+    let { selector: e, container: t, hoverSource: n, toTag: i, mergeMenu: r } = this.opts;
     this.register(
       ve(
         document,
@@ -7881,11 +7240,7 @@ var Ze = class extends I.Component {
               let c = lt(I.Menu.prototype, {
                 showAtPosition(u) {
                   return function (...f) {
-                    return (
-                      c(),
-                      o.plugin.setupMenu(this, i(l)),
-                      u.apply(this, f)
-                    );
+                    return (c(), o.plugin.setupMenu(this, i(l)), u.apply(this, f));
                   };
                 },
               });
@@ -7894,11 +7249,7 @@ var Ze = class extends I.Component {
                   forEvent(f) {
                     return function (h) {
                       let d = f.call(this, a);
-                      return (
-                        h === a && (o.plugin.setupMenu(d, i(l)), c()),
-                        u(),
-                        d
-                      );
+                      return (h === a && (o.plugin.setupMenu(d, i(l)), c()), u(), d);
                     };
                   },
                 });
@@ -7946,17 +7297,13 @@ var Ze = class extends I.Component {
                 ? this.plugin.openTagPage(h, !1, u)
                 : new Xt()
                     .setTitle("Create Tag Page")
-                    .setContent(
-                      `A tag page for ${f} does not exist.  Create it?`,
-                    )
+                    .setContent(`A tag page for ${f} does not exist.  Create it?`)
                     .confirm()
                     .then((d) => {
                       var p;
                       if (d) return this.plugin.createTagPage(f, u);
                       let g =
-                        (p =
-                          app.internalPlugins.getPluginById("global-search")) ==
-                        null
+                        (p = app.internalPlugins.getPluginById("global-search")) == null
                           ? void 0
                           : p.instance;
                       g == null || g.openGlobalSearch("tag:#" + f);
@@ -7973,9 +7320,7 @@ var Ze = class extends I.Component {
 };
 function ir(s) {
   if (I.Menu.forEvent)
-    return (
-      s.obsidian_contextmenu || (s.obsidian_contextmenu = I.Menu.forEvent(s))
-    );
+    return s.obsidian_contextmenu || (s.obsidian_contextmenu = I.Menu.forEvent(s));
   let e = s.obsidian_contextmenu;
   return (
     e ||

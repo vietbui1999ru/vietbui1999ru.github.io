@@ -55,6 +55,8 @@ export const SECTION_IDS = NAV_ITEMS.map((item) => item.href.slice(1));
 /** Scroll offset (px) at which a section is considered "active" */
 export const SCROLL_ACTIVE_THRESHOLD = 150;
 
-/** Active nav highlight colors */
-export const NAV_ACTIVE_CLASS = "text-[#D92D48] dark:text-[#FA689A]";
-export const NAV_INACTIVE_CLASS = "text-[#384664] dark:text-[#C0B6DD]";
+import { THEME } from "@/config/theme";
+
+/** Active nav highlight colors — values defined in src/config/theme.ts */
+export const NAV_ACTIVE_CLASS = THEME.nav.activeClass;
+export const NAV_INACTIVE_CLASS = THEME.nav.inactiveClass;

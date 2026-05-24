@@ -2,21 +2,15 @@
 
 import { GraduationCap } from "lucide-react";
 import { AppleHelloEducationEffect } from "@/components/ui/apple-hello-effect";
-import {
-  TimelineLayout,
-  type TimelineItem,
-} from "@/components/ui/TimelineLayout";
-import { EDUCATION_ITEMS } from "@/data/educationData";
+import { TimelineLayout, type TimelineItem } from "@/components/ui/TimelineLayout";
+import { EDUCATION_ITEMS, EDUCATION_SECTION_SUBTITLE } from "@/data/educationData";
 
 const EducationTimeline = () => {
   const items: TimelineItem[] = EDUCATION_ITEMS.map((item, idx) => {
     const descriptionBase =
-      item.content ??
-      (item.columns ? item.columns.flat().join(". ") : "") ??
-      "";
+      item.content ?? (item.columns ? item.columns.flat().join(". ") : "") ?? "";
 
-    const descriptionWithGpa =
-      descriptionBase + (item.GPA ? `\nGPA: ${item.GPA}` : "");
+    const descriptionWithGpa = descriptionBase + (item.GPA ? `\nGPA: ${item.GPA}` : "");
 
     const columns =
       item.columns && item.columns.length > 0
@@ -38,9 +32,7 @@ const EducationTimeline = () => {
       description: descriptionWithGpa,
       contentColumns: columns,
       icon: <GraduationCap className="h-3 w-3" />,
-      status: item.date.toLowerCase().includes("present")
-        ? "in-progress"
-        : "completed",
+      status: item.date.toLowerCase().includes("present") ? "in-progress" : "completed",
       ctaHref:
         item.featuredLink?.enable && item.featuredLink.url
           ? item.featuredLink.url
@@ -55,7 +47,7 @@ const EducationTimeline = () => {
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloEducationEffect className="w-full" />
           <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-            Academic background and continuous learning.
+            {EDUCATION_SECTION_SUBTITLE}
           </p>
         </header>
 

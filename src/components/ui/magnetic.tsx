@@ -10,11 +10,7 @@ type MagneticProps = {
   strength?: number;
 };
 
-export function Magnetic({
-  children,
-  className,
-  strength = 20,
-}: MagneticProps) {
+export function Magnetic({ children, className, strength = 20 }: MagneticProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -26,10 +22,8 @@ export function Magnetic({
     const bounds = ref.current?.getBoundingClientRect();
     if (!bounds) return;
 
-    const relativeX =
-      (event.clientX - bounds.left - bounds.width / 2) / (bounds.width / 2);
-    const relativeY =
-      (event.clientY - bounds.top - bounds.height / 2) / (bounds.height / 2);
+    const relativeX = (event.clientX - bounds.left - bounds.width / 2) / (bounds.width / 2);
+    const relativeY = (event.clientY - bounds.top - bounds.height / 2) / (bounds.height / 2);
 
     x.set(relativeX * strength);
     y.set(relativeY * strength);

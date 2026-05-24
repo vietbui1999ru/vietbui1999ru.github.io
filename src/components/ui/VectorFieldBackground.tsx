@@ -126,10 +126,7 @@ export function VectorFieldBackground({
       return;
     }
 
-    const dpr = Math.min(
-      2,
-      typeof window !== "undefined" ? window.devicePixelRatio : 1,
-    );
+    const dpr = Math.min(2, typeof window !== "undefined" ? window.devicePixelRatio : 1);
     const cssW = canvas.clientWidth;
     const cssH = canvas.clientHeight;
     if (canvas.width !== cssW * dpr || canvas.height !== cssH * dpr) {
@@ -165,11 +162,9 @@ export function VectorFieldBackground({
     const yMax = 5;
     const yOffset = (scrollY * 0.015) % (yMax - yMin);
     const toScreenX = (x: number) => ((x - xMin) / (xMax - xMin)) * width;
-    const toScreenY = (y: number) =>
-      ((y - (yMin + yOffset)) / (yMax - yMin)) * height;
+    const toScreenY = (y: number) => ((y - (yMin + yOffset)) / (yMax - yMin)) * height;
     const toWorldX = (sx: number) => xMin + (sx / width) * (xMax - xMin);
-    const toWorldY = (sy: number) =>
-      yMin + yOffset + (sy / height) * (yMax - yMin);
+    const toWorldY = (sy: number) => yMin + yOffset + (sy / height) * (yMax - yMin);
 
     let cursorWX: number | null = null;
     let cursorWY: number | null = null;
@@ -186,12 +181,7 @@ export function VectorFieldBackground({
       cursorWY = sm.y;
     }
 
-    const addCursorAttraction = (
-      x: number,
-      y: number,
-      u: number,
-      v: number,
-    ): [number, number] => {
+    const addCursorAttraction = (x: number, y: number, u: number, v: number): [number, number] => {
       if (cursorWX === null || cursorWY === null) return [u, v];
       const dx = cursorWX - x;
       const dy = cursorWY - y;
@@ -249,13 +239,7 @@ export function VectorFieldBackground({
 
     ctx.restore();
     rafRef.current = requestAnimationFrame(draw);
-  }, [
-    field,
-    effectiveGrid,
-    arrowScale,
-    effectiveCursorEnabled,
-    cursorAttraction,
-  ]);
+  }, [field, effectiveGrid, arrowScale, effectiveCursorEnabled, cursorAttraction]);
 
   useEffect(() => {
     if (isMobile) {
@@ -275,12 +259,7 @@ export function VectorFieldBackground({
   }
 
   return (
-    <div
-      className={cn(
-        "pointer-events-none fixed inset-0 z-0 contain-[paint]",
-        className,
-      )}
-    >
+    <div className={cn("pointer-events-none fixed inset-0 z-0 contain-[paint]", className)}>
       <canvas
         ref={canvasRef}
         className="block size-full"

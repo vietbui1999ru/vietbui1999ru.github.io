@@ -5,6 +5,7 @@ import { AppleHelloBlogEffect } from "@/components/ui/apple-hello-effect";
 import { buttonVariants } from "@/components/ui/button";
 import { Calendar, Clock, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { BLOG_SECTION_SUBTITLE } from "@/data/blogData";
 
 export type BlogPost = {
   slug: string;
@@ -18,8 +19,6 @@ type BlogProps = {
   posts: BlogPost[];
 };
 
-const BLOG_SECTION_TITLE = "Blog";
-const BLOG_SECTION_SUBTITLE = "Recent posts and writing.";
 
 const Blog = ({ posts }: BlogProps) => {
   const formatDate = (d: Date) =>

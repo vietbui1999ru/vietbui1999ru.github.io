@@ -28,9 +28,7 @@ export function dft(pts: Complex[]): Complex[] {
  * Sort coefficients by magnitude (largest first) and take top N for drawing.
  */
 export function topCoefficients(coeffs: Complex[], count: number): Complex[] {
-  return [...coeffs]
-    .sort((a, b) => magnitude(b) - magnitude(a))
-    .slice(0, count);
+  return [...coeffs].sort((a, b) => magnitude(b) - magnitude(a)).slice(0, count);
 }
 
 export function magnitude(c: Complex): number {
@@ -41,10 +39,7 @@ export function magnitude(c: Complex): number {
  * Sample N evenly spaced points from an SVG path string (e.g. from path.getAttribute('d')).
  * Uses a temporary SVG path element and getPointAtLength for accuracy.
  */
-export function samplePathFromSvgPath(
-  pathD: string,
-  numPoints: number,
-): Complex[] {
+export function samplePathFromSvgPath(pathD: string, numPoints: number): Complex[] {
   if (typeof document === "undefined") return [];
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");

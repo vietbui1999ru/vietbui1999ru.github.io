@@ -484,10 +484,7 @@ settings:
   max-width: 100%;
   box-sizing: border-box;
   padding: 0;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(var(--card-min-width, 300px), 1fr)
-  );
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width, 300px), 1fr));
 }
 
 /* Ensure no extra padding in embedded CMS view only (do not affect titles/cards views) */
@@ -557,8 +554,7 @@ body[style*="--bases-cms-min-grid-columns: '2'"] .bases-cms-grid {
 }
 
 .bases-cms .card {
-  border: 1px solid
-    var(--bases-cms-card-border-color, var(--background-modifier-border));
+  border: 1px solid var(--bases-cms-card-border-color, var(--background-modifier-border));
   border-radius: var(--bases-cms-card-border-radius, 8px);
   padding: var(--bases-cms-card-padding, 12px) !important;
   margin: var(--bases-cms-card-spacing, 8px) 0;
@@ -607,8 +603,8 @@ body.bases-cms-card-background-custom .bases-cms .card {
 
 /* Ensure cover image respects card border-radius when selected */
 .bases-cms .card.selected.image-format-cover .card-cover {
-  border-radius: var(--bases-cms-card-border-radius, 8px)
-    var(--bases-cms-card-border-radius, 8px) 0 0;
+  border-radius: var(--bases-cms-card-border-radius, 8px) var(--bases-cms-card-border-radius, 8px) 0
+    0;
 }
 
 /* Selection checkbox */
@@ -641,10 +637,7 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
 }
 
 /* For cover images, add subtle drop shadow for visibility on light images */
-.bases-cms
-  .card.image-format-cover
-  .bases-cms-select-checkbox
-  input[type="checkbox"] {
+.bases-cms .card.image-format-cover .bases-cms-select-checkbox input[type="checkbox"] {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
@@ -750,10 +743,7 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
 .bases-cms .card-text-preview {
   color: var(--bases-cms-text-preview-color, var(--text-muted));
   font-family: var(--bases-cms-text-preview-font, inherit);
-  font-size: var(
-    --bases-cms-text-preview-font-size,
-    var(--bases-table-font-size)
-  );
+  font-size: var(--bases-cms-text-preview-font-size, var(--bases-table-font-size));
   flex: 1;
   min-width: 0;
   display: -webkit-box;
@@ -773,10 +763,7 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
 .bases-cms .card-thumbnail {
   flex-shrink: 0;
   width: var(--bases-cms-thumbnail-size, 80px);
-  height: calc(
-    var(--bases-cms-thumbnail-size, 80px) /
-      var(--bases-cms-thumbnail-aspect-ratio, 1)
-  );
+  height: calc(var(--bases-cms-thumbnail-size, 80px) / var(--bases-cms-thumbnail-aspect-ratio, 1));
   overflow: hidden;
   border-radius: var(--bases-cms-thumbnail-border-radius, 4px);
   pointer-events: none;
@@ -785,10 +772,7 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
 .bases-cms .card-thumbnail-placeholder {
   flex-shrink: 0;
   width: var(--bases-cms-thumbnail-size, 80px);
-  height: calc(
-    var(--bases-cms-thumbnail-size, 80px) /
-      var(--bases-cms-thumbnail-aspect-ratio, 1)
-  );
+  height: calc(var(--bases-cms-thumbnail-size, 80px) / var(--bases-cms-thumbnail-aspect-ratio, 1));
   border-radius: var(--bases-cms-thumbnail-border-radius, 4px);
   background-color: var(--background-modifier-border);
 }
@@ -839,16 +823,12 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
 }
 
 .bases-cms .card.image-format-cover:has(.card-cover) .card-title {
-  margin-top: calc(
-    var(--bases-cms-image-aspect-ratio, 0.55) * (100% + 26px) - 1px
-  );
+  margin-top: calc(var(--bases-cms-image-aspect-ratio, 0.55) * (100% + 26px) - 1px);
 }
 
 /* When placeholder exists, push title down similar to cover image */
 .bases-cms .card.image-format-cover:has(.card-cover-placeholder) .card-title {
-  margin-top: calc(
-    var(--bases-cms-image-aspect-ratio, 0.55) * (100% + 26px) - 1px
-  );
+  margin-top: calc(var(--bases-cms-image-aspect-ratio, 0.55) * (100% + 26px) - 1px);
 }
 
 /* Title is always shown - no special handling needed for missing titles */
@@ -859,11 +839,9 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
   left: 0;
   width: 100% !important;
   height: 0;
-  padding-top: calc(
-    var(--bases-cms-image-aspect-ratio, 0.55) * 100%
-  ) !important;
-  border-radius: var(--bases-cms-card-border-radius, 8px)
-    var(--bases-cms-card-border-radius, 8px) 0 0;
+  padding-top: calc(var(--bases-cms-image-aspect-ratio, 0.55) * 100%) !important;
+  border-radius: var(--bases-cms-card-border-radius, 8px) var(--bases-cms-card-border-radius, 8px) 0
+    0;
   margin: 0;
   overflow: visible;
   /* Account for selected card's box-shadow */
@@ -878,11 +856,9 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
   left: 0;
   width: 100% !important;
   height: 0;
-  padding-top: calc(
-    var(--bases-cms-image-aspect-ratio, 0.55) * 100%
-  ) !important;
-  border-radius: var(--bases-cms-card-border-radius, 8px)
-    var(--bases-cms-card-border-radius, 8px) 0 0;
+  padding-top: calc(var(--bases-cms-image-aspect-ratio, 0.55) * 100%) !important;
+  border-radius: var(--bases-cms-card-border-radius, 8px) var(--bases-cms-card-border-radius, 8px) 0
+    0;
   background-color: var(--background-modifier-border);
   margin: 0;
   overflow: visible;
@@ -907,27 +883,15 @@ body.bases-cms-hide-checkboxes .bases-cms .bases-cms-select-checkbox {
 }
 
 /* Cover crop alignment */
-body.bases-cms-cover-crop-top
-  .bases-cms
-  .card.image-format-cover
-  .card-cover
-  .image-embed {
+body.bases-cms-cover-crop-top .bases-cms .card.image-format-cover .card-cover .image-embed {
   background-position: center top !important;
 }
 
-body.bases-cms-cover-crop-bottom
-  .bases-cms
-  .card.image-format-cover
-  .card-cover
-  .image-embed {
+body.bases-cms-cover-crop-bottom .bases-cms .card.image-format-cover .card-cover .image-embed {
   background-position: center bottom !important;
 }
 
-body.bases-cms-cover-crop-center
-  .bases-cms
-  .card.image-format-cover
-  .card-cover
-  .image-embed,
+body.bases-cms-cover-crop-center .bases-cms .card.image-format-cover .card-cover .image-embed,
 body:not(.bases-cms-cover-crop-top):not(.bases-cms-cover-crop-bottom)
   .bases-cms
   .card.image-format-cover
@@ -1039,9 +1003,7 @@ body:not(.bases-cms-badge-style-minimal):not(.bases-cms-badge-style-custom)
   color: rgba(0, 0, 0, 0.9);
 }
 
-body.bases-cms-badge-style-default
-  .bases-cms
-  .card-status-badge.status-published,
+body.bases-cms-badge-style-default .bases-cms .card-status-badge.status-published,
 body:not(.bases-cms-badge-style-minimal):not(.bases-cms-badge-style-custom)
   .bases-cms
   .card-status-badge.status-published {
@@ -1059,20 +1021,12 @@ body.bases-cms-badge-style-minimal .bases-cms .card-status-badge {
 
 /* Custom colors style */
 body.bases-cms-badge-style-custom .bases-cms .card-status-badge.status-draft {
-  background-color: var(
-    --bases-cms-badge-draft-color,
-    rgba(255, 193, 7, 0.95)
-  ) !important;
+  background-color: var(--bases-cms-badge-draft-color, rgba(255, 193, 7, 0.95)) !important;
   color: rgba(0, 0, 0, 0.9);
 }
 
-body.bases-cms-badge-style-custom
-  .bases-cms
-  .card-status-badge.status-published {
-  background-color: var(
-    --bases-cms-badge-published-color,
-    rgba(46, 125, 50, 0.95)
-  ) !important;
+body.bases-cms-badge-style-custom .bases-cms .card-status-badge.status-published {
+  background-color: var(--bases-cms-badge-published-color, rgba(46, 125, 50, 0.95)) !important;
   color: rgba(255, 255, 255, 1);
 }
 
@@ -1467,10 +1421,7 @@ body.bases-cms-property-color-custom .bases-cms .property-content {
 }
 
 /* Keep delete button icon color consistent on hover */
-.bases-cms-bulk-toolbar
-  .text-icon-button.destructive:hover
-  .text-button-icon
-  svg {
+.bases-cms-bulk-toolbar .text-icon-button.destructive:hover .text-button-icon svg {
   color: var(--text-error);
   stroke: var(--text-error);
 }

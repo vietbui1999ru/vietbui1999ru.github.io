@@ -82,33 +82,40 @@ No new dependencies. Uses Node.js built-ins only.
 ## Updated `astro.config.ts`
 
 ```typescript
-import { remarkPreview }        from './src/lib/remark/preview'
-import { remarkEmbeds }         from './src/lib/remark/embeds'
-import { remarkWikilinks }      from './src/lib/remark/wikilinks'
-import { createAssetAdapters }  from './src/lib/remark/adapters'
-import { getVaultRoot, warnIfNotMain } from './src/lib/vault'
-import { buildWikilinkIndex }   from './src/lib/build-wikilink-index'
+import { remarkPreview } from "./src/lib/remark/preview";
+import { remarkEmbeds } from "./src/lib/remark/embeds";
+import { remarkWikilinks } from "./src/lib/remark/wikilinks";
+import { createAssetAdapters } from "./src/lib/remark/adapters";
+import { getVaultRoot, warnIfNotMain } from "./src/lib/vault";
+import { buildWikilinkIndex } from "./src/lib/build-wikilink-index";
 
-const vaultRoot = getVaultRoot()
-warnIfNotMain(vaultRoot)
+const vaultRoot = getVaultRoot();
+warnIfNotMain(vaultRoot);
 
 const { copyAsset, resolveExcalidraw } = createAssetAdapters({
-  attachmentsRoot: path.join(vaultRoot, 'Attachments'),
-  publicRoot:      path.resolve(__dirname, 'public'),
-  excalidrawCacheDir: path.resolve(__dirname, '.cache/excalidraw'),
-})
+  attachmentsRoot: path.join(vaultRoot, "Attachments"),
+  publicRoot: path.resolve(__dirname, "public"),
+  excalidrawCacheDir: path.resolve(__dirname, ".cache/excalidraw"),
+});
 
-const wikilinkIndex = buildWikilinkIndex(
-  path.resolve(__dirname, 'src/content/blog')
-)
+const wikilinkIndex = buildWikilinkIndex(path.resolve(__dirname, "src/content/blog"));
 
 // in defineConfig:
 markdown: {
   remarkPlugins: [
     remarkPreview,
-    [remarkEmbeds,    { attachmentsRoot: path.join(vaultRoot, 'Attachments'), copyAsset, resolveExcalidraw }],
-    [remarkWikilinks, { index: wikilinkIndex, onDead: (slug, file) => console.warn(`[wikilinks] dead: ${slug} in ${file}`) }],
-  ]
+    [
+      remarkEmbeds,
+      { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw },
+    ],
+    [
+      remarkWikilinks,
+      {
+        index: wikilinkIndex,
+        onDead: (slug, file) => console.warn(`[wikilinks] dead: ${slug} in ${file}`),
+      },
+    ],
+  ];
 }
 ```
 

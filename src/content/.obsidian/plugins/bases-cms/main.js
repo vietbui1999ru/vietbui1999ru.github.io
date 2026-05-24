@@ -13,8 +13,7 @@ var __esm = (fn, res) =>
     return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res);
   };
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if ((from && typeof from === "object") || typeof from === "function") {
@@ -27,8 +26,7 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toCommonJS = (mod) =>
-  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/utils/mdx-frontmatter.ts
 function isMdxFile(file) {
@@ -85,9 +83,7 @@ async function processMdxFrontMatter(app, file, callback) {
     }
     const frontmatter = { ...parsed.frontmatter };
     callback(frontmatter);
-    const newFrontmatterText = (0, import_obsidian4.stringifyYaml)(
-      frontmatter,
-    ).trim();
+    const newFrontmatterText = (0, import_obsidian4.stringifyYaml)(frontmatter).trim();
     const newContent = `---
 ${newFrontmatterText}
 ---
@@ -162,9 +158,7 @@ function readCMSSettings(config, pluginSettings) {
     _x;
   const getConfig = (key) => {
     var _a2;
-    return (_a2 = config == null ? void 0 : config.get) == null
-      ? void 0
-      : _a2.call(config, key);
+    return (_a2 = config == null ? void 0 : config.get) == null ? void 0 : _a2.call(config, key);
   };
   return {
     titleProperty: getConfig("titleProperty") || "note.title",
@@ -176,14 +170,10 @@ function readCMSSettings(config, pluginSettings) {
     dateProperty: getConfig("dateProperty") || "",
     dateIncludeTime: (_b = getConfig("dateIncludeTime")) != null ? _b : false,
     showTextPreview: (_c = getConfig("showTextPreview")) != null ? _c : true,
-    fallbackToContent:
-      (_d = getConfig("fallbackToContent")) != null ? _d : true,
-    truncatePreviewProperty:
-      (_e = getConfig("truncatePreviewProperty")) != null ? _e : false,
-    descriptionMaxLength:
-      (_f = getConfig("descriptionMaxLength")) != null ? _f : 500,
-    descriptionMaxLines:
-      (_g = getConfig("descriptionMaxLines")) != null ? _g : 5,
+    fallbackToContent: (_d = getConfig("fallbackToContent")) != null ? _d : true,
+    truncatePreviewProperty: (_e = getConfig("truncatePreviewProperty")) != null ? _e : false,
+    descriptionMaxLength: (_f = getConfig("descriptionMaxLength")) != null ? _f : 500,
+    descriptionMaxLines: (_g = getConfig("descriptionMaxLines")) != null ? _g : 5,
     fallbackToEmbeds: (() => {
       const value = getConfig("fallbackToEmbeds");
       if (value === "always" || value === "if-empty" || value === "never") {
@@ -205,14 +195,10 @@ function readCMSSettings(config, pluginSettings) {
     propertyDisplay12: getConfig("propertyDisplay12") || "",
     propertyDisplay13: getConfig("propertyDisplay13") || "",
     propertyDisplay14: getConfig("propertyDisplay14") || "",
-    propertyLayout12SideBySide:
-      (_h = getConfig("propertyLayout12SideBySide")) != null ? _h : false,
-    propertyLayout34SideBySide:
-      (_i = getConfig("propertyLayout34SideBySide")) != null ? _i : false,
-    propertyLayout56SideBySide:
-      (_j = getConfig("propertyLayout56SideBySide")) != null ? _j : false,
-    propertyLayout78SideBySide:
-      (_k = getConfig("propertyLayout78SideBySide")) != null ? _k : false,
+    propertyLayout12SideBySide: (_h = getConfig("propertyLayout12SideBySide")) != null ? _h : false,
+    propertyLayout34SideBySide: (_i = getConfig("propertyLayout34SideBySide")) != null ? _i : false,
+    propertyLayout56SideBySide: (_j = getConfig("propertyLayout56SideBySide")) != null ? _j : false,
+    propertyLayout78SideBySide: (_k = getConfig("propertyLayout78SideBySide")) != null ? _k : false,
     propertyLayout910SideBySide:
       (_l = getConfig("propertyLayout910SideBySide")) != null ? _l : false,
     propertyLayout1112SideBySide:
@@ -229,22 +215,18 @@ function readCMSSettings(config, pluginSettings) {
     imageFormat: getConfig("imageFormat") || "thumbnail",
     imagePosition: getConfig("imagePosition") || "right",
     propertyLabels: getConfig("propertyLabels") || "hide",
-    propertyDisplayMaxLength:
-      (_o = getConfig("propertyDisplayMaxLength")) != null ? _o : 0,
+    propertyDisplayMaxLength: (_o = getConfig("propertyDisplayMaxLength")) != null ? _o : 0,
     showDraftStatus: (_p = getConfig("showDraftStatus")) != null ? _p : false,
     draftStatusProperty: getConfig("draftStatusProperty") || "",
-    draftStatusReverse:
-      (_q = getConfig("draftStatusReverse")) != null ? _q : false,
+    draftStatusReverse: (_q = getConfig("draftStatusReverse")) != null ? _q : false,
     draftStatusUseFilenamePrefix:
       (_r = getConfig("draftStatusUseFilenamePrefix")) != null ? _r : false,
     showTags: (_s = getConfig("showTags")) != null ? _s : false,
     tagsProperty: getConfig("tagsProperty") || "",
     maxTagsToShow: (_t = getConfig("maxTagsToShow")) != null ? _t : 3,
-    customizeNewButton:
-      (_u = getConfig("customizeNewButton")) != null ? _u : false,
+    customizeNewButton: (_u = getConfig("customizeNewButton")) != null ? _u : false,
     newNoteLocation: getConfig("newNoteLocation") || "",
-    hideQuickEditIcon:
-      (_v = getConfig("hideQuickEditIcon")) != null ? _v : false,
+    hideQuickEditIcon: (_v = getConfig("hideQuickEditIcon")) != null ? _v : false,
     cardSize: (_w = getConfig("cardSize")) != null ? _w : 250,
     imageAspectRatio: (_x = getConfig("imageAspectRatio")) != null ? _x : 0.55,
   };
@@ -803,10 +785,7 @@ async function getAttachmentsInNote(app, file) {
       const metadata = app.metadataCache.getFileCache(content);
       const embeds = (metadata == null ? void 0 : metadata.embeds) || [];
       for (const embed of embeds) {
-        const embedFile = app.metadataCache.getFirstLinkpathDest(
-          embed.link,
-          file.path,
-        );
+        const embedFile = app.metadataCache.getFirstLinkpathDest(embed.link, file.path);
         if (embedFile instanceof import_obsidian16.TFile) {
           attachments.push(embedFile);
         }
@@ -815,36 +794,19 @@ async function getAttachmentsInNote(app, file) {
     const frontmatter = await getFileFrontmatter(app, file);
     if (frontmatter) {
       const imagePropertyNames = ["image", "imageOG", "cover", "thumbnail"];
-      const validImageExtensions = [
-        "avif",
-        "bmp",
-        "gif",
-        "jpeg",
-        "jpg",
-        "png",
-        "svg",
-        "webp",
-      ];
+      const validImageExtensions = ["avif", "bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
       for (const propName of imagePropertyNames) {
         const propValue = frontmatter[propName];
         if (!propValue) continue;
         const imagePaths = Array.isArray(propValue) ? propValue : [propValue];
         for (const imagePath of imagePaths) {
           if (typeof imagePath !== "string") continue;
-          const cleanPath = imagePath
-            .replace(/^!?\[\[([^\]]+)\]\]$/, "$1")
-            .trim();
+          const cleanPath = imagePath.replace(/^!?\[\[([^\]]+)\]\]$/, "$1").trim();
           if (!cleanPath) continue;
-          if (
-            cleanPath.startsWith("http://") ||
-            cleanPath.startsWith("https://")
-          ) {
+          if (cleanPath.startsWith("http://") || cleanPath.startsWith("https://")) {
             continue;
           }
-          let imageFile = app.metadataCache.getFirstLinkpathDest(
-            cleanPath,
-            file.path,
-          );
+          let imageFile = app.metadataCache.getFirstLinkpathDest(cleanPath, file.path);
           if (!imageFile && cleanPath.startsWith("./")) {
             const relativePath = cleanPath.substring(2);
             const fullPath = ((_a = file.parent) == null ? void 0 : _a.path)
@@ -884,15 +846,8 @@ async function getAttachmentsInFolder(app, folder) {
   }
   return attachments;
 }
-async function isAttachmentUsedInOtherNotes(
-  app,
-  attachment,
-  excludedNote,
-  excludedFolder,
-) {
-  const allNotes = app.vault
-    .getMarkdownFiles()
-    .filter((file) => file.path !== excludedNote.path);
+async function isAttachmentUsedInOtherNotes(app, attachment, excludedNote, excludedFolder) {
+  const allNotes = app.vault.getMarkdownFiles().filter((file) => file.path !== excludedNote.path);
   const attachmentPath = attachment.path;
   const attachmentName = attachment.name;
   const attachmentBasename = attachment.basename;
@@ -982,23 +937,15 @@ async function prepareDeletionPreview(app, files, config) {
       filesToDelete.push(file);
     }
     if (config.deleteUniqueAttachments) {
-      const parentFolder = shouldDeleteParentFolder(file, config)
-        ? file.parent || void 0
-        : void 0;
-      const uniqueAttachments2 = await findUniqueAttachments(
-        app,
-        file,
-        parentFolder,
-      );
+      const parentFolder = shouldDeleteParentFolder(file, config) ? file.parent || void 0 : void 0;
+      const uniqueAttachments2 = await findUniqueAttachments(app, file, parentFolder);
       attachmentsToDelete.push(...uniqueAttachments2);
     }
   }
   const uniqueFiles = Array.from(new Set(filesToDelete.map((f) => f.path)))
     .map((path) => app.vault.getAbstractFileByPath(path))
     .filter((file) => file instanceof import_obsidian17.TFile);
-  const uniqueAttachments = Array.from(
-    new Set(attachmentsToDelete.map((a) => a.path)),
-  )
+  const uniqueAttachments = Array.from(new Set(attachmentsToDelete.map((a) => a.path)))
     .map((path) => app.vault.getAbstractFileByPath(path))
     .filter((file) => file instanceof import_obsidian17.TFile);
   return {
@@ -1038,9 +985,7 @@ async function executeSmartDeletion(app, preview) {
     }
   }
   if (errorCount > 0) {
-    new import_obsidian17.Notice(
-      `Deleted ${deletedCount} items, ${errorCount} errors occurred`,
-    );
+    new import_obsidian17.Notice(`Deleted ${deletedCount} items, ${errorCount} errors occurred`);
   } else {
     new import_obsidian17.Notice(
       `Successfully deleted ${deletedCount} item${deletedCount !== 1 ? "s" : ""}`,
@@ -1076,9 +1021,7 @@ var init_deletion_preview = __esm({
       onOpen() {
         const { contentEl } = this;
         contentEl.empty();
-        new import_obsidian18.Setting(contentEl)
-          .setName("Confirm deletion")
-          .setHeading();
+        new import_obsidian18.Setting(contentEl).setName("Confirm deletion").setHeading();
         contentEl.createEl("p", {
           text: "The following items will be deleted:",
           cls: "bases-cms-deletion-warning",
@@ -1119,10 +1062,7 @@ var init_deletion_preview = __esm({
           const attachmentsList = contentEl.createEl("ul", {
             cls: "bases-cms-deletion-list",
           });
-          for (const attachment of this.preview.attachmentsToDelete.slice(
-            0,
-            20,
-          )) {
+          for (const attachment of this.preview.attachmentsToDelete.slice(0, 20)) {
             const li = attachmentsList.createEl("li");
             li.setText(attachment.path);
           }
@@ -1186,12 +1126,7 @@ var CommandPickerModal = class extends import_obsidian.FuzzySuggestModal {
       try {
         const commands = commandRegistry.listCommands();
         for (const command of commands) {
-          if (
-            command &&
-            command.id &&
-            command.name &&
-            !commandMap.has(command.id)
-          ) {
+          if (command && command.id && command.name && !commandMap.has(command.id)) {
             commandMap.set(command.id, {
               id: command.id,
               name: command.name,
@@ -1199,24 +1134,15 @@ var CommandPickerModal = class extends import_obsidian.FuzzySuggestModal {
           }
         }
       } catch (e) {
-        console.warn(
-          "[Bases CMS] Error getting commands via listCommands():",
-          e,
-        );
+        console.warn("[Bases CMS] Error getting commands via listCommands():", e);
       }
     }
     try {
-      const registry =
-        commandRegistry == null ? void 0 : commandRegistry.commands;
+      const registry = commandRegistry == null ? void 0 : commandRegistry.commands;
       if (registry && typeof registry === "object") {
         const allCommands = Object.values(registry);
         for (const command of allCommands) {
-          if (
-            command &&
-            command.id &&
-            command.name &&
-            !commandMap.has(command.id)
-          ) {
+          if (command && command.id && command.name && !commandMap.has(command.id)) {
             commandMap.set(command.id, {
               id: command.id,
               name: command.name,
@@ -1228,17 +1154,11 @@ var CommandPickerModal = class extends import_obsidian.FuzzySuggestModal {
       console.warn("[Bases CMS] Error getting commands via registry:", e);
     }
     try {
-      const internalRegistry =
-        commandRegistry == null ? void 0 : commandRegistry.commandRegistry;
+      const internalRegistry = commandRegistry == null ? void 0 : commandRegistry.commandRegistry;
       if (internalRegistry && typeof internalRegistry === "object") {
         const allCommands = Object.values(internalRegistry);
         for (const command of allCommands) {
-          if (
-            command &&
-            command.id &&
-            command.name &&
-            !commandMap.has(command.id)
-          ) {
+          if (command && command.id && command.name && !commandMap.has(command.id)) {
             commandMap.set(command.id, {
               id: command.id,
               name: command.name,
@@ -1247,10 +1167,7 @@ var CommandPickerModal = class extends import_obsidian.FuzzySuggestModal {
         }
       }
     } catch (e) {
-      console.warn(
-        "[Bases CMS] Error getting commands via internal registry:",
-        e,
-      );
+      console.warn("[Bases CMS] Error getting commands via internal registry:", e);
     }
     const commandOptions = Array.from(commandMap.values());
     commandOptions.sort((a, b) => a.name.localeCompare(b.name));
@@ -1473,10 +1390,7 @@ var IconPickerModal = class extends import_obsidian2.FuzzySuggestModal {
     const content = el.createDiv({ cls: "suggestion-content" });
     content.createDiv({ cls: "suggestion-title", text: item.name });
     const aux = el.createDiv({ cls: "suggestion-aux" });
-    (0, import_obsidian2.setIcon)(
-      aux.createSpan({ cls: "suggestion-flair" }),
-      item.id,
-    );
+    (0, import_obsidian2.setIcon)(aux.createSpan({ cls: "suggestion-flair" }), item.id);
   }
 };
 
@@ -1492,10 +1406,7 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
    */
   refreshActiveToolbars() {
     const pluginWithMethod = this.plugin;
-    if (
-      pluginWithMethod &&
-      typeof pluginWithMethod.refreshAllToolbars === "function"
-    ) {
+    if (pluginWithMethod && typeof pluginWithMethod.refreshAllToolbars === "function") {
       pluginWithMethod.refreshAllToolbars();
     }
   }
@@ -1506,18 +1417,16 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
       .setName("Confirm bulk operations")
       .setDesc("Show confirmation dialogs before performing bulk operations.")
       .addToggle((toggle) =>
-        toggle
-          .setValue(this.plugin.settings.confirmBulkOperations)
-          .onChange((value) => {
-            void (async () => {
-              this.plugin.settings.confirmBulkOperations = value;
-              await this.plugin.saveData(this.plugin.settings);
-            })();
-          }),
+        toggle.setValue(this.plugin.settings.confirmBulkOperations).onChange((value) => {
+          void (async () => {
+            this.plugin.settings.confirmBulkOperations = value;
+            await this.plugin.saveData(this.plugin.settings);
+          })();
+        }),
       );
-    const toolbarButtonsGroup = new import_obsidian3.SettingGroup(
-      containerEl,
-    ).setHeading("Toolbar buttons");
+    const toolbarButtonsGroup = new import_obsidian3.SettingGroup(containerEl).setHeading(
+      "Toolbar buttons",
+    );
     toolbarButtonsGroup.addSetting((setting) => {
       setting
         .setName("Show select all button")
@@ -1622,9 +1531,7 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
           });
         });
     });
-    const deletionsGroup = new import_obsidian3.SettingGroup(
-      containerEl,
-    ).setHeading("Deletions");
+    const deletionsGroup = new import_obsidian3.SettingGroup(containerEl).setHeading("Deletions");
     deletionsGroup.addSetting((setting) => {
       setting
         .setName("Delete parent folder for specific file name")
@@ -1679,9 +1586,7 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
           });
         });
     });
-    const appearanceGroup = new import_obsidian3.SettingGroup(
-      containerEl,
-    ).setHeading("Appearance");
+    const appearanceGroup = new import_obsidian3.SettingGroup(containerEl).setHeading("Appearance");
     appearanceGroup.addSetting((setting) => {
       setting
         .setName("Use home icon for CMS view")
@@ -1718,9 +1623,9 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
           });
         });
     });
-    const performanceGroup = new import_obsidian3.SettingGroup(
-      containerEl,
-    ).setHeading("Performance");
+    const performanceGroup = new import_obsidian3.SettingGroup(containerEl).setHeading(
+      "Performance",
+    );
     performanceGroup.addSetting((setting) => {
       setting
         .setName("Embedded view refresh debounce (ms)")
@@ -1769,68 +1674,48 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
           });
         });
     });
-    const quickEditGroup = new import_obsidian3.SettingGroup(
-      containerEl,
-    ).setHeading("Quick edit");
+    const quickEditGroup = new import_obsidian3.SettingGroup(containerEl).setHeading("Quick edit");
     let quickEditCommandSetting;
     let quickEditIconSetting;
     let quickEditOpenFileSetting;
     quickEditGroup.addSetting((setting) => {
       setting
         .setName("Enable quick edit")
-        .setDesc(
-          "Show an icon on card titles that launches a command when clicked.",
-        )
+        .setDesc("Show an icon on card titles that launches a command when clicked.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableQuickEdit)
-            .onChange((value) => {
-              void (async () => {
-                this.plugin.settings.enableQuickEdit = value;
-                await this.plugin.saveData(this.plugin.settings);
-                const shouldHide = !value;
-                const commandEl =
-                  quickEditCommandSetting == null
-                    ? void 0
-                    : quickEditCommandSetting.settingEl;
-                const iconEl =
-                  quickEditIconSetting == null
-                    ? void 0
-                    : quickEditIconSetting.settingEl;
-                const openFileEl =
-                  quickEditOpenFileSetting == null
-                    ? void 0
-                    : quickEditOpenFileSetting.settingEl;
-                if (commandEl) {
-                  commandEl.toggleClass("bases-cms-setting-hidden", shouldHide);
-                }
-                if (iconEl) {
-                  iconEl.toggleClass("bases-cms-setting-hidden", shouldHide);
-                }
-                if (openFileEl) {
-                  openFileEl.toggleClass(
-                    "bases-cms-setting-hidden",
-                    shouldHide,
-                  );
-                }
-              })();
-            }),
+          toggle.setValue(this.plugin.settings.enableQuickEdit).onChange((value) => {
+            void (async () => {
+              this.plugin.settings.enableQuickEdit = value;
+              await this.plugin.saveData(this.plugin.settings);
+              const shouldHide = !value;
+              const commandEl =
+                quickEditCommandSetting == null ? void 0 : quickEditCommandSetting.settingEl;
+              const iconEl = quickEditIconSetting == null ? void 0 : quickEditIconSetting.settingEl;
+              const openFileEl =
+                quickEditOpenFileSetting == null ? void 0 : quickEditOpenFileSetting.settingEl;
+              if (commandEl) {
+                commandEl.toggleClass("bases-cms-setting-hidden", shouldHide);
+              }
+              if (iconEl) {
+                iconEl.toggleClass("bases-cms-setting-hidden", shouldHide);
+              }
+              if (openFileEl) {
+                openFileEl.toggleClass("bases-cms-setting-hidden", shouldHide);
+              }
+            })();
+          }),
         );
     });
     quickEditGroup.addSetting((setting) => {
       quickEditCommandSetting = setting;
       setting
         .setName("Quick edit command")
-        .setDesc(
-          "The command to execute when clicking the quick edit icon on a card title.",
-        )
+        .setDesc("The command to execute when clicking the quick edit icon on a card title.")
         .addButton((button) => {
           var _a;
           const currentCommandName =
             this.plugin.settings.quickEditCommandName ||
-            (this.plugin.settings.quickEditCommand
-              ? "Select command..."
-              : "No command selected");
+            (this.plugin.settings.quickEditCommand ? "Select command..." : "No command selected");
           button.setButtonText(currentCommandName).onClick(() => {
             const modal = new CommandPickerModal(this.app, (commandId) => {
               void (async () => {
@@ -1839,9 +1724,7 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
                 if (commandRegistry) {
                   if (typeof commandRegistry.listCommands === "function") {
                     const commands = commandRegistry.listCommands();
-                    const command = commands.find(
-                      (cmd) => cmd.id === commandId,
-                    );
+                    const command = commands.find((cmd) => cmd.id === commandId);
                     if (command) {
                       commandName = command.name;
                     }
@@ -1890,13 +1773,9 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
       quickEditIconSetting = setting;
       setting
         .setName("Quick edit icon")
-        .setDesc(
-          "Select the icon to display for the quick edit button on card titles.",
-        )
+        .setDesc("Select the icon to display for the quick edit button on card titles.")
         .addButton((button) => {
-          const iconName = this.getIconName(
-            this.plugin.settings.quickEditIcon || "pencil-line",
-          );
+          const iconName = this.getIconName(this.plugin.settings.quickEditIcon || "pencil-line");
           button.setButtonText(iconName || "Select icon...").onClick(() => {
             const modal = new IconPickerModal(this.app, (iconId) => {
               void (async () => {
@@ -1921,14 +1800,12 @@ var BasesCMSSettingTab = class extends import_obsidian3.PluginSettingTab {
           "For commands that don't have special handling, attempt to open the file and execute the command. Some commands may not work properly this way.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.quickEditOpenFile)
-            .onChange((value) => {
-              void (async () => {
-                this.plugin.settings.quickEditOpenFile = value;
-                await this.plugin.saveData(this.plugin.settings);
-              })();
-            }),
+          toggle.setValue(this.plugin.settings.quickEditOpenFile).onChange((value) => {
+            void (async () => {
+              this.plugin.settings.quickEditOpenFile = value;
+              await this.plugin.saveData(this.plugin.settings);
+            })();
+          }),
         );
       setting.settingEl.toggleClass(
         "bases-cms-setting-hidden",
@@ -2045,11 +1922,7 @@ function getPropertyLabel(propertyName, app, basesConfig, basesController) {
     if (typeof configWithDisplayName.getDisplayName === "function") {
       try {
         const displayName = configWithDisplayName.getDisplayName(propertyName);
-        if (
-          displayName &&
-          typeof displayName === "string" &&
-          displayName.trim() !== ""
-        ) {
+        if (displayName && typeof displayName === "string" && displayName.trim() !== "") {
           return displayName;
         }
       } catch (e) {}
@@ -2063,9 +1936,7 @@ function hasBodyClass(className) {
   return document.body.classList.contains(className);
 }
 function getListSeparator() {
-  let value = getComputedStyle(document.body).getPropertyValue(
-    "--bases-cms-list-separator",
-  );
+  let value = getComputedStyle(document.body).getPropertyValue("--bases-cms-list-separator");
   if (
     (value.startsWith('"') && value.endsWith('"')) ||
     (value.startsWith("'") && value.endsWith("'"))
@@ -2075,9 +1946,7 @@ function getListSeparator() {
   return value || ", ";
 }
 function getEmptyValueMarker() {
-  let value = getComputedStyle(document.body).getPropertyValue(
-    "--bases-cms-empty-value-marker",
-  );
+  let value = getComputedStyle(document.body).getPropertyValue("--bases-cms-empty-value-marker");
   if (
     (value.startsWith('"') && value.endsWith('"')) ||
     (value.startsWith("'") && value.endsWith("'"))
@@ -2148,11 +2017,7 @@ async function basesEntryToCardData(
   let titleValue = null;
   if (app) {
     const file = app.vault.getAbstractFileByPath(entry.file.path);
-    if (
-      file instanceof import_obsidian6.TFile &&
-      file.extension === "mdx" &&
-      mdxFrontmatterCache
-    ) {
+    if (file instanceof import_obsidian6.TFile && file.extension === "mdx" && mdxFrontmatterCache) {
       const frontmatter = mdxFrontmatterCache[entry.file.path];
       if (frontmatter) {
         const cleanProp = settings.titleProperty.startsWith("note.")
@@ -2166,11 +2031,7 @@ async function basesEntryToCardData(
     }
   }
   if (!titleValue) {
-    titleValue = await getFirstBasesPropertyValue(
-      entry,
-      settings.titleProperty,
-      app,
-    );
+    titleValue = await getFirstBasesPropertyValue(entry, settings.titleProperty, app);
   }
   const titleData = titleValue == null ? void 0 : titleValue.data;
   let title;
@@ -2201,10 +2062,7 @@ async function basesEntryToCardData(
     const file = app.vault.getAbstractFileByPath(entry.file.path);
     if (file instanceof import_obsidian6.TFile && file.extension === "mdx") {
       let frontmatter =
-        (_a =
-          mdxFrontmatterCache == null
-            ? void 0
-            : mdxFrontmatterCache[entry.file.path]) != null
+        (_a = mdxFrontmatterCache == null ? void 0 : mdxFrontmatterCache[entry.file.path]) != null
           ? _a
           : null;
       if (frontmatter === void 0) {
@@ -2243,9 +2101,7 @@ async function basesEntryToCardData(
             if (t && typeof t === "object" && "data" in t) {
               return String(t.data);
             }
-            return typeof t === "string" || typeof t === "number"
-              ? String(t)
-              : "";
+            return typeof t === "string" || typeof t === "number" ? String(t) : "";
           })
           .filter((t) => t)
       : typeof tagData === "string" || typeof tagData === "number"
@@ -2262,11 +2118,7 @@ async function basesEntryToCardData(
           .map((t) => {
             if (t && typeof t === "object" && t !== null && "data" in t) {
               const itemData = t.data;
-              if (
-                itemData &&
-                typeof itemData === "object" &&
-                itemData !== null
-              ) {
+              if (itemData && typeof itemData === "object" && itemData !== null) {
                 return JSON.stringify(itemData);
               }
               return String(itemData);
@@ -2274,9 +2126,7 @@ async function basesEntryToCardData(
             if (t && typeof t === "object" && t !== null) {
               return JSON.stringify(t);
             }
-            return typeof t === "string" || typeof t === "number"
-              ? String(t)
-              : "";
+            return typeof t === "string" || typeof t === "number" ? String(t) : "";
           })
           .filter((t) => typeof t === "string" && t.length > 0)
       : (() => {
@@ -2298,11 +2148,7 @@ async function basesEntryToCardData(
   const mtime = entry.file.stat.mtime;
   let displayTags = [];
   if (settings.showTags && settings.tagsProperty) {
-    const tagsValue = await getFirstBasesPropertyValue(
-      entry,
-      settings.tagsProperty,
-      app,
-    );
+    const tagsValue = await getFirstBasesPropertyValue(entry, settings.tagsProperty, app);
     if (tagsValue && tagsValue.data != null) {
       const tagData = tagsValue.data;
       if (Array.isArray(tagData)) {
@@ -2311,9 +2157,7 @@ async function basesEntryToCardData(
             if (t && typeof t === "object" && "data" in t) {
               return String(t.data);
             }
-            return typeof t === "string" || typeof t === "number"
-              ? String(t)
-              : "";
+            return typeof t === "string" || typeof t === "number" ? String(t) : "";
           })
           .filter((t) => typeof t === "string" && t.length > 0);
       } else if (typeof tagData === "string" || typeof tagData === "number") {
@@ -2570,11 +2414,7 @@ async function resolveBasesPropertyAsync(
   let value = null;
   if (app) {
     const file = app.vault.getAbstractFileByPath(entry.file.path);
-    if (
-      file instanceof import_obsidian6.TFile &&
-      file.extension === "mdx" &&
-      mdxFrontmatterCache
-    ) {
+    if (file instanceof import_obsidian6.TFile && file.extension === "mdx" && mdxFrontmatterCache) {
       const frontmatter = mdxFrontmatterCache[entry.file.path];
       if (frontmatter) {
         const cleanProp = propertyName.startsWith("note.")
@@ -2638,11 +2478,7 @@ async function resolveBasesPropertyAsync(
       const trimmed = str.trim();
       if (trimmed && trimmed !== "") {
         const deduplicated = removeDuplication(trimmed);
-        if (
-          deduplicated &&
-          deduplicated !== "" &&
-          !uniqueItems.has(deduplicated)
-        ) {
+        if (deduplicated && deduplicated !== "" && !uniqueItems.has(deduplicated)) {
           uniqueItems.add(deduplicated);
           result.push(deduplicated);
         }
@@ -2713,22 +2549,10 @@ async function processImagePaths(imagePaths) {
 }
 function resolveInternalImagePaths(internalPaths, sourcePath, app) {
   var _a, _b, _c;
-  const validImageExtensions = [
-    "avif",
-    "bmp",
-    "gif",
-    "jpeg",
-    "jpg",
-    "png",
-    "svg",
-    "webp",
-  ];
+  const validImageExtensions = ["avif", "bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
   const resourcePaths = [];
   for (const propPath of internalPaths) {
-    let imageFile = app.metadataCache.getFirstLinkpathDest(
-      propPath,
-      sourcePath,
-    );
+    let imageFile = app.metadataCache.getFirstLinkpathDest(propPath, sourcePath);
     if (!imageFile && propPath.startsWith("./")) {
       const sourceFile = app.vault.getAbstractFileByPath(sourcePath);
       if (sourceFile && sourceFile.parent) {
@@ -2753,9 +2577,7 @@ function resolveInternalImagePaths(internalPaths, sourcePath, app) {
       resourcePaths.push(resourcePath);
     } else if (propPath.startsWith("/") && !propPath.startsWith("//")) {
       const vaultCms =
-        (_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null
-          ? void 0
-          : _b["vault-cms"];
+        (_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["vault-cms"];
       const resolved =
         (_c = vaultCms == null ? void 0 : vaultCms.resolvePublicPath) == null
           ? void 0
@@ -2768,16 +2590,7 @@ function resolveInternalImagePaths(internalPaths, sourcePath, app) {
   return resourcePaths;
 }
 async function extractEmbedImages(file, app) {
-  const validImageExtensions = [
-    "avif",
-    "bmp",
-    "gif",
-    "jpeg",
-    "jpg",
-    "png",
-    "svg",
-    "webp",
-  ];
+  const validImageExtensions = ["avif", "bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
   const metadata = app.metadataCache.getFileCache(file);
   const bodyResourcePaths = [];
   const bodyExternalUrlCandidates = /* @__PURE__ */ new Set();
@@ -2789,10 +2602,7 @@ async function extractEmbedImages(file, app) {
           bodyExternalUrlCandidates.add(embedLink);
         }
       } else {
-        const targetFile = app.metadataCache.getFirstLinkpathDest(
-          embedLink,
-          file.path,
-        );
+        const targetFile = app.metadataCache.getFirstLinkpathDest(embedLink, file.path);
         if (targetFile && validImageExtensions.includes(targetFile.extension)) {
           const resourcePath = app.vault.getResourcePath(targetFile);
           bodyResourcePaths.push(resourcePath);
@@ -2827,10 +2637,7 @@ async function extractEmbedImages(file, app) {
         }
       }
     } catch (error) {
-      console.warn(
-        `Failed to read file content for image extraction: ${file.path}`,
-        error,
-      );
+      console.warn(`Failed to read file content for image extraction: ${file.path}`, error);
     }
   }
   const externalUrlArray = Array.from(bodyExternalUrlCandidates);
@@ -2937,10 +2744,7 @@ function removeCodeBlocks(text) {
     const fenceLength = openMatch[1].length;
     const openIndex = openMatch.index;
     const escapedChar = fenceChar.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const closePattern = new RegExp(
-      `^${escapedChar}{${fenceLength}}\\s*$`,
-      "m",
-    );
+    const closePattern = new RegExp(`^${escapedChar}{${fenceLength}}\\s*$`, "m");
     const afterOpen = result.substring(openIndex + openMatch[1].length);
     const closeMatch = afterOpen.match(closePattern);
     if (closeMatch) {
@@ -2964,8 +2768,7 @@ function stripMarkdownSyntax(text) {
   if (!text || text.trim().length === 0) return "";
   text = text.replace(/^>\s*\[![\w-]+\][+-]?.*$/gm, "");
   text = text.replace(/^>\s?/gm, "");
-  const { text: protectedText, map: escapedCharsMap } =
-    protectEscapedChars(text);
+  const { text: protectedText, map: escapedCharsMap } = protectEscapedChars(text);
   let result = removeCodeBlocks(protectedText);
   markdownPatterns.forEach((pattern) => {
     result = result.replace(pattern, (match, ...groups) => {
@@ -2985,25 +2788,17 @@ function stripMarkdownSyntax(text) {
   result = restoreEscapedChars(result, escapedCharsMap);
   return result;
 }
-function sanitizeForPreview(
-  content,
-  omitFirstLine = false,
-  filename,
-  titleValue,
-) {
+function sanitizeForPreview(content, omitFirstLine = false, filename, titleValue) {
   const cleaned = content.replace(/^---[\s\S]*?---/, "").trim();
   let stripped = stripMarkdownSyntax(cleaned);
   const firstLineEnd = stripped.indexOf("\n");
-  const firstLine = (
-    firstLineEnd !== -1 ? stripped.substring(0, firstLineEnd) : stripped
-  ).trim();
+  const firstLine = (firstLineEnd !== -1 ? stripped.substring(0, firstLineEnd) : stripped).trim();
   if (
     omitFirstLine ||
     (filename && firstLine === filename) ||
     (titleValue && firstLine === titleValue)
   ) {
-    stripped =
-      firstLineEnd !== -1 ? stripped.substring(firstLineEnd + 1).trim() : "";
+    stripped = firstLineEnd !== -1 ? stripped.substring(firstLineEnd + 1).trim() : "";
   }
   const normalized = stripped
     .replace(/\^[a-zA-Z0-9-]+/g, "")
@@ -3019,14 +2814,7 @@ function sanitizeForPreview(
   }
   return preview;
 }
-async function loadFilePreview(
-  file,
-  app,
-  propertyValue,
-  settings,
-  fileName,
-  titleValue,
-) {
+async function loadFilePreview(file, app, propertyValue, settings, fileName, titleValue) {
   var _a;
   let result = null;
   if (propertyValue != null) {
@@ -3040,10 +2828,7 @@ async function loadFilePreview(
         })
         .filter((s) => s.trim().length > 0);
       result = items.length > 0 ? items.join(", ") : null;
-    } else if (
-      typeof propertyValue === "string" ||
-      typeof propertyValue === "number"
-    ) {
+    } else if (typeof propertyValue === "string" || typeof propertyValue === "number") {
       const str = String(propertyValue).trim();
       result = str.length > 0 ? str : null;
     }
@@ -3061,12 +2846,7 @@ async function loadFilePreview(
   }
   if (settings.fallbackToContent) {
     const content = await app.vault.cachedRead(file);
-    return sanitizeForPreview(
-      content,
-      settings.omitFirstLine,
-      fileName,
-      titleValue,
-    );
+    return sanitizeForPreview(content, settings.omitFirstLine, fileName, titleValue);
   }
   return "";
 }
@@ -3082,9 +2862,7 @@ async function loadImageForEntry(
   hasImageCache,
 ) {
   const hasPropertyValues =
-    imagePropertyValues &&
-    Array.isArray(imagePropertyValues) &&
-    imagePropertyValues.length > 0;
+    imagePropertyValues && Array.isArray(imagePropertyValues) && imagePropertyValues.length > 0;
   const shouldFallback =
     fallbackToEmbeds === true ||
     fallbackToEmbeds === "always" ||
@@ -3097,8 +2875,7 @@ async function loadImageForEntry(
     return;
   }
   try {
-    const { internalPaths, externalUrls } =
-      await processImagePaths(imagePropertyValues);
+    const { internalPaths, externalUrls } = await processImagePaths(imagePropertyValues);
     let validImages = [
       ...resolveInternalImagePaths(internalPaths, path, app),
       ...externalUrls,
@@ -3121,13 +2898,7 @@ async function loadImageForEntry(
     console.error(`Failed to load image for ${path}:`, error);
   }
 }
-async function loadImagesForEntries(
-  entries,
-  fallbackToEmbeds,
-  app,
-  imageCache,
-  hasImageCache,
-) {
+async function loadImagesForEntries(entries, fallbackToEmbeds, app, imageCache, hasImageCache) {
   const entriesToProcess = entries.filter((entry) => {
     const hasPropertyValues =
       entry.imagePropertyValues &&
@@ -3199,12 +2970,7 @@ var import_obsidian11 = require("obsidian");
 // src/utils/draft-status-badge.ts
 var import_obsidian8 = require("obsidian");
 init_frontmatter_helper();
-async function calculateDraftStatusAsync(
-  entry,
-  settings,
-  app,
-  mdxFrontmatterCache,
-) {
+async function calculateDraftStatusAsync(entry, settings, app, mdxFrontmatterCache) {
   var _a;
   let booleanValue = null;
   let isDraft = false;
@@ -3215,11 +2981,7 @@ async function calculateDraftStatusAsync(
     isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
   } else if (settings.draftStatusProperty) {
     const draftValue = entry.getValue(settings.draftStatusProperty);
-    if (
-      draftValue &&
-      "data" in draftValue &&
-      typeof draftValue.data === "boolean"
-    ) {
+    if (draftValue && "data" in draftValue && typeof draftValue.data === "boolean") {
       booleanValue = draftValue.data;
       isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
     } else {
@@ -3227,8 +2989,7 @@ async function calculateDraftStatusAsync(
       if (file instanceof import_obsidian8.TFile && file.extension === "mdx") {
         let frontmatter = null;
         if (mdxFrontmatterCache) {
-          frontmatter =
-            (_a = mdxFrontmatterCache[entry.file.path]) != null ? _a : null;
+          frontmatter = (_a = mdxFrontmatterCache[entry.file.path]) != null ? _a : null;
         }
         if (frontmatter === void 0) {
           frontmatter = await getFileFrontmatter(app, file);
@@ -3240,9 +3001,7 @@ async function calculateDraftStatusAsync(
           const frontmatterValue = frontmatter[cleanProp];
           if (typeof frontmatterValue === "boolean") {
             booleanValue = frontmatterValue;
-            isDraft = settings.draftStatusReverse
-              ? !booleanValue
-              : booleanValue;
+            isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
           }
         }
       }
@@ -3260,11 +3019,7 @@ function calculateDraftStatus(entry, settings) {
     isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
   } else if (settings.draftStatusProperty) {
     const draftValue = entry.getValue(settings.draftStatusProperty);
-    if (
-      draftValue &&
-      "data" in draftValue &&
-      typeof draftValue.data === "boolean"
-    ) {
+    if (draftValue && "data" in draftValue && typeof draftValue.data === "boolean") {
       booleanValue = draftValue.data;
       isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
     }
@@ -3283,25 +3038,12 @@ function renderDraftStatusBadge(
   if (!settings.showDraftStatus) {
     return;
   }
-  const { booleanValue: syncValue, isDraft: syncIsDraft } =
-    calculateDraftStatus(entry, settings);
+  const { booleanValue: syncValue, isDraft: syncIsDraft } = calculateDraftStatus(entry, settings);
   if (syncValue !== null) {
-    renderBadge(
-      container,
-      syncValue,
-      syncIsDraft,
-      onPropertyToggle,
-      cardPath,
-      settings,
-      app,
-    );
+    renderBadge(container, syncValue, syncIsDraft, onPropertyToggle, cardPath, settings, app);
   } else if (app) {
     const file = app.vault.getAbstractFileByPath(entry.file.path);
-    if (
-      file instanceof import_obsidian8.TFile &&
-      file.extension === "mdx" &&
-      mdxFrontmatterCache
-    ) {
+    if (file instanceof import_obsidian8.TFile && file.extension === "mdx" && mdxFrontmatterCache) {
       const frontmatter = mdxFrontmatterCache[entry.file.path];
       if (frontmatter && settings.draftStatusProperty) {
         const cleanProp = settings.draftStatusProperty.startsWith("note.")
@@ -3310,18 +3052,8 @@ function renderDraftStatusBadge(
         const frontmatterValue = frontmatter[cleanProp];
         if (typeof frontmatterValue === "boolean") {
           const booleanValue = frontmatterValue;
-          const isDraft = settings.draftStatusReverse
-            ? !booleanValue
-            : booleanValue;
-          renderBadge(
-            container,
-            booleanValue,
-            isDraft,
-            onPropertyToggle,
-            cardPath,
-            settings,
-            app,
-          );
+          const isDraft = settings.draftStatusReverse ? !booleanValue : booleanValue;
+          renderBadge(container, booleanValue, isDraft, onPropertyToggle, cardPath, settings, app);
           return;
         }
       }
@@ -3334,28 +3066,12 @@ function renderDraftStatusBadge(
         mdxFrontmatterCache,
       );
       if (booleanValue !== null && container.isConnected) {
-        renderBadge(
-          container,
-          booleanValue,
-          isDraft,
-          onPropertyToggle,
-          cardPath,
-          settings,
-          app,
-        );
+        renderBadge(container, booleanValue, isDraft, onPropertyToggle, cardPath, settings, app);
       }
     })();
   }
 }
-function renderBadge(
-  container,
-  booleanValue,
-  isDraft,
-  onPropertyToggle,
-  cardPath,
-  settings,
-  app,
-) {
+function renderBadge(container, booleanValue, isDraft, onPropertyToggle, cardPath, settings, app) {
   if (container.querySelector(".card-status-badge")) {
     return;
   }
@@ -3367,8 +3083,7 @@ function renderBadge(
     statusBadge.addClass("status-published");
     statusBadge.appendText("Published");
   }
-  const isUnderscoreMode =
-    settings == null ? void 0 : settings.draftStatusUseFilenamePrefix;
+  const isUnderscoreMode = settings == null ? void 0 : settings.draftStatusUseFilenamePrefix;
   if (isUnderscoreMode && app) {
     statusBadge.addClass("bases-cms-cursor-pointer");
     statusBadge.addEventListener("click", (e) => {
@@ -3430,8 +3145,7 @@ function showRenameDialog(app, file) {
       return;
     }
     const pathParts = file.path.split("/");
-    pathParts[pathParts.length - 1] =
-      newName + (file.extension ? `.${file.extension}` : "");
+    pathParts[pathParts.length - 1] = newName + (file.extension ? `.${file.extension}` : "");
     const newPath = pathParts.join("/");
     try {
       await app.fileManager.renameFile(file, newPath);
@@ -3461,9 +3175,7 @@ function isObsidianRenameCommand(commandId) {
     commandId === "file-explorer:rename-file" ||
     commandId === "rename-file" ||
     commandId === "file:rename-file" ||
-    (lowerId.includes("rename") &&
-      lowerId.includes("file") &&
-      !lowerId.includes(":"))
+    (lowerId.includes("rename") && lowerId.includes("file") && !lowerId.includes(":"))
   );
 }
 function isProblematicCommand(commandId, commandName) {
@@ -3492,10 +3204,7 @@ function setupQuickEditIcon(app, plugin, titleEl, cardEl, cardPath, settings) {
   }
   const quickEditIcon = titleEl.createSpan("bases-cms-quick-edit-icon");
   quickEditIcon.addClass("bases-cms-cursor-default");
-  (0, import_obsidian9.setIcon)(
-    quickEditIcon,
-    plugin.settings.quickEditIcon || "pencil-line",
-  );
+  (0, import_obsidian9.setIcon)(quickEditIcon, plugin.settings.quickEditIcon || "pencil-line");
   titleEl.addEventListener(
     "click",
     (e) => {
@@ -3512,10 +3221,7 @@ function setupQuickEditIcon(app, plugin, titleEl, cardEl, cardPath, settings) {
       void (async () => {
         var _a, _b, _c, _d;
         const target = e.target;
-        if (
-          !quickEditIcon.contains(target) &&
-          !target.closest(".bases-cms-quick-edit-icon")
-        ) {
+        if (!quickEditIcon.contains(target) && !target.closest(".bases-cms-quick-edit-icon")) {
           return;
         }
         e.stopPropagation();
@@ -3526,17 +3232,14 @@ function setupQuickEditIcon(app, plugin, titleEl, cardEl, cardPath, settings) {
           const commandId = plugin.settings.quickEditCommand;
           const commandRegistry = app.commands;
           const command =
-            (_a =
-              commandRegistry == null ? void 0 : commandRegistry.commands) ==
-            null
+            (_a = commandRegistry == null ? void 0 : commandRegistry.commands) == null
               ? void 0
               : _a[commandId];
           const commandName = (command == null ? void 0 : command.name) || "";
           const lowerCommandName = commandName.toLowerCase();
           if (
             isObsidianRenameCommand(commandId) ||
-            (lowerCommandName.includes("rename") &&
-              lowerCommandName.includes("file"))
+            (lowerCommandName.includes("rename") && lowerCommandName.includes("file"))
           ) {
             showRenameDialog(app, file);
             return;
@@ -3563,10 +3266,7 @@ function setupQuickEditIcon(app, plugin, titleEl, cardEl, cardPath, settings) {
               const appWithCommands = app;
               const commandRegistry2 = appWithCommands.commands;
               const command2 =
-                (_b =
-                  commandRegistry2 == null
-                    ? void 0
-                    : commandRegistry2.commands) == null
+                (_b = commandRegistry2 == null ? void 0 : commandRegistry2.commands) == null
                   ? void 0
                   : _b[commandId];
               if (command2) {
@@ -3582,23 +3282,16 @@ function setupQuickEditIcon(app, plugin, titleEl, cardEl, cardPath, settings) {
             if (pluginId) {
               const plugins = app.plugins;
               const sourcePlugin =
-                (_d = plugins == null ? void 0 : plugins.plugins) == null
-                  ? void 0
-                  : _d[pluginId];
+                (_d = plugins == null ? void 0 : plugins.plugins) == null ? void 0 : _d[pluginId];
               if (sourcePlugin) {
                 const methodName =
                   baseCommandId
                     .split("-")
                     .map((part, index) =>
-                      index === 0
-                        ? part
-                        : part.charAt(0).toUpperCase() + part.slice(1),
+                      index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1),
                     )
                     .join("") + "ByPath";
-                if (
-                  sourcePlugin &&
-                  typeof sourcePlugin[methodName] === "function"
-                ) {
+                if (sourcePlugin && typeof sourcePlugin[methodName] === "function") {
                   await sourcePlugin[methodName](cardPath);
                   helperCalled = true;
                   return;
@@ -3625,10 +3318,8 @@ function setupQuickEditIcon(app, plugin, titleEl, cardEl, cardPath, settings) {
                 void (async () => {
                   var _a2, _b2;
                   try {
-                    await ((_b2 =
-                      (_a2 = app.commands) == null
-                        ? void 0
-                        : _a2.executeCommandById) == null
+                    await ((_b2 = (_a2 = app.commands) == null ? void 0 : _a2.executeCommandById) ==
+                    null
                       ? void 0
                       : _b2.call(_a2, plugin.settings.quickEditCommand));
                   } catch (e2) {}
@@ -3639,12 +3330,7 @@ function setupQuickEditIcon(app, plugin, titleEl, cardEl, cardPath, settings) {
               const view = leaf.view;
               const viewWithEditor = view;
               const activeFile = app.workspace.getActiveFile();
-              if (
-                view &&
-                "editor" in view &&
-                viewWithEditor.editor &&
-                activeFile === file
-              ) {
+              if (view && "editor" in view && viewWithEditor.editor && activeFile === file) {
                 requestAnimationFrame(() => {
                   requestAnimationFrame(() => {
                     setTimeout(() => {
@@ -3730,31 +3416,17 @@ var PropertyRenderer = class {
           if (Array.isArray(data)) {
             return data
               .map((item) => {
-                if (
-                  item &&
-                  typeof item === "object" &&
-                  item !== null &&
-                  !Array.isArray(item)
-                ) {
+                if (item && typeof item === "object" && item !== null && !Array.isArray(item)) {
                   return JSON.stringify(item);
                 }
                 return String(item);
               })
               .join(", ");
           }
-          if (
-            data &&
-            typeof data === "object" &&
-            data !== null &&
-            !Array.isArray(data)
-          ) {
+          if (data && typeof data === "object" && data !== null && !Array.isArray(data)) {
             return JSON.stringify(data);
           }
-          if (
-            typeof data === "string" ||
-            typeof data === "number" ||
-            typeof data === "boolean"
-          ) {
+          if (typeof data === "string" || typeof data === "number" || typeof data === "boolean") {
             return String(data);
           }
           return data ? JSON.stringify(data) : "";
@@ -3765,9 +3437,7 @@ var PropertyRenderer = class {
     const maxLen = (_a = settings.propertyDisplayMaxLength) != null ? _a : 0;
     const displayValues =
       maxLen > 0
-        ? values.map((v) =>
-            v != null && v.length > maxLen ? v.slice(0, maxLen) + "\u2026" : v,
-          )
+        ? values.map((v) => (v != null && v.length > maxLen ? v.slice(0, maxLen) + "\u2026" : v))
         : values;
     const propertyGroups = [
       {
@@ -3834,10 +3504,7 @@ var PropertyRenderer = class {
         (typeof propValue === "string" && propValue.trim() === "");
       let propertyExists = false;
       try {
-        const filePath =
-          (_a2 = entry == null ? void 0 : entry.file) == null
-            ? void 0
-            : _a2.path;
+        const filePath = (_a2 = entry == null ? void 0 : entry.file) == null ? void 0 : _a2.path;
         if (
           filePath &&
           ((_b = this.app) == null ? void 0 : _b.vault) &&
@@ -3881,17 +3548,13 @@ var PropertyRenderer = class {
       const topMetaEl = cardEl.createDiv("card-properties properties-top");
       topGroups.forEach((group, groupIndex) => {
         const prop1ShouldRender =
-          group.props[0] &&
-          !shouldHideProperty(group.props[0], group.values[0]);
+          group.props[0] && !shouldHideProperty(group.props[0], group.values[0]);
         const prop2ShouldRender =
-          group.props[1] &&
-          !shouldHideProperty(group.props[1], group.values[1]);
+          group.props[1] && !shouldHideProperty(group.props[1], group.values[1]);
         if (!prop1ShouldRender && !prop2ShouldRender) {
           return;
         }
-        const rowEl = topMetaEl.createDiv(
-          `property-row property-row-group-${groupIndex + 1}`,
-        );
+        const rowEl = topMetaEl.createDiv(`property-row property-row-group-${groupIndex + 1}`);
         if (group.sideBySide) {
           rowEl.addClass("property-row-side-by-side");
         }
@@ -3921,26 +3584,17 @@ var PropertyRenderer = class {
         }
       });
     }
-    if (
-      (position === "bottom" || position === void 0) &&
-      bottomGroups.length > 0
-    ) {
-      const bottomMetaEl = cardEl.createDiv(
-        "card-properties properties-bottom",
-      );
+    if ((position === "bottom" || position === void 0) && bottomGroups.length > 0) {
+      const bottomMetaEl = cardEl.createDiv("card-properties properties-bottom");
       bottomGroups.forEach((group, groupIndex) => {
         const prop1ShouldRender =
-          group.props[0] &&
-          !shouldHideProperty(group.props[0], group.values[0]);
+          group.props[0] && !shouldHideProperty(group.props[0], group.values[0]);
         const prop2ShouldRender =
-          group.props[1] &&
-          !shouldHideProperty(group.props[1], group.values[1]);
+          group.props[1] && !shouldHideProperty(group.props[1], group.values[1]);
         if (!prop1ShouldRender && !prop2ShouldRender) {
           return;
         }
-        const rowEl = bottomMetaEl.createDiv(
-          `property-row property-row-group-${groupIndex + 1}`,
-        );
+        const rowEl = bottomMetaEl.createDiv(`property-row property-row-group-${groupIndex + 1}`);
         if (group.sideBySide) {
           rowEl.addClass("property-row-side-by-side");
         }
@@ -3994,10 +3648,7 @@ var PropertyRenderer = class {
       return;
     }
     if (settings.propertyLabels === "hide") {
-      if (
-        (propertyName === "tags" || propertyName === "note.tags") &&
-        card.yamlTags.length === 0
-      ) {
+      if ((propertyName === "tags" || propertyName === "note.tags") && card.yamlTags.length === 0) {
         return;
       }
       if (
@@ -4008,17 +3659,9 @@ var PropertyRenderer = class {
       }
     }
     const basesConfig = this.getBasesConfig ? this.getBasesConfig() : void 0;
-    const basesController = this.getBasesController
-      ? this.getBasesController()
-      : void 0;
-    const propertyLabel = getPropertyLabel(
-      propertyName,
-      this.app,
-      basesConfig,
-      basesController,
-    );
-    const isCustomLabel =
-      propertyLabel.toLowerCase() !== propertyName.toLowerCase();
+    const basesController = this.getBasesController ? this.getBasesController() : void 0;
+    const propertyLabel = getPropertyLabel(propertyName, this.app, basesConfig, basesController);
+    const isCustomLabel = propertyLabel.toLowerCase() !== propertyName.toLowerCase();
     if (settings.propertyLabels === "above") {
       const labelEl = container.createDiv("property-label");
       if (isCustomLabel) {
@@ -4066,9 +3709,7 @@ var PropertyRenderer = class {
           var _a, _b, _c;
           e.preventDefault();
           const searchPlugin =
-            (_b =
-              (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
-            null
+            (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null
               ? void 0
               : _b["global-search"];
           if (
@@ -4099,9 +3740,7 @@ var PropertyRenderer = class {
           var _a, _b, _c;
           e.preventDefault();
           const searchPlugin =
-            (_b =
-              (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) ==
-            null
+            (_b = (_a = this.app.internalPlugins) == null ? void 0 : _a.plugins) == null
               ? void 0
               : _b["global-search"];
           if (
@@ -4116,12 +3755,7 @@ var PropertyRenderer = class {
     } else {
       if (!this.app || !this.app.metadataCache) {
         const textWrapper = metaContent.createDiv("text-wrapper");
-        this.renderPropertyValueWithLinks(
-          textWrapper,
-          resolvedValue,
-          card.path,
-          propertyName,
-        );
+        this.renderPropertyValueWithLinks(textWrapper, resolvedValue, card.path, propertyName);
         return;
       }
       let propInfo = void 0;
@@ -4141,13 +3775,10 @@ var PropertyRenderer = class {
       } catch (e) {}
       const isCheckbox =
         (propInfo == null ? void 0 : propInfo.widget) === "checkbox" ||
-        (entryValue &&
-          "data" in entryValue &&
-          typeof entryValue.data === "boolean");
+        (entryValue && "data" in entryValue && typeof entryValue.data === "boolean");
       if (isCheckbox && onPropertyToggle) {
         const checkbox = metaContent.createEl("input", { type: "checkbox" });
-        checkbox.checked =
-          entryValue && "data" in entryValue ? Boolean(entryValue.data) : false;
+        checkbox.checked = entryValue && "data" in entryValue ? Boolean(entryValue.data) : false;
         metaContent.createSpan({ text: propertyLabel });
         checkbox.addEventListener("change", (e) => {
           e.stopPropagation();
@@ -4168,18 +3799,10 @@ var PropertyRenderer = class {
         });
       } else {
         const textWrapper = metaContent.createDiv("text-wrapper");
-        this.renderPropertyValueWithLinks(
-          textWrapper,
-          resolvedValue,
-          card.path,
-          propertyName,
-        );
+        this.renderPropertyValueWithLinks(textWrapper, resolvedValue, card.path, propertyName);
       }
     }
-    if (
-      !metaContent.textContent ||
-      metaContent.textContent.trim().length === 0
-    ) {
+    if (!metaContent.textContent || metaContent.textContent.trim().length === 0) {
       metaContent.remove();
     }
   }
@@ -4195,8 +3818,7 @@ var PropertyRenderer = class {
     }
     const trimmedValue = value.trim();
     if (
-      (trimmedValue.startsWith("http://") ||
-        trimmedValue.startsWith("https://")) &&
+      (trimmedValue.startsWith("http://") || trimmedValue.startsWith("https://")) &&
       !trimmedValue.includes(" ")
     ) {
       const linkEl = container.createEl("a", {
@@ -4317,9 +3939,7 @@ function resolveImageUrl(app, url) {
   var _a, _b, _c, _d;
   if (!url.startsWith("/") || url.startsWith("//")) return url;
   const vaultCms =
-    (_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null
-      ? void 0
-      : _b["vault-cms"];
+    (_b = (_a = app.plugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["vault-cms"];
   return (_d =
     (_c = vaultCms == null ? void 0 : vaultCms.resolvePublicPath) == null
       ? void 0
@@ -4328,14 +3948,7 @@ function resolveImageUrl(app, url) {
     : url;
 }
 var SharedCardRenderer = class {
-  constructor(
-    app,
-    plugin,
-    propertyObservers,
-    updateLayoutRef,
-    basesConfig,
-    basesController,
-  ) {
+  constructor(app, plugin, propertyObservers, updateLayoutRef, basesConfig, basesController) {
     this.app = app;
     this.plugin = plugin;
     this.propertyObservers = propertyObservers;
@@ -4515,14 +4128,7 @@ var SharedCardRenderer = class {
     });
     const titleEl = cardEl.createDiv("card-title");
     titleEl.appendText(card.title);
-    setupQuickEditIcon(
-      this.app,
-      this.plugin,
-      titleEl,
-      cardEl,
-      card.path,
-      settings,
-    );
+    setupQuickEditIcon(this.app, this.plugin, titleEl, cardEl, card.path, settings);
     if (settings.showDate && settings.dateProperty) {
       let dateValue = entry.getValue(settings.dateProperty);
       const hasValidDate =
@@ -4531,10 +4137,7 @@ var SharedCardRenderer = class {
           ("data" in dateValue && dateValue.data != null));
       if (!hasValidDate) {
         const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (
-          file instanceof import_obsidian11.TFile &&
-          file.extension === "mdx"
-        ) {
+        if (file instanceof import_obsidian11.TFile && file.extension === "mdx") {
           void (async () => {
             const frontmatter = await getFileFrontmatter(this.app, file);
             if (frontmatter) {
@@ -4561,9 +4164,7 @@ var SharedCardRenderer = class {
                 }
                 if (!date && typeof frontmatterValue === "string") {
                   const dateStr = frontmatterValue.trim();
-                  const isoDateStr = dateStr.includes("T")
-                    ? dateStr
-                    : `${dateStr}T00:00:00`;
+                  const isoDateStr = dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00`;
                   const parsedDate = new Date(isoDateStr);
                   if (!isNaN(parsedDate.getTime())) {
                     date = parsedDate;
@@ -4599,12 +4200,8 @@ var SharedCardRenderer = class {
                       if (!dateEl) {
                         const titleEl2 = cardEl.querySelector(".card-title");
                         if (titleEl2 && titleEl2.parentElement) {
-                          dateEl =
-                            titleEl2.parentElement.createDiv("card-date");
-                          titleEl2.parentElement.insertBefore(
-                            dateEl,
-                            titleEl2.nextSibling,
-                          );
+                          dateEl = titleEl2.parentElement.createDiv("card-date");
+                          titleEl2.parentElement.insertBefore(dateEl, titleEl2.nextSibling);
                         } else {
                           dateEl = cardEl.createDiv("card-date");
                         }
@@ -4652,27 +4249,17 @@ var SharedCardRenderer = class {
         }
       }
     }
-    this.propertyRenderer.renderProperties(
-      cardEl,
-      card,
-      entry,
-      settings,
-      onPropertyToggle,
-      "top",
-    );
+    this.propertyRenderer.renderProperties(cardEl, card, entry, settings, onPropertyToggle, "top");
     if (
       settings.showTextPreview ||
       (settings.showTags && card.displayTags && card.displayTags.length > 0) ||
       settings.imageFormat === "thumbnail" ||
       settings.imageFormat === "cover" ||
-      (settings.imageFormat !== "none" &&
-        (card.imageUrl || card.hasImageAvailable))
+      (settings.imageFormat !== "none" && (card.imageUrl || card.hasImageAvailable))
     ) {
       const contentContainer = cardEl.createDiv("card-content");
       if (settings.imageFormat === "thumbnail" && card.imageUrl) {
-        const rawUrls = Array.isArray(card.imageUrl)
-          ? card.imageUrl
-          : [card.imageUrl];
+        const rawUrls = Array.isArray(card.imageUrl) ? card.imageUrl : [card.imageUrl];
         const imageUrls = rawUrls.filter(
           (url) => url && typeof url === "string" && url.trim().length > 0,
         );
@@ -4705,11 +4292,7 @@ var SharedCardRenderer = class {
           cardEl.__textPreviewEl = textPreviewEl;
           cardEl.__cardPath = card.path;
         }
-        if (
-          settings.showTags &&
-          card.displayTags &&
-          card.displayTags.length > 0
-        ) {
+        if (settings.showTags && card.displayTags && card.displayTags.length > 0) {
           const tagsContainer = textWrapper.createDiv("card-tags");
           const tagStyle = getTagStyle();
           if (tagStyle !== "plain") {
@@ -4736,11 +4319,7 @@ var SharedCardRenderer = class {
           cardEl.__textPreviewEl = textPreviewEl;
           cardEl.__cardPath = card.path;
         }
-        if (
-          settings.showTags &&
-          card.displayTags &&
-          card.displayTags.length > 0
-        ) {
+        if (settings.showTags && card.displayTags && card.displayTags.length > 0) {
           const tagsContainer = contentContainer.createDiv("card-tags");
           const tagStyle = getTagStyle();
           if (tagStyle !== "plain") {
@@ -4761,9 +4340,7 @@ var SharedCardRenderer = class {
       }
       if (settings.imageFormat === "cover") {
         if (card.imageUrl) {
-          const rawUrls = Array.isArray(card.imageUrl)
-            ? card.imageUrl
-            : [card.imageUrl];
+          const rawUrls = Array.isArray(card.imageUrl) ? card.imageUrl : [card.imageUrl];
           const imageUrls = rawUrls.filter(
             (url) => url && typeof url === "string" && url.trim().length > 0,
           );
@@ -4796,13 +4373,9 @@ var SharedCardRenderer = class {
           }
         }
         if (card.hasImageAvailable && !card.imageUrl) {
-          const placeholderEl = contentContainer.createDiv(
-            "card-cover-placeholder",
-          );
+          const placeholderEl = contentContainer.createDiv("card-cover-placeholder");
         } else if (!card.imageUrl) {
-          const placeholderEl = contentContainer.createDiv(
-            "card-cover-placeholder",
-          );
+          const placeholderEl = contentContainer.createDiv("card-cover-placeholder");
         }
       }
     }
@@ -4913,9 +4486,7 @@ var BulkOperations = class {
             }
           } else {
             if (startsWithUnderscore) {
-              const newName =
-                fileName.substring(1) +
-                (file.extension ? `.${file.extension}` : "");
+              const newName = fileName.substring(1) + (file.extension ? `.${file.extension}` : "");
               pathParts[pathParts.length - 1] = newName;
               const newPath = pathParts.join("/");
               await this.app.fileManager.renameFile(file, newPath);
@@ -4973,9 +4544,7 @@ var BulkOperations = class {
       if (frontmatter == null ? void 0 : frontmatter.tags) {
         const fmTags = frontmatter.tags;
         const currentTags = Array.isArray(fmTags) ? fmTags : [fmTags];
-        const updatedTags = currentTags.filter(
-          (tag) => !tagsToRemove.includes(tag),
-        );
+        const updatedTags = currentTags.filter((tag) => !tagsToRemove.includes(tag));
         await processFileFrontMatter(this.app, file, (fm) => {
           if (updatedTags.length > 0) {
             fm.tags = updatedTags;
@@ -4993,9 +4562,7 @@ var BulkOperations = class {
    * Set a property value for multiple files
    */
   async setProperty(files, property, value, propertyType = "text") {
-    const cleanProperty = property.startsWith("note.")
-      ? property.substring(5)
-      : property;
+    const cleanProperty = property.startsWith("note.") ? property.substring(5) : property;
     const props = /* @__PURE__ */ new Map();
     props.set(cleanProperty, {
       type: propertyType,
@@ -5014,9 +4581,7 @@ var BulkOperations = class {
    * Remove a property from multiple files
    */
   async removeProperty(files, property) {
-    const cleanProperty = property.startsWith("note.")
-      ? property.substring(5)
-      : property;
+    const cleanProperty = property.startsWith("note.") ? property.substring(5) : property;
     await this.batchProcessFiles(files, async (file) => {
       await removeProperties(this.app, file, [cleanProperty]);
     });
@@ -5061,9 +4626,7 @@ var ManageTagsModal = class extends import_obsidian13.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    new import_obsidian13.Setting(contentEl)
-      .setName("Manage tags")
-      .setHeading();
+    new import_obsidian13.Setting(contentEl).setName("Manage tags").setHeading();
     contentEl.createEl("p", {
       text: `Managing tags for ${this.files.length} file${this.files.length !== 1 ? "s" : ""}`,
     });
@@ -5085,17 +4648,11 @@ var ManageTagsModal = class extends import_obsidian13.Modal {
           void (async () => {
             const frontmatter = await getFileFrontmatter(this.app, file);
             if (frontmatter == null ? void 0 : frontmatter.tags) {
-              const tags = Array.isArray(frontmatter.tags)
-                ? frontmatter.tags
-                : [frontmatter.tags];
+              const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [frontmatter.tags];
               tags.forEach((tag) => {
                 if (!allTags.has(tag)) {
                   allTags.add(tag);
-                  if (
-                    this.contentEl &&
-                    this.contentEl.isConnected &&
-                    removeContainer.isConnected
-                  ) {
+                  if (this.contentEl && this.contentEl.isConnected && removeContainer.isConnected) {
                     this.addTagCheckbox(removeContainer, tag);
                   }
                 }
@@ -5106,26 +4663,22 @@ var ManageTagsModal = class extends import_obsidian13.Modal {
           const metadata = this.app.metadataCache.getFileCache(file);
           const frontmatter = metadata == null ? void 0 : metadata.frontmatter;
           if (frontmatter == null ? void 0 : frontmatter.tags) {
-            const tags = Array.isArray(frontmatter.tags)
-              ? frontmatter.tags
-              : [frontmatter.tags];
+            const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [frontmatter.tags];
             tags.forEach((tag) => allTags.add(tag));
           }
         }
       }
     }
     for (const tag of Array.from(allTags).sort()) {
-      new import_obsidian13.Setting(removeContainer)
-        .setName(tag)
-        .addToggle((toggle) => {
-          toggle.setValue(this.tagsToRemove.has(tag)).onChange((value) => {
-            if (value) {
-              this.tagsToRemove.add(tag);
-            } else {
-              this.tagsToRemove.delete(tag);
-            }
-          });
+      new import_obsidian13.Setting(removeContainer).setName(tag).addToggle((toggle) => {
+        toggle.setValue(this.tagsToRemove.has(tag)).onChange((value) => {
+          if (value) {
+            this.tagsToRemove.add(tag);
+          } else {
+            this.tagsToRemove.delete(tag);
+          }
         });
+      });
     }
     const buttonContainer = contentEl.createDiv();
     buttonContainer.addClass("bases-cms-modal-button-container");
@@ -5143,17 +4696,15 @@ var ManageTagsModal = class extends import_obsidian13.Modal {
     });
   }
   addTagCheckbox(container, tag) {
-    new import_obsidian13.Setting(container)
-      .setName(tag)
-      .addToggle((toggle) => {
-        toggle.setValue(this.tagsToRemove.has(tag)).onChange((value) => {
-          if (value) {
-            this.tagsToRemove.add(tag);
-          } else {
-            this.tagsToRemove.delete(tag);
-          }
-        });
+    new import_obsidian13.Setting(container).setName(tag).addToggle((toggle) => {
+      toggle.setValue(this.tagsToRemove.has(tag)).onChange((value) => {
+        if (value) {
+          this.tagsToRemove.add(tag);
+        } else {
+          this.tagsToRemove.delete(tag);
+        }
       });
+    });
   }
   async applyChanges() {
     if (this.tagsToAdd.trim()) {
@@ -5189,9 +4740,7 @@ var SetPropertyModal = class extends import_obsidian14.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    new import_obsidian14.Setting(contentEl)
-      .setName("Set property")
-      .setHeading();
+    new import_obsidian14.Setting(contentEl).setName("Set property").setHeading();
     contentEl.createEl("p", {
       text: `Setting property on ${this.files.length} file${this.files.length !== 1 ? "s" : ""}`,
     });
@@ -5220,9 +4769,7 @@ var SetPropertyModal = class extends import_obsidian14.Modal {
       });
     new import_obsidian14.Setting(contentEl)
       .setName("Property value")
-      .setDesc(
-        "Enter the property value. For List type, use comma- or newline-separated values.",
-      )
+      .setDesc("Enter the property value. For List type, use comma- or newline-separated values.")
       .addText((text) => {
         text.setPlaceholder("Enter value").onChange((value) => {
           this.propertyValue = value;
@@ -5238,10 +4785,7 @@ var SetPropertyModal = class extends import_obsidian14.Modal {
     applyBtn.addClass("mod-cta");
     applyBtn.addEventListener("click", () => {
       void (async () => {
-        if (
-          this.propertyName &&
-          (this.propertyValue || this.propertyType === "list")
-        ) {
+        if (this.propertyName && (this.propertyValue || this.propertyType === "list")) {
           await this.applyChanges();
           this.close();
         }
@@ -5253,9 +4797,7 @@ var SetPropertyModal = class extends import_obsidian14.Modal {
     if (this.propertyType === "number") {
       value = Number(this.propertyValue);
     } else if (this.propertyType === "checkbox") {
-      value =
-        this.propertyValue.toLowerCase() === "true" ||
-        this.propertyValue === "1";
+      value = this.propertyValue.toLowerCase() === "true" || this.propertyValue === "1";
     } else if (this.propertyType === "date") {
       value = this.propertyValue;
     } else if (this.propertyType === "list") {
@@ -5264,12 +4806,7 @@ var SetPropertyModal = class extends import_obsidian14.Modal {
         .map((s) => s.trim())
         .filter(Boolean);
     }
-    await this.bulkOps.setProperty(
-      this.files,
-      this.propertyName,
-      value,
-      this.propertyType,
-    );
+    await this.bulkOps.setProperty(this.files, this.propertyName, value, this.propertyType);
   }
   onClose() {
     const { contentEl } = this;
@@ -5290,9 +4827,7 @@ var RemovePropertyModal = class extends import_obsidian15.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    new import_obsidian15.Setting(contentEl)
-      .setName("Remove property")
-      .setHeading();
+    new import_obsidian15.Setting(contentEl).setName("Remove property").setHeading();
     contentEl.createEl("p", {
       text: `Removing properties from ${this.files.length} file${this.files.length !== 1 ? "s" : ""}`,
     });
@@ -5318,10 +4853,7 @@ var RemovePropertyModal = class extends import_obsidian15.Modal {
     void (async () => {
       for (const filePath of this.files) {
         const file = this.app.vault.getAbstractFileByPath(filePath);
-        if (
-          file instanceof import_obsidian15.TFile &&
-          file.extension === "mdx"
-        ) {
+        if (file instanceof import_obsidian15.TFile && file.extension === "mdx") {
           const frontmatter = await getFileFrontmatter(this.app, file);
           if (frontmatter) {
             for (const key in frontmatter) {
@@ -5365,17 +4897,15 @@ var RemovePropertyModal = class extends import_obsidian15.Modal {
     });
   }
   addPropertyCheckbox(container, prop) {
-    new import_obsidian15.Setting(container)
-      .setName(prop)
-      .addToggle((toggle) => {
-        toggle.setValue(this.propertiesToRemove.has(prop)).onChange((value) => {
-          if (value) {
-            this.propertiesToRemove.add(prop);
-          } else {
-            this.propertiesToRemove.delete(prop);
-          }
-        });
+    new import_obsidian15.Setting(container).setName(prop).addToggle((toggle) => {
+      toggle.setValue(this.propertiesToRemove.has(prop)).onChange((value) => {
+        if (value) {
+          this.propertiesToRemove.add(prop);
+        } else {
+          this.propertiesToRemove.delete(prop);
+        }
       });
+    });
   }
   async applyChanges() {
     for (const prop of this.propertiesToRemove) {
@@ -5403,13 +4933,9 @@ var BulkOperationConfirmModal = class extends import_obsidian19.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    const operationName =
-      this.operation === "draft" ? "mark as draft" : "mark as published";
-    const headingText =
-      operationName.charAt(0).toUpperCase() + operationName.slice(1);
-    new import_obsidian19.Setting(contentEl)
-      .setName(`Confirm ${headingText}`)
-      .setHeading();
+    const operationName = this.operation === "draft" ? "mark as draft" : "mark as published";
+    const headingText = operationName.charAt(0).toUpperCase() + operationName.slice(1);
+    new import_obsidian19.Setting(contentEl).setName(`Confirm ${headingText}`).setHeading();
     contentEl.createEl("p", {
       text: `Are you sure you want to ${operationName} ${this.files.length} file${this.files.length !== 1 ? "s" : ""}?`,
     });
@@ -5449,14 +4975,7 @@ var BulkOperationConfirmModal = class extends import_obsidian19.Modal {
 // src/utils/toolbar-actions.ts
 init_smart_deletion();
 var ToolbarActions = class {
-  constructor(
-    app,
-    plugin,
-    getSelectedFiles,
-    clearSelection,
-    refreshView,
-    showToolbar,
-  ) {
+  constructor(app, plugin, getSelectedFiles, clearSelection, refreshView, showToolbar) {
     this.app = app;
     this.plugin = plugin;
     this.getSelectedFiles = getSelectedFiles;
@@ -5469,17 +4988,12 @@ var ToolbarActions = class {
     const files = this.getSelectedFiles();
     if (files.length === 0) return;
     if (this.plugin.settings.confirmBulkOperations) {
-      const modal = new BulkOperationConfirmModal(
-        this.app,
-        files,
-        "draft",
-        () => {
-          void (async () => {
-            await this.bulkOps.setDraft(files, true, settings);
-            this.refreshView();
-          })();
-        },
-      );
+      const modal = new BulkOperationConfirmModal(this.app, files, "draft", () => {
+        void (async () => {
+          await this.bulkOps.setDraft(files, true, settings);
+          this.refreshView();
+        })();
+      });
       modal.open();
     } else {
       await this.bulkOps.setDraft(files, true, settings);
@@ -5490,17 +5004,12 @@ var ToolbarActions = class {
     const files = this.getSelectedFiles();
     if (files.length === 0) return;
     if (this.plugin.settings.confirmBulkOperations) {
-      const modal = new BulkOperationConfirmModal(
-        this.app,
-        files,
-        "publish",
-        () => {
-          void (async () => {
-            await this.bulkOps.setDraft(files, false, settings);
-            this.refreshView();
-          })();
-        },
-      );
+      const modal = new BulkOperationConfirmModal(this.app, files, "publish", () => {
+        void (async () => {
+          await this.bulkOps.setDraft(files, false, settings);
+          this.refreshView();
+        })();
+      });
       modal.open();
     } else {
       await this.bulkOps.setDraft(files, false, settings);
@@ -5541,22 +5050,14 @@ var ToolbarActions = class {
     const files = this.getSelectedFiles();
     if (files.length === 0) return;
     if (this.plugin.settings.confirmDeletions) {
-      const preview = await prepareDeletionPreview(
-        this.app,
-        files,
-        this.plugin.settings,
-      );
+      const preview = await prepareDeletionPreview(this.app, files, this.plugin.settings);
       const modal = new DeletionPreviewModal(this.app, preview, () => {
         this.clearSelection();
         this.refreshView();
       });
       modal.open();
     } else {
-      const preview = await prepareDeletionPreview(
-        this.app,
-        files,
-        this.plugin.settings,
-      );
+      const preview = await prepareDeletionPreview(this.app, files, this.plugin.settings);
       await executeSmartDeletion(this.app, preview);
       this.clearSelection();
       this.refreshView();
@@ -5612,8 +5113,7 @@ var BulkToolbar = class {
   }
   createToolbar() {
     this.toolbarEl = document.createElement("div");
-    this.toolbarEl.className =
-      "bases-toolbar bases-cms-bulk-toolbar bases-cms-bulk-toolbar-hidden";
+    this.toolbarEl.className = "bases-toolbar bases-cms-bulk-toolbar bases-cms-bulk-toolbar-hidden";
     this.toolbarEl.__bulkToolbarInstance = this;
     this.createToolbarContent();
     this.positionToolbar();
@@ -5627,9 +5127,7 @@ var BulkToolbar = class {
       if (!parent2 || !newNode) return false;
       if (
         newNode.parentElement === parent2 &&
-        (refNode === null
-          ? !newNode.nextSibling
-          : newNode.nextSibling === refNode)
+        (refNode === null ? !newNode.nextSibling : newNode.nextSibling === refNode)
       ) {
         return true;
       }
@@ -5649,17 +5147,9 @@ var BulkToolbar = class {
       ((_a = this.container.closest(".view-content")) == null
         ? void 0
         : _a.querySelector(".bases-header")) ||
-      ((_b = this.container.parentElement) == null
-        ? void 0
-        : _b.querySelector(".bases-header"));
+      ((_b = this.container.parentElement) == null ? void 0 : _b.querySelector(".bases-header"));
     if (basesHeader instanceof HTMLElement && basesHeader.parentElement) {
-      if (
-        safeInsertBefore(
-          basesHeader.parentElement,
-          this.toolbarEl,
-          basesHeader.nextSibling,
-        )
-      )
+      if (safeInsertBefore(basesHeader.parentElement, this.toolbarEl, basesHeader.nextSibling))
         return;
     }
     const parent = this.container.parentElement;
@@ -5669,16 +5159,8 @@ var BulkToolbar = class {
   }
   createToolbarContent() {
     if (!this.toolbarEl) return;
-    const leftContainer = this.toolbarEl.createDiv(
-      "bases-cms-bulk-toolbar-left",
-    );
-    const createBasesButton = (
-      iconName,
-      text,
-      onClick,
-      container,
-      isDestructive = false,
-    ) => {
+    const leftContainer = this.toolbarEl.createDiv("bases-cms-bulk-toolbar-left");
+    const createBasesButton = (iconName, text, onClick, container, isDestructive = false) => {
       const toolbarItem = container.createDiv("bases-toolbar-item");
       const button = toolbarItem.createDiv("text-icon-button");
       if (isDestructive) {
@@ -5693,29 +5175,15 @@ var BulkToolbar = class {
       return button;
     };
     if (this.plugin.settings.showToolbarSelectAll) {
-      createBasesButton(
-        "copy-check",
-        "Select all",
-        () => this.handleSelectAll(),
-        leftContainer,
-      );
+      createBasesButton("copy-check", "Select all", () => this.handleSelectAll(), leftContainer);
     }
     if (this.plugin.settings.showToolbarClear) {
-      createBasesButton(
-        "square-x",
-        "Clear",
-        () => this.clearSelection(),
-        leftContainer,
-      );
+      createBasesButton("square-x", "Clear", () => this.clearSelection(), leftContainer);
     }
-    const countItem = leftContainer.createDiv(
-      "bases-toolbar-item bases-cms-selected-count",
-    );
+    const countItem = leftContainer.createDiv("bases-toolbar-item bases-cms-selected-count");
     this.countEl = countItem.createSpan("text-button-label");
     this.countEl.setText("0 selected");
-    const rightContainer = this.toolbarEl.createDiv(
-      "bases-cms-bulk-toolbar-right",
-    );
+    const rightContainer = this.toolbarEl.createDiv("bases-cms-bulk-toolbar-right");
     if (this.plugin.settings.showToolbarPublish) {
       createBasesButton(
         "book-check",
@@ -5737,12 +5205,7 @@ var BulkToolbar = class {
       );
     }
     if (this.plugin.settings.showToolbarTags) {
-      createBasesButton(
-        "tags",
-        "Tags",
-        () => this.actions.handleManageTags(),
-        rightContainer,
-      );
+      createBasesButton("tags", "Tags", () => this.actions.handleManageTags(), rightContainer);
     }
     if (this.plugin.settings.showToolbarSet) {
       createBasesButton(
@@ -5873,9 +5336,7 @@ var BulkToolbar = class {
    * Preserves visibility state and count
    */
   recreate() {
-    const wasVisible =
-      this.toolbarEl &&
-      !this.toolbarEl.hasClass("bases-cms-bulk-toolbar-hidden");
+    const wasVisible = this.toolbarEl && !this.toolbarEl.hasClass("bases-cms-bulk-toolbar-hidden");
     let currentCount = 0;
     if (this.countEl && this.countEl.textContent) {
       const match = this.countEl.textContent.match(/\d+/);
@@ -5911,13 +5372,7 @@ var BulkToolbar = class {
 
 // src/utils/new-note-interceptor.ts
 init_settings_schema();
-function setupNewNoteInterceptor(
-  app,
-  containerEl,
-  config,
-  pluginSettings,
-  registerCleanup,
-) {
+function setupNewNoteInterceptor(app, containerEl, config, pluginSettings, registerCleanup) {
   const interceptNewButton = (e) => {
     const target = e.target;
     const buttonEl = target.closest(
@@ -5931,8 +5386,7 @@ function setupNewNoteInterceptor(
     }
     const activeLeaf = app.workspace.activeLeaf;
     const activeView = activeLeaf == null ? void 0 : activeLeaf.view;
-    const activeViewContainer =
-      activeView == null ? void 0 : activeView.containerEl;
+    const activeViewContainer = activeView == null ? void 0 : activeView.containerEl;
     const isCMSView =
       (activeView == null ? void 0 : activeView.type) === "bases-cms" ||
       (activeViewContainer == null
@@ -5956,24 +5410,20 @@ function setupNewNoteInterceptor(
       containerWithView.__cmsConfig ||
       config;
     const settings = readCMSSettings(viewConfig, pluginSettings);
-    const hasCustomLocation =
-      settings.newNoteLocation && settings.newNoteLocation.trim() !== "";
+    const hasCustomLocation = settings.newNoteLocation && settings.newNoteLocation.trim() !== "";
     if (settings.customizeNewButton || hasCustomLocation) {
       e.preventDefault();
       e.stopPropagation();
       e.stopImmediatePropagation();
       void (async () => {
         var _a;
-        const locationInput =
-          ((_a = settings.newNoteLocation) == null ? void 0 : _a.trim()) || "";
+        const locationInput = ((_a = settings.newNoteLocation) == null ? void 0 : _a.trim()) || "";
         if (locationInput === "" && !settings.customizeNewButton) {
           const vaultConfig = app.vault.config;
           const newFileLocation =
-            (vaultConfig == null ? void 0 : vaultConfig.newFileLocation) ||
-            "folder";
+            (vaultConfig == null ? void 0 : vaultConfig.newFileLocation) || "folder";
           const newFileFolderPath =
-            (vaultConfig == null ? void 0 : vaultConfig.newFileFolderPath) ||
-            "";
+            (vaultConfig == null ? void 0 : vaultConfig.newFileFolderPath) || "";
           let filePath = "Untitled.md";
           if (newFileLocation === "folder" && newFileFolderPath) {
             filePath = `${newFileFolderPath}/Untitled.md`;
@@ -6005,10 +5455,7 @@ function setupNewNoteInterceptor(
           folder = app.vault.getAbstractFileByPath(folderPath);
         }
         if (folder && "children" in folder) {
-          const newFile = await app.vault.create(
-            `${folderPath}/Untitled.md`,
-            "",
-          );
+          const newFile = await app.vault.create(`${folderPath}/Untitled.md`, "");
           if (settings.customizeNewButton) {
             await app.workspace.openLinkText(newFile.path, "", false);
           }
@@ -6063,12 +5510,9 @@ var PropertyToggleHandler = class {
     try {
       const file = this.app.vault.getAbstractFileByPath(path);
       if (!(file instanceof import_obsidian21.TFile)) return;
-      const cleanProperty = property.startsWith("note.")
-        ? property.substring(5)
-        : property;
+      const cleanProperty = property.startsWith("note.") ? property.substring(5) : property;
       const settings = readCMSSettings(this.config, this.pluginSettings);
-      const isDraftProperty =
-        settings.showDraftStatus && cleanProperty === "draft";
+      const isDraftProperty = settings.showDraftStatus && cleanProperty === "draft";
       let shouldRefresh = false;
       if (isDraftProperty) {
         if (settings.draftStatusUseFilenamePrefix) {
@@ -6086,9 +5530,7 @@ var PropertyToggleHandler = class {
             }
           } else {
             if (startsWithUnderscore) {
-              const newName =
-                fileName.substring(1) +
-                (file.extension ? `.${file.extension}` : "");
+              const newName = fileName.substring(1) + (file.extension ? `.${file.extension}` : "");
               pathParts[pathParts.length - 1] = newName;
               const newPath = pathParts.join("/");
               await this.app.fileManager.renameFile(file, newPath);
@@ -6119,10 +5561,7 @@ var PropertyToggleHandler = class {
             try {
               this.onRefresh();
             } catch (error) {
-              console.error(
-                "Error refreshing view after property toggle:",
-                error,
-              );
+              console.error("Error refreshing view after property toggle:", error);
             }
           }, 100);
         });
@@ -6136,14 +5575,7 @@ var PropertyToggleHandler = class {
 // src/utils/scroll-layout-manager.ts
 init_settings_schema();
 var ScrollLayoutManager = class {
-  constructor(
-    containerEl,
-    app,
-    config,
-    pluginSettings,
-    onLoadMore,
-    registerCleanup,
-  ) {
+  constructor(containerEl, app, config, pluginSettings, onLoadMore, registerCleanup) {
     this.containerEl = containerEl;
     this.app = app;
     this.pluginSettings = pluginSettings;
@@ -6221,16 +5653,10 @@ var ScrollLayoutManager = class {
       const isMobile = (_a = this.app.isMobile) != null ? _a : false;
       const viewportMultiplier = isMobile ? 1 : 2;
       const threshold = clientHeight * viewportMultiplier;
-      if (
-        distanceFromBottom < threshold &&
-        this.displayedCount < totalEntries
-      ) {
+      if (distanceFromBottom < threshold && this.displayedCount < totalEntries) {
         this.isLoading = true;
         const batchSize = 50;
-        this.displayedCount = Math.min(
-          this.displayedCount + batchSize,
-          totalEntries,
-        );
+        this.displayedCount = Math.min(this.displayedCount + batchSize, totalEntries);
         this.onLoadMore();
       }
       this.scrollThrottleTimeout = window.setTimeout(() => {
@@ -6259,16 +5685,12 @@ var ScrollLayoutManager = class {
       const currentSettings = readCMSSettings(this.config, this.pluginSettings);
       const cardMinWidth = currentSettings.cardSize;
       const imageAspectRatio = currentSettings.imageAspectRatio;
-      this.containerEl.style.setProperty(
-        "--card-min-width",
-        `${cardMinWidth}px`,
-      );
+      this.containerEl.style.setProperty("--card-min-width", `${cardMinWidth}px`);
       this.containerEl.style.setProperty(
         "--bases-cms-image-aspect-ratio",
         String(imageAspectRatio),
       );
-      const descriptionMaxLines =
-        (_a = currentSettings.descriptionMaxLines) != null ? _a : 5;
+      const descriptionMaxLines = (_a = currentSettings.descriptionMaxLines) != null ? _a : 5;
       this.containerEl.style.setProperty(
         "--bases-cms-text-preview-lines",
         String(descriptionMaxLines),
@@ -6295,10 +5717,7 @@ var ScrollLayoutManager = class {
         this.lastImageAspectRatio !== currentImageAspectRatio ||
         this.lastDescriptionMaxLines !== currentDescriptionMaxLines
       ) {
-        this.containerEl.style.setProperty(
-          "--card-min-width",
-          `${currentCardSize}px`,
-        );
+        this.containerEl.style.setProperty("--card-min-width", `${currentCardSize}px`);
         this.containerEl.style.setProperty(
           "--bases-cms-image-aspect-ratio",
           String(currentImageAspectRatio),
@@ -6320,10 +5739,7 @@ var ScrollLayoutManager = class {
     });
   }
   updateGridLayout(settings) {
-    this.containerEl.style.setProperty(
-      "--card-min-width",
-      `${settings.cardSize}px`,
-    );
+    this.containerEl.style.setProperty("--card-min-width", `${settings.cardSize}px`);
     this.containerEl.style.setProperty(
       "--bases-cms-image-aspect-ratio",
       String(settings.imageAspectRatio),
@@ -6385,10 +5801,7 @@ var ScrollLayoutManager = class {
     const containerWidth = this.containerEl.clientWidth;
     const cardMinWidth = this.lastCardSize || 280;
     const gap = 16;
-    return Math.max(
-      1,
-      Math.floor((containerWidth + gap) / (cardMinWidth + gap)),
-    );
+    return Math.max(1, Math.floor((containerWidth + gap) / (cardMinWidth + gap)));
   }
   /**
    * Calculate which cards should be visible in the viewport
@@ -6400,24 +5813,15 @@ var ScrollLayoutManager = class {
     this.cardsPerRow = this.calculateCardsPerRow();
     const rowHeight = this.estimatedCardHeight + 16;
     const totalRows = Math.ceil(totalEntries / this.cardsPerRow);
-    const firstVisibleRow = Math.max(
-      0,
-      Math.floor(scrollTop / rowHeight) - buffer,
-    );
+    const firstVisibleRow = Math.max(0, Math.floor(scrollTop / rowHeight) - buffer);
     const lastVisibleRow = Math.min(
       totalRows - 1,
       Math.ceil((scrollTop + viewportHeight) / rowHeight) + buffer,
     );
     const startIndex = firstVisibleRow * this.cardsPerRow;
-    const endIndex = Math.min(
-      totalEntries - 1,
-      (lastVisibleRow + 1) * this.cardsPerRow - 1,
-    );
+    const endIndex = Math.min(totalEntries - 1, (lastVisibleRow + 1) * this.cardsPerRow - 1);
     const topPadding = firstVisibleRow * rowHeight;
-    const bottomPadding = Math.max(
-      0,
-      (totalRows - lastVisibleRow - 1) * rowHeight,
-    );
+    const bottomPadding = Math.max(0, (totalRows - lastVisibleRow - 1) * rowHeight);
     return {
       startIndex,
       endIndex,
@@ -6573,9 +5977,7 @@ var ViewSwitchListener = class {
         }
         startObserving();
         if (this.backupInterval === null) {
-          this.backupInterval = this.plugin.registerInterval(
-            window.setInterval(backupCheck, 500),
-          );
+          this.backupInterval = this.plugin.registerInterval(window.setInterval(backupCheck, 500));
         }
       } else {
         this.currentBaseIdentifier = null;
@@ -6684,9 +6086,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     try {
       const configToUse =
-        this.config && typeof this.config.get === "function"
-          ? this.config
-          : { get: () => void 0 };
+        this.config && typeof this.config.get === "function" ? this.config : { get: () => void 0 };
       this.scrollLayoutManager = new ScrollLayoutManager(
         this.containerEl,
         this.app,
@@ -6721,11 +6121,8 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       this.viewSwitchListener = null;
     }
     if (this.viewSwitchListener) {
-      const originalHandleSelectionChange =
-        this.handleSelectionChange.bind(this);
-      this.handleSelectionChange = this.viewSwitchListener.setup(
-        originalHandleSelectionChange,
-      );
+      const originalHandleSelectionChange = this.handleSelectionChange.bind(this);
+      this.handleSelectionChange = this.viewSwitchListener.setup(originalHandleSelectionChange);
     }
   }
   /**
@@ -6746,11 +6143,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     const entriesWithValues = await Promise.all(
       entries.map(async (entry) => {
-        const value = await getFirstBasesPropertyValue(
-          entry,
-          propertyName,
-          this.app,
-        );
+        const value = await getFirstBasesPropertyValue(entry, propertyName, this.app);
         return { entry, value };
       }),
     );
@@ -6785,11 +6178,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
    */
   parseDateValue(value) {
     if (!value) return null;
-    if (
-      typeof value === "object" &&
-      "date" in value &&
-      value.date instanceof Date
-    ) {
+    if (typeof value === "object" && "date" in value && value.date instanceof Date) {
       return value.date;
     }
     let data = value;
@@ -6811,9 +6200,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     if (typeof data === "string") {
       const dateStr = data.trim();
-      const isoDateStr = dateStr.includes("T")
-        ? dateStr
-        : `${dateStr}T00:00:00`;
+      const isoDateStr = dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00`;
       const parsedDate = new Date(isoDateStr);
       if (!isNaN(parsedDate.getTime())) {
         return parsedDate;
@@ -6865,19 +6252,14 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     for (const processedGroup of processedGroups) {
       allFlatEntries.push(...processedGroup.entries);
     }
-    const useVirtualScroll =
-      this.scrollLayoutManager.shouldEnableVirtualScroll(totalEntriesCount);
+    const useVirtualScroll = this.scrollLayoutManager.shouldEnableVirtualScroll(totalEntriesCount);
     let visibleEntries;
     let startIndex = 0;
     let virtualRange = null;
     if (useVirtualScroll) {
-      virtualRange =
-        this.scrollLayoutManager.calculateVisibleRange(totalEntriesCount);
+      virtualRange = this.scrollLayoutManager.calculateVisibleRange(totalEntriesCount);
       startIndex = virtualRange.startIndex;
-      visibleEntries = allFlatEntries.slice(
-        virtualRange.startIndex,
-        virtualRange.endIndex + 1,
-      );
+      visibleEntries = allFlatEntries.slice(virtualRange.startIndex, virtualRange.endIndex + 1);
     } else {
       const remainingCount = this.scrollLayoutManager.getDisplayedCount();
       visibleEntries = allFlatEntries.slice(0, remainingCount);
@@ -6903,27 +6285,19 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     if (!isStillValid()) return;
     this.cardRenderer.basesConfig = this.config;
-    if (
-      this.cardRenderer &&
-      typeof this.cardRenderer.setMdxFrontmatterCache === "function"
-    ) {
+    if (this.cardRenderer && typeof this.cardRenderer.setMdxFrontmatterCache === "function") {
       this.cardRenderer.setMdxFrontmatterCache(this.mdxFrontmatterCache);
     }
     this.mdxFrontmatterCache = {};
     await this.preloadMdxFrontmatter(visibleEntries);
     if (!isStillValid()) return;
-    if (
-      this.cardRenderer &&
-      typeof this.cardRenderer.setMdxFrontmatterCache === "function"
-    ) {
+    if (this.cardRenderer && typeof this.cardRenderer.setMdxFrontmatterCache === "function") {
       this.cardRenderer.setMdxFrontmatterCache(this.mdxFrontmatterCache);
     }
     this.containerEl.empty();
     this.propertyObservers.forEach((obs) => obs.disconnect());
     this.propertyObservers = [];
-    const scrollContentEl = this.containerEl.createDiv(
-      "bases-cms-scroll-content",
-    );
+    const scrollContentEl = this.containerEl.createDiv("bases-cms-scroll-content");
     const feedEl = scrollContentEl.createDiv("bases-cms-grid");
     if (useVirtualScroll && virtualRange && virtualRange.topPadding > 0) {
       const topSpacer = feedEl.createDiv("bases-cms-virtual-spacer");
@@ -6948,8 +6322,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       let displayedSoFar = 0;
       let cardIndex = 0;
       for (const processedGroup of processedGroups) {
-        if (displayedSoFar >= this.scrollLayoutManager.getDisplayedCount())
-          break;
+        if (displayedSoFar >= this.scrollLayoutManager.getDisplayedCount()) break;
         const entriesToDisplay = Math.min(
           processedGroup.entries.length,
           this.scrollLayoutManager.getDisplayedCount() - displayedSoFar,
@@ -6959,10 +6332,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         if (processedGroup.group.hasKey()) {
           const headerEl = groupEl.createDiv("bases-cms-group-heading");
           const valueEl = headerEl.createDiv("bases-cms-group-value");
-          const keyValue =
-            ((_a = processedGroup.group.key) == null
-              ? void 0
-              : _a.toString()) || "";
+          const keyValue = ((_a = processedGroup.group.key) == null ? void 0 : _a.toString()) || "";
           valueEl.setText(keyValue);
         }
         for (let i = 0; i < entriesToDisplay && cardIndex < cards.length; i++) {
@@ -6993,9 +6363,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     if (!isStillValid()) return;
     if (totalCardsRendered === 0 && totalEntriesCount > 0) {
-      throw new Error(
-        "No cards were rendered despite having entries. Check card rendering logic.",
-      );
+      throw new Error("No cards were rendered despite having entries. Check card rendering logic.");
     }
     if (totalCardsRendered > 0) {
       const firstCard = feedEl.querySelector(".bases-cms-card");
@@ -7020,19 +6388,11 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       const cachedAllEntries = allFlatEntries;
       const cachedSettings = settings;
       const cachedUpdateId = updateId;
-      this.scrollLayoutManager.setupVirtualScroll(
-        totalEntriesCount,
-        (range) => {
-          if (cachedUpdateId === this.lastUpdateId) {
-            void this.renderVirtualRange(
-              cachedAllEntries,
-              cachedSettings,
-              range,
-              feedEl,
-            );
-          }
-        },
-      );
+      this.scrollLayoutManager.setupVirtualScroll(totalEntriesCount, (range) => {
+        if (cachedUpdateId === this.lastUpdateId) {
+          void this.renderVirtualRange(cachedAllEntries, cachedSettings, range, feedEl);
+        }
+      });
     } else {
       this.scrollLayoutManager.setupInfiniteScroll(totalEntriesCount);
     }
@@ -7045,10 +6405,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
    * Render cards for a specific virtual scroll range
    */
   async renderVirtualRange(allEntries, settings, range, feedEl) {
-    const visibleEntries = allEntries.slice(
-      range.startIndex,
-      range.endIndex + 1,
-    );
+    const visibleEntries = allEntries.slice(range.startIndex, range.endIndex + 1);
     await this.loadContentForEntries(visibleEntries, settings);
     feedEl.empty();
     if (range.topPadding > 0) {
@@ -7150,12 +6507,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         }
         if (!this.data.groupedData || !this.data.data) {
           setTimeout(() => {
-            if (
-              isStillValid() &&
-              this.data &&
-              this.data.groupedData &&
-              this.data.data
-            ) {
+            if (isStillValid() && this.data && this.data.groupedData && this.data.data) {
               this.onDataUpdated();
             }
           }, 100);
@@ -7166,9 +6518,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
         const allEntries = this.data.data;
         const settings = readCMSSettings(this.config, this.plugin.settings);
         if (!isStillValid()) return;
-        const allFlatEntries = Array.isArray(this.data.data)
-          ? this.data.data
-          : [];
+        const allFlatEntries = Array.isArray(this.data.data) ? this.data.data : [];
         this.lastVisiblePaths = allFlatEntries
           .map((e) => {
             var _a;
@@ -7191,11 +6541,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           const firstSort = sortConfigs[0];
           const property = firstSort.property;
           const direction = firstSort.direction.toLowerCase();
-          if (
-            property &&
-            !property.includes("ctime") &&
-            !property.includes("mtime")
-          ) {
+          if (property && !property.includes("ctime") && !property.includes("mtime")) {
             void (async () => {
               try {
                 const allEntries2 = [];
@@ -7271,8 +6617,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     try {
       const controller = this.basesController;
       if (controller) {
-        if (typeof controller.getBaseName === "function")
-          return controller.getBaseName();
+        if (typeof controller.getBaseName === "function") return controller.getBaseName();
         if (controller.baseName) return controller.baseName;
       }
       if (this.config && typeof this.config.getName === "function") {
@@ -7323,77 +6668,48 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       if (!this.config || typeof this.config.get !== "function") {
         return;
       }
-      const currentSettings = readCMSSettings(
-        this.config,
-        this.plugin.settings,
-      );
+      const currentSettings = readCMSSettings(this.config, this.plugin.settings);
       if (!this.lastSettings) {
         return;
       }
       const settingsChanged =
-        this.lastSettings.descriptionProperty !==
-          currentSettings.descriptionProperty ||
+        this.lastSettings.descriptionProperty !== currentSettings.descriptionProperty ||
         this.lastSettings.showTextPreview !== currentSettings.showTextPreview ||
-        this.lastSettings.fallbackToContent !==
-          currentSettings.fallbackToContent ||
-        this.lastSettings.truncatePreviewProperty !==
-          currentSettings.truncatePreviewProperty ||
-        this.lastSettings.descriptionMaxLength !==
-          currentSettings.descriptionMaxLength ||
+        this.lastSettings.fallbackToContent !== currentSettings.fallbackToContent ||
+        this.lastSettings.truncatePreviewProperty !== currentSettings.truncatePreviewProperty ||
+        this.lastSettings.descriptionMaxLength !== currentSettings.descriptionMaxLength ||
         this.lastSettings.imageProperty !== currentSettings.imageProperty ||
         this.lastSettings.imageFormat !== currentSettings.imageFormat ||
-        this.lastSettings.fallbackToEmbeds !==
-          currentSettings.fallbackToEmbeds ||
-        this.lastSettings.propertyDisplay1 !==
-          currentSettings.propertyDisplay1 ||
-        this.lastSettings.propertyDisplay2 !==
-          currentSettings.propertyDisplay2 ||
-        this.lastSettings.propertyDisplay3 !==
-          currentSettings.propertyDisplay3 ||
-        this.lastSettings.propertyDisplay4 !==
-          currentSettings.propertyDisplay4 ||
-        this.lastSettings.propertyDisplay5 !==
-          currentSettings.propertyDisplay5 ||
-        this.lastSettings.propertyDisplay6 !==
-          currentSettings.propertyDisplay6 ||
-        this.lastSettings.propertyDisplay7 !==
-          currentSettings.propertyDisplay7 ||
-        this.lastSettings.propertyDisplay8 !==
-          currentSettings.propertyDisplay8 ||
-        this.lastSettings.propertyDisplay9 !==
-          currentSettings.propertyDisplay9 ||
-        this.lastSettings.propertyDisplay10 !==
-          currentSettings.propertyDisplay10 ||
-        this.lastSettings.propertyDisplay11 !==
-          currentSettings.propertyDisplay11 ||
-        this.lastSettings.propertyDisplay12 !==
-          currentSettings.propertyDisplay12 ||
-        this.lastSettings.propertyDisplay13 !==
-          currentSettings.propertyDisplay13 ||
-        this.lastSettings.propertyDisplay14 !==
-          currentSettings.propertyDisplay14 ||
-        this.lastSettings.propertyDisplayMaxLength !==
-          currentSettings.propertyDisplayMaxLength;
+        this.lastSettings.fallbackToEmbeds !== currentSettings.fallbackToEmbeds ||
+        this.lastSettings.propertyDisplay1 !== currentSettings.propertyDisplay1 ||
+        this.lastSettings.propertyDisplay2 !== currentSettings.propertyDisplay2 ||
+        this.lastSettings.propertyDisplay3 !== currentSettings.propertyDisplay3 ||
+        this.lastSettings.propertyDisplay4 !== currentSettings.propertyDisplay4 ||
+        this.lastSettings.propertyDisplay5 !== currentSettings.propertyDisplay5 ||
+        this.lastSettings.propertyDisplay6 !== currentSettings.propertyDisplay6 ||
+        this.lastSettings.propertyDisplay7 !== currentSettings.propertyDisplay7 ||
+        this.lastSettings.propertyDisplay8 !== currentSettings.propertyDisplay8 ||
+        this.lastSettings.propertyDisplay9 !== currentSettings.propertyDisplay9 ||
+        this.lastSettings.propertyDisplay10 !== currentSettings.propertyDisplay10 ||
+        this.lastSettings.propertyDisplay11 !== currentSettings.propertyDisplay11 ||
+        this.lastSettings.propertyDisplay12 !== currentSettings.propertyDisplay12 ||
+        this.lastSettings.propertyDisplay13 !== currentSettings.propertyDisplay13 ||
+        this.lastSettings.propertyDisplay14 !== currentSettings.propertyDisplay14 ||
+        this.lastSettings.propertyDisplayMaxLength !== currentSettings.propertyDisplayMaxLength;
       if (settingsChanged) {
         if (
-          this.lastSettings.descriptionProperty !==
-            currentSettings.descriptionProperty ||
-          this.lastSettings.showTextPreview !==
-            currentSettings.showTextPreview ||
-          this.lastSettings.fallbackToContent !==
-            currentSettings.fallbackToContent ||
-          this.lastSettings.truncatePreviewProperty !==
-            currentSettings.truncatePreviewProperty ||
-          this.lastSettings.descriptionMaxLength !==
-            currentSettings.descriptionMaxLength
+          this.lastSettings.descriptionProperty !== currentSettings.descriptionProperty ||
+          this.lastSettings.showTextPreview !== currentSettings.showTextPreview ||
+          this.lastSettings.fallbackToContent !== currentSettings.fallbackToContent ||
+          this.lastSettings.truncatePreviewProperty !== currentSettings.truncatePreviewProperty ||
+          this.lastSettings.descriptionMaxLength !== currentSettings.descriptionMaxLength
         ) {
           this.snippets = {};
         }
         if (
           this.lastSettings.imageProperty !== currentSettings.imageProperty ||
           this.lastSettings.imageFormat !== currentSettings.imageFormat ||
-          this.lastSettings.fallbackToEmbeds !==
-            currentSettings.fallbackToEmbeds
+          this.lastSettings.fallbackToEmbeds !== currentSettings.fallbackToEmbeds
         ) {
           this.images = {};
           this.hasImageAvailable = {};
@@ -7457,10 +6773,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
             const frontmatter = await getFileFrontmatter(this.app, file);
             this.mdxFrontmatterCache[entry.file.path] = frontmatter;
           } catch (error) {
-            console.error(
-              `Bases CMS: Error preloading properties for ${entry.file.path}:`,
-              error,
-            );
+            console.error(`Bases CMS: Error preloading properties for ${entry.file.path}:`, error);
             this.mdxFrontmatterCache[entry.file.path] = null;
           }
         }
@@ -7485,9 +6798,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
             descriptionData: descValue == null ? void 0 : descValue.data,
           };
         });
-      const snippetEntries = (await Promise.all(snippetEntriesPromises)).filter(
-        (e) => e !== null,
-      );
+      const snippetEntries = (await Promise.all(snippetEntriesPromises)).filter((e) => e !== null);
       if (snippetEntries.length > 0) {
         await loadSnippetsForEntries(
           snippetEntries,
@@ -7517,9 +6828,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
             imagePropertyValues,
           };
         });
-      const imageEntries = (await Promise.all(imageEntriesPromises)).filter(
-        (e) => e !== null,
-      );
+      const imageEntries = (await Promise.all(imageEntriesPromises)).filter((e) => e !== null);
       if (imageEntries.length > 0) {
         await loadImagesForEntries(
           imageEntries,
@@ -7539,29 +6848,18 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       const {
         prepareDeletionPreview: prepareDeletionPreview2,
         executeSmartDeletion: executeSmartDeletion2,
-      } = await Promise.resolve().then(
-        () => (init_smart_deletion(), smart_deletion_exports),
+      } = await Promise.resolve().then(() => (init_smart_deletion(), smart_deletion_exports));
+      const { DeletionPreviewModal: DeletionPreviewModal2 } = await Promise.resolve().then(
+        () => (init_deletion_preview(), deletion_preview_exports),
       );
-      const { DeletionPreviewModal: DeletionPreviewModal2 } =
-        await Promise.resolve().then(
-          () => (init_deletion_preview(), deletion_preview_exports),
-        );
       if (this.plugin.settings.confirmDeletions) {
-        const preview = await prepareDeletionPreview2(
-          this.app,
-          [filePath],
-          this.plugin.settings,
-        );
+        const preview = await prepareDeletionPreview2(this.app, [filePath], this.plugin.settings);
         const modal = new DeletionPreviewModal2(this.app, preview, () => {
           this.onDataUpdated();
         });
         modal.open();
       } else {
-        const preview = await prepareDeletionPreview2(
-          this.app,
-          [filePath],
-          this.plugin.settings,
-        );
+        const preview = await prepareDeletionPreview2(this.app, [filePath], this.plugin.settings);
         await executeSmartDeletion2(this.app, preview);
         this.onDataUpdated();
       }
@@ -7604,15 +6902,11 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       const isCover = cardEl.classList.contains("image-format-cover");
       if (placeholder) {
         const existingBadge = placeholder.querySelector(".card-status-badge");
-        const imageClassName = placeholder.classList.contains(
-          "card-cover-placeholder",
-        )
+        const imageClassName = placeholder.classList.contains("card-cover-placeholder")
           ? "card-cover"
           : "card-thumbnail";
         const imageEl =
-          (_a = placeholder.parentElement) == null
-            ? void 0
-            : _a.createDiv(imageClassName);
+          (_a = placeholder.parentElement) == null ? void 0 : _a.createDiv(imageClassName);
         if (imageEl) {
           imageEmbedContainer = imageEl.createDiv("image-embed");
           if (existingBadge) {
@@ -7623,8 +6917,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       } else if (isThumbnail) {
         const contentContainer = cardEl.querySelector(".card-content");
         if (contentContainer) {
-          const textWrapper =
-            contentContainer.querySelector(".card-text-wrapper");
+          const textWrapper = contentContainer.querySelector(".card-text-wrapper");
           const imageEl = textWrapper
             ? contentContainer.insertBefore(
                 contentContainer.createDiv("card-thumbnail"),
@@ -7643,10 +6936,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     }
     if (imageEmbedContainer) {
       void (async () => {
-        const finalUrl = await convertGifToStatic(
-          url,
-          this.plugin.settings.forceStaticGifImages,
-        );
+        const finalUrl = await convertGifToStatic(url, this.plugin.settings.forceStaticGifImages);
         imageEmbedContainer.style.backgroundImage = `url("${finalUrl}")`;
       })();
       imageEmbedContainer.style.backgroundImage = `url("${url}")`;
@@ -7700,9 +6990,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     if (this.selectedFiles.size === 0) {
       if (this.bulkToolbar) {
         this.bulkToolbar.hide();
-        const toolbarEl = this.containerEl.querySelector(
-          ".bases-cms-bulk-toolbar",
-        );
+        const toolbarEl = this.containerEl.querySelector(".bases-cms-bulk-toolbar");
         if (toolbarEl instanceof HTMLElement) {
           toolbarEl.removeClass("bases-cms-bulk-toolbar-visible");
           toolbarEl.addClass("bases-cms-bulk-toolbar-hidden");
@@ -7712,11 +7000,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
   }
   async handlePropertyToggle(path, property, value) {
     if (this.propertyToggleHandler) {
-      await this.propertyToggleHandler.handlePropertyToggle(
-        path,
-        property,
-        value,
-      );
+      await this.propertyToggleHandler.handlePropertyToggle(path, property, value);
     }
   }
   selectAll() {
@@ -7729,9 +7013,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     const cards = this.containerEl.querySelectorAll(".bases-cms-card.selected");
     cards.forEach((cardEl) => {
       cardEl.removeClass("selected");
-      const checkbox = cardEl.querySelector(
-        'input[type="checkbox"].selection-checkbox',
-      );
+      const checkbox = cardEl.querySelector('input[type="checkbox"].selection-checkbox');
       if (checkbox) {
         checkbox.checked = false;
       }
@@ -7744,18 +7026,14 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
    * Update checkbox and class for a specific card in the DOM
    */
   updateCardCheckboxState(path, selected) {
-    const cardEl = this.containerEl.querySelector(
-      `.bases-cms-card[data-path="${path}"]`,
-    );
+    const cardEl = this.containerEl.querySelector(`.bases-cms-card[data-path="${path}"]`);
     if (cardEl instanceof HTMLElement) {
       if (selected) {
         cardEl.addClass("selected");
       } else {
         cardEl.removeClass("selected");
       }
-      const checkbox = cardEl.querySelector(
-        'input[type="checkbox"].selection-checkbox',
-      );
+      const checkbox = cardEl.querySelector('input[type="checkbox"].selection-checkbox');
       if (checkbox) {
         checkbox.checked = selected;
       }
@@ -7778,9 +7056,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     const cards = this.containerEl.querySelectorAll(".card");
     cards.forEach((cardEl) => {
       const path = cardEl.getAttribute("data-path");
-      const checkbox = cardEl.querySelector(
-        'input[type="checkbox"].selection-checkbox',
-      );
+      const checkbox = cardEl.querySelector('input[type="checkbox"].selection-checkbox');
       if (path) {
         const isSelected = this.selectedFiles.has(path);
         if (isSelected) {
@@ -7794,9 +7070,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
       }
     });
     if (this.selectedFiles.size > 0) {
-      const orphanedToolbars = document.querySelectorAll(
-        ".bases-cms-bulk-toolbar",
-      );
+      const orphanedToolbars = document.querySelectorAll(".bases-cms-bulk-toolbar");
       orphanedToolbars.forEach((toolbar) => {
         const toolbarInstance = toolbar.__bulkToolbarInstance;
         if (!toolbarInstance || toolbarInstance !== this.bulkToolbar) {
@@ -7855,9 +7129,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     } else {
       if (this.bulkToolbar && !this.isRefreshingWithSelection) {
         this.bulkToolbar.hide();
-        const toolbarEl = this.containerEl.querySelector(
-          ".bases-cms-bulk-toolbar",
-        );
+        const toolbarEl = this.containerEl.querySelector(".bases-cms-bulk-toolbar");
         if (toolbarEl instanceof HTMLElement) {
           toolbarEl.removeClass("bases-cms-bulk-toolbar-visible");
           toolbarEl.addClass("bases-cms-bulk-toolbar-hidden");
@@ -7879,9 +7151,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     if (this.bulkToolbar) {
       this.bulkToolbar.destroy();
     }
-    const orphanedToolbars = document.querySelectorAll(
-      ".bases-cms-bulk-toolbar",
-    );
+    const orphanedToolbars = document.querySelectorAll(".bases-cms-bulk-toolbar");
     orphanedToolbars.forEach((toolbar) => toolbar.remove());
     const pluginWithMethod = this.plugin;
     if (pluginWithMethod && typeof pluginWithMethod.removeView === "function") {
@@ -7896,16 +7166,13 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
     const settings = readCMSSettings(this.config, this.plugin.settings);
     if (settings.customizeNewButton) {
       try {
-        const locationInput =
-          ((_a = settings.newNoteLocation) == null ? void 0 : _a.trim()) || "";
+        const locationInput = ((_a = settings.newNoteLocation) == null ? void 0 : _a.trim()) || "";
         if (locationInput === "") {
           const vaultConfig = this.app.vault.config;
           const newFileLocation =
-            (vaultConfig == null ? void 0 : vaultConfig.newFileLocation) ||
-            "folder";
+            (vaultConfig == null ? void 0 : vaultConfig.newFileLocation) || "folder";
           const newFileFolderPath =
-            (vaultConfig == null ? void 0 : vaultConfig.newFileFolderPath) ||
-            "";
+            (vaultConfig == null ? void 0 : vaultConfig.newFileFolderPath) || "";
           let filePath = "Untitled.md";
           if (newFileLocation === "folder" && newFileFolderPath) {
             filePath = `${newFileFolderPath}/Untitled.md`;
@@ -7933,10 +7200,7 @@ var BasesCMSView = class extends import_obsidian22.BasesView {
           folder = this.app.vault.getAbstractFileByPath(folderPath);
         }
         if (folder && "children" in folder) {
-          const newFile = await this.app.vault.create(
-            `${folderPath}/Untitled.md`,
-            "",
-          );
+          const newFile = await this.app.vault.create(`${folderPath}/Untitled.md`, "");
           await this.app.workspace.openLinkText(newFile.path, "", false);
           return true;
         }
@@ -7980,8 +7244,7 @@ var DEFAULT_SETTINGS = {
 var import_obsidian23 = require("obsidian");
 var TITLES_VIEW_TYPE = "titles";
 function getTitleFromEntry(entry, titleProperty) {
-  const prop =
-    (titleProperty == null ? void 0 : titleProperty.trim()) || "note.title";
+  const prop = (titleProperty == null ? void 0 : titleProperty.trim()) || "note.title";
   const value = entry.getValue(prop);
   if ((value == null ? void 0 : value.data) != null) {
     const d = value.data;
@@ -8009,8 +7272,7 @@ function getSecondaryFromEntry(entry, propertyKey) {
   }
   if (value.data != null) {
     const d = value.data;
-    if (typeof d === "string" || typeof d === "number")
-      return String(d).trim() || null;
+    if (typeof d === "string" || typeof d === "number") return String(d).trim() || null;
     if (typeof d === "boolean") return String(d);
     if (d instanceof Date)
       return d.toLocaleDateString(void 0, {
@@ -8020,8 +7282,7 @@ function getSecondaryFromEntry(entry, propertyKey) {
       });
     if (Array.isArray(d) && d.length > 0) {
       const first = d[0];
-      if (first != null && typeof first === "object" && "data" in first)
-        return String(first.data);
+      if (first != null && typeof first === "object" && "data" in first) return String(first.data);
       return String(first);
     }
   }
@@ -8072,14 +7333,9 @@ var BasesTitlesView = class extends import_obsidian23.BasesView {
       if (config == null ? void 0 : config.get) {
         const t = config.get("titleProperty");
         titleProp =
-          ((_b = typeof t === "string" ? t : "") == null
-            ? void 0
-            : _b.trim()) || "note.title";
+          ((_b = typeof t === "string" ? t : "") == null ? void 0 : _b.trim()) || "note.title";
         const s = config.get("secondaryProperty");
-        secondaryProp =
-          ((_c = typeof s === "string" ? s : "") == null
-            ? void 0
-            : _c.trim()) || "";
+        secondaryProp = ((_c = typeof s === "string" ? s : "") == null ? void 0 : _c.trim()) || "";
       }
     } catch (e) {}
     const fragment = document.createDocumentFragment();
@@ -8090,9 +7346,7 @@ var BasesTitlesView = class extends import_obsidian23.BasesView {
     listEl.style.padding = "0";
     for (const entry of entries) {
       const title = getTitleFromEntry(entry, titleProp) || entry.file.basename;
-      const secondary = secondaryProp
-        ? getSecondaryFromEntry(entry, secondaryProp)
-        : null;
+      const secondary = secondaryProp ? getSecondaryFromEntry(entry, secondaryProp) : null;
       const li = listEl.appendChild(document.createElement("li"));
       const link = li.appendChild(document.createElement("a"));
       link.href = entry.file.path;
@@ -8159,10 +7413,7 @@ function registerBasesCMSView(plugin, retries = 5) {
                   window.setTimeout(tryRefresh, delay);
                 }
               } catch (error) {
-                console.warn(
-                  "Bases CMS: Error refreshing newly created embedded view:",
-                  error,
-                );
+                console.warn("Bases CMS: Error refreshing newly created embedded view:", error);
               }
             };
             window.setTimeout(tryRefresh, baseDelay);
@@ -8175,8 +7426,7 @@ function registerBasesCMSView(plugin, retries = 5) {
       const titlesViewConfig = {
         name: "Titles",
         icon: "lucide-type",
-        factory: (controller, containerEl) =>
-          new BasesTitlesView(controller, containerEl, plugin),
+        factory: (controller, containerEl) => new BasesTitlesView(controller, containerEl, plugin),
         options: () => [
           {
             type: "group",
@@ -8212,9 +7462,7 @@ function registerBasesCMSView(plugin, retries = 5) {
         registerBasesCMSView(plugin, retries - 1);
       }, 200);
     } else {
-      console.warn(
-        "Bases CMS: registerBasesView not available. Is Bases plugin installed?",
-      );
+      console.warn("Bases CMS: registerBasesView not available. Is Bases plugin installed?");
     }
   } catch (error) {
     console.error("Bases CMS: Error registering view:", error);
@@ -8237,10 +7485,7 @@ async function migrateBasesCmsToCms(app) {
       try {
         const content = await app.vault.read(file);
         if (content.toLowerCase().includes("bases-cms")) {
-          const newContent = content.replace(
-            /(type[ \t]*:[ \t]*["']?)bases-cms\b/gi,
-            "$1cms",
-          );
+          const newContent = content.replace(/(type[ \t]*:[ \t]*["']?)bases-cms\b/gi, "$1cms");
           if (newContent !== content) {
             await app.vault.modify(file, newContent);
             migratedCount++;
@@ -8351,8 +7596,7 @@ var BasesCMSPlugin = class extends import_obsidian24.Plugin {
    */
   getActiveCMSView() {
     try {
-      const obsidianActiveView =
-        this.app.workspace.getActiveViewOfType(BasesCMSView);
+      const obsidianActiveView = this.app.workspace.getActiveViewOfType(BasesCMSView);
       if (obsidianActiveView && obsidianActiveView instanceof BasesCMSView) {
         return obsidianActiveView;
       }

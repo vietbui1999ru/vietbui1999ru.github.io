@@ -2,11 +2,8 @@
 
 import { BriefcaseBusiness } from "lucide-react";
 import { AppleHelloExperienceEffect } from "@/components/ui/apple-hello-effect";
-import {
-  TimelineLayout,
-  type TimelineItem,
-} from "@/components/ui/TimelineLayout";
-import { EXPERIENCE_ITEMS, type ExperienceTag } from "@/data/experienceData";
+import { TimelineLayout, type TimelineItem } from "@/components/ui/TimelineLayout";
+import { EXPERIENCE_ITEMS, EXPERIENCE_SECTION_SUBTITLE, type ExperienceTag } from "@/data/experienceData";
 
 type ExperienceJobLike = {
   name?: string;
@@ -20,10 +17,7 @@ type ExperienceCompanyLike = {
   jobs?: Array<ExperienceJobLike | ExperienceCompanyLike>;
 };
 
-function collectTimelineItems(
-  companyLike: ExperienceCompanyLike,
-  output: TimelineItem[],
-) {
+function collectTimelineItems(companyLike: ExperienceCompanyLike, output: TimelineItem[]) {
   const companyName = companyLike.company ?? "Unknown";
   const jobs = Array.isArray(companyLike.jobs) ? companyLike.jobs : [];
 
@@ -61,9 +55,7 @@ function collectTimelineItems(
       description: entry.content ?? "",
       tags,
       icon: <BriefcaseBusiness className="h-3 w-3" />,
-      status: date.toLowerCase().includes("present")
-        ? "in-progress"
-        : "completed",
+      status: date.toLowerCase().includes("present") ? "in-progress" : "completed",
     });
   });
 }
@@ -81,7 +73,7 @@ const ExperienceTimeline = () => {
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloExperienceEffect className="w-full" />
           <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-            Where I've worked and what I've built.
+            {EXPERIENCE_SECTION_SUBTITLE}
           </p>
         </header>
 

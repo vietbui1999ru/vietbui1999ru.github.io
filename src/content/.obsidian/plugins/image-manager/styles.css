@@ -136,12 +136,7 @@
   border-radius: 6px;
 }
 
-.image-inserter-container
-  .container
-  .scroll-area
-  .images-list
-  .query-result
-  img {
+.image-inserter-container .container .scroll-area .images-list .query-result img {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -149,11 +144,7 @@
   background-color: inherit;
 }
 
-.image-inserter-container
-  .container
-  .scroll-area
-  .images-list
-  .query-result.is-selected {
+.image-inserter-container .container .scroll-area .images-list .query-result.is-selected {
   background-color: var(--background-tertiary);
   box-shadow:
     0 1px 3px rgb(0 0 0 / 12%),
@@ -210,10 +201,7 @@
   padding: 2rem;
 }
 
-.image-inserter-container
-  .container
-  .scroll-area
-  .no-result-container.error-text {
+.image-inserter-container .container .scroll-area .no-result-container.error-text {
   color: var(--text-error);
 }
 
@@ -263,11 +251,7 @@ body {
   --im-banner-img-y: 0px;
   --im-banner-note-offset: -32px;
   --im-banner-view-offset: 0px;
-  --im-banner-mask: linear-gradient(
-    180deg,
-    transparent 25%,
-    var(--background-primary)
-  );
+  --im-banner-mask: linear-gradient(180deg, transparent 25%, var(--background-primary));
   --im-banner-mask-webkit: -webkit-linear-gradient(
     270deg,
     transparent 25%,
@@ -329,8 +313,7 @@ div.image-manager-banner > div.banner-content > video {
   animation:
     im-banner-fade-in 1s cubic-bezier(0.4, 0, 0.2, 1) forwards,
     im-banner-video-anim 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  object-position: calc(50% + var(--im-banner-img-x))
-    calc(50% + var(--im-banner-img-y));
+  object-position: calc(50% + var(--im-banner-img-x)) calc(50% + var(--im-banner-img-y));
   border-radius: var(--im-banner-radius);
   transition: object-position 0.5s ease-in-out;
   will-change: object-position;
@@ -428,8 +411,7 @@ div.image-manager-banner + div {
       calc(50% + (var(--im-banner-img-y, 0px) - 10px));
   }
   to {
-    object-position: calc(50% + var(--im-banner-img-x, 0px))
-      calc(50% + var(--im-banner-img-y, 0px));
+    object-position: calc(50% + var(--im-banner-img-x, 0px)) calc(50% + var(--im-banner-img-y, 0px));
   }
 }
 
@@ -442,10 +424,7 @@ div.image-manager-banner + div {
     opacity: 0;
   }
   to {
-    transform: translate(
-      var(--im-banner-icon-offset-x),
-      var(--im-banner-icon-offset-y)
-    );
+    transform: translate(var(--im-banner-icon-offset-x), var(--im-banner-icon-offset-y));
     opacity: 1;
   }
 }
@@ -474,10 +453,7 @@ div.image-manager-banner > div.banner-icon > div {
   width: var(--im-banner-icon-size-w);
   height: var(--im-banner-icon-size-h);
   background-color: var(--im-banner-icon-background);
-  transform: translate(
-    var(--im-banner-icon-offset-x),
-    var(--im-banner-icon-offset-y)
-  );
+  transform: translate(var(--im-banner-icon-offset-x), var(--im-banner-icon-offset-y));
   border-radius: var(--im-banner-icon-radius);
   border: var(--im-banner-icon-border) solid var(--background-primary);
   z-index: 2;

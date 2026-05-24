@@ -61,10 +61,7 @@ void mainImage(out vec4 O, vec2 F)
 }
 `;
 
-export const SingularityShaders = forwardRef<
-  HTMLDivElement,
-  SingularityShadersProps
->(
+export const SingularityShaders = forwardRef<HTMLDivElement, SingularityShadersProps>(
   (
     {
       className,
@@ -78,11 +75,7 @@ export const SingularityShaders = forwardRef<
     ref,
   ) => {
     return (
-      <div
-        className={cn("w-full h-full", className)}
-        ref={ref}
-        {...(props as object)}
-      >
+      <div className={cn("w-full h-full", className)} ref={ref} {...(props as object)}>
         <Shader
           fs={fragmentShader}
           style={{ width: "100%", height: "100%" } as React.CSSProperties}

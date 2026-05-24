@@ -13,8 +13,7 @@ var __esm = (fn, res) =>
     return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res);
   };
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name in all) __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if ((from && typeof from === "object") || typeof from === "function") {
@@ -27,8 +26,7 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toCommonJS = (mod) =>
-  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/utils/frontmatter.ts
 var frontmatter_exports = {};
@@ -93,13 +91,7 @@ var init_frontmatter = __esm({
 });
 
 // src/utils/search.ts
-async function buildFileCache(
-  files,
-  metadataCache,
-  app,
-  propertyKey,
-  settings,
-) {
+async function buildFileCache(files, metadataCache, app, propertyKey, settings) {
   const cache = /* @__PURE__ */ new Map();
   const { getFrontmatter: getFrontmatter2 } = await Promise.resolve().then(
     () => (init_frontmatter(), frontmatter_exports),
@@ -112,27 +104,19 @@ async function buildFileCache(
       let frontmatter;
       if (file.extension === "md") {
         const fileCache = app.metadataCache.getFileCache(file);
-        frontmatter =
-          (fileCache == null ? void 0 : fileCache.frontmatter) || null;
+        frontmatter = (fileCache == null ? void 0 : fileCache.frontmatter) || null;
       } else {
         frontmatter = await getFrontmatter2(app, file, settings);
       }
       let displayName = file.basename;
       let isCustomDisplay = false;
       let aliases = [];
-      if (
-        frontmatter &&
-        frontmatter[propertyKey] !== void 0 &&
-        frontmatter[propertyKey] !== null
-      ) {
+      if (frontmatter && frontmatter[propertyKey] !== void 0 && frontmatter[propertyKey] !== null) {
         const propertyValueRaw = frontmatter[propertyKey];
         let propertyValue;
         if (typeof propertyValueRaw === "string") {
           propertyValue = propertyValueRaw.trim();
-        } else if (
-          typeof propertyValueRaw === "number" ||
-          typeof propertyValueRaw === "boolean"
-        ) {
+        } else if (typeof propertyValueRaw === "number" || typeof propertyValueRaw === "boolean") {
           propertyValue = String(propertyValueRaw).trim();
         } else {
           propertyValue = "";
@@ -147,9 +131,7 @@ async function buildFileCache(
         aliases = Array.isArray(aliasesRaw)
           ? aliasesRaw.map((a) => String(a))
           : [String(aliasesRaw)];
-        aliases = aliases
-          .map((alias) => alias.trim())
-          .filter((alias) => alias !== "");
+        aliases = aliases.map((alias) => alias.trim()).filter((alias) => alias !== "");
       }
       cache.set(file.path, {
         file,
@@ -173,10 +155,7 @@ function isExcluded(file, app) {
   }
   try {
     const vault = app.vault;
-    const filters =
-      (_a = vault.getConfig) == null
-        ? void 0
-        : _a.call(vault, "userIgnoreFilters");
+    const filters = (_a = vault.getConfig) == null ? void 0 : _a.call(vault, "userIgnoreFilters");
     if (Array.isArray(filters)) {
       const path = file.path;
       for (const filter of filters) {
@@ -276,20 +255,12 @@ var init_QuickSwitchModal = __esm({
         );
       }
       async updateFileCache(file) {
-        const {
-          getFrontmatter: getFrontmatter2,
-          isFileTypeSupported: isFileTypeSupported2,
-        } = await Promise.resolve().then(
-          () => (init_frontmatter(), frontmatter_exports),
-        );
+        const { getFrontmatter: getFrontmatter2, isFileTypeSupported: isFileTypeSupported2 } =
+          await Promise.resolve().then(() => (init_frontmatter(), frontmatter_exports));
         if (!isFileTypeSupported2(file.extension, this.plugin.settings)) {
           return;
         }
-        const frontmatter = await getFrontmatter2(
-          this.app,
-          file,
-          this.plugin.settings,
-        );
+        const frontmatter = await getFrontmatter2(this.app, file, this.plugin.settings);
         let displayName = file.basename;
         let isCustomDisplay = false;
         let aliases = [];
@@ -298,9 +269,7 @@ var init_QuickSwitchModal = __esm({
           frontmatter[this.plugin.settings.propertyKey] !== void 0 &&
           frontmatter[this.plugin.settings.propertyKey] !== null
         ) {
-          const propertyValue = String(
-            frontmatter[this.plugin.settings.propertyKey],
-          ).trim();
+          const propertyValue = String(frontmatter[this.plugin.settings.propertyKey]).trim();
           if (propertyValue !== "") {
             displayName = propertyValue;
             isCustomDisplay = true;
@@ -311,9 +280,7 @@ var init_QuickSwitchModal = __esm({
           aliases = Array.isArray(aliasesRaw)
             ? aliasesRaw.map((a) => String(a))
             : [String(aliasesRaw)];
-          aliases = aliases
-            .map((alias) => alias.trim())
-            .filter((alias) => alias !== "");
+          aliases = aliases.map((alias) => alias.trim()).filter((alias) => alias !== "");
         }
         this.fileCache.set(file.path, {
           file,
@@ -329,17 +296,11 @@ var init_QuickSwitchModal = __esm({
         const workspace = this.app.workspace;
         const quickSwitcherOptions = this.getQuickSwitcherOptions();
         const showAttachments =
-          (_a =
-            quickSwitcherOptions == null
-              ? void 0
-              : quickSwitcherOptions.showAttachments) != null
+          (_a = quickSwitcherOptions == null ? void 0 : quickSwitcherOptions.showAttachments) !=
+          null
             ? _a
             : true;
-        if (
-          (_b = workspace.recentFileTracker) == null
-            ? void 0
-            : _b.getLastOpenFiles
-        ) {
+        if ((_b = workspace.recentFileTracker) == null ? void 0 : _b.getLastOpenFiles) {
           const lastOpenFiles = workspace.recentFileTracker.getLastOpenFiles();
           recentFiles = lastOpenFiles
             .map((filePath) => this.app.vault.getAbstractFileByPath(filePath))
@@ -357,16 +318,13 @@ var init_QuickSwitchModal = __esm({
         }
         const behavior = this.plugin.settings.quickSwitcherExcludedBehavior;
         if (behavior !== "ignore") {
-          recentFiles = recentFiles.filter(
-            (file) => !isExcluded(file, this.app),
-          );
+          recentFiles = recentFiles.filter((file) => !isExcluded(file, this.app));
         }
         if (!showAttachments) {
           recentFiles = recentFiles.filter(
             (file) =>
               file.extension === "md" ||
-              (file.extension === "mdx" &&
-                this.plugin.settings.enableMdxSupport),
+              (file.extension === "mdx" && this.plugin.settings.enableMdxSupport),
           );
         }
         const targetCount = 8;
@@ -385,20 +343,13 @@ var init_QuickSwitchModal = __esm({
             const mdxFiles = this.plugin.settings.enableMdxSupport
               ? this.app.vault
                   .getFiles()
-                  .filter(
-                    (f) =>
-                      f instanceof import_obsidian4.TFile &&
-                      f.extension === "mdx",
-                  )
+                  .filter((f) => f instanceof import_obsidian4.TFile && f.extension === "mdx")
               : [];
             const allSupportedFiles = [...allMarkdownFiles, ...mdxFiles];
-            const behavior2 =
-              this.plugin.settings.quickSwitcherExcludedBehavior;
+            const behavior2 = this.plugin.settings.quickSwitcherExcludedBehavior;
             const additionalFiles = allSupportedFiles
               .filter((file) => !existingPaths.has(file.path))
-              .filter(
-                (file) => behavior2 === "ignore" || !isExcluded(file, this.app),
-              )
+              .filter((file) => behavior2 === "ignore" || !isExcluded(file, this.app))
               .slice(0, targetCount - recentFiles.length);
             recentFiles.push(...additionalFiles);
           }
@@ -414,17 +365,10 @@ var init_QuickSwitchModal = __esm({
         if (this.plugin.settings.enableMdxSupport) {
           const mdxFiles = this.app.vault
             .getFiles()
-            .filter(
-              (f) =>
-                f instanceof import_obsidian4.TFile && f.extension === "mdx",
-            );
+            .filter((f) => f instanceof import_obsidian4.TFile && f.extension === "mdx");
           files = [...files, ...mdxFiles];
         }
-        if (
-          quickSwitcherOptions == null
-            ? void 0
-            : quickSwitcherOptions.showAttachments
-        ) {
+        if (quickSwitcherOptions == null ? void 0 : quickSwitcherOptions.showAttachments) {
           const allFiles = this.app.vault
             .getFiles()
             .filter((file) => file instanceof import_obsidian4.TFile);
@@ -432,8 +376,7 @@ var init_QuickSwitchModal = __esm({
             (file) =>
               file instanceof import_obsidian4.TFile &&
               (file.extension === "md" ||
-                (file.extension === "mdx" &&
-                  this.plugin.settings.enableMdxSupport) ||
+                (file.extension === "mdx" && this.plugin.settings.enableMdxSupport) ||
                 this.isAttachment(file)),
           );
         }
@@ -491,19 +434,14 @@ var init_QuickSwitchModal = __esm({
         if (cached) {
           return cached.displayName;
         }
-        const frontmatter = getFrontmatterSync(
-          this.app,
-          file,
-          this.plugin.settings,
-        );
+        const frontmatter = getFrontmatterSync(this.app, file, this.plugin.settings);
         if (frontmatter) {
           const propertyValue = frontmatter[this.plugin.settings.propertyKey];
           if (propertyValue !== void 0 && propertyValue !== null) {
             const trimmed =
               typeof propertyValue === "string"
                 ? propertyValue.trim()
-                : (typeof propertyValue === "number" ||
-                  typeof propertyValue === "boolean"
+                : (typeof propertyValue === "number" || typeof propertyValue === "boolean"
                     ? String(propertyValue)
                     : ""
                   ).trim();
@@ -527,10 +465,7 @@ var init_QuickSwitchModal = __esm({
             : (0, import_obsidian4.prepareFuzzySearch)(searchQuery2);
           const results = [];
           for (const file of files) {
-            const match =
-              (_a = search(file.basename)) != null
-                ? _a
-                : { score: 0, matches: [] };
+            const match = (_a = search(file.basename)) != null ? _a : { score: 0, matches: [] };
             if (match.matches.length > 0) {
               results.push({ item: file, match });
             }
@@ -588,10 +523,7 @@ var init_QuickSwitchModal = __esm({
             }
           }
           if (!matchType) {
-            if (
-              this.plugin.settings.includeFilenameInSearch &&
-              file.basename !== displayName
-            ) {
+            if (this.plugin.settings.includeFilenameInSearch && file.basename !== displayName) {
               const filenameMatch = search(file.basename);
               if (filenameMatch && filenameMatch.matches.length > 0) {
                 matchReason.matchedInFilename = true;
@@ -610,11 +542,7 @@ var init_QuickSwitchModal = __esm({
               }
             }
           }
-          if (
-            !matchType &&
-            this.plugin.settings.includeAliasesInSearch &&
-            aliases.length > 0
-          ) {
+          if (!matchType && this.plugin.settings.includeAliasesInSearch && aliases.length > 0) {
             for (const alias of aliases) {
               const aliasMatch = search(alias);
               if (aliasMatch && aliasMatch.matches.length > 0) {
@@ -628,8 +556,7 @@ var init_QuickSwitchModal = __esm({
           }
           if (bestMatch && bestMatch.matches.length > 0) {
             if (!searchQuery) {
-              const behavior =
-                this.plugin.settings.quickSwitcherExcludedBehavior;
+              const behavior = this.plugin.settings.quickSwitcherExcludedBehavior;
               if (behavior !== "ignore" && isExcluded(file, this.app)) {
                 continue;
               }
@@ -640,10 +567,8 @@ var init_QuickSwitchModal = __esm({
         }
         const quickSwitcherOptions = this.getQuickSwitcherOptions();
         const showExistingOnly =
-          (_a =
-            quickSwitcherOptions == null
-              ? void 0
-              : quickSwitcherOptions.showExistingOnly) != null
+          (_a = quickSwitcherOptions == null ? void 0 : quickSwitcherOptions.showExistingOnly) !=
+          null
             ? _a
             : false;
         if (!showExistingOnly) {
@@ -672,10 +597,8 @@ var init_QuickSwitchModal = __esm({
           const behavior = this.plugin.settings.quickSwitcherExcludedBehavior;
           if (behavior !== "ignore") {
             results.sort((a, b) => {
-              const aFile =
-                a.item instanceof import_obsidian4.TFile ? a.item : null;
-              const bFile =
-                b.item instanceof import_obsidian4.TFile ? b.item : null;
+              const aFile = a.item instanceof import_obsidian4.TFile ? a.item : null;
+              const bFile = b.item instanceof import_obsidian4.TFile ? b.item : null;
               const aExcluded = aFile ? isExcluded(aFile, this.app) : false;
               const bExcluded = bFile ? isExcluded(bFile, this.app) : false;
               if (aExcluded && !bExcluded) return 1;
@@ -686,10 +609,7 @@ var init_QuickSwitchModal = __esm({
           let filteredResults = results;
           if (behavior === "hide") {
             filteredResults = filteredResults.filter((r) => {
-              return !(
-                r.item instanceof import_obsidian4.TFile &&
-                isExcluded(r.item, this.app)
-              );
+              return !(r.item instanceof import_obsidian4.TFile && isExcluded(r.item, this.app));
             });
           }
           if (showExistingOnly) {
@@ -711,9 +631,7 @@ var init_QuickSwitchModal = __esm({
                 (this.plugin.settings.includeAliasesInSearch &&
                   ((_a2 = this.fileCache.get(r.item.path)) == null
                     ? void 0
-                    : _a2.aliases.some(
-                        (alias) => alias.toLowerCase() === lowerQuery,
-                      ))))
+                    : _a2.aliases.some((alias) => alias.toLowerCase() === lowerQuery))))
             );
           });
           if (!showExistingOnly && !exactMatch) {
@@ -747,8 +665,7 @@ var init_QuickSwitchModal = __esm({
         const { item } = suggestion;
         if (
           item instanceof import_obsidian4.TFile &&
-          this.plugin.settings.quickSwitcherExcludedBehavior ===
-            "deemphasize" &&
+          this.plugin.settings.quickSwitcherExcludedBehavior === "deemphasize" &&
           isExcluded(item, this.app)
         ) {
           el.addClass("mod-excluded");
@@ -799,10 +716,7 @@ var init_QuickSwitchModal = __esm({
           }
           const cachedData = this.fileCache.get(item.path);
           const isCustomDisplay =
-            (_a = cachedData == null ? void 0 : cachedData.isCustomDisplay) !=
-            null
-              ? _a
-              : false;
+            (_a = cachedData == null ? void 0 : cachedData.isCustomDisplay) != null ? _a : false;
           const matchReason = this.matchReasons.get(item.path);
           if (
             !isCustomDisplay &&
@@ -894,10 +808,7 @@ var init_QuickSwitchModal = __esm({
         return "Match";
       }
       createTypeIcon(container) {
-        const svg = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "svg",
-        );
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "24");
         svg.setAttribute("height", "24");
         svg.setAttribute("viewBox", "0 0 24 24");
@@ -907,25 +818,16 @@ var init_QuickSwitchModal = __esm({
         svg.setAttribute("stroke-linecap", "round");
         svg.setAttribute("stroke-linejoin", "round");
         svg.classList.add("svg-icon", "lucide-type");
-        const polyline1 = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "polyline",
-        );
+        const polyline1 = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
         polyline1.setAttribute("points", "4 7 4 4 20 4 20 7");
         svg.appendChild(polyline1);
-        const line1 = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "line",
-        );
+        const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line1.setAttribute("x1", "9");
         line1.setAttribute("y1", "20");
         line1.setAttribute("x2", "15");
         line1.setAttribute("y2", "20");
         svg.appendChild(line1);
-        const line2 = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "line",
-        );
+        const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line2.setAttribute("x1", "12");
         line2.setAttribute("y1", "4");
         line2.setAttribute("x2", "12");
@@ -934,10 +836,7 @@ var init_QuickSwitchModal = __esm({
         container.appendChild(svg);
       }
       createFileIcon(container) {
-        const svg = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "svg",
-        );
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "24");
         svg.setAttribute("height", "24");
         svg.setAttribute("viewBox", "0 0 24 24");
@@ -947,52 +846,34 @@ var init_QuickSwitchModal = __esm({
         svg.setAttribute("stroke-linecap", "round");
         svg.setAttribute("stroke-linejoin", "round");
         svg.classList.add("svg-icon", "lucide-file-text");
-        const path = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "path",
-        );
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute(
           "d",
           "M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z",
         );
         svg.appendChild(path);
-        const polyline1 = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "polyline",
-        );
+        const polyline1 = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
         polyline1.setAttribute("points", "14,2 14,8 20,8");
         svg.appendChild(polyline1);
-        const line1 = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "line",
-        );
+        const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line1.setAttribute("x1", "16");
         line1.setAttribute("y1", "13");
         line1.setAttribute("x2", "8");
         line1.setAttribute("y2", "13");
         svg.appendChild(line1);
-        const line2 = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "line",
-        );
+        const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line2.setAttribute("x1", "16");
         line2.setAttribute("y1", "17");
         line2.setAttribute("x2", "8");
         line2.setAttribute("y2", "17");
         svg.appendChild(line2);
-        const polyline2 = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "polyline",
-        );
+        const polyline2 = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
         polyline2.setAttribute("points", "10,9 9,9 8,9");
         svg.appendChild(polyline2);
         container.appendChild(svg);
       }
       createForwardIcon(container) {
-        const svg = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "svg",
-        );
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "24");
         svg.setAttribute("height", "24");
         svg.setAttribute("viewBox", "0 0 24 24");
@@ -1002,25 +883,16 @@ var init_QuickSwitchModal = __esm({
         svg.setAttribute("stroke-linecap", "round");
         svg.setAttribute("stroke-linejoin", "round");
         svg.classList.add("svg-icon", "lucide-forward");
-        const polyline = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "polyline",
-        );
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
         polyline.setAttribute("points", "15 17 20 12 15 7");
         svg.appendChild(polyline);
-        const path = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "path",
-        );
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d", "M4 18v-2a4 4 0 0 1 4-4h12");
         svg.appendChild(path);
         container.appendChild(svg);
       }
       createFilePlusIcon(container) {
-        const svg = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "svg",
-        );
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "24");
         svg.setAttribute("height", "24");
         svg.setAttribute("viewBox", "0 0 24 24");
@@ -1030,34 +902,22 @@ var init_QuickSwitchModal = __esm({
         svg.setAttribute("stroke-linecap", "round");
         svg.setAttribute("stroke-linejoin", "round");
         svg.classList.add("svg-icon", "lucide-file-plus");
-        const path = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "path",
-        );
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute(
           "d",
           "M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z",
         );
         svg.appendChild(path);
-        const polyline = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "polyline",
-        );
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
         polyline.setAttribute("points", "14,2 14,8 20,8");
         svg.appendChild(polyline);
-        const line1 = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "line",
-        );
+        const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line1.setAttribute("x1", "12");
         line1.setAttribute("y1", "18");
         line1.setAttribute("x2", "12");
         line1.setAttribute("y2", "12");
         svg.appendChild(line1);
-        const line2 = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "line",
-        );
+        const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line2.setAttribute("x1", "9");
         line2.setAttribute("y1", "15");
         line2.setAttribute("x2", "15");
@@ -1069,17 +929,14 @@ var init_QuickSwitchModal = __esm({
         const cache = this.app.metadataCache.getFileCache(file);
         const frontmatter = cache == null ? void 0 : cache.frontmatter;
         const propertyValue =
-          frontmatter == null
-            ? void 0
-            : frontmatter[this.plugin.settings.propertyKey];
+          frontmatter == null ? void 0 : frontmatter[this.plugin.settings.propertyKey];
         if (propertyValue === void 0 || propertyValue === null) {
           return false;
         }
         const strValue =
           typeof propertyValue === "string"
             ? propertyValue
-            : typeof propertyValue === "number" ||
-                typeof propertyValue === "boolean"
+            : typeof propertyValue === "number" || typeof propertyValue === "boolean"
               ? String(propertyValue)
               : "";
         return strValue.trim() !== "";
@@ -1096,35 +953,23 @@ var init_QuickSwitchModal = __esm({
         var _a, _b, _c;
         if ("isUnresolved" in item && item.isUnresolved) {
           const unresolvedText = item.unresolvedText;
-          const activeView = this.app.workspace.getActiveViewOfType(
-            import_obsidian4.MarkdownView,
-          );
+          const activeView = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
           const sourcePath =
-            ((_a = activeView == null ? void 0 : activeView.file) == null
-              ? void 0
-              : _a.path) || "";
-          void this.app.workspace
-            .openLinkText(unresolvedText, sourcePath)
-            .catch((err) => {
-              const message = err instanceof Error ? err.message : String(err);
-              new import_obsidian4.Notice(`Error creating note: ${message}`);
-            });
+            ((_a = activeView == null ? void 0 : activeView.file) == null ? void 0 : _a.path) || "";
+          void this.app.workspace.openLinkText(unresolvedText, sourcePath).catch((err) => {
+            const message = err instanceof Error ? err.message : String(err);
+            new import_obsidian4.Notice(`Error creating note: ${message}`);
+          });
           return;
         }
         if ("isNewNote" in item) {
-          const activeView = this.app.workspace.getActiveViewOfType(
-            import_obsidian4.MarkdownView,
-          );
+          const activeView = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
           const sourcePath =
-            ((_b = activeView == null ? void 0 : activeView.file) == null
-              ? void 0
-              : _b.path) || "";
-          void this.app.workspace
-            .openLinkText(item.newName, sourcePath)
-            .catch((err) => {
-              const message = err instanceof Error ? err.message : String(err);
-              new import_obsidian4.Notice(`Error creating note: ${message}`);
-            });
+            ((_b = activeView == null ? void 0 : activeView.file) == null ? void 0 : _b.path) || "";
+          void this.app.workspace.openLinkText(item.newName, sourcePath).catch((err) => {
+            const message = err instanceof Error ? err.message : String(err);
+            new import_obsidian4.Notice(`Error creating note: ${message}`);
+          });
         } else if (item instanceof import_obsidian4.TFile) {
           if (evt instanceof KeyboardEvent) {
             if (evt.ctrlKey && evt.altKey) {
@@ -1137,20 +982,14 @@ var init_QuickSwitchModal = __esm({
                 import_obsidian4.MarkdownView,
               );
               const sourcePath =
-                ((_c = activeView == null ? void 0 : activeView.file) == null
-                  ? void 0
-                  : _c.path) || "";
+                ((_c = activeView == null ? void 0 : activeView.file) == null ? void 0 : _c.path) ||
+                "";
               const currentQuery = this.inputEl.value.trim();
               if (currentQuery) {
-                void this.app.workspace
-                  .openLinkText(currentQuery, sourcePath)
-                  .catch((err) => {
-                    const message =
-                      err instanceof Error ? err.message : String(err);
-                    new import_obsidian4.Notice(
-                      `Error creating note: ${message}`,
-                    );
-                  });
+                void this.app.workspace.openLinkText(currentQuery, sourcePath).catch((err) => {
+                  const message = err instanceof Error ? err.message : String(err);
+                  new import_obsidian4.Notice(`Error creating note: ${message}`);
+                });
               } else {
                 void this.app.workspace.getLeaf().openFile(item);
               }
@@ -1215,12 +1054,8 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
       el.addClass("property-over-filename-suggestion");
       if (!el.querySelector(".prompt-instructions")) {
         const instructions = el.createDiv({ cls: "prompt-instructions" });
-        instructions
-          .createDiv({ cls: "prompt-instruction" })
-          .setText("Type # to link heading");
-        instructions
-          .createDiv({ cls: "prompt-instruction" })
-          .setText("Type ^ to link blocks");
+        instructions.createDiv({ cls: "prompt-instruction" }).setText("Type # to link heading");
+        instructions.createDiv({ cls: "prompt-instruction" }).setText("Type ^ to link blocks");
         instructions
           .createDiv({ cls: "prompt-instruction" })
           .setText("Type | to change display text");
@@ -1258,9 +1093,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     if (this.plugin.settings.enableMdxSupport) {
       const mdxFiles = this.app.vault
         .getFiles()
-        .filter(
-          (f) => f instanceof import_obsidian2.TFile && f.extension === "mdx",
-        );
+        .filter((f) => f instanceof import_obsidian2.TFile && f.extension === "mdx");
       allFiles.push(...mdxFiles);
     }
     this.fileCache = await buildFileCache(
@@ -1272,20 +1105,12 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     );
   }
   async updateFileCache(file) {
-    const {
-      getFrontmatter: getFrontmatter2,
-      isFileTypeSupported: isFileTypeSupported2,
-    } = await Promise.resolve().then(
-      () => (init_frontmatter(), frontmatter_exports),
-    );
+    const { getFrontmatter: getFrontmatter2, isFileTypeSupported: isFileTypeSupported2 } =
+      await Promise.resolve().then(() => (init_frontmatter(), frontmatter_exports));
     if (!isFileTypeSupported2(file.extension, this.plugin.settings)) {
       return;
     }
-    const frontmatter = await getFrontmatter2(
-      this.app,
-      file,
-      this.plugin.settings,
-    );
+    const frontmatter = await getFrontmatter2(this.app, file, this.plugin.settings);
     let displayName = file.basename;
     let isCustomDisplay = false;
     let aliases = [];
@@ -1294,9 +1119,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
       frontmatter[this.plugin.settings.propertyKey] !== void 0 &&
       frontmatter[this.plugin.settings.propertyKey] !== null
     ) {
-      const propertyValue = String(
-        frontmatter[this.plugin.settings.propertyKey],
-      ).trim();
+      const propertyValue = String(frontmatter[this.plugin.settings.propertyKey]).trim();
       if (propertyValue !== "") {
         displayName = propertyValue;
         isCustomDisplay = true;
@@ -1304,12 +1127,8 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     }
     if (frontmatter == null ? void 0 : frontmatter.aliases) {
       const aliasesRaw = frontmatter.aliases;
-      aliases = Array.isArray(aliasesRaw)
-        ? aliasesRaw.map((a) => String(a))
-        : [String(aliasesRaw)];
-      aliases = aliases
-        .map((alias) => alias.trim())
-        .filter((alias) => alias !== "");
+      aliases = Array.isArray(aliasesRaw) ? aliasesRaw.map((a) => String(a)) : [String(aliasesRaw)];
+      aliases = aliases.map((alias) => alias.trim()).filter((alias) => alias !== "");
     }
     this.fileCache.set(file.path, {
       file,
@@ -1328,10 +1147,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     if (!query || query.trim() === "") {
       const behavior2 = this.plugin.settings.linkSuggesterExcludedBehavior;
       const suggestions2 = Array.from(this.fileCache.values())
-        .filter(
-          (cached) =>
-            behavior2 === "ignore" || !isExcluded(cached.file, this.app),
-        )
+        .filter((cached) => behavior2 === "ignore" || !isExcluded(cached.file, this.app))
         .sort((a, b) => b.lastModified - a.lastModified)
         .slice(0, 10)
         .map((cached) => ({
@@ -1365,10 +1181,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
         }
       }
       if (!matchType) {
-        if (
-          this.plugin.settings.includeFilenameInSearch &&
-          file.basename !== displayName
-        ) {
+        if (this.plugin.settings.includeFilenameInSearch && file.basename !== displayName) {
           const filenameMatch = search(file.basename);
           if (filenameMatch && filenameMatch.matches.length > 0) {
             matchReason.matchedInFilename = true;
@@ -1384,11 +1197,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
           }
         }
       }
-      if (
-        !matchType &&
-        this.plugin.settings.includeAliasesInSearch &&
-        aliases.length > 0
-      ) {
+      if (!matchType && this.plugin.settings.includeAliasesInSearch && aliases.length > 0) {
         for (const alias of aliases) {
           const aliasMatch = search(alias);
           if (aliasMatch && aliasMatch.matches.length > 0) {
@@ -1418,10 +1227,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     }
     const quickSwitcherOptions = this.getQuickSwitcherOptions();
     const showExistingOnly =
-      (_a =
-        quickSwitcherOptions == null
-          ? void 0
-          : quickSwitcherOptions.showExistingOnly) != null
+      (_a = quickSwitcherOptions == null ? void 0 : quickSwitcherOptions.showExistingOnly) != null
         ? _a
         : false;
     if (!showExistingOnly) {
@@ -1567,25 +1373,16 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     svg.setAttribute("stroke-linecap", "round");
     svg.setAttribute("stroke-linejoin", "round");
     svg.classList.add("svg-icon", "lucide-type");
-    const polyline1 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "polyline",
-    );
+    const polyline1 = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
     polyline1.setAttribute("points", "4 7 4 4 20 4 20 7");
     svg.appendChild(polyline1);
-    const line1 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "line",
-    );
+    const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line1.setAttribute("x1", "9");
     line1.setAttribute("y1", "20");
     line1.setAttribute("x2", "15");
     line1.setAttribute("y2", "20");
     svg.appendChild(line1);
-    const line2 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "line",
-    );
+    const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line2.setAttribute("x1", "12");
     line2.setAttribute("y1", "4");
     line2.setAttribute("x2", "12");
@@ -1605,39 +1402,24 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     svg.setAttribute("stroke-linejoin", "round");
     svg.classList.add("svg-icon", "lucide-file-text");
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute(
-      "d",
-      "M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z",
-    );
+    path.setAttribute("d", "M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z");
     svg.appendChild(path);
-    const polyline1 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "polyline",
-    );
+    const polyline1 = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
     polyline1.setAttribute("points", "14,2 14,8 20,8");
     svg.appendChild(polyline1);
-    const line1 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "line",
-    );
+    const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line1.setAttribute("x1", "16");
     line1.setAttribute("y1", "13");
     line1.setAttribute("x2", "8");
     line1.setAttribute("y2", "13");
     svg.appendChild(line1);
-    const line2 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "line",
-    );
+    const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line2.setAttribute("x1", "16");
     line2.setAttribute("y1", "17");
     line2.setAttribute("x2", "8");
     line2.setAttribute("y2", "17");
     svg.appendChild(line2);
-    const polyline2 = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "polyline",
-    );
+    const polyline2 = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
     polyline2.setAttribute("points", "10,9 9,9 8,9");
     svg.appendChild(polyline2);
     container.appendChild(svg);
@@ -1653,10 +1435,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     svg.setAttribute("stroke-linecap", "round");
     svg.setAttribute("stroke-linejoin", "round");
     svg.classList.add("svg-icon", "lucide-forward");
-    const polyline = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "polyline",
-    );
+    const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
     polyline.setAttribute("points", "15 17 20 12 15 7");
     svg.appendChild(polyline);
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -1668,17 +1447,14 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     const cache = this.app.metadataCache.getFileCache(file);
     const frontmatter = cache == null ? void 0 : cache.frontmatter;
     const propertyValue =
-      frontmatter == null
-        ? void 0
-        : frontmatter[this.plugin.settings.propertyKey];
+      frontmatter == null ? void 0 : frontmatter[this.plugin.settings.propertyKey];
     if (propertyValue === void 0 || propertyValue === null) {
       return false;
     }
     const strValue =
       typeof propertyValue === "string"
         ? propertyValue
-        : typeof propertyValue === "number" ||
-            typeof propertyValue === "boolean"
+        : typeof propertyValue === "number" || typeof propertyValue === "boolean"
           ? String(propertyValue)
           : "";
     return strValue.trim() !== "";
@@ -1696,9 +1472,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     if (suggestion.isNoMatch) {
       return;
     }
-    const activeView = this.app.workspace.getActiveViewOfType(
-      import_obsidian2.MarkdownView,
-    );
+    const activeView = this.app.workspace.getActiveViewOfType(import_obsidian2.MarkdownView);
     if (!activeView || !this.context) return;
     const editor = activeView.editor;
     const { start, end } = this.context;
@@ -1712,10 +1486,7 @@ var LinkTitleSuggest = class extends import_obsidian2.EditorSuggest {
     }
     const vault = this.app.vault;
     const useMarkdownLinks =
-      (_b =
-        (_a = vault.getConfig) == null
-          ? void 0
-          : _a.call(vault, "useMarkdownLinks")) != null
+      (_b = (_a = vault.getConfig) == null ? void 0 : _a.call(vault, "useMarkdownLinks")) != null
         ? _b
         : false;
     let linkText;
@@ -1804,13 +1575,11 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
         .setName("When linking notes")
         .setDesc("Enable property-based titles in the link suggester.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableForLinking)
-            .onChange(async (value) => {
-              this.plugin.settings.enableForLinking = value;
-              await this.plugin.saveData(this.plugin.settings);
-              this.plugin.updateLinkSuggester();
-            }),
+          toggle.setValue(this.plugin.settings.enableForLinking).onChange(async (value) => {
+            this.plugin.settings.enableForLinking = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.plugin.updateLinkSuggester();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -1818,14 +1587,11 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
         .setName("In quick switcher")
         .setDesc("Enable property-based titles in the quick switcher.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableForQuickSwitcher)
-            .onChange(async (value) => {
-              const prevQuickSwitcherState =
-                this.plugin.settings.enableForQuickSwitcher;
-              this.plugin.settings.enableForQuickSwitcher = value;
-              await this.plugin.saveSettings(prevQuickSwitcherState);
-            }),
+          toggle.setValue(this.plugin.settings.enableForQuickSwitcher).onChange(async (value) => {
+            const prevQuickSwitcherState = this.plugin.settings.enableForQuickSwitcher;
+            this.plugin.settings.enableForQuickSwitcher = value;
+            await this.plugin.saveSettings(prevQuickSwitcherState);
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -1835,12 +1601,10 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
           "Include note file names in fuzzy search results for link suggester and quick switcher.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.includeFilenameInSearch)
-            .onChange(async (value) => {
-              this.plugin.settings.includeFilenameInSearch = value;
-              await this.plugin.saveData(this.plugin.settings);
-            }),
+          toggle.setValue(this.plugin.settings.includeFilenameInSearch).onChange(async (value) => {
+            this.plugin.settings.includeFilenameInSearch = value;
+            await this.plugin.saveData(this.plugin.settings);
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -1850,27 +1614,21 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
           "Include property aliases in fuzzy search results for link suggester and quick switcher.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.includeAliasesInSearch)
-            .onChange(async (value) => {
-              this.plugin.settings.includeAliasesInSearch = value;
-              await this.plugin.saveData(this.plugin.settings);
-            }),
+          toggle.setValue(this.plugin.settings.includeAliasesInSearch).onChange(async (value) => {
+            this.plugin.settings.includeAliasesInSearch = value;
+            await this.plugin.saveData(this.plugin.settings);
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
       setting
         .setName("When dragging notes")
-        .setDesc(
-          "Use property-based titles when dragging notes from the file explorer.",
-        )
+        .setDesc("Use property-based titles when dragging notes from the file explorer.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableForDragDrop)
-            .onChange(async (value) => {
-              this.plugin.settings.enableForDragDrop = value;
-              await this.plugin.saveData(this.plugin.settings);
-            }),
+          toggle.setValue(this.plugin.settings.enableForDragDrop).onChange(async (value) => {
+            this.plugin.settings.enableForDragDrop = value;
+            await this.plugin.saveData(this.plugin.settings);
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -1880,28 +1638,22 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
           "Automatically use the configured property value as the default name when creating a bookmark.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableForBookmarks)
-            .onChange(async (value) => {
-              this.plugin.settings.enableForBookmarks = value;
-              await this.plugin.saveData(this.plugin.settings);
-              this.plugin.updateBookmarks();
-            }),
+          toggle.setValue(this.plugin.settings.enableForBookmarks).onChange(async (value) => {
+            this.plugin.settings.enableForBookmarks = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.plugin.updateBookmarks();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
       setting
         .setName("In graph view")
-        .setDesc(
-          "Use the property instead of the file name as the note's title in graph view.",
-        )
+        .setDesc("Use the property instead of the file name as the note's title in graph view.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableForGraphView)
-            .onChange(async (value) => {
-              this.plugin.settings.enableForGraphView = value;
-              await this.plugin.saveSettings();
-            }),
+          toggle.setValue(this.plugin.settings.enableForGraphView).onChange(async (value) => {
+            this.plugin.settings.enableForGraphView = value;
+            await this.plugin.saveSettings();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -1911,13 +1663,11 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
           "Use the property instead of the file name in the linked mentions footer, dedicated backlinks panel, and outgoing links.",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableForBacklinks)
-            .onChange(async (value) => {
-              this.plugin.settings.enableForBacklinks = value;
-              await this.plugin.saveData(this.plugin.settings);
-              this.plugin.updateBacklinks();
-            }),
+          toggle.setValue(this.plugin.settings.enableForBacklinks).onChange(async (value) => {
+            this.plugin.settings.enableForBacklinks = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.plugin.updateBacklinks();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -1941,46 +1691,36 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
         .setName("In tab titles")
         .setDesc("Use the property instead of the file name in tab titles.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableForTabs)
-            .onChange(async (value) => {
-              const prevTabState = this.plugin.settings.enableForTabs;
-              this.plugin.settings.enableForTabs = value;
-              await this.plugin.saveSettings(void 0, prevTabState);
-            }),
+          toggle.setValue(this.plugin.settings.enableForTabs).onChange(async (value) => {
+            const prevTabState = this.plugin.settings.enableForTabs;
+            this.plugin.settings.enableForTabs = value;
+            await this.plugin.saveSettings(void 0, prevTabState);
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
       setting
         .setName("In window frame title")
-        .setDesc(
-          "Use the property instead of the file name in the browser window title bar.",
-        )
+        .setDesc("Use the property instead of the file name in the browser window title bar.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableForWindowFrame)
-            .onChange(async (value) => {
-              this.plugin.settings.enableForWindowFrame = value;
-              await this.plugin.saveData(this.plugin.settings);
-              this.plugin.updateWindowFrame();
-            }),
+          toggle.setValue(this.plugin.settings.enableForWindowFrame).onChange(async (value) => {
+            this.plugin.settings.enableForWindowFrame = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.plugin.updateWindowFrame();
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
       setting
         .setName("In file explorer")
-        .setDesc(
-          "Use the property instead of the file name in the file explorer.",
-        )
+        .setDesc("Use the property instead of the file name in the file explorer.")
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableForExplorer)
-            .onChange(async (value) => {
-              this.plugin.settings.enableForExplorer = value;
-              await this.plugin.saveData(this.plugin.settings);
-              this.plugin.updateExplorer();
-              this.display();
-            }),
+          toggle.setValue(this.plugin.settings.enableForExplorer).onChange(async (value) => {
+            this.plugin.settings.enableForExplorer = value;
+            await this.plugin.saveData(this.plugin.settings);
+            this.plugin.updateExplorer();
+            this.display();
+          }),
         );
     });
     if (this.plugin.settings.enableForExplorer) {
@@ -2009,12 +1749,10 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
           "Instead of using fuzzy search, simple search provides better performance with very large vaults (thousands of files).",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.useSimpleSearch)
-            .onChange(async (value) => {
-              this.plugin.settings.useSimpleSearch = value;
-              await this.plugin.saveData(this.plugin.settings);
-            }),
+          toggle.setValue(this.plugin.settings.useSimpleSearch).onChange(async (value) => {
+            this.plugin.settings.useSimpleSearch = value;
+            await this.plugin.saveData(this.plugin.settings);
+          }),
         );
     });
     generalGroup.addSetting((setting) => {
@@ -2066,21 +1804,19 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
           "Enable support for .mdx files. When enabled, the plugin will read properties from mdx files manually (Obsidian's metadata cache only works for .md files).",
         )
         .addToggle((toggle) =>
-          toggle
-            .setValue(this.plugin.settings.enableMdxSupport)
-            .onChange(async (value) => {
-              this.plugin.settings.enableMdxSupport = value;
-              await this.plugin.saveSettings();
-              this.plugin.rebuildCache();
-              this.plugin.updateLinkSuggester();
-              this.plugin.updateQuickSwitcher();
-              this.plugin.updateGraphView();
-              this.plugin.updateBacklinks();
-              this.plugin.updateTabs();
-              this.plugin.updateExplorer();
-              this.plugin.updateWindowFrame();
-              this.plugin.updateBookmarks();
-            }),
+          toggle.setValue(this.plugin.settings.enableMdxSupport).onChange(async (value) => {
+            this.plugin.settings.enableMdxSupport = value;
+            await this.plugin.saveSettings();
+            this.plugin.rebuildCache();
+            this.plugin.updateLinkSuggester();
+            this.plugin.updateQuickSwitcher();
+            this.plugin.updateGraphView();
+            this.plugin.updateBacklinks();
+            this.plugin.updateTabs();
+            this.plugin.updateExplorer();
+            this.plugin.updateWindowFrame();
+            this.plugin.updateBookmarks();
+          }),
         );
     });
   }
@@ -2093,10 +1829,9 @@ function registerCommands(plugin) {
     id: "open-quick-switcher",
     name: "Open quick switcher (property-based)",
     callback: async () => {
-      const { QuickSwitchModal: QuickSwitchModal2 } =
-        await Promise.resolve().then(
-          () => (init_QuickSwitchModal(), QuickSwitchModal_exports),
-        );
+      const { QuickSwitchModal: QuickSwitchModal2 } = await Promise.resolve().then(
+        () => (init_QuickSwitchModal(), QuickSwitchModal_exports),
+      );
       new QuickSwitchModal2(plugin.app, plugin).open();
     },
   });
@@ -2117,8 +1852,7 @@ function registerCommands(plugin) {
     name: "Toggle property-based quick switcher",
     callback: async () => {
       const prevState = plugin.settings.enableForQuickSwitcher;
-      plugin.settings.enableForQuickSwitcher =
-        !plugin.settings.enableForQuickSwitcher;
+      plugin.settings.enableForQuickSwitcher = !plugin.settings.enableForQuickSwitcher;
       await plugin.saveSettings(prevState);
       new import_obsidian5.Notice(
         `Property-based Quick Switcher ${plugin.settings.enableForQuickSwitcher ? "enabled" : "disabled"}`,
@@ -2153,15 +1887,9 @@ var QuickSwitcherService = class {
     this.plugin = plugin;
   }
   updateQuickSwitcher() {
-    if (
-      this.plugin.settings.enableForQuickSwitcher &&
-      !this.isCommandOverridden
-    ) {
+    if (this.plugin.settings.enableForQuickSwitcher && !this.isCommandOverridden) {
       this.overrideQuickSwitcherCommand();
-    } else if (
-      !this.plugin.settings.enableForQuickSwitcher &&
-      this.isCommandOverridden
-    ) {
+    } else if (!this.plugin.settings.enableForQuickSwitcher && this.isCommandOverridden) {
       this.restoreOriginalCommand();
     }
   }
@@ -2188,18 +1916,12 @@ var QuickSwitcherService = class {
       hotkeys: [{ modifiers: ["Mod"], key: "o" }],
       callback: () => {
         const workspace = this.plugin.app.workspace;
-        if (
-          workspace.switcher &&
-          typeof workspace.switcher.close === "function"
-        ) {
+        if (workspace.switcher && typeof workspace.switcher.close === "function") {
           workspace.switcher.close();
         }
         const existingModals = document.querySelectorAll(".modal");
         existingModals.forEach((modal) => {
-          if (
-            modal instanceof HTMLElement &&
-            !modal.classList.contains("hidden")
-          ) {
+          if (modal instanceof HTMLElement && !modal.classList.contains("hidden")) {
             modal.addClass("hidden");
           }
         });
@@ -2211,18 +1933,12 @@ var QuickSwitcherService = class {
               modal.open();
             })
             .catch(() => {
-              if (
-                this.originalSwitcherCommand &&
-                this.originalSwitcherCommand.callback
-              ) {
+              if (this.originalSwitcherCommand && this.originalSwitcherCommand.callback) {
                 this.originalSwitcherCommand.callback();
               }
             });
         } catch (e) {
-          if (
-            this.originalSwitcherCommand &&
-            this.originalSwitcherCommand.callback
-          ) {
+          if (this.originalSwitcherCommand && this.originalSwitcherCommand.callback) {
             this.originalSwitcherCommand.callback();
           }
         }
@@ -2275,10 +1991,7 @@ var DragDropService = class {
       return;
     }
     const now = Date.now();
-    if (
-      now - this.lastDropTime < this.DROP_DEBOUNCE_MS &&
-      this.lastDropData === filePath
-    ) {
+    if (now - this.lastDropTime < this.DROP_DEBOUNCE_MS && this.lastDropData === filePath) {
       return;
     }
     this.lastDropTime = now;
@@ -2294,10 +2007,7 @@ var DragDropService = class {
           this.replaceLastInsertedLink(file, displayName, editor);
         }, 50);
       }
-    } else if (
-      file.extension === "mdx" &&
-      this.plugin.settings.enableMdxSupport
-    ) {
+    } else if (file.extension === "mdx" && this.plugin.settings.enableMdxSupport) {
       void (async () => {
         const displayName = await this.getDisplayName(file);
         if (displayName !== null) {
@@ -2305,11 +2015,7 @@ var DragDropService = class {
           const maxAttempts = 5;
           const attemptReplace = () => {
             attempts++;
-            const replaced = this.replaceLastInsertedLink(
-              file,
-              displayName,
-              editor,
-            );
+            const replaced = this.replaceLastInsertedLink(file, displayName, editor);
             if (!replaced && attempts < maxAttempts) {
               setTimeout(attemptReplace, 50 * attempts);
             }
@@ -2321,11 +2027,8 @@ var DragDropService = class {
   }
   handleDOMDrop(event) {
     const target = event.target;
-    const editorElement =
-      target == null ? void 0 : target.closest(".cm-editor");
-    const activeView = this.plugin.app.workspace.getActiveViewOfType(
-      import_obsidian6.MarkdownView,
-    );
+    const editorElement = target == null ? void 0 : target.closest(".cm-editor");
+    const activeView = this.plugin.app.workspace.getActiveViewOfType(import_obsidian6.MarkdownView);
     const hasActiveEditor = activeView && activeView.editor;
     if (!editorElement && !hasActiveEditor) {
       return;
@@ -2351,9 +2054,7 @@ var DragDropService = class {
             actualFilePath = decodedPath;
           } else {
             if (this.plugin.settings.enableMdxSupport) {
-              const mdxFile = this.plugin.app.vault.getAbstractFileByPath(
-                decodedPath + ".mdx",
-              );
+              const mdxFile = this.plugin.app.vault.getAbstractFileByPath(decodedPath + ".mdx");
               if (mdxFile) {
                 actualFilePath = decodedPath + ".mdx";
               } else {
@@ -2376,10 +2077,7 @@ var DragDropService = class {
       return;
     }
     const now = Date.now();
-    if (
-      now - this.lastDropTime < this.DROP_DEBOUNCE_MS &&
-      this.lastDropData === actualFilePath
-    ) {
+    if (now - this.lastDropTime < this.DROP_DEBOUNCE_MS && this.lastDropData === actualFilePath) {
       return;
     }
     this.lastDropTime = now;
@@ -2397,18 +2095,11 @@ var DragDropService = class {
               import_obsidian6.MarkdownView,
             );
             if (activeView2 && activeView2.editor) {
-              this.replaceLastInsertedLink(
-                file,
-                displayName,
-                activeView2.editor,
-              );
+              this.replaceLastInsertedLink(file, displayName, activeView2.editor);
             }
           }, 50);
         }
-      } else if (
-        file.extension === "mdx" &&
-        this.plugin.settings.enableMdxSupport
-      ) {
+      } else if (file.extension === "mdx" && this.plugin.settings.enableMdxSupport) {
         void (async () => {
           const displayName = await this.getDisplayName(file);
           if (displayName !== null) {
@@ -2445,19 +2136,13 @@ var DragDropService = class {
     if (file.extension !== "md") {
       return null;
     }
-    const frontmatter = getFrontmatterSync(
-      this.plugin.app,
-      file,
-      this.plugin.settings,
-    );
+    const frontmatter = getFrontmatterSync(this.plugin.app, file, this.plugin.settings);
     if (
       frontmatter &&
       frontmatter[this.plugin.settings.propertyKey] !== void 0 &&
       frontmatter[this.plugin.settings.propertyKey] !== null
     ) {
-      const propertyValue = String(
-        frontmatter[this.plugin.settings.propertyKey],
-      ).trim();
+      const propertyValue = String(frontmatter[this.plugin.settings.propertyKey]).trim();
       if (propertyValue !== "") {
         return propertyValue;
       }
@@ -2468,28 +2153,18 @@ var DragDropService = class {
    * Async version for .mdx files (needs file reading)
    */
   async getDisplayName(file) {
-    const {
-      getFrontmatter: getFrontmatter2,
-      isFileTypeSupported: isFileTypeSupported2,
-    } = await Promise.resolve().then(
-      () => (init_frontmatter(), frontmatter_exports),
-    );
+    const { getFrontmatter: getFrontmatter2, isFileTypeSupported: isFileTypeSupported2 } =
+      await Promise.resolve().then(() => (init_frontmatter(), frontmatter_exports));
     if (!isFileTypeSupported2(file.extension, this.plugin.settings)) {
       return null;
     }
-    const frontmatter = await getFrontmatter2(
-      this.plugin.app,
-      file,
-      this.plugin.settings,
-    );
+    const frontmatter = await getFrontmatter2(this.plugin.app, file, this.plugin.settings);
     if (
       frontmatter &&
       frontmatter[this.plugin.settings.propertyKey] !== void 0 &&
       frontmatter[this.plugin.settings.propertyKey] !== null
     ) {
-      const propertyValue = String(
-        frontmatter[this.plugin.settings.propertyKey],
-      ).trim();
+      const propertyValue = String(frontmatter[this.plugin.settings.propertyKey]).trim();
       if (propertyValue !== "") {
         return propertyValue;
       }
@@ -2702,10 +2377,7 @@ function isGraphNode(value) {
   var _a;
   if (!value || typeof value !== "object") return false;
   const v = value;
-  return (
-    typeof v.id === "string" ||
-    typeof ((_a = v.text) == null ? void 0 : _a.text) === "string"
-  );
+  return typeof v.id === "string" || typeof ((_a = v.text) == null ? void 0 : _a.text) === "string";
 }
 function isNodeTextCarrier(node) {
   return !!node.text && typeof node.text.text === "string";
@@ -2775,10 +2447,7 @@ var GraphViewService = class {
     for (const { leafType, leaf } of leaves) {
       const leafLike = asLeafLike(leaf);
       const leafId = leafLike == null ? void 0 : leafLike.id;
-      const leafKey = getLeafKey(
-        leafType,
-        isNonEmptyString(leafId) ? leafId : String(leaf),
-      );
+      const leafKey = getLeafKey(leafType, isNonEmptyString(leafId) ? leafId : String(leaf));
       if (!this.seenLeaves.has(leafKey)) this.seenLeaves.add(leafKey);
       this.tryInstallPatchFromLeaf(leaf);
     }
@@ -2828,10 +2497,7 @@ var GraphViewService = class {
     const leaves = this.getGraphLeaves();
     for (const { leaf } of leaves) {
       const view = (_a = asLeafLike(leaf)) == null ? void 0 : _a.view;
-      const nodes =
-        (_b = view == null ? void 0 : view.renderer) == null
-          ? void 0
-          : _b.nodes;
+      const nodes = (_b = view == null ? void 0 : view.renderer) == null ? void 0 : _b.nodes;
       if (!nodes) continue;
       iterateGraphNodes(nodes, (node) => {
         if (!node || typeof node !== "object") return;
@@ -2925,8 +2591,7 @@ var GraphViewService = class {
     this.refreshTimer = void 0;
     for (const t of this.retryTimers) window.clearTimeout(t);
     this.retryTimers.clear();
-    if (this.pendingMdxRefreshTimer)
-      window.clearTimeout(this.pendingMdxRefreshTimer);
+    if (this.pendingMdxRefreshTimer) window.clearTimeout(this.pendingMdxRefreshTimer);
     this.pendingMdxRefreshTimer = void 0;
   }
   // --- Label computation ---
@@ -2934,8 +2599,7 @@ var GraphViewService = class {
     var _a, _b, _c, _d;
     if (!this.plugin.settings.enableForGraphView) return null;
     const propertyKey =
-      ((_a = this.plugin.settings.propertyKey) == null ? void 0 : _a.trim()) ||
-      "title";
+      ((_a = this.plugin.settings.propertyKey) == null ? void 0 : _a.trim()) || "title";
     const fileFromId = this.resolveFileFromNodeId(node.id);
     const nodeObj = node;
     const nodeTextForResolution =
@@ -2945,9 +2609,7 @@ var GraphViewService = class {
           ? void 0
           : _b.text;
     const file =
-      fileFromId != null
-        ? fileFromId
-        : this.resolveFileFromNodeLabel(nodeTextForResolution);
+      fileFromId != null ? fileFromId : this.resolveFileFromNodeLabel(nodeTextForResolution);
     if (!(file instanceof import_obsidian7.TFile)) return null;
     if (
       file.extension !== "md" &&
@@ -2956,9 +2618,7 @@ var GraphViewService = class {
       return null;
     if (file.extension === "md") {
       const fm =
-        (_d = this.plugin.app.metadataCache.getFileCache(file)) == null
-          ? void 0
-          : _d.frontmatter;
+        (_d = this.plugin.app.metadataCache.getFileCache(file)) == null ? void 0 : _d.frontmatter;
       const fmRecord = fm && typeof fm === "object" ? fm : void 0;
       const label2 = coerceFrontmatterValueToLabel(
         fmRecord == null ? void 0 : fmRecord[propertyKey],
@@ -2978,24 +2638,18 @@ var GraphViewService = class {
   }
   ensureBasenameIndex() {
     const mdxEnabled = this.plugin.settings.enableMdxSupport;
-    if (
-      this.basenameIndexBuiltForMdxSupport === mdxEnabled &&
-      this.basenameIndex.size > 0
-    )
-      return;
+    if (this.basenameIndexBuiltForMdxSupport === mdxEnabled && this.basenameIndex.size > 0) return;
     this.basenameIndexBuiltForMdxSupport = mdxEnabled;
     this.basenameIndex.clear();
     const files = this.plugin.app.vault.getFiles();
     for (const file of files) {
       if (!(file instanceof import_obsidian7.TFile)) continue;
       if (file.extension === "md") {
-        if (!this.basenameIndex.has(file.basename))
-          this.basenameIndex.set(file.basename, file);
+        if (!this.basenameIndex.has(file.basename)) this.basenameIndex.set(file.basename, file);
         continue;
       }
       if (file.extension === "mdx" && mdxEnabled) {
-        if (!this.basenameIndex.has(file.basename))
-          this.basenameIndex.set(file.basename, file);
+        if (!this.basenameIndex.has(file.basename)) this.basenameIndex.set(file.basename, file);
       }
     }
   }
@@ -3033,8 +2687,7 @@ var GraphViewService = class {
       if (file.extension === "md") return file;
       if (file.extension === "mdx" && enableMdx) return file;
     }
-    const cleaned =
-      (_a = normalizedId.split(/[/\\]/).pop()) != null ? _a : normalizedId;
+    const cleaned = (_a = normalizedId.split(/[/\\]/).pop()) != null ? _a : normalizedId;
     const base = stripMdExtension(cleaned);
     if (!isNonEmptyString(base)) return null;
     this.ensureBasenameIndex();
@@ -3061,22 +2714,13 @@ var GraphViewService = class {
     const out = [];
     const workspace = this.plugin.app.workspace;
     const graphLeavesUnknown =
-      (_a = workspace.getLeavesOfType) == null
-        ? void 0
-        : _a.call(workspace, "graph");
-    const graphLeaves = Array.isArray(graphLeavesUnknown)
-      ? graphLeavesUnknown
-      : [];
+      (_a = workspace.getLeavesOfType) == null ? void 0 : _a.call(workspace, "graph");
+    const graphLeaves = Array.isArray(graphLeavesUnknown) ? graphLeavesUnknown : [];
     for (const leaf of graphLeaves) out.push({ leafType: "graph", leaf });
     const localGraphLeavesUnknown =
-      (_b = workspace.getLeavesOfType) == null
-        ? void 0
-        : _b.call(workspace, "localgraph");
-    const localGraphLeaves = Array.isArray(localGraphLeavesUnknown)
-      ? localGraphLeavesUnknown
-      : [];
-    for (const leaf of localGraphLeaves)
-      out.push({ leafType: "localgraph", leaf });
+      (_b = workspace.getLeavesOfType) == null ? void 0 : _b.call(workspace, "localgraph");
+    const localGraphLeaves = Array.isArray(localGraphLeavesUnknown) ? localGraphLeavesUnknown : [];
+    for (const leaf of localGraphLeaves) out.push({ leafType: "localgraph", leaf });
     return out;
   }
   pickAnyNode(nodes) {
@@ -3120,8 +2764,7 @@ function stripMdExtension(path) {
 function cleanLabelToBasename(label) {
   var _a;
   const trimmed = label.trim();
-  const lastSegment =
-    (_a = trimmed.split(/[/\\]/).pop()) != null ? _a : trimmed;
+  const lastSegment = (_a = trimmed.split(/[/\\]/).pop()) != null ? _a : trimmed;
   return stripMdExtension(lastSegment);
 }
 function safeCall(fn, self) {
@@ -3129,8 +2772,7 @@ function safeCall(fn, self) {
   try {
     return fn.call(self);
   } catch (e) {
-    const direct =
-      (_a = self == null ? void 0 : self.text) == null ? void 0 : _a.text;
+    const direct = (_a = self == null ? void 0 : self.text) == null ? void 0 : _a.text;
     return isNonEmptyString(direct) ? direct : "";
   }
 }
@@ -3153,28 +2795,18 @@ var BacklinkService = class {
     if (!this.plugin.settings.enableForBacklinks) {
       return null;
     }
-    const {
-      getFrontmatter: getFrontmatter2,
-      isFileTypeSupported: isFileTypeSupported2,
-    } = await Promise.resolve().then(
-      () => (init_frontmatter(), frontmatter_exports),
-    );
+    const { getFrontmatter: getFrontmatter2, isFileTypeSupported: isFileTypeSupported2 } =
+      await Promise.resolve().then(() => (init_frontmatter(), frontmatter_exports));
     if (!isFileTypeSupported2(file.extension, this.plugin.settings)) {
       return null;
     }
-    const frontmatter = await getFrontmatter2(
-      this.plugin.app,
-      file,
-      this.plugin.settings,
-    );
+    const frontmatter = await getFrontmatter2(this.plugin.app, file, this.plugin.settings);
     if (
       frontmatter &&
       frontmatter[this.plugin.settings.propertyKey] !== void 0 &&
       frontmatter[this.plugin.settings.propertyKey] !== null
     ) {
-      const propertyValue = String(
-        frontmatter[this.plugin.settings.propertyKey],
-      ).trim();
+      const propertyValue = String(frontmatter[this.plugin.settings.propertyKey]).trim();
       if (propertyValue !== "") {
         return propertyValue;
       }
@@ -3201,9 +2833,7 @@ var BacklinkService = class {
       if (!(leaf.view instanceof import_obsidian8.MarkdownView)) {
         continue;
       }
-      const embeddedBacklinks = leaf.view.containerEl.querySelector(
-        ".embedded-backlinks",
-      );
+      const embeddedBacklinks = leaf.view.containerEl.querySelector(".embedded-backlinks");
       if (embeddedBacklinks) {
         this.updateBacklinkContainer(embeddedBacklinks);
       }
@@ -3213,16 +2843,14 @@ var BacklinkService = class {
    * Update dedicated backlinks panel
    */
   async updateDedicatedBacklinksPanel() {
-    const backlinksLeaves =
-      this.plugin.app.workspace.getLeavesOfType("backlink");
+    const backlinksLeaves = this.plugin.app.workspace.getLeavesOfType("backlink");
     for (const leaf of backlinksLeaves) {
       await leaf.loadIfDeferred();
       if (leaf.view) {
         const container = leaf.view.containerEl;
         if (container) {
           const backlinksContainer =
-            container.querySelector(".backlinks-pane") ||
-            container.querySelector(".backlink-pane");
+            container.querySelector(".backlinks-pane") || container.querySelector(".backlink-pane");
           if (backlinksContainer) {
             this.updateBacklinkContainer(backlinksContainer);
           }
@@ -3246,9 +2874,7 @@ var BacklinkService = class {
       let value = rawPathLike.trim();
       if (!value) return null;
       value =
-        (_b2 =
-          (_a2 = value.split("#")[0]) == null ? void 0 : _a2.split("?")[0]) !=
-        null
+        (_b2 = (_a2 = value.split("#")[0]) == null ? void 0 : _a2.split("?")[0]) != null
           ? _b2
           : value;
       if (value.startsWith("file://")) value = value.slice("file://".length);
@@ -3322,9 +2948,7 @@ var BacklinkService = class {
           if (file) return file;
         }
       }
-      const anchors = Array.from(
-        searchResult.querySelectorAll("a[href], a[data-href]"),
-      );
+      const anchors = Array.from(searchResult.querySelectorAll("a[href], a[data-href]"));
       for (const a of anchors) {
         const dataHref = a.getAttribute("data-href");
         if (dataHref) {
@@ -3445,28 +3069,24 @@ var BacklinkService = class {
       }
       if (sources.length === 0) return;
       sources.sort((a, b) => a.localeCompare(b));
-      const linkedHeaders = Array.from(
-        container.querySelectorAll(".tree-item-self"),
-      ).filter((h) => {
-        var _a, _b;
-        return (
-          ((_b =
-            (_a = h.querySelector(".tree-item-inner")) == null
-              ? void 0
-              : _a.textContent) != null
-            ? _b
-            : ""
-          ).trim() === "Linked mentions"
-        );
-      });
+      const linkedHeaders = Array.from(container.querySelectorAll(".tree-item-self")).filter(
+        (h) => {
+          var _a, _b;
+          return (
+            ((_b = (_a = h.querySelector(".tree-item-inner")) == null ? void 0 : _a.textContent) !=
+            null
+              ? _b
+              : ""
+            ).trim() === "Linked mentions"
+          );
+        },
+      );
       for (const header of linkedHeaders) {
         const sibling = header.nextElementSibling;
         if (!(sibling instanceof HTMLElement)) continue;
         if (!sibling.classList.contains("search-result-container")) continue;
         const titleEls = Array.from(
-          sibling.querySelectorAll(
-            ".search-result-file-title .tree-item-inner",
-          ),
+          sibling.querySelectorAll(".search-result-file-title .tree-item-inner"),
         );
         if (titleEls.length === 0) continue;
         let nextIdx = 0;
@@ -3484,23 +3104,17 @@ var BacklinkService = class {
       }
     })();
     const applyUnlinkedVisibility = (hide) => {
-      const previouslyHidden = container.querySelectorAll(
-        '[data-pov-unlinked-hidden="true"]',
-      );
+      const previouslyHidden = container.querySelectorAll('[data-pov-unlinked-hidden="true"]');
       previouslyHidden.forEach((el) => {
         el.style.removeProperty("display");
         el.removeAttribute("data-pov-unlinked-hidden");
       });
       if (!hide) return;
-      const headers = Array.from(
-        container.querySelectorAll(".tree-item-self"),
-      ).filter((h) => {
+      const headers = Array.from(container.querySelectorAll(".tree-item-self")).filter((h) => {
         var _a, _b;
         return (
-          ((_b =
-            (_a = h.querySelector(".tree-item-inner")) == null
-              ? void 0
-              : _a.textContent) != null
+          ((_b = (_a = h.querySelector(".tree-item-inner")) == null ? void 0 : _a.textContent) !=
+          null
             ? _b
             : ""
           ).trim() === "Unlinked mentions"
@@ -3519,9 +3133,7 @@ var BacklinkService = class {
         }
       }
     };
-    applyUnlinkedVisibility(
-      this.plugin.settings.hideUnlinkedMentionsInBacklinks,
-    );
+    applyUnlinkedVisibility(this.plugin.settings.hideUnlinkedMentionsInBacklinks);
     const selectors = [
       ".tree-item-inner",
       ".backlink-title",
@@ -3566,8 +3178,7 @@ var BacklinkService = class {
       }
       this.processedElements.add(element);
       element.setAttribute("data-pov-processed", "true");
-      const currentText =
-        ((_a = element.textContent) == null ? void 0 : _a.trim()) || "";
+      const currentText = ((_a = element.textContent) == null ? void 0 : _a.trim()) || "";
       const basename = file.basename;
       const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const escapedBasename = escapeRegExp(basename);
@@ -3660,9 +3271,7 @@ var BacklinkService = class {
                   var _a;
                   try {
                     const elements =
-                      (_a = node.querySelectorAll) == null
-                        ? void 0
-                        : _a.call(node, selector);
+                      (_a = node.querySelectorAll) == null ? void 0 : _a.call(node, selector);
                     elements == null
                       ? void 0
                       : elements.forEach((el) => {
@@ -3686,9 +3295,7 @@ var BacklinkService = class {
               shouldUpdate = true;
             }
           } else if (target.parentElement) {
-            const embeddedBacklinks = target.parentElement.closest(
-              ".embedded-backlinks",
-            );
+            const embeddedBacklinks = target.parentElement.closest(".embedded-backlinks");
             const backlinksPanel = target.parentElement.closest(
               ".backlinks-pane, .backlink-pane, .outgoing-link-pane, .outgoing-links, .backlink-container",
             );
@@ -3765,10 +3372,7 @@ var BacklinkService = class {
       return;
     }
     const proto = Object.getPrototypeOf(element);
-    const originalDescriptor = Object.getOwnPropertyDescriptor(
-      proto,
-      "textContent",
-    );
+    const originalDescriptor = Object.getOwnPropertyDescriptor(proto, "textContent");
     if (originalDescriptor && originalDescriptor.set) {
       this.originalTextContentDescriptors.set(element, originalDescriptor);
       try {
@@ -3780,9 +3384,7 @@ var BacklinkService = class {
                 const displayName = await this.getDisplayName(file);
                 if (
                   displayName &&
-                  (value === file.basename ||
-                    value === file.name ||
-                    value.endsWith(file.basename))
+                  (value === file.basename || value === file.name || value.endsWith(file.basename))
                 ) {
                   originalDescriptor.set.call(element, displayName);
                   element.setAttribute("data-pov-processed", "true");
@@ -3803,10 +3405,8 @@ var BacklinkService = class {
               var _a, _b;
               return (
                 ((_b =
-                  (_a = Object.getOwnPropertyDescriptor(
-                    HTMLElement.prototype,
-                    "textContent",
-                  )) == null
+                  (_a = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "textContent")) ==
+                  null
                     ? void 0
                     : _a.get) == null
                   ? void 0
@@ -3888,34 +3488,21 @@ var TabService = class {
       var _a;
       const view = leaf.view;
       const state = leaf.getViewState();
-      if (
-        ((_a = state.state) == null ? void 0 : _a.file) &&
-        !(view == null ? void 0 : view.file)
-      ) {
+      if (((_a = state.state) == null ? void 0 : _a.file) && !(view == null ? void 0 : view.file)) {
         void leaf.setViewState({ type: state.type, state: state.state });
       }
       if (view == null ? void 0 : view.file) {
         const file = view.file;
         void (async () => {
-          const frontmatter = await getFrontmatter(
-            this.plugin.app,
-            file,
-            this.plugin.settings,
-          );
+          const frontmatter = await getFrontmatter(this.plugin.app, file, this.plugin.settings);
           const propertyValue =
-            frontmatter == null
-              ? void 0
-              : frontmatter[this.plugin.settings.propertyKey];
+            frontmatter == null ? void 0 : frontmatter[this.plugin.settings.propertyKey];
           const tabHeaderEl = leaf.tabHeaderEl;
           if (tabHeaderEl) {
             tabHeaderEl.setAttribute("data-pov-title-set", "true");
             if (this.plugin.settings.enableForTabs) {
-              const titleEl = tabHeaderEl.querySelector(
-                ".workspace-tab-header-inner-title",
-              );
-              const displayText = propertyValue
-                ? String(propertyValue)
-                : file.basename;
+              const titleEl = tabHeaderEl.querySelector(".workspace-tab-header-inner-title");
+              const displayText = propertyValue ? String(propertyValue) : file.basename;
               if (titleEl) {
                 titleEl.setText(displayText);
               }
@@ -3967,19 +3554,11 @@ var TabService = class {
       }),
     );
     this.plugin.registerEvent(
-      this.plugin.app.workspace.on("active-leaf-change", () =>
-        this.renameTabs(),
-      ),
+      this.plugin.app.workspace.on("active-leaf-change", () => this.renameTabs()),
     );
-    this.plugin.registerEvent(
-      this.plugin.app.workspace.on("file-open", () => this.renameTabs()),
-    );
-    this.plugin.registerEvent(
-      this.plugin.app.vault.on("rename", () => this.renameTabs()),
-    );
-    this.plugin.registerEvent(
-      this.plugin.app.metadataCache.on("changed", () => this.renameTabs()),
-    );
+    this.plugin.registerEvent(this.plugin.app.workspace.on("file-open", () => this.renameTabs()));
+    this.plugin.registerEvent(this.plugin.app.vault.on("rename", () => this.renameTabs()));
+    this.plugin.registerEvent(this.plugin.app.metadataCache.on("changed", () => this.renameTabs()));
   }
   /**
    * Update tabs (public method for manual updates)
@@ -4037,8 +3616,7 @@ var ExplorerService = class {
     }
     const folderNoteFilename = this.plugin.settings.folderNoteFilename.trim();
     const folderNotePath = `${folder.path}/${folderNoteFilename}.md`;
-    const folderNoteFile =
-      this.plugin.app.vault.getAbstractFileByPath(folderNotePath);
+    const folderNoteFile = this.plugin.app.vault.getAbstractFileByPath(folderNotePath);
     if (folderNoteFile instanceof import_obsidian9.TFile) {
       const cache = this.plugin.app.metadataCache.getFileCache(folderNoteFile);
       const propertyValue =
@@ -4057,24 +3635,14 @@ var ExplorerService = class {
    */
   async resolveTitle(item) {
     if (item.file instanceof import_obsidian9.TFile) {
-      const {
-        getFrontmatter: getFrontmatter2,
-        isFileTypeSupported: isFileTypeSupported2,
-      } = await Promise.resolve().then(
-        () => (init_frontmatter(), frontmatter_exports),
-      );
+      const { getFrontmatter: getFrontmatter2, isFileTypeSupported: isFileTypeSupported2 } =
+        await Promise.resolve().then(() => (init_frontmatter(), frontmatter_exports));
       if (!isFileTypeSupported2(item.file.extension, this.plugin.settings)) {
         return null;
       }
-      const frontmatter = await getFrontmatter2(
-        this.plugin.app,
-        item.file,
-        this.plugin.settings,
-      );
+      const frontmatter = await getFrontmatter2(this.plugin.app, item.file, this.plugin.settings);
       const propertyValue =
-        frontmatter == null
-          ? void 0
-          : frontmatter[this.plugin.settings.propertyKey];
+        frontmatter == null ? void 0 : frontmatter[this.plugin.settings.propertyKey];
       return propertyValue ? String(propertyValue) : null;
     } else if (item.file instanceof import_obsidian9.TFolder) {
       return this.getFolderNoteTitle(item.file);
@@ -4176,9 +3744,7 @@ var ExplorerFileItemMutator = class {
     this.service = service;
     const proto = Object.getPrototypeOf(item);
     this.originalUpdateTitle = proto.updateTitle.bind(item);
-    this.originalStartRename = proto.startRename
-      ? proto.startRename.bind(item)
-      : void 0;
+    this.originalStartRename = proto.startRename ? proto.startRename.bind(item) : void 0;
     item.updateTitle = this.updateTitle.bind(this);
     if (proto.startRename) {
       item.startRename = this.startRename.bind(this);
@@ -4226,8 +3792,7 @@ var WindowFrameService = class {
     const activeFile = this.plugin.app.workspace.getActiveFile();
     if (activeFile instanceof import_obsidian10.TFile) {
       if (activeFile.extension === "md") {
-        const fileCache =
-          this.plugin.app.metadataCache.getFileCache(activeFile);
+        const fileCache = this.plugin.app.metadataCache.getFileCache(activeFile);
         const propertyValue =
           (_a = fileCache == null ? void 0 : fileCache.frontmatter) == null
             ? void 0
@@ -4237,10 +3802,7 @@ var WindowFrameService = class {
         }
         return activeFile.basename;
       }
-      if (
-        activeFile.extension === "mdx" &&
-        this.plugin.settings.enableMdxSupport
-      ) {
+      if (activeFile.extension === "mdx" && this.plugin.settings.enableMdxSupport) {
         void (async () => {
           const frontmatter = await getFrontmatter(
             this.plugin.app,
@@ -4248,9 +3810,7 @@ var WindowFrameService = class {
             this.plugin.settings,
           );
           const propertyValue =
-            frontmatter == null
-              ? void 0
-              : frontmatter[this.plugin.settings.propertyKey];
+            frontmatter == null ? void 0 : frontmatter[this.plugin.settings.propertyKey];
           if (propertyValue) {
             const app = this.plugin.app;
             if (typeof app.getAppTitle === "function") {
@@ -4393,9 +3953,7 @@ var BookmarkService = class {
       for (const mutation of mutations) {
         mutation.addedNodes.forEach((node) => {
           if (node instanceof HTMLElement) {
-            const modalEl = node.classList.contains("modal")
-              ? node
-              : node.querySelector(".modal");
+            const modalEl = node.classList.contains("modal") ? node : node.querySelector(".modal");
             if (modalEl) {
               this.handleModalAppearance(modalEl);
             }
@@ -4463,23 +4021,14 @@ var BookmarkService = class {
             }
           }
           if (file) {
-            const frontmatter = await getFrontmatter(
-              this.plugin.app,
-              file,
-              this.plugin.settings,
-            );
+            const frontmatter = await getFrontmatter(this.plugin.app, file, this.plugin.settings);
             const propertyValue =
-              frontmatter == null
-                ? void 0
-                : frontmatter[this.plugin.settings.propertyKey];
+              frontmatter == null ? void 0 : frontmatter[this.plugin.settings.propertyKey];
             if (propertyValue !== void 0 && propertyValue !== null) {
               let displayValue = "";
               if (typeof propertyValue === "string") {
                 displayValue = propertyValue;
-              } else if (
-                typeof propertyValue === "number" ||
-                typeof propertyValue === "boolean"
-              ) {
+              } else if (typeof propertyValue === "number" || typeof propertyValue === "boolean") {
                 displayValue = String(propertyValue);
               }
               if (displayValue && displayValue.trim() !== "") {
@@ -4490,9 +4039,7 @@ var BookmarkService = class {
                   currentValue === file.name;
                 if (isDefault) {
                   titleInput.value = displayValue;
-                  titleInput.dispatchEvent(
-                    new Event("input", { bubbles: true }),
-                  );
+                  titleInput.dispatchEvent(new Event("input", { bubbles: true }));
                   titleInput.select();
                   return true;
                 }
@@ -4536,10 +4083,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
     } catch (error) {
       const errorMsg = error.message;
       if (!errorMsg.includes("existing file extension")) {
-        console.error(
-          "[POV] Unexpected MDX registration error in constructor:",
-          errorMsg,
-        );
+        console.error("[POV] Unexpected MDX registration error in constructor:", errorMsg);
       }
     }
   }
@@ -4555,9 +4099,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
           this.settings.enableMdxSupport = false;
         }
       }
-      const mdxFiles = this.app.vault
-        .getFiles()
-        .filter((f) => f.extension === "mdx");
+      const mdxFiles = this.app.vault.getFiles().filter((f) => f.extension === "mdx");
       for (const file of mdxFiles) {
         this.app.metadataCache.trigger("changed", file);
       }
@@ -4579,10 +4121,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
       (() => {
         const mdxFiles = this.app.vault
           .getFiles()
-          .filter(
-            (f) =>
-              f instanceof import_obsidian12.TFile && f.extension === "mdx",
-          );
+          .filter((f) => f instanceof import_obsidian12.TFile && f.extension === "mdx");
         for (const file of mdxFiles) {
           void frontmatterCache.get(this.app, file, this.settings);
         }
@@ -4624,8 +4163,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
       this.app.vault.on("modify", (file) => {
         if (
           file instanceof import_obsidian12.TFile &&
-          (file.extension === "md" ||
-            (file.extension === "mdx" && this.settings.enableMdxSupport))
+          (file.extension === "md" || (file.extension === "mdx" && this.settings.enableMdxSupport))
         ) {
           this.cacheService.invalidateCache(file);
           frontmatterCache.invalidate(file.path);
@@ -4636,8 +4174,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
       this.app.vault.on("rename", (file, oldPath) => {
         if (
           file instanceof import_obsidian12.TFile &&
-          (file.extension === "md" ||
-            (file.extension === "mdx" && this.settings.enableMdxSupport))
+          (file.extension === "md" || (file.extension === "mdx" && this.settings.enableMdxSupport))
         ) {
           this.cacheService.invalidateCache(file);
           frontmatterCache.invalidate(file.path);
@@ -4648,8 +4185,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
       this.app.vault.on("delete", (file) => {
         if (
           file instanceof import_obsidian12.TFile &&
-          (file.extension === "md" ||
-            (file.extension === "mdx" && this.settings.enableMdxSupport))
+          (file.extension === "md" || (file.extension === "mdx" && this.settings.enableMdxSupport))
         ) {
           this.cacheService.invalidateCache(file);
           frontmatterCache.invalidate(file.path);
@@ -4660,8 +4196,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
       this.app.metadataCache.on("changed", (file) => {
         if (
           file instanceof import_obsidian12.TFile &&
-          (file.extension === "md" ||
-            (file.extension === "mdx" && this.settings.enableMdxSupport))
+          (file.extension === "md" || (file.extension === "mdx" && this.settings.enableMdxSupport))
         ) {
           this.cacheService.rebuildCache();
           if (this.settings.enableForGraphView) {
@@ -4706,9 +4241,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
     const editorSuggest = this.app.workspace.editorSuggest;
     if (!editorSuggest) return;
     if (this.suggest) {
-      editorSuggest.suggests = editorSuggest.suggests.filter(
-        (s) => s !== this.suggest,
-      );
+      editorSuggest.suggests = editorSuggest.suggests.filter((s) => s !== this.suggest);
       this.suggest = void 0;
     }
     if (this.settings.enableForLinking) {
@@ -4748,9 +4281,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
   onunload() {
     const editorSuggest = this.app.workspace.editorSuggest;
     if (editorSuggest && this.suggest) {
-      editorSuggest.suggests = editorSuggest.suggests.filter(
-        (s) => s !== this.suggest,
-      );
+      editorSuggest.suggests = editorSuggest.suggests.filter((s) => s !== this.suggest);
     }
     this.quickSwitcherService.restoreOriginalCommand();
     this.graphViewService.onunload();
@@ -4762,11 +4293,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
   }
   async loadSettings() {
     const loadedData = await this.loadData();
-    this.settings = Object.assign(
-      {},
-      DEFAULT_SETTINGS,
-      loadedData != null ? loadedData : {},
-    );
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, loadedData != null ? loadedData : {});
   }
   async saveSettings(prevQuickSwitcherState, prevTabState) {
     await this.saveData(this.settings);
@@ -4776,10 +4303,7 @@ var PropertyOverFileNamePlugin = class extends import_obsidian12.Plugin {
     ) {
       this.updateQuickSwitcher();
     }
-    if (
-      prevTabState !== void 0 &&
-      prevTabState !== this.settings.enableForTabs
-    ) {
+    if (prevTabState !== void 0 && prevTabState !== this.settings.enableForTabs) {
       void this.tabService.registerEvents();
       this.updateTabs();
     }

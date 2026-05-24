@@ -16,8 +16,7 @@ type BlobConfig = {
   delay: number;
 };
 
-const randomInRange = (min: number, max: number) =>
-  Math.random() * (max - min) + min;
+const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
 
 const createBlobConfigs = (): BlobConfig[] =>
   Array.from({ length: 8 }, (_, i) => {
@@ -26,9 +25,7 @@ const createBlobConfigs = (): BlobConfig[] =>
     const size = Math.max(24, sizeBase + sizeJitter);
 
     const isLeftSide = i % 2 === 0;
-    const horizontalBase = isLeftSide
-      ? randomInRange(15, 40)
-      : randomInRange(55, 85);
+    const horizontalBase = isLeftSide ? randomInRange(15, 40) : randomInRange(55, 85);
 
     return {
       width: size,
@@ -42,10 +39,7 @@ const createBlobConfigs = (): BlobConfig[] =>
     };
   });
 
-export const LavaLampBackground: React.FC<LavaLampBackgroundProps> = ({
-  fromColor,
-  toColor,
-}) => {
+export const LavaLampBackground: React.FC<LavaLampBackgroundProps> = ({ fromColor, toColor }) => {
   const gradient = `linear-gradient(-206deg, ${fromColor} 0%, ${toColor} 100%)`;
   const blobConfigs = useMemo(() => createBlobConfigs(), []);
 
@@ -56,16 +50,7 @@ export const LavaLampBackground: React.FC<LavaLampBackgroundProps> = ({
         <div className="lava-card-lava">
           {blobConfigs.map(
             (
-              {
-                width,
-                height,
-                bottom,
-                left,
-                right,
-                floatDuration,
-                wobbleDuration,
-                delay,
-              },
+              { width, height, bottom, left, right, floatDuration, wobbleDuration, delay },
               index,
             ) => (
               <div

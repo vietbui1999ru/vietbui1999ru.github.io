@@ -1,72 +1,72 @@
-import type { Plugin } from 'unified'
-import type { Root, Text, PhrasingContent } from 'mdast'
-import { visit, SKIP } from 'unist-util-visit'
-import path from 'node:path'
+import type { Plugin } from "unified";
+import type { Root, Text, PhrasingContent } from "mdast";
+import { visit, SKIP } from "unist-util-visit";
+import path from "node:path";
 
 export interface EmbedOptions {
-  attachmentsRoot: string
+  attachmentsRoot: string;
   /**
    * Copy an asset into the public directory and return its public URL.
    * Callback is responsible for rejecting path traversal (`..`) in the filename
    * before touching the filesystem — plugin passes filenames through unmodified.
    */
-  copyAsset: (filename: string, postSlug: string) => string
+  copyAsset: (filename: string, postSlug: string) => string;
   /**
    * Resolve an excalidraw.md filename to SVG markup (string).
    * Callback is responsible for sanitizing the SVG (strip `<script>`, on*
    * handlers, javascript: URLs) — plugin injects the return value as raw HTML.
    */
-  resolveExcalidraw: (filename: string) => string
+  resolveExcalidraw: (filename: string) => string;
 }
 
-const EMBED_REGEX = /!\[\[([^\[\]]+)\]\]/g
+const EMBED_REGEX = /!\[\[([^\[\]]+)\]\]/g;
 
 function postSlugFromFilePath(filePath: string | undefined): string {
-  if (!filePath) return 'unknown'
-  const base = path.basename(filePath, path.extname(filePath))
-  return base
+  if (!filePath) return "unknown";
+  const base = path.basename(filePath, path.extname(filePath));
+  return base;
 }
 
 export const remarkEmbeds: Plugin<[EmbedOptions], Root> = (opts) => {
-  const { copyAsset, resolveExcalidraw } = opts
+  const { copyAsset, resolveExcalidraw } = opts;
   return (tree, file) => {
-    const postSlug = postSlugFromFilePath(file.path as string | undefined)
+    const postSlug = postSlugFromFilePath(file.path as string | undefined);
 
-    visit(tree, 'text', (node: Text, idx, parent) => {
-      if (!parent || typeof idx !== 'number') return
-      const src = node.value
-      if (!src.includes('![[')) return
+    visit(tree, "text", (node: Text, idx, parent) => {
+      if (!parent || typeof idx !== "number") return;
+      const src = node.value;
+      if (!src.includes("![[")) return;
 
-      const out: PhrasingContent[] = []
-      let lastIndex = 0
-      EMBED_REGEX.lastIndex = 0
+      const out: PhrasingContent[] = [];
+      let lastIndex = 0;
+      EMBED_REGEX.lastIndex = 0;
       for (const match of src.matchAll(EMBED_REGEX)) {
-        const [full, filename] = match
-        const mIdx = match.index ?? 0
-        if (mIdx > lastIndex) out.push({ type: 'text', value: src.slice(lastIndex, mIdx) })
-        lastIndex = mIdx + full.length
+        const [full, filename] = match;
+        const mIdx = match.index ?? 0;
+        if (mIdx > lastIndex) out.push({ type: "text", value: src.slice(lastIndex, mIdx) });
+        lastIndex = mIdx + full.length;
 
-        if (filename.endsWith('.excalidraw.md')) {
-          const svg = resolveExcalidraw(filename)
+        if (filename.endsWith(".excalidraw.md")) {
+          const svg = resolveExcalidraw(filename);
           // html node not typed as PhrasingContent but accepted by mdast AST
-          out.push({ type: 'html', value: svg } as any)
-          continue
+          out.push({ type: "html", value: svg } as any);
+          continue;
         }
 
-        const publicUrl = copyAsset(filename, postSlug)
+        const publicUrl = copyAsset(filename, postSlug);
         out.push({
-          type: 'image',
+          type: "image",
           url: publicUrl,
           title: null,
           alt: filename,
-        })
+        });
       }
 
-      if (lastIndex < src.length) out.push({ type: 'text', value: src.slice(lastIndex) })
-      if (out.length === 0) return
+      if (lastIndex < src.length) out.push({ type: "text", value: src.slice(lastIndex) });
+      if (out.length === 0) return;
 
-      parent.children.splice(idx, 1, ...out)
-      return [SKIP, idx + out.length]
-    })
-  }
-}
+      parent.children.splice(idx, 1, ...out);
+      return [SKIP, idx + out.length];
+    });
+  };
+};

@@ -27,4 +27,4 @@ export type SkillType = {
 };
 
 import skillsData from "./skillsData.json";
-export const SKILLS_CATEGORIES: SkillType[] = skillsData as SkillType[];
+export const SKILLS_CATEGORIES: SkillType[] = skillsData;

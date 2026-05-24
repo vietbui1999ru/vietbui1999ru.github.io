@@ -46,9 +46,7 @@
 .nested-properties-container .nested-properties-collapsible {
   flex-wrap: wrap;
 }
-.nested-properties-container
-  .nested-properties-collapsible
-  > .metadata-property-value {
+.nested-properties-container .nested-properties-collapsible > .metadata-property-value {
   flex-direction: column;
   overflow: visible;
   width: 100%;
@@ -87,8 +85,7 @@
   > .nested-properties-summary {
   display: inline;
 }
-.metadata-container:not(:has(.nested-properties-collapsible))
-  .nested-properties-header-actions {
+.metadata-container:not(:has(.nested-properties-collapsible)) .nested-properties-header-actions {
   display: none;
 }
 .nested-properties-header-actions {

@@ -12,15 +12,8 @@ type MarqueeProps = {
   duration?: number;
 };
 
-export function Marquee({
-  children,
-  className,
-  reverse = false,
-  duration = 15,
-}: MarqueeProps) {
-  const animationName = reverse
-    ? "marquee-horizontal-right"
-    : "marquee-horizontal-left";
+export function Marquee({ children, className, reverse = false, duration = 15 }: MarqueeProps) {
+  const animationName = reverse ? "marquee-horizontal-right" : "marquee-horizontal-left";
 
   return (
     <div className={cn("relative flex overflow-hidden", className)}>
