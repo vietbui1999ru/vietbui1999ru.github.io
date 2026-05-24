@@ -5,14 +5,38 @@ import type { Card } from "@/components/ui/CardsCarousel";
 import { AppleHelloMyWorkEffect } from "@/components/ui/apple-hello-effect";
 import { SkillBadge } from "@/components/ui/SkillBadge";
 import { buttonVariants } from "@/components/ui/button";
-import { Github, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   LavaLampBackground,
   type LavaLampBackgroundProps,
 } from "@/components/ui/LavaLampBackground";
-import { PROJECTS_ITEMS, PROJECTS_TITLE } from "@/data/projectsData";
+import { resolveIcon } from "@/lib/iconResolver";
 import { useCallback, useEffect, useRef, useState } from "react";
+import DOMPurify from "dompurify";
+
+export type ProjectCardData = {
+  slug: string;
+  title: string;
+  summary: string;
+  date: Date;
+  featured: boolean;
+  badges?: string[];
+  cover?: string;
+  images?: string[];
+  links?: Array<{ icon: string; url: string }>;
+  status: "active" | "shipped" | "archived";
+  bodyHtml: string;
+};
+
+type ProjectsProps = {
+  projects: ProjectCardData[];
+};
+
+function resolveImageUrl(image: string, slug: string): string {
+  if (image.startsWith("http://") || image.startsWith("https://")) return image;
+  return `/assets/projects/${slug}/${image}`;
+}
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const cleaned = hex.replace("#", "");
@@ -151,17 +175,20 @@ function ProjectImageGallery({ images, title }: { images: string[]; title: strin
 }
 
 function projectToCarouselCard(
-  project: (typeof PROJECTS_ITEMS)[number],
+  project: ProjectCardData,
   index: number,
   total: number,
 ): Card {
   const { fromColor, toColor } = gradientForIndex(index, total);
+
   const normalizedImages: string[] =
     project.images && project.images.length > 0
-      ? project.images
-      : project.image
-        ? [project.image]
+      ? project.images.map((img) => resolveImageUrl(img, project.slug))
+      : project.cover
+        ? [resolveImageUrl(project.cover, project.slug)]
         : [];
+
+  const sanitizedHtml = project.bodyHtml ? DOMPurify.sanitize(project.bodyHtml) : "";
 
   return {
     background: <LavaLampBackground fromColor={fromColor} toColor={toColor} />,
@@ -181,7 +208,14 @@ function projectToCarouselCard(
         {normalizedImages.length > 1 && (
           <ProjectImageGallery images={normalizedImages} title={project.title} />
         )}
-        <p className="text-muted-foreground text-sm leading-relaxed">{project.content}</p>
+        {sanitizedHtml ? (
+          <div
+            className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground"
+            dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+          />
+        ) : (
+          <p className="text-muted-foreground text-sm leading-relaxed">{project.summary}</p>
+        )}
         {project.badges && project.badges.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {project.badges.map((badge) => (
@@ -191,22 +225,24 @@ function projectToCarouselCard(
         )}
         {project.links && project.links.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
-            {project.links.map((link, i) => (
-              <a
-                key={i}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "sm" }),
-                  "inline-flex items-center gap-1.5",
-                )}
-              >
-                <Github className="size-3.5" />
-                View code
-                <ExternalLink className="size-3" />
-              </a>
-            ))}
+            {project.links.map((link, i) => {
+              const Icon = resolveIcon(link.icon);
+              return (
+                <a
+                  key={i}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "sm" }),
+                    "inline-flex items-center gap-1.5",
+                  )}
+                >
+                  <Icon className="size-3.5" />
+                  View
+                </a>
+              );
+            })}
           </div>
         )}
       </>
@@ -214,9 +250,9 @@ function projectToCarouselCard(
   };
 }
 
-const Projects = () => {
-  const total = PROJECTS_ITEMS.length;
-  const carouselCards = PROJECTS_ITEMS.map((project, index) =>
+const Projects = ({ projects }: ProjectsProps) => {
+  const total = projects.length;
+  const carouselCards = projects.map((project, index) =>
     projectToCarouselCard(project, index, total),
   );
 
@@ -225,7 +261,6 @@ const Projects = () => {
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloMyWorkEffect className="w-full" />
-          <p className="mx-auto max-w-3xl text-lg text-muted-foreground">{PROJECTS_TITLE}</p>
         </header>
 
         <Carousel
