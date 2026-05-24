@@ -26,7 +26,7 @@ import LevaPanel from "@/scenes/ui/LevaPanel";
     )}
   >
     <AppCanvasIsland client:load />
-    <LevaPanel client:load />
+    <LevaPanel client:only="react" />
     <MobileBlocker client:load />
     <VectorFieldBackground client:load className="hidden md:block" />
     <AnimatedCursor client:load />

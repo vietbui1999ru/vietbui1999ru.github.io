@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { PROJECTS_ITEMS } from "@/data/projectsData";
-import { ProjectCard } from "@/components/projects/ProjectCard";
+import { ProjectCard, type ProjectGridItem } from "@/components/projects/ProjectCard";
 
 function TagFilter({ tags, active, onToggle }: { tags: string[]; active: string | null; onToggle: (t: string) => void }) {
   return (
@@ -24,11 +23,11 @@ function TagFilter({ tags, active, onToggle }: { tags: string[]; active: string 
   );
 }
 
-export function ProjectsGrid() {
+export function ProjectsGrid({ projects }: { projects: ProjectGridItem[] }) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
-  const allTags = Array.from(new Set(PROJECTS_ITEMS.flatMap((p) => p.tags ?? []))).sort();
-  const filtered = activeTag ? PROJECTS_ITEMS.filter((p) => p.tags?.includes(activeTag)) : PROJECTS_ITEMS;
+  const allTags = Array.from(new Set(projects.flatMap((p) => p.tags ?? []))).sort();
+  const filtered = activeTag ? projects.filter((p) => p.tags?.includes(activeTag)) : projects;
   const toggle = (tag: string) => setActiveTag((prev) => (tag === "" || prev === tag ? null : tag));
 
   return (

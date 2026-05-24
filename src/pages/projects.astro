@@ -1,6 +1,24 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { ProjectsGrid } from "@/components/projects/ProjectsGrid";
+import type { ProjectGridItem } from "@/components/projects/ProjectCard";
+import { getCollection } from "astro:content";
+
+const projects: ProjectGridItem[] = (
+  await getCollection("projects", (p) => !p.data.draft)
+)
+  .sort((a, b) => {
+    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  })
+  .map((entry) => ({
+    title: entry.data.title,
+    content: entry.data.summary,
+    tags: entry.data.badges,
+    badges: entry.data.badges,
+    images: entry.data.images,
+    links: entry.data.links,
+  }));
 ---
 
 <BaseLayout>
@@ -13,7 +31,7 @@ import { ProjectsGrid } from "@/components/projects/ProjectsGrid";
         ← Back
       </a>
       <h1 class="text-4xl font-bold mb-10">Projects</h1>
-      <ProjectsGrid client:load />
+      <ProjectsGrid client:load projects={projects} />
     </div>
   </div>
 </BaseLayout>

@@ -8,7 +8,6 @@ import { BlurImage } from "@/components/ui/CardsCarousel";
 import { SkillBadge } from "@/components/ui/SkillBadge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { ProjectItem } from "@/data/projectsData";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 
@@ -69,8 +68,18 @@ function ImageGallery({ images, title }: { images: string[]; title: string }) {
 
 // ── card + modal ───────────────────────────────────────────────────────────────
 
+export type ProjectGridItem = {
+  title: string;
+  content?: string;
+  tags?: string[];
+  badges?: string[];
+  images?: string[];
+  image?: string;
+  links?: Array<{ icon: string; url: string }>;
+};
+
 export interface ProjectCardProps {
-  project: ProjectItem;
+  project: ProjectGridItem;
   /** Optional extra classes for the card trigger wrapper */
   className?: string;
 }
