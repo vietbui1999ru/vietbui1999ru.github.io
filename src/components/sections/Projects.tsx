@@ -188,7 +188,12 @@ function projectToCarouselCard(
         ? [resolveImageUrl(project.cover, project.slug)]
         : [];
 
-  const sanitizedHtml = project.bodyHtml ? DOMPurify.sanitize(project.bodyHtml) : "";
+  // DOMPurify needs a browser DOM; skip on SSR (trusted vault content), sanitize on client.
+  const sanitizedHtml = project.bodyHtml
+    ? typeof window !== "undefined"
+      ? DOMPurify.sanitize(project.bodyHtml)
+      : project.bodyHtml
+    : "";
 
   return {
     background: <LavaLampBackground fromColor={fromColor} toColor={toColor} />,
