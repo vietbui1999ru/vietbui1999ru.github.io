@@ -70,9 +70,57 @@ describe("clippingSchema", () => {
 });
 
 describe("projectSchema", () => {
-  it("defaults status to shipped", () => {
-    const parsed = projectSchema.parse({ title: "t", summary: "s", date: "2026-01-01" });
+  const base = {
+    title: "My Project",
+    summary: "Short description.",
+    date: "2026-01-15",
+  };
+
+  it("accepts minimal valid frontmatter", () => {
+    const parsed = projectSchema.parse(base);
+    expect(parsed.featured).toBe(false);
+    expect(parsed.draft).toBe(false);
     expect(parsed.status).toBe("shipped");
+  });
+
+  it("rejects missing title", () => {
+    expect(() => projectSchema.parse({ ...base, title: undefined })).toThrow();
+  });
+
+  it("rejects missing summary", () => {
+    expect(() => projectSchema.parse({ ...base, summary: undefined })).toThrow();
+  });
+
+  it("coerces date strings", () => {
+    const parsed = projectSchema.parse(base);
+    expect(parsed.date).toBeInstanceOf(Date);
+  });
+
+  it("featured defaults to false", () => {
+    expect(projectSchema.parse(base).featured).toBe(false);
+  });
+
+  it("draft defaults to false", () => {
+    expect(projectSchema.parse(base).draft).toBe(false);
+  });
+
+  it("accepts full valid frontmatter", () => {
+    const parsed = projectSchema.parse({
+      ...base,
+      featured: true,
+      draft: false,
+      status: "active",
+      badges: ["React", "TypeScript"],
+      cover: "hero.png",
+      images: ["hero.png", "https://example.com/img.png"],
+      links: [{ icon: "github", url: "https://github.com/foo/bar" }],
+    });
+    expect(parsed.featured).toBe(true);
+    expect(parsed.badges).toHaveLength(2);
+  });
+
+  it("rejects invalid status", () => {
+    expect(() => projectSchema.parse({ ...base, status: "unpublished" })).toThrow();
   });
 });
 
@@ -81,6 +129,7 @@ describe("aboutSchema", () => {
     expect(() => aboutSchema.parse({ title: "t" })).toThrow();
   });
 });
+
 
 describe("educationSchema", () => {
   it("requires institution, degree, date_start, summary", () => {
@@ -106,6 +155,7 @@ describe("gallerySchema", () => {
       title: "t",
       date: "2026-04-16",
       image: "/x.jpg",
+      order: 1,
     });
     expect(parsed.graph_node).toBe(true);
   });

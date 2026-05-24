@@ -1,9 +1,11 @@
 /**
- * Contact section content
- * Data loaded from contact.json for easy editing
+ * Contact section content — email derived from src/config/owner.ts.
+ * Edit OWNER.email there; it propagates here automatically.
  */
 
-import contactJson from "./contact.json";
+import { OWNER } from "@/config/owner";
 
-export const CONTACT_CONTENT = contactJson.content;
-export const CONTACT_BTN_LINK = contactJson.btnLink;
+export const CONTACT_CONTENT =
+  "Contact me for a chat or anything really, I'm always open to learning and collaborating!";
+
+export const CONTACT_BTN_LINK = `mailto:${OWNER.email}`;

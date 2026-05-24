@@ -2,6 +2,8 @@
  * Education section content
  */
 
+export const EDUCATION_SECTION_SUBTITLE = "Academic background and continuous learning.";
+
 export type EducationItem = {
   title: string;
   school: { name: string; url: string };

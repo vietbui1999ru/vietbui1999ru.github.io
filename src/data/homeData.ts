@@ -1,10 +1,12 @@
 /**
- * Home section content — edit this file to customize intro text, gradients, and hero copy.
+ * Home section content — edit this file to customize gradients and hero copy.
+ * Intro text and personal info live in src/config/owner.ts.
  */
 
 import { ABOUT_TAGLINE } from "./aboutData";
+import { OWNER } from "@/config/owner";
 
-export const INTRO_LINE1 = "Hi, I'm Viet!";
+export const INTRO_LINE1 = OWNER.intro;
 export const INTRO_TYPING_SPEED = 100;
 export const INTRO_INITIAL_DELAY = 10;
 export const INTRO_GRADIENT =

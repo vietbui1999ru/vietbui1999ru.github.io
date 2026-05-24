@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Home from "@/components/sections/Home";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
+import type { ProjectCardData } from "@/components/sections/Projects";
 import Experience from "@/components/sections/Experience";
 import Education from "@/components/sections/Education";
 import Blog from "@/components/sections/Blog";
@@ -56,13 +57,34 @@ const galleryItems: GalleryItem[] = (await getCollection("gallery"))
       order: item.data.order,
     };
   });
+
+const projects: ProjectCardData[] = (
+  await getCollection("projects", (p) => !p.data.draft)
+)
+  .sort((a, b) => {
+    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  })
+  .map((entry) => ({
+    slug: entry.id,
+    title: entry.data.title,
+    summary: entry.data.summary,
+    date: entry.data.date,
+    featured: entry.data.featured,
+    badges: entry.data.badges,
+    cover: entry.data.cover,
+    images: entry.data.images,
+    links: entry.data.links,
+    status: entry.data.status,
+    bodyHtml: entry.rendered?.html ?? "",
+  }));
 ---
 
 <BaseLayout>
   <Home client:load />
   <About client:load />
   <Blog client:visible posts={blogPosts} />
-  <Projects client:visible />
+  <Projects client:visible projects={projects} />
   <Gallery client:visible items={galleryItems} />
   <Experience client:visible />
   <Education client:visible />

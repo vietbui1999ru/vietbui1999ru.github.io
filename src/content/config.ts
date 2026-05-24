@@ -1,6 +1,6 @@
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
-import { blogSchema, blogVariantSchema, gallerySchema } from "@/content/schemas";
+import { blogSchema, blogVariantSchema, gallerySchema, projectSchema } from "@/content/schemas";
 
 // Canonical posts only — exclude companion variant files (post.ai.md, post.yoda.md)
 const blog = defineCollection({
@@ -28,8 +28,17 @@ const gallery = defineCollection({
   schema: gallerySchema,
 });
 
+const projects = defineCollection({
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./vendor/vault/Portfolio/Projects",
+  }),
+  schema: projectSchema,
+});
+
 export const collections = {
   blog,
   "blog-variants": blogVariants,
   gallery,
+  projects,
 };

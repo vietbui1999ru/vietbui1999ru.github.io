@@ -5,6 +5,8 @@
 
 import experienceJson from "./experience.json";
 
+export const EXPERIENCE_SECTION_SUBTITLE = "Where I've worked and what I've built.";
+
 export type ExperienceTag = {
   name: string;
   url?: string;
@@ -19,10 +21,11 @@ export type ExperienceJob = {
   tags?: ExperienceTag[];
 };
 
+// jobs entries can be nested companies (recursive) — matches actual experience.json structure
 export type ExperienceCompany = {
   company: string;
   companyUrl: string;
-  jobs: ExperienceJob[];
+  jobs: Array<ExperienceJob | ExperienceCompany>;
 };
 
 export const EXPERIENCE_ITEMS: ExperienceCompany[] = experienceJson.items as ExperienceCompany[];

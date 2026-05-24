@@ -36,6 +36,8 @@ export const projectSchema = z.object({
   title: z.string(),
   summary: z.string(),
   date: z.coerce.date(),
+  featured: z.boolean().default(false),
+  draft: z.boolean().default(false),
   tags: z.array(z.string()).optional(),
   badges: z.array(z.string()).optional(),
   images: z.array(z.string()).optional(),
