@@ -24,14 +24,14 @@ export function SectionHeading({
     <header className={cn("space-y-2 text-center", className)}>
       <h2
         className={cn(
-          "text-3xl font-semibold tracking-tight text-foreground md:text-4xl",
+          "text-fluid-heading font-semibold tracking-tight text-foreground",
           titleClassName,
         )}
       >
         {title}
       </h2>
       {subtitle ? (
-        <p className={cn("text-muted-foreground text-lg max-w-3xl mx-auto", subtitleClassName)}>
+        <p className={cn("text-fluid-subheading text-muted-foreground max-w-3xl mx-auto", subtitleClassName)}>
           {subtitle}
         </p>
       ) : null}

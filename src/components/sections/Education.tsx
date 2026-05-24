@@ -3,7 +3,7 @@
 import { GraduationCap } from "lucide-react";
 import { AppleHelloEducationEffect } from "@/components/ui/apple-hello-effect";
 import { TimelineLayout, type TimelineItem } from "@/components/ui/TimelineLayout";
-import { EDUCATION_ITEMS, EDUCATION_SECTION_SUBTITLE } from "@/data/educationData";
+import { EDUCATION_ITEMS } from "@/data/educationData";
 
 const EducationTimeline = () => {
   const items: TimelineItem[] = EDUCATION_ITEMS.map((item, idx) => {
@@ -43,11 +43,16 @@ const EducationTimeline = () => {
 
   return (
     <section id="education" className="relative min-h-screen w-full">
+      <div
+        data-section-id="education"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloEducationEffect className="w-full" />
           <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-            {EDUCATION_SECTION_SUBTITLE}
+            Academic background and continuous learning.
           </p>
         </header>
 

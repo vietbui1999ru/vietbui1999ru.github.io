@@ -63,15 +63,16 @@ export function VectorFieldBackground({
   });
   const scrollYRef = useRef(0);
   const rafRef = useRef<number>(0);
-  const runningRef = useRef(false);
+  const loopActiveRef = useRef(false);
+  const drawRef = useRef<() => void>(() => {});
   const [fadeEnd, setFadeEnd] = useState(800);
   const effectiveFadeEndRef = useRef(800);
   const cursorEnabled = cursorAttraction > 0;
 
-  const isMobile = useIsMobileOrTouch();
+  const isMobileOrTouch = useIsMobileOrTouch();
 
-  const effectiveGrid = isMobile ? Math.min(grid, 20) : grid;
-  const effectiveCursorEnabled = cursorEnabled && !isMobile;
+  const effectiveGrid = isMobileOrTouch ? Math.min(grid, 20) : grid;
+  const effectiveCursorEnabled = cursorEnabled && !isMobileOrTouch;
 
   useEffect(() => {
     const h = typeof window !== "undefined" ? window.innerHeight * 0.85 : 800;
@@ -86,8 +87,9 @@ export function VectorFieldBackground({
   useEffect(() => {
     const onScroll = () => {
       scrollYRef.current = window.scrollY;
-      if (!runningRef.current && !isMobile) {
-        draw();
+      if (!loopActiveRef.current && window.scrollY > 0) {
+        loopActiveRef.current = true;
+        drawRef.current();
       }
     };
     onScroll();
@@ -119,8 +121,6 @@ export function VectorFieldBackground({
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    runningRef.current = true;
-
     if (typeof document !== "undefined" && document.hidden) {
       rafRef.current = requestAnimationFrame(draw);
       return;
@@ -146,8 +146,8 @@ export function VectorFieldBackground({
     const effectiveFadeEnd = effectiveFadeEndRef.current;
     const opacity = Math.min(1, scrollY / effectiveFadeEnd);
     if (opacity <= 0) {
-      runningRef.current = false;
-      return;
+      loopActiveRef.current = false;
+      return; // stop the loop; scroll handler will restart it
     }
 
     const now = performance.now();
@@ -161,8 +161,6 @@ export function VectorFieldBackground({
     const yMin = -5;
     const yMax = 5;
     const yOffset = (scrollY * 0.015) % (yMax - yMin);
-    const toScreenX = (x: number) => ((x - xMin) / (xMax - xMin)) * width;
-    const toScreenY = (y: number) => ((y - (yMin + yOffset)) / (yMax - yMin)) * height;
     const toWorldX = (sx: number) => xMin + (sx / width) * (xMax - xMin);
     const toWorldY = (sy: number) => yMin + yOffset + (sy / height) * (yMax - yMin);
 
@@ -238,25 +236,17 @@ export function VectorFieldBackground({
     }
 
     ctx.restore();
+    loopActiveRef.current = true;
     rafRef.current = requestAnimationFrame(draw);
   }, [field, effectiveGrid, arrowScale, effectiveCursorEnabled, cursorAttraction]);
 
   useEffect(() => {
-    if (isMobile) {
-      cancelAnimationFrame(rafRef.current);
-      runningRef.current = false;
-      return;
-    }
+    drawRef.current = draw;
     draw();
-    return () => {
-      runningRef.current = false;
-      cancelAnimationFrame(rafRef.current);
-    };
-  }, [draw, isMobile]);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [draw]);
 
-  if (isMobile) {
-    return null;
-  }
+  if (isMobileOrTouch) return null;
 
   return (
     <div className={cn("pointer-events-none fixed inset-0 z-0 contain-[paint]", className)}>

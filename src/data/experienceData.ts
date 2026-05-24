@@ -28,4 +28,4 @@ export type ExperienceCompany = {
   jobs: Array<ExperienceJob | ExperienceCompany>;
 };
 
-export const EXPERIENCE_ITEMS: ExperienceCompany[] = experienceJson.items;
+export const EXPERIENCE_ITEMS: ExperienceCompany[] = experienceJson.items as ExperienceCompany[];

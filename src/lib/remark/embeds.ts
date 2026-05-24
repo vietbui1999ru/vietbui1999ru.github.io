@@ -19,7 +19,7 @@ export interface EmbedOptions {
   resolveExcalidraw: (filename: string) => string;
 }
 
-const EMBED_REGEX = /!\[\[([^\[\]]+)\]\]/g;
+const EMBED_REGEX = /!\[\[([^[\]]+)\]\]/g;
 
 function postSlugFromFilePath(filePath: string | undefined): string {
   if (!filePath) return "unknown";

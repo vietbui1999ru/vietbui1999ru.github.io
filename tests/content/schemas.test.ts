@@ -130,6 +130,7 @@ describe("aboutSchema", () => {
   });
 });
 
+
 describe("educationSchema", () => {
   it("requires institution, degree, date_start, summary", () => {
     expect(() => educationSchema.parse({ institution: "u" })).toThrow();
@@ -154,6 +155,7 @@ describe("gallerySchema", () => {
       title: "t",
       date: "2026-04-16",
       image: "/x.jpg",
+      order: 1,
     });
     expect(parsed.graph_node).toBe(true);
   });

@@ -3,7 +3,7 @@
 import { BriefcaseBusiness } from "lucide-react";
 import { AppleHelloExperienceEffect } from "@/components/ui/apple-hello-effect";
 import { TimelineLayout, type TimelineItem } from "@/components/ui/TimelineLayout";
-import { EXPERIENCE_ITEMS, EXPERIENCE_SECTION_SUBTITLE, type ExperienceTag } from "@/data/experienceData";
+import { EXPERIENCE_ITEMS, type ExperienceTag } from "@/data/experienceData";
 
 type ExperienceJobLike = {
   name?: string;
@@ -34,13 +34,14 @@ function collectTimelineItems(companyLike: ExperienceCompanyLike, output: Timeli
       return;
     }
 
-    const title = entry.name?.trim();
+    const job = entry as ExperienceJobLike;
+    const title = job.name?.trim();
     if (!title) return;
 
-    const date = entry.date ?? "";
+    const date = job.date ?? "";
     const tags =
-      Array.isArray(entry.tags) && entry.tags.length > 0
-        ? entry.tags.map((t) => ({
+      Array.isArray(job.tags) && job.tags.length > 0
+        ? job.tags.map((t: ExperienceTag) => ({
             label: t.name,
             href: t.url,
             title: t.tooltip,
@@ -52,7 +53,7 @@ function collectTimelineItems(companyLike: ExperienceCompanyLike, output: Timeli
       date,
       title,
       subtitle: companyName,
-      description: entry.content ?? "",
+      description: job.content ?? "",
       tags,
       icon: <BriefcaseBusiness className="h-3 w-3" />,
       status: date.toLowerCase().includes("present") ? "in-progress" : "completed",
@@ -69,11 +70,16 @@ const ExperienceTimeline = () => {
 
   return (
     <section id="experience" className="relative min-h-screen w-full">
+      <div
+        data-section-id="experience"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloExperienceEffect className="w-full" />
           <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-            {EXPERIENCE_SECTION_SUBTITLE}
+            Where I've worked and what I've built.
           </p>
         </header>
 

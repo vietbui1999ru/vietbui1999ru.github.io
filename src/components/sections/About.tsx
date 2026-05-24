@@ -2,7 +2,7 @@
 
 import { AppleHelloAboutMeEffect } from "@/components/ui/apple-hello-effect";
 import { Separator } from "@/components/ui/separator";
-import { ABOUT_PARAGRAPHS, ABOUT_TAGLINE } from "@/data/aboutData";
+import { ABOUT_PARAGRAPHS } from "@/data/aboutData";
 import { AboutParagraphReveal } from "./AboutParagraphReveal";
 import { SkillsSection } from "./SkillsSection";
 
@@ -21,6 +21,11 @@ const ABOUT_REVEAL_CONFIG = {
 const About = () => {
   return (
     <section id="about" className="relative min-h-[50vh] w-full">
+      <div
+        data-section-id="about"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
       <div className="section-content max-w-10xl mx-auto">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloAboutMeEffect className="w-full" />

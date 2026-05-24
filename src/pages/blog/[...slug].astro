@@ -1,27 +1,142 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
+import BlogVariantTabs from "@/components/blog/BlogVariantTabs";
+import { GiscusComments } from "@/components/blog/GiscusComments";
+import { TableOfContents } from "@/components/blog/TableOfContents";
+import { toSlug } from "@/lib/utils";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
   return blogEntries.map((entry) => ({
-    params: { slug: entry.id },
+    params: { slug: toSlug(entry.id) },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const entrySlug = toSlug(entry.id);
+
+// Match variants by slugified id — variant files store parent_slug as a slug,
+// while entry.id is the raw filename (may contain spaces/special chars).
+const allVariants = await getCollection("blog-variants", (v) =>
+  v.data.parent_slug === entrySlug || v.data.parent_slug === entry.id
+);
+
+// Render each variant's Content component for use in the template below
+const renderedVariants = await Promise.all(
+  allVariants.map(async (v) => {
+    const { Content: VC } = await render(v);
+    return { label: v.data.style_label, Content: VC };
+  })
+);
+
+// Ensure AI variant is second if present (after Original)
+const aiIdx = renderedVariants.findIndex((v) => v.label.toLowerCase() === "ai");
+if (aiIdx > 0) {
+  const [aiVariant] = renderedVariants.splice(aiIdx, 1);
+  renderedVariants.unshift(aiVariant);
+}
+
+const storageId = "blog-variant-storage";
+
+const wordCount = (entry.body ?? "").trim().split(/\s+/).length;
+const readingTime = `${Math.max(1, Math.round(wordCount / 200))} min read`;
+const formattedDate = entry.data.date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const proseClass =
+  "prose prose-neutral dark:prose-invert " +
+  "prose-headings:font-semibold prose-headings:tracking-tight " +
+  "prose-a:text-primary prose-a:no-underline hover:prose-a:underline " +
+  "prose-code:before:content-none prose-code:after:content-none " +
+  "prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 " +
+  "prose-code:bg-secondary prose-code:text-secondary-foreground prose-code:font-normal " +
+  "prose-pre:rounded-lg prose-pre:border prose-pre:border-border " +
+  "max-w-none";
 ---
 
 <BaseLayout>
-  <article class="mx-auto w-full max-w-[var(--content-max)] px-4 py-24 sm:px-6">
-    <h1 class="text-4xl font-bold mb-4">{entry.data.title}</h1>
-    <p class="text-muted-foreground mb-8">
-      {entry.data.date.toLocaleDateString("en-US")}
-    </p>
-    <div class="prose dark:prose-invert">
-      <Content />
+  <div class="w-full flex-1 bg-background">
+  <div class="mx-auto w-full max-w-6xl px-4 pt-16 pb-24 sm:px-6">
+    <a
+      href="/blog"
+      class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-10 transition-colors"
+    >
+      ← Blog
+    </a>
+
+    <!--
+      Hidden storage lives outside #blog-content so TableOfContents
+      doesn't find duplicate headings from every pre-rendered variant.
+    -->
+    <div id={storageId} style="display:none" aria-hidden="true">
+      <div data-variant-label="Original">
+        <Content />
+      </div>
+      {renderedVariants.map(({ label, Content: VC }) => (
+        <div data-variant-label={label}>
+          <VC />
+        </div>
+      ))}
     </div>
-  </article>
+
+    <div class="xl:grid xl:grid-cols-[200px_minmax(0,65ch)] xl:gap-14 xl:items-start">
+      <aside class="hidden xl:block">
+        <div class="sticky top-24">
+          <TableOfContents contentId="blog-content" client:load />
+        </div>
+      </aside>
+      <div id="blog-content" class="min-w-0">
+        <header class="mb-10">
+          <h1 class="text-4xl font-bold tracking-tight mb-3" style="font-family: var(--font-serif)">
+            {entry.data.title}
+          </h1>
+          <p class="text-muted-foreground text-base mb-4">
+            {entry.data.description}
+          </p>
+          <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+            <time datetime={entry.data.date.toISOString()}>{formattedDate}</time>
+            {readingTime && <span>·</span>}
+            {readingTime && <span>{readingTime}</span>}
+            {entry.data.updated && (
+              <>
+                <span>·</span>
+                <span>
+                  Updated{" "}
+                  {entry.data.updated.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </>
+            )}
+          </div>
+          {entry.data.tags && entry.data.tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mt-4">
+              {entry.data.tags.map((tag) => (
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        <BlogVariantTabs
+          client:load
+          storageId={storageId}
+          proseClass={proseClass}
+        />
+
+        <GiscusComments client:visible />
+      </div>
+    </div>
+  </div>
+  </div>
 </BaseLayout>

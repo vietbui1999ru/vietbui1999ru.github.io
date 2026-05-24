@@ -3,7 +3,6 @@
 import { Carousel, Card as CarouselCard, BlurImage } from "@/components/ui/CardsCarousel";
 import type { Card } from "@/components/ui/CardsCarousel";
 import { AppleHelloMyWorkEffect } from "@/components/ui/apple-hello-effect";
-import { SkillBadge } from "@/components/ui/SkillBadge";
 import { buttonVariants } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -14,6 +13,7 @@ import {
 import { resolveIcon } from "@/lib/iconResolver";
 import { useCallback, useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
+import { SkillBadge } from "@/components/ui/SkillBadge";
 
 export type ProjectCardData = {
   slug: string;
@@ -93,28 +93,14 @@ function ProjectImageGallery({ images, title }: { images: string[]; title: strin
   const updateScrollState = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
-    const { scrollLeft, scrollWidth, clientWidth } = el;
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 1);
   }, []);
 
   useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
     updateScrollState();
-  }, [images.length, updateScrollState]);
-
-  const scroll = (direction: "left" | "right") => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const step = el.clientWidth;
-    el.scrollBy({
-      left: direction === "left" ? -step : step,
-      behavior: "smooth",
-    });
-  };
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
     el.addEventListener("scroll", updateScrollState);
     const ro = new ResizeObserver(updateScrollState);
     ro.observe(el);
@@ -123,6 +109,12 @@ function ProjectImageGallery({ images, title }: { images: string[]; title: strin
       ro.disconnect();
     };
   }, [updateScrollState]);
+
+  const scroll = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === "left" ? -300 : 300, behavior: "smooth" });
+  };
 
   return (
     <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-black/90">
@@ -263,6 +255,7 @@ const Projects = ({ projects }: ProjectsProps) => {
 
   return (
     <section id="projects" className="relative min-h-screen w-full">
+      <div data-section-id="projects" aria-hidden="true" className="absolute inset-0 pointer-events-none" />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloMyWorkEffect className="w-full" />
@@ -273,6 +266,12 @@ const Projects = ({ projects }: ProjectsProps) => {
             <CarouselCard key={card.title} card={card} index={index} layout />
           ))}
         />
+
+        <div className="mt-8 text-center">
+          <a href="/projects" className={cn(buttonVariants({ variant: "outline" }), "inline-flex min-h-[44px]")}>
+            View all projects
+          </a>
+        </div>
       </div>
     </section>
   );

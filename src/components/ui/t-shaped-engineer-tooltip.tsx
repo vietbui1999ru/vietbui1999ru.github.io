@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 import tShapedDiagram from "@/assets/images/t-shaped.png";
@@ -46,7 +47,16 @@ export function TShapedEngineerTooltip({ children, className }: TShapedEngineerT
     y.set(relativeY);
   }
 
-  // On touch devices, use a simple click-to-toggle tooltip without 3D motion.
+  // Close on scroll while open (mobile only)
+  React.useEffect(() => {
+    if (!open || !isTouchDevice) return;
+    const close = () => setOpen(false);
+    window.addEventListener("scroll", close, { passive: true });
+    return () => window.removeEventListener("scroll", close);
+  }, [open, isTouchDevice]);
+
+  // On touch devices, render a fixed viewport-centered modal so it's never clipped by
+  // ancestor overflow containers regardless of where the trigger sits in the page.
   if (isTouchDevice) {
     return (
       <span
@@ -63,20 +73,29 @@ export function TShapedEngineerTooltip({ children, className }: TShapedEngineerT
         >
           {children}
         </button>
-        {open && (
-          <div className="absolute left-1/2 top-full z-20 mt-3 -translate-x-1/2 w-72 max-w-[90vw] rounded-xl bg-background/95 p-4 text-left text-xs text-muted-foreground shadow-xl ring-1 ring-border backdrop-blur">
-            <div className="mb-3 flex justify-center">
-              <img
-                src={tShapedDiagram.src}
-                alt="T-shaped engineer diagram"
-                className="w-full max-w-[14rem] h-auto rounded-lg object-contain ring-1 ring-border/60"
-                loading="lazy"
-                decoding="async"
-              />
+        {open && createPortal(
+          <>
+            {/* Backdrop — tap anywhere outside to close */}
+            <div
+              className="fixed inset-0 z-[9999998]"
+              onClick={() => setOpen(false)}
+            />
+            {/* Modal centered on viewport, above MobileBottomNav (z-9999999) */}
+            <div className="fixed left-1/2 top-1/2 z-[9999999] -translate-x-1/2 -translate-y-1/2 w-72 max-w-[90vw] rounded-xl bg-background/95 p-4 text-left text-xs text-muted-foreground shadow-xl ring-1 ring-border backdrop-blur">
+              <div className="mb-3 flex justify-center">
+                <img
+                  src={tShapedDiagram.src}
+                  alt="T-shaped engineer diagram"
+                  className="w-full max-w-[14rem] h-auto rounded-lg object-contain ring-1 ring-border/60"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <p className="mb-1 text-sm font-semibold text-foreground">T-shaped engineer</p>
+              <p>Broad curiosity across disciplines with deep expertise in one core craft.</p>
             </div>
-            <p className="mb-1 text-sm font-semibold text-foreground">T-shaped engineer</p>
-            <p>Broad curiosity across disciplines with deep expertise in one core craft.</p>
-          </div>
+          </>,
+          document.body,
         )}
       </span>
     );
@@ -101,7 +120,7 @@ export function TShapedEngineerTooltip({ children, className }: TShapedEngineerT
           style={{ rotateX, rotateY }}
           className="pointer-events-none absolute left-1/2 top-full z-20 mt-4 -translate-x-1/2"
         >
-          <div className="overflow-hidden rounded-2xl bg-background/95 shadow-xl ring-1 ring-border backdrop-blur w-140 sm:w-96">
+          <div className="overflow-hidden rounded-2xl bg-background/95 shadow-xl ring-1 ring-border backdrop-blur w-96 max-w-[90vw]">
             <div className="flex flex-col items-center gap-4 p-5 text-center">
               <img
                 src={tShapedDiagram.src}

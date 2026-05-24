@@ -10,6 +10,9 @@ import Blog from "@/components/sections/Blog";
 import Gallery from "@/components/sections/Gallery";
 import Contact from "@/components/sections/Contact";
 import { getCollection } from "astro:content";
+import path from "node:path";
+import { createAssetAdapters } from "@/lib/remark/adapters";
+import type { GalleryItem } from "@/data/galleryData";
 
 const blogPosts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
@@ -21,7 +24,39 @@ const blogPosts = (await getCollection("blog"))
     description: p.data.description,
     date: p.data.date,
     draft: p.data.draft,
+    tags: p.data.tags,
+    cover: p.data.cover,
   }));
+
+const { copyAsset } = createAssetAdapters({
+  attachmentsRoot: path.join(process.cwd(), "vendor", "vault", "Attachments"),
+  publicRoot: path.join(process.cwd(), "public"),
+  excalidrawCacheDir: path.join(process.cwd(), ".cache", "excalidraw"),
+});
+
+const galleryItems: GalleryItem[] = (await getCollection("gallery"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((item) => {
+    let image: string | undefined;
+    if (item.data.image) {
+      try {
+        image = copyAsset(item.data.image, "gallery");
+      } catch {
+        console.warn(
+          `[gallery] image not found in Attachments: ${item.data.image}`,
+        );
+      }
+    }
+    return {
+      id: item.id,
+      title: item.data.title,
+      description: item.data.description,
+      image,
+      href: item.data.href,
+      tags: item.data.tags,
+      order: item.data.order,
+    };
+  });
 
 const projects: ProjectCardData[] = (
   await getCollection("projects", (p) => !p.data.draft)
@@ -48,10 +83,10 @@ const projects: ProjectCardData[] = (
 <BaseLayout>
   <Home client:load />
   <About client:load />
+  <Blog client:visible posts={blogPosts} />
   <Projects client:visible projects={projects} />
+  <Gallery client:visible items={galleryItems} />
   <Experience client:visible />
   <Education client:visible />
-  <Gallery client:visible />
-  <Blog client:visible posts={blogPosts} />
   <Contact client:visible />
 </BaseLayout>

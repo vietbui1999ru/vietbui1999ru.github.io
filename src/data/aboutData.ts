@@ -2,8 +2,6 @@
  * About section content
  */
 
-export const ABOUT_TITLE = "About Me";
-
 export const ABOUT_TAGLINE =
   "I'm a Software Engineer with a passion for all things Simulations and Automation.";
 
@@ -16,8 +14,6 @@ export const ABOUT_PARAGRAPHS = [
 
 // Skills data now abstracted, see skillsData.json
 // All previous ABOUT_CURRENT_ROLE, ABOUT_INTERESTS, ABOUT_HOBBIES removed per instruction.
-export const SKILLS_SECTION_TITLE = "Skillset";
-
 export type SkillType = {
   type: string; // e.g "Programming Languages"
   skills: Array<{

@@ -4,54 +4,76 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AppleHelloGalleryEffect } from "@/components/ui/apple-hello-effect";
 import { Marquee3D, type Marquee3DImage } from "@/components/ui/Marquee3D";
-import { GALLERY_SECTION_TITLE, GALLERY_SECTION_SUBTITLE, GALLERY_ITEMS } from "@/data/galleryData";
+import { GALLERY_SECTION_SUBTITLE, type GalleryItem } from "@/data/galleryData";
 import { Card3D } from "@/components/ui/Card3D";
 import { X, ExternalLink } from "lucide-react";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
+import { useScrollLock } from "@/hooks/useScrollLock";
+import { cn } from "@/lib/utils";
 
-const Gallery = () => {
+interface GalleryProps {
+  items: GalleryItem[];
+}
+
+const Gallery = ({ items }: GalleryProps) => {
   const [activeImage, setActiveImage] = useState<Marquee3DImage | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(4);
+  const resizeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [activeTag, setActiveTag] = useState<string | null>(null);
 
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
       setColumns(w < 640 ? 2 : w < 1024 ? 3 : 4);
     };
+    const onResize = () => {
+      if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
+      resizeTimerRef.current = setTimeout(update, 100);
+    };
     update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
+    };
   }, []);
 
   useOnClickOutside(modalRef as React.RefObject<HTMLElement>, () => setActiveImage(null));
+  useScrollLock(!!activeImage);
 
   useEffect(() => {
     if (!activeImage) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActiveImage(null);
     };
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.style.overflow = "auto";
-      window.removeEventListener("keydown", onKeyDown);
-    };
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [activeImage]);
 
-  const marqueeImages: Marquee3DImage[] = GALLERY_ITEMS.filter((item) => item.image).map(
-    (item) => ({
+  const allTags = Array.from(new Set(items.flatMap((item) => item.tags ?? []))).sort();
+
+  const filteredItems =
+    activeTag === null ? items : items.filter((item) => item.tags?.includes(activeTag));
+
+  const marqueeImages: Marquee3DImage[] = filteredItems
+    .filter((item) => item.image)
+    .map((item) => ({
       id: item.id,
       src: item.image!,
       alt: item.title ?? item.id,
       title: item.title,
       description: item.description,
       href: item.href,
-    }),
-  );
+    }));
 
   return (
     <section id="gallery" className="relative min-h-screen w-full">
+      <div
+        data-section-id="gallery"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
       <div className="section-content">
         <header className="mb-12 flex flex-col items-center gap-4 text-center">
           <AppleHelloGalleryEffect className="w-full" />
@@ -59,6 +81,38 @@ const Gallery = () => {
             {GALLERY_SECTION_SUBTITLE}
           </p>
         </header>
+
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap gap-2 justify-center mb-8">
+            <button
+              type="button"
+              onClick={() => setActiveTag(null)}
+              className={cn(
+                "px-3 py-1 rounded-full text-sm font-medium transition-colors",
+                activeTag === null
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+              )}
+            >
+              All
+            </button>
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setActiveTag((prev) => (prev === tag ? null : tag))}
+                className={cn(
+                  "px-3 py-1 rounded-full text-sm font-medium transition-colors",
+                  activeTag === tag
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+                )}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
 
         {marqueeImages.length > 0 ? (
           <Marquee3D
@@ -70,20 +124,21 @@ const Gallery = () => {
           />
         ) : (
           <p className="text-center text-muted-foreground py-16">
-            Add images to galleryData.ts to see the 3D marquee.
+            No gallery items yet — add items to ~/repos/Obsidian/gallery/ and run sync-full.sh.
           </p>
         )}
 
         <AnimatePresence>
           {activeImage && (
-            <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto p-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg"
-              />
+            <motion.div
+              key="gallery-modal"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto p-4"
+            >
+              <div className="fixed inset-0 h-full w-full bg-black/80 backdrop-blur-lg" />
               <Card3D
                 active={true}
                 maxTilt={8}
@@ -108,11 +163,11 @@ const Gallery = () => {
                   >
                     <X className="h-5 w-5" />
                   </button>
-                  <div className="overflow-hidden rounded-2xl mb-4">
+                  <div className="flex items-center justify-center overflow-hidden rounded-2xl mb-4 bg-muted/30">
                     <img
                       src={activeImage.src}
                       alt={activeImage.alt ?? activeImage.id}
-                      className="w-full h-full max-h-[60vh] md:max-h-[400px] object-cover"
+                      className="w-auto h-auto max-w-full max-h-[60vh] md:max-h-[70vh] object-contain"
                     />
                   </div>
                   {activeImage.title && (
@@ -134,7 +189,7 @@ const Gallery = () => {
                   )}
                 </motion.div>
               </Card3D>
-            </div>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

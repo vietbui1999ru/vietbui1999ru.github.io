@@ -43,10 +43,10 @@ export function Marquee3D({
             <button
               key={img.id}
               type="button"
-              className="group relative aspect-square w-full overflow-hidden rounded-xl border border-border/60 bg-card/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="group relative w-full overflow-hidden rounded-xl border border-border/60 bg-card/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               onClick={() => onImageClick?.(img)}
             >
-              <img src={img.src} alt={img.alt ?? img.id} className="h-full w-full object-cover" />
+              <img src={img.src} alt={img.alt ?? img.id} className="w-full h-auto object-contain" />
             </button>
           ))}
         </div>
@@ -92,7 +92,7 @@ export function Marquee3D({
               {[...colImages, ...colImages].map((img, i) => (
                 <div
                   key={`${img.id}-${i}`}
-                  className="group relative overflow-hidden rounded-xl shrink-0 aspect-square w-32 md:w-40 lg:w-48 transition-transform duration-300 hover:scale-105 hover:z-10 cursor-pointer"
+                  className="group relative overflow-hidden rounded-xl shrink-0 w-32 md:w-40 lg:w-48 bg-card/60 transition-transform duration-300 hover:scale-105 hover:z-10 cursor-pointer"
                   style={{ transformStyle: "preserve-3d" }}
                   onClick={() => onImageClick?.(img)}
                   role="button"
@@ -107,7 +107,7 @@ export function Marquee3D({
                   <img
                     src={img.src}
                     alt={img.alt ?? img.id}
-                    className="h-full w-full object-cover"
+                    className="w-full h-auto object-contain"
                   />
                 </div>
               ))}

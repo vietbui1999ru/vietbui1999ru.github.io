@@ -7,6 +7,8 @@ import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import AnimatedCursor from "@/components/ui/AnimatedCursor";
 import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
 import { MobileBlocker } from "@/components/layout/MobileBlocker";
+import AppCanvasIsland from "@/scenes/engine/AppCanvasIsland";
+import LevaPanel from "@/scenes/ui/LevaPanel";
 ---
 
 <!doctype html>
@@ -16,12 +18,15 @@ import { MobileBlocker } from "@/components/layout/MobileBlocker";
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Viet Bui | Portfolio</title>
     <link rel="icon" type="image/png" href={pcmasterracePng.src} />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous" />
   </head>
   <body
     class={cn(
       "group/body overscroll-none antialiased bg-background text-foreground",
     )}
   >
+    <AppCanvasIsland client:load />
+    <LevaPanel client:load />
     <MobileBlocker client:load />
     <VectorFieldBackground client:load className="hidden md:block" />
     <AnimatedCursor client:load />

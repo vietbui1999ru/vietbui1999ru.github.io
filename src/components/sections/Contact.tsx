@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { BuiltWithBadge } from "@/components/ui/BuiltWithBadge";
 import { AppleHelloContactEffect } from "@/components/ui/apple-hello-effect";
 import { Check, Copy, Linkedin, Mail } from "lucide-react";
 import { SiDiscord } from "@icons-pack/react-simple-icons";
@@ -14,7 +15,9 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Modal, ModalTrigger, ModalBody, ModalContent } from "@/components/ui/AnimatedModal";
-import { OWNER } from "@/config/owner";
+
+const LINKEDIN_URL = "https://linkedin.com/in/vietbui99";
+const DISCORD_URL = "https://discord.com/users/463366284940410910";
 
 const Contact = () => {
   const email = CONTACT_BTN_LINK.replace(/^mailto:/i, "");
@@ -52,7 +55,12 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative min-h-screen w-full">
+    <section id="contact" className="relative min-h-screen w-full flex flex-col">
+      <div
+        data-section-id="contact"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
       <div className="section-content">
         <header className="mb-12 flex flex-col justify-center items-center gap-4 text-center">
           <AppleHelloContactEffect className="w-full" />
@@ -107,7 +115,7 @@ const Contact = () => {
                 </div>
 
                 <a
-                  href={OWNER.social.linkedin.url}
+                  href={LINKEDIN_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
@@ -119,7 +127,7 @@ const Contact = () => {
                   LinkedIn
                 </a>
                 <a
-                  href={OWNER.social.discord.url}
+                  href={DISCORD_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
@@ -134,6 +142,9 @@ const Contact = () => {
             </ModalContent>
           </ModalBody>
         </Modal>
+      </div>
+      <div className="mt-auto pb-12">
+        <BuiltWithBadge />
       </div>
     </section>
   );

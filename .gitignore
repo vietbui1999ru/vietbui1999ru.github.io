@@ -20,10 +20,22 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Git worktrees
+.worktrees/
+
 # Vault CMS / Obsidian
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
-.ref/
 
 # Superpowers brainstorm companion
 .superpowers/
+
+# Git worktrees
+.worktrees/
+.claude/worktrees/
+
+# Playwright MCP output
+.playwright-mcp/
+
+# Style guides (local authoring aids, not for publication)
+docs/style-guides/

@@ -1,0 +1,112 @@
+---
+// src/pages/sim/[name].astro
+// Playground page for each registered sim.
+//
+// The app-wide Canvas (mounted in BaseLayout via AppCanvasIsland) reads
+// `data-scene-id` from the sentinel div and activates the matching SimModule.
+// Leva controls are toggled with the L key (existing behavior; no programmatic
+// collapse needed here).
+import { SCENE_REGISTRY } from '../../scenes/registry'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import type { GetStaticPaths } from 'astro'
+
+export const getStaticPaths = (() => {
+  return Object.keys(SCENE_REGISTRY).map((name) => ({ params: { name } }))
+}) satisfies GetStaticPaths
+
+const { name } = Astro.params
+const entry = SCENE_REGISTRY[name as keyof typeof SCENE_REGISTRY]
+if (!entry) throw new Error(`Unknown sim: ${name}`)
+---
+
+<BaseLayout>
+  <!--
+    Sentinel: the app-wide Canvas reads data-scene-id via IntersectionObserver
+    and switches to the matching SimModule.
+  -->
+  <div
+    data-scene-id={name}
+    data-playground="true"
+    class="sim-playground-sentinel"
+    aria-label={`${entry.title} simulation playground`}
+  />
+
+  <!-- Back-to-home link, positioned over canvas -->
+  <a
+    href="/"
+    class="sim-back-link"
+    aria-label="Back to portfolio home"
+  >
+    ← Home
+  </a>
+
+  <!-- Share-URL button: progressive enhancement via inline script -->
+  <button
+    id="sim-share-btn"
+    class="sim-share-btn"
+    type="button"
+    aria-label="Copy share URL"
+  >
+    Share
+  </button>
+</BaseLayout>
+
+<style>
+  .sim-playground-sentinel {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .sim-back-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 50;
+    color: white;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .sim-back-link:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .sim-share-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 50;
+    color: white;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .sim-share-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+</style>
+
+<script>
+  // Share-URL: copy current href (includes hash from URL-sync store) to clipboard
+  const shareBtn = document.getElementById('sim-share-btn')
+  shareBtn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      shareBtn.textContent = 'Copied!'
+      setTimeout(() => { shareBtn.textContent = 'Share' }, 2000)
+    } catch {
+      shareBtn.textContent = 'Copy failed'
+      setTimeout(() => { shareBtn.textContent = 'Share' }, 2000)
+    }
+  })
+</script>

@@ -1,10 +1,9 @@
 "use client";
 
-import SingularityShaders from "@/components/shaders/Singularity";
 import GradientText from "@/components/ui/GradientText";
 import TypingText from "@/components/ui/TypingText";
 import { Magnetic } from "@/components/ui/magnetic";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SiGithub, SiGitlab } from "@icons-pack/react-simple-icons";
 import {
   INTRO_GRADIENT,
@@ -12,92 +11,33 @@ import {
   INTRO_LINE1,
   HOME_TAGLINE,
   INTRO_TYPING_SPEED,
-  SINGULARITY_SCROLL_MAX,
-  SINGULARITY_SCROLL_MIN,
-  SINGULARITY_SIZE_RESIZE_FACTOR,
   VIET_GRADIENT,
 } from "@/data/homeData";
-import { OWNER } from "@/config/owner";
+
+const GITLAB_PROFILE_URL = "https://gitlab.com/vietbui1999ru";
 
 const Home = () => {
-  const [singularitySpeed, setSingularitySpeed] = useState(1.0);
-  const [singularityIntensity, setSingularityIntensity] = useState(1.0);
-  const [singularitySize, setSingularitySize] = useState(1.0);
-  const [singularityWaveStrength, setSingularityWaveStrength] = useState(1.0);
-  const [singularityColorShift, setSingularityColorShift] = useState(1.0);
   const [githubGradientAngle, setGithubGradientAngle] = useState(220);
   const [gitlabGradientAngle, setGitlabGradientAngle] = useState(220);
 
-  const [isTouchOrMobile, setIsTouchOrMobile] = useState(false);
-
-  useEffect(() => {
-    const checkIsTouchOrMobile = () => {
-      if (typeof window === "undefined") return;
-      const isCoarsePointer =
-        typeof window.matchMedia !== "undefined"
-          ? window.matchMedia("(pointer: coarse)").matches
-          : false;
-      const isSmallViewport = window.innerWidth < 768;
-      setIsTouchOrMobile(isCoarsePointer || isSmallViewport);
-    };
-
-    checkIsTouchOrMobile();
-    window.addEventListener("resize", checkIsTouchOrMobile);
-    window.addEventListener("orientationchange", checkIsTouchOrMobile);
-
-    return () => {
-      window.removeEventListener("resize", checkIsTouchOrMobile);
-      window.removeEventListener("orientationchange", checkIsTouchOrMobile);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isTouchOrMobile) {
-      setSingularitySpeed(0);
-      setSingularityIntensity(0);
-      setSingularitySize(0);
-      setSingularityWaveStrength(0);
-      setSingularityColorShift(0);
-      return;
-    }
-
-    const handleScroll = () => {
-      const t = Math.min(1, window.scrollY / (window.innerHeight / 2));
-      const v =
-        SINGULARITY_SCROLL_MIN + (SINGULARITY_SCROLL_MAX - SINGULARITY_SCROLL_MIN) * (1 - t);
-      const sizeMax = SINGULARITY_SCROLL_MAX * SINGULARITY_SIZE_RESIZE_FACTOR;
-      const sizeV = SINGULARITY_SCROLL_MIN + (sizeMax - SINGULARITY_SCROLL_MIN) * (1 - t);
-      setSingularitySpeed(v);
-      setSingularityIntensity(v);
-      setSingularitySize(sizeV);
-      setSingularityWaveStrength(v);
-      setSingularityColorShift(v);
-    };
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isTouchOrMobile]);
   return (
-    <div
-      id="home"
-      className="relative min-h-screen w-full bg-gradient-to-b from-background to-surface/40"
-    >
-      {!isTouchOrMobile && (
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{ opacity: singularitySize > 0.25 ? 1 : 0 }}
-          aria-hidden={singularitySize <= 0.25}
-        >
-          <SingularityShaders
-            className="singularity-shader h-full w-full"
-            speed={singularitySpeed}
-            intensity={singularityIntensity}
-            size={singularitySize}
-            waveStrength={singularityWaveStrength}
-            colorShift={singularityColorShift}
-          />
-        </div>
-      )}
+    <div id="home" className="relative min-h-screen w-full">
+      {/* Viewport-filling gradient overlay. Sits ABOVE the r3f canvas
+          (z-index 0 > canvas -10) and BELOW hero text (z-index 10). Covers
+          the strip that BaseLayout's <main pt-24 pb-20> would otherwise
+          leave uncolored, so the r3f Singularity never peeks through
+          brighter than the home gradient. */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 bg-gradient-to-b from-background to-surface/40 pointer-events-none"
+        style={{ zIndex: 0 }}
+      />
+
+      <div
+        data-section-id="home"
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+      />
 
       <div className="relative z-10 flex min-h-screen w-full items-center justify-center px-4">
         <div className="text-center space-y-4 max-w-3xl">
@@ -129,11 +69,11 @@ const Home = () => {
               <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Magnetic strength={18}>
                   <a
-                    href={OWNER.social.github.url}
+                    href="https://github.com/vietbui1999ru"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-medium shadow-md backdrop-blur transition hover:border-white/30 hover:bg-white/5"
-                    aria-label={`View ${OWNER.name}'s GitHub profile`}
+                    aria-label="View Viet Bui's GitHub profile"
                     onMouseMove={(event) => {
                       const bounds = event.currentTarget.getBoundingClientRect();
                       const relativeX = (event.clientX - bounds.left) / Math.max(bounds.width, 1);
@@ -150,17 +90,17 @@ const Home = () => {
                         backgroundImage: `linear-gradient(${githubGradientAngle}deg, #f5f5f5, #d4d4d8, #a1a1aa)`,
                       }}
                     >
-                      {OWNER.social.github.label}
+                      My GitHub profile
                     </span>
                   </a>
                 </Magnetic>
                 <Magnetic strength={18}>
                   <a
-                    href={OWNER.social.gitlab.url}
+                    href={GITLAB_PROFILE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-medium shadow-md backdrop-blur transition hover:border-white/30 hover:bg-white/5"
-                    aria-label={`View ${OWNER.name}'s GitLab profile`}
+                    aria-label="View Viet Bui's GitLab profile"
                     onMouseMove={(event) => {
                       const bounds = event.currentTarget.getBoundingClientRect();
                       const relativeX = (event.clientX - bounds.left) / Math.max(bounds.width, 1);
@@ -177,26 +117,24 @@ const Home = () => {
                         backgroundImage: `linear-gradient(${gitlabGradientAngle}deg, #fff7ed, #fdba74, #fb923c)`,
                       }}
                     >
-                      {OWNER.social.gitlab.label}
+                      My GitLab profile
                     </span>
                   </a>
                 </Magnetic>
               </div>
-              {OWNER.availability.open && (
               <button
                 type="button"
                 className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-1.5 text-xs font-medium text-emerald-100 shadow-sm backdrop-blur-sm"
-                aria-label={OWNER.availability.text}
+                aria-label="Open to new opportunities and challenges"
               >
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(16,185,129,0.35)]" />
                 </span>
                 <span className="whitespace-nowrap">
-                  {OWNER.availability.text}
+                  open to new opportunities &amp; challenges
                 </span>
               </button>
-              )}
             </div>
           </div>
         </div>

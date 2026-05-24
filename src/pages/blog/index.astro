@@ -1,29 +1,27 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { toSlug } from "@/lib/utils";
+import { BlogGrid } from "@/components/blog/BlogGrid";
 
 const posts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .map((p) => ({
+    slug: toSlug(p.id),
+    title: p.data.title,
+    description: p.data.description ?? "",
+    date: p.data.date.toISOString(),
+    tags: p.data.tags ?? [],
+    cover: p.data.cover,
+  }));
 ---
 
 <BaseLayout>
-  <div class="mx-auto w-full max-w-[var(--content-max)] px-4 py-24 sm:px-6">
-    <h1 class="text-4xl font-bold mb-8">Blog</h1>
-    <ul class="space-y-4">
-      {posts.map((post) => (
-        <li>
-          <a
-            href={`/blog/${post.id}`}
-            class="text-primary hover:underline font-medium"
-          >
-            {post.data.title}
-          </a>
-          <span class="text-muted-foreground text-sm ml-2">
-            {post.data.date.toLocaleDateString("en-US")}
-          </span>
-        </li>
-      ))}
-    </ul>
+  <div class="w-full flex-1 bg-background">
+    <div class="mx-auto w-full max-w-[var(--content-max)] px-4 py-24 sm:px-6">
+      <h1 class="text-4xl font-bold mb-10">Blog</h1>
+      <BlogGrid posts={posts} client:load />
+    </div>
   </div>
 </BaseLayout>

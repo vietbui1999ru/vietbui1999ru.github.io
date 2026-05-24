@@ -22,11 +22,18 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { label: "Home", shortLabel: "Home", icon: HomeIcon, href: "#home" },
   { label: "About Me", shortLabel: "About", icon: User, href: "#about" },
+  { label: "Blog", shortLabel: "Blog", icon: NotebookPen, href: "#blog" },
   {
     label: "Projects",
     shortLabel: "Projects",
     icon: ServerCog,
     href: "#projects",
+  },
+  {
+    label: "Gallery",
+    shortLabel: "Gallery",
+    icon: GalleryHorizontal,
+    href: "#gallery",
   },
   {
     label: "Professional Experience",
@@ -40,13 +47,6 @@ export const NAV_ITEMS: NavItem[] = [
     icon: GraduationCap,
     href: "#education",
   },
-  {
-    label: "Gallery",
-    shortLabel: "Gallery",
-    icon: GalleryHorizontal,
-    href: "#gallery",
-  },
-  { label: "Blog", shortLabel: "Blog", icon: NotebookPen, href: "#blog" },
   { label: "Contact", shortLabel: "Contact", icon: UserPen, href: "#contact" },
 ];
 

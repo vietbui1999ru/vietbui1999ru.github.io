@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "astro/zod";
 
 export const blogSchema = z.object({
   title: z.string(),
@@ -61,8 +61,10 @@ export const educationSchema = z.object({
 export const gallerySchema = z.object({
   title: z.string(),
   description: z.string().optional(),
-  date: z.coerce.date(),
-  image: z.string(),
+  image: z.string().optional(),
+  order: z.number().int(),
+  date: z.coerce.date().optional(),
+  href: z.string().optional(),
   tags: z.array(z.string()).optional(),
   graph_node: z.boolean().default(true),
 });
@@ -82,7 +84,13 @@ export const aboutSchema = z.object({
   tagline: z.string(),
 });
 
+export const blogVariantSchema = z.object({
+  style_label: z.string(),
+  parent_slug: z.string(),
+});
+
 export type BlogEntry = z.infer<typeof blogSchema>;
+export type BlogVariantEntry = z.infer<typeof blogVariantSchema>;
 export type RoleEntry = z.infer<typeof roleSchema>;
 export type CompanyEntry = z.infer<typeof companySchema>;
 export type ProjectEntry = z.infer<typeof projectSchema>;

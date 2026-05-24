@@ -50,7 +50,7 @@ function SkillsMarquee() {
 function ResumeViewer() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-4">
-      <div className="w-full overflow-hidden rounded-xl border border-white/10 bg-black/20 shadow-lg">
+      <div className="w-full overflow-hidden rounded-xl border border-border bg-muted/20 shadow-lg">
         <object
           data={`${RESUME_PATH}#toolbar=1&navpanes=0&scrollbar=1`}
           type="application/pdf"
@@ -66,7 +66,7 @@ function ResumeViewer() {
       <a
         href={RESUME_PATH}
         download
-        className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/10 min-h-[44px]"
+        className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/60 min-h-[44px]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -97,14 +97,14 @@ export function SkillsSection() {
       <div className="flex flex-col items-center gap-4">
         <SectionHeading title="Skills & Resume" className="mb-0" />
 
-        <div className="inline-flex rounded-full border border-white/10 bg-white/5 p-1">
+        <div className="inline-flex rounded-full border border-border bg-muted/50 p-1">
           <button
             type="button"
             onClick={() => setView("skills")}
             className={cn(
               "rounded-full px-5 py-2.5 text-sm font-medium transition-all min-h-[44px]",
               view === "skills"
-                ? "bg-white/15 text-foreground shadow-sm"
+                ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
@@ -116,7 +116,7 @@ export function SkillsSection() {
             className={cn(
               "rounded-full px-5 py-2.5 text-sm font-medium transition-all min-h-[44px]",
               view === "resume"
-                ? "bg-white/15 text-foreground shadow-sm"
+                ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
