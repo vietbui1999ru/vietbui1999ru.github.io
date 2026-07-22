@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PaperHero from "@/components/svelte/PaperHero.svelte";
-import About from "@/components/sections/About";
+import PaperAbout from "@/components/svelte/PaperAbout.svelte";
 import Projects from "@/components/sections/Projects";
 import type { ProjectCardData } from "@/components/sections/Projects";
 import Experience from "@/components/sections/Experience";
@@ -82,7 +82,7 @@ const projects: ProjectCardData[] = (
 
 <BaseLayout>
   <PaperHero />
-  <About client:load />
+  <PaperAbout client:visible />
   <Blog client:visible posts={blogPosts} />
   <Projects client:visible projects={projects} />
   <Gallery client:visible items={galleryItems} />
