@@ -7,8 +7,8 @@ import PaperProjects from "@/components/svelte/PaperProjects.svelte";
 import PaperGallery from "@/components/svelte/PaperGallery.svelte";
 import PaperExperience from "@/components/svelte/PaperExperience.svelte";
 import PaperEducation from "@/components/svelte/PaperEducation.svelte";
+import PaperContact from "@/components/svelte/PaperContact.svelte";
 import type { ProjectCardData } from "@/data/projectData";
-import Contact from "@/components/sections/Contact";
 import { getCollection } from "astro:content";
 import path from "node:path";
 import { createAssetAdapters } from "@/lib/remark/adapters";
@@ -88,5 +88,5 @@ const projects: ProjectCardData[] = (
   <PaperGallery items={galleryItems} />
   <PaperExperience />
   <PaperEducation />
-  <Contact client:visible />
+  <PaperContact />
 </BaseLayout>
