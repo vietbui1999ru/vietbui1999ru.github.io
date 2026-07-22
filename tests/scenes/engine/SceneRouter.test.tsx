@@ -28,8 +28,11 @@ function MockIntersectionObserver(cb: IOCallback) {
 }
 
 // Utility: fire mock IO entries
-function fireEntries(entries: Array<{ target: Element; intersectionRatio: number }>) {
-  if (!capturedCallback) throw new Error("IntersectionObserver callback not captured");
+function fireEntries(
+  entries: Array<{ target: Element; intersectionRatio: number }>,
+) {
+  if (!capturedCallback)
+    throw new Error("IntersectionObserver callback not captured");
   capturedCallback(
     entries.map(({ target, intersectionRatio }) => ({
       target,
@@ -71,13 +74,15 @@ function makeRegistry(ids: string[]) {
 
 describe("useActiveScene", () => {
   it("falls back to routeHint when no sentinel has intersectionRatio > 0", () => {
-    const registry = makeRegistry(["singularity", "lorenz"]);
-    const { result } = renderHook(() => useActiveScene({ registry, routeHint: "lorenz" }));
-    expect(result.current.activeSceneId).toBe("lorenz");
+    const registry = makeRegistry(["singularity", "magnetic"]);
+    const { result } = renderHook(() =>
+      useActiveScene({ registry, routeHint: "magnetic" }),
+    );
+    expect(result.current.activeSceneId).toBe("magnetic");
   });
 
   it("selects the scene with the highest intersectionRatio when sentinels fire", () => {
-    const registry = makeRegistry(["singularity", "lorenz"]);
+    const registry = makeRegistry(["singularity", "magnetic"]);
 
     // Create real DOM sentinels so the hook can observe them
     const sentinel1 = document.createElement("div");
@@ -85,10 +90,12 @@ describe("useActiveScene", () => {
     document.body.appendChild(sentinel1);
 
     const sentinel2 = document.createElement("div");
-    sentinel2.setAttribute("data-scene-id", "lorenz");
+    sentinel2.setAttribute("data-scene-id", "magnetic");
     document.body.appendChild(sentinel2);
 
-    const { result } = renderHook(() => useActiveScene({ registry, routeHint: "singularity" }));
+    const { result } = renderHook(() =>
+      useActiveScene({ registry, routeHint: "singularity" }),
+    );
 
     act(() => {
       fireEntries([
@@ -97,26 +104,30 @@ describe("useActiveScene", () => {
       ]);
     });
 
-    expect(result.current.activeSceneId).toBe("lorenz");
+    expect(result.current.activeSceneId).toBe("magnetic");
 
     document.body.removeChild(sentinel1);
     document.body.removeChild(sentinel2);
   });
 
   it("setActiveSceneId overrides selection immediately", () => {
-    const registry = makeRegistry(["singularity", "lorenz"]);
-    const { result } = renderHook(() => useActiveScene({ registry, routeHint: "singularity" }));
+    const registry = makeRegistry(["singularity", "magnetic"]);
+    const { result } = renderHook(() =>
+      useActiveScene({ registry, routeHint: "singularity" }),
+    );
 
     act(() => {
-      result.current.setActiveSceneId("lorenz");
+      result.current.setActiveSceneId("magnetic");
     });
 
-    expect(result.current.activeSceneId).toBe("lorenz");
+    expect(result.current.activeSceneId).toBe("magnetic");
   });
 
   it("disconnects IntersectionObserver on unmount", () => {
     const registry = makeRegistry(["singularity"]);
-    const { unmount } = renderHook(() => useActiveScene({ registry, routeHint: "singularity" }));
+    const { unmount } = renderHook(() =>
+      useActiveScene({ registry, routeHint: "singularity" }),
+    );
     unmount();
     expect(mockDisconnect).toHaveBeenCalledOnce();
   });

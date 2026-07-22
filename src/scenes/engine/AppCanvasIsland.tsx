@@ -42,7 +42,7 @@ function isSimEnabled(): boolean {
 
 function SimCanvas(): React.ReactElement {
   const routeHint = deriveRouteHint();
-  // Prefer persisted choice; fall back to route hint (so /sim/lorenz still works on first visit)
+  // Prefer persisted choice; fall back to route hint (so /sim/magnetic still works on first visit)
   const initialScene: SceneSelection = readPersistedScene() ?? routeHint;
   const [perf, setPerf] = useState<PerfTier>("mid");
 

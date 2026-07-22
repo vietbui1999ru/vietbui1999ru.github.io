@@ -15,20 +15,14 @@
 import type { SceneId, SimModule } from "./engine/types";
 import { SceneRegistry } from "./engine/SceneRegistry";
 import { singularityModule } from "./sims/singularity/index";
-import LorenzModule from "./sims/lorenz/index";
 import MagneticModule from "./sims/magnetic/index";
-import GrayScottModule from "./sims/grayScott/index";
-import KuramotoSivashinskyModule from "./sims/kuramotoSivashinsky/index";
 
 // ---------------------------------------------------------------------------
 // All registered modules in display order — THE ONE LIST
 // ---------------------------------------------------------------------------
 export const registeredModules: SimModule[] = [
   singularityModule as SimModule,
-  LorenzModule as SimModule,
   MagneticModule as SimModule,
-  GrayScottModule as SimModule,
-  KuramotoSivashinskyModule as SimModule,
 ];
 
 // ---------------------------------------------------------------------------
@@ -41,9 +35,10 @@ export const sceneMap: Partial<Record<SceneId, SimModule>> = Object.fromEntries(
 // ---------------------------------------------------------------------------
 // Plain record for Astro SSG (getStaticPaths). No React dependencies.
 // ---------------------------------------------------------------------------
-export const SCENE_REGISTRY: Record<string, { id: string; title: string }> = Object.fromEntries(
-  registeredModules.map((m) => [m.id, { id: m.id, title: m.title }]),
-);
+export const SCENE_REGISTRY: Record<string, { id: string; title: string }> =
+  Object.fromEntries(
+    registeredModules.map((m) => [m.id, { id: m.id, title: m.title }]),
+  );
 
 // ---------------------------------------------------------------------------
 // Factory for the React-side class-based SceneRegistry
