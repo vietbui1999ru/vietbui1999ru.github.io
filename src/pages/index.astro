@@ -2,11 +2,11 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PaperHero from "@/components/svelte/PaperHero.svelte";
 import PaperAbout from "@/components/svelte/PaperAbout.svelte";
+import PaperBlog from "@/components/svelte/PaperBlog.svelte";
 import Projects from "@/components/sections/Projects";
 import type { ProjectCardData } from "@/components/sections/Projects";
 import Experience from "@/components/sections/Experience";
 import Education from "@/components/sections/Education";
-import Blog from "@/components/sections/Blog";
 import Gallery from "@/components/sections/Gallery";
 import Contact from "@/components/sections/Contact";
 import { getCollection } from "astro:content";
@@ -83,7 +83,7 @@ const projects: ProjectCardData[] = (
 <BaseLayout>
   <PaperHero />
   <PaperAbout client:visible />
-  <Blog client:visible posts={blogPosts} />
+  <PaperBlog posts={blogPosts} />
   <Projects client:visible projects={projects} />
   <Gallery client:visible items={galleryItems} />
   <Experience client:visible />
