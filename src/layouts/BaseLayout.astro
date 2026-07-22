@@ -3,7 +3,7 @@ import "@/styles/global.css";
 import pcmasterracePng from "@/assets/images/pcmasterrace.png";
 import { cn } from "@/lib/utils";
 import PaperNav from "@/components/svelte/PaperNav.svelte";
-import MobileBottomNav from "@/components/layout/MobileBottomNav";
+import PaperMobileNav from "@/components/svelte/PaperMobileNav.svelte";
 import AnimatedCursor from "@/components/ui/AnimatedCursor";
 import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
 import { MobileBlocker } from "@/components/layout/MobileBlocker";
@@ -31,7 +31,7 @@ import LevaPanel from "@/scenes/ui/LevaPanel";
   </head>
   <body
     class={cn(
-      "group/body overscroll-none antialiased bg-background text-foreground",
+      "group/body overscroll-none bg-paper text-ink antialiased transition-colors duration-300",
     )}
   >
     <AppCanvasIsland client:load />
@@ -39,9 +39,9 @@ import LevaPanel from "@/scenes/ui/LevaPanel";
     <MobileBlocker client:only="react" />
     <VectorFieldBackground client:only="react" className="hidden md:block" />
     <AnimatedCursor client:only="react" />
-    <PaperNav client:load />
-    <MobileBottomNav client:load />
-    <main class="relative z-10 flex flex-1 flex-col pt-4 pb-20 md:pt-24 md:pb-0">
+    <PaperNav pathname={Astro.url.pathname} client:load />
+    <PaperMobileNav pathname={Astro.url.pathname} client:load />
+    <main class="relative z-10 flex flex-1 flex-col pb-20 md:pb-0">
       <slot />
     </main>
   </body>

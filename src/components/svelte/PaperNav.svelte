@@ -2,11 +2,16 @@
 import { onMount } from "svelte";
 import { NAV_LINKS } from "@/data/navLinks";
 
+let { pathname }: { pathname: string } = $props();
 let dark = $state(false);
 
 onMount(() => {
   dark = document.documentElement.classList.contains("dark");
 });
+
+function hrefFor(hash: string): string {
+  return pathname === "/" ? hash : `/${hash}`;
+}
 
 function toggleTheme() {
   dark = !dark;
@@ -22,15 +27,15 @@ function toggleTheme() {
     class="mx-auto flex h-14 w-full max-w-[var(--content-max)] items-center justify-between px-4 sm:px-6"
   >
     <a
-      href="#home"
+      href={hrefFor("#home")}
       class="font-serif text-lg font-semibold italic text-ink no-underline"
       >viet bui</a
     >
 
-    <div class="flex items-center gap-7">
+    <div class="flex items-center gap-3 lg:gap-5 xl:gap-7">
       {#each NAV_LINKS as link, i (link.href)}
         <a
-          href={link.href}
+          href={hrefFor(link.href)}
           class="u-draw inline-flex items-baseline gap-1 font-mono text-step--1 uppercase tracking-wider text-ink no-underline"
         >
           <span class="text-[0.65em] text-journal-2">{String(i + 1).padStart(2, "0")}</span

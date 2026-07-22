@@ -10,7 +10,10 @@
   const showName = OWNER.intro.includes(firstName);
 </script>
 
-<section id="home" class="relative flex min-h-screen w-full items-center justify-center">
+<section
+  id="home"
+  class="relative flex min-h-screen w-full items-center justify-center md:min-h-[calc(100svh-3.5rem)]"
+>
   <!-- Paper veil over the r3f canvas behind (canvas sits at z-index -10). -->
   <div
     aria-hidden="true"
