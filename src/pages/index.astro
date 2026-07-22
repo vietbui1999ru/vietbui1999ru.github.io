@@ -5,9 +5,9 @@ import PaperAbout from "@/components/svelte/PaperAbout.svelte";
 import PaperBlog from "@/components/svelte/PaperBlog.svelte";
 import PaperProjects from "@/components/svelte/PaperProjects.svelte";
 import PaperGallery from "@/components/svelte/PaperGallery.svelte";
+import PaperExperience from "@/components/svelte/PaperExperience.svelte";
+import PaperEducation from "@/components/svelte/PaperEducation.svelte";
 import type { ProjectCardData } from "@/data/projectData";
-import Experience from "@/components/sections/Experience";
-import Education from "@/components/sections/Education";
 import Contact from "@/components/sections/Contact";
 import { getCollection } from "astro:content";
 import path from "node:path";
@@ -86,7 +86,7 @@ const projects: ProjectCardData[] = (
   <PaperBlog posts={blogPosts} />
   <PaperProjects projects={projects} />
   <PaperGallery items={galleryItems} />
-  <Experience client:visible />
-  <Education client:visible />
+  <PaperExperience />
+  <PaperEducation />
   <Contact client:visible />
 </BaseLayout>
