@@ -2,7 +2,7 @@
 import "@/styles/global.css";
 import pcmasterracePng from "@/assets/images/pcmasterrace.png";
 import { cn } from "@/lib/utils";
-import NavBarDock from "@/components/layout/NavBarDock";
+import PaperNav from "@/components/svelte/PaperNav.svelte";
 import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import AnimatedCursor from "@/components/ui/AnimatedCursor";
 import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
@@ -12,9 +12,18 @@ import LevaPanel from "@/scenes/ui/LevaPanel";
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script is:inline>
+      // Theme init before paint: stored preference, else system. Default light (paper-first).
+      (() => {
+        const t = localStorage.getItem("theme");
+        if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Viet Bui | Portfolio</title>
     <link rel="icon" type="image/png" href={pcmasterracePng.src} />
@@ -27,10 +36,10 @@ import LevaPanel from "@/scenes/ui/LevaPanel";
   >
     <AppCanvasIsland client:load />
     <LevaPanel client:load />
-    <MobileBlocker client:load />
-    <VectorFieldBackground client:load className="hidden md:block" />
-    <AnimatedCursor client:load />
-    <NavBarDock client:load />
+    <MobileBlocker client:only="react" />
+    <VectorFieldBackground client:only="react" className="hidden md:block" />
+    <AnimatedCursor client:only="react" />
+    <PaperNav client:load />
     <MobileBottomNav client:load />
     <main class="relative z-10 flex flex-1 flex-col pt-4 pb-20 md:pt-24 md:pb-0">
       <slot />

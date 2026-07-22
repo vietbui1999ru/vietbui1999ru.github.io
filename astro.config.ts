@@ -1,5 +1,6 @@
 // @ts-check
 import react from "@astrojs/react";
+import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import fs from "node:fs";
@@ -56,7 +57,7 @@ if (fs.existsSync(galleryDir)) {
 export default defineConfig({
   site,
   base,
-  integrations: [react()],
+  integrations: [react(), svelte()],
   markdown: {
     shikiConfig: {
       themes: { light: "github-light", dark: "github-dark" },
@@ -69,7 +70,11 @@ export default defineConfig({
       remarkPreview,
       [
         remarkEmbeds,
-        { attachmentsRoot: path.join(vaultRoot, "Attachments"), copyAsset, resolveExcalidraw },
+        {
+          attachmentsRoot: path.join(vaultRoot, "Attachments"),
+          copyAsset,
+          resolveExcalidraw,
+        },
       ],
       [
         remarkWikilinks,

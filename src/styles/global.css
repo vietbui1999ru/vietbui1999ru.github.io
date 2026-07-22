@@ -58,11 +58,56 @@
   --radius-4xl: calc(var(--radius) + 16px);
   --color-selection: var(--selection);
   --color-selection-foreground: var(--selection-foreground);
+
+  /* ── Paper & Ink design system (ADR 001, design/index.html) ── */
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-journal-1: var(--grey-1);
+  --color-journal-2: var(--grey-2);
+  --color-journal-3: var(--grey-3);
+  --color-journal-4: var(--grey-4);
+  --color-pastel-sage: var(--sage);
+  --color-pastel-dust: var(--dust);
+  --color-pastel-rose: var(--rose);
+  --color-pastel-butter: var(--butter);
+
+  /* fluid type scale — clamp(min, vw, max), no breakpoint jumps */
+  --text-step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.875rem);
+  --text-step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-step-1: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+  --text-step-2: clamp(1.6rem, 1.3rem + 1.5vw, 2.6rem);
+  --text-step-3: clamp(2.1rem, 1.5rem + 3vw, 4rem);
+  --text-step-4: clamp(2.8rem, 1.8rem + 5vw, 6rem);
+
+  /* hard offset shadows (sharp, no blur) */
+  --shadow-hard: 4px 4px 0 var(--ink);
+  --shadow-hard-sm: 2px 2px 0 var(--ink);
 }
 
 :root {
   /* Content width: fluid from 288px (very small phones) to 96rem (desktop). 94vw gives ~387px on S21 Ultra (412px). */
   --content-max: clamp(288px, 94vw, 96rem);
+
+  /* ── Paper & Ink tokens (light) ── */
+  --paper: #fbfaf6;
+  --paper-raised: #ffffff;
+  --ink: #141412;
+  --ink-soft: #2e2d28;
+  --grey-1: #6e6d66;
+  --grey-2: #a3a29a;
+  --grey-3: #d8d6cc;
+  --grey-4: #eceae1;
+  --sage: #b7c9b0;
+  --dust: #b3c4d6;
+  --rose: #e3c2c6;
+  --butter: #e8d9a8;
+  --ink-line: 1.5px solid var(--ink);
+  --hairline: 1px solid var(--grey-3);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-gleam: 0.9s;
+  --dur-idle: 7s;
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -135,6 +180,20 @@
   --surface: oklch(0.2 0 0);
   --selection: oklch(0.922 0 0);
   --selection-foreground: oklch(0.205 0 0);
+
+  /* ── Paper & Ink tokens (dark) ── */
+  --paper: #141412;
+  --paper-raised: #1c1b17;
+  --ink: #edece3;
+  --ink-soft: #d6d4c8;
+  --grey-1: #a3a29a;
+  --grey-2: #7c7b72;
+  --grey-3: #3a3931;
+  --grey-4: #26251f;
+  --sage: #77917a;
+  --dust: #6f8aa3;
+  --rose: #a37880;
+  --butter: #a8975e;
 }
 
 @layer base {
@@ -445,4 +504,138 @@
 /* dark mode: bump callout bg slightly brighter */
 .dark [data-callout] {
   background-color: color-mix(in oklch, currentColor 10%, transparent);
+}
+
+/* ================================================================
+   Paper & Ink — motion primitives (ADR 001, design/index.html)
+   Shared utilities; usable from React and Svelte components alike.
+   ================================================================ */
+
+/* 1. GLEAM — quick light sweep across a surface on hover/focus */
+.gleam {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.gleam::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    color-mix(in oklab, var(--paper-raised) 85%, white) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%) skewX(-12deg);
+  opacity: 0;
+}
+.gleam:hover::after,
+.gleam:focus-visible::after {
+  animation: gleam-sweep var(--dur-gleam) var(--ease-out-expo) forwards;
+}
+@keyframes gleam-sweep {
+  0% {
+    transform: translateX(-120%) skewX(-12deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120%) skewX(-12deg);
+    opacity: 0;
+  }
+}
+
+/* 2. TEXT SHIMMER — ambient gradient sweep across display type (sparing) */
+.shimmer-text {
+  background: linear-gradient(
+    100deg,
+    var(--ink) 0%,
+    var(--ink) 42%,
+    var(--grey-2) 50%,
+    var(--ink) 58%,
+    var(--ink) 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-shimmer var(--dur-idle) var(--ease-out-expo) infinite;
+}
+@keyframes text-shimmer {
+  0%,
+  55% {
+    background-position: 100% 0;
+  }
+  75%,
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+/* 3. UNDERLINE DRAW — journal annotation feel */
+.u-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1.5px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  text-decoration: none;
+  transition: background-size 0.45s var(--ease-out-expo);
+  padding-bottom: 2px;
+}
+.u-draw:hover {
+  background-size: 100% 1.5px;
+}
+
+/* 4. HARD-LIFT — sharp offset shadow press/lift */
+.lift {
+  transition:
+    transform 0.25s var(--ease-out-expo),
+    box-shadow 0.25s var(--ease-out-expo);
+}
+.lift:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.lift:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-hard-sm);
+}
+
+/* 5. BORDER TRACE — ink line draws around the box on hover */
+.trace {
+  position: relative;
+}
+.trace::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border: var(--ink-line);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.5s var(--ease-out-expo);
+  pointer-events: none;
+}
+.trace:hover::before {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gleam::after {
+    display: none;
+  }
+  .shimmer-text {
+    color: var(--ink);
+    background: none;
+    animation: none;
+  }
+  .u-draw,
+  .lift,
+  .trace::before {
+    transition: none;
+  }
 }

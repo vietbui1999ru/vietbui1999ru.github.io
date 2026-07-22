@@ -88,7 +88,7 @@ const proseClass =
     <div class="xl:grid xl:grid-cols-[200px_minmax(0,65ch)] xl:gap-14 xl:items-start">
       <aside class="hidden xl:block">
         <div class="sticky top-24">
-          <TableOfContents contentId="blog-content" client:load />
+          <TableOfContents contentId="blog-content" client:only="react" />
         </div>
       </aside>
       <div id="blog-content" class="min-w-0">
