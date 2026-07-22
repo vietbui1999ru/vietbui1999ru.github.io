@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import Projects from "@/components/sections/Projects";
-import type { ProjectCardData } from "@/components/sections/Projects";
+import PaperProjects from "@/components/svelte/PaperProjects.svelte";
+import type { ProjectCardData } from "@/data/projectData";
 
 const projects: ProjectCardData[] = (
   await getCollection("projects", (p) => !p.data.draft)
@@ -35,7 +35,7 @@ const projects: ProjectCardData[] = (
       >
         ← Back
       </a>
-      <Projects client:visible projects={projects} />
+      <PaperProjects projects={projects} />
     </div>
   </div>
 </BaseLayout>
