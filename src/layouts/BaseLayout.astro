@@ -1,12 +1,8 @@
 ---
 import "@/styles/global.css";
 import pcmasterracePng from "@/assets/images/pcmasterrace.png";
-import { cn } from "@/lib/utils";
 import PaperNav from "@/components/svelte/PaperNav.svelte";
 import PaperMobileNav from "@/components/svelte/PaperMobileNav.svelte";
-import AnimatedCursor from "@/components/ui/AnimatedCursor";
-import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
-import { MobileBlocker } from "@/components/layout/MobileBlocker";
 import AppCanvasIsland from "@/scenes/engine/AppCanvasIsland";
 import LevaPanel from "@/scenes/ui/LevaPanel";
 ---
@@ -29,16 +25,9 @@ import LevaPanel from "@/scenes/ui/LevaPanel";
     <link rel="icon" type="image/png" href={pcmasterracePng.src} />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous" />
   </head>
-  <body
-    class={cn(
-      "group/body overscroll-none bg-paper text-ink antialiased transition-colors duration-300",
-    )}
-  >
+  <body class="group/body overscroll-none bg-paper text-ink antialiased transition-colors duration-300">
     <AppCanvasIsland client:load />
     <LevaPanel client:load />
-    <MobileBlocker client:only="react" />
-    <VectorFieldBackground client:only="react" className="hidden md:block" />
-    <AnimatedCursor client:only="react" />
     <PaperNav pathname={Astro.url.pathname} client:load />
     <PaperMobileNav pathname={Astro.url.pathname} client:load />
     <main class="relative z-10 flex flex-1 flex-col pb-20 md:pb-0">
