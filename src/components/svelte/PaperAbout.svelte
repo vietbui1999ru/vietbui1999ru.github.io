@@ -1,25 +1,44 @@
 <script lang="ts">
-  import { ABOUT_PARAGRAPHS, SKILLS_CATEGORIES } from "@/data/aboutData";
-  import resumeUrl from "@/assets/files/resume.pdf?url";
+import { ABOUT_PARAGRAPHS } from "@/data/aboutData";
+import { SKILL_GROUPS } from "@/data/skillsPresentation";
+import resumeUrl from "@/assets/files/resume.pdf?url";
 
-  const PASTELS = ["bg-pastel-sage", "bg-pastel-dust", "bg-pastel-rose", "bg-pastel-butter"];
+let skillQuery = $state("");
 
-  // Scroll-into-view reveal: adds .in-view once, then stops observing.
-  function revealOnView(node: HTMLElement) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            io.unobserve(entry.target);
-          }
+const skillGroups = $derived(
+  SKILL_GROUPS.map((group) => ({
+    ...group,
+    skills: group.skills.filter((skill) =>
+      `${group.type} ${skill.name}`
+        .toLocaleLowerCase()
+        .includes(skillQuery.trim().toLocaleLowerCase()),
+    ),
+  })).filter((group) => group.skills.length > 0),
+);
+
+const PASTELS = [
+  "bg-pastel-sage",
+  "bg-pastel-dust",
+  "bg-pastel-rose",
+  "bg-pastel-butter",
+];
+
+// Scroll-into-view reveal: adds .in-view once, then stops observing.
+function revealOnView(node: HTMLElement) {
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          io.unobserve(entry.target);
         }
-      },
-      { threshold: 0.2 },
-    );
-    node.querySelectorAll(".rv").forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }
+      }
+    },
+    { threshold: 0.2 },
+  );
+  node.querySelectorAll(".rv").forEach((el) => io.observe(el));
+  return () => io.disconnect();
+}
 </script>
 
 <section id="about" class="relative w-full py-24" {@attach revealOnView}>
@@ -35,7 +54,7 @@
 
     <ol class="mb-14 max-w-3xl space-y-8">
       {#each ABOUT_PARAGRAPHS as text, i (text)}
-        <li class="rv flex items-baseline gap-5" style="transition-delay: {i * 90}ms">
+        <li class="rv flex items-baseline gap-5" style={"transition-delay: " + i * 90 + "ms"}>
           <span class="shrink-0 font-mono text-step--1 text-journal-2"
             >{String.fromCharCode(97 + i)}.</span
           >
@@ -59,9 +78,14 @@
       </a>
     </div>
 
+    <label class="rv mb-6 block max-w-sm">
+      <span class="mb-1 block font-mono text-[0.68rem] uppercase tracking-wider text-journal-1">filter toolbox</span>
+      <input bind:value={skillQuery} placeholder="language, framework, tool…" class="w-full border-[1.5px] border-ink bg-paper-raised px-3 py-2 font-mono text-step--1 text-ink placeholder:text-journal-2" />
+    </label>
+
     <div class="space-y-6">
-      {#each SKILLS_CATEGORIES as group, g (group.type)}
-        <div class="rv flex flex-wrap items-baseline gap-x-6 gap-y-3" style="transition-delay: {g * 90}ms">
+      {#each skillGroups as group, g (group.type)}
+        <div class="rv flex flex-wrap items-baseline gap-x-6 gap-y-3" style={"transition-delay: " + g * 90 + "ms"}>
           <span class="w-44 shrink-0 font-mono text-step--1 uppercase tracking-wider text-journal-2"
             >{group.type}</span
           >

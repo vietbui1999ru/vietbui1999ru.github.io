@@ -20,10 +20,16 @@ describe("blogSchema", () => {
     expect(parsed.draft).toBe(false);
   });
   it("rejects missing title", () => {
-    expect(() => blogSchema.parse({ description: "y", date: "2026-04-16" })).toThrow();
+    expect(() =>
+      blogSchema.parse({ description: "y", date: "2026-04-16" }),
+    ).toThrow();
   });
   it("coerces date strings", () => {
-    const parsed = blogSchema.parse({ title: "x", description: "y", date: "2026-04-16" });
+    const parsed = blogSchema.parse({
+      title: "x",
+      description: "y",
+      date: "2026-04-16",
+    });
     expect(parsed.date).toBeInstanceOf(Date);
   });
 });
@@ -88,7 +94,9 @@ describe("projectSchema", () => {
   });
 
   it("rejects missing summary", () => {
-    expect(() => projectSchema.parse({ ...base, summary: undefined })).toThrow();
+    expect(() =>
+      projectSchema.parse({ ...base, summary: undefined }),
+    ).toThrow();
   });
 
   it("coerces date strings", () => {
@@ -114,13 +122,35 @@ describe("projectSchema", () => {
       cover: "hero.png",
       images: ["hero.png", "https://example.com/img.png"],
       links: [{ icon: "github", url: "https://github.com/foo/bar" }],
+      media: [
+        { kind: "image", src: "hero.png", alt: "Project dashboard" },
+        { kind: "youtube", id: "abc123", title: "Project walkthrough" },
+      ],
     });
     expect(parsed.featured).toBe(true);
     expect(parsed.badges).toHaveLength(2);
+    expect(parsed.media).toHaveLength(2);
   });
 
   it("rejects invalid status", () => {
-    expect(() => projectSchema.parse({ ...base, status: "unpublished" })).toThrow();
+    expect(() =>
+      projectSchema.parse({ ...base, status: "unpublished" }),
+    ).toThrow();
+  });
+
+  it("requires accessible labels for project media", () => {
+    expect(() =>
+      projectSchema.parse({
+        ...base,
+        media: [{ kind: "image", src: "hero.png" }],
+      }),
+    ).toThrow();
+    expect(() =>
+      projectSchema.parse({
+        ...base,
+        media: [{ kind: "youtube", id: "abc123" }],
+      }),
+    ).toThrow();
   });
 });
 
@@ -129,7 +159,6 @@ describe("aboutSchema", () => {
     expect(() => aboutSchema.parse({ title: "t" })).toThrow();
   });
 });
-
 
 describe("educationSchema", () => {
   it("requires institution, degree, date_start, summary", () => {

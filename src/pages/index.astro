@@ -1,23 +1,17 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PaperHero from "@/components/svelte/PaperHero.svelte";
-import PaperAbout from "@/components/svelte/PaperAbout.svelte";
+import PaperAboutTeaser from "@/components/svelte/PaperAboutTeaser.svelte";
 import PaperBlog from "@/components/svelte/PaperBlog.svelte";
 import PaperProjects from "@/components/svelte/PaperProjects.svelte";
-import PaperGallery from "@/components/svelte/PaperGallery.svelte";
-import PaperExperience from "@/components/svelte/PaperExperience.svelte";
-import PaperEducation from "@/components/svelte/PaperEducation.svelte";
 import PaperContact from "@/components/svelte/PaperContact.svelte";
 import type { ProjectCardData } from "@/data/projectData";
 import { getCollection } from "astro:content";
-import path from "node:path";
-import { createAssetAdapters } from "@/lib/remark/adapters";
-import type { GalleryItem } from "@/data/galleryData";
 
 const blogPosts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 6)
+  .slice(0, 3)
   .map((p) => ({
     slug: p.id,
     title: p.data.title,
@@ -27,36 +21,6 @@ const blogPosts = (await getCollection("blog"))
     tags: p.data.tags,
     cover: p.data.cover,
   }));
-
-const { copyAsset } = createAssetAdapters({
-  attachmentsRoot: path.join(process.cwd(), "vendor", "vault", "Attachments"),
-  publicRoot: path.join(process.cwd(), "public"),
-  excalidrawCacheDir: path.join(process.cwd(), ".cache", "excalidraw"),
-});
-
-const galleryItems: GalleryItem[] = (await getCollection("gallery"))
-  .sort((a, b) => a.data.order - b.data.order)
-  .map((item) => {
-    let image: string | undefined;
-    if (item.data.image) {
-      try {
-        image = copyAsset(item.data.image, "gallery");
-      } catch {
-        console.warn(
-          `[gallery] image not found in Attachments: ${item.data.image}`,
-        );
-      }
-    }
-    return {
-      id: item.id,
-      title: item.data.title,
-      description: item.data.description,
-      image,
-      href: item.data.href,
-      tags: item.data.tags,
-      order: item.data.order,
-    };
-  });
 
 const projects: ProjectCardData[] = (
   await getCollection("projects", (p) => !p.data.draft)
@@ -75,6 +39,7 @@ const projects: ProjectCardData[] = (
     cover: entry.data.cover,
     images: entry.data.images,
     links: entry.data.links,
+    media: entry.data.media,
     status: entry.data.status,
     bodyHtml: entry.rendered?.html ?? "",
   }));
@@ -82,11 +47,8 @@ const projects: ProjectCardData[] = (
 
 <BaseLayout>
   <PaperHero />
-  <PaperAbout client:visible />
+  <PaperAboutTeaser />
   <PaperBlog posts={blogPosts} />
-  <PaperProjects projects={projects} />
-  <PaperGallery items={galleryItems} />
-  <PaperExperience />
-  <PaperEducation />
+  <PaperProjects projects={projects.slice(0, 4)} />
   <PaperContact />
 </BaseLayout>

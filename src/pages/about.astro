@@ -1,0 +1,15 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PaperAbout from "@/components/svelte/PaperAbout.svelte";
+import PaperExperience from "@/components/svelte/PaperExperience.svelte";
+import PaperEducation from "@/components/svelte/PaperEducation.svelte";
+---
+
+<BaseLayout>
+  <div class="mx-auto w-full max-w-[var(--content-max)] px-4 pt-10 sm:px-6 md:pt-16">
+    <a href="/" class="u-draw mb-6 inline-block font-mono text-step--1 uppercase tracking-wider text-journal-1 no-underline">← portfolio</a>
+  </div>
+  <PaperAbout client:load />
+  <PaperExperience />
+  <PaperEducation />
+</BaseLayout>

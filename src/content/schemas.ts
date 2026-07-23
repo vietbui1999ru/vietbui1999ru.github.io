@@ -32,6 +32,33 @@ export const companySchema = z.object({
   graph_node: z.boolean().default(false),
 });
 
+const projectMediaSchema = z.discriminatedUnion("kind", [
+  z.object({
+    kind: z.literal("image"),
+    src: z.string(),
+    alt: z.string().min(1),
+    caption: z.string().optional(),
+  }),
+  z.object({
+    kind: z.literal("video"),
+    src: z.string(),
+    title: z.string().min(1),
+    caption: z.string().optional(),
+  }),
+  z.object({
+    kind: z.literal("youtube"),
+    id: z.string().min(1),
+    title: z.string().min(1),
+    caption: z.string().optional(),
+  }),
+  z.object({
+    kind: z.literal("vimeo"),
+    id: z.string().min(1),
+    title: z.string().min(1),
+    caption: z.string().optional(),
+  }),
+]);
+
 export const projectSchema = z.object({
   title: z.string(),
   summary: z.string(),
@@ -42,7 +69,10 @@ export const projectSchema = z.object({
   badges: z.array(z.string()).optional(),
   images: z.array(z.string()).optional(),
   cover: z.string().optional(),
-  links: z.array(z.object({ icon: z.string(), url: z.string().url() })).optional(),
+  links: z
+    .array(z.object({ icon: z.string(), url: z.string().url() }))
+    .optional(),
+  media: z.array(projectMediaSchema).optional(),
   status: z.enum(["active", "shipped", "archived"]).default("shipped"),
   graph_node: z.boolean().default(true),
 });

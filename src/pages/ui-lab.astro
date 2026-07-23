@@ -1,0 +1,12 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import UiLab from "@/components/ui-lab/UiLab.svelte";
+
+if (!import.meta.env.DEV) {
+  return Astro.redirect("/");
+}
+---
+
+<BaseLayout>
+  <UiLab client:load />
+</BaseLayout>

@@ -9,8 +9,8 @@ onMount(() => {
   dark = document.documentElement.classList.contains("dark");
 });
 
-function hrefFor(hash: string): string {
-  return pathname === "/" ? hash : `/${hash}`;
+function hrefFor(href: string): string {
+  return href;
 }
 
 function toggleTheme() {

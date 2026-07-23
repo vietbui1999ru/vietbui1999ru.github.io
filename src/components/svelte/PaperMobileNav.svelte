@@ -5,8 +5,8 @@ let { pathname }: { pathname: string } = $props();
 let activeHref = $state("");
 let dark = $state(false);
 
-function hrefFor(hash: string): string {
-  return pathname === "/" ? hash : `/${hash}`;
+function hrefFor(href: string): string {
+  return href;
 }
 
 function toggleTheme() {
@@ -17,24 +17,7 @@ function toggleTheme() {
 
 function observeSections(_node: HTMLElement) {
   dark = document.documentElement.classList.contains("dark");
-  if (pathname !== "/") return;
-  activeHref = "#home";
-
-  const elements = NAV_LINKS.map((link) => document.querySelector(link.href)).filter(
-    (element): element is Element => element !== null,
-  );
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible?.target.id) activeHref = `#${visible.target.id}`;
-    },
-    { rootMargin: "-25% 0px -60% 0px", threshold: [0, 0.2, 0.5] },
-  );
-
-  elements.forEach((element) => observer.observe(element));
-  return () => observer.disconnect();
+  activeHref = pathname;
 }
 </script>
 

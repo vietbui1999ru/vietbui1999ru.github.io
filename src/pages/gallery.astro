@@ -1,0 +1,43 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PaperGallery from "@/components/svelte/PaperGallery.svelte";
+import type { GalleryItem } from "@/data/galleryData";
+import { getCollection } from "astro:content";
+import path from "node:path";
+import { createAssetAdapters } from "@/lib/remark/adapters";
+
+const { copyAsset } = createAssetAdapters({
+  attachmentsRoot: path.join(process.cwd(), "vendor", "vault", "Attachments"),
+  publicRoot: path.join(process.cwd(), "public"),
+  excalidrawCacheDir: path.join(process.cwd(), ".cache", "excalidraw"),
+});
+
+const items: GalleryItem[] = (await getCollection("gallery"))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((item) => {
+    let image: string | undefined;
+    if (item.data.image) {
+      try {
+        image = copyAsset(item.data.image, "gallery");
+      } catch {
+        console.warn(`[gallery] image not found in Attachments: ${item.data.image}`);
+      }
+    }
+    return {
+      id: item.id,
+      title: item.data.title,
+      description: item.data.description,
+      image,
+      href: item.data.href,
+      tags: item.data.tags,
+      order: item.data.order,
+    };
+  });
+---
+
+<BaseLayout>
+  <div class="mx-auto w-full max-w-[var(--content-max)] px-4 pt-10 sm:px-6 md:pt-16">
+    <a href="/" class="u-draw mb-6 inline-block font-mono text-step--1 uppercase tracking-wider text-journal-1 no-underline">← portfolio</a>
+  </div>
+  <PaperGallery items={items} />
+</BaseLayout>
