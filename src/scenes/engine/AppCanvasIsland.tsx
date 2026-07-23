@@ -22,28 +22,16 @@ function deriveRouteHint(): SceneId {
   return "singularity";
 }
 
-function readPersistedScene(): SceneSelection | null {
-  try {
-    const stored = localStorage.getItem(SCENE_STORAGE_KEY);
-    if (stored && (stored === SCENE_OFF || sceneMap[stored as SceneId])) {
-      return stored as SceneSelection;
-    }
-  } catch {
-    // localStorage unavailable (private browsing, etc.)
-  }
-  return null;
-}
-
 function isSimEnabled(): boolean {
   if (typeof window === "undefined") return false;
-  const p = window.location.pathname;
-  return p === "/" || p.startsWith("/sim/");
+  const path = window.location.pathname;
+  return path.startsWith("/sim/") || path.startsWith("/sim-test");
 }
 
 function SimCanvas(): React.ReactElement {
-  const routeHint = deriveRouteHint();
-  // Prefer persisted choice; fall back to route hint (so /sim/magnetic still works on first visit)
-  const initialScene: SceneSelection = readPersistedScene() ?? routeHint;
+  // The dedicated route is authoritative so shared /sim/:name URLs always
+  // open the requested scene, independent of the user's last Leva choice.
+  const initialScene: SceneSelection = deriveRouteHint();
   const [perf, setPerf] = useState<PerfTier>("mid");
 
   useEffect(() => {

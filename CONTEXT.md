@@ -155,18 +155,19 @@ All simulations must degrade gracefully across tiers:
 
 ---
 
-## Section → Sim Integration (upcoming)
+## Simulation Route Isolation
 
-After merging to main:
+As of 2026-07-22 (ADR 001 amendment):
 
-- The Singularity hero section is **removed**
-- The universal `AppCanvas` sim runs as background for **all** portfolio sections
-- Each portfolio section has a `data-scene-id` sentinel; `SceneRouter` handles transitions
-- A **"Scenes" folder in the Leva panel** lets users reassign which sim plays per section
-- Sim parameters remain per-sim in their own Leva folders (unchanged)
-
-Portfolio sections (in scroll order):
-`home` → `about` → `projects` → `experience` → `education` → `gallery` → `blog` → `contact`
+- Simulations do **not** load on portfolio, project, or blog routes.
+- `AppCanvasIsland` and `LevaPanel` mount only on `/sim/[name]` (plus the
+  isolated `/sim-test` harness).
+- The two generated playgrounds are `/sim/singularity` and `/sim/magnetic`;
+  the registry remains the source of truth for `getStaticPaths`.
+- The URL route is authoritative for initial scene selection, so shared sim
+  URLs open the named scene rather than a locally persisted choice.
+- `SimLayout.astro` owns the full-screen dark lab shell; `BaseLayout.astro`
+  stays paper-first and simulation-free.
 
 ---
 
@@ -182,5 +183,6 @@ Portfolio sections (in scroll order):
 | Scene component      | `PascalCase.tsx`     | `Scene.tsx` inside `sims/magnetic/`   |
 | Sim directory        | camelCase            | `sims/magnetic/`, `sims/singularity/` |
 | Data constants       | `UPPER_SNAKE_CASE`   | `SCROLL_ACTIVE_THRESHOLD`             |
-| React components     | PascalCase           | `SceneHost.tsx`, `AnimatedCursor.tsx` |
-| Hooks                | `useNoun`            | `useScrollSpy`, `useIsMobileOrTouch`  |
+| Svelte components    | PascalCase           | `PaperNav.svelte`                     |
+| React engine pieces  | PascalCase           | `SceneHost.tsx`                       |
+| Hooks                | `useNoun`            | `useIsMobileOrTouch`                  |

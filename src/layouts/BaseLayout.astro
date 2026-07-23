@@ -3,8 +3,6 @@ import "@/styles/global.css";
 import pcmasterracePng from "@/assets/images/pcmasterrace.png";
 import PaperNav from "@/components/svelte/PaperNav.svelte";
 import PaperMobileNav from "@/components/svelte/PaperMobileNav.svelte";
-import AppCanvasIsland from "@/scenes/engine/AppCanvasIsland";
-import LevaPanel from "@/scenes/ui/LevaPanel";
 ---
 
 <!doctype html>
@@ -26,8 +24,6 @@ import LevaPanel from "@/scenes/ui/LevaPanel";
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous" />
   </head>
   <body class="group/body overscroll-none bg-paper text-ink antialiased transition-colors duration-300">
-    <AppCanvasIsland client:load />
-    <LevaPanel client:load />
     <PaperNav pathname={Astro.url.pathname} client:load />
     <PaperMobileNav pathname={Astro.url.pathname} client:load />
     <main class="relative z-10 flex flex-1 flex-col pb-20 md:pb-0">

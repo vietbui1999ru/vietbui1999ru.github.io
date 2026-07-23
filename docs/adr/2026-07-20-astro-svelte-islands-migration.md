@@ -67,12 +67,14 @@ Astro natively hydrates multiple frameworks side-by-side, so:
 
 **Follow-ups**
 
-- Phase 1: design artifact (`design/index.html`) — tokens, typography,
-  shimmer animation, component styles. ← next
-- Phase 2: tokens → `src/styles/global.css` `@theme`.
-- Phase 3: add `@astrojs/svelte`; rebuild sections (Home → About → Blog →
-  Projects → Gallery → Experience/Education → Contact → nav).
-- Phase 4: decide sim engine fate (keep r3f islands vs. port to Threlte).
+- [x] Phase 1: design artifact (`design/index.html`) — tokens, typography,
+  shimmer animation, component styles.
+- [x] Phase 2: tokens → `src/styles/global.css` `@theme`.
+- [x] Phase 3: add `@astrojs/svelte`; rebuild landing sections and nav.
+- [x] Phase 3b: migrate blog archive, variant tabs, and TOC to Svelte.
+- [x] Phase 4a: isolate retained r3f simulations to dedicated routes.
+- [ ] Phase 4b (optional): port the two retained sims to Threlte or vanilla
+  Three.js to remove React from the engine.
 
 ## Amendment (2026-07-20): sim engine scope reduced
 
@@ -95,3 +97,18 @@ Consequence for Phase 4: with only two particle-based sims remaining, a
 Threlte port (or even vanilla-three rewrite) is now small enough that full
 React removal from the repo is a realistic near-term option rather than a
 deferred one.
+
+## Amendment (2026-07-22): simulations isolated from portfolio routes
+
+Decision: retain the two r3f simulations as dedicated experiments, but remove
+the engine from the global portfolio layout.
+
+- `BaseLayout.astro` no longer mounts `AppCanvasIsland` or `LevaPanel`.
+- New `SimLayout.astro` provides a dark, full-screen lab shell.
+- `/sim/singularity` and `/sim/magnetic` mount the engine and Leva directly.
+- `/`, `/projects`, and `/blog/**` no longer reference or download
+  Three.js/r3f/Leva chunks.
+- The sim route, rather than local storage, determines the initial scene.
+
+This delivers the intended phase-out while preserving the two experiments and
+substantially reduces the main portfolio's JavaScript/runtime surface.
