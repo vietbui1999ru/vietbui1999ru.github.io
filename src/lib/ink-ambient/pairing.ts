@@ -17,7 +17,7 @@ import {
   PREY_THROW_SPEED_MAX,
   PREY_WOBBLE_FACTOR,
 } from "./config";
-import { clamp, normalize, subtract } from "./physics";
+import { clamp, length, normalize, subtract } from "./physics";
 import type { SeededRng } from "./rng";
 import type { InkObject, Vec2 } from "./types";
 
@@ -113,6 +113,31 @@ export function detachPair(object: InkObject, objects: readonly InkObject[]): vo
   }
 }
 
+function recalibratePair(thrown: InkObject, partner: InkObject, rng: SeededRng): void {
+  thrown.partnerId = partner.id;
+  partner.partnerId = thrown.id;
+  thrown.formerPartnerId = null;
+  partner.formerPartnerId = null;
+  thrown.motionBlend = { from: { ...thrown.lastAcceleration }, elapsed: 0, duration: MOTION_BLEND_SECONDS };
+  partner.motionBlend = { from: { ...partner.lastAcceleration }, elapsed: 0, duration: MOTION_BLEND_SECONDS };
+
+  const thrownIsPredator = rng.chance(0.5);
+  const throwSpeed = length(thrown.velocity);
+
+  if (thrownIsPredator) {
+    thrown.role = "predator";
+    partner.role = "prey";
+    const multiplier = rollPredatorMultiplier(thrown, rng);
+    thrown.chaseSpeed = Math.max(throwSpeed, PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN);
+    partner.chaseSpeed = clamp(thrown.chaseSpeed / multiplier, PREY_SPEED_MIN, PREY_SPEED_MAX);
+  } else {
+    thrown.role = "prey";
+    partner.role = "predator";
+    thrown.chaseSpeed = clamp(throwSpeed, PREY_SPEED_MIN, PREY_THROW_SPEED_MAX);
+    partner.chaseSpeed = thrown.chaseSpeed * rollPredatorMultiplier(partner, rng);
+  }
+}
+
 export function reevaluatePartner(
   object: InkObject,
   objects: readonly InkObject[],
@@ -120,7 +145,7 @@ export function reevaluatePartner(
 ): void {
   const nearest = findNearestAvailable(object, objects);
   const oldPartnerId = object.formerPartnerId;
-  if (nearest) formPair(object, nearest, rng);
+  if (nearest) recalibratePair(object, nearest, rng);
   if (oldPartnerId !== null && oldPartnerId !== nearest?.id) {
     const oldPartner = objects.find((candidate) => candidate.id === oldPartnerId) ?? null;
     if (oldPartner && oldPartner.partnerId === null) {

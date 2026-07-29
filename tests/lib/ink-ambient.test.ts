@@ -296,6 +296,41 @@ describe("Ink Ambient primitives", () => {
     expect(touchingRamp).toBeLessThanOrEqual(2.4);
   });
 
+  it("pins the thrown object's chaseSpeed to its throw velocity instead of rolling fresh", () => {
+    const objects = [object(1, 0, 0), object(2, 10, 0)];
+    const rng = new SeededRng(5);
+    formInitialPairs(objects, rng);
+    const thrown = objects[0];
+    const partner = objects[1];
+    detachPair(thrown, objects);
+    thrown.velocity = { x: 20, y: 0 }; // throwSpeed = 20, well below every floor/ceiling below
+    reevaluatePartner(thrown, objects, rng);
+    expect(thrown.partnerId).toBe(partner.id);
+    if (thrown.role === "predator") {
+      // floored at PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN = 95 * 1.15
+      expect(thrown.chaseSpeed).toBeCloseTo(95 * 1.15, 5);
+    } else {
+      // clamped up to PREY_SPEED_MIN = 95 (20 is below the floor)
+      expect(thrown.chaseSpeed).toBeCloseTo(95, 5);
+    }
+  });
+
+  it("recalibration never lets a gently-thrown predator end up slower than its prey", () => {
+    for (let seed = 0; seed < 30; seed += 1) {
+      const objects = [object(1, 0, 0), object(2, 10, 0)];
+      const rng = new SeededRng(seed * 101 + 1);
+      formInitialPairs(objects, rng);
+      const thrown = objects[0];
+      const partner = objects[1];
+      detachPair(thrown, objects);
+      thrown.velocity = { x: 1, y: 0 }; // near-zero throw, worst case
+      reevaluatePartner(thrown, objects, rng);
+      const predator = thrown.role === "predator" ? thrown : partner;
+      const prey = thrown.role === "predator" ? partner : thrown;
+      expect(predator.chaseSpeed).toBeGreaterThan(prey.chaseSpeed);
+    }
+  });
+
   it("detects circle overlap consistently with resolveCircleCollision's own check", () => {
     const overlappingA = object(1, 100, 100);
     const overlappingB = object(2, 130, 100);
