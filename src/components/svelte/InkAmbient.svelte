@@ -16,8 +16,6 @@ import {
   MAX_OBJECTS_MOBILE,
   PREDATOR_MAX_RAMPED_SPEED,
   SAFE_CLEARANCE,
-  TRAIL_MAX_AGE_SECONDS,
-  TRAIL_MAX_POINTS,
   TRAIL_MIN_SPEED,
   TRAIL_SAMPLE_INTERVAL_SECONDS,
   TRAPPED_ESCAPE_ACCELERATION,
@@ -57,6 +55,8 @@ import {
   scale as scaleVector,
   subtract,
   tipPosition,
+  trailMaxAge,
+  trailMaxPoints,
   updateTurnSquash,
 } from "@/lib/ink-ambient/physics";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
@@ -318,9 +318,12 @@ onMount(() => {
   function updateTrail(object: InkObject, dt: number): void {
     // Age and prune every frame regardless of motion, so a trail fades out on
     // its own instead of freezing in place when the object slows down.
+    // Pen (predator) and pencil (prey) keep independent trail lengths.
+    const maxAge = trailMaxAge(object);
+    const maxPoints = trailMaxPoints(object);
     for (let index = object.trail.length - 1; index >= 0; index -= 1) {
       object.trail[index].age += dt;
-      if (object.trail[index].age >= TRAIL_MAX_AGE_SECONDS) object.trail.splice(index, 1);
+      if (object.trail[index].age >= maxAge) object.trail.splice(index, 1);
     }
     object.trailSampleTimer += dt;
     if (
@@ -331,7 +334,7 @@ onMount(() => {
       object.trailSampleTimer = 0;
       const tip = tipPosition(object);
       object.trail.push({ x: tip.x, y: tip.y, age: 0 });
-      if (object.trail.length > TRAIL_MAX_POINTS) object.trail.shift();
+      if (object.trail.length > maxPoints) object.trail.shift();
     }
   }
 

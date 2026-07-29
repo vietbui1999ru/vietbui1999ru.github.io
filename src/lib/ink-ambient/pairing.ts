@@ -69,6 +69,28 @@ function rollPredatorMultiplier(predator: InkObject, rng: SeededRng): number {
   );
 }
 
+/**
+ * Roles are sticky: an object that already has a role (from a previous
+ * pairing) keeps it rather than being re-flipped by a coin toss — otherwise
+ * dragging one object out of a pair and releasing it can visibly swap it
+ * (and its new partner) from predator to prey or back, which read as
+ * arbitrary/buggy once shape was tied to role. Only rolls a fresh coin flip
+ * when neither object has an established role (brand-new pairing) or both
+ * claim the same role (a rare reshuffle conflict with no clear precedent).
+ */
+function resolveStickyRoles(
+  a: InkObject,
+  b: InkObject,
+  rng: SeededRng,
+): { predator: InkObject; prey: InkObject } {
+  if (a.role === "predator" && b.role !== "predator") return { predator: a, prey: b };
+  if (b.role === "predator" && a.role !== "predator") return { predator: b, prey: a };
+  if (a.role === "prey" && b.role !== "prey") return { predator: b, prey: a };
+  if (b.role === "prey" && a.role !== "prey") return { predator: a, prey: b };
+  const aIsPredator = rng.chance(0.5);
+  return aIsPredator ? { predator: a, prey: b } : { predator: b, prey: a };
+}
+
 export function formPair(a: InkObject, b: InkObject, rng: SeededRng): void {
   a.partnerId = b.id;
   b.partnerId = a.id;
@@ -77,11 +99,9 @@ export function formPair(a: InkObject, b: InkObject, rng: SeededRng): void {
   a.motionBlend = { from: { ...a.lastAcceleration }, elapsed: 0, duration: MOTION_BLEND_SECONDS };
   b.motionBlend = { from: { ...b.lastAcceleration }, elapsed: 0, duration: MOTION_BLEND_SECONDS };
 
-  const aIsPredator = rng.chance(0.5);
-  a.role = aIsPredator ? "predator" : "prey";
-  b.role = aIsPredator ? "prey" : "predator";
-  const predator = aIsPredator ? a : b;
-  const prey = aIsPredator ? b : a;
+  const { predator, prey } = resolveStickyRoles(a, b, rng);
+  predator.role = "predator";
+  prey.role = "prey";
   prey.chaseSpeed = rollPreySpeed(prey, rng);
   predator.chaseSpeed = prey.chaseSpeed * rollPredatorMultiplier(predator, rng);
   prey.radius = rng.range(PREY_RADIUS_MIN, PREY_RADIUS_MAX);
@@ -120,27 +140,33 @@ function recalibratePair(thrown: InkObject, partner: InkObject, rng: SeededRng):
   partner.partnerId = thrown.id;
   thrown.formerPartnerId = null;
   partner.formerPartnerId = null;
-  thrown.motionBlend = { from: { ...thrown.lastAcceleration }, elapsed: 0, duration: MOTION_BLEND_SECONDS };
-  partner.motionBlend = { from: { ...partner.lastAcceleration }, elapsed: 0, duration: MOTION_BLEND_SECONDS };
+  thrown.motionBlend = {
+    from: { ...thrown.lastAcceleration },
+    elapsed: 0,
+    duration: MOTION_BLEND_SECONDS,
+  };
+  partner.motionBlend = {
+    from: { ...partner.lastAcceleration },
+    elapsed: 0,
+    duration: MOTION_BLEND_SECONDS,
+  };
 
-  const thrownIsPredator = rng.chance(0.5);
   const throwSpeed = length(thrown.velocity);
+  const { predator, prey } = resolveStickyRoles(thrown, partner, rng);
+  predator.role = "predator";
+  prey.role = "prey";
 
-  if (thrownIsPredator) {
-    thrown.role = "predator";
-    partner.role = "prey";
-    const multiplier = rollPredatorMultiplier(thrown, rng);
-    thrown.chaseSpeed = Math.max(throwSpeed, PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN);
-    partner.chaseSpeed = clamp(thrown.chaseSpeed / multiplier, PREY_SPEED_MIN, PREY_SPEED_MAX);
-    thrown.radius = rng.range(PREDATOR_RADIUS_MIN, PREDATOR_RADIUS_MAX);
-    partner.radius = rng.range(PREY_RADIUS_MIN, PREY_RADIUS_MAX);
+  if (thrown === predator) {
+    const multiplier = rollPredatorMultiplier(predator, rng);
+    predator.chaseSpeed = Math.max(throwSpeed, PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN);
+    prey.chaseSpeed = clamp(predator.chaseSpeed / multiplier, PREY_SPEED_MIN, PREY_SPEED_MAX);
+    predator.radius = rng.range(PREDATOR_RADIUS_MIN, PREDATOR_RADIUS_MAX);
+    prey.radius = rng.range(PREY_RADIUS_MIN, PREY_RADIUS_MAX);
   } else {
-    thrown.role = "prey";
-    partner.role = "predator";
-    thrown.chaseSpeed = clamp(throwSpeed, PREY_SPEED_MIN, PREY_THROW_SPEED_MAX);
-    partner.chaseSpeed = thrown.chaseSpeed * rollPredatorMultiplier(partner, rng);
-    thrown.radius = rng.range(PREY_RADIUS_MIN, PREY_RADIUS_MAX);
-    partner.radius = rng.range(PREDATOR_RADIUS_MIN, PREDATOR_RADIUS_MAX);
+    prey.chaseSpeed = clamp(throwSpeed, PREY_SPEED_MIN, PREY_THROW_SPEED_MAX);
+    predator.chaseSpeed = prey.chaseSpeed * rollPredatorMultiplier(predator, rng);
+    prey.radius = rng.range(PREY_RADIUS_MIN, PREY_RADIUS_MAX);
+    predator.radius = rng.range(PREDATOR_RADIUS_MIN, PREDATOR_RADIUS_MAX);
   }
 }
 
@@ -199,7 +225,12 @@ function driveMultiplier(object: InkObject): number {
   return clamp(object.attractionValue, PAIR_FORCE_MIN, PAIR_FORCE_MAX);
 }
 
-function lateralWobbleScalar(object: InkObject, magnitude: number, wobbleFactor: number, now: number): number {
+function lateralWobbleScalar(
+  object: InkObject,
+  magnitude: number,
+  wobbleFactor: number,
+  now: number,
+): number {
   const t = now / 1000 + object.wobblePhase;
   return Math.sin(t * object.wobbleFrequency * 1.7) * magnitude * wobbleFactor;
 }
@@ -212,7 +243,11 @@ export function predatorAcceleration(
 ): Vec2 {
   const direction = normalize(subtract(prey.position, object.position));
   const ramp = pairApproachRamp(object, prey);
-  const magnitude = clamp(ATTRACTION_BASE_ACCELERATION * driveMultiplier(object) * ramp, 0, maxAcceleration);
+  const magnitude = clamp(
+    ATTRACTION_BASE_ACCELERATION * driveMultiplier(object) * ramp,
+    0,
+    maxAcceleration,
+  );
   const perpendicular = { x: -direction.y, y: direction.x };
   const wobble = lateralWobbleScalar(object, magnitude, PREDATOR_WOBBLE_FACTOR, now);
   return {
@@ -228,7 +263,11 @@ export function preyAcceleration(
   now: number,
 ): Vec2 {
   const direction = normalize(subtract(object.position, predator.position));
-  const magnitude = clamp(ATTRACTION_BASE_ACCELERATION * driveMultiplier(object), 0, maxAcceleration);
+  const magnitude = clamp(
+    ATTRACTION_BASE_ACCELERATION * driveMultiplier(object),
+    0,
+    maxAcceleration,
+  );
   const perpendicular = { x: -direction.y, y: direction.x };
   const panicRamp = preyPanicRamp(object, predator);
   const wobble = lateralWobbleScalar(object, magnitude, PREY_WOBBLE_FACTOR * panicRamp, now);

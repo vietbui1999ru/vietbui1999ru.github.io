@@ -1,5 +1,10 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import { PREY_SPEED_MAX, PREY_SPEED_MIN, SNAPSHOT_KEY } from "@/lib/ink-ambient/config";
+import {
+  PREDATOR_SPEED_MULTIPLIER_MIN,
+  PREY_SPEED_MAX,
+  PREY_SPEED_MIN,
+  SNAPSHOT_KEY,
+} from "@/lib/ink-ambient/config";
 import {
   buildSpatialField,
   availableCapacity,
@@ -350,11 +355,27 @@ describe("Ink Ambient primitives", () => {
     reevaluatePartner(thrown, objects, rng);
     expect(thrown.partnerId).toBe(partner.id);
     if (thrown.role === "predator") {
-      // floored at PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN = 95 * 1.15
-      expect(thrown.chaseSpeed).toBeCloseTo(95 * 1.15, 5);
+      // floored at PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN
+      expect(thrown.chaseSpeed).toBeCloseTo(PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN, 5);
     } else {
-      // clamped up to PREY_SPEED_MIN = 95 (20 is below the floor)
-      expect(thrown.chaseSpeed).toBeCloseTo(95, 5);
+      // clamped up to PREY_SPEED_MIN (20 is below the floor)
+      expect(thrown.chaseSpeed).toBeCloseTo(PREY_SPEED_MIN, 5);
+    }
+  });
+
+  it("keeps the thrown object's role sticky across a throw instead of re-flipping", () => {
+    for (let seed = 0; seed < 20; seed += 1) {
+      const objects = [object(1, 0, 0), object(2, 10, 0)];
+      const rng = new SeededRng(seed * 37 + 3);
+      formInitialPairs(objects, rng);
+      const thrown = objects[0];
+      const partner = objects[1];
+      const roleBeforeThrow = thrown.role;
+      detachPair(thrown, objects);
+      thrown.velocity = { x: 15, y: 0 };
+      reevaluatePartner(thrown, objects, rng);
+      expect(thrown.role).toBe(roleBeforeThrow);
+      expect(partner.role).toBe(roleBeforeThrow === "predator" ? "prey" : "predator");
     }
   });
 

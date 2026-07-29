@@ -1,4 +1,10 @@
-import { OBJECT_TIP_OFFSET_FRACTION } from "./config";
+import {
+  OBJECT_TIP_OFFSET_FRACTION,
+  PENCIL_TRAIL_MAX_AGE_SECONDS,
+  PENCIL_TRAIL_MAX_POINTS,
+  PEN_TRAIL_MAX_AGE_SECONDS,
+  PEN_TRAIL_MAX_POINTS,
+} from "./config";
 import type { InkObject, Rect, Vec2 } from "./types";
 
 export const ZERO: Vec2 = { x: 0, y: 0 };
@@ -13,6 +19,25 @@ export function tipPosition(object: Pick<InkObject, "position" | "rotation" | "r
     x: object.position.x + Math.cos(object.rotation) * object.radius * OBJECT_TIP_OFFSET_FRACTION,
     y: object.position.y + Math.sin(object.rotation) * object.radius * OBJECT_TIP_OFFSET_FRACTION,
   };
+}
+
+/**
+ * Whether this object should render/behave as the pen (bold) rather than the
+ * pencil (soft) — predator is always the pen; an unpaired/idle object (role
+ * still null) falls back to its random spawn variant for visual mix.
+ */
+export function isPenLike(object: Pick<InkObject, "role" | "variant">): boolean {
+  return object.role === "predator" || (object.role === null && object.variant % 2 === 1);
+}
+
+/** Pen keeps a longer, more deliberate trail than pencil (see config.ts). */
+export function trailMaxAge(object: Pick<InkObject, "role" | "variant">): number {
+  return isPenLike(object) ? PEN_TRAIL_MAX_AGE_SECONDS : PENCIL_TRAIL_MAX_AGE_SECONDS;
+}
+
+/** Point-count cap sized to match trailMaxAge so it never truncates early. */
+export function trailMaxPoints(object: Pick<InkObject, "role" | "variant">): number {
+  return isPenLike(object) ? PEN_TRAIL_MAX_POINTS : PENCIL_TRAIL_MAX_POINTS;
 }
 
 export function clamp(value: number, min: number, max: number): number {

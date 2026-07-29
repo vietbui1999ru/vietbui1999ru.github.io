@@ -8,8 +8,15 @@ export const MAX_OBJECTS_MOBILE = 2;
 export const SAFE_CLEARANCE = 18;
 export const TRAPPED_ESCAPE_SECONDS = 1.5;
 export const TRAPPED_ESCAPE_ACCELERATION = 140;
-export const TRAIL_MAX_POINTS = 112;
-export const TRAIL_MAX_AGE_SECONDS = 1.8;
+// Pen (predator) and pencil (prey) get independent trail retention — pen's
+// is deliberately longer/darker (see renderer.ts's isPenLike-driven color and
+// physics.ts's trailMaxAge/trailMaxPoints). Point counts are sized so the
+// point-count cap doesn't truncate a trail before its own age cap would
+// (points accumulate roughly once per FIXED_STEP tick while moving).
+export const PEN_TRAIL_MAX_AGE_SECONDS = 2.6;
+export const PEN_TRAIL_MAX_POINTS = 160;
+export const PENCIL_TRAIL_MAX_AGE_SECONDS = 1.4;
+export const PENCIL_TRAIL_MAX_POINTS = 90;
 // Sample every simulation tick (~FIXED_STEP) so fast drags produce closely
 // spaced points instead of a few long, visibly straight polyline segments.
 export const TRAIL_SAMPLE_INTERVAL_SECONDS = 0;
@@ -26,20 +33,24 @@ export const SNAPSHOT_MAX_AGE = 1000 * 60 * 60 * 12;
 
 export const ATTRACTION_VALUE_MIN = 0.5;
 export const ATTRACTION_VALUE_MAX = 1.5;
-export const ATTRACTION_BASE_ACCELERATION = 110;
-export const ATTRACTION_MAX_ACCELERATION_LIGHT = 130;
-export const ATTRACTION_MAX_ACCELERATION_HEAVY = 70;
+// Speed/acceleration constants below are scaled ~1.4x over the original
+// tuning for a more aggressive chase (user feedback: "feels a bit slow").
+// The predator/prey ratio (PREDATOR_SPEED_MULTIPLIER_*) is unchanged — only
+// the baseline everyone moves/accelerates at went up.
+export const ATTRACTION_BASE_ACCELERATION = 154;
+export const ATTRACTION_MAX_ACCELERATION_LIGHT = 182;
+export const ATTRACTION_MAX_ACCELERATION_HEAVY = 98;
 export const PAIR_FORCE_MIN = 0.3;
 export const PAIR_FORCE_MAX = 2.2;
 export const ATTRACTION_RAMP_MAX = 2.4;
 export const ATTRACTION_RAMP_START_MULTIPLIER = 6;
-export const PREY_SPEED_MIN = 95;
-export const PREY_SPEED_MAX = 130;
-export const PREY_THROW_SPEED_MAX = 180;
+export const PREY_SPEED_MIN = 133;
+export const PREY_SPEED_MAX = 182;
+export const PREY_THROW_SPEED_MAX = 252;
 export const PREDATOR_SPEED_MULTIPLIER_MIN = 1.15;
 export const PREDATOR_SPEED_MULTIPLIER_MAX = 1.45;
 export const PANIC_RAMP_MAX = 2.2;
-export const PREDATOR_MAX_RAMPED_SPEED = 372; // matches the previous system's own worst-case ceiling (155 * ATTRACTION_RAMP_MAX)
+export const PREDATOR_MAX_RAMPED_SPEED = 520; // scaled up with the rest — was 372 (155 * ATTRACTION_RAMP_MAX) before the speed increase
 export const PREY_RADIUS_MIN = 11;
 export const PREY_RADIUS_MAX = 17;
 export const PREDATOR_RADIUS_MIN = 19;
