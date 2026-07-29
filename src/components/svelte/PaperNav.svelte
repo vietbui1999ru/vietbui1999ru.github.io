@@ -76,11 +76,28 @@ function toggleInkAmbient() {
           {inkAmbientEnabled ? "✦" : "·"}
         </button>
         <button
-          onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-topup"))}
-          aria-label="Top up ink ambient population"
-          class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
+          onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-add-predator"))}
+          aria-label="Add a predator"
+          class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised shadow-hard-sm"
         >
-          ⟳
+          <img
+            src="/assets/images/VectorPen.svg"
+            alt=""
+            aria-hidden="true"
+            class="h-4 w-5 object-contain"
+          />
+        </button>
+        <button
+          onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-add-prey"))}
+          aria-label="Add a prey"
+          class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised shadow-hard-sm"
+        >
+          <img
+            src="/assets/images/VectorPencil.svg"
+            alt=""
+            aria-hidden="true"
+            class="h-5 w-3 object-contain"
+          />
         </button>
         <button
           onclick={toggleTheme}

@@ -164,3 +164,8 @@ export const POPULATION_TOPUP_MAX_DELAY_MS = 3500;
 // not from ordinary autonomous chasing. Applied once per real drag+release,
 // on top of the normal per-second hungerElapsed accrual.
 export const PREDATOR_DRAG_HUNGER_PENALTY_SECONDS = 6;
+
+// Independent per-role spawn count at page load/refresh (each role rolled
+// separately, so a fresh load can be prey-heavy, predator-heavy, or balanced).
+export const SPAWN_COUNT_MIN = 2;
+export const SPAWN_COUNT_MAX = 10;

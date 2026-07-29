@@ -22,6 +22,8 @@ import {
   PREDATOR_RADIUS_MAX,
   PREY_RADIUS_MAX,
   SAFE_CLEARANCE,
+  SPAWN_COUNT_MAX,
+  SPAWN_COUNT_MIN,
   TRAIL_MIN_SPEED,
   TRAIL_SAMPLE_INTERVAL_SECONDS,
   TRAPPED_ESCAPE_ACCELERATION,
@@ -255,16 +257,29 @@ onMount(() => {
 
   function spawnInitialBatch(now: number): void {
     if (!field) return;
-    const target = targetPopulation();
-    while (objects.length < target) {
-      const role: "predator" | "prey" = rng.chance(0.5) ? "predator" : "prey";
-      const radius = role === "predator" ? PREDATOR_RADIUS_MAX : PREY_RADIUS_MAX;
-      const avoid = objects.map((object) => object.position);
-      const position =
-        findSafePointNearCorner(field, radius, rng, objects.length, avoid) ??
-        findSafePoint(field, radius, rng, avoid);
-      if (!position) break;
-      objects.push(makeObject(nextObjectId++, position, rng, now, role));
+    // Prey and predator counts at spawn/refresh are each independently
+    // randomized rather than a single coin-flipped combined target, so a
+    // fresh page load can start prey-heavy, predator-heavy, or balanced.
+    const preyTarget = rng.int(SPAWN_COUNT_MIN, SPAWN_COUNT_MAX);
+    const predatorTarget = rng.int(SPAWN_COUNT_MIN, SPAWN_COUNT_MAX);
+    const cap = targetPopulation();
+    let preySpawned = 0;
+    let predatorSpawned = 0;
+    while (
+      objects.length < cap &&
+      (preySpawned < preyTarget || predatorSpawned < predatorTarget)
+    ) {
+      let role: "predator" | "prey";
+      if (preySpawned < preyTarget && predatorSpawned < predatorTarget) {
+        role = rng.chance(0.5) ? "predator" : "prey";
+      } else if (preySpawned < preyTarget) {
+        role = "prey";
+      } else {
+        role = "predator";
+      }
+      if (!spawnOne(role, now)) break;
+      if (role === "prey") preySpawned += 1;
+      else predatorSpawned += 1;
     }
   }
 
@@ -307,15 +322,19 @@ onMount(() => {
     }
   }
 
-  /** The manual nav button: adds exactly one new critter of a random role,
-   * independent of the Lotka-Volterra targets — a simple "one more" action
-   * rather than "catch up to target," capped only by the device's overall
-   * object ceiling so repeated clicks can't runaway past a sane bound. */
-  function forceTopUp(now: number): void {
-    if (!field) return;
-    if (objects.length >= deviceCapMax()) return;
-    const role: "predator" | "prey" = rng.chance(0.5) ? "predator" : "prey";
-    spawnOne(role, now);
+  /** The two manual nav buttons (pen/pencil icons): each adds exactly one
+   * critter of its specific role, independent of the Lotka-Volterra targets
+   * — a simple "one more" action that can push a role's count past its
+   * normal LV-derived target, capped only by the device's overall object
+   * ceiling so repeated clicks can't runaway past a sane bound. */
+  function forceAddPredator(now: number): void {
+    if (!field || objects.length >= deviceCapMax()) return;
+    spawnOne("predator", now);
+  }
+
+  function forceAddPrey(now: number): void {
+    if (!field || objects.length >= deviceCapMax()) return;
+    spawnOne("prey", now);
   }
 
   function restoreObjects(): void {
@@ -794,8 +813,11 @@ onMount(() => {
     window.removeEventListener("blur", onBlur);
     pointerListenersInstalled = false;
   };
-  const onInkAmbientTopup = () => {
-    forceTopUp(performance.now());
+  const onInkAmbientAddPredator = () => {
+    forceAddPredator(performance.now());
+  };
+  const onInkAmbientAddPrey = () => {
+    forceAddPrey(performance.now());
   };
   const onInkAmbientChange = (event: Event) => {
     const { enabled: nextEnabled } = (
@@ -819,7 +841,8 @@ onMount(() => {
     passive: true,
   });
   window.addEventListener("ink-ambient-change", onInkAmbientChange);
-  window.addEventListener("ink-ambient-topup", onInkAmbientTopup);
+  window.addEventListener("ink-ambient-add-predator", onInkAmbientAddPredator);
+  window.addEventListener("ink-ambient-add-prey", onInkAmbientAddPrey);
   mutationObserver.takeRecords();
   start();
 
@@ -835,7 +858,8 @@ onMount(() => {
     removePointerListeners();
     document.removeEventListener("visibilitychange", visibilityChange);
     window.removeEventListener("ink-ambient-change", onInkAmbientChange);
-    window.removeEventListener("ink-ambient-topup", onInkAmbientTopup);
+    window.removeEventListener("ink-ambient-add-predator", onInkAmbientAddPredator);
+    window.removeEventListener("ink-ambient-add-prey", onInkAmbientAddPrey);
   };
 });
 </script>
