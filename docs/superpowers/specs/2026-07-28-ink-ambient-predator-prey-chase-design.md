@@ -62,12 +62,15 @@ New config constants (`config.ts`):
 ```ts
 PREY_SPEED_MIN = 95;
 PREY_SPEED_MAX = 130;
+PREY_THROW_SPEED_MAX = 180;
 PREDATOR_SPEED_MULTIPLIER_MIN = 1.15;
 PREDATOR_SPEED_MULTIPLIER_MAX = 1.45;
 ```
 
-At pair formation (`formPair` in `pairing.ts`, called from both
-`formInitialPairs` and `reevaluatePartner`):
+At pair formation (`formPair` in `pairing.ts`, called from
+`formInitialPairs` when neither object has a pinned throw speed —
+see §7 for the drag/throw path via `reevaluatePartner`, which pins one
+side and derives the other instead of rolling both fresh):
 
 1. Coin flip assigns one object `role: "predator"`, the other `role: "prey"`.
 2. Prey's `chaseSpeed` is rolled in `[PREY_SPEED_MIN, PREY_SPEED_MAX]`,
@@ -138,20 +141,29 @@ object.role === "predator"
 In `releasePointer` (`InkAmbient.svelte`), when a dragged object is thrown
 (`throwObject` true, velocity clamped to ±260 as today, unchanged):
 
-1. The thrown object's new `chaseSpeed` = magnitude of its clamped throw
-   velocity. If it's prey, this is further clamped so a very light flick
-   or a very hard throw still lands in a sane band (95 up to ~180 — some
-   overshoot above `PREY_SPEED_MAX` is allowed since a real throw should
-   feel responsive); if it's predator, no extra ceiling beyond the ±260
-   pointer clamp.
-2. `reevaluatePartner` (already called on release to re-pair) re-rolls the
-   partner's `chaseSpeed` fresh, not a scaled copy of its old value: if the
-   thrown object is now predator, prey's `chaseSpeed` is re-rolled from
-   `[PREY_SPEED_MIN, PREY_SPEED_MAX]`; if the thrown object is prey,
-   predator's `chaseSpeed` = new prey speed × a freshly rolled multiplier
-   from `[PREDATOR_SPEED_MULTIPLIER_MIN, PREDATOR_SPEED_MULTIPLIER_MAX]`.
-   This keeps the margin intact regardless of throw force, and avoids
-   compounding ratios across repeated throws.
+1. Role for the thrown object is freshly coin-flipped (same 50/50 as
+   initial pairing). The thrown object's new `chaseSpeed` is *pinned* to
+   the magnitude of its clamped throw velocity:
+   - If it's now prey: clamped to `[PREY_SPEED_MIN, PREY_THROW_SPEED_MAX]`
+     (180 — wider than the normal 130 ceiling so a hard throw still feels
+     responsive).
+   - If it's now predator: floored at `PREY_SPEED_MIN *
+     PREDATOR_SPEED_MULTIPLIER_MIN` (so even the gentlest throw still
+     outpaces the slowest possible prey), no extra ceiling beyond the
+     existing ±260 pointer clamp.
+2. The partner's `chaseSpeed` is then **derived from the thrown object's
+   pinned speed**, never re-rolled independently against the base range —
+   independent re-rolling can't guarantee the invariant (a gently-thrown
+   predator could roll slower than an independently-rolled fast prey).
+   A fresh multiplier is rolled from
+   `[PREDATOR_SPEED_MULTIPLIER_MIN, PREDATOR_SPEED_MULTIPLIER_MAX]` and:
+   - If thrown object is prey: `partner(predator).chaseSpeed = thrown.chaseSpeed * multiplier`.
+   - If thrown object is predator: `partner(prey).chaseSpeed = thrown.chaseSpeed / multiplier`,
+     then clamped into `[PREY_SPEED_MIN, PREY_SPEED_MAX]` — safe because
+     the floor in step 1 guarantees `thrown.chaseSpeed / multiplier` never
+     clamps upward past `thrown.chaseSpeed` itself.
+   This keeps predator > prey intact by construction regardless of throw
+   force, and avoids compounding ratios across repeated throws.
 3. If the throw breaks up a pair and forms a brand-new one via
    `reevaluatePartner`, role + speed assignment for that new pair follows
    the same `formPair` logic as §5 — no separate code path.
