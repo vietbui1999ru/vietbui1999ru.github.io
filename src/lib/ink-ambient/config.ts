@@ -8,12 +8,17 @@ export const MAX_OBJECTS_MOBILE = 2;
 export const SAFE_CLEARANCE = 18;
 export const TRAPPED_ESCAPE_SECONDS = 1.5;
 export const TRAPPED_ESCAPE_ACCELERATION = 140;
-export const TRAIL_MAX_POINTS = 56;
-export const TRAIL_MAX_AGE_SECONDS = 0.9;
+export const TRAIL_MAX_POINTS = 112;
+export const TRAIL_MAX_AGE_SECONDS = 1.8;
 // Sample every simulation tick (~FIXED_STEP) so fast drags produce closely
 // spaced points instead of a few long, visibly straight polyline segments.
 export const TRAIL_SAMPLE_INTERVAL_SECONDS = 0;
 export const TRAIL_MIN_SPEED = 6;
+// Fraction of object.radius from center to the sprite's tip (pen/pencil nib).
+// Must match the renderer's sprite geometry (TARGET_SPAN / SPRITE_SIZE) — the
+// renderer derives its TARGET_SPAN from this same constant, so there's one
+// source of truth for "how far forward is the tip."
+export const OBJECT_TIP_OFFSET_FRACTION = 70 / 96;
 export const GRID_COLUMNS = 28;
 export const GRID_ROWS = 18;
 export const SNAPSHOT_KEY = "ink-ambient:v1";

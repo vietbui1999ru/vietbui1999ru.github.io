@@ -1,6 +1,19 @@
+import { OBJECT_TIP_OFFSET_FRACTION } from "./config";
 import type { InkObject, Rect, Vec2 } from "./types";
 
 export const ZERO: Vec2 = { x: 0, y: 0 };
+
+/**
+ * World position of the object's sprite tip (the pen/pencil nib), forward of
+ * center along the object's current heading. Used for trail sampling so ink
+ * appears to flow from the nib rather than the object's center.
+ */
+export function tipPosition(object: Pick<InkObject, "position" | "rotation" | "radius">): Vec2 {
+  return {
+    x: object.position.x + Math.cos(object.rotation) * object.radius * OBJECT_TIP_OFFSET_FRACTION,
+    y: object.position.y + Math.sin(object.rotation) * object.radius * OBJECT_TIP_OFFSET_FRACTION,
+  };
+}
 
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
@@ -143,12 +156,10 @@ export function boundarySteeringForce(
   const margin = object.radius * 1.4;
   let x = 0;
   let y = 0;
-  if (object.position.x < margin)
-    x += ((margin - object.position.x) / margin) * strength;
+  if (object.position.x < margin) x += ((margin - object.position.x) / margin) * strength;
   if (object.position.x > width - margin)
     x -= ((object.position.x - (width - margin)) / margin) * strength;
-  if (object.position.y < margin)
-    y += ((margin - object.position.y) / margin) * strength;
+  if (object.position.y < margin) y += ((margin - object.position.y) / margin) * strength;
   if (object.position.y > height - margin)
     y -= ((object.position.y - (height - margin)) / margin) * strength;
   return { x, y };

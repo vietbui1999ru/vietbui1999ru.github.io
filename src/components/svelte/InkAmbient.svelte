@@ -56,6 +56,7 @@ import {
   resolveCircleCollision,
   scale as scaleVector,
   subtract,
+  tipPosition,
   updateTurnSquash,
 } from "@/lib/ink-ambient/physics";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
@@ -328,7 +329,8 @@ onMount(() => {
       object.trailSampleTimer >= TRAIL_SAMPLE_INTERVAL_SECONDS
     ) {
       object.trailSampleTimer = 0;
-      object.trail.push({ x: object.position.x, y: object.position.y, age: 0 });
+      const tip = tipPosition(object);
+      object.trail.push({ x: tip.x, y: tip.y, age: 0 });
       if (object.trail.length > TRAIL_MAX_POINTS) object.trail.shift();
     }
   }
