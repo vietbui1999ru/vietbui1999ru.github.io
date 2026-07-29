@@ -522,7 +522,12 @@ onMount(() => {
     const catchResult = resolveCatches(objects);
     for (const id of catchResult.winnerIds) {
       const winner = objects.find((object) => object.id === id);
-      if (winner) winner.hungerElapsed = 0;
+      if (winner) {
+        winner.hungerElapsed = 0;
+        // A successful catch is a full reprieve — lives lost to earlier
+        // rival losses are forgiven too, not just the starvation clock.
+        winner.lives = PREDATOR_LIVES_START;
+      }
     }
     for (const id of catchResult.loserIds) {
       const loser = objects.find((object) => object.id === id);
@@ -858,7 +863,11 @@ onMount(() => {
   .ink-ambient-canvas {
     position: fixed;
     inset: 0;
-    z-index: 0;
+    /* Above ordinary page content/text/links (unstyled, effectively z-auto)
+       so predators/prey visually pass over them, but below the sticky nav
+       (z-40) and modal overlays (z-50) so those stay usable and aren't
+       painted over by a frozen ink-ambient frame while a modal is open. */
+    z-index: 30;
     display: block;
     width: 100vw;
     height: 100vh;
