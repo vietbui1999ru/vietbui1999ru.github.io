@@ -23,6 +23,8 @@ import {
   formInitialPairs,
   formPair,
   pairApproachRamp,
+  predatorAcceleration,
+  preyAcceleration,
   preyPanicRamp,
   reevaluatePartner,
 } from "@/lib/ink-ambient/pairing";
@@ -311,6 +313,29 @@ describe("Ink Ambient primitives", () => {
     expect(nearRamp).toBeGreaterThan(farRamp);
     expect(touchingRamp).toBeGreaterThan(nearRamp);
     expect(touchingRamp).toBeLessThanOrEqual(2.2);
+  });
+
+  it("steers the predator toward the prey", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    predator.chaseSpeed = 150;
+    const prey = object(2, 100, 0);
+    prey.role = "prey";
+    prey.chaseSpeed = 110;
+    const accel = predatorAcceleration(predator, prey, 400, 0);
+    expect(accel.x).toBeGreaterThan(0);
+  });
+
+  it("steers the prey away from the predator", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    predator.chaseSpeed = 150;
+    const prey = object(2, 100, 0);
+    prey.role = "prey";
+    prey.chaseSpeed = 110;
+    // prey sits to the right of the predator, so fleeing means accelerating further right (+x)
+    const accel = preyAcceleration(prey, predator, 400, 0);
+    expect(accel.x).toBeGreaterThan(0);
   });
 
   it("pins the thrown object's chaseSpeed to its throw velocity instead of rolling fresh", () => {

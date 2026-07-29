@@ -44,10 +44,6 @@ export function findNearestAvailable(
   return best;
 }
 
-export function pairForceMultiplier(a: InkObject, b: InkObject): number {
-  return clamp(a.attractionValue * b.attractionValue, PAIR_FORCE_MIN, PAIR_FORCE_MAX);
-}
-
 function vigorT(object: InkObject): number {
   return clamp(
     (object.attractionValue - ATTRACTION_VALUE_MIN) / (ATTRACTION_VALUE_MAX - ATTRACTION_VALUE_MIN),
@@ -189,33 +185,47 @@ export function preyPanicRamp(object: InkObject, partner: InkObject): number {
   return 1 + proximity * proximity * (PANIC_RAMP_MAX - 1);
 }
 
-export function pairAcceleration(
+function driveMultiplier(object: InkObject): number {
+  return clamp(object.attractionValue, PAIR_FORCE_MIN, PAIR_FORCE_MAX);
+}
+
+function lateralWobbleScalar(object: InkObject, magnitude: number, wobbleFactor: number, now: number): number {
+  const t = now / 1000 + object.wobblePhase;
+  return Math.sin(t * object.wobbleFrequency * 1.7) * magnitude * wobbleFactor;
+}
+
+export function predatorAcceleration(
   object: InkObject,
-  partner: InkObject,
+  prey: InkObject,
   maxAcceleration: number,
   now: number,
 ): Vec2 {
-  const direction = normalize(subtract(partner.position, object.position));
-  const baseMagnitude = clamp(
-    ATTRACTION_BASE_ACCELERATION * pairForceMultiplier(object, partner),
-    0,
-    maxAcceleration,
-  );
-  const magnitude = baseMagnitude * pairApproachRamp(object, partner);
-  const acceleration = { x: direction.x * magnitude, y: direction.y * magnitude };
+  const direction = normalize(subtract(prey.position, object.position));
+  const ramp = pairApproachRamp(object, prey);
+  const magnitude = clamp(ATTRACTION_BASE_ACCELERATION * driveMultiplier(object) * ramp, 0, maxAcceleration);
+  const perpendicular = { x: -direction.y, y: direction.x };
+  const wobble = lateralWobbleScalar(object, magnitude, PREDATOR_WOBBLE_FACTOR, now);
+  return {
+    x: direction.x * magnitude + perpendicular.x * wobble,
+    y: direction.y * magnitude + perpendicular.y * wobble,
+  };
+}
 
-  // Fade a small seeded wobble to zero as the pair closes in, so the final
-  // approach reads clean rather than jittery right before collision.
-  const closeDistance = (object.radius + partner.radius) * 2;
-  const currentDistance = pairDistance(object, partner);
-  const wobbleFade = clamp((currentDistance - closeDistance) / closeDistance, 0, 1);
-  if (wobbleFade > 0) {
-    const t = now / 1000 + object.wobblePhase;
-    const wobbleMagnitude = baseMagnitude * 0.25 * wobbleFade;
-    acceleration.x += Math.sin(t * object.wobbleFrequency * 1.7) * wobbleMagnitude;
-    acceleration.y += Math.cos(t * object.wobbleFrequency * 1.3) * wobbleMagnitude;
-  }
-  return acceleration;
+export function preyAcceleration(
+  object: InkObject,
+  predator: InkObject,
+  maxAcceleration: number,
+  now: number,
+): Vec2 {
+  const direction = normalize(subtract(object.position, predator.position));
+  const magnitude = clamp(ATTRACTION_BASE_ACCELERATION * driveMultiplier(object), 0, maxAcceleration);
+  const perpendicular = { x: -direction.y, y: direction.x };
+  const panicRamp = preyPanicRamp(object, predator);
+  const wobble = lateralWobbleScalar(object, magnitude, PREY_WOBBLE_FACTOR * panicRamp, now);
+  return {
+    x: direction.x * magnitude + perpendicular.x * wobble,
+    y: direction.y * magnitude + perpendicular.y * wobble,
+  };
 }
 
 export function idleAcceleration(
