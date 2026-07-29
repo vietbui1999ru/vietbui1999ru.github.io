@@ -544,21 +544,29 @@ onMount(() => {
         const a = objects[first];
         const b = objects[second];
         if (catchResult.destroyedPreyIds.has(a.id) || catchResult.destroyedPreyIds.has(b.id)) continue;
-        const collision = resolveCircleCollision(a, b, rng.range(-0.08, 0.08));
-        if (collision.hit) {
-          const squash = clamp(collision.impulse / 90, 0.02, 0.22);
-          if (a.squashCooldown <= 0) {
-            a.scale.x = 1 + squash;
-            a.scale.y = 1 - squash;
-            a.squashCooldown = 0.18;
+        // Cross-role (predator vs prey) pairs never physically bounce — a full-
+        // radius collision bounce would otherwise push them apart right at the
+        // boundary where they'd need to interpenetrate further to reach the
+        // tighter PREDATOR_PREY_CATCH_RADIUS_FRACTION threshold, preventing
+        // catches from ever registering. Same-role pairs (predator-predator,
+        // prey-prey) still bump normally.
+        if (a.role === b.role) {
+          const collision = resolveCircleCollision(a, b, rng.range(-0.08, 0.08));
+          if (collision.hit) {
+            const squash = clamp(collision.impulse / 90, 0.02, 0.22);
+            if (a.squashCooldown <= 0) {
+              a.scale.x = 1 + squash;
+              a.scale.y = 1 - squash;
+              a.squashCooldown = 0.18;
+            }
+            if (b.squashCooldown <= 0) {
+              b.scale.x = 1 + squash;
+              b.scale.y = 1 - squash;
+              b.squashCooldown = 0.18;
+            }
+            addCollisionEffect(a);
+            addCollisionEffect(b);
           }
-          if (b.squashCooldown <= 0) {
-            b.scale.x = 1 + squash;
-            b.scale.y = 1 - squash;
-            b.squashCooldown = 0.18;
-          }
-          addCollisionEffect(a);
-          addCollisionEffect(b);
         }
       }
     }
