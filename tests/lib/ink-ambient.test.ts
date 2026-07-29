@@ -49,6 +49,12 @@ import {
   predatorSpawnRampMultiplier,
 } from "@/lib/ink-ambient/lifecycle";
 import type { InkObject } from "@/lib/ink-ambient/types";
+import {
+  findNearestOpponent,
+  updateTarget,
+  nearbyPredatorCount,
+  nearbyPredatorWobbleMultiplier,
+} from "@/lib/ink-ambient/targeting";
 
 function object(id: number, x: number, y: number): InkObject {
   return {
@@ -681,5 +687,99 @@ describe("Predator survival tick and spawn ramp", () => {
     expect(predatorSpawnRampMultiplier(freshlySpawned, 1000 + 3000)).toBeCloseTo(1, 5);
     // Stays at 1 well past the ramp window — no re-ramping for a long-lived predator.
     expect(predatorSpawnRampMultiplier(freshlySpawned, 1000 + 3_600_000)).toBeCloseTo(1, 5);
+  });
+});
+
+describe("Continuous targeting", () => {
+  it("finds the nearest opposite-role candidate, including a grabbed one", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    const farPrey = object(2, 1000, 0);
+    farPrey.role = "prey";
+    const nearGrabbedPrey = object(3, 10, 0);
+    nearGrabbedPrey.role = "prey";
+    nearGrabbedPrey.grabbed = true;
+    const samePredator = object(4, 1, 0);
+    samePredator.role = "predator";
+
+    const nearest = findNearestOpponent(predator, [predator, farPrey, nearGrabbedPrey, samePredator]);
+    expect(nearest?.id).toBe(3);
+  });
+
+  it("excludes a mid-vanish candidate", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    const vanishingPrey = object(2, 10, 0);
+    vanishingPrey.role = "prey";
+    vanishingPrey.vanishElapsed = 0.1;
+    const fartherAlivePrey = object(3, 50, 0);
+    fartherAlivePrey.role = "prey";
+
+    const nearest = findNearestOpponent(predator, [predator, vanishingPrey, fartherAlivePrey]);
+    expect(nearest?.id).toBe(3);
+  });
+
+  it("does not switch tracked target when the new candidate is only marginally closer", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    const trackedPrey = object(2, 100, 0);
+    trackedPrey.role = "prey";
+    const slightlyCloserPrey = object(3, 95, 0); // 5% closer, under the 10% threshold
+    slightlyCloserPrey.role = "prey";
+    predator.currentTargetId = 2;
+
+    const target = updateTarget(predator, [predator, trackedPrey, slightlyCloserPrey]);
+    expect(target?.id).toBe(2);
+    expect(predator.currentTargetId).toBe(2);
+  });
+
+  it("switches tracked target when the new candidate is clearly closer", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    const trackedPrey = object(2, 100, 0);
+    trackedPrey.role = "prey";
+    const muchCloserPrey = object(3, 20, 0); // 80% closer, over the 10% threshold
+    muchCloserPrey.role = "prey";
+    predator.currentTargetId = 2;
+    predator.lastAcceleration = { x: 5, y: 5 };
+
+    const target = updateTarget(predator, [predator, trackedPrey, muchCloserPrey]);
+    expect(target?.id).toBe(3);
+    expect(predator.currentTargetId).toBe(3);
+    expect(predator.motionBlend).not.toBeNull();
+    expect(predator.motionBlend?.from).toEqual({ x: 5, y: 5 });
+  });
+
+  it("switches tracked target when the previously tracked target no longer exists", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    const newPrey = object(2, 50, 0);
+    newPrey.role = "prey";
+    predator.currentTargetId = 999; // stale id, no longer in the array
+
+    const target = updateTarget(predator, [predator, newPrey]);
+    expect(target?.id).toBe(2);
+    expect(predator.currentTargetId).toBe(2);
+  });
+
+  it("counts nearby predators within the ramp-start distance and scales prey wobble", () => {
+    const prey = object(1, 0, 0);
+    prey.radius = 15;
+    const near1 = object(2, 30, 0);
+    near1.role = "predator";
+    near1.radius = 20;
+    const near2 = object(3, -30, 0);
+    near2.role = "predator";
+    near2.radius = 20;
+    const far = object(4, 5000, 0);
+    far.role = "predator";
+    far.radius = 20;
+
+    expect(nearbyPredatorCount(prey, [prey, near1, near2, far])).toBe(2);
+    const soloMultiplier = nearbyPredatorWobbleMultiplier(prey, [prey, near1, far]);
+    const duoMultiplier = nearbyPredatorWobbleMultiplier(prey, [prey, near1, near2, far]);
+    expect(soloMultiplier).toBe(1);
+    expect(duoMultiplier).toBeGreaterThan(soloMultiplier);
+    expect(duoMultiplier).toBeLessThanOrEqual(2);
   });
 });

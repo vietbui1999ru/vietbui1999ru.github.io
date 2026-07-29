@@ -86,6 +86,11 @@ export const PREDATOR_PREY_CATCH_RADIUS_FRACTION = 0.65;
 export const PREDATOR_SPAWN_RAMP_SECONDS = 3;
 export const PREDATOR_SPAWN_RAMP_START_FRACTION = 0.5;
 
+// Continuous per-tick targeting (spec §4.3-§4.4).
+export const ANTI_FLICKER_SWITCH_THRESHOLD = 0.1;
+export const NEARBY_PREDATOR_WOBBLE_STEP = 0.25;
+export const NEARBY_PREDATOR_WOBBLE_MAX = 2;
+
 const OUTER: RouteProfile = {
   name: "outer-gutters",
   edgeBias: "outer",
