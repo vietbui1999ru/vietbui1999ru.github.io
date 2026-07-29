@@ -373,6 +373,37 @@ describe("Ink Ambient primitives", () => {
     }
   });
 
+  it("reshuffles the old partner with a nearby lone object when a throw forms a new pair", () => {
+    const objects = [
+      object(1, 0, 0), // A
+      object(2, 10, 0), // B — A's original partner
+      object(3, 1000, 1000), // E — lone, closest to A after the throw
+      object(4, 1500, 1500), // F — lone, closest to B once orphaned
+    ];
+    const rng = new SeededRng(9);
+    formPair(objects[0], objects[1], rng); // A-B paired directly (no other objects to interfere)
+    const a = objects[0];
+    const b = objects[1];
+    const e = objects[2];
+    const f = objects[3];
+    detachPair(a, objects);
+    // Move A next to E (not back toward B) so the thrown object forms a NEW pair.
+    a.position = { x: 990, y: 990 };
+    a.velocity = { x: 5, y: 5 };
+    reevaluatePartner(a, objects, rng);
+
+    expect(a.partnerId).toBe(e.id);
+    expect(e.partnerId).toBe(a.id);
+    expect(b.partnerId).toBe(f.id);
+    expect(f.partnerId).toBe(b.id);
+
+    // predator > prey invariant holds for both freshly-formed pairs
+    const [aRolePredator, aRolePrey] = a.role === "predator" ? [a, e] : [e, a];
+    expect(aRolePredator.chaseSpeed).toBeGreaterThan(aRolePrey.chaseSpeed);
+    const [bRolePredator, bRolePrey] = b.role === "predator" ? [b, f] : [f, b];
+    expect(bRolePredator.chaseSpeed).toBeGreaterThan(bRolePrey.chaseSpeed);
+  });
+
   it("detects circle overlap consistently with resolveCircleCollision's own check", () => {
     const overlappingA = object(1, 100, 100);
     const overlappingB = object(2, 130, 100);
