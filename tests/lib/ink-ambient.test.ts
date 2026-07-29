@@ -1,10 +1,15 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import {
+  PREDATOR_RADIUS_MAX,
+  PREDATOR_RADIUS_MIN,
   PREDATOR_SPEED_MULTIPLIER_MIN,
+  PREY_RADIUS_MAX,
+  PREY_RADIUS_MIN,
   PREY_SPEED_MAX,
   PREY_SPEED_MIN,
   SNAPSHOT_KEY,
 } from "@/lib/ink-ambient/config";
+import { rollRadius, rollChaseSpeed } from "@/lib/ink-ambient/spawn";
 import {
   buildSpatialField,
   availableCapacity,
@@ -470,5 +475,34 @@ describe("Population dynamics", () => {
     const high = mapToTargets({ prey: 100, predator: 100 });
     expect(high.preyTarget).toBeLessThanOrEqual(2);
     expect(high.predatorTarget).toBeLessThanOrEqual(2);
+  });
+});
+
+describe("Spawn-time trait rolls", () => {
+  it("rolls radius within the role-specific range", () => {
+    const rng = new SeededRng(21);
+    for (let i = 0; i < 100; i += 1) {
+      const preyRadius = rollRadius("prey", rng);
+      expect(preyRadius).toBeGreaterThanOrEqual(PREY_RADIUS_MIN);
+      expect(preyRadius).toBeLessThanOrEqual(PREY_RADIUS_MAX);
+      const predatorRadius = rollRadius("predator", rng);
+      expect(predatorRadius).toBeGreaterThanOrEqual(PREDATOR_RADIUS_MIN);
+      expect(predatorRadius).toBeLessThanOrEqual(PREDATOR_RADIUS_MAX);
+    }
+  });
+
+  it("rolls predators statistically faster than prey at the same vigor, without guaranteeing every instance", () => {
+    // No paired-derivation guarantee exists anymore (spec §4.2: "statistically
+    // faster... without requiring a specific paired prey to derive from") —
+    // assert the population-level tendency via averages, not a per-pair invariant.
+    const rng = new SeededRng(55);
+    let preySum = 0;
+    let predatorSum = 0;
+    const trials = 500;
+    for (let i = 0; i < trials; i += 1) {
+      preySum += rollChaseSpeed("prey", 1.0, rng);
+      predatorSum += rollChaseSpeed("predator", 1.0, rng);
+    }
+    expect(predatorSum / trials).toBeGreaterThan(preySum / trials);
   });
 });
