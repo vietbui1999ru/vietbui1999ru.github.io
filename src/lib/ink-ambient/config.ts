@@ -194,3 +194,14 @@ export const PREY_SPAWN_TINT_COLOR = "#a8d8b0";
 // out at almost the same rate the object fades in, making it barely
 // visible: the two ramps would cancel out instead of overlapping.
 export const SPAWN_TINT_DURATION_SECONDS = 2.5;
+
+// Ties the abstract Lotka-Volterra population state to REAL events in the
+// discrete chase sim, not just its own continuous x*y math (see stepLotkaVolterra
+// in population.ts) — matching the classical model's actual mechanism: a
+// predator eating prey drives predator population growth (delta*x*y, a birth
+// term), and a predator dying drives its own population down beyond the
+// passive gamma*y decay. Applied once per real event, on top of the
+// continuous flow, each simulation tick.
+export const LV_CATCH_PREDATOR_BOOST = 0.15;
+export const LV_CATCH_PREY_DECAY = 0.1;
+export const LV_PREDATOR_DEATH_DECAY = 0.15;

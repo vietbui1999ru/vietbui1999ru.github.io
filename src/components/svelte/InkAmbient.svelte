@@ -12,6 +12,9 @@ import {
   FIXED_STEP,
   MAX_CATCH_UP_STEPS,
   MAX_DPR,
+  LV_CATCH_PREDATOR_BOOST,
+  LV_CATCH_PREY_DECAY,
+  LV_PREDATOR_DEATH_DECAY,
   MAX_OBJECTS_DESKTOP,
   MAX_OBJECTS_MOBILE,
   POPULATION_TOPUP_MAX_DELAY_MS,
@@ -518,6 +521,10 @@ onMount(() => {
     pausedByModal = hasOpenModal();
     if (pausedByModal) return;
 
+    const wasVanishing = new Set(
+      objects.filter((object) => object.vanishElapsed !== null).map((object) => object.id),
+    );
+
     for (const object of objects) updateObject(object, dt, now);
 
     const catchResult = resolveCatches(objects);
@@ -537,6 +544,26 @@ onMount(() => {
         if (loser.lives <= 0) loser.vanishElapsed = 0;
       }
     }
+
+    // Tie the abstract Lotka-Volterra state to real events, matching the
+    // classical model's actual mechanism: eating drives predator births,
+    // dying drives predator population down, beyond the passive gamma*y/
+    // delta*x*y continuous flow (see stepLotkaVolterra).
+    if (catchResult.winnerIds.size > 0) {
+      population.predator += LV_CATCH_PREDATOR_BOOST * catchResult.winnerIds.size;
+    }
+    if (catchResult.destroyedPreyIds.size > 0) {
+      population.prey = Math.max(
+        0.05,
+        population.prey - LV_CATCH_PREY_DECAY * catchResult.destroyedPreyIds.size,
+      );
+    }
+    for (const object of objects) {
+      if (object.role === "predator" && object.vanishElapsed !== null && !wasVanishing.has(object.id)) {
+        population.predator = Math.max(0.05, population.predator - LV_PREDATOR_DEATH_DECAY);
+      }
+    }
+
     if (catchResult.winnerIds.size > 0) {
       const preyRemaining = countAlive("prey") - catchResult.destroyedPreyIds.size;
       const predatorCount = countAlive("predator");
