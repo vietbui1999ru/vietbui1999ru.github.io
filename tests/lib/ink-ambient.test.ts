@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import { PAIR_FORCE_MAX, PAIR_FORCE_MIN, SNAPSHOT_KEY } from "@/lib/ink-ambient/config";
+import { PREY_SPEED_MAX, PREY_SPEED_MIN, SNAPSHOT_KEY } from "@/lib/ink-ambient/config";
 import {
   buildSpatialField,
   availableCapacity,
@@ -21,8 +21,8 @@ import {
 import {
   detachPair,
   formInitialPairs,
+  formPair,
   pairApproachRamp,
-  pairForceMultiplier,
   reevaluatePartner,
 } from "@/lib/ink-ambient/pairing";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
@@ -55,6 +55,8 @@ function object(id: number, x: number, y: number): InkObject {
     trailSampleTimer: 0,
     partnerId: null,
     formerPartnerId: null,
+    role: null,
+    chaseSpeed: 0,
     attractionValue: 1,
     motionBlend: null,
   };
@@ -79,10 +81,7 @@ describe("Ink Ambient primitives", () => {
     expect(result.hit).toBe(true);
     expect(result.impulse).toBeGreaterThan(0);
     expect(
-      Math.hypot(
-        second.position.x - first.position.x,
-        second.position.y - first.position.y,
-      ),
+      Math.hypot(second.position.x - first.position.x, second.position.y - first.position.y),
     ).toBeGreaterThanOrEqual(40);
     expect(first.velocity.x).toBeLessThan(0);
     expect(second.velocity.x - first.velocity.x).toBeGreaterThan(0);
@@ -240,13 +239,8 @@ describe("Ink Ambient primitives", () => {
   });
 
   it("pairs the nearest available objects into mutual bonds", () => {
-    const objects = [
-      object(1, 0, 0),
-      object(2, 10, 0),
-      object(3, 500, 500),
-      object(4, 510, 500),
-    ];
-    formInitialPairs(objects);
+    const objects = [object(1, 0, 0), object(2, 10, 0), object(3, 500, 500), object(4, 510, 500)];
+    formInitialPairs(objects, new SeededRng(1));
     expect(objects[0].partnerId).toBe(2);
     expect(objects[1].partnerId).toBe(1);
     expect(objects[2].partnerId).toBe(4);
@@ -255,33 +249,35 @@ describe("Ink Ambient primitives", () => {
 
   it("leaves a lone object unpaired without throwing", () => {
     const objects = [object(1, 0, 0)];
-    expect(() => formInitialPairs(objects)).not.toThrow();
+    expect(() => formInitialPairs(objects, new SeededRng(1))).not.toThrow();
     expect(objects[0].partnerId).toBeNull();
   });
 
   it("re-forms the same pair after a detach and release with only two objects", () => {
     const objects = [object(1, 0, 0), object(2, 10, 0)];
-    formInitialPairs(objects);
+    formInitialPairs(objects, new SeededRng(1));
     detachPair(objects[0], objects);
     expect(objects[0].partnerId).toBeNull();
     expect(objects[1].partnerId).toBeNull();
-    reevaluatePartner(objects[0], objects);
+    reevaluatePartner(objects[0], objects, new SeededRng(1));
     expect(objects[0].partnerId).toBe(2);
     expect(objects[1].partnerId).toBe(1);
   });
 
-  it("scales pair force by the product of both attraction values, clamped", () => {
-    const a = object(1, 0, 0);
-    const b = object(2, 10, 0);
-    a.attractionValue = 1.5;
-    b.attractionValue = 1.5;
-    expect(pairForceMultiplier(a, b)).toBe(PAIR_FORCE_MAX);
-    a.attractionValue = 0.5;
-    b.attractionValue = 0.5;
-    expect(pairForceMultiplier(a, b)).toBe(PAIR_FORCE_MIN);
-    a.attractionValue = 1;
-    b.attractionValue = 1;
-    expect(pairForceMultiplier(a, b)).toBe(1);
+  it("assigns one predator and one prey with predator always faster", () => {
+    const rng = new SeededRng(7);
+    for (let trial = 0; trial < 50; trial += 1) {
+      const a = object(1, 0, 0);
+      const b = object(2, 10, 0);
+      formPair(a, b, rng);
+      const roles = [a.role, b.role].sort();
+      expect(roles).toEqual(["predator", "prey"]);
+      const predator = a.role === "predator" ? a : b;
+      const prey = a.role === "predator" ? b : a;
+      expect(predator.chaseSpeed).toBeGreaterThan(prey.chaseSpeed);
+      expect(prey.chaseSpeed).toBeGreaterThanOrEqual(PREY_SPEED_MIN);
+      expect(prey.chaseSpeed).toBeLessThanOrEqual(PREY_SPEED_MAX);
+    }
   });
 
   it("ramps the approach multiplier up as a pair closes in, capped near touching", () => {

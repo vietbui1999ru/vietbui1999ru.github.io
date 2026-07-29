@@ -2,11 +2,23 @@ import {
   ATTRACTION_BASE_ACCELERATION,
   ATTRACTION_RAMP_MAX,
   ATTRACTION_RAMP_START_MULTIPLIER,
+  ATTRACTION_VALUE_MAX,
+  ATTRACTION_VALUE_MIN,
+  CHASE_VIGOR_JITTER,
   MOTION_BLEND_SECONDS,
   PAIR_FORCE_MAX,
   PAIR_FORCE_MIN,
+  PANIC_RAMP_MAX,
+  PREDATOR_SPEED_MULTIPLIER_MAX,
+  PREDATOR_SPEED_MULTIPLIER_MIN,
+  PREDATOR_WOBBLE_FACTOR,
+  PREY_SPEED_MAX,
+  PREY_SPEED_MIN,
+  PREY_THROW_SPEED_MAX,
+  PREY_WOBBLE_FACTOR,
 } from "./config";
 import { clamp, normalize, subtract } from "./physics";
+import type { SeededRng } from "./rng";
 import type { InkObject, Vec2 } from "./types";
 
 export function findNearestAvailable(
@@ -32,25 +44,50 @@ export function findNearestAvailable(
   return best;
 }
 
-export function pairForceMultiplier(a: InkObject, b: InkObject): number {
-  return clamp(a.attractionValue * b.attractionValue, PAIR_FORCE_MIN, PAIR_FORCE_MAX);
+function vigorT(object: InkObject): number {
+  return clamp(
+    (object.attractionValue - ATTRACTION_VALUE_MIN) / (ATTRACTION_VALUE_MAX - ATTRACTION_VALUE_MIN),
+    0,
+    1,
+  );
 }
 
-export function formPair(a: InkObject, b: InkObject): void {
+function rollPreySpeed(prey: InkObject, rng: SeededRng): number {
+  const t = clamp(vigorT(prey) + rng.range(-CHASE_VIGOR_JITTER, CHASE_VIGOR_JITTER), 0, 1);
+  return PREY_SPEED_MIN + (PREY_SPEED_MAX - PREY_SPEED_MIN) * t;
+}
+
+function rollPredatorMultiplier(predator: InkObject, rng: SeededRng): number {
+  const t = clamp(vigorT(predator) + rng.range(-CHASE_VIGOR_JITTER, CHASE_VIGOR_JITTER), 0, 1);
+  return (
+    PREDATOR_SPEED_MULTIPLIER_MIN +
+    (PREDATOR_SPEED_MULTIPLIER_MAX - PREDATOR_SPEED_MULTIPLIER_MIN) * t
+  );
+}
+
+export function formPair(a: InkObject, b: InkObject, rng: SeededRng): void {
   a.partnerId = b.id;
   b.partnerId = a.id;
   a.formerPartnerId = null;
   b.formerPartnerId = null;
   a.motionBlend = { from: { ...a.lastAcceleration }, elapsed: 0, duration: MOTION_BLEND_SECONDS };
   b.motionBlend = { from: { ...b.lastAcceleration }, elapsed: 0, duration: MOTION_BLEND_SECONDS };
+
+  const aIsPredator = rng.chance(0.5);
+  a.role = aIsPredator ? "predator" : "prey";
+  b.role = aIsPredator ? "prey" : "predator";
+  const predator = aIsPredator ? a : b;
+  const prey = aIsPredator ? b : a;
+  prey.chaseSpeed = rollPreySpeed(prey, rng);
+  predator.chaseSpeed = prey.chaseSpeed * rollPredatorMultiplier(predator, rng);
 }
 
-export function formInitialPairs(objects: InkObject[]): void {
+export function formInitialPairs(objects: InkObject[], rng: SeededRng): void {
   const sorted = [...objects].sort((a, b) => a.id - b.id);
   for (const object of sorted) {
     if (object.partnerId !== null) continue;
     const partner = findNearestAvailable(object, objects);
-    if (partner) formPair(object, partner);
+    if (partner) formPair(object, partner, rng);
   }
 }
 
@@ -72,15 +109,19 @@ export function detachPair(object: InkObject, objects: readonly InkObject[]): vo
   }
 }
 
-export function reevaluatePartner(object: InkObject, objects: readonly InkObject[]): void {
+export function reevaluatePartner(
+  object: InkObject,
+  objects: readonly InkObject[],
+  rng: SeededRng,
+): void {
   const nearest = findNearestAvailable(object, objects);
   const oldPartnerId = object.formerPartnerId;
-  if (nearest) formPair(object, nearest);
+  if (nearest) formPair(object, nearest, rng);
   if (oldPartnerId !== null && oldPartnerId !== nearest?.id) {
     const oldPartner = objects.find((candidate) => candidate.id === oldPartnerId) ?? null;
     if (oldPartner && oldPartner.partnerId === null) {
       const oldPartnerNearest = findNearestAvailable(oldPartner, objects);
-      if (oldPartnerNearest) formPair(oldPartner, oldPartnerNearest);
+      if (oldPartnerNearest) formPair(oldPartner, oldPartnerNearest, rng);
     }
   }
   object.formerPartnerId = null;
