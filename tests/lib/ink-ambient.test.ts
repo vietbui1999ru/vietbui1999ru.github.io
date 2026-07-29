@@ -280,6 +280,7 @@ describe("Ink Ambient primitives", () => {
       expect(predator.chaseSpeed).toBeGreaterThan(prey.chaseSpeed);
       expect(prey.chaseSpeed).toBeGreaterThanOrEqual(PREY_SPEED_MIN);
       expect(prey.chaseSpeed).toBeLessThanOrEqual(PREY_SPEED_MAX);
+      expect(predator.radius).toBeGreaterThan(prey.radius);
     }
   });
 
@@ -370,6 +371,7 @@ describe("Ink Ambient primitives", () => {
       const predator = thrown.role === "predator" ? thrown : partner;
       const prey = thrown.role === "predator" ? partner : thrown;
       expect(predator.chaseSpeed).toBeGreaterThan(prey.chaseSpeed);
+      expect(predator.radius).toBeGreaterThan(prey.radius);
     }
   });
 

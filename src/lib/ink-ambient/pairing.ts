@@ -9,9 +9,13 @@ import {
   PAIR_FORCE_MAX,
   PAIR_FORCE_MIN,
   PANIC_RAMP_MAX,
+  PREDATOR_RADIUS_MAX,
+  PREDATOR_RADIUS_MIN,
   PREDATOR_SPEED_MULTIPLIER_MAX,
   PREDATOR_SPEED_MULTIPLIER_MIN,
   PREDATOR_WOBBLE_FACTOR,
+  PREY_RADIUS_MAX,
+  PREY_RADIUS_MIN,
   PREY_SPEED_MAX,
   PREY_SPEED_MIN,
   PREY_THROW_SPEED_MAX,
@@ -80,6 +84,8 @@ export function formPair(a: InkObject, b: InkObject, rng: SeededRng): void {
   const prey = aIsPredator ? b : a;
   prey.chaseSpeed = rollPreySpeed(prey, rng);
   predator.chaseSpeed = prey.chaseSpeed * rollPredatorMultiplier(predator, rng);
+  prey.radius = rng.range(PREY_RADIUS_MIN, PREY_RADIUS_MAX);
+  predator.radius = rng.range(PREDATOR_RADIUS_MIN, PREDATOR_RADIUS_MAX);
 }
 
 export function formInitialPairs(objects: InkObject[], rng: SeededRng): void {
@@ -126,11 +132,15 @@ function recalibratePair(thrown: InkObject, partner: InkObject, rng: SeededRng):
     const multiplier = rollPredatorMultiplier(thrown, rng);
     thrown.chaseSpeed = Math.max(throwSpeed, PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN);
     partner.chaseSpeed = clamp(thrown.chaseSpeed / multiplier, PREY_SPEED_MIN, PREY_SPEED_MAX);
+    thrown.radius = rng.range(PREDATOR_RADIUS_MIN, PREDATOR_RADIUS_MAX);
+    partner.radius = rng.range(PREY_RADIUS_MIN, PREY_RADIUS_MAX);
   } else {
     thrown.role = "prey";
     partner.role = "predator";
     thrown.chaseSpeed = clamp(throwSpeed, PREY_SPEED_MIN, PREY_THROW_SPEED_MAX);
     partner.chaseSpeed = thrown.chaseSpeed * rollPredatorMultiplier(partner, rng);
+    thrown.radius = rng.range(PREY_RADIUS_MIN, PREY_RADIUS_MAX);
+    partner.radius = rng.range(PREDATOR_RADIUS_MIN, PREDATOR_RADIUS_MAX);
   }
 }
 
