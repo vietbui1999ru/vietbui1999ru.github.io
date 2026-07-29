@@ -40,6 +40,14 @@ import {
 } from "@/lib/ink-ambient/pairing";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
 import { stepLotkaVolterra, mapToTargets } from "@/lib/ink-ambient/population";
+import { resolveCatches } from "@/lib/ink-ambient/catches";
+import {
+  livesFadeStep,
+  renderedOpacityMultiplier,
+  updateVanish,
+  applyPredatorSurvivalTick,
+  predatorSpawnRampMultiplier,
+} from "@/lib/ink-ambient/lifecycle";
 import type { InkObject } from "@/lib/ink-ambient/types";
 
 function object(id: number, x: number, y: number): InkObject {
@@ -67,6 +75,10 @@ function object(id: number, x: number, y: number): InkObject {
     wobblePhase: 0,
     trail: [],
     trailSampleTimer: 0,
+    currentTargetId: null,
+    lives: 3,
+    hungerElapsed: 0,
+    vanishElapsed: null,
     partnerId: null,
     formerPartnerId: null,
     role: null,
@@ -504,5 +516,170 @@ describe("Spawn-time trait rolls", () => {
       predatorSum += rollChaseSpeed("predator", 1.0, rng);
     }
     expect(predatorSum / trials).toBeGreaterThan(preySum / trials);
+  });
+});
+
+describe("Catch resolution", () => {
+  it("resolves the closest predator as winner and costs every other targeting predator a life", () => {
+    const prey = object(1, 100, 100);
+    prey.role = "prey";
+    const closeWinner = object(2, 105, 100); // distance 5, well inside catch radius
+    closeWinner.role = "predator";
+    closeWinner.currentTargetId = 1;
+    const farLoser = object(3, 108, 100); // distance 8, also inside catch radius, but farther
+    farLoser.role = "predator";
+    farLoser.currentTargetId = 1;
+    const uninvolved = object(4, 500, 500);
+    uninvolved.role = "predator";
+    uninvolved.currentTargetId = null; // not targeting prey 1 — unaffected even though it's a predator
+
+    const result = resolveCatches([prey, closeWinner, farLoser, uninvolved]);
+
+    expect(result.destroyedPreyIds.has(1)).toBe(true);
+    expect(result.winnerIds.has(2)).toBe(true);
+    expect(result.loserIds.has(3)).toBe(true);
+    expect(result.loserIds.has(4)).toBe(false);
+    expect(result.bursts).toHaveLength(1);
+  });
+
+  it("does not catch a prey outside the tighter catch radius even if within full physics radius", () => {
+    const prey = object(1, 0, 0);
+    prey.role = "prey";
+    prey.radius = 15;
+    const predator = object(2, 30, 0); // sum of radii = 15+20=35 (full-radius overlap), but
+    predator.role = "predator"; // catch radius is (15+20)*0.65=22.75 < 30, so no catch
+    predator.radius = 20;
+    predator.currentTargetId = 1;
+
+    const result = resolveCatches([prey, predator]);
+    expect(result.destroyedPreyIds.size).toBe(0);
+    expect(result.winnerIds.size).toBe(0);
+  });
+
+  it("ignores a predator whose currentTargetId points at a different prey", () => {
+    const preyA = object(1, 0, 0);
+    preyA.role = "prey";
+    const preyB = object(2, 500, 500);
+    preyB.role = "prey";
+    const predator = object(3, 3, 0); // catches preyA
+    predator.role = "predator";
+    predator.currentTargetId = 2; // was targeting preyB, unaffected by catching preyA
+
+    const result = resolveCatches([preyA, preyB, predator]);
+    expect(result.destroyedPreyIds.has(1)).toBe(true);
+    expect(result.winnerIds.has(3)).toBe(true);
+    expect(result.loserIds.size).toBe(0);
+  });
+
+  it("excludes a mid-vanish predator from winning a catch", () => {
+    const prey = object(1, 0, 0);
+    prey.role = "prey";
+    const vanishing = object(2, 3, 0);
+    vanishing.role = "predator";
+    vanishing.vanishElapsed = 0.1;
+
+    const result = resolveCatches([prey, vanishing]);
+    expect(result.destroyedPreyIds.size).toBe(0);
+  });
+});
+
+describe("Lives/hunger vanish rendering", () => {
+  it("maps lives to stepped opacity fractions", () => {
+    expect(livesFadeStep(3)).toBe(1.0);
+    expect(livesFadeStep(2)).toBeCloseTo(0.7, 5);
+    expect(livesFadeStep(1)).toBeCloseTo(0.4, 5);
+    expect(livesFadeStep(0)).toBeCloseTo(0.4, 5);
+  });
+
+  it("only fades predators, and only while not vanishing", () => {
+    const prey = object(1, 0, 0);
+    prey.role = "prey";
+    prey.lives = 1;
+    expect(renderedOpacityMultiplier(prey)).toBe(1);
+
+    const predator = object(2, 0, 0);
+    predator.role = "predator";
+    predator.lives = 2;
+    predator.hungerElapsed = 0;
+    expect(renderedOpacityMultiplier(predator)).toBeCloseTo(0.7, 5);
+
+    predator.vanishElapsed = 0.1;
+    expect(renderedOpacityMultiplier(predator)).toBe(1);
+  });
+
+  it("combines lives and hunger fades multiplicatively", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    predator.lives = 3;
+    predator.hungerElapsed = 8; // half of PREDATOR_STARVE_SECONDS (16)
+    expect(renderedOpacityMultiplier(predator)).toBeCloseTo(0.5, 5);
+  });
+
+  it("steps vanish animation toward zero scale/opacity and reports completion", () => {
+    const predator = object(1, 0, 0);
+    predator.vanishElapsed = 0;
+    expect(updateVanish(predator, 0.25)).toBe(false);
+    expect(predator.scale.x).toBeCloseTo(0.5, 5);
+    expect(predator.opacity).toBeCloseTo(0.5, 5);
+    expect(updateVanish(predator, 0.25)).toBe(true);
+    expect(predator.scale.x).toBeCloseTo(0, 5);
+  });
+
+  it("is a no-op on an object that is not vanishing", () => {
+    const predator = object(1, 0, 0);
+    predator.vanishElapsed = null;
+    expect(updateVanish(predator, 1)).toBe(false);
+  });
+});
+
+describe("Predator survival tick and spawn ramp", () => {
+  it("triggers vanish when lives reaches 0, even before the hunger threshold", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    predator.lives = 0;
+    predator.hungerElapsed = 0;
+    applyPredatorSurvivalTick(predator, 1);
+    expect(predator.vanishElapsed).toBe(0);
+  });
+
+  it("triggers vanish when hunger reaches the starve threshold", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    predator.lives = 3;
+    predator.hungerElapsed = 15.5; // one tick under PREDATOR_STARVE_SECONDS (16)
+    applyPredatorSurvivalTick(predator, 1);
+    expect(predator.vanishElapsed).toBe(0);
+  });
+
+  it("does not trigger vanish while lives and hunger are both within bounds", () => {
+    const predator = object(1, 0, 0);
+    predator.role = "predator";
+    predator.lives = 3;
+    predator.hungerElapsed = 0;
+    applyPredatorSurvivalTick(predator, 1);
+    expect(predator.vanishElapsed).toBeNull();
+    expect(predator.hungerElapsed).toBeCloseTo(1, 5);
+  });
+
+  it("is a no-op for non-predators and for objects already vanishing", () => {
+    const prey = object(1, 0, 0);
+    prey.role = "prey";
+    applyPredatorSurvivalTick(prey, 5);
+    expect(prey.hungerElapsed).toBe(0);
+
+    const vanishing = object(2, 0, 0);
+    vanishing.role = "predator";
+    vanishing.vanishElapsed = 0.2;
+    applyPredatorSurvivalTick(vanishing, 5);
+    expect(vanishing.hungerElapsed).toBe(0);
+  });
+
+  it("ramps a freshly-spawned predator's speed multiplier from the start fraction up to 1", () => {
+    const freshlySpawned = { spawnAt: 1000 };
+    expect(predatorSpawnRampMultiplier(freshlySpawned, 1000)).toBeCloseTo(0.5, 5);
+    expect(predatorSpawnRampMultiplier(freshlySpawned, 1000 + 1500)).toBeCloseTo(0.75, 5);
+    expect(predatorSpawnRampMultiplier(freshlySpawned, 1000 + 3000)).toBeCloseTo(1, 5);
+    // Stays at 1 well past the ramp window — no re-ramping for a long-lived predator.
+    expect(predatorSpawnRampMultiplier(freshlySpawned, 1000 + 3_600_000)).toBeCloseTo(1, 5);
   });
 });

@@ -75,6 +75,17 @@ export const LV_SCALE = 2;
 export const PREY_TARGET_MAX = 2;
 export const PREDATOR_TARGET_MAX = 2;
 
+// Predator survival mechanics (spec §5-§7).
+export const PREDATOR_LIVES_START = 3;
+export const PREDATOR_STARVE_SECONDS = 16;
+export const VANISH_DURATION_SECONDS = 0.5;
+export const PREDATOR_PREY_CATCH_RADIUS_FRACTION = 0.65;
+// Predator spawn ramp (spec §6.1) — lives here rather than in Task 5 because
+// predatorSpawnRampMultiplier (added below) needs it and is built/tested in
+// this task, before the cutover.
+export const PREDATOR_SPAWN_RAMP_SECONDS = 3;
+export const PREDATOR_SPAWN_RAMP_START_FRACTION = 0.5;
+
 const OUTER: RouteProfile = {
   name: "outer-gutters",
   edgeBias: "outer",

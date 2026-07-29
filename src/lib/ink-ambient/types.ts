@@ -34,6 +34,10 @@ export type InkObject = {
   wobblePhase: number;
   trail: TrailPoint[];
   trailSampleTimer: number;
+  currentTargetId: number | null;
+  lives: number;
+  hungerElapsed: number;
+  vanishElapsed: number | null;
   partnerId: number | null;
   formerPartnerId: number | null;
   role: "predator" | "prey" | null;
