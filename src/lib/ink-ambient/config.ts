@@ -145,3 +145,9 @@ export function getRouteProfile(pathname: string, sectionId?: string): RouteProf
 // predatorSpawnRampMultiplier which consumes them.
 export const POPULATION_TOPUP_MIN_DELAY_MS = 1500;
 export const POPULATION_TOPUP_MAX_DELAY_MS = 3500;
+
+// User-drag hunger penalty: starvation risk should mostly come from the user
+// interfering (dragging a predator off its hunt, or dragging its prey away),
+// not from ordinary autonomous chasing. Applied once per real drag+release,
+// on top of the normal per-second hungerElapsed accrual.
+export const PREDATOR_DRAG_HUNGER_PENALTY_SECONDS = 6;

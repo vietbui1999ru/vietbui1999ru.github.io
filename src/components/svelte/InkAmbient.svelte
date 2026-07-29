@@ -16,6 +16,7 @@ import {
   MAX_OBJECTS_MOBILE,
   POPULATION_TOPUP_MAX_DELAY_MS,
   POPULATION_TOPUP_MIN_DELAY_MS,
+  PREDATOR_DRAG_HUNGER_PENALTY_SECONDS,
   PREDATOR_LIVES_START,
   PREDATOR_MAX_RAMPED_SPEED,
   PREDATOR_RADIUS_MAX,
@@ -37,7 +38,7 @@ import {
   preyAcceleration,
   idleAcceleration,
 } from "@/lib/ink-ambient/targeting";
-import { resolveCatches } from "@/lib/ink-ambient/catches";
+import { resolveCatches, predatorsTargeting } from "@/lib/ink-ambient/catches";
 import { stepLotkaVolterra, mapToTargets, type PopulationState } from "@/lib/ink-ambient/population";
 import {
   updateSpawnFade,
@@ -667,6 +668,15 @@ onMount(() => {
       if (pointer.dragStarted && throwObject) {
         object.velocity.x = clamp(pointer.velocityX, -260, 260);
         object.velocity.y = clamp(pointer.velocityY, -260, 260);
+      }
+      if (pointer.dragStarted) {
+        if (object.role === "predator") {
+          object.hungerElapsed += PREDATOR_DRAG_HUNGER_PENALTY_SECONDS;
+        } else if (object.role === "prey") {
+          for (const predator of predatorsTargeting(object.id, objects)) {
+            predator.hungerElapsed += PREDATOR_DRAG_HUNGER_PENALTY_SECONDS;
+          }
+        }
       }
     }
     pointer.id = null;

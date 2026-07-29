@@ -29,7 +29,7 @@ import {
 } from "@/lib/ink-ambient/physics";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
 import { stepLotkaVolterra, mapToTargets } from "@/lib/ink-ambient/population";
-import { resolveCatches } from "@/lib/ink-ambient/catches";
+import { resolveCatches, predatorsTargeting } from "@/lib/ink-ambient/catches";
 import {
   livesFadeStep,
   renderedOpacityMultiplier,
@@ -451,6 +451,26 @@ describe("Catch resolution", () => {
 
     const result = resolveCatches([prey, vanishing]);
     expect(result.destroyedPreyIds.size).toBe(0);
+  });
+
+  it("finds only predators currently targeting a given prey", () => {
+    const prey = object(1, 0, 0);
+    prey.role = "prey";
+    const otherPrey = object(2, 500, 500);
+    otherPrey.role = "prey";
+    const targeting = object(3, 10, 0);
+    targeting.role = "predator";
+    targeting.currentTargetId = 1;
+    const notTargeting = object(4, 20, 0);
+    notTargeting.role = "predator";
+    notTargeting.currentTargetId = 2;
+    const noTarget = object(5, 30, 0);
+    noTarget.role = "predator";
+    noTarget.currentTargetId = null;
+
+    const result = predatorsTargeting(1, [prey, otherPrey, targeting, notTargeting, noTarget]);
+    expect(result.map((p) => p.id)).toEqual([3]);
+    expect(predatorsTargeting(999, [prey, targeting])).toEqual([]);
   });
 });
 

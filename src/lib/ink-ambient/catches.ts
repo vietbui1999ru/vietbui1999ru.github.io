@@ -46,3 +46,9 @@ export function resolveCatches(objects: readonly InkObject[]): CatchResolution {
 
   return { destroyedPreyIds, winnerIds, loserIds, bursts };
 }
+
+/** Predators currently chasing a specific prey — used to apply a hunger
+ * penalty when the user drags that prey away mid-chase. */
+export function predatorsTargeting(preyId: number, objects: readonly InkObject[]): InkObject[] {
+  return objects.filter((o) => o.role === "predator" && o.currentTargetId === preyId);
+}
