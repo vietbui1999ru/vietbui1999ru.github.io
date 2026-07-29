@@ -34,6 +34,7 @@ export const PREY_THROW_SPEED_MAX = 180;
 export const PREDATOR_SPEED_MULTIPLIER_MIN = 1.15;
 export const PREDATOR_SPEED_MULTIPLIER_MAX = 1.45;
 export const PANIC_RAMP_MAX = 2.2;
+export const PREDATOR_MAX_RAMPED_SPEED = 372; // matches the previous system's own worst-case ceiling (155 * ATTRACTION_RAMP_MAX)
 export const PREDATOR_WOBBLE_FACTOR = 0.15;
 export const PREY_WOBBLE_FACTOR = 0.4;
 export const CHASE_VIGOR_JITTER = 0.15;

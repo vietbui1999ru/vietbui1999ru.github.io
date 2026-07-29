@@ -14,6 +14,7 @@ import {
   MAX_DPR,
   MAX_OBJECTS_DESKTOP,
   MAX_OBJECTS_MOBILE,
+  PREDATOR_MAX_RAMPED_SPEED,
   SAFE_CLEARANCE,
   TRAIL_MAX_AGE_SECONDS,
   TRAIL_MAX_POINTS,
@@ -397,7 +398,7 @@ onMount(() => {
     const maxSpeed =
       partner && !settling
         ? object.role === "predator"
-          ? object.chaseSpeed * pairApproachRamp(object, partner)
+          ? Math.min(object.chaseSpeed * pairApproachRamp(object, partner), PREDATOR_MAX_RAMPED_SPEED)
           : object.chaseSpeed
         : 155 - (155 - 115) * massT;
     object.velocity = limit(object.velocity, maxSpeed);
