@@ -177,6 +177,18 @@ export function pairApproachRamp(object: InkObject, partner: InkObject): number 
   return 1 + proximity * proximity * (ATTRACTION_RAMP_MAX - 1);
 }
 
+export function preyPanicRamp(object: InkObject, partner: InkObject): number {
+  const closeDistance = (object.radius + partner.radius) * 2;
+  const rampStart = (object.radius + partner.radius) * ATTRACTION_RAMP_START_MULTIPLIER;
+  const currentDistance = pairDistance(object, partner);
+  const proximity = clamp(
+    1 - (currentDistance - closeDistance) / (rampStart - closeDistance),
+    0,
+    1,
+  );
+  return 1 + proximity * proximity * (PANIC_RAMP_MAX - 1);
+}
+
 export function pairAcceleration(
   object: InkObject,
   partner: InkObject,

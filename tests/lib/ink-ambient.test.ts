@@ -23,6 +23,7 @@ import {
   formInitialPairs,
   formPair,
   pairApproachRamp,
+  preyPanicRamp,
   reevaluatePartner,
 } from "@/lib/ink-ambient/pairing";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
@@ -294,6 +295,22 @@ describe("Ink Ambient primitives", () => {
     expect(nearRamp).toBeGreaterThan(farRamp);
     expect(touchingRamp).toBeGreaterThan(nearRamp);
     expect(touchingRamp).toBeLessThanOrEqual(2.4);
+  });
+
+  it("ramps prey panic-wobble amplitude up as the predator closes in", () => {
+    const anchor = object(1, 0, 0);
+    const far = object(2, 1000, 0);
+    const near = object(3, 90, 0);
+    const touching = object(4, 45, 0);
+
+    const farRamp = preyPanicRamp(anchor, far);
+    const nearRamp = preyPanicRamp(anchor, near);
+    const touchingRamp = preyPanicRamp(anchor, touching);
+
+    expect(farRamp).toBe(1);
+    expect(nearRamp).toBeGreaterThan(farRamp);
+    expect(touchingRamp).toBeGreaterThan(nearRamp);
+    expect(touchingRamp).toBeLessThanOrEqual(2.2);
   });
 
   it("pins the thrown object's chaseSpeed to its throw velocity instead of rolling fresh", () => {
