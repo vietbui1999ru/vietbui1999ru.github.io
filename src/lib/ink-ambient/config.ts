@@ -188,4 +188,9 @@ export const PREDATOR_SCARCITY_HUNGER_PENALTY_SECONDS = 5;
 // spawned in" cue.
 export const PREDATOR_SPAWN_TINT_COLOR = "#f2a6a6";
 export const PREY_SPAWN_TINT_COLOR = "#a8d8b0";
-export const SPAWN_TINT_DURATION_SECONDS = 1.2;
+// Long enough to clear the spawn opacity ramp-in (object.opacity starts at
+// 0.01 and takes ~1.1s to reach 1.0, plus SPAWN_SETTLE_SECONDS before
+// lifecycle flips to "active") with real margin — otherwise the tint fades
+// out at almost the same rate the object fades in, making it barely
+// visible: the two ramps would cancel out instead of overlapping.
+export const SPAWN_TINT_DURATION_SECONDS = 2.5;
