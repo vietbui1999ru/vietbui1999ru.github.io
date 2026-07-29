@@ -44,6 +44,10 @@ export function findNearestAvailable(
   return best;
 }
 
+export function pairForceMultiplier(a: InkObject, b: InkObject): number {
+  return clamp(a.attractionValue * b.attractionValue, PAIR_FORCE_MIN, PAIR_FORCE_MAX);
+}
+
 function vigorT(object: InkObject): number {
   return clamp(
     (object.attractionValue - ATTRACTION_VALUE_MIN) / (ATTRACTION_VALUE_MAX - ATTRACTION_VALUE_MIN),
