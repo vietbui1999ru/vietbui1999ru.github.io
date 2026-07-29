@@ -27,8 +27,9 @@ import {
   detachPair,
   formInitialPairs,
   idleAcceleration,
-  pairAcceleration,
   pairApproachRamp,
+  predatorAcceleration,
+  preyAcceleration,
   reevaluatePartner,
 } from "@/lib/ink-ambient/pairing";
 import { updateSpawnFade } from "@/lib/ink-ambient/lifecycle";
@@ -133,6 +134,8 @@ function makeObject(id: number, position: Vec2, rng: SeededRng, now: number): In
     trailSampleTimer: 0,
     partnerId: null,
     formerPartnerId: null,
+    role: null,
+    chaseSpeed: 0,
     attractionValue: rng.range(ATTRACTION_VALUE_MIN, ATTRACTION_VALUE_MAX),
     motionBlend: null,
   };
@@ -237,7 +240,7 @@ onMount(() => {
       objects.push(makeObject(nextObjectId++, position, rng, now));
       cornerIndex += 1;
     }
-    formInitialPairs(objects);
+    formInitialPairs(objects, rng);
   }
 
   function restoreObjects(): void {
@@ -358,7 +361,9 @@ onMount(() => {
 
     let acceleration =
       partner && !settling
-        ? pairAcceleration(object, partner, maxAccel, now)
+        ? object.role === "predator"
+          ? predatorAcceleration(object, partner, maxAccel, now)
+          : preyAcceleration(object, partner, maxAccel, now)
         : idleAcceleration(object, activeAnchor, isUnsafe, now);
 
     if (object.motionBlend) {
@@ -389,8 +394,12 @@ onMount(() => {
     applyDrag(object, 0.06, dt);
     integrate(object, acceleration, dt);
     const rotationDelta = applyHeadingRotation(object, dt);
-    const approachRamp = partner && !settling ? pairApproachRamp(object, partner) : 1;
-    const maxSpeed = (155 - (155 - 115) * massT) * approachRamp;
+    const maxSpeed =
+      partner && !settling
+        ? object.role === "predator"
+          ? object.chaseSpeed * pairApproachRamp(object, partner)
+          : object.chaseSpeed
+        : 155 - (155 - 115) * massT;
     object.velocity = limit(object.velocity, maxSpeed);
     object.scale.x += (1 - object.scale.x) * Math.min(1, dt * 5);
     object.scale.y += (1 - object.scale.y) * Math.min(1, dt * 5);
@@ -582,7 +591,7 @@ onMount(() => {
           object.velocity.x = clamp(pointer.velocityX, -260, 260);
           object.velocity.y = clamp(pointer.velocityY, -260, 260);
         }
-        reevaluatePartner(object, objects);
+        reevaluatePartner(object, objects, rng);
       }
     }
     pointer.id = null;
