@@ -2,7 +2,6 @@ import { describe, expect, it, beforeEach } from "vitest";
 import {
   PREDATOR_RADIUS_MAX,
   PREDATOR_RADIUS_MIN,
-  PREDATOR_SPEED_MULTIPLIER_MIN,
   PREY_RADIUS_MAX,
   PREY_RADIUS_MIN,
   PREY_SPEED_MAX,
@@ -28,16 +27,6 @@ import {
   resolveCircleCollision,
   updateTurnSquash,
 } from "@/lib/ink-ambient/physics";
-import {
-  detachPair,
-  formInitialPairs,
-  formPair,
-  pairApproachRamp,
-  predatorAcceleration,
-  preyAcceleration,
-  preyPanicRamp,
-  reevaluatePartner,
-} from "@/lib/ink-ambient/pairing";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
 import { stepLotkaVolterra, mapToTargets } from "@/lib/ink-ambient/population";
 import { resolveCatches } from "@/lib/ink-ambient/catches";
@@ -54,6 +43,10 @@ import {
   updateTarget,
   nearbyPredatorCount,
   nearbyPredatorWobbleMultiplier,
+  pairApproachRamp,
+  preyPanicRamp,
+  predatorAcceleration,
+  preyAcceleration,
 } from "@/lib/ink-ambient/targeting";
 
 function object(id: number, x: number, y: number): InkObject {
@@ -85,8 +78,6 @@ function object(id: number, x: number, y: number): InkObject {
     lives: 3,
     hungerElapsed: 0,
     vanishElapsed: null,
-    partnerId: null,
-    formerPartnerId: null,
     role: null,
     chaseSpeed: 0,
     attractionValue: 1,
@@ -270,49 +261,6 @@ describe("Ink Ambient primitives", () => {
     expect(turning.smoothedAngularVelocity).toBeLessThanOrEqual(8);
   });
 
-  it("pairs the nearest available objects into mutual bonds", () => {
-    const objects = [object(1, 0, 0), object(2, 10, 0), object(3, 500, 500), object(4, 510, 500)];
-    formInitialPairs(objects, new SeededRng(1));
-    expect(objects[0].partnerId).toBe(2);
-    expect(objects[1].partnerId).toBe(1);
-    expect(objects[2].partnerId).toBe(4);
-    expect(objects[3].partnerId).toBe(3);
-  });
-
-  it("leaves a lone object unpaired without throwing", () => {
-    const objects = [object(1, 0, 0)];
-    expect(() => formInitialPairs(objects, new SeededRng(1))).not.toThrow();
-    expect(objects[0].partnerId).toBeNull();
-  });
-
-  it("re-forms the same pair after a detach and release with only two objects", () => {
-    const objects = [object(1, 0, 0), object(2, 10, 0)];
-    formInitialPairs(objects, new SeededRng(1));
-    detachPair(objects[0], objects);
-    expect(objects[0].partnerId).toBeNull();
-    expect(objects[1].partnerId).toBeNull();
-    reevaluatePartner(objects[0], objects, new SeededRng(1));
-    expect(objects[0].partnerId).toBe(2);
-    expect(objects[1].partnerId).toBe(1);
-  });
-
-  it("assigns one predator and one prey with predator always faster", () => {
-    const rng = new SeededRng(7);
-    for (let trial = 0; trial < 50; trial += 1) {
-      const a = object(1, 0, 0);
-      const b = object(2, 10, 0);
-      formPair(a, b, rng);
-      const roles = [a.role, b.role].sort();
-      expect(roles).toEqual(["predator", "prey"]);
-      const predator = a.role === "predator" ? a : b;
-      const prey = a.role === "predator" ? b : a;
-      expect(predator.chaseSpeed).toBeGreaterThan(prey.chaseSpeed);
-      expect(prey.chaseSpeed).toBeGreaterThanOrEqual(PREY_SPEED_MIN);
-      expect(prey.chaseSpeed).toBeLessThanOrEqual(PREY_SPEED_MAX);
-      expect(predator.radius).toBeGreaterThan(prey.radius);
-    }
-  });
-
   it("ramps the approach multiplier up as a pair closes in, capped near touching", () => {
     const anchor = object(1, 0, 0);
     const far = object(2, 1000, 0);
@@ -366,89 +314,6 @@ describe("Ink Ambient primitives", () => {
     // prey sits to the right of the predator, so fleeing means accelerating further right (+x)
     const accel = preyAcceleration(prey, predator, 400, 0);
     expect(accel.x).toBeGreaterThan(0);
-  });
-
-  it("pins the thrown object's chaseSpeed to its throw velocity instead of rolling fresh", () => {
-    const objects = [object(1, 0, 0), object(2, 10, 0)];
-    const rng = new SeededRng(5);
-    formInitialPairs(objects, rng);
-    const thrown = objects[0];
-    const partner = objects[1];
-    detachPair(thrown, objects);
-    thrown.velocity = { x: 20, y: 0 }; // throwSpeed = 20, well below every floor/ceiling below
-    reevaluatePartner(thrown, objects, rng);
-    expect(thrown.partnerId).toBe(partner.id);
-    if (thrown.role === "predator") {
-      // floored at PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN
-      expect(thrown.chaseSpeed).toBeCloseTo(PREY_SPEED_MIN * PREDATOR_SPEED_MULTIPLIER_MIN, 5);
-    } else {
-      // clamped up to PREY_SPEED_MIN (20 is below the floor)
-      expect(thrown.chaseSpeed).toBeCloseTo(PREY_SPEED_MIN, 5);
-    }
-  });
-
-  it("keeps the thrown object's role sticky across a throw instead of re-flipping", () => {
-    for (let seed = 0; seed < 20; seed += 1) {
-      const objects = [object(1, 0, 0), object(2, 10, 0)];
-      const rng = new SeededRng(seed * 37 + 3);
-      formInitialPairs(objects, rng);
-      const thrown = objects[0];
-      const partner = objects[1];
-      const roleBeforeThrow = thrown.role;
-      detachPair(thrown, objects);
-      thrown.velocity = { x: 15, y: 0 };
-      reevaluatePartner(thrown, objects, rng);
-      expect(thrown.role).toBe(roleBeforeThrow);
-      expect(partner.role).toBe(roleBeforeThrow === "predator" ? "prey" : "predator");
-    }
-  });
-
-  it("recalibration never lets a gently-thrown predator end up slower than its prey", () => {
-    for (let seed = 0; seed < 30; seed += 1) {
-      const objects = [object(1, 0, 0), object(2, 10, 0)];
-      const rng = new SeededRng(seed * 101 + 1);
-      formInitialPairs(objects, rng);
-      const thrown = objects[0];
-      const partner = objects[1];
-      detachPair(thrown, objects);
-      thrown.velocity = { x: 1, y: 0 }; // near-zero throw, worst case
-      reevaluatePartner(thrown, objects, rng);
-      const predator = thrown.role === "predator" ? thrown : partner;
-      const prey = thrown.role === "predator" ? partner : thrown;
-      expect(predator.chaseSpeed).toBeGreaterThan(prey.chaseSpeed);
-      expect(predator.radius).toBeGreaterThan(prey.radius);
-    }
-  });
-
-  it("reshuffles the old partner with a nearby lone object when a throw forms a new pair", () => {
-    const objects = [
-      object(1, 0, 0), // A
-      object(2, 10, 0), // B — A's original partner
-      object(3, 1000, 1000), // E — lone, closest to A after the throw
-      object(4, 1500, 1500), // F — lone, closest to B once orphaned
-    ];
-    const rng = new SeededRng(9);
-    formPair(objects[0], objects[1], rng); // A-B paired directly (no other objects to interfere)
-    const a = objects[0];
-    const b = objects[1];
-    const e = objects[2];
-    const f = objects[3];
-    detachPair(a, objects);
-    // Move A next to E (not back toward B) so the thrown object forms a NEW pair.
-    a.position = { x: 990, y: 990 };
-    a.velocity = { x: 5, y: 5 };
-    reevaluatePartner(a, objects, rng);
-
-    expect(a.partnerId).toBe(e.id);
-    expect(e.partnerId).toBe(a.id);
-    expect(b.partnerId).toBe(f.id);
-    expect(f.partnerId).toBe(b.id);
-
-    // predator > prey invariant holds for both freshly-formed pairs
-    const [aRolePredator, aRolePrey] = a.role === "predator" ? [a, e] : [e, a];
-    expect(aRolePredator.chaseSpeed).toBeGreaterThan(aRolePrey.chaseSpeed);
-    const [bRolePredator, bRolePrey] = b.role === "predator" ? [b, f] : [f, b];
-    expect(bRolePredator.chaseSpeed).toBeGreaterThan(bRolePrey.chaseSpeed);
   });
 
   it("detects circle overlap consistently with resolveCircleCollision's own check", () => {

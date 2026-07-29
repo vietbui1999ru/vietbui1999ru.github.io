@@ -4,9 +4,13 @@ import { NAV_LINKS } from "@/data/navLinks";
 
 let { pathname }: { pathname: string } = $props();
 let dark = $state(false);
+let inkAmbientEnabled = $state(true);
 
 onMount(() => {
   dark = document.documentElement.classList.contains("dark");
+  inkAmbientEnabled = !document.documentElement.classList.contains(
+    "ink-ambient-disabled",
+  );
 });
 
 function hrefFor(href: string): string {
@@ -18,6 +22,20 @@ function toggleTheme() {
   document.documentElement.classList.toggle("dark", dark);
   localStorage.setItem("theme", dark ? "dark" : "light");
 }
+
+function toggleInkAmbient() {
+  inkAmbientEnabled = !inkAmbientEnabled;
+  document.documentElement.classList.toggle(
+    "ink-ambient-disabled",
+    !inkAmbientEnabled,
+  );
+  localStorage.setItem("ink-ambient", inkAmbientEnabled ? "on" : "off");
+  window.dispatchEvent(
+    new CustomEvent("ink-ambient-change", {
+      detail: { enabled: inkAmbientEnabled },
+    }),
+  );
+}
 </script>
 
 <nav
@@ -27,10 +45,15 @@ function toggleTheme() {
     class="mx-auto flex h-14 w-full max-w-[var(--content-max)] items-center justify-between px-4 sm:px-6"
   >
     <a
-      href={hrefFor("#home")}
-      class="font-serif text-lg font-semibold italic text-ink no-underline"
-      >viet bui</a
+      href={hrefFor("/")}
+      class="group relative inline-flex items-center font-serif text-xl font-black italic leading-none tracking-[-0.04em] text-ink no-underline"
     >
+      <span class="relative z-10">viet bui</span>
+      <span
+        aria-hidden="true"
+        class="absolute inset-x-0 bottom-[-0.15rem] h-2 bg-pastel-butter transition-transform duration-200 group-hover:translate-y-0.5"
+      ></span>
+    </a>
 
     <div class="flex items-center gap-3 lg:gap-5 xl:gap-7">
       {#each NAV_LINKS as link, i (link.href)}
@@ -43,13 +66,30 @@ function toggleTheme() {
         </a>
       {/each}
 
-      <button
-        onclick={toggleTheme}
-        aria-label="Toggle dark mode"
-        class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
-      >
-        {dark ? "☼" : "◐"}
-      </button>
+      <div class="flex items-center gap-2">
+        <button
+          onclick={toggleInkAmbient}
+          aria-label={inkAmbientEnabled ? "Disable ink ambient animation" : "Enable ink ambient animation"}
+          aria-pressed={inkAmbientEnabled}
+          class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
+        >
+          {inkAmbientEnabled ? "✦" : "·"}
+        </button>
+        <button
+          onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-topup"))}
+          aria-label="Top up ink ambient population"
+          class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
+        >
+          ⟳
+        </button>
+        <button
+          onclick={toggleTheme}
+          aria-label="Toggle dark mode"
+          class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
+        >
+          {dark ? "☼" : "◐"}
+        </button>
+      </div>
     </div>
   </div>
 </nav>

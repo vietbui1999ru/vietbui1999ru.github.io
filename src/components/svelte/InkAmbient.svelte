@@ -14,24 +14,37 @@ import {
   MAX_DPR,
   MAX_OBJECTS_DESKTOP,
   MAX_OBJECTS_MOBILE,
+  POPULATION_TOPUP_MAX_DELAY_MS,
+  POPULATION_TOPUP_MIN_DELAY_MS,
+  PREDATOR_LIVES_START,
   PREDATOR_MAX_RAMPED_SPEED,
+  PREDATOR_RADIUS_MAX,
+  PREY_RADIUS_MAX,
   SAFE_CLEARANCE,
   TRAIL_MIN_SPEED,
   TRAIL_SAMPLE_INTERVAL_SECONDS,
   TRAPPED_ESCAPE_ACCELERATION,
   TRAPPED_ESCAPE_SECONDS,
+  VANISH_DURATION_SECONDS,
   getRouteProfile,
 } from "@/lib/ink-ambient/config";
+import { rollRadius, rollChaseSpeed } from "@/lib/ink-ambient/spawn";
 import {
-  detachPair,
-  formInitialPairs,
-  idleAcceleration,
+  updateTarget,
+  nearbyPredatorWobbleMultiplier,
   pairApproachRamp,
   predatorAcceleration,
   preyAcceleration,
-  reevaluatePartner,
-} from "@/lib/ink-ambient/pairing";
-import { updateSpawnFade } from "@/lib/ink-ambient/lifecycle";
+  idleAcceleration,
+} from "@/lib/ink-ambient/targeting";
+import { resolveCatches } from "@/lib/ink-ambient/catches";
+import { stepLotkaVolterra, mapToTargets, type PopulationState } from "@/lib/ink-ambient/population";
+import {
+  updateSpawnFade,
+  updateVanish,
+  applyPredatorSurvivalTick,
+  predatorSpawnRampMultiplier,
+} from "@/lib/ink-ambient/lifecycle";
 import {
   collectObstacles,
   hasOpenModal,
@@ -42,7 +55,6 @@ import {
   applyDrag,
   applyHeadingRotation,
   boundarySteeringForce,
-  circlesOverlap,
   clamp,
   clampToViewport,
   fixedStepAccumulator,
@@ -109,12 +121,19 @@ function massFraction(mass: number): number {
   return clamp((mass - 0.7) / (1.5 - 0.7), 0, 1);
 }
 
-function makeObject(id: number, position: Vec2, rng: SeededRng, now: number): InkObject {
+function makeObject(
+  id: number,
+  position: Vec2,
+  rng: SeededRng,
+  now: number,
+  role: "predator" | "prey",
+): InkObject {
+  const attractionValue = rng.range(ATTRACTION_VALUE_MIN, ATTRACTION_VALUE_MAX);
   return {
     id,
     position: { ...position },
     velocity: { x: rng.range(-18, 18), y: rng.range(-12, 12) },
-    radius: rng.range(13, 24),
+    radius: rollRadius(role, rng),
     mass: rng.range(0.7, 1.5),
     rotation: rng.range(-Math.PI, Math.PI),
     angularVelocity: rng.range(-0.25, 0.25),
@@ -134,12 +153,14 @@ function makeObject(id: number, position: Vec2, rng: SeededRng, now: number): In
     wobblePhase: rng.range(0, Math.PI * 2),
     trail: [],
     trailSampleTimer: 0,
-    partnerId: null,
-    formerPartnerId: null,
-    role: null,
-    chaseSpeed: 0,
-    attractionValue: rng.range(ATTRACTION_VALUE_MIN, ATTRACTION_VALUE_MAX),
+    currentTargetId: null,
+    role,
+    chaseSpeed: rollChaseSpeed(role, attractionValue, rng),
+    attractionValue,
     motionBlend: null,
+    lives: PREDATOR_LIVES_START,
+    hungerElapsed: 0,
+    vanishElapsed: null,
   };
 }
 
@@ -179,6 +200,9 @@ onMount(() => {
     "ink-ambient-disabled",
   );
   let activeAnchor: Vec2 | null = null;
+  let nextPreySpawnAt = 0;
+  let nextPredatorSpawnAt = 0;
+  let population: PopulationState = { prey: 1.5, predator: 0.7 };
   let lastSectionChange = 0;
   let pointerSampleTime = 0;
   let pointerListenersInstalled = false;
@@ -228,21 +252,58 @@ onMount(() => {
     return Math.min(maximum, Math.max(0, capacity));
   }
 
-  function spawnFreshBatch(now: number): void {
+  function spawnInitialBatch(now: number): void {
     if (!field) return;
     const target = targetPopulation();
-    let cornerIndex = objects.length;
     while (objects.length < target) {
-      const radius = rng.range(13, 24);
+      const role: "predator" | "prey" = rng.chance(0.5) ? "predator" : "prey";
+      const radius = role === "predator" ? PREDATOR_RADIUS_MAX : PREY_RADIUS_MAX;
       const avoid = objects.map((object) => object.position);
       const position =
-        findSafePointNearCorner(field, radius, rng, cornerIndex, avoid) ??
+        findSafePointNearCorner(field, radius, rng, objects.length, avoid) ??
         findSafePoint(field, radius, rng, avoid);
       if (!position) break;
-      objects.push(makeObject(nextObjectId++, position, rng, now));
-      cornerIndex += 1;
+      objects.push(makeObject(nextObjectId++, position, rng, now, role));
     }
-    formInitialPairs(objects, rng);
+  }
+
+  function countAlive(role: "predator" | "prey"): number {
+    return objects.filter((object) => object.role === role && object.vanishElapsed === null).length;
+  }
+
+  function spawnOne(role: "predator" | "prey", now: number): boolean {
+    if (!field) return false;
+    const radius = role === "predator" ? PREDATOR_RADIUS_MAX : PREY_RADIUS_MAX;
+    const avoid = objects.map((object) => object.position);
+    const position =
+      findSafePointNearCorner(field, radius, rng, objects.length, avoid) ??
+      findSafePoint(field, radius, rng, avoid);
+    if (!position) return false;
+    objects.push(makeObject(nextObjectId++, position, rng, now, role));
+    return true;
+  }
+
+  function deviceCapMax(): number {
+    return pointer.fine && width >= 720 ? MAX_OBJECTS_DESKTOP : MAX_OBJECTS_MOBILE;
+  }
+
+  function topUpPopulation(now: number, forceImmediate = false): void {
+    if (!field) return;
+    const targets = mapToTargets(population);
+    const perRoleCap = Math.max(1, Math.floor(deviceCapMax() / 2));
+    const preyTarget = Math.min(targets.preyTarget, perRoleCap);
+    const predatorTarget = Math.min(targets.predatorTarget, perRoleCap);
+
+    while (countAlive("prey") < preyTarget && (forceImmediate || now >= nextPreySpawnAt)) {
+      if (!spawnOne("prey", now)) break;
+      nextPreySpawnAt = now + rng.range(POPULATION_TOPUP_MIN_DELAY_MS, POPULATION_TOPUP_MAX_DELAY_MS);
+      if (!forceImmediate) break;
+    }
+    while (countAlive("predator") < predatorTarget && (forceImmediate || now >= nextPredatorSpawnAt)) {
+      if (!spawnOne("predator", now)) break;
+      nextPredatorSpawnAt = now + rng.range(POPULATION_TOPUP_MIN_DELAY_MS, POPULATION_TOPUP_MAX_DELAY_MS);
+      if (!forceImmediate) break;
+    }
   }
 
   function restoreObjects(): void {
@@ -264,13 +325,17 @@ onMount(() => {
             objects.map((object) => object.position),
           );
       if (!position) continue;
-      const object = makeObject(saved.id, position, rng, performance.now());
+      const role: "predator" | "prey" = rng.chance(0.5) ? "predator" : "prey";
+      const object = makeObject(saved.id, position, rng, performance.now(), role);
       nextObjectId = Math.max(nextObjectId, saved.id + 1);
       object.velocity = {
         x: saved.velocity.x * width,
         y: saved.velocity.y * height,
       };
       object.attractionValue = saved.attractionValue;
+      // Re-roll chaseSpeed from the restored attractionValue — makeObject already
+      // rolled one from a freshly-generated attractionValue before we overwrote it.
+      object.chaseSpeed = rollChaseSpeed(role, object.attractionValue, rng);
       object.rngState = saved.rngState;
       objects.push(object);
     }
@@ -342,6 +407,12 @@ onMount(() => {
     object.effectCooldown = Math.max(0, object.effectCooldown - dt);
     object.squashCooldown = Math.max(0, object.squashCooldown - dt);
     updateSpawnFade(object, now, dt);
+    applyPredatorSurvivalTick(object, dt);
+
+    if (object.vanishElapsed !== null) {
+      updateVanish(object, dt);
+      return;
+    }
 
     if (object.grabbed) {
       // Still track the trail while dragged: object.position is synced to the
@@ -357,19 +428,16 @@ onMount(() => {
       ATTRACTION_MAX_ACCELERATION_LIGHT +
       (ATTRACTION_MAX_ACCELERATION_HEAVY - ATTRACTION_MAX_ACCELERATION_LIGHT) * massT;
 
-    const partner =
-      object.partnerId !== null
-        ? (objects.find((candidate) => candidate.id === object.partnerId) ?? null)
-        : null;
+    const target = updateTarget(object, objects);
 
     const isUnsafe = Boolean(field) && !isSafePoint(field!, object.position, object.radius);
     object.unsafeElapsed = isUnsafe ? object.unsafeElapsed + dt : 0;
 
     let acceleration =
-      partner && !settling
+      target && !settling
         ? object.role === "predator"
-          ? predatorAcceleration(object, partner, maxAccel, now)
-          : preyAcceleration(object, partner, maxAccel, now)
+          ? predatorAcceleration(object, target, maxAccel, now)
+          : preyAcceleration(object, target, maxAccel, now, nearbyPredatorWobbleMultiplier(object, objects))
         : idleAcceleration(object, activeAnchor, isUnsafe, now);
 
     if (object.motionBlend) {
@@ -400,10 +468,11 @@ onMount(() => {
     applyDrag(object, 0.06, dt);
     integrate(object, acceleration, dt);
     const rotationDelta = applyHeadingRotation(object, dt);
+    const spawnRamp = object.role === "predator" ? predatorSpawnRampMultiplier(object, now) : 1;
     const maxSpeed =
-      partner && !settling
+      target && !settling
         ? object.role === "predator"
-          ? Math.min(object.chaseSpeed * pairApproachRamp(object, partner), PREDATOR_MAX_RAMPED_SPEED)
+          ? Math.min(object.chaseSpeed * pairApproachRamp(object, target) * spawnRamp, PREDATOR_MAX_RAMPED_SPEED)
           : object.chaseSpeed
         : 155 - (155 - 115) * massT;
     object.velocity = limit(object.velocity, maxSpeed);
@@ -425,56 +494,60 @@ onMount(() => {
 
     for (const object of objects) updateObject(object, dt, now);
 
-    const destroyed = new Set<number>();
-    const bursts: Array<{ x: number; y: number; radius: number }> = [];
+    const catchResult = resolveCatches(objects);
+    for (const id of catchResult.winnerIds) {
+      const winner = objects.find((object) => object.id === id);
+      if (winner) winner.hungerElapsed = 0;
+    }
+    for (const id of catchResult.loserIds) {
+      const loser = objects.find((object) => object.id === id);
+      if (loser && loser.vanishElapsed === null) {
+        loser.lives -= 1;
+        if (loser.lives <= 0) loser.vanishElapsed = 0;
+      }
+    }
+    for (const burst of catchResult.bursts) addBurstEffect(burst.x, burst.y, burst.radius);
+
     for (let first = 0; first < objects.length; first += 1) {
       for (let second = first + 1; second < objects.length; second += 1) {
         const a = objects[first];
         const b = objects[second];
-        if (destroyed.has(a.id) || destroyed.has(b.id)) continue;
-
-        const mutuallyPaired = a.partnerId === b.id && b.partnerId === a.id;
-        if (mutuallyPaired && circlesOverlap(a, b)) {
-          destroyed.add(a.id);
-          destroyed.add(b.id);
-          bursts.push({
-            x: (a.position.x + b.position.x) / 2,
-            y: (a.position.y + b.position.y) / 2,
-            radius: a.radius + b.radius,
-          });
-          continue;
-        }
-        if (!mutuallyPaired) {
-          const collision = resolveCircleCollision(a, b, rng.range(-0.08, 0.08));
-          if (collision.hit) {
-            const squash = clamp(collision.impulse / 90, 0.02, 0.22);
-            if (a.squashCooldown <= 0) {
-              a.scale.x = 1 + squash;
-              a.scale.y = 1 - squash;
-              a.squashCooldown = 0.18;
-            }
-            if (b.squashCooldown <= 0) {
-              b.scale.x = 1 + squash;
-              b.scale.y = 1 - squash;
-              b.squashCooldown = 0.18;
-            }
-            addCollisionEffect(a);
-            addCollisionEffect(b);
+        if (catchResult.destroyedPreyIds.has(a.id) || catchResult.destroyedPreyIds.has(b.id)) continue;
+        const collision = resolveCircleCollision(a, b, rng.range(-0.08, 0.08));
+        if (collision.hit) {
+          const squash = clamp(collision.impulse / 90, 0.02, 0.22);
+          if (a.squashCooldown <= 0) {
+            a.scale.x = 1 + squash;
+            a.scale.y = 1 - squash;
+            a.squashCooldown = 0.18;
           }
+          if (b.squashCooldown <= 0) {
+            b.scale.x = 1 + squash;
+            b.scale.y = 1 - squash;
+            b.squashCooldown = 0.18;
+          }
+          addCollisionEffect(a);
+          addCollisionEffect(b);
         }
       }
     }
 
-    if (destroyed.size > 0) {
-      for (const burst of bursts) addBurstEffect(burst.x, burst.y, burst.radius);
+    const readyForRemoval = new Set<number>(catchResult.destroyedPreyIds);
+    for (const object of objects) {
+      if (object.vanishElapsed !== null && object.vanishElapsed >= VANISH_DURATION_SECONDS) {
+        readyForRemoval.add(object.id);
+      }
+    }
+    if (readyForRemoval.size > 0) {
       for (let index = objects.length - 1; index >= 0; index -= 1) {
-        if (destroyed.has(objects[index].id)) objects.splice(index, 1);
+        if (readyForRemoval.has(objects[index].id)) objects.splice(index, 1);
       }
     }
 
     updateEffects(dt);
 
-    if (objects.length === 0) spawnFreshBatch(now);
+    population = stepLotkaVolterra(population, dt);
+    topUpPopulation(now);
   }
 
   function frame(now: number): void {
@@ -547,7 +620,6 @@ onMount(() => {
       if (moved < 5) return;
       pointer.dragStarted = true;
       object.grabbed = true;
-      detachPair(object, objects);
     }
     object.position.x = pointer.x;
     object.position.y = pointer.y;
@@ -592,12 +664,9 @@ onMount(() => {
     );
     if (object) {
       object.grabbed = false;
-      if (pointer.dragStarted) {
-        if (throwObject) {
-          object.velocity.x = clamp(pointer.velocityX, -260, 260);
-          object.velocity.y = clamp(pointer.velocityY, -260, 260);
-        }
-        reevaluatePartner(object, objects, rng);
+      if (pointer.dragStarted && throwObject) {
+        object.velocity.x = clamp(pointer.velocityX, -260, 260);
+        object.velocity.y = clamp(pointer.velocityY, -260, 260);
       }
     }
     pointer.id = null;
@@ -654,7 +723,7 @@ onMount(() => {
   resize();
   refreshGeometry();
   restoreObjects();
-  spawnFreshBatch(performance.now());
+  spawnInitialBatch(performance.now());
 
   const sectionObserver = new IntersectionObserver(activeSectionChange, {
     threshold: [0.15, 0.35, 0.6],
@@ -704,6 +773,9 @@ onMount(() => {
     window.removeEventListener("blur", onBlur);
     pointerListenersInstalled = false;
   };
+  const onInkAmbientTopup = () => {
+    topUpPopulation(performance.now(), true);
+  };
   const onInkAmbientChange = (event: Event) => {
     const { enabled: nextEnabled } = (
       event as CustomEvent<{ enabled: boolean }>
@@ -726,6 +798,7 @@ onMount(() => {
     passive: true,
   });
   window.addEventListener("ink-ambient-change", onInkAmbientChange);
+  window.addEventListener("ink-ambient-topup", onInkAmbientTopup);
   mutationObserver.takeRecords();
   start();
 
@@ -741,6 +814,7 @@ onMount(() => {
     removePointerListeners();
     document.removeEventListener("visibilitychange", visibilityChange);
     window.removeEventListener("ink-ambient-change", onInkAmbientChange);
+    window.removeEventListener("ink-ambient-topup", onInkAmbientTopup);
   };
 });
 </script>

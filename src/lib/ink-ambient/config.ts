@@ -139,3 +139,9 @@ export function getRouteProfile(pathname: string, sectionId?: string): RouteProf
   if (pathname === "/projects") return ROUTE_PROFILES.projects;
   return ROUTE_PROFILES.default;
 }
+
+// Population top-up pacing (spec §8.3). PREDATOR_SPAWN_RAMP_SECONDS and
+// PREDATOR_SPAWN_RAMP_START_FRACTION were already added in Task 3, alongside
+// predatorSpawnRampMultiplier which consumes them.
+export const POPULATION_TOPUP_MIN_DELAY_MS = 1500;
+export const POPULATION_TOPUP_MAX_DELAY_MS = 3500;

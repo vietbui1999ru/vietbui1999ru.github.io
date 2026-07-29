@@ -38,8 +38,6 @@ export type InkObject = {
   lives: number;
   hungerElapsed: number;
   vanishElapsed: number | null;
-  partnerId: number | null;
-  formerPartnerId: number | null;
   role: "predator" | "prey" | null;
   chaseSpeed: number;
   attractionValue: number;

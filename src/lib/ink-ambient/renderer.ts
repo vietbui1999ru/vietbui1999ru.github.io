@@ -1,5 +1,6 @@
 import { OBJECT_TIP_OFFSET_FRACTION } from "./config";
 import { isPenLike, tipPosition, trailMaxAge } from "./physics";
+import { renderedOpacityMultiplier } from "./lifecycle";
 import type { InkEffect, InkObject, Rect } from "./types";
 
 const SPRITE_SIZE = 96;
@@ -104,12 +105,13 @@ export class InkRenderer {
         { position: object.position, radius: renderedRadius },
         obstacles,
       );
-      if (opacity <= 0) continue;
+      const fadeMultiplier = renderedOpacityMultiplier(object);
+      if (opacity <= 0 || fadeMultiplier <= 0) continue;
       // sprites[0] = pencil, sprites[1] = pen — same isPenLike predicate the
       // trail helpers use, so shape and trail styling always agree.
       const sprite = this.sprites[isPenLike(object) ? 1 : 0];
       this.context.save();
-      this.context.globalAlpha = object.opacity * opacity;
+      this.context.globalAlpha = object.opacity * opacity * fadeMultiplier;
       this.context.translate(object.position.x, object.position.y);
       this.context.rotate(object.rotation);
       this.context.scale(
