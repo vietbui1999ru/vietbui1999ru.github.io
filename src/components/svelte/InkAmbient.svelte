@@ -381,22 +381,6 @@ onMount(() => {
     }
   }
 
-  function addCollisionEffect(object: InkObject): void {
-    if (object.effectCooldown > 0 || effects.length >= 4 || !rng.chance(0.12))
-      return;
-    object.effectCooldown = 1.3;
-    effects.push({
-      x: object.position.x,
-      y: object.position.y,
-      radius: object.radius * rng.range(0.45, 0.9),
-      alpha: 0.26,
-      age: 0,
-      lifetime: rng.range(0.5, 1.5),
-      type: "splat",
-      rotation: rng.range(-Math.PI, Math.PI),
-    });
-  }
-
   function addBurstEffect(x: number, y: number, radius: number): void {
     if (effects.length >= 4) return;
     effects.push({
@@ -551,22 +535,8 @@ onMount(() => {
         // catches from ever registering. Same-role pairs (predator-predator,
         // prey-prey) still bump normally.
         if (a.role === b.role) {
-          const collision = resolveCircleCollision(a, b, rng.range(-0.08, 0.08));
-          if (collision.hit) {
-            const squash = clamp(collision.impulse / 90, 0.02, 0.22);
-            if (a.squashCooldown <= 0) {
-              a.scale.x = 1 + squash;
-              a.scale.y = 1 - squash;
-              a.squashCooldown = 0.18;
-            }
-            if (b.squashCooldown <= 0) {
-              b.scale.x = 1 + squash;
-              b.scale.y = 1 - squash;
-              b.squashCooldown = 0.18;
-            }
-            addCollisionEffect(a);
-            addCollisionEffect(b);
-          }
+          // Physical separation only — no squash/star-splat visual embellishment.
+          resolveCircleCollision(a, b, rng.range(-0.08, 0.08));
         }
       }
     }
