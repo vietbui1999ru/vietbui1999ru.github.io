@@ -3,8 +3,11 @@ import type { RouteProfile } from "./types";
 export const FIXED_STEP = 1 / 60;
 export const MAX_CATCH_UP_STEPS = 4;
 export const MAX_DPR = 2;
-export const MAX_OBJECTS_DESKTOP = 4;
-export const MAX_OBJECTS_MOBILE = 2;
+// Raised from 4/2 — canvas should support a much larger, denser population
+// rather than a tightly-capped handful; actual on-screen count is still
+// naturally bounded by available safe screen space (spatial-field capacity).
+export const MAX_OBJECTS_DESKTOP = 24;
+export const MAX_OBJECTS_MOBILE = 10;
 export const SAFE_CLEARANCE = 18;
 export const TRAPPED_ESCAPE_SECONDS = 1.5;
 export const TRAPPED_ESCAPE_ACCELERATION = 140;
@@ -35,8 +38,6 @@ export const ATTRACTION_VALUE_MIN = 0.5;
 export const ATTRACTION_VALUE_MAX = 1.5;
 // Speed/acceleration constants below are scaled ~1.4x over the original
 // tuning for a more aggressive chase (user feedback: "feels a bit slow").
-// The predator/prey ratio (PREDATOR_SPEED_MULTIPLIER_*) is unchanged — only
-// the baseline everyone moves/accelerates at went up.
 export const ATTRACTION_BASE_ACCELERATION = 154;
 export const ATTRACTION_MAX_ACCELERATION_LIGHT = 182;
 export const ATTRACTION_MAX_ACCELERATION_HEAVY = 98;
@@ -47,8 +48,13 @@ export const ATTRACTION_RAMP_START_MULTIPLIER = 6;
 export const PREY_SPEED_MIN = 133;
 export const PREY_SPEED_MAX = 182;
 export const PREY_THROW_SPEED_MAX = 252;
-export const PREDATOR_SPEED_MULTIPLIER_MIN = 1.15;
-export const PREDATOR_SPEED_MULTIPLIER_MAX = 1.45;
+// Floor is set above PREY_SPEED_MAX / PREY_SPEED_MIN (182/133 ≈ 1.37) so a
+// predator's max speed always exceeds every prey's, regardless of vigor rolls
+// — a low-vigor predator must still be able to run down a high-vigor prey.
+// Previously the floor (1.15) let a slow predator be outrun by a fast prey,
+// so predators effectively never caught anything (user-reported).
+export const PREDATOR_SPEED_MULTIPLIER_MIN = 1.4;
+export const PREDATOR_SPEED_MULTIPLIER_MAX = 1.8;
 export const PANIC_RAMP_MAX = 2.2;
 export const PREDATOR_MAX_RAMPED_SPEED = 520; // scaled up with the rest — was 372 (155 * ATTRACTION_RAMP_MAX) before the speed increase
 export const PREY_RADIUS_MIN = 11;
@@ -71,13 +77,20 @@ export const LV_ALPHA = 0.2;
 export const LV_BETA = 0.2;
 export const LV_GAMMA = 0.2;
 export const LV_DELTA = 0.2;
-export const LV_SCALE = 2;
-export const PREY_TARGET_MAX = 2;
-export const PREDATOR_TARGET_MAX = 2;
+// Scale and per-role maximums raised alongside MAX_OBJECTS_* so the LV cycle
+// has real room to swing across a much larger population instead of pinning
+// at 1-2 of each role.
+export const LV_SCALE = 6;
+export const PREY_TARGET_MAX = 12;
+export const PREDATOR_TARGET_MAX = 12;
 
 // Predator survival mechanics (spec §5-§7).
 export const PREDATOR_LIVES_START = 3;
-export const PREDATOR_STARVE_SECONDS = 16;
+// 5x the original 16s — starvation always happens eventually from passive
+// hunger accrual alone (never gated on user interaction), but on a much
+// longer autonomous clock; dragging (PREDATOR_DRAG_HUNGER_PENALTY_SECONDS)
+// is what meaningfully accelerates it.
+export const PREDATOR_STARVE_SECONDS = 80;
 export const VANISH_DURATION_SECONDS = 0.5;
 export const PREDATOR_PREY_CATCH_RADIUS_FRACTION = 0.65;
 // Predator spawn ramp (spec §6.1) — lives here rather than in Task 5 because

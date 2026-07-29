@@ -288,23 +288,34 @@ onMount(() => {
     return pointer.fine && width >= 720 ? MAX_OBJECTS_DESKTOP : MAX_OBJECTS_MOBILE;
   }
 
-  function topUpPopulation(now: number, forceImmediate = false): void {
+  function topUpPopulation(now: number): void {
     if (!field) return;
     const targets = mapToTargets(population);
     const perRoleCap = Math.max(1, Math.floor(deviceCapMax() / 2));
     const preyTarget = Math.min(targets.preyTarget, perRoleCap);
     const predatorTarget = Math.min(targets.predatorTarget, perRoleCap);
 
-    while (countAlive("prey") < preyTarget && (forceImmediate || now >= nextPreySpawnAt)) {
-      if (!spawnOne("prey", now)) break;
-      nextPreySpawnAt = now + rng.range(POPULATION_TOPUP_MIN_DELAY_MS, POPULATION_TOPUP_MAX_DELAY_MS);
-      if (!forceImmediate) break;
+    if (countAlive("prey") < preyTarget && now >= nextPreySpawnAt) {
+      if (spawnOne("prey", now)) {
+        nextPreySpawnAt = now + rng.range(POPULATION_TOPUP_MIN_DELAY_MS, POPULATION_TOPUP_MAX_DELAY_MS);
+      }
     }
-    while (countAlive("predator") < predatorTarget && (forceImmediate || now >= nextPredatorSpawnAt)) {
-      if (!spawnOne("predator", now)) break;
-      nextPredatorSpawnAt = now + rng.range(POPULATION_TOPUP_MIN_DELAY_MS, POPULATION_TOPUP_MAX_DELAY_MS);
-      if (!forceImmediate) break;
+    if (countAlive("predator") < predatorTarget && now >= nextPredatorSpawnAt) {
+      if (spawnOne("predator", now)) {
+        nextPredatorSpawnAt = now + rng.range(POPULATION_TOPUP_MIN_DELAY_MS, POPULATION_TOPUP_MAX_DELAY_MS);
+      }
     }
+  }
+
+  /** The manual nav button: adds exactly one new critter of a random role,
+   * independent of the Lotka-Volterra targets — a simple "one more" action
+   * rather than "catch up to target," capped only by the device's overall
+   * object ceiling so repeated clicks can't runaway past a sane bound. */
+  function forceTopUp(now: number): void {
+    if (!field) return;
+    if (objects.length >= deviceCapMax()) return;
+    const role: "predator" | "prey" = rng.chance(0.5) ? "predator" : "prey";
+    spawnOne(role, now);
   }
 
   function restoreObjects(): void {
@@ -784,7 +795,7 @@ onMount(() => {
     pointerListenersInstalled = false;
   };
   const onInkAmbientTopup = () => {
-    topUpPopulation(performance.now(), true);
+    forceTopUp(performance.now());
   };
   const onInkAmbientChange = (event: Event) => {
     const { enabled: nextEnabled } = (

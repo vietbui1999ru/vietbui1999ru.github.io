@@ -2,10 +2,11 @@ import { describe, expect, it, beforeEach } from "vitest";
 import {
   PREDATOR_RADIUS_MAX,
   PREDATOR_RADIUS_MIN,
+  PREDATOR_STARVE_SECONDS,
+  PREDATOR_TARGET_MAX,
   PREY_RADIUS_MAX,
   PREY_RADIUS_MIN,
-  PREY_SPEED_MAX,
-  PREY_SPEED_MIN,
+  PREY_TARGET_MAX,
   SNAPSHOT_KEY,
 } from "@/lib/ink-ambient/config";
 import { rollRadius, rollChaseSpeed } from "@/lib/ink-ambient/spawn";
@@ -356,8 +357,8 @@ describe("Population dynamics", () => {
     expect(low.predatorTarget).toBe(1);
 
     const high = mapToTargets({ prey: 100, predator: 100 });
-    expect(high.preyTarget).toBeLessThanOrEqual(2);
-    expect(high.predatorTarget).toBeLessThanOrEqual(2);
+    expect(high.preyTarget).toBeLessThanOrEqual(PREY_TARGET_MAX);
+    expect(high.predatorTarget).toBeLessThanOrEqual(PREDATOR_TARGET_MAX);
   });
 });
 
@@ -502,7 +503,7 @@ describe("Lives/hunger vanish rendering", () => {
     const predator = object(1, 0, 0);
     predator.role = "predator";
     predator.lives = 3;
-    predator.hungerElapsed = 8; // half of PREDATOR_STARVE_SECONDS (16)
+    predator.hungerElapsed = PREDATOR_STARVE_SECONDS / 2;
     expect(renderedOpacityMultiplier(predator)).toBeCloseTo(0.5, 5);
   });
 
@@ -537,7 +538,7 @@ describe("Predator survival tick and spawn ramp", () => {
     const predator = object(1, 0, 0);
     predator.role = "predator";
     predator.lives = 3;
-    predator.hungerElapsed = 15.5; // one tick under PREDATOR_STARVE_SECONDS (16)
+    predator.hungerElapsed = PREDATOR_STARVE_SECONDS - 0.5; // one tick under the threshold
     applyPredatorSurvivalTick(predator, 1);
     expect(predator.vanishElapsed).toBe(0);
   });

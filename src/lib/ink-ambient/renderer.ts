@@ -99,14 +99,15 @@ export class InkRenderer {
 
     for (const object of objects) {
       if (object.opacity <= 0) continue;
-      this.drawTrail(object, obstacles);
+      const fadeMultiplier = renderedOpacityMultiplier(object);
+      if (fadeMultiplier <= 0) continue;
+      this.drawTrail(object, obstacles, fadeMultiplier);
       const renderedRadius = object.radius * Math.max(object.scale.x, object.scale.y);
       const opacity = obstacleOpacity(
         { position: object.position, radius: renderedRadius },
         obstacles,
       );
-      const fadeMultiplier = renderedOpacityMultiplier(object);
-      if (opacity <= 0 || fadeMultiplier <= 0) continue;
+      if (opacity <= 0) continue;
       // sprites[0] = pencil, sprites[1] = pen — same isPenLike predicate the
       // trail helpers use, so shape and trail styling always agree.
       const sprite = this.sprites[isPenLike(object) ? 1 : 0];
@@ -150,7 +151,7 @@ export class InkRenderer {
     return sprite;
   }
 
-  private drawTrail(object: InkObject, obstacles: readonly Rect[]): void {
+  private drawTrail(object: InkObject, obstacles: readonly Rect[], fadeMultiplier: number): void {
     if (object.trail.length === 0) return;
     const tip = tipPosition(object);
     const chain: Array<{ x: number; y: number; age: number }> = [
@@ -170,7 +171,7 @@ export class InkRenderer {
         { position: midpoint, radius: object.radius * 0.3 },
         obstacles,
       );
-      const alpha = object.opacity * 0.5 * lifeT * localOpacity;
+      const alpha = object.opacity * 0.5 * lifeT * localOpacity * fadeMultiplier;
       if (alpha <= 0.01) continue;
       this.context.save();
       this.context.globalAlpha = alpha;
