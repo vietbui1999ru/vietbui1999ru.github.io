@@ -176,3 +176,17 @@ export const SPAWN_COUNT_MAX = 10;
 // continuously chasing the same target, reset whenever the target changes.
 export const PREDATOR_CHASE_ACCEL_SECONDS = 4;
 export const PREDATOR_CHASE_ACCEL_MAX_MULTIPLIER = 1.6;
+
+// Scarcity competition: whenever a catch happens and predators outnumber
+// (or match) the remaining prey, every predator that DIDN'T make that catch
+// gets an extra hunger penalty — food just got scarcer, and missing out
+// costs you regardless of whether you were even chasing that specific prey.
+export const PREDATOR_SCARCITY_HUNGER_PENALTY_SECONDS = 5;
+
+// Spawn tint: a freshly-spawned object briefly renders in a distinctive
+// pastel color (predator = light red, prey = light green) before quickly
+// converging to its normal ink/soft-grey sprite color, as a visual "just
+// spawned in" cue.
+export const PREDATOR_SPAWN_TINT_COLOR = "#f2a6a6";
+export const PREY_SPAWN_TINT_COLOR = "#a8d8b0";
+export const SPAWN_TINT_DURATION_SECONDS = 1.2;

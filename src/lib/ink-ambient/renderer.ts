@@ -1,5 +1,10 @@
-import { OBJECT_TIP_OFFSET_FRACTION } from "./config";
-import { isPenLike, tipPosition, trailMaxAge } from "./physics";
+import {
+  OBJECT_TIP_OFFSET_FRACTION,
+  PREDATOR_SPAWN_TINT_COLOR,
+  PREY_SPAWN_TINT_COLOR,
+  SPAWN_TINT_DURATION_SECONDS,
+} from "./config";
+import { clamp, isPenLike, tipPosition, trailMaxAge } from "./physics";
 import { renderedOpacityMultiplier } from "./lifecycle";
 import type { InkEffect, InkObject, Rect } from "./types";
 
@@ -86,6 +91,7 @@ export class InkRenderer {
     obstacles: readonly Rect[],
     width: number,
     height: number,
+    now: number,
   ): void {
     this.context.save();
     this.context.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
@@ -120,6 +126,13 @@ export class InkRenderer {
         (object.radius * 2 * object.scale.y) / SPRITE_SIZE,
       );
       this.context.drawImage(sprite, -SPRITE_SIZE / 2, -SPRITE_SIZE / 2);
+      const tintAlpha = clamp(1 - (now - object.spawnAt) / 1000 / SPAWN_TINT_DURATION_SECONDS, 0, 1);
+      if (tintAlpha > 0) {
+        this.context.globalCompositeOperation = "source-atop";
+        this.context.globalAlpha = object.opacity * opacity * fadeMultiplier * tintAlpha;
+        this.context.fillStyle = isPenLike(object) ? PREDATOR_SPAWN_TINT_COLOR : PREY_SPAWN_TINT_COLOR;
+        this.context.fillRect(-SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
+      }
       this.context.restore();
     }
     this.context.restore();

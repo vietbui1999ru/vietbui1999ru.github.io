@@ -20,6 +20,7 @@ import {
   PREDATOR_LIVES_START,
   PREDATOR_MAX_RAMPED_SPEED,
   PREDATOR_RADIUS_MAX,
+  PREDATOR_SCARCITY_HUNGER_PENALTY_SECONDS,
   PREY_RADIUS_MAX,
   SAFE_CLEARANCE,
   SPAWN_COUNT_MAX,
@@ -536,6 +537,21 @@ onMount(() => {
         if (loser.lives <= 0) loser.vanishElapsed = 0;
       }
     }
+    if (catchResult.winnerIds.size > 0) {
+      const preyRemaining = countAlive("prey") - catchResult.destroyedPreyIds.size;
+      const predatorCount = countAlive("predator");
+      if (predatorCount >= preyRemaining) {
+        for (const object of objects) {
+          if (
+            object.role === "predator" &&
+            object.vanishElapsed === null &&
+            !catchResult.winnerIds.has(object.id)
+          ) {
+            object.hungerElapsed += PREDATOR_SCARCITY_HUNGER_PENALTY_SECONDS;
+          }
+        }
+      }
+    }
     for (const burst of catchResult.bursts) addBurstEffect(burst.x, burst.y, burst.radius);
 
     for (let first = 0; first < objects.length; first += 1) {
@@ -590,7 +606,7 @@ onMount(() => {
     } else {
       accumulator = 0;
     }
-    renderer.draw(objects, effects, obstacles, width, height);
+    renderer.draw(objects, effects, obstacles, width, height, now);
     if (now - lastSave > 7000) {
       saveSnapshot(seed, objects, { width, height }, Date.now());
       lastSave = now;
