@@ -65,6 +65,16 @@ export const BURST_ALPHA = 0.55;
 export const BURST_LIFETIME_MIN = 0.6;
 export const BURST_LIFETIME_MAX = 1.0;
 
+// Lotka-Volterra population rhythm (spec §8) — tuned for a ~20-40s bounded
+// boom/bust cycle at equilibrium x*=y*=1, not biological accuracy.
+export const LV_ALPHA = 0.2;
+export const LV_BETA = 0.2;
+export const LV_GAMMA = 0.2;
+export const LV_DELTA = 0.2;
+export const LV_SCALE = 2;
+export const PREY_TARGET_MAX = 2;
+export const PREDATOR_TARGET_MAX = 2;
+
 const OUTER: RouteProfile = {
   name: "outer-gutters",
   edgeBias: "outer",

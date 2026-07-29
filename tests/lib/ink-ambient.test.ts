@@ -34,6 +34,7 @@ import {
   reevaluatePartner,
 } from "@/lib/ink-ambient/pairing";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
+import { stepLotkaVolterra, mapToTargets } from "@/lib/ink-ambient/population";
 import type { InkObject } from "@/lib/ink-ambient/types";
 
 function object(id: number, x: number, y: number): InkObject {
@@ -437,5 +438,37 @@ describe("Ink Ambient primitives", () => {
     const farB = object(4, 300, 100);
     expect(circlesOverlap(farA, farB)).toBe(false);
     expect(resolveCircleCollision(farA, farB).hit).toBe(false);
+  });
+});
+
+describe("Population dynamics", () => {
+  it("keeps prey/predator state bounded and non-NaN over many steps", () => {
+    let state = { prey: 1.5, predator: 0.7 };
+    let sawIncrease = false;
+    let previousPrey = state.prey;
+    for (let i = 0; i < 3000; i += 1) {
+      state = stepLotkaVolterra(state, 1 / 60);
+      expect(Number.isFinite(state.prey)).toBe(true);
+      expect(Number.isFinite(state.predator)).toBe(true);
+      expect(state.prey).toBeGreaterThanOrEqual(0.05);
+      expect(state.predator).toBeGreaterThanOrEqual(0.05);
+      expect(state.prey).toBeLessThan(50);
+      expect(state.predator).toBeLessThan(50);
+      if (state.prey > previousPrey) sawIncrease = true;
+      previousPrey = state.prey;
+    }
+    // A genuine oscillation must include at least one increasing step, not a
+    // monotonic decay to the floor.
+    expect(sawIncrease).toBe(true);
+  });
+
+  it("maps population state to integer targets within configured maximums", () => {
+    const low = mapToTargets({ prey: 0.01, predator: 0.01 });
+    expect(low.preyTarget).toBe(1);
+    expect(low.predatorTarget).toBe(1);
+
+    const high = mapToTargets({ prey: 100, predator: 100 });
+    expect(high.preyTarget).toBeLessThanOrEqual(2);
+    expect(high.predatorTarget).toBeLessThanOrEqual(2);
   });
 });
