@@ -9,6 +9,8 @@ import {
   PAIR_FORCE_MAX,
   PAIR_FORCE_MIN,
   PANIC_RAMP_MAX,
+  PREDATOR_CHASE_ACCEL_MAX_MULTIPLIER,
+  PREDATOR_CHASE_ACCEL_SECONDS,
   PREDATOR_WOBBLE_FACTOR,
   PREY_WOBBLE_FACTOR,
 } from "./config";
@@ -161,4 +163,13 @@ export function idleAcceleration(
   x += Math.sin(t * object.wobbleFrequency * 1.7) * wobbleMagnitude;
   y += Math.cos(t * object.wobbleFrequency * 1.3) * wobbleMagnitude;
   return { x, y };
+}
+
+/** A predator sustaining a chase on the same target speeds up the longer it
+ * goes on, reaching PREDATOR_CHASE_ACCEL_MAX_MULTIPLIER after
+ * PREDATOR_CHASE_ACCEL_SECONDS of uninterrupted pursuit. `chaseElapsed`
+ * resets to 0 whenever the tracked target changes (see updateTarget). */
+export function chaseAccelerationMultiplier(chaseElapsed: number): number {
+  const t = clamp(chaseElapsed / PREDATOR_CHASE_ACCEL_SECONDS, 0, 1);
+  return 1 + (PREDATOR_CHASE_ACCEL_MAX_MULTIPLIER - 1) * t;
 }

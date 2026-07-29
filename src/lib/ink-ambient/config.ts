@@ -169,3 +169,10 @@ export const PREDATOR_DRAG_HUNGER_PENALTY_SECONDS = 6;
 // separately, so a fresh load can be prey-heavy, predator-heavy, or balanced).
 export const SPAWN_COUNT_MIN = 2;
 export const SPAWN_COUNT_MAX = 10;
+
+// Predators speed up the longer they've sustained a chase on the same
+// target (distinct from the proximity-based pairApproachRamp and the one-
+// time spawn ramp) — reaches the max multiplier after this many seconds of
+// continuously chasing the same target, reset whenever the target changes.
+export const PREDATOR_CHASE_ACCEL_SECONDS = 4;
+export const PREDATOR_CHASE_ACCEL_MAX_MULTIPLIER = 1.6;

@@ -35,6 +35,7 @@ export type InkObject = {
   trail: TrailPoint[];
   trailSampleTimer: number;
   currentTargetId: number | null;
+  chaseElapsed: number;
   lives: number;
   hungerElapsed: number;
   vanishElapsed: number | null;

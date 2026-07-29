@@ -39,6 +39,7 @@ import {
   predatorAcceleration,
   preyAcceleration,
   idleAcceleration,
+  chaseAccelerationMultiplier,
 } from "@/lib/ink-ambient/targeting";
 import { resolveCatches, predatorsTargeting } from "@/lib/ink-ambient/catches";
 import { stepLotkaVolterra, mapToTargets, type PopulationState } from "@/lib/ink-ambient/population";
@@ -157,6 +158,7 @@ function makeObject(
     trail: [],
     trailSampleTimer: 0,
     currentTargetId: null,
+    chaseElapsed: 0,
     role,
     chaseSpeed: rollChaseSpeed(role, attractionValue, rng),
     attractionValue,
@@ -443,7 +445,9 @@ onMount(() => {
       ATTRACTION_MAX_ACCELERATION_LIGHT +
       (ATTRACTION_MAX_ACCELERATION_HEAVY - ATTRACTION_MAX_ACCELERATION_LIGHT) * massT;
 
+    const previousTargetId = object.currentTargetId;
     const target = updateTarget(object, objects);
+    object.chaseElapsed = object.currentTargetId === previousTargetId ? object.chaseElapsed + dt : 0;
 
     const isUnsafe = Boolean(field) && !isSafePoint(field!, object.position, object.radius);
     object.unsafeElapsed = isUnsafe ? object.unsafeElapsed + dt : 0;
@@ -487,7 +491,13 @@ onMount(() => {
     const maxSpeed =
       target && !settling
         ? object.role === "predator"
-          ? Math.min(object.chaseSpeed * pairApproachRamp(object, target) * spawnRamp, PREDATOR_MAX_RAMPED_SPEED)
+          ? Math.min(
+              object.chaseSpeed *
+                pairApproachRamp(object, target) *
+                spawnRamp *
+                chaseAccelerationMultiplier(object.chaseElapsed),
+              PREDATOR_MAX_RAMPED_SPEED,
+            )
           : object.chaseSpeed
         : 155 - (155 - 115) * massT;
     object.velocity = limit(object.velocity, maxSpeed);

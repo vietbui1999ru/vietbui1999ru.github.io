@@ -48,6 +48,7 @@ import {
   preyPanicRamp,
   predatorAcceleration,
   preyAcceleration,
+  chaseAccelerationMultiplier,
 } from "@/lib/ink-ambient/targeting";
 
 function object(id: number, x: number, y: number): InkObject {
@@ -76,6 +77,7 @@ function object(id: number, x: number, y: number): InkObject {
     trail: [],
     trailSampleTimer: 0,
     currentTargetId: null,
+    chaseElapsed: 0,
     lives: 3,
     hungerElapsed: 0,
     vanishElapsed: null,
@@ -667,5 +669,19 @@ describe("Continuous targeting", () => {
     expect(soloMultiplier).toBe(1);
     expect(duoMultiplier).toBeGreaterThan(soloMultiplier);
     expect(duoMultiplier).toBeLessThanOrEqual(2);
+  });
+});
+
+describe("Chase acceleration", () => {
+  it("starts at 1x for a freshly-targeted chase and ramps up over time", () => {
+    expect(chaseAccelerationMultiplier(0)).toBe(1);
+    const partway = chaseAccelerationMultiplier(2);
+    expect(partway).toBeGreaterThan(1);
+    expect(partway).toBeLessThan(1.6);
+  });
+
+  it("reaches the max multiplier at PREDATOR_CHASE_ACCEL_SECONDS and stays there", () => {
+    expect(chaseAccelerationMultiplier(4)).toBeCloseTo(1.6, 5);
+    expect(chaseAccelerationMultiplier(400)).toBeCloseTo(1.6, 5);
   });
 });
