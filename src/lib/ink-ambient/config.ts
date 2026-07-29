@@ -47,7 +47,6 @@ export const ATTRACTION_RAMP_MAX = 2.4;
 export const ATTRACTION_RAMP_START_MULTIPLIER = 6;
 export const PREY_SPEED_MIN = 133;
 export const PREY_SPEED_MAX = 182;
-export const PREY_THROW_SPEED_MAX = 252;
 // Floor is set above PREY_SPEED_MAX / PREY_SPEED_MIN (182/133 ≈ 1.37) so a
 // predator's max speed always exceeds every prey's, regardless of vigor rolls
 // — a low-vigor predator must still be able to run down a high-vigor prey.
