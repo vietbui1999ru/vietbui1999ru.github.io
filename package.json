@@ -63,6 +63,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
@@ -82,6 +83,8 @@
     "oxlint": "^1.49.0",
     "remark-parse": "^11.0.0",
     "typescript": "^5.9.3",
+    "@types/mdast": "^4.0.4",
+    "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0",
     "vitest": "^4.1.4"
   }
