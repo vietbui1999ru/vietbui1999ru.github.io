@@ -46,6 +46,11 @@ import {
   chaseAccelerationMultiplier,
 } from "@/lib/ink-ambient/targeting";
 import { resolveCatches, predatorsTargeting } from "@/lib/ink-ambient/catches";
+import {
+  computeFlockAssignments,
+  flockHuntAcceleration,
+  isFlockKillTriggered,
+} from "@/lib/ink-ambient/flocking";
 import { stepLotkaVolterra, mapToTargets, type PopulationState } from "@/lib/ink-ambient/population";
 import {
   updateSpawnFade,
@@ -170,6 +175,8 @@ function makeObject(
     lives: PREDATOR_LIVES_START,
     hungerElapsed: 0,
     vanishElapsed: null,
+    huntingFlock: false,
+    beingHunted: false,
   };
 }
 
@@ -212,6 +219,10 @@ onMount(() => {
   let nextPreySpawnAt = 0;
   let nextPredatorSpawnAt = 0;
   let population: PopulationState = { prey: 1.5, predator: 0.7 };
+  let preyButtonEverPressed = false;
+  let flockTargetByMemberId = new Map<number, InkObject>();
+  let flockByMemberId = new Map<number, InkObject[]>();
+  let flockByTargetPredatorId = new Map<number, InkObject[]>();
   let lastSectionChange = 0;
   let pointerSampleTime = 0;
   let pointerListenersInstalled = false;
@@ -457,11 +468,18 @@ onMount(() => {
     object.unsafeElapsed = isUnsafe ? object.unsafeElapsed + dt : 0;
 
     let acceleration =
-      target && !settling
-        ? object.role === "predator"
-          ? predatorAcceleration(object, target, maxAccel, now)
-          : preyAcceleration(object, target, maxAccel, now, nearbyPredatorWobbleMultiplier(object, objects))
-        : idleAcceleration(object, activeAnchor, isUnsafe, now);
+      object.huntingFlock && flockTargetByMemberId.has(object.id)
+        ? flockHuntAcceleration(
+            object,
+            flockTargetByMemberId.get(object.id)!,
+            flockByMemberId.get(object.id)!,
+            maxAccel,
+          )
+        : target && !settling
+          ? object.role === "predator"
+            ? predatorAcceleration(object, target, maxAccel, now)
+            : preyAcceleration(object, target, maxAccel, now, nearbyPredatorWobbleMultiplier(object, objects))
+          : idleAcceleration(object, activeAnchor, isUnsafe, now);
 
     if (object.motionBlend) {
       object.motionBlend.elapsed += dt;
@@ -492,8 +510,9 @@ onMount(() => {
     integrate(object, acceleration, dt);
     const rotationDelta = applyHeadingRotation(object, dt);
     const spawnRamp = object.role === "predator" ? predatorSpawnRampMultiplier(object, now) : 1;
-    const maxSpeed =
-      target && !settling
+    const maxSpeed = object.huntingFlock
+      ? object.chaseSpeed
+      : target && !settling
         ? object.role === "predator"
           ? Math.min(
               object.chaseSpeed *
@@ -525,6 +544,25 @@ onMount(() => {
       objects.filter((object) => object.vanishElapsed !== null).map((object) => object.id),
     );
 
+    if (preyButtonEverPressed && countAlive("prey") > countAlive("predator")) {
+      const assignment = computeFlockAssignments(objects);
+      for (const object of objects) {
+        object.huntingFlock = assignment.huntingFlockIds.has(object.id);
+        object.beingHunted = assignment.beingHuntedIds.has(object.id);
+      }
+      flockTargetByMemberId = assignment.targetByMemberId;
+      flockByMemberId = assignment.flockByMemberId;
+      flockByTargetPredatorId = assignment.flockByTargetPredatorId;
+    } else {
+      for (const object of objects) {
+        object.huntingFlock = false;
+        object.beingHunted = false;
+      }
+      flockTargetByMemberId = new Map();
+      flockByMemberId = new Map();
+      flockByTargetPredatorId = new Map();
+    }
+
     for (const object of objects) updateObject(object, dt, now);
 
     const catchResult = resolveCatches(objects);
@@ -543,6 +581,20 @@ onMount(() => {
         loser.lives -= 1;
         if (loser.lives <= 0) loser.vanishElapsed = 0;
       }
+    }
+
+    for (const predator of objects) {
+      if (!predator.beingHunted || predator.vanishElapsed !== null) continue;
+      const hunters = flockByTargetPredatorId.get(predator.id);
+      if (!hunters || !isFlockKillTriggered(predator, hunters)) continue;
+      predator.role = "prey";
+      predator.radius = rollRadius("prey", rng);
+      predator.chaseSpeed = rollChaseSpeed("prey", predator.attractionValue, rng);
+      predator.currentTargetId = null;
+      predator.chaseElapsed = 0;
+      predator.huntingFlock = false;
+      predator.beingHunted = false;
+      addBurstEffect(predator.position.x, predator.position.y, predator.radius);
     }
 
     // Tie the abstract Lotka-Volterra state to real events, matching the
@@ -853,6 +905,7 @@ onMount(() => {
     forceAddPredator(performance.now());
   };
   const onInkAmbientAddPrey = () => {
+    preyButtonEverPressed = true;
     forceAddPrey(performance.now());
   };
   const onInkAmbientChange = (event: Event) => {
