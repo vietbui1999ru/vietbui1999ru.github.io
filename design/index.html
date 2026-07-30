@@ -1,0 +1,1052 @@
+<!doctype html>
+<!--
+  Design Artifact — "Paper & Ink" visual system
+  Portfolio redesign · phase 1 (ADR 001, Option B: Astro + Svelte islands)
+  Self-contained demo: open this file in a browser. No build step.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Paper &amp; Ink — Design Artifact</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@100..900&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ================================================================
+         TOKENS — will map 1:1 to Tailwind @theme vars in global.css
+         ================================================================ */
+      :root {
+        /* paper & ink */
+        --paper: #fbfaf6;
+        --paper-raised: #ffffff;
+        --ink: #141412;
+        --ink-soft: #2e2d28;
+
+        /* greys (warm, journaling) */
+        --grey-1: #6e6d66; /* body-secondary */
+        --grey-2: #a3a29a; /* meta, captions */
+        --grey-3: #d8d6cc; /* hairlines */
+        --grey-4: #eceae1; /* fills */
+
+        /* pastel-muted accents (desaturated on purpose) */
+        --sage: #b7c9b0;
+        --dust: #b3c4d6; /* dusty blue */
+        --rose: #e3c2c6;
+        --butter: #e8d9a8;
+
+        /* structure */
+        --line: 1.5px solid var(--ink);
+        --line-hair: 1px solid var(--grey-3);
+        --radius: 0px; /* sharp, always */
+        --shadow-hard: 4px 4px 0 var(--ink);
+        --shadow-hard-sm: 2px 2px 0 var(--ink);
+
+        /* type */
+        --font-serif: "Playfair Display", Georgia, serif;
+        --font-sans: "Inter", system-ui, sans-serif;
+        --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+        /* fluid scale — clamp(min, fluid, max) */
+        --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.875rem);
+        --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+        --step-1: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+        --step-2: clamp(1.6rem, 1.3rem + 1.5vw, 2.6rem);
+        --step-3: clamp(2.1rem, 1.5rem + 3vw, 4rem);
+        --step-4: clamp(2.8rem, 1.8rem + 5vw, 6rem);
+
+        /* motion */
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        --dur-gleam: 0.9s; /* quick shimmer sweep */
+        --dur-idle: 7s; /* ambient gleam cadence */
+      }
+
+      .dark {
+        --paper: #141412;
+        --paper-raised: #1c1b17;
+        --ink: #edece3;
+        --ink-soft: #d6d4c8;
+        --grey-1: #a3a29a;
+        --grey-2: #7c7b72;
+        --grey-3: #3a3931;
+        --grey-4: #26251f;
+        --sage: #77917a;
+        --dust: #6f8aa3;
+        --rose: #a37880;
+        --butter: #a8975e;
+        --shadow-hard: 4px 4px 0 rgba(237, 236, 227, 0.9);
+        --shadow-hard-sm: 2px 2px 0 rgba(237, 236, 227, 0.9);
+      }
+
+      /* ================================================================
+         BASE
+         ================================================================ */
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-sans);
+        font-size: var(--step-0);
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        transition:
+          background 0.4s var(--ease-out),
+          color 0.4s var(--ease-out);
+      }
+      ::selection {
+        background: var(--butter);
+        color: #141412;
+      }
+
+      .wrap {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 0 clamp(1rem, 4vw, 3rem);
+      }
+
+      .mono {
+        font-family: var(--font-mono);
+        font-size: var(--step--1);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--grey-1);
+      }
+      .rule {
+        border: 0;
+        border-top: var(--line-hair);
+        margin: 0;
+      }
+      .rule--dashed {
+        border-top: 1px dashed var(--grey-2);
+      }
+
+      section {
+        padding: clamp(3rem, 8vw, 6.5rem) 0;
+      }
+      .section-head {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        margin-bottom: clamp(1.5rem, 4vw, 3rem);
+      }
+      .section-head .idx {
+        color: var(--grey-2);
+      }
+      .section-head h2 {
+        font-family: var(--font-serif);
+        font-weight: 600;
+        font-size: var(--step-2);
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+      .section-head .line {
+        flex: 1;
+        border-top: var(--line-hair);
+        transform: translateY(-0.4em);
+      }
+
+      /* ================================================================
+         MOTION PRIMITIVES
+         ================================================================ */
+
+      /* 1. GLEAM — quick light sweep across a surface (buttons, cards).
+            Triggered on hover/focus. */
+      .gleam {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .gleam::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background: linear-gradient(
+          105deg,
+          transparent 40%,
+          color-mix(in oklab, var(--paper-raised) 85%, white) 50%,
+          transparent 60%
+        );
+        transform: translateX(-120%) skewX(-12deg);
+        opacity: 0;
+      }
+      .gleam:hover::after,
+      .gleam:focus-visible::after {
+        animation: gleam-sweep var(--dur-gleam) var(--ease-out) forwards;
+      }
+      @keyframes gleam-sweep {
+        0% {
+          transform: translateX(-120%) skewX(-12deg);
+          opacity: 0;
+        }
+        15% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(120%) skewX(-12deg);
+          opacity: 0;
+        }
+      }
+
+      /* 2. TEXT SHIMMER — gradient sweep across display type.
+            Used sparingly: hero + emphasis moments. */
+      .shimmer-text {
+        background: linear-gradient(
+          100deg,
+          var(--ink) 0%,
+          var(--ink) 42%,
+          var(--grey-2) 50%,
+          var(--ink) 58%,
+          var(--ink) 100%
+        );
+        background-size: 300% 100%;
+        background-position: 100% 0;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: text-shimmer var(--dur-idle) var(--ease-out) infinite;
+      }
+      @keyframes text-shimmer {
+        0%,
+        55% {
+          background-position: 100% 0;
+        }
+        75%,
+        100% {
+          background-position: 0% 0;
+        }
+      }
+
+      /* 3. UNDERLINE DRAW — journal annotation feel */
+      .u-draw {
+        background-image: linear-gradient(currentColor, currentColor);
+        background-size: 0% 1.5px;
+        background-repeat: no-repeat;
+        background-position: 0 100%;
+        text-decoration: none;
+        transition: background-size 0.45s var(--ease-out);
+        padding-bottom: 2px;
+      }
+      .u-draw:hover {
+        background-size: 100% 1.5px;
+      }
+
+      /* 4. HARD-LIFT — sharp offset shadow press/lift */
+      .lift {
+        transition:
+          transform 0.25s var(--ease-out),
+          box-shadow 0.25s var(--ease-out);
+      }
+      .lift:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--ink);
+      }
+      .lift:active {
+        transform: translate(2px, 2px);
+        box-shadow: var(--shadow-hard-sm);
+      }
+
+      /* 5. BORDER TRACE — ink line draws around the box on hover */
+      .trace {
+        position: relative;
+      }
+      .trace::before {
+        content: "";
+        position: absolute;
+        inset: -1.5px;
+        border: var(--line);
+        clip-path: inset(0 100% 0 0);
+        transition: clip-path 0.5s var(--ease-out);
+        pointer-events: none;
+      }
+      .trace:hover::before {
+        clip-path: inset(0 0 0 0);
+      }
+
+      /* 6. FLUID REVEAL — lines of type rise on load (hero) */
+      .reveal {
+        overflow: hidden;
+      }
+      .reveal > span {
+        display: inline-block;
+        transform: translateY(110%);
+        animation: rise 1s var(--ease-out) forwards;
+      }
+      .reveal:nth-child(2) > span {
+        animation-delay: 0.12s;
+      }
+      .reveal:nth-child(3) > span {
+        animation-delay: 0.24s;
+      }
+      @keyframes rise {
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+        .reveal > span {
+          transform: none;
+        }
+        .shimmer-text {
+          color: var(--ink);
+          background: none;
+        }
+      }
+
+      /* ================================================================
+         NAV
+         ================================================================ */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: color-mix(in oklab, var(--paper) 88%, transparent);
+        backdrop-filter: blur(8px);
+        border-bottom: var(--line);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 3.5rem;
+      }
+      .nav-links {
+        display: flex;
+        gap: 1.75rem;
+        align-items: center;
+      }
+      .nav-links a {
+        color: var(--ink);
+        display: inline-flex;
+        gap: 0.4em;
+        align-items: baseline;
+      }
+      .nav-links a .n {
+        font-size: 0.65em;
+        color: var(--grey-2);
+      }
+      .brand {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      /* theme toggle — sharp square */
+      .toggle {
+        width: 2rem;
+        height: 2rem;
+        border: var(--line);
+        background: var(--paper-raised);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        font-size: 0.9rem;
+        color: var(--ink);
+        box-shadow: var(--shadow-hard-sm);
+      }
+
+      /* ================================================================
+         HERO
+         ================================================================ */
+      .hero {
+        padding-top: clamp(4rem, 10vw, 8rem);
+      }
+      .hero h1 {
+        font-family: var(--font-serif);
+        font-weight: 550;
+        font-size: var(--step-4);
+        line-height: 1.04;
+        letter-spacing: -0.02em;
+        margin: 0.35em 0 0.5em;
+      }
+      .hero h1 em {
+        font-style: italic;
+        font-weight: 500;
+      }
+      .hero .meta {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .stamp {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        border: var(--line);
+        padding: 0.35em 0.8em;
+        color: var(--ink);
+        background: var(--butter);
+        transform: rotate(-2deg);
+        display: inline-block;
+      }
+
+      /* ================================================================
+         SWATCHES
+         ================================================================ */
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+        gap: 1rem;
+      }
+      .swatch {
+        border: var(--line);
+        background: var(--paper-raised);
+      }
+      .swatch .chip {
+        height: 5rem;
+        border-bottom: var(--line);
+      }
+      .swatch .label {
+        padding: 0.5rem 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+
+      /* ================================================================
+         TYPE SPECIMEN
+         ================================================================ */
+      .specimen > div {
+        padding: 1.25rem 0;
+        border-bottom: var(--line-hair);
+        display: flex;
+        align-items: baseline;
+        gap: 2rem;
+      }
+      .specimen .tag {
+        min-width: 8.5rem;
+        flex-shrink: 0;
+      }
+      .t-display {
+        font-family: var(--font-serif);
+        font-size: var(--step-3);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
+      .t-h2 {
+        font-family: var(--font-serif);
+        font-size: var(--step-2);
+        font-weight: 600;
+      }
+      .t-h3 {
+        font-family: var(--font-serif);
+        font-size: var(--step-1);
+        font-weight: 600;
+        font-style: italic;
+      }
+      .t-body {
+        font-size: var(--step-0);
+        max-width: 40ch;
+      }
+      .t-mono {
+        font-family: var(--font-mono);
+        font-size: var(--step--1);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* ================================================================
+         COMPONENTS
+         ================================================================ */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+        gap: 2rem;
+      }
+
+      /* buttons */
+      .btn {
+        font-family: var(--font-mono);
+        font-size: var(--step--1);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: var(--line);
+        background: var(--paper-raised);
+        color: var(--ink);
+        padding: 0.8em 1.6em;
+        cursor: pointer;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-hard);
+      }
+      .btn--ink {
+        background: var(--ink);
+        color: var(--paper);
+        box-shadow: 4px 4px 0 var(--grey-2);
+      }
+      .btn--ghost {
+        box-shadow: none;
+        border-color: var(--grey-2);
+        color: var(--grey-1);
+      }
+      .btn-row {
+        display: flex;
+        gap: 1.25rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      /* badges / tags */
+      .tag-chip {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border: 1px solid var(--ink);
+        padding: 0.25em 0.7em;
+        background: var(--paper-raised);
+        color: var(--ink);
+      }
+      .tag-chip--sage {
+        background: var(--sage);
+      }
+      .tag-chip--dust {
+        background: var(--dust);
+      }
+      .tag-chip--rose {
+        background: var(--rose);
+      }
+      .tag-chip--butter {
+        background: var(--butter);
+      }
+      .chip-row {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+
+      /* cards */
+      .card {
+        border: var(--line);
+        background: var(--paper-raised);
+        box-shadow: var(--shadow-hard);
+        border-radius: var(--radius);
+        display: flex;
+        flex-direction: column;
+      }
+      .card .card-head {
+        border-bottom: var(--line);
+        padding: 0.65rem 1.1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        background: var(--grey-4);
+      }
+      .card .card-body {
+        padding: 1.25rem 1.1rem 1.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        flex: 1;
+      }
+      .card h3 {
+        font-family: var(--font-serif);
+        font-size: var(--step-1);
+        margin: 0;
+        font-weight: 600;
+      }
+      .card p {
+        margin: 0;
+        color: var(--grey-1);
+        font-size: var(--step--1);
+        line-height: 1.7;
+      }
+      .card .card-foot {
+        margin-top: auto;
+        padding-top: 0.75rem;
+        border-top: var(--line-hair);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .accent-bar {
+        height: 4px;
+        border-bottom: var(--line);
+      }
+      .a-sage {
+        background: var(--sage);
+      }
+      .a-dust {
+        background: var(--dust);
+      }
+      .a-rose {
+        background: var(--rose);
+      }
+      .a-butter {
+        background: var(--butter);
+      }
+
+      /* form fields */
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+      .field input,
+      .field textarea {
+        border: var(--line);
+        border-radius: 0;
+        background: var(--paper-raised);
+        color: var(--ink);
+        padding: 0.75em 0.9em;
+        font-family: var(--font-sans);
+        font-size: var(--step--1);
+        outline: none;
+        transition: box-shadow 0.2s var(--ease-out);
+        resize: vertical;
+      }
+      .field input:focus,
+      .field textarea:focus {
+        box-shadow: var(--shadow-hard-sm);
+      }
+
+      /* blockquote / journal margin note */
+      .margin-note {
+        border-left: 3px solid var(--ink);
+        padding: 0.5rem 0 0.5rem 1.25rem;
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-size: var(--step-1);
+        line-height: 1.5;
+        color: var(--ink-soft);
+      }
+      .margin-note .cite {
+        display: block;
+        margin-top: 0.6rem;
+        font-family: var(--font-mono);
+        font-style: normal;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--grey-2);
+      }
+
+      /* index list (blog index style) */
+      .index-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .index-list li {
+        border-bottom: var(--line-hair);
+      }
+      .index-list a {
+        display: flex;
+        align-items: baseline;
+        gap: 1.25rem;
+        padding: 0.9rem 0.25rem;
+        text-decoration: none;
+        color: var(--ink);
+        transition:
+          background 0.2s var(--ease-out),
+          padding-left 0.25s var(--ease-out);
+      }
+      .index-list a:hover {
+        background: var(--grey-4);
+        padding-left: 0.9rem;
+      }
+      .index-list .date {
+        min-width: 7.5rem;
+      }
+      .index-list .title {
+        font-family: var(--font-serif);
+        font-size: var(--step-1);
+        font-weight: 500;
+        flex: 1;
+      }
+      .index-list .arrow {
+        opacity: 0;
+        transition: opacity 0.2s;
+        font-family: var(--font-mono);
+      }
+      .index-list a:hover .arrow {
+        opacity: 1;
+      }
+
+      .demo-label {
+        margin-bottom: 0.9rem;
+        display: block;
+      }
+      .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 2.25rem;
+      }
+
+      footer {
+        border-top: var(--line);
+        padding: 2rem 0 3rem;
+      }
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="wrap nav-inner">
+        <a class="brand" href="#">viet bui</a>
+        <div class="nav-links mono">
+          <a class="u-draw" href="#color"><span class="n">01</span>color</a>
+          <a class="u-draw" href="#type"><span class="n">02</span>type</a>
+          <a class="u-draw" href="#motion"><span class="n">03</span>motion</a>
+          <a class="u-draw" href="#components"><span class="n">04</span>components</a>
+          <button class="toggle lift" id="themeToggle" aria-label="Toggle dark mode">◐</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <header class="hero wrap">
+      <p class="mono reveal"><span>portfolio · field notes · est. 1999</span></p>
+      <h1>
+        <span class="reveal"><span>Engineer’s journal,</span></span
+        ><br />
+        <span class="reveal"
+          ><span class="shimmer-text"><em>written in ink</em> &amp; pixels.</span></span
+        >
+      </h1>
+      <div class="meta">
+        <span class="stamp">draft — v0.1</span>
+        <span class="mono">paper / ink / grey · pastel-muted · sharp edges · quick gleam</span>
+      </div>
+    </header>
+
+    <div class="wrap"><hr class="rule" /></div>
+
+    <!-- ============ 01 COLOR ============ -->
+    <section id="color" class="wrap">
+      <div class="section-head">
+        <span class="mono idx">01</span>
+        <h2>Color</h2>
+        <span class="line"></span>
+        <span class="mono">warm paper · true ink · 4 muted pastels</span>
+      </div>
+      <div class="swatches">
+        <div class="swatch">
+          <div class="chip" style="background: var(--paper)"></div>
+          <div class="label mono"><span>paper</span><span>#FBFAF6</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--ink)"></div>
+          <div class="label mono"><span>ink</span><span>#141412</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--grey-1)"></div>
+          <div class="label mono"><span>grey·1</span><span>body-2</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--grey-2)"></div>
+          <div class="label mono"><span>grey·2</span><span>meta</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--grey-3)"></div>
+          <div class="label mono"><span>grey·3</span><span>hairline</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--grey-4)"></div>
+          <div class="label mono"><span>grey·4</span><span>fill</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--sage)"></div>
+          <div class="label mono"><span>sage</span><span>accent</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--dust)"></div>
+          <div class="label mono"><span>dust</span><span>accent</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--rose)"></div>
+          <div class="label mono"><span>rose</span><span>accent</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background: var(--butter)"></div>
+          <div class="label mono"><span>butter</span><span>accent</span></div>
+        </div>
+      </div>
+      <p class="mono" style="margin-top: 1.5rem">
+        rule: ink &amp; greys do 90% of the work · pastels only as fills/bars/tags, never large
+        backgrounds · dark mode inverts paper↔ink, pastels deepen
+      </p>
+    </section>
+
+    <div class="wrap"><hr class="rule rule--dashed" /></div>
+
+    <!-- ============ 02 TYPE ============ -->
+    <section id="type" class="wrap">
+      <div class="section-head">
+        <span class="mono idx">02</span>
+        <h2>Typography</h2>
+        <span class="line"></span>
+        <span class="mono">playfair display · inter · ibm plex mono · fluid clamp()</span>
+      </div>
+      <div class="specimen">
+        <div>
+          <span class="mono tag">display / serif 600</span
+          ><span class="t-display">Simulations &amp; systems</span>
+        </div>
+        <div>
+          <span class="mono tag">h2 / serif 600</span
+          ><span class="t-h2">Building a vault CMS pipeline</span>
+        </div>
+        <div>
+          <span class="mono tag">h3 / serif italic</span
+          ><span class="t-h3">notes from the margin</span>
+        </div>
+        <div>
+          <span class="mono tag">body / inter</span
+          ><span class="t-body"
+            >Body copy sits in Inter at a comfortable 1.65 line-height. Long-form blog prose
+            switches to 1.75 and lets serif own the headings — an editorial rhythm, not a
+            dashboard.</span
+          >
+        </div>
+        <div>
+          <span class="mono tag">mono / meta</span
+          ><span class="t-mono">2026-07-20 · 8 min read · #astro #svelte</span>
+        </div>
+      </div>
+      <p class="mono" style="margin-top: 1.5rem">
+        fluid scale: every step is clamp(min, vw, max) — no breakpoint jumps. display spans 2.8rem →
+        6rem across viewports.
+      </p>
+    </section>
+
+    <div class="wrap"><hr class="rule" /></div>
+
+    <!-- ============ 03 MOTION ============ -->
+    <section id="motion" class="wrap">
+      <div class="section-head">
+        <span class="mono idx">03</span>
+        <h2>Motion</h2>
+        <span class="line"></span>
+        <span class="mono">quick · sharp · respects reduced-motion</span>
+      </div>
+      <div class="grid-2">
+        <div class="stack">
+          <div>
+            <span class="mono demo-label">a / gleam — hover the card</span>
+            <div class="card gleam lift">
+              <div class="accent-bar a-dust"></div>
+              <div class="card-body">
+                <h3>Light sweep, 0.9s</h3>
+                <p>
+                  A single skewed highlight crosses the surface once on hover. No looping sparkle —
+                  the gleam is an event, not an ambience.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="mono demo-label">b / text shimmer — ambient, every 7s</span>
+            <p class="t-h2 shimmer-text" style="margin: 0">Gleam passes over this heading.</p>
+          </div>
+        </div>
+        <div class="stack">
+          <div>
+            <span class="mono demo-label">c / underline draw — hover</span>
+            <p style="margin: 0; font-size: var(--step-1)">
+              <a
+                class="u-draw"
+                href="#"
+                onclick="return false;"
+                style="color: var(--ink); font-family: var(--font-serif); font-style: italic"
+                >read the field notes →</a
+              >
+            </p>
+          </div>
+          <div>
+            <span class="mono demo-label">d / border trace — hover</span>
+            <div class="card trace" style="box-shadow: none">
+              <div class="card-body">
+                <h3>Ink traces the edge</h3>
+                <p>
+                  A 1.5px ink line draws itself around the frame on hover — like circling something
+                  in a notebook.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="mono demo-label">e / hard lift — press me</span>
+            <div class="btn-row">
+              <button class="btn gleam lift">Hover &amp; press</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap"><hr class="rule rule--dashed" /></div>
+
+    <!-- ============ 04 COMPONENTS ============ -->
+    <section id="components" class="wrap">
+      <div class="section-head">
+        <span class="mono idx">04</span>
+        <h2>Components</h2>
+        <span class="line"></span>
+        <span class="mono">0 radius · 1.5px ink · hard offset shadow</span>
+      </div>
+
+      <div class="stack">
+        <div>
+          <span class="mono demo-label">buttons</span>
+          <div class="btn-row">
+            <button class="btn gleam lift">Default</button>
+            <button class="btn btn--ink gleam lift">Ink / primary</button>
+            <button class="btn btn--ghost">Ghost</button>
+          </div>
+        </div>
+
+        <div>
+          <span class="mono demo-label">tags / badges</span>
+          <div class="chip-row">
+            <span class="tag-chip">typescript</span>
+            <span class="tag-chip tag-chip--sage">svelte</span>
+            <span class="tag-chip tag-chip--dust">webgl</span>
+            <span class="tag-chip tag-chip--rose">writing</span>
+            <span class="tag-chip tag-chip--butter">notes</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="mono demo-label">cards — project &amp; post</span>
+          <div class="grid-2">
+            <div class="card gleam lift">
+              <div class="accent-bar a-sage"></div>
+              <div class="card-head mono"><span>project</span><span>2026</span></div>
+              <div class="card-body">
+                <h3>Simulation Engine</h3>
+                <p>
+                  Two surviving simulations — Singularity &amp; Magnetic field. React-three-fiber
+                  today, Threlte maybe tomorrow.
+                </p>
+                <div class="chip-row">
+                  <span class="tag-chip">webgl</span
+                  ><span class="tag-chip tag-chip--dust">three.js</span>
+                </div>
+                <div class="card-foot mono">
+                  <span>★ 12</span
+                  ><a class="u-draw" href="#" onclick="return false;" style="color: var(--ink)"
+                    >view →</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="card gleam lift">
+              <div class="accent-bar a-rose"></div>
+              <div class="card-head mono"><span>field note</span><span>05·24</span></div>
+              <div class="card-body">
+                <h3>Building a vault CMS pipeline</h3>
+                <p>
+                  Obsidian as the editor, Astro as the press. Wikilinks, Excalidraw embeds, and a
+                  zod gate at build time.
+                </p>
+                <div class="chip-row">
+                  <span class="tag-chip tag-chip--rose">writing</span
+                  ><span class="tag-chip">astro</span>
+                </div>
+                <div class="card-foot mono">
+                  <span>8 min</span
+                  ><a class="u-draw" href="#" onclick="return false;" style="color: var(--ink)"
+                    >read →</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="mono demo-label">index list — blog archive</span>
+          <ul class="index-list">
+            <li>
+              <a href="#" onclick="return false;"
+                ><span class="mono date">2026·05·24</span
+                ><span class="title">Building a vault CMS pipeline</span
+                ><span class="arrow">→</span></a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="return false;"
+                ><span class="mono date">2026·04·02</span
+                ><span class="title">I accidentally deleted my Linux boot</span
+                ><span class="arrow">→</span></a
+              >
+            </li>
+            <li>
+              <a href="#" onclick="return false;"
+                ><span class="mono date">2026·02·11</span
+                ><span class="title">Personal TypeScript reference cheat sheet</span
+                ><span class="arrow">→</span></a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <span class="mono demo-label">form fields</span>
+            <form class="stack" style="gap: 1.1rem" onsubmit="return false;">
+              <div class="field">
+                <label class="mono" for="f1">name</label>
+                <input id="f1" type="text" placeholder="Ada Lovelace" />
+              </div>
+              <div class="field">
+                <label class="mono" for="f2">message</label>
+                <textarea id="f2" rows="3" placeholder="Write something worth keeping…"></textarea>
+              </div>
+            </form>
+          </div>
+          <div>
+            <span class="mono demo-label">margin note / blockquote</span>
+            <blockquote class="margin-note">
+              “The best interfaces feel like a well-kept notebook — everything sharp, nothing
+              shouting.”
+              <span class="cite">— design principle, p.1</span>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <span class="mono">paper &amp; ink — design artifact v0.1</span>
+        <span class="mono">adr 001 · astro + svelte islands · tokens → tailwind @theme next</span>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.getElementById("themeToggle");
+      toggle.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+      });
+    </script>
+  </body>
+</html>

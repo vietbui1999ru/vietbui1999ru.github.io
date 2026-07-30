@@ -25,14 +25,14 @@ const defaultStyle: React.CSSProperties = {
 };
 
 /**
- * App-wide single r3f Canvas.
+ * Full-viewport r3f Canvas for the dedicated simulation routes.
  *
- * Mounted in BaseLayout at `fixed inset-0 -z-10 pointer-events-none` so it
- * sits behind all page content and never intercepts mouse events.
+ * Mounted inside `SimLayout` pages at `fixed inset-0 -z-10 pointer-events-none`.
+ * The surrounding stacking context keeps the negative layer behind the lab
+ * controls without loading it behind portfolio or blog content.
  *
- * The Canvas is intentionally frameless (no background): the site background
- * color is set via CSS on `<body>`, so the Canvas layer blends on top
- * transparently by default.
+ * The Canvas is intentionally frameless; the simulation layout owns the dark
+ * page background.
  */
 export function AppCanvas({
   activeSceneId,

@@ -1,38 +1,32 @@
 ---
 import "@/styles/global.css";
 import pcmasterracePng from "@/assets/images/pcmasterrace.png";
-import { cn } from "@/lib/utils";
-import NavBarDock from "@/components/layout/NavBarDock";
-import MobileBottomNav from "@/components/layout/MobileBottomNav";
-import AnimatedCursor from "@/components/ui/AnimatedCursor";
-import VectorFieldBackground from "@/components/ui/VectorFieldBackground";
-import { MobileBlocker } from "@/components/layout/MobileBlocker";
-import AppCanvasIsland from "@/scenes/engine/AppCanvasIsland";
-import LevaPanel from "@/scenes/ui/LevaPanel";
+import PaperNav from "@/components/svelte/PaperNav.svelte";
+import PaperMobileNav from "@/components/svelte/PaperMobileNav.svelte";
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script is:inline>
+      // Theme init before paint: stored preference, else system. Default light (paper-first).
+      (() => {
+        const t = localStorage.getItem("theme");
+        if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Viet Bui | Portfolio</title>
     <link rel="icon" type="image/png" href={pcmasterracePng.src} />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous" />
   </head>
-  <body
-    class={cn(
-      "group/body overscroll-none antialiased bg-background text-foreground",
-    )}
-  >
-    <AppCanvasIsland client:load />
-    <LevaPanel client:load />
-    <MobileBlocker client:load />
-    <VectorFieldBackground client:load className="hidden md:block" />
-    <AnimatedCursor client:load />
-    <NavBarDock client:load />
-    <MobileBottomNav client:load />
-    <main class="relative z-10 flex flex-1 flex-col pt-4 pb-20 md:pt-24 md:pb-0">
+  <body class="group/body overscroll-none bg-paper text-ink antialiased transition-colors duration-300">
+    <PaperNav pathname={Astro.url.pathname} client:load />
+    <PaperMobileNav pathname={Astro.url.pathname} client:load />
+    <main class="relative z-10 flex flex-1 flex-col pb-20 md:pb-0">
       <slot />
     </main>
   </body>

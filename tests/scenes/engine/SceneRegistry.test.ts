@@ -29,12 +29,12 @@ describe("SceneRegistry", () => {
   });
 
   it("get returns undefined for unregistered id", () => {
-    expect(registry.get("lorenz")).toBeUndefined();
+    expect(registry.get("magnetic")).toBeUndefined();
   });
 
   it("list returns all registered modules in insertion order", () => {
     const m1 = makeMockModule("singularity");
-    const m2 = makeMockModule("lorenz");
+    const m2 = makeMockModule("magnetic");
     registry.register(m1);
     registry.register(m2);
     const list = registry.list();

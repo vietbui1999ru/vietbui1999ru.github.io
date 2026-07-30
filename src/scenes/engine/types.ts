@@ -19,7 +19,7 @@ export interface SymmetryConfig {
 // ---------------------------------------------------------------------------
 // Scene identifiers
 // ---------------------------------------------------------------------------
-export type SceneId = "singularity" | "magnetic" | "lorenz" | "gray-scott" | "kuramoto-sivashinsky";
+export type SceneId = "singularity" | "magnetic";
 
 // ---------------------------------------------------------------------------
 // Leva schema — opaque at this layer; each sim provides its own typed schema

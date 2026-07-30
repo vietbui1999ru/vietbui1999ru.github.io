@@ -40,7 +40,7 @@ Prefer:
 ### SceneId
 
 ```typescript
-type SceneId = "singularity" | "lorenz" | "magnetic" | "gray-scott" | "kuramoto-sivashinsky";
+type SceneId = "singularity" | "magnetic";
 ```
 
 Lowercase kebab-case string. The canonical identifier for a simulation everywhere
@@ -97,7 +97,7 @@ not preference — it determines solver, shader, and data-flow patterns.
 Physics state lives entirely on the GPU as textures.
 Uses `GPUComputationRenderer` with GLSL fragment shaders for each time step.
 
-**Examples:** `gray-scott`, `kuramoto-sivashinsky`
+**Examples:** none currently registered (as of 2026-07-20 — see ADR 001 amendment)
 **When to use:** continuous field PDEs (reaction-diffusion, fluid, wave equations)
 
 ### CPUSim
@@ -105,8 +105,9 @@ Uses `GPUComputationRenderer` with GLSL fragment shaders for each time step.
 Physics state lives in JS TypedArrays, advanced by a numerical solver each frame,
 then uploaded to GPU geometry/buffer attributes for rendering.
 
-**Examples:** `lorenz`, `magnetic`
-**Solvers available:** `rk4` (general ODEs), `verlet` (symplectic, energy-conserving)
+**Examples:** `magnetic`
+**Solvers:** integration lives in each sim's own `physics.ts` (the shared
+`src/scenes/solvers/` directory was removed 2026-07-20 — see ADR 001 amendment)
 **When to use:** particle systems, ODEs with small state (< ~10k particles)
 
 ### ShaderSim
@@ -119,15 +120,12 @@ analytically from `time` and `uv` uniforms. Stateless between frames.
 
 ---
 
-## Numerical Solvers (`src/scenes/solvers/`)
+## Numerical Solvers
 
-| Module       | Algorithm                         | Use case                                |
-| ------------ | --------------------------------- | --------------------------------------- |
-| `rk4`        | 4-stage Runge-Kutta               | General ODEs                            |
-| `verlet`     | Velocity-Verlet (symplectic)      | Hamiltonian systems, Lorentz force      |
-| `etdrk4`     | Exponential time-differencing RK4 | Stiff PDEs (Kuramoto)                   |
-| `fft`        | FFT wrapper (fft.js)              | Spectral methods (Kuramoto, Gray-Scott) |
-| `gpuCompute` | GPU texture ping-pong             | Any GPUComputeSim                       |
+Removed 2026-07-20 (ADR 001 amendment). The shared `src/scenes/solvers/`
+directory (`fft`, `etdrk4`, `gpuCompute`, `verlet`) was deleted along with the
+sims that consumed it. Kept sims integrate physics in their own modules
+(e.g. `sims/magnetic/physics.ts`).
 
 ---
 
@@ -141,7 +139,7 @@ analytically from `time` and `uv` uniforms. Stateless between frames.
 | D_n              | dihedral, order n      | n rotations + n reflections |
 
 `symmetryApplies()` guards against physically meaningless combinations.
-Singularity and Kuramoto-Sivashinsky disable symmetry entirely.
+Singularity disables symmetry entirely.
 
 ---
 
@@ -157,32 +155,34 @@ All simulations must degrade gracefully across tiers:
 
 ---
 
-## Section → Sim Integration (upcoming)
+## Simulation Route Isolation
 
-After merging to main:
+As of 2026-07-22 (ADR 001 amendment):
 
-- The Singularity hero section is **removed**
-- The universal `AppCanvas` sim runs as background for **all** portfolio sections
-- Each portfolio section has a `data-scene-id` sentinel; `SceneRouter` handles transitions
-- A **"Scenes" folder in the Leva panel** lets users reassign which sim plays per section
-- Sim parameters remain per-sim in their own Leva folders (unchanged)
-
-Portfolio sections (in scroll order):
-`home` → `about` → `projects` → `experience` → `education` → `gallery` → `blog` → `contact`
+- Simulations do **not** load on portfolio, project, or blog routes.
+- `AppCanvasIsland` and `LevaPanel` mount only on `/sim/[name]` (plus the
+  isolated `/sim-test` harness).
+- The two generated playgrounds are `/sim/singularity` and `/sim/magnetic`;
+  the registry remains the source of truth for `getStaticPaths`.
+- The URL route is authoritative for initial scene selection, so shared sim
+  URLs open the named scene rather than a locally persisted choice.
+- `SimLayout.astro` owns the full-screen dark lab shell; `BaseLayout.astro`
+  stays paper-first and simulation-free.
 
 ---
 
 ## Naming Conventions
 
-| Thing                | Convention           | Example                                        |
-| -------------------- | -------------------- | ---------------------------------------------- |
-| SimModule id         | kebab-case           | `'gray-scott'`                                 |
-| SimModule title      | Title Case           | `"Gray-Scott Reaction-Diffusion"`              |
-| Presets constant     | `MODULE_PRESETS`     | `GRAY_SCOTT_PRESETS`                           |
-| Leva schema constant | `MODULE_LEVA_SCHEMA` | `GRAY_SCOTT_LEVA_SCHEMA`                       |
-| Config type          | `PascalCaseConfig`   | `GrayScottConfig`                              |
-| Scene component      | `PascalCase.tsx`     | `Scene.tsx` inside `sims/grayScott/`           |
-| Sim directory        | camelCase            | `sims/grayScott/`, `sims/kuramotoSivashinsky/` |
-| Data constants       | `UPPER_SNAKE_CASE`   | `SCROLL_ACTIVE_THRESHOLD`                      |
-| React components     | PascalCase           | `SceneHost.tsx`, `AnimatedCursor.tsx`          |
-| Hooks                | `useNoun`            | `useScrollSpy`, `useIsMobileOrTouch`           |
+| Thing                | Convention           | Example                               |
+| -------------------- | -------------------- | ------------------------------------- |
+| SimModule id         | kebab-case           | `'magnetic'`                          |
+| SimModule title      | Title Case           | `"Magnetic Field"`                    |
+| Presets constant     | `MODULE_PRESETS`     | `MAGNETIC_PRESETS`                    |
+| Leva schema constant | `MODULE_LEVA_SCHEMA` | `MAGNETIC_LEVA_SCHEMA`                |
+| Config type          | `PascalCaseConfig`   | `MagneticConfig`                      |
+| Scene component      | `PascalCase.tsx`     | `Scene.tsx` inside `sims/magnetic/`   |
+| Sim directory        | camelCase            | `sims/magnetic/`, `sims/singularity/` |
+| Data constants       | `UPPER_SNAKE_CASE`   | `SCROLL_ACTIVE_THRESHOLD`             |
+| Svelte components    | PascalCase           | `PaperNav.svelte`                     |
+| React engine pieces  | PascalCase           | `SceneHost.tsx`                       |
+| Hooks                | `useNoun`            | `useIsMobileOrTouch`                  |

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
+    "@astrojs/svelte": "^7.2.5",
     "@base-ui/react": "^1.2.0",
     "@fontsource-variable/geist-mono": "^5.2.7",
     "@fontsource-variable/inter": "^5.2.8",
@@ -45,7 +46,6 @@
     "clsx": "^2.1.1",
     "detect-gpu": "^5.0.70",
     "dompurify": "^3.4.5",
-    "fft.js": "^4.0.4",
     "framer-motion": "^12.29.2",
     "gsap": "^3.14.2",
     "leva": "^0.10.1",
@@ -55,6 +55,7 @@
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "shadcn": "^3.8.5",
+    "svelte": "^5.56.7",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.0",
     "three": "^0.184.0",
@@ -62,14 +63,19 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@sveltejs/vite-plugin-svelte": "^5.1.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
+    "@testing-library/svelte": "^5.4.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/dompurify": "^3.0.5",
     "@types/node": "^24.10.13",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.184.0",
     "@vitest/ui": "^4.1.4",
+    "axe-core": "^4.12.1",
     "gray-matter": "^4.0.3",
     "jsdom": "^29.0.2",
     "mdast-util-to-string": "^4.0.0",
@@ -77,6 +83,8 @@
     "oxlint": "^1.49.0",
     "remark-parse": "^11.0.0",
     "typescript": "^5.9.3",
+    "@types/mdast": "^4.0.4",
+    "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0",
     "vitest": "^4.1.4"
   }

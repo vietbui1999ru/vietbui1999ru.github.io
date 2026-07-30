@@ -1,6 +1,30 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { ProjectsGrid } from "@/components/projects/ProjectsGrid";
+import { getCollection } from "astro:content";
+import PaperProjects from "@/components/svelte/PaperProjects.svelte";
+import type { ProjectCardData } from "@/data/projectData";
+
+const projects: ProjectCardData[] = (
+  await getCollection("projects", (p) => !p.data.draft)
+)
+  .sort((a, b) => {
+    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  })
+  .map((entry) => ({
+    slug: entry.id,
+    title: entry.data.title,
+    summary: entry.data.summary,
+    date: entry.data.date,
+    featured: entry.data.featured,
+    badges: entry.data.badges,
+    cover: entry.data.cover,
+    images: entry.data.images,
+    links: entry.data.links,
+    media: entry.data.media,
+    status: entry.data.status,
+    bodyHtml: entry.rendered?.html ?? "",
+  }));
 ---
 
 <BaseLayout>
@@ -12,8 +36,7 @@ import { ProjectsGrid } from "@/components/projects/ProjectsGrid";
       >
         ← Back
       </a>
-      <h1 class="text-4xl font-bold mb-10">Projects</h1>
-      <ProjectsGrid client:load />
+      <PaperProjects projects={projects} />
     </div>
   </div>
 </BaseLayout>

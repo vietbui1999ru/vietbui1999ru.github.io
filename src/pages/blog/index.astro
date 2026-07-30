@@ -2,9 +2,10 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { toSlug } from "@/lib/utils";
-import { BlogGrid } from "@/components/blog/BlogGrid";
+import PaperBlogArchive from "@/components/svelte/PaperBlogArchive.svelte";
+import type { SerializedPost } from "@/data/blogData";
 
-const posts = (await getCollection("blog"))
+const posts: SerializedPost[] = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .map((p) => ({
@@ -18,10 +19,5 @@ const posts = (await getCollection("blog"))
 ---
 
 <BaseLayout>
-  <div class="w-full flex-1 bg-background">
-    <div class="mx-auto w-full max-w-[var(--content-max)] px-4 py-24 sm:px-6">
-      <h1 class="text-4xl font-bold mb-10">Blog</h1>
-      <BlogGrid posts={posts} client:load />
-    </div>
-  </div>
+  <PaperBlogArchive posts={posts} client:load />
 </BaseLayout>

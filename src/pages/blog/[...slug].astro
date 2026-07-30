@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
-import BlogVariantTabs from "@/components/blog/BlogVariantTabs";
+import PaperBlogVariants from "@/components/svelte/PaperBlogVariants.svelte";
+import PaperTableOfContents from "@/components/svelte/PaperTableOfContents.svelte";
 import { GiscusComments } from "@/components/blog/GiscusComments";
-import { TableOfContents } from "@/components/blog/TableOfContents";
 import { toSlug } from "@/lib/utils";
 
 export async function getStaticPaths() {
@@ -50,24 +50,24 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
 });
 
 const proseClass =
-  "prose prose-neutral dark:prose-invert " +
-  "prose-headings:font-semibold prose-headings:tracking-tight " +
-  "prose-a:text-primary prose-a:no-underline hover:prose-a:underline " +
+  "prose prose-neutral dark:prose-invert max-w-none " +
+  "prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-ink " +
+  "prose-p:text-ink-soft prose-li:text-ink-soft " +
+  "prose-a:text-ink prose-a:underline prose-a:decoration-journal-2 prose-a:underline-offset-4 " +
   "prose-code:before:content-none prose-code:after:content-none " +
-  "prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 " +
-  "prose-code:bg-secondary prose-code:text-secondary-foreground prose-code:font-normal " +
-  "prose-pre:rounded-lg prose-pre:border prose-pre:border-border " +
-  "max-w-none";
+  "prose-code:rounded-none prose-code:px-1.5 prose-code:py-0.5 " +
+  "prose-code:bg-journal-4 prose-code:text-ink prose-code:font-normal " +
+  "prose-pre:rounded-none prose-pre:border-[1.5px] prose-pre:border-ink " +
+  "prose-blockquote:border-ink prose-blockquote:text-ink-soft";
 ---
 
 <BaseLayout>
-  <div class="w-full flex-1 bg-background">
-  <div class="mx-auto w-full max-w-6xl px-4 pt-16 pb-24 sm:px-6">
+  <div class="mx-auto w-full max-w-7xl px-4 pt-12 pb-20 sm:px-6 md:pt-16 md:pb-24">
     <a
       href="/blog"
-      class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-10 transition-colors"
+      class="u-draw mb-10 inline-block font-mono text-step--1 uppercase tracking-wider text-journal-1 no-underline"
     >
-      ← Blog
+      ← field notes
     </a>
 
     <!--
@@ -85,21 +85,22 @@ const proseClass =
       ))}
     </div>
 
-    <div class="xl:grid xl:grid-cols-[200px_minmax(0,65ch)] xl:gap-14 xl:items-start">
+    <div class="xl:grid xl:grid-cols-[210px_minmax(0,76ch)] xl:gap-12 xl:items-start">
       <aside class="hidden xl:block">
-        <div class="sticky top-24">
-          <TableOfContents contentId="blog-content" client:load />
+        <div class="sticky top-20 border-l-[1.5px] border-ink pl-4">
+          <PaperTableOfContents contentId="blog-content" client:load />
         </div>
       </aside>
       <div id="blog-content" class="min-w-0">
-        <header class="mb-10">
-          <h1 class="text-4xl font-bold tracking-tight mb-3" style="font-family: var(--font-serif)">
+        <header class="mb-12 border-b-[1.5px] border-ink pb-8">
+          <span class="mb-4 block font-mono text-step--1 uppercase tracking-wider text-journal-2">field note</span>
+          <h1 class="mb-4 font-serif text-step-3 font-semibold leading-tight tracking-tight text-ink">
             {entry.data.title}
           </h1>
-          <p class="text-muted-foreground text-base mb-4">
+          <p class="mb-5 text-step-0 leading-relaxed text-journal-1">
             {entry.data.description}
           </p>
-          <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+          <div class="flex flex-wrap items-center gap-3 font-mono text-step--1 uppercase tracking-wider text-journal-2">
             <time datetime={entry.data.date.toISOString()}>{formattedDate}</time>
             {readingTime && <span>·</span>}
             {readingTime && <span>{readingTime}</span>}
@@ -118,9 +119,9 @@ const proseClass =
             )}
           </div>
           {entry.data.tags && entry.data.tags.length > 0 && (
-            <div class="flex flex-wrap gap-2 mt-4">
+            <div class="mt-5 flex flex-wrap gap-2">
               {entry.data.tags.map((tag) => (
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
+                <span class="border border-ink bg-paper-raised px-2.5 py-0.5 font-mono text-[0.68rem] tracking-wide text-ink">
                   {tag}
                 </span>
               ))}
@@ -128,15 +129,14 @@ const proseClass =
           )}
         </header>
 
-        <BlogVariantTabs
-          client:load
+        <PaperBlogVariants
           storageId={storageId}
           proseClass={proseClass}
+          client:load
         />
 
         <GiscusComments client:visible />
       </div>
     </div>
-  </div>
   </div>
 </BaseLayout>

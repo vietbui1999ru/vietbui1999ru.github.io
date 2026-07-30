@@ -10,7 +10,7 @@
  */
 
 // ---------------------------------------------------------------------------
-// Point-set generators (for particle-based sims: Magnetic, Lorenz)
+// Point-set generators (for particle-based sims: Magnetic, Singularity)
 // ---------------------------------------------------------------------------
 
 /**

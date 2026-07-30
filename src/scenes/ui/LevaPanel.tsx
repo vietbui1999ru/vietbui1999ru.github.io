@@ -58,10 +58,10 @@ export function useLevaPanelVisibility(): LevaPanelVisibility {
 // ---------------------------------------------------------------------------
 
 /**
- * Global Leva control panel.
+ * Simulation-route Leva control panel.
  *
- * Mount this once in BaseLayout (alongside AppCanvasIsland). It renders the
- * global Leva panel whose schema is populated by whichever sim is active.
+ * Mount this once beside `AppCanvasIsland` in the dedicated sim page. It
+ * renders the panel whose schema is populated by whichever sim is active.
  * Schema composition (active sim → leva controls) is handled by calling
  * `useControls` inside each sim's Scene component; Leva merges them
  * automatically into this single panel via its internal store.

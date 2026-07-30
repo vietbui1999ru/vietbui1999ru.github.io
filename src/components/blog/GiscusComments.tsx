@@ -1,35 +1,41 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Giscus from "@giscus/react";
-import { MessageSquare } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { OWNER } from "@/config/owner";
 
 export function GiscusComments() {
-  return (
-    <div className="mt-16">
-      <Separator className="mb-10" />
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
-      <div className="flex items-center gap-2 mb-6">
-        <MessageSquare className="size-4 text-muted-foreground" />
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-          Discussion
-        </h2>
-      </div>
+  useEffect(() => {
+    const root = document.documentElement;
+    const syncTheme = () => setTheme(root.classList.contains("dark") ? "dark" : "light");
+    syncTheme();
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="mt-20 border-t-[1.5px] border-ink pt-8">
+      <h2 className="mb-6 font-mono text-xs font-medium uppercase tracking-widest text-journal-1">
+        discussion
+      </h2>
 
       <Giscus
-        repo="vietbui1999ru/vietbui1999ru.github.io"
-        repoId="R_kgDOQp69TA"
-        category="General"
-        categoryId="DIC_kwDOQp69TM4C9SY7"
+        repo={OWNER.giscus.repo}
+        repoId={OWNER.giscus.repoId}
+        category={OWNER.giscus.category}
+        categoryId={OWNER.giscus.categoryId}
         mapping="pathname"
         strict="0"
         reactionsEnabled="1"
         emitMetadata="0"
         inputPosition="bottom"
-        theme="transparent_dark"
+        theme={theme}
         lang="en"
         loading="lazy"
       />
-    </div>
+    </section>
   );
 }
