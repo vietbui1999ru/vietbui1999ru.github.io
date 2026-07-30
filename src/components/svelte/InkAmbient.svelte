@@ -50,6 +50,7 @@ import {
   computeFlockAssignments,
   flockHuntAcceleration,
   isFlockKillTriggered,
+  predatorFleeAcceleration,
 } from "@/lib/ink-ambient/flocking";
 import { stepLotkaVolterra, mapToTargets, type PopulationState } from "@/lib/ink-ambient/population";
 import {
@@ -499,11 +500,13 @@ onMount(() => {
             flockByMemberId.get(object.id)!,
             maxAccel,
           )
-        : target && !settling
-          ? object.role === "predator"
-            ? predatorAcceleration(object, target, maxAccel, now)
-            : preyAcceleration(object, target, maxAccel, now, nearbyPredatorWobbleMultiplier(object, objects))
-          : idleAcceleration(object, activeAnchor, isUnsafe, now);
+        : object.beingHunted && !settling && flockByTargetPredatorId.has(object.id)
+          ? predatorFleeAcceleration(object, flockByTargetPredatorId.get(object.id)!, maxAccel, now)
+          : target && !settling
+            ? object.role === "predator"
+              ? predatorAcceleration(object, target, maxAccel, now)
+              : preyAcceleration(object, target, maxAccel, now, nearbyPredatorWobbleMultiplier(object, objects))
+            : idleAcceleration(object, activeAnchor, isUnsafe, now);
 
     if (object.motionBlend) {
       object.motionBlend.elapsed += dt;
@@ -534,7 +537,7 @@ onMount(() => {
     integrate(object, acceleration, dt);
     const rotationDelta = applyHeadingRotation(object, dt);
     const spawnRamp = object.role === "predator" ? predatorSpawnRampMultiplier(object, now) : 1;
-    const maxSpeed = object.huntingFlock && !settling
+    const maxSpeed = (object.huntingFlock || object.beingHunted) && !settling
       ? object.chaseSpeed
       : target && !settling
         ? object.role === "predator"
@@ -607,17 +610,18 @@ onMount(() => {
       }
     }
 
+    // Being hunted only changes a predator's BEHAVIOR (it flees like prey,
+    // see predatorFleeAcceleration) — its role never flips. A flock that
+    // closes the kill distance destroys it outright rather than converting
+    // it into a new prey object, so it stays role="predator" all the way
+    // through vanishElapsed and the LV predator-death-decay accounting
+    // below picks it up exactly like any other predator death.
     for (const predator of objects) {
       if (!predator.beingHunted || predator.vanishElapsed !== null) continue;
       const hunters = flockByTargetPredatorId.get(predator.id);
       if (!hunters || !isFlockKillTriggered(predator, hunters)) continue;
-      predator.role = "prey";
-      predator.radius = rollRadius("prey", rng);
-      predator.chaseSpeed = rollChaseSpeed("prey", predator.attractionValue, rng);
-      predator.currentTargetId = null;
-      predator.chaseElapsed = 0;
-      predator.huntingFlock = false;
       predator.beingHunted = false;
+      predator.vanishElapsed = 0;
       addBurstEffect(predator.position.x, predator.position.y, predator.radius);
     }
 

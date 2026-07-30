@@ -59,6 +59,7 @@ import {
   alignmentDirection,
   flockHuntAcceleration,
   isFlockKillTriggered,
+  predatorFleeAcceleration,
 } from "@/lib/ink-ambient/flocking";
 
 function object(id: number, x: number, y: number): InkObject {
@@ -852,5 +853,28 @@ describe("Boids steering and kill-trigger", () => {
     const farMember = object(3, 5000, 0);
     expect(isFlockKillTriggered(predator, [farMember])).toBe(false);
     expect(isFlockKillTriggered(predator, [closeMember])).toBe(true);
+  });
+});
+
+describe("Predator flee acceleration (prey-mode behavior)", () => {
+  it("flees away from the nearest hunter, ignoring farther ones", () => {
+    const predator = object(1, 0, 0);
+    const near = object(2, -50, 0);
+    const far = object(3, 5000, 0);
+    const accel = predatorFleeAcceleration(predator, [far, near], 50, 0);
+    expect(accel.x).toBeGreaterThan(0);
+  });
+
+  it("returns zero acceleration with no hunters", () => {
+    const predator = object(1, 0, 0);
+    expect(predatorFleeAcceleration(predator, [], 50, 0)).toEqual({ x: 0, y: 0 });
+  });
+
+  it("respects the acceleration cap", () => {
+    const predator = object(1, 0, 0);
+    predator.attractionValue = 1.5;
+    const hunter = object(2, 10, 0);
+    const accel = predatorFleeAcceleration(predator, [hunter], 50, 0);
+    expect(Math.hypot(accel.x, accel.y)).toBeLessThanOrEqual(50 + 1e-6);
   });
 });

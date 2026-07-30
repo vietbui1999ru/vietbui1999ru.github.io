@@ -11,6 +11,7 @@ import {
   PAIR_FORCE_MIN,
 } from "./config";
 import { clamp, distance, normalize, subtract } from "./physics";
+import { preyAcceleration } from "./targeting";
 import type { InkObject, Vec2 } from "./types";
 
 function isAlive(object: InkObject): boolean {
@@ -179,4 +180,28 @@ export function flockHuntAcceleration(
 
 export function isFlockKillTriggered(predator: InkObject, flockMembers: readonly InkObject[]): boolean {
   return flockMembers.some((member) => distance(predator.position, member.position) < FLOCK_RADIUS);
+}
+
+/** A predator being hunted by a flock acts as prey (behavior only — its
+ * role never changes): it flees the nearest flock member exactly like
+ * ordinary prey flee the nearest predator, via the same preyAcceleration
+ * formula. If the flock catches it anyway, it's destroyed outright, not
+ * converted into a new prey object (see the kill-trigger pass). */
+export function predatorFleeAcceleration(
+  predator: InkObject,
+  hunters: readonly InkObject[],
+  maxAcceleration: number,
+  now: number,
+): Vec2 {
+  let nearest: InkObject | null = null;
+  let nearestDistance = Number.POSITIVE_INFINITY;
+  for (const hunter of hunters) {
+    const d = distance(predator.position, hunter.position);
+    if (nearest === null || d < nearestDistance) {
+      nearest = hunter;
+      nearestDistance = d;
+    }
+  }
+  if (!nearest) return { x: 0, y: 0 };
+  return preyAcceleration(predator, nearest, maxAcceleration, now);
 }
