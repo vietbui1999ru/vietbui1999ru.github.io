@@ -1,5 +1,16 @@
-import { FLOCK_MIN_SIZE, FLOCK_RADIUS } from "./config";
-import { distance } from "./physics";
+import {
+  ATTRACTION_BASE_ACCELERATION,
+  FLOCK_ALIGNMENT_WEIGHT,
+  FLOCK_COHESION_WEIGHT,
+  FLOCK_HUNT_WEIGHT,
+  FLOCK_MIN_SIZE,
+  FLOCK_RADIUS,
+  FLOCK_SEPARATION_DISTANCE,
+  FLOCK_SEPARATION_WEIGHT,
+  PAIR_FORCE_MAX,
+  PAIR_FORCE_MIN,
+} from "./config";
+import { clamp, distance, normalize, subtract } from "./physics";
 import type { InkObject, Vec2 } from "./types";
 
 function isAlive(object: InkObject): boolean {
@@ -96,4 +107,76 @@ export function computeFlockAssignments(objects: readonly InkObject[]): FlockAss
   }
 
   return { huntingFlockIds, beingHuntedIds, targetByMemberId, flockByMemberId, flockByTargetPredatorId };
+}
+
+function localNeighbors(
+  object: InkObject,
+  flockMembers: readonly InkObject[],
+  radius: number,
+): InkObject[] {
+  return flockMembers.filter(
+    (member) => member.id !== object.id && distance(object.position, member.position) < radius,
+  );
+}
+
+export function cohesionDirection(object: InkObject, flockMembers: readonly InkObject[]): Vec2 {
+  const neighbors = localNeighbors(object, flockMembers, FLOCK_RADIUS);
+  if (neighbors.length === 0) return { x: 0, y: 0 };
+  return normalize(subtract(centroid(neighbors), object.position));
+}
+
+export function separationDirection(object: InkObject, flockMembers: readonly InkObject[]): Vec2 {
+  const tooClose = localNeighbors(object, flockMembers, FLOCK_SEPARATION_DISTANCE);
+  if (tooClose.length === 0) return { x: 0, y: 0 };
+  let x = 0;
+  let y = 0;
+  for (const neighbor of tooClose) {
+    const away = normalize(subtract(object.position, neighbor.position));
+    x += away.x;
+    y += away.y;
+  }
+  return normalize({ x, y });
+}
+
+export function alignmentDirection(object: InkObject, flockMembers: readonly InkObject[]): Vec2 {
+  const neighbors = localNeighbors(object, flockMembers, FLOCK_RADIUS);
+  if (neighbors.length === 0) return { x: 0, y: 0 };
+  const sum = neighbors.reduce(
+    (acc, neighbor) => ({ x: acc.x + neighbor.velocity.x, y: acc.y + neighbor.velocity.y }),
+    { x: 0, y: 0 },
+  );
+  return normalize(sum);
+}
+
+export function flockHuntAcceleration(
+  object: InkObject,
+  targetPredator: InkObject,
+  flockMembers: readonly InkObject[],
+  maxAcceleration: number,
+): Vec2 {
+  const hunt = normalize(subtract(targetPredator.position, object.position));
+  const cohesion = cohesionDirection(object, flockMembers);
+  const separation = separationDirection(object, flockMembers);
+  const alignment = alignmentDirection(object, flockMembers);
+
+  const combined: Vec2 = {
+    x:
+      FLOCK_HUNT_WEIGHT * hunt.x +
+      FLOCK_COHESION_WEIGHT * cohesion.x +
+      FLOCK_SEPARATION_WEIGHT * separation.x +
+      FLOCK_ALIGNMENT_WEIGHT * alignment.x,
+    y:
+      FLOCK_HUNT_WEIGHT * hunt.y +
+      FLOCK_COHESION_WEIGHT * cohesion.y +
+      FLOCK_SEPARATION_WEIGHT * separation.y +
+      FLOCK_ALIGNMENT_WEIGHT * alignment.y,
+  };
+  const direction = normalize(combined);
+  const driveMultiplier = clamp(object.attractionValue, PAIR_FORCE_MIN, PAIR_FORCE_MAX);
+  const magnitude = clamp(ATTRACTION_BASE_ACCELERATION * driveMultiplier, 0, maxAcceleration);
+  return { x: direction.x * magnitude, y: direction.y * magnitude };
+}
+
+export function isFlockKillTriggered(predator: InkObject, flockMembers: readonly InkObject[]): boolean {
+  return flockMembers.some((member) => distance(predator.position, member.position) < FLOCK_RADIUS);
 }

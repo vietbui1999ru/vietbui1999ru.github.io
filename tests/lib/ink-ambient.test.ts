@@ -50,7 +50,16 @@ import {
   preyAcceleration,
   chaseAccelerationMultiplier,
 } from "@/lib/ink-ambient/targeting";
-import { detectFlocks, selectFlockTarget, computeFlockAssignments } from "@/lib/ink-ambient/flocking";
+import {
+  detectFlocks,
+  selectFlockTarget,
+  computeFlockAssignments,
+  cohesionDirection,
+  separationDirection,
+  alignmentDirection,
+  flockHuntAcceleration,
+  isFlockKillTriggered,
+} from "@/lib/ink-ambient/flocking";
 
 function object(id: number, x: number, y: number): InkObject {
   return {
@@ -797,5 +806,51 @@ describe("Flock detection and target selection", () => {
     expect(assignment.targetByMemberId.get(1)?.id).toBe(4);
     expect(assignment.flockByMemberId.get(1)?.map((m) => m.id).sort()).toEqual([1, 2, 3]);
     expect(assignment.flockByTargetPredatorId.get(4)?.map((m) => m.id).sort()).toEqual([1, 2, 3]);
+  });
+});
+
+describe("Boids steering and kill-trigger", () => {
+  it("cohesion pulls toward the centroid of nearby flock members, zero with none nearby", () => {
+    const self = object(1, 0, 0);
+    const near = object(2, 40, 0);
+    const far = object(3, 5000, 0);
+    expect(cohesionDirection(self, [self, near, far])).toEqual({ x: 1, y: 0 });
+    expect(cohesionDirection(self, [self])).toEqual({ x: 0, y: 0 });
+  });
+
+  it("separation pushes away from members closer than FLOCK_SEPARATION_DISTANCE", () => {
+    const self = object(1, 0, 0);
+    const tooClose = object(2, 10, 0); // within 30
+    const notTooClose = object(3, 50, 0); // outside 30, inside FLOCK_RADIUS
+    const result = separationDirection(self, [self, tooClose, notTooClose]);
+    expect(result.x).toBeLessThan(0); // pushed away from tooClose, which is at +x
+    expect(separationDirection(self, [self])).toEqual({ x: 0, y: 0 });
+  });
+
+  it("alignment steers toward the average velocity of nearby members", () => {
+    const self = object(1, 0, 0);
+    const neighbor = object(2, 40, 0);
+    neighbor.velocity = { x: 0, y: 50 };
+    const result = alignmentDirection(self, [self, neighbor]);
+    expect(result).toEqual({ x: 0, y: 1 });
+  });
+
+  it("flockHuntAcceleration combines all four terms and respects the acceleration cap", () => {
+    const self = object(1, 0, 0);
+    self.attractionValue = 1.5;
+    const target = object(2, 1000, 0);
+    target.role = "predator";
+    const neighbor = object(3, 40, 0);
+    const accel = flockHuntAcceleration(self, target, [self, neighbor], 50);
+    expect(Math.hypot(accel.x, accel.y)).toBeLessThanOrEqual(50 + 1e-6);
+    expect(accel.x).toBeGreaterThan(0); // net direction toward target at +x
+  });
+
+  it("isFlockKillTriggered fires only when the predator is within FLOCK_RADIUS of a current flock member", () => {
+    const predator = object(1, 0, 0);
+    const closeMember = object(2, 50, 0); // within 90
+    const farMember = object(3, 5000, 0);
+    expect(isFlockKillTriggered(predator, [farMember])).toBe(false);
+    expect(isFlockKillTriggered(predator, [closeMember])).toBe(true);
   });
 });
