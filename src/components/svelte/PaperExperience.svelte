@@ -1,6 +1,10 @@
 <script lang="ts">
 import { EXPERIENCE_ITEMS } from "../../data/experienceData";
-import type { ExperienceCompany, ExperienceJob, ExperienceTag } from "../../data/experienceData";
+import type {
+  ExperienceCompany,
+  ExperienceJob,
+  ExperienceTag,
+} from "../../data/experienceData";
 
 type TimelineJob = {
   id: string;
@@ -35,14 +39,19 @@ function collect(company: ExperienceCompany, output: TimelineJob[]) {
 
 const jobs: TimelineJob[] = [];
 EXPERIENCE_ITEMS.forEach((company) => collect(company, jobs));
-const PASTELS = ["bg-pastel-sage", "bg-pastel-dust", "bg-pastel-rose", "bg-pastel-butter"];
+const PASTELS = [
+  "bg-pastel-sage",
+  "bg-pastel-dust",
+  "bg-pastel-rose",
+  "bg-pastel-butter",
+];
 </script>
 
-<section id="experience" class="relative w-full py-24">
+<section id="experience" class="relative w-full py-12 md:py-16">
   <div data-section-id="experience" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
 
   <div class="relative z-10 mx-auto w-full max-w-[var(--content-max)] px-4 sm:px-6">
-    <header class="mb-12 flex items-baseline gap-4">
+    <header class="mb-8 flex items-baseline gap-4">
       <span class="font-mono text-step--1 text-journal-2">06</span>
       <h2 class="font-serif text-step-2 font-semibold tracking-tight text-ink">experience</h2>
       <span class="h-px flex-1 -translate-y-1 bg-journal-3"></span>
@@ -51,9 +60,9 @@ const PASTELS = ["bg-pastel-sage", "bg-pastel-dust", "bg-pastel-rose", "bg-paste
       >
     </header>
 
-    <ol class="ml-2 max-w-4xl border-l-[1.5px] border-ink">
+    <ol data-ink-obstacle="prose" class="ml-2 max-w-4xl border-l-[1.5px] border-ink">
       {#each jobs as job, i (job.id)}
-        <li class="relative pb-12 pl-8 last:pb-0">
+        <li class="relative pb-10 pl-8 last:pb-0">
           <span
             class="absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink {PASTELS[i % PASTELS.length]}"
           ></span>

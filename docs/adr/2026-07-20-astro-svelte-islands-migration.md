@@ -68,13 +68,13 @@ Astro natively hydrates multiple frameworks side-by-side, so:
 **Follow-ups**
 
 - [x] Phase 1: design artifact (`design/index.html`) — tokens, typography,
-  shimmer animation, component styles.
+      shimmer animation, component styles.
 - [x] Phase 2: tokens → `src/styles/global.css` `@theme`.
 - [x] Phase 3: add `@astrojs/svelte`; rebuild landing sections and nav.
 - [x] Phase 3b: migrate blog archive, variant tabs, and TOC to Svelte.
 - [x] Phase 4a: isolate retained r3f simulations to dedicated routes.
 - [ ] Phase 4b (optional): port the two retained sims to Threlte or vanilla
-  Three.js to remove React from the engine.
+      Three.js to remove React from the engine.
 
 ## Amendment (2026-07-20): sim engine scope reduced
 
@@ -112,3 +112,40 @@ the engine from the global portfolio layout.
 
 This delivers the intended phase-out while preserving the two experiments and
 substantially reduces the main portfolio's JavaScript/runtime surface.
+
+## Amendment (2026-07-26): Ink Ambient portfolio effect
+
+Decision: add a separate, lightweight Canvas 2D Svelte island for decorative ink
+motion on explicitly opted-in portfolio routes.
+
+- Ink Ambient is not a `Scene`, `Simulation`, or `SimModule` and does not live under
+  `src/scenes/`.
+- It uses seeded CPU-only movement and simple collision for at most four objects.
+- It is explicitly enabled by portfolio pages and remains absent from `/sim/*`,
+  `/sim-test`, and `/ui-lab`.
+- The island must remain below portfolio content and must not block normal pointer,
+  keyboard, selection, navigation, or modal interaction.
+- Reduced-motion users receive no continuous ambient animation.
+
+This introduces a small portfolio UI runtime without reopening the r3f simulation
+boundary or loading Three.js on paper routes. The implementation is subject to the
+Ink Ambient bundle and frame-time budgets in its feature specification.
+
+## Amendment (2026-07-27): Ink Ambient physics/visual remediation
+
+The first Ink Ambient implementation read as rigid and exhibited erratic motion.
+Root-cause investigation (see `docs/superpowers/specs/2026-07-26-ink-ambient-physics.md`
+§24) found the implementation deviated from its own spec. Decisions made to fix it:
+
+- Collision restitution lowered from `0.72` to `0.38` (spec called for a
+  "low-energy" impulse; `0.72` was bouncier than intended).
+- Rotation is derived from a smoothed heading (`atan2(velocity)`) instead of a
+  free-running, spawn-random `angularVelocity` driving rotation directly.
+- Boundary handling dropped the teleport/wrap path entirely for ordinary
+  behaviors; objects are steered away from edges continuously and hard-clamped
+  to the viewport as a last resort, never teleported.
+- Behavior transitions blend over a short (`220ms`, temperament-scaled) window
+  instead of snapping acceleration instantly to the new behavior.
+
+These are implementation-tuning decisions within the existing architecture, not a
+change to the runtime boundary established above.

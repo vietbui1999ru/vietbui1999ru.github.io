@@ -4,21 +4,10 @@ import React, { useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import { cn } from "@/lib/utils";
 
-const CHARS =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 const PHASE_MS = 2000;
 
-const STATIC_TAGS = new Set([
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  "img",
-  "figure",
-  "picture",
-]);
+const STATIC_TAGS = new Set(["h1", "h2", "h3", "h4", "h5", "h6", "img", "figure", "picture"]);
 
 function randomChar() {
   return CHARS[Math.floor(Math.random() * CHARS.length)];
@@ -47,23 +36,17 @@ function buildFrame(source: string, progress: number): string {
   return result;
 }
 
-type ChildInfo =
-  | { kind: "static"; html: string }
-  | { kind: "animated"; tag: string; text: string };
+type ChildInfo = { kind: "static"; html: string } | { kind: "animated"; tag: string; text: string };
 
 /** True for elements that should never scramble (headers, images, image-containing blocks). */
 function isStaticElement(el: Element): boolean {
-  return (
-    STATIC_TAGS.has(el.tagName.toLowerCase()) ||
-    el.querySelector("img") !== null
-  );
+  return STATIC_TAGS.has(el.tagName.toLowerCase()) || el.querySelector("img") !== null;
 }
 
 /** Pre-compute per-element metadata once, not on every rAF frame. */
 function parseChildInfo(div: HTMLElement): ChildInfo[] {
   return Array.from(div.children).map((child) => {
-    if (isStaticElement(child))
-      return { kind: "static", html: child.outerHTML };
+    if (isStaticElement(child)) return { kind: "static", html: child.outerHTML };
     const tag = child.tagName.toLowerCase();
     return { kind: "animated", tag, text: child.textContent ?? "" };
   });
@@ -105,10 +88,9 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0 },
-    );
+    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), {
+      threshold: 0,
+    });
     observer.observe(el);
     return () => observer.disconnect();
   }, []);

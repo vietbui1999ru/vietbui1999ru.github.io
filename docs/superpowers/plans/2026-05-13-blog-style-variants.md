@@ -12,24 +12,25 @@
 
 ## File Map
 
-| Path | Action | Responsibility |
-|------|--------|---------------|
-| `src/content/schemas.ts` | Modify | Add `blogVariantSchema` |
-| `src/content/config.ts` | Modify | Add `blog-variants` collection; restrict `blog` glob to exclude `*.*.md` |
-| `src/pages/blog/[...slug].astro` | Modify | Load variants, render to HTML, pass to tab component |
-| `src/components/blog/BlogVariantTabs.tsx` | Create | Tab strip + scramble animation orchestration |
-| `src/components/ui/scramble-text.tsx` | Create | Scramble-text component (viewport-visible, 700ms, bidirectional, interrupt+restart) |
-| `vendor/vault/Blogs/building-a-vault-cms-pipeline.ai.md` | Create | Sample AI variant for test post |
-| `vendor/vault/Blogs/building-a-vault-cms-pipeline.yoda.md` | Create | Sample Yoda variant for test post |
-| `~/.claude/skills/style-blog.md` | Create | CC skill for generating style variants |
-| `docs/style-guides/` | Create dir | Style guide files (gitignored) |
-| `.gitignore` | Modify | Add `docs/style-guides/` |
+| Path                                                       | Action     | Responsibility                                                                      |
+| ---------------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------- |
+| `src/content/schemas.ts`                                   | Modify     | Add `blogVariantSchema`                                                             |
+| `src/content/config.ts`                                    | Modify     | Add `blog-variants` collection; restrict `blog` glob to exclude `*.*.md`            |
+| `src/pages/blog/[...slug].astro`                           | Modify     | Load variants, render to HTML, pass to tab component                                |
+| `src/components/blog/BlogVariantTabs.tsx`                  | Create     | Tab strip + scramble animation orchestration                                        |
+| `src/components/ui/scramble-text.tsx`                      | Create     | Scramble-text component (viewport-visible, 700ms, bidirectional, interrupt+restart) |
+| `vendor/vault/Blogs/building-a-vault-cms-pipeline.ai.md`   | Create     | Sample AI variant for test post                                                     |
+| `vendor/vault/Blogs/building-a-vault-cms-pipeline.yoda.md` | Create     | Sample Yoda variant for test post                                                   |
+| `~/.claude/skills/style-blog.md`                           | Create     | CC skill for generating style variants                                              |
+| `docs/style-guides/`                                       | Create dir | Style guide files (gitignored)                                                      |
+| `.gitignore`                                               | Modify     | Add `docs/style-guides/`                                                            |
 
 ---
 
 ## Task 1: Schema + Collection Config
 
 **Files:**
+
 - Modify: `src/content/schemas.ts`
 - Modify: `src/content/config.ts`
 
@@ -49,6 +50,7 @@ export type BlogVariantEntry = z.infer<typeof blogVariantSchema>;
 ```
 
 Also add to the exports at the bottom:
+
 ```ts
 export type BlogVariantEntry = z.infer<typeof blogVariantSchema>;
 ```
@@ -118,6 +120,7 @@ git commit -m "feat(content): add blog-variants collection with blogVariantSchem
 ## Task 2: Update `[...slug].astro` to load and pass variants
 
 **Files:**
+
 - Modify: `src/pages/blog/[...slug].astro`
 
 In Astro 5, use `experimental_AstroContainer` to render content entries to HTML strings at SSG time. First verify the API is available in the project's Astro version.
@@ -228,6 +231,7 @@ git commit -m "feat(blog): load and pre-render style variants at build time"
 ## Task 3: Create `BlogVariantTabs` React component
 
 **Files:**
+
 - Create: `src/components/blog/BlogVariantTabs.tsx`
 
 - [ ] **Step 1: Create the directory if needed**
@@ -265,17 +269,14 @@ export default function BlogVariantTabs({ tabs, proseClass }: BlogVariantTabsPro
       setActiveIdx(idx);
       setScrambleKey((k) => k + 1); // new key = interrupt + restart scramble
     },
-    [activeIdx]
+    [activeIdx],
   );
 
   // Single tab: render without tab strip
   if (tabs.length <= 1) {
     return (
       // HTML is Astro-rendered from trusted vault markdown — not user input
-      <div
-        className={cn(proseClass)}
-        dangerouslySetInnerHTML={{ __html: tabs[0]?.html ?? "" }}
-      />
+      <div className={cn(proseClass)} dangerouslySetInnerHTML={{ __html: tabs[0]?.html ?? "" }} />
     );
   }
 
@@ -292,7 +293,7 @@ export default function BlogVariantTabs({ tabs, proseClass }: BlogVariantTabsPro
               "px-4 py-2 text-sm font-medium rounded-t transition-colors -mb-px border-b-2",
               idx === activeIdx
                 ? "border-primary text-foreground"
-                : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+                : "border-transparent text-muted-foreground hover:text-foreground hover:border-border",
             )}
           >
             {tab.label}
@@ -300,11 +301,7 @@ export default function BlogVariantTabs({ tabs, proseClass }: BlogVariantTabsPro
         ))}
       </div>
 
-      <ScrambleText
-        key={scrambleKey}
-        html={tabs[activeIdx].html}
-        className={cn(proseClass)}
-      />
+      <ScrambleText key={scrambleKey} html={tabs[activeIdx].html} className={cn(proseClass)} />
     </div>
   );
 }
@@ -330,6 +327,7 @@ git commit -m "feat(blog): add BlogVariantTabs component with tab strip"
 ## Task 4: Implement `ScrambleText` component
 
 **Files:**
+
 - Create (or replace): `src/components/ui/scramble-text.tsx`
 
 First attempt to install via shadcn, then extend/replace with our viewport-aware version.
@@ -393,10 +391,9 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
-    );
+    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), {
+      threshold: 0.1,
+    });
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
@@ -436,9 +433,7 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
       }
 
       // Wrap in aria-hidden span so screen readers see the real content below
-      setDisplayHtml(
-        `<span aria-hidden="true" style="white-space:pre-wrap">${scrambled}</span>`
-      );
+      setDisplayHtml(`<span aria-hidden="true" style="white-space:pre-wrap">${scrambled}</span>`);
 
       if (progress < 1) {
         rafRef.current = requestAnimationFrame(step);
@@ -458,8 +453,8 @@ export default function ScrambleText({ html, className }: ScrambleTextProps) {
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
-  // html changes trigger the effect; isVisible change triggers re-evaluation
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // html changes trigger the effect; isVisible change triggers re-evaluation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [html, isVisible]);
 
   return (
@@ -487,9 +482,11 @@ const observeCallbacks = new Map<Element, (entries: IntersectionObserverEntry[])
 vi.stubGlobal(
   "IntersectionObserver",
   vi.fn((callback: (entries: IntersectionObserverEntry[]) => void) => ({
-    observe: (el: Element) => { observeCallbacks.set(el, callback); },
+    observe: (el: Element) => {
+      observeCallbacks.set(el, callback);
+    },
     disconnect: vi.fn(),
-  }))
+  })),
 );
 
 // rAF mock
@@ -518,9 +515,7 @@ describe("ScrambleText", () => {
     const el = container.firstChild as Element;
     const callback = observeCallbacks.get(el);
     if (callback) {
-      act(() =>
-        callback([{ isIntersecting: true } as IntersectionObserverEntry])
-      );
+      act(() => callback([{ isIntersecting: true } as IntersectionObserverEntry]));
     }
 
     rerender(<ScrambleText html="<p>end</p>" />);
@@ -550,6 +545,7 @@ git commit -m "feat(ui): add viewport-visible bidirectional ScrambleText compone
 ## Task 5: Sample companion files in vault
 
 **Files:**
+
 - Create: `vendor/vault/Blogs/building-a-vault-cms-pipeline.ai.md`
 - Create: `vendor/vault/Blogs/building-a-vault-cms-pipeline.yoda.md`
 
@@ -633,6 +629,7 @@ git commit -m "feat(vault): add AI and Yoda style variants for pipeline post"
 ## Task 6: Style guides directory + gitignore
 
 **Files:**
+
 - Modify: `.gitignore`
 - Create: `docs/style-guides/yoda.md`
 
@@ -645,6 +642,7 @@ grep -n "style-guides" /Users/vietquocbui/repos/VsCode/vietbui1999ru/Portfolio/v
 - [ ] **Step 2: Add to .gitignore if missing**
 
 Append to `.gitignore`:
+
 ```
 # Style guides (local authoring aids, not for publication)
 docs/style-guides/
@@ -658,21 +656,25 @@ Write `docs/style-guides/yoda.md`:
 # Yoda Style Guide
 
 ## Voice
+
 Inverted sentence structure (object–subject–verb order). Deliberate, wise pacing.
 Present tense preferred. Occasional rhetorical questions.
 
 ## Sentence patterns
+
 - "Strong with you, the [noun] is."
 - "[Verb] you must."
 - "Hmm, yes. [observation]"
 - "[adjective], this [noun] is."
 
 ## Vocabulary
+
 - Avoid modern slang and colloquialisms
 - Prefer timeless nouns: path, journey, wisdom, balance, force
 - Replace "I am [adj]" → "[adj], I am" or "Am I [adj]"
 
 ## Preservation rules (always keep as-is)
+
 - LaTeX math: `$...$` and `$$...$$`
 - Code blocks and inline code
 - Wikilinks: `[[...]]`
@@ -680,11 +682,12 @@ Present tense preferred. Occasional rhetorical questions.
 - Markdown heading levels
 
 ## Example transformation
+
 Original: "I wanted to eliminate manual file management."
-Yoda:     "Eliminate manual file management, I wanted to."
+Yoda: "Eliminate manual file management, I wanted to."
 
 Original: "The pipeline runs three scripts."
-Yoda:     "Three scripts, the pipeline runs."
+Yoda: "Three scripts, the pipeline runs."
 ```
 
 - [ ] **Step 4: Commit**
@@ -699,13 +702,14 @@ git commit -m "chore: gitignore style-guides dir; add yoda style guide sample"
 ## Task 7: Create `/style-blog` CC skill
 
 **Files:**
+
 - Create: `~/.claude/skills/style-blog.md`
 
 - [ ] **Step 1: Write the skill**
 
 Write `~/.claude/skills/style-blog.md`:
 
-```markdown
+````markdown
 ---
 name: style-blog
 description: Generate or update a blog post style variant. Supports named styles (ai, yoda, shakespeare, etc.). Uses Ollama by default (cost/privacy); falls back to Claude if unavailable.
@@ -720,6 +724,7 @@ Generate a style variant for a blog post in the Obsidian vault.
 Called as: `/style-blog <post-slug> <style-name>`
 
 Examples:
+
 - `/style-blog building-a-vault-cms-pipeline yoda`
 - `/style-blog my-post ai`
 
@@ -734,6 +739,7 @@ If not found, list all `.md` files in `vendor/vault/Blogs/` (excluding `*.*.md`)
 ### Step 2: Check for existing variant
 
 Check for `vendor/vault/Blogs/<slug>.<style>.md`:
+
 - **Exists**: Show first 200 characters. Ask: "overwrite / update / cancel?"
 - **Not found**: Proceed to Step 3.
 
@@ -759,6 +765,7 @@ capable = [m for m in models if any(k in m for k in ['gemma', 'llama', 'mistral'
 print(capable[0] if capable else '')
 " 2>/dev/null
 ```
+````
 
 - If a capable model name is returned: use Ollama.
 - If empty or error: use current Claude session (skip curl step below).
@@ -818,17 +825,20 @@ Display name: capitalize first letter of style name (e.g. "yoda" → "Yoda", "ai
 Ask user: "Variant written to vendor/vault/Blogs/<slug>.<style>.md. Run sync-full.sh to publish? (y/n)"
 
 If yes:
+
 ```bash
 ls sync-full.sh scripts/sync-full.sh 2>/dev/null | head -1
 ```
+
 Run whichever exists. If neither found, tell user to run it manually.
-```
+
+````
 
 - [ ] **Step 2: Verify file written**
 
 ```bash
 head -5 ~/.claude/skills/style-blog.md
-```
+````
 
 Expected: frontmatter lines for name and description.
 
@@ -841,6 +851,7 @@ This file lives in `~/.claude/skills/` and is picked up automatically by CC in a
 ## Self-Review
 
 **Spec coverage:**
+
 - Companion files (`post.ai.md`, `post.yoda.md`) — Task 5
 - Second content collection `blog-variants` — Task 1
 - Tab strip UI — Task 3
@@ -860,6 +871,7 @@ This file lives in `~/.claude/skills/` and is picked up automatically by CC in a
 **Placeholder scan:** None.
 
 **Type consistency:**
+
 - `TabData = { label: string; html: string }` defined in BlogVariantTabs.tsx; matches usage in `[...slug].astro`
 - `blogVariantSchema` exported from schemas.ts, imported in config.ts
 - `ScrambleText` props: `{ html: string; className?: string }` — matches usage in BlogVariantTabs

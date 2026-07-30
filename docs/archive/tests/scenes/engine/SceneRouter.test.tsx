@@ -28,11 +28,8 @@ function MockIntersectionObserver(cb: IOCallback) {
 }
 
 // Utility: fire mock IO entries
-function fireEntries(
-  entries: Array<{ target: Element; intersectionRatio: number }>,
-) {
-  if (!capturedCallback)
-    throw new Error("IntersectionObserver callback not captured");
+function fireEntries(entries: Array<{ target: Element; intersectionRatio: number }>) {
+  if (!capturedCallback) throw new Error("IntersectionObserver callback not captured");
   capturedCallback(
     entries.map(({ target, intersectionRatio }) => ({
       target,
@@ -75,9 +72,7 @@ function makeRegistry(ids: string[]) {
 describe("useActiveScene", () => {
   it("falls back to routeHint when no sentinel has intersectionRatio > 0", () => {
     const registry = makeRegistry(["singularity", "magnetic"]);
-    const { result } = renderHook(() =>
-      useActiveScene({ registry, routeHint: "magnetic" }),
-    );
+    const { result } = renderHook(() => useActiveScene({ registry, routeHint: "magnetic" }));
     expect(result.current.activeSceneId).toBe("magnetic");
   });
 
@@ -93,9 +88,7 @@ describe("useActiveScene", () => {
     sentinel2.setAttribute("data-scene-id", "magnetic");
     document.body.appendChild(sentinel2);
 
-    const { result } = renderHook(() =>
-      useActiveScene({ registry, routeHint: "singularity" }),
-    );
+    const { result } = renderHook(() => useActiveScene({ registry, routeHint: "singularity" }));
 
     act(() => {
       fireEntries([
@@ -112,9 +105,7 @@ describe("useActiveScene", () => {
 
   it("setActiveSceneId overrides selection immediately", () => {
     const registry = makeRegistry(["singularity", "magnetic"]);
-    const { result } = renderHook(() =>
-      useActiveScene({ registry, routeHint: "singularity" }),
-    );
+    const { result } = renderHook(() => useActiveScene({ registry, routeHint: "singularity" }));
 
     act(() => {
       result.current.setActiveSceneId("magnetic");
@@ -125,9 +116,7 @@ describe("useActiveScene", () => {
 
   it("disconnects IntersectionObserver on unmount", () => {
     const registry = makeRegistry(["singularity"]);
-    const { unmount } = renderHook(() =>
-      useActiveScene({ registry, routeHint: "singularity" }),
-    );
+    const { unmount } = renderHook(() => useActiveScene({ registry, routeHint: "singularity" }));
     unmount();
     expect(mockDisconnect).toHaveBeenCalledOnce();
   });

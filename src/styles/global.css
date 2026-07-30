@@ -550,34 +550,6 @@
   }
 }
 
-/* 2. TEXT SHIMMER — ambient gradient sweep across display type (sparing) */
-.shimmer-text {
-  background: linear-gradient(
-    100deg,
-    var(--ink) 0%,
-    var(--ink) 42%,
-    var(--grey-2) 50%,
-    var(--ink) 58%,
-    var(--ink) 100%
-  );
-  background-size: 300% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: text-shimmer var(--dur-idle) var(--ease-out-expo) infinite;
-}
-@keyframes text-shimmer {
-  0%,
-  55% {
-    background-position: 100% 0;
-  }
-  75%,
-  100% {
-    background-position: 0% 0;
-  }
-}
-
 /* 3. UNDERLINE DRAW — journal annotation feel */
 .u-draw {
   background-image: linear-gradient(currentColor, currentColor);
@@ -627,11 +599,6 @@
 @media (prefers-reduced-motion: reduce) {
   .gleam::after {
     display: none;
-  }
-  .shimmer-text {
-    color: var(--ink);
-    background: none;
-    animation: none;
   }
   .u-draw,
   .lift,

@@ -35,10 +35,9 @@ export const sceneMap: Partial<Record<SceneId, SimModule>> = Object.fromEntries(
 // ---------------------------------------------------------------------------
 // Plain record for Astro SSG (getStaticPaths). No React dependencies.
 // ---------------------------------------------------------------------------
-export const SCENE_REGISTRY: Record<string, { id: string; title: string }> =
-  Object.fromEntries(
-    registeredModules.map((m) => [m.id, { id: m.id, title: m.title }]),
-  );
+export const SCENE_REGISTRY: Record<string, { id: string; title: string }> = Object.fromEntries(
+  registeredModules.map((m) => [m.id, { id: m.id, title: m.title }]),
+);
 
 // ---------------------------------------------------------------------------
 // Factory for the React-side class-based SceneRegistry

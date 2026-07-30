@@ -84,7 +84,7 @@ function toggleInkAmbient() {
             src="/assets/images/VectorPen.svg"
             alt=""
             aria-hidden="true"
-            class="h-4 w-5 object-contain"
+            class="h-7 w-8 object-contain"
           />
         </button>
         <button
@@ -96,7 +96,7 @@ function toggleInkAmbient() {
             src="/assets/images/VectorPencil.svg"
             alt=""
             aria-hidden="true"
-            class="h-5 w-3 object-contain"
+            class="h-4 w-5 object-contain"
           />
         </button>
         <button

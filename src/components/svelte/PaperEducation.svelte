@@ -4,11 +4,11 @@ import { EDUCATION_ITEMS } from "../../data/educationData";
 const PASTELS = ["bg-pastel-dust", "bg-pastel-rose"];
 </script>
 
-<section id="education" class="relative w-full py-24">
+<section id="education" class="relative w-full py-12 md:py-16">
   <div data-section-id="education" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
 
   <div class="relative z-10 mx-auto w-full max-w-[var(--content-max)] px-4 sm:px-6">
-    <header class="mb-12 flex items-baseline gap-4">
+    <header class="mb-8 flex items-baseline gap-4">
       <span class="font-mono text-step--1 text-journal-2">07</span>
       <h2 class="font-serif text-step-2 font-semibold tracking-tight text-ink">education</h2>
       <span class="h-px flex-1 -translate-y-1 bg-journal-3"></span>
@@ -17,9 +17,9 @@ const PASTELS = ["bg-pastel-dust", "bg-pastel-rose"];
       >
     </header>
 
-    <ol class="ml-2 max-w-5xl border-l-[1.5px] border-ink">
+    <ol data-ink-obstacle="prose" class="ml-2 max-w-5xl border-l-[1.5px] border-ink">
       {#each EDUCATION_ITEMS as item, i (item.title)}
-        <li class="relative pb-14 pl-8 last:pb-0">
+        <li class="relative pb-10 pl-8 last:pb-0">
           <span
             class="absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink {PASTELS[i % PASTELS.length]}"
           ></span>

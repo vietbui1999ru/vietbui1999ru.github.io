@@ -9,7 +9,8 @@ export function GiscusComments() {
 
   useEffect(() => {
     const root = document.documentElement;
-    const syncTheme = () => setTheme(root.classList.contains("dark") ? "dark" : "light");
+    const syncTheme = () =>
+      setTheme(root.classList.contains("dark") ? "dark" : "light");
     syncTheme();
     const observer = new MutationObserver(syncTheme);
     observer.observe(root, { attributes: true, attributeFilter: ["class"] });

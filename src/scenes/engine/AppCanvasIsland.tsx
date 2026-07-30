@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useControls } from "leva";
 import { AppCanvas } from "./Canvas";
 import type { SceneId, SymmetryConfig, PerfTier } from "./types";
-import { createAppSceneRegistry, registeredModules, sceneMap } from "../registry";
+import {
+  createAppSceneRegistry,
+  registeredModules,
+  sceneMap,
+} from "../registry";
 import { getPerfTier } from "./PerfController";
 import { useIsMobileOrTouch } from "@/hooks/useIsMobileOrTouch";
 
@@ -12,7 +16,10 @@ const SCENE_STORAGE_KEY = "portfolio:activeScene";
 
 const registry = createAppSceneRegistry();
 const defaultSymmetry: SymmetryConfig = { type: "none", order: 1 };
-const sceneOptions: SceneSelection[] = [SCENE_OFF, ...registeredModules.map((m) => m.id)];
+const sceneOptions: SceneSelection[] = [
+  SCENE_OFF,
+  ...registeredModules.map((m) => m.id),
+];
 
 function deriveRouteHint(): SceneId {
   if (typeof window === "undefined") return "singularity";

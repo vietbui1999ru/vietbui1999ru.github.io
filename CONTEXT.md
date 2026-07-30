@@ -186,3 +186,15 @@ As of 2026-07-22 (ADR 001 amendment):
 | Svelte components    | PascalCase           | `PaperNav.svelte`                     |
 | React engine pieces  | PascalCase           | `SceneHost.tsx`                       |
 | Hooks                | `useNoun`            | `useIsMobileOrTouch`                  |
+
+---
+
+## Ink Ambient
+
+Ink Ambient is a decorative Canvas 2D portfolio effect, not a `Scene`, `Simulation`,
+`SimModule`, or part of `src/scenes/`. It uses a small CPU-only Svelte island with
+seeded 2D motion, safe-space obstacle avoidance, and optional fine-pointer interaction.
+
+It may be explicitly enabled on selected paper portfolio routes only. It must remain
+absent from `/sim/*`, `/sim-test`, and `/ui-lab`. The retained r3f scene engine remains
+isolated to the simulation routes; Ink Ambient does not change that boundary.

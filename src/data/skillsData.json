@@ -15,6 +15,14 @@
         "icon": "go"
       },
       {
+        "name": "Rust",
+        "icon": "rust"
+      },
+      {
+        "name": "Lean",
+        "icon": "lean"
+      },
+      {
         "name": "C#",
         "icon": "dotnet"
       },
@@ -43,6 +51,10 @@
         "icon": "latex"
       },
       {
+        "name": "Typst",
+        "icon": "typst"
+      },
+      {
         "name": "Ocaml",
         "icon": "ocaml"
       },
@@ -57,6 +69,14 @@
       {
         "name": "React",
         "icon": "react"
+      },
+      {
+        "name": "Svelte",
+        "icon": "svelte"
+      },
+      {
+        "name": "Shadcn",
+        "icon": "shadcnui"
       },
       {
         "name": "Astro",
@@ -89,6 +109,22 @@
       {
         "name": "FastAPI",
         "icon": "fastapi"
+      },
+      {
+        "name": "Cypress",
+        "icon": "cypress"
+      },
+      {
+        "name": "Playwright",
+        "icon": "playwright"
+      },
+      {
+        "name": "LangChain",
+        "icon": "langchain"
+      },
+      {
+        "name": "LangGraph",
+        "icon": "langgraph"
       }
     ]
   },
@@ -215,6 +251,34 @@
       {
         "name": "AWS",
         "icon": "aws"
+      },
+      {
+        "name": "AWS ECS Fargate",
+        "icon": "amazon-ecs"
+      },
+      {
+        "name": "AWS ECR",
+        "icon": "amazon-ecr"
+      },
+      {
+        "name": "AWS ALB",
+        "icon": "aws"
+      },
+      {
+        "name": "AWS API Gateway",
+        "icon": "amazon-api-gateway"
+      },
+      {
+        "name": "AWS IAM",
+        "icon": "aws-iam"
+      },
+      {
+        "name": "AWS Secrets Manager",
+        "icon": "aws-secrets-manager"
+      },
+      {
+        "name": "AWS CloudWatch",
+        "icon": "amazon-cloudwatch"
       },
       {
         "name": "Google Cloud Platform",
