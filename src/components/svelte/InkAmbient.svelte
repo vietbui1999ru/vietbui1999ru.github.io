@@ -468,7 +468,7 @@ onMount(() => {
     object.unsafeElapsed = isUnsafe ? object.unsafeElapsed + dt : 0;
 
     let acceleration =
-      object.huntingFlock && flockTargetByMemberId.has(object.id)
+      object.huntingFlock && !settling && flockTargetByMemberId.has(object.id)
         ? flockHuntAcceleration(
             object,
             flockTargetByMemberId.get(object.id)!,
@@ -510,7 +510,7 @@ onMount(() => {
     integrate(object, acceleration, dt);
     const rotationDelta = applyHeadingRotation(object, dt);
     const spawnRamp = object.role === "predator" ? predatorSpawnRampMultiplier(object, now) : 1;
-    const maxSpeed = object.huntingFlock
+    const maxSpeed = object.huntingFlock && !settling
       ? object.chaseSpeed
       : target && !settling
         ? object.role === "predator"
