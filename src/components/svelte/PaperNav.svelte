@@ -100,6 +100,13 @@ function toggleInkAmbient() {
           />
         </button>
         <button
+          onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-reset"))}
+          aria-label="Reset ink ambient simulation"
+          class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
+        >
+          ↺
+        </button>
+        <button
           onclick={toggleTheme}
           aria-label="Toggle dark mode"
           class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"

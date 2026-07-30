@@ -1,4 +1,6 @@
 import {
+  FLOCK_BLINK_FREQUENCY,
+  FLOCK_HUNT_BRIGHT_RED_COLOR,
   OBJECT_TIP_OFFSET_FRACTION,
   PREDATOR_SPAWN_TINT_COLOR,
   PREY_SPAWN_TINT_COLOR,
@@ -126,12 +128,29 @@ export class InkRenderer {
         (object.radius * 2 * object.scale.y) / SPRITE_SIZE,
       );
       this.context.drawImage(sprite, -SPRITE_SIZE / 2, -SPRITE_SIZE / 2);
-      const tintAlpha = clamp(1 - (now - object.spawnAt) / 1000 / SPAWN_TINT_DURATION_SECONDS, 0, 1);
-      if (tintAlpha > 0) {
+      const baseAlpha = object.opacity * opacity * fadeMultiplier;
+      if (object.huntingFlock) {
+        const blink = (Math.sin((now / 1000) * FLOCK_BLINK_FREQUENCY) + 1) / 2;
         this.context.globalCompositeOperation = "source-atop";
-        this.context.globalAlpha = object.opacity * opacity * fadeMultiplier * tintAlpha;
-        this.context.fillStyle = isPenLike(object) ? PREDATOR_SPAWN_TINT_COLOR : PREY_SPAWN_TINT_COLOR;
+        this.context.globalAlpha = baseAlpha * (1 - blink);
+        this.context.fillStyle = PREDATOR_SPAWN_TINT_COLOR;
         this.context.fillRect(-SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
+        this.context.globalAlpha = baseAlpha * blink;
+        this.context.fillStyle = FLOCK_HUNT_BRIGHT_RED_COLOR;
+        this.context.fillRect(-SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
+      } else if (object.beingHunted) {
+        this.context.globalCompositeOperation = "source-atop";
+        this.context.globalAlpha = baseAlpha;
+        this.context.fillStyle = PREY_SPAWN_TINT_COLOR;
+        this.context.fillRect(-SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
+      } else {
+        const tintAlpha = clamp(1 - (now - object.spawnAt) / 1000 / SPAWN_TINT_DURATION_SECONDS, 0, 1);
+        if (tintAlpha > 0) {
+          this.context.globalCompositeOperation = "source-atop";
+          this.context.globalAlpha = baseAlpha * tintAlpha;
+          this.context.fillStyle = isPenLike(object) ? PREDATOR_SPAWN_TINT_COLOR : PREY_SPAWN_TINT_COLOR;
+          this.context.fillRect(-SPRITE_SIZE / 2, -SPRITE_SIZE / 2, SPRITE_SIZE, SPRITE_SIZE);
+        }
       }
       this.context.restore();
     }
