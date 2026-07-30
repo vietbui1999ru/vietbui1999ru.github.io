@@ -320,12 +320,15 @@ onMount(() => {
     return pointer.fine && width >= 720 ? MAX_OBJECTS_DESKTOP : MAX_OBJECTS_MOBILE;
   }
 
+  function perRoleCap(): number {
+    return Math.max(1, Math.floor(deviceCapMax() / 2));
+  }
+
   function topUpPopulation(now: number): void {
     if (!field) return;
     const targets = mapToTargets(population);
-    const perRoleCap = Math.max(1, Math.floor(deviceCapMax() / 2));
-    const preyTarget = Math.min(targets.preyTarget, perRoleCap);
-    const predatorTarget = Math.min(targets.predatorTarget, perRoleCap);
+    const preyTarget = Math.min(targets.preyTarget, perRoleCap());
+    const predatorTarget = Math.min(targets.predatorTarget, perRoleCap());
 
     if (countAlive("prey") < preyTarget && now >= nextPreySpawnAt) {
       if (spawnOne("prey", now)) {
@@ -342,16 +345,37 @@ onMount(() => {
   /** The two manual nav buttons (pen/pencil icons): each adds exactly one
    * critter of its specific role, independent of the Lotka-Volterra targets
    * — a simple "one more" action that can push a role's count past its
-   * normal LV-derived target, capped only by the device's overall object
-   * ceiling so repeated clicks can't runaway past a sane bound. */
+   * normal LV-derived target. Bounded by both the device's overall object
+   * ceiling AND a per-role cap (same halved-ceiling formula topUpPopulation
+   * uses), so spamming one button can't flood the screen with a single role
+   * even before the shared ceiling is reached. */
   function forceAddPredator(now: number): void {
-    if (!field || objects.length >= deviceCapMax()) return;
+    if (!field || objects.length >= deviceCapMax() || countAlive("predator") >= perRoleCap()) return;
     spawnOne("predator", now);
   }
 
   function forceAddPrey(now: number): void {
-    if (!field || objects.length >= deviceCapMax()) return;
+    if (!field || objects.length >= deviceCapMax() || countAlive("prey") >= perRoleCap()) return;
     spawnOne("prey", now);
+  }
+
+  /** Full reset to page-load state: clears every object and re-derives a
+   * fresh random population, and rewinds every piece of session state a
+   * page load would have started fresh (LV targets, top-up timers, the
+   * flocking unlock flag and its assignment maps) rather than just the
+   * object list. */
+  function resetSimulation(now: number): void {
+    if (!field) return;
+    objects.length = 0;
+    population = { prey: 1.5, predator: 0.7 };
+    preyButtonEverPressed = false;
+    flockTargetByMemberId = new Map();
+    flockByMemberId = new Map();
+    flockByTargetPredatorId = new Map();
+    nextPreySpawnAt = 0;
+    nextPredatorSpawnAt = 0;
+    spawnInitialBatch(now);
+    saveSnapshot(seed, objects, { width, height });
   }
 
   function restoreObjects(): void {
@@ -908,6 +932,9 @@ onMount(() => {
     preyButtonEverPressed = true;
     forceAddPrey(performance.now());
   };
+  const onInkAmbientReset = () => {
+    resetSimulation(performance.now());
+  };
   const onInkAmbientChange = (event: Event) => {
     const { enabled: nextEnabled } = (
       event as CustomEvent<{ enabled: boolean }>
@@ -932,6 +959,7 @@ onMount(() => {
   window.addEventListener("ink-ambient-change", onInkAmbientChange);
   window.addEventListener("ink-ambient-add-predator", onInkAmbientAddPredator);
   window.addEventListener("ink-ambient-add-prey", onInkAmbientAddPrey);
+  window.addEventListener("ink-ambient-reset", onInkAmbientReset);
   mutationObserver.takeRecords();
   start();
 
@@ -949,6 +977,7 @@ onMount(() => {
     window.removeEventListener("ink-ambient-change", onInkAmbientChange);
     window.removeEventListener("ink-ambient-add-predator", onInkAmbientAddPredator);
     window.removeEventListener("ink-ambient-add-prey", onInkAmbientAddPrey);
+    window.removeEventListener("ink-ambient-reset", onInkAmbientReset);
   };
 });
 </script>
