@@ -3,11 +3,11 @@ import { OWNER } from "../../config/owner";
 import { CONTACT_CONTENT } from "../../data/contactData";
 </script>
 
-<section id="contact" class="relative flex min-h-[70vh] w-full flex-col py-24">
+<section id="contact" class="relative flex min-h-[50vh] w-full flex-col py-12 md:py-16">
   <div data-section-id="contact" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
 
   <div class="relative z-10 mx-auto w-full max-w-[var(--content-max)] flex-1 px-4 sm:px-6">
-    <header class="mb-12 flex items-baseline gap-4">
+    <header class="mb-8 flex items-baseline gap-4">
       <span class="font-mono text-step--1 text-journal-2">08</span>
       <h2 class="font-serif text-step-2 font-semibold tracking-tight text-ink">contact</h2>
       <span class="h-px flex-1 -translate-y-1 bg-journal-3"></span>
@@ -16,7 +16,7 @@ import { CONTACT_CONTENT } from "../../data/contactData";
       >
     </header>
 
-    <div class="max-w-4xl">
+    <div data-ink-obstacle="content" class="max-w-4xl">
       <p class="mb-10 font-serif text-step-2 leading-tight text-ink-soft">{CONTACT_CONTENT}</p>
 
       <a
@@ -60,7 +60,7 @@ import { CONTACT_CONTENT } from "../../data/contactData";
   </div>
 
   <footer
-    class="relative z-10 mx-auto mt-24 flex w-full max-w-[var(--content-max)] flex-wrap justify-between gap-3 border-t-[1.5px] border-ink px-4 pt-5 font-mono text-step--1 uppercase tracking-wider text-journal-1 sm:px-6"
+    class="relative z-10 mx-auto mt-12 flex w-full max-w-[var(--content-max)] flex-wrap justify-between gap-3 border-t-[1.5px] border-ink px-4 pt-5 font-mono text-step--1 uppercase tracking-wider text-journal-1 sm:px-6"
   >
     <span>viet bui · {new Date().getFullYear()}</span>
     <span>astro + svelte · obsidian vault</span>

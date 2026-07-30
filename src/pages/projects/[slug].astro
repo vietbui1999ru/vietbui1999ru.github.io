@@ -20,7 +20,7 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
 });
 ---
 
-<BaseLayout>
+<BaseLayout enableInkAmbient={true}>
   <div class="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 md:py-16">
     <a
       href="/projects"
@@ -29,7 +29,7 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
       ← all projects
     </a>
 
-    <article class="mx-auto max-w-5xl">
+    <article data-ink-obstacle="content" class="mx-auto max-w-5xl">
       <header class="mb-10 border-b-[1.5px] border-ink pb-8">
         <span class="mb-3 block font-mono text-step--1 uppercase tracking-wider text-journal-2">
           {entry.data.status} · {formattedDate}
@@ -48,6 +48,7 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
       </header>
 
       <div
+        data-ink-obstacle="prose"
         class="prose prose-neutral dark:prose-invert max-w-[76ch] prose-headings:font-serif prose-headings:text-ink prose-p:text-ink-soft prose-li:text-ink-soft prose-a:text-ink prose-pre:rounded-none prose-pre:border-[1.5px] prose-pre:border-ink"
       >
         <Content />

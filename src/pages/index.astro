@@ -7,13 +7,14 @@ import PaperProjects from "@/components/svelte/PaperProjects.svelte";
 import PaperContact from "@/components/svelte/PaperContact.svelte";
 import type { ProjectCardData } from "@/data/projectData";
 import { getCollection } from "astro:content";
+import { toSlug } from "@/lib/utils";
 
 const blogPosts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3)
   .map((p) => ({
-    slug: p.id,
+    slug: toSlug(p.id),
     title: p.data.title,
     description: p.data.description,
     date: p.data.date,
@@ -36,19 +37,25 @@ const projects: ProjectCardData[] = (
     date: entry.data.date,
     featured: entry.data.featured,
     badges: entry.data.badges,
-    cover: entry.data.cover,
+    cover: entry.data.cover ?? entry.data.images?.[0],
     images: entry.data.images,
     links: entry.data.links,
-    media: entry.data.media,
+    media:
+      entry.data.media ??
+      entry.data.images?.map((src, index) => ({
+        kind: "image" as const,
+        src,
+        alt: `${entry.data.title} screenshot ${index + 1}`,
+      })),
     status: entry.data.status,
     bodyHtml: entry.rendered?.html ?? "",
   }));
 ---
 
-<BaseLayout>
+<BaseLayout enableInkAmbient={true}>
   <PaperHero />
   <PaperAboutTeaser />
   <PaperBlog posts={blogPosts} />
-  <PaperProjects projects={projects.slice(0, 4)} />
+  <PaperProjects projects={projects.slice(0, 4)} client:load />
   <PaperContact />
 </BaseLayout>

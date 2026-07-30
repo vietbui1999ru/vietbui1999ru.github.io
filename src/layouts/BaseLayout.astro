@@ -3,6 +3,9 @@ import "@/styles/global.css";
 import pcmasterracePng from "@/assets/images/pcmasterrace.png";
 import PaperNav from "@/components/svelte/PaperNav.svelte";
 import PaperMobileNav from "@/components/svelte/PaperMobileNav.svelte";
+import InkAmbient from "@/components/svelte/InkAmbient.svelte";
+
+const { enableInkAmbient = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -16,6 +19,9 @@ import PaperMobileNav from "@/components/svelte/PaperMobileNav.svelte";
         if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches)) {
           document.documentElement.classList.add("dark");
         }
+        if (localStorage.getItem("ink-ambient") === "off") {
+          document.documentElement.classList.add("ink-ambient-disabled");
+        }
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -23,9 +29,10 @@ import PaperMobileNav from "@/components/svelte/PaperMobileNav.svelte";
     <link rel="icon" type="image/png" href={pcmasterracePng.src} />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous" />
   </head>
-  <body class="group/body overscroll-none bg-paper text-ink antialiased transition-colors duration-300">
+  <body class="group/body relative isolate overscroll-none bg-paper text-ink antialiased transition-colors duration-300">
     <PaperNav pathname={Astro.url.pathname} client:load />
     <PaperMobileNav pathname={Astro.url.pathname} client:load />
+    {enableInkAmbient && <InkAmbient pathname={Astro.url.pathname} client:load />}
     <main class="relative z-10 flex flex-1 flex-col pb-20 md:pb-0">
       <slot />
     </main>

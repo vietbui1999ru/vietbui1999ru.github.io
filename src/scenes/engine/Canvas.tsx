@@ -50,7 +50,12 @@ export function AppCanvas({
       aria-hidden="true"
     >
       {orthographic && <OrthographicCamera makeDefault position={[0, 0, 5]} />}
-      <SceneHost activeSceneId={activeSceneId} config={config} perf={perf} symmetry={symmetry} />
+      <SceneHost
+        activeSceneId={activeSceneId}
+        config={config}
+        perf={perf}
+        symmetry={symmetry}
+      />
     </R3FCanvas>
   );
 }

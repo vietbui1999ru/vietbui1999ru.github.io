@@ -4,6 +4,7 @@ import { NAV_LINKS } from "../../data/navLinks";
 let { pathname }: { pathname: string } = $props();
 let activeHref = $state("");
 let dark = $state(false);
+let inkAmbientEnabled = $state(true);
 
 function hrefFor(href: string): string {
   return href;
@@ -15,8 +16,25 @@ function toggleTheme() {
   localStorage.setItem("theme", dark ? "dark" : "light");
 }
 
+function toggleInkAmbient() {
+  inkAmbientEnabled = !inkAmbientEnabled;
+  document.documentElement.classList.toggle(
+    "ink-ambient-disabled",
+    !inkAmbientEnabled,
+  );
+  localStorage.setItem("ink-ambient", inkAmbientEnabled ? "on" : "off");
+  window.dispatchEvent(
+    new CustomEvent("ink-ambient-change", {
+      detail: { enabled: inkAmbientEnabled },
+    }),
+  );
+}
+
 function observeSections(_node: HTMLElement) {
   dark = document.documentElement.classList.contains("dark");
+  inkAmbientEnabled = !document.documentElement.classList.contains(
+    "ink-ambient-disabled",
+  );
   activeHref = pathname;
 }
 </script>
@@ -42,6 +60,14 @@ function observeSections(_node: HTMLElement) {
       </a>
     {/each}
 
+    <button
+      onclick={toggleInkAmbient}
+      aria-label={inkAmbientEnabled ? "Disable ink ambient animation" : "Enable ink ambient animation"}
+      aria-pressed={inkAmbientEnabled}
+      class="grid min-h-14 w-14 shrink-0 cursor-pointer place-items-center border-0 bg-paper font-mono text-ink"
+    >
+      {inkAmbientEnabled ? "✦" : "·"}
+    </button>
     <button
       onclick={toggleTheme}
       aria-label="Toggle dark mode"

@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import Button from "../primitives/Button.svelte";
 import CollectionToolbar from "../patterns/CollectionToolbar.svelte";
 import ProjectCollection from "../patterns/ProjectCollection.svelte";
+import IconPlayground from "./IconPlayground.svelte";
 import { UI_LAB_PROJECTS } from "../../fixtures/projects";
 import {
   DEFAULT_COLLECTION_STATE,
@@ -206,6 +207,7 @@ function setBoolean(
           <CollectionToolbar state={experiment} {tags} resultCount={filterAndSortCollection(UI_LAB_PROJECTS, experiment).length} onStateChange={updateState} onReset={resetState} onCopy={copyUrl} />
           <div class="mt-5"><ProjectCollection projects={UI_LAB_PROJECTS} experiment={experiment} onMove={moveProject} /></div>
         </section>
+        <IconPlayground />
       </main>
     </div>
   </div>

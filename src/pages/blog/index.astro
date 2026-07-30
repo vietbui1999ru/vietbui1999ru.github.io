@@ -18,6 +18,6 @@ const posts: SerializedPost[] = (await getCollection("blog"))
   }));
 ---
 
-<BaseLayout>
+<BaseLayout enableInkAmbient={true}>
   <PaperBlogArchive posts={posts} client:load />
 </BaseLayout>

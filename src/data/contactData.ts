@@ -6,6 +6,6 @@
 import { OWNER } from "@/config/owner";
 
 export const CONTACT_CONTENT =
-  "Contact me for a chat or anything really, I'm always open to learning and collaborating!";
+  "Contact me for a chat or anything really. I'm always open to learning and collaborating!";
 
 export const CONTACT_BTN_LINK = `mailto:${OWNER.email}`;

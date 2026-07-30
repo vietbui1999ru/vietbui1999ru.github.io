@@ -70,12 +70,21 @@ function linkLabel(icon: string): string {
 </script>
 
 <article
-  class="gleam lift flex flex-col border-[1.5px] border-ink bg-paper-raised shadow-hard {HEIGHT_CLASSES[cardHeight]}"
+  class="relative gleam lift flex flex-col border-[1.5px] border-ink bg-paper-raised shadow-hard {HEIGHT_CLASSES[cardHeight]}"
 >
-  <div class="h-1 shrink-0 border-b-[1.5px] border-ink {PASTELS[index % PASTELS.length]}"></div>
+  {#if onPreview}
+    <button
+      type="button"
+      aria-label={`Quick view ${project.title}`}
+      onclick={onPreview}
+      class="absolute inset-0 z-0 cursor-pointer"
+    ></button>
+  {/if}
+
+  <div class="pointer-events-none relative z-10 h-1 shrink-0 border-b-[1.5px] border-ink {PASTELS[index % PASTELS.length]}"></div>
 
   <div
-    class="flex shrink-0 items-baseline justify-between border-b-[1.5px] border-ink bg-journal-4 px-4 py-2 font-mono text-step--1 uppercase tracking-wider text-journal-1"
+    class="pointer-events-none relative z-10 flex shrink-0 items-baseline justify-between border-b-[1.5px] border-ink bg-journal-4 px-4 py-2 font-mono text-step--1 uppercase tracking-wider text-journal-1"
   >
     <span>{project.featured ? "featured" : "project"}</span>
     <span>{year(project.date)}</span>
@@ -86,13 +95,13 @@ function linkLabel(icon: string): string {
       src={imageUrl(project.cover, project.slug)}
       alt={project.title}
       loading="lazy"
-      class="aspect-video w-full shrink-0 border-b-[1.5px] border-ink object-cover"
+      class="pointer-events-none relative z-10 aspect-video w-full shrink-0 border-b-[1.5px] border-ink object-cover"
     />
   {/if}
 
-  <div class="flex min-h-0 flex-1 flex-col {DENSITY_CLASSES[density]}">
+  <div class="pointer-events-none relative z-10 flex min-h-0 flex-1 flex-col {DENSITY_CLASSES[density]}">
     <h3 class="font-serif text-step-1 font-semibold text-ink">
-      <a href="/projects/{project.slug}" class="u-draw text-ink no-underline">{project.title}</a>
+      <a href="/projects/{project.slug}" class="u-draw relative z-10 text-ink no-underline pointer-events-auto">{project.title}</a>
     </h3>
 
     {#if showSummary}
@@ -123,14 +132,14 @@ function linkLabel(icon: string): string {
 
         <span class="flex items-center gap-4">
           {#if onPreview}
-            <button type="button" onclick={onPreview} class="u-draw font-mono text-step--1 uppercase tracking-wider text-ink">quick view</button>
+            <button type="button" onclick={onPreview} class="u-draw relative z-10 font-mono text-step--1 uppercase tracking-wider text-ink pointer-events-auto">quick view</button>
           {/if}
         {#if showLinks && project.links && project.links.length > 0}
           <span class="flex gap-4">
             {#each project.links as link (link.url)}
               <a
                 href={link.url}
-                class="u-draw font-mono text-step--1 uppercase tracking-wider text-ink no-underline"
+                class="u-draw relative z-10 font-mono text-step--1 uppercase tracking-wider text-ink no-underline pointer-events-auto"
               >
                 {linkLabel(link.icon)} ↗
               </a>

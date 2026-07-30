@@ -18,16 +18,22 @@ const projects: ProjectCardData[] = (
     date: entry.data.date,
     featured: entry.data.featured,
     badges: entry.data.badges,
-    cover: entry.data.cover,
+    cover: entry.data.cover ?? entry.data.images?.[0],
     images: entry.data.images,
     links: entry.data.links,
-    media: entry.data.media,
+    media:
+      entry.data.media ??
+      entry.data.images?.map((src, index) => ({
+        kind: "image" as const,
+        src,
+        alt: `${entry.data.title} screenshot ${index + 1}`,
+      })),
     status: entry.data.status,
     bodyHtml: entry.rendered?.html ?? "",
   }));
 ---
 
-<BaseLayout>
+<BaseLayout enableInkAmbient={true}>
   <div class="w-full flex-1 bg-background">
     <div class="mx-auto w-full max-w-[var(--content-max)] px-4 py-24 sm:px-6">
       <a
@@ -36,7 +42,7 @@ const projects: ProjectCardData[] = (
       >
         ← Back
       </a>
-      <PaperProjects projects={projects} />
+      <PaperProjects projects={projects} client:load />
     </div>
   </div>
 </BaseLayout>

@@ -12,11 +12,11 @@ const PASTELS = [
 ];
 </script>
 
-<section id="gallery" class="relative w-full py-24">
+<section id="gallery" class="relative w-full py-12 md:py-16">
   <div data-section-id="gallery" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
 
   <div class="relative z-10 mx-auto w-full max-w-[var(--content-max)] px-4 sm:px-6">
-    <header class="mb-12 flex items-baseline gap-4">
+    <header class="mb-8 flex items-baseline gap-4">
       <span class="font-mono text-step--1 text-journal-2">05</span>
       <h2 class="font-serif text-step-2 font-semibold tracking-tight text-ink">gallery</h2>
       <span class="h-px flex-1 -translate-y-1 bg-journal-3"></span>
@@ -26,9 +26,9 @@ const PASTELS = [
     </header>
 
     {#if visibleItems.length > 0}
-      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div data-ink-obstacle="media" class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {#each visibleItems as item, i (item.id)}
-          <figure class="gleam lift border-[1.5px] border-ink bg-paper-raised shadow-hard-sm">
+          <figure data-ink-obstacle="media" class="gleam lift border-[1.5px] border-ink bg-paper-raised shadow-hard-sm">
             <div class="h-1 border-b-[1.5px] border-ink {PASTELS[i % PASTELS.length]}"></div>
             <a
               href={item.href ?? item.image}

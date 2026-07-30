@@ -12,26 +12,27 @@
 
 ## File Map
 
-| Action | Path | Responsibility |
-|---|---|---|
-| Modify | `src/content/schemas.ts` | Add `featured`, `draft` to `projectSchema` |
-| Modify | `src/content/config.ts` | Register `projects` collection pointing to vault |
-| Modify | `tests/content/schemas.test.ts` | Add projectSchema tests |
-| Create | `scripts/copy-vault-images.ts` | Pre-build: copy vault images to `public/` |
-| Modify | `package.json` | Prepend copy script to `build`, add dompurify |
-| Create | `src/lib/iconResolver.tsx` | Map icon slug to React component |
-| Modify | `src/components/sections/Projects.tsx` | Accept props, render sanitized bodyHtml |
-| Modify | `src/pages/index.astro` | Fetch projects collection, pass as props |
-| Create | `vendor/vault/Portfolio/Projects/*.md` (x9) | Migrate all existing projects |
-| Create | `vendor/vault/Templates/project-template.md` | Obsidian new-project template |
-| Delete | `src/data/projects.json` | Replaced by vault markdown |
-| Delete | `src/data/projectsData.ts` | Replaced by content collection |
+| Action | Path                                         | Responsibility                                   |
+| ------ | -------------------------------------------- | ------------------------------------------------ |
+| Modify | `src/content/schemas.ts`                     | Add `featured`, `draft` to `projectSchema`       |
+| Modify | `src/content/config.ts`                      | Register `projects` collection pointing to vault |
+| Modify | `tests/content/schemas.test.ts`              | Add projectSchema tests                          |
+| Create | `scripts/copy-vault-images.ts`               | Pre-build: copy vault images to `public/`        |
+| Modify | `package.json`                               | Prepend copy script to `build`, add dompurify    |
+| Create | `src/lib/iconResolver.tsx`                   | Map icon slug to React component                 |
+| Modify | `src/components/sections/Projects.tsx`       | Accept props, render sanitized bodyHtml          |
+| Modify | `src/pages/index.astro`                      | Fetch projects collection, pass as props         |
+| Create | `vendor/vault/Portfolio/Projects/*.md` (x9)  | Migrate all existing projects                    |
+| Create | `vendor/vault/Templates/project-template.md` | Obsidian new-project template                    |
+| Delete | `src/data/projects.json`                     | Replaced by vault markdown                       |
+| Delete | `src/data/projectsData.ts`                   | Replaced by content collection                   |
 
 ---
 
 ## Task 1: Extend projectSchema
 
 **Files:**
+
 - Modify: `src/content/schemas.ts`
 - Modify: `tests/content/schemas.test.ts`
 
@@ -145,6 +146,7 @@ git commit -m "feat(projects): add featured and draft fields to projectSchema"
 ## Task 2: Wire projects content collection
 
 **Files:**
+
 - Modify: `src/content/config.ts`
 
 - [ ] **Step 1: Add projects collection**
@@ -212,7 +214,7 @@ Create `vendor/vault/Templates/project-template.md`:
 ---
 title: "{{title}}"
 summary: "One sentence describing what this project does."
-date: {{date:YYYY-MM-DD}}
+date: { { date:YYYY-MM-DD } }
 featured: false
 draft: true
 status: shipped
@@ -256,6 +258,7 @@ git commit -m "chore(vault): add Projects directories and Obsidian project templ
 ## Task 4: Pre-build vault image copy script
 
 **Files:**
+
 - Create: `scripts/copy-vault-images.ts`
 
 - [ ] **Step 1: Install gray-matter and tsx if missing**
@@ -373,6 +376,7 @@ git commit -m "feat(projects): add vault image copy pre-build script"
 ## Task 5: Wire pre-build into package.json
 
 **Files:**
+
 - Modify: `package.json`
 
 - [ ] **Step 1: Install dompurify**
@@ -416,6 +420,7 @@ git commit -m "chore: wire vault image copy into build and add dompurify"
 ## Task 6: Create icon resolver
 
 **Files:**
+
 - Create: `src/lib/iconResolver.tsx`
 
 - [ ] **Step 1: Create the file**
@@ -479,6 +484,7 @@ git commit -m "feat(projects): add icon slug resolver"
 ## Task 7: Update Projects.tsx
 
 **Files:**
+
 - Modify: `src/components/sections/Projects.tsx`
 
 - [ ] **Step 1: Replace the import block and add type definitions**
@@ -670,6 +676,7 @@ git commit -m "feat(projects): update Projects.tsx to accept props and render ma
 ## Task 8: Update index.astro
 
 **Files:**
+
 - Modify: `src/pages/index.astro`
 
 - [ ] **Step 1: Replace the frontmatter block**
@@ -701,9 +708,7 @@ const blogPosts = (await getCollection("blog"))
     draft: p.data.draft,
   }));
 
-const projects: ProjectCardData[] = (
-  await getCollection("projects", (p) => !p.data.draft)
-)
+const projects: ProjectCardData[] = (await getCollection("projects", (p) => !p.data.draft))
   .sort((a, b) => {
     if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
     return b.data.date.valueOf() - a.data.date.valueOf();
@@ -768,7 +773,18 @@ date: 2026-01-15
 featured: true
 draft: false
 status: shipped
-badges: [Python, React, Recharts, TypeScript, FastAPI, "Stripe API", "Google Cloud Platform", "Google BigQuery", MySQL]
+badges:
+  [
+    Python,
+    React,
+    Recharts,
+    TypeScript,
+    FastAPI,
+    "Stripe API",
+    "Google Cloud Platform",
+    "Google BigQuery",
+    MySQL,
+  ]
 images:
   - https://raw.githubusercontent.com/vietbui1999ru/omega-sigma-alpha-4983/main/docs/dashboard-screenshot.png
   - https://raw.githubusercontent.com/vietbui1999ru/omega-sigma-alpha-4983/main/docs/mrr_accuracy_comparison.png
@@ -791,7 +807,21 @@ date: 2026-02-16
 featured: true
 draft: false
 status: shipped
-badges: [Python, React, Plotly, "Tailwind CSS", TypeScript, FastAPI, Numpy, Scipy, Matplotlib, Pandas, Nginx, Docker]
+badges:
+  [
+    Python,
+    React,
+    Plotly,
+    "Tailwind CSS",
+    TypeScript,
+    FastAPI,
+    Numpy,
+    Scipy,
+    Matplotlib,
+    Pandas,
+    Nginx,
+    Docker,
+  ]
 images:
   - https://raw.githubusercontent.com/vietbui1999ru/Heat-Wave-PDE-Simulation/main/demo/Screenshot%202026-02-16%20at%2021-20-24%20PDE%20Simulation%20Platform.png
   - https://raw.githubusercontent.com/vietbui1999ru/Heat-Wave-PDE-Simulation/main/demo/Screenshot%202026-02-16%20at%2021-19-43%20PDE%20Simulation%20Platform.png
@@ -814,7 +844,21 @@ date: 2025-11-01
 featured: false
 draft: false
 status: shipped
-badges: [".NET", Redis, "REST API", React, TypeScript, Vite, "Radix UI", "Tailwind CSS", "TanStack Query", PostgreSQL, Docker, Playwright]
+badges:
+  [
+    ".NET",
+    Redis,
+    "REST API",
+    React,
+    TypeScript,
+    Vite,
+    "Radix UI",
+    "Tailwind CSS",
+    "TanStack Query",
+    PostgreSQL,
+    Docker,
+    Playwright,
+  ]
 links:
   - icon: github
     url: https://github.com/vietbui1999ru/hosted-dashboard
@@ -860,7 +904,18 @@ date: 2025-09-01
 featured: false
 draft: false
 status: active
-badges: [Proxmox, Prometheus, Grafana, Terraform, Ansible, Docker, "Nginx Proxy Manager", "WireGuard VPN", GitLab]
+badges:
+  [
+    Proxmox,
+    Prometheus,
+    Grafana,
+    Terraform,
+    Ansible,
+    Docker,
+    "Nginx Proxy Manager",
+    "WireGuard VPN",
+    GitLab,
+  ]
 graph_node: true
 ---
 
@@ -959,6 +1014,7 @@ git commit -m "feat(projects): migrate all 9 projects from JSON to vault markdow
 ## Task 10: Delete projects.json and projectsData.ts
 
 **Files:**
+
 - Delete: `src/data/projects.json`
 - Delete: `src/data/projectsData.ts`
 
@@ -1031,6 +1087,7 @@ git commit -m "feat(projects): complete project card system — vault markdown, 
 ## Self-Review
 
 **Spec coverage:**
+
 - Markdown-per-project with frontmatter schema — Task 1, 2, 9
 - `Portfolio/Projects/` vault location — Task 3
 - `Assets/Projects/<slug>/` image convention — Task 4
@@ -1045,6 +1102,7 @@ git commit -m "feat(projects): complete project card system — vault markdown, 
 - DOMPurify sanitization on rendered HTML — Task 5, 7
 
 **Type consistency:**
+
 - `ProjectCardData` defined in `Projects.tsx`, imported via `type` in `index.astro` — consistent
 - `resolveIcon(slug)` returns `ComponentType<IconProps>` — used as JSX in Task 7 — correct
 - `projectSchema` `featured`/`draft` defaults used in collection filter — consistent

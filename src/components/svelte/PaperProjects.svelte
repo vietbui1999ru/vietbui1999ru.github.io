@@ -19,7 +19,7 @@ let selected = $state<ProjectCardData | null>(null);
       <span class="font-mono text-step--1 uppercase tracking-wider text-journal-2">selected work</span>
     </header>
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <div data-ink-obstacle="cards" class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
       {#each projects as project, p (project.slug)}
         <ProjectCard project={project} index={p} onPreview={() => (selected = project)} />
       {/each}

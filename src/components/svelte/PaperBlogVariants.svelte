@@ -17,12 +17,12 @@ function loadVariants(_node: HTMLElement) {
   const storage = document.getElementById(storageId);
   if (!storage) return;
 
-  tabs = Array.from(storage.querySelectorAll<HTMLElement>("[data-variant-label]")).map(
-    (source) => ({
-      label: source.dataset.variantLabel ?? "",
-      source,
-    }),
-  );
+  tabs = Array.from(
+    storage.querySelectorAll<HTMLElement>("[data-variant-label]"),
+  ).map((source) => ({
+    label: source.dataset.variantLabel ?? "",
+    source,
+  }));
   storage.hidden = true;
   storage.style.display = "none";
 }
@@ -31,7 +31,9 @@ function mountVariant(node: HTMLElement) {
   const tab = tabs[activeIdx];
   if (!tab) return;
 
-  node.replaceChildren(...Array.from(tab.source.childNodes).map((child) => child.cloneNode(true)));
+  node.replaceChildren(
+    ...Array.from(tab.source.childNodes).map((child) => child.cloneNode(true)),
+  );
   window.dispatchEvent(new CustomEvent("variant-change"));
 
   return () => node.replaceChildren();
