@@ -205,3 +205,10 @@ export const SPAWN_TINT_DURATION_SECONDS = 2.5;
 export const LV_CATCH_PREDATOR_BOOST = 0.15;
 export const LV_CATCH_PREY_DECAY = 0.1;
 export const LV_PREDATOR_DEATH_DECAY = 0.15;
+
+// Prey flock predator conversion (spec 2026-07-30). FLOCK_RADIUS doubles as
+// both the flock-cohesion sensing radius and the kill-trigger radius — the
+// same value, per the design's explicit constraint (not a separate tighter
+// kill threshold like the normal catch mechanic uses).
+export const FLOCK_RADIUS = 90;
+export const FLOCK_MIN_SIZE = 3;

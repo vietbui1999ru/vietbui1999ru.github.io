@@ -43,6 +43,8 @@ export type InkObject = {
   chaseSpeed: number;
   attractionValue: number;
   motionBlend: MotionBlend | null;
+  huntingFlock: boolean;
+  beingHunted: boolean;
 };
 
 export type Rect = {
