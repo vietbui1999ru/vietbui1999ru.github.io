@@ -1,9 +1,8 @@
 <script lang="ts">
 import { ABOUT_PARAGRAPHS, ABOUT_TAGLINE } from "../../data/aboutData";
 
-// Replace with a local portrait asset when ready, for example:
-// const PROFILE_IMAGE = "/assets/images/viet-bui.jpg";
-const PROFILE_IMAGE = "";
+// Leave empty to show the "insert portrait" placeholder.
+const PROFILE_IMAGE = "/assets/images/self_portrait.png";
 </script>
 
 <section id="about" class="relative w-full py-12 md:py-16">
@@ -18,7 +17,7 @@ const PROFILE_IMAGE = "";
       <div
         class="mx-auto grid aspect-square w-40 place-items-center overflow-hidden rounded-full border-[1.5px] border-ink bg-paper-raised text-center shadow-hard-sm sm:w-48 md:mx-0"
         role="img"
-        aria-label="Portrait placeholder"
+        aria-label={PROFILE_IMAGE ? "Portrait of Viet Bui" : "Portrait placeholder"}
       >
         {#if PROFILE_IMAGE}
           <img src={PROFILE_IMAGE} alt="Viet Bui" class="h-full w-full object-cover" />
