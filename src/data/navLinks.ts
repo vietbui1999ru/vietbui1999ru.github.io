@@ -13,6 +13,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "home", href: "/" },
   { label: "about", href: "/about" },
   { label: "blog", href: "/blog" },
+  { label: "thoughts", href: "/thoughts" },
   { label: "projects", href: "/projects" },
   { label: "gallery", href: "/gallery" },
 ];

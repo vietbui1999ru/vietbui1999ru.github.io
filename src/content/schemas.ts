@@ -14,6 +14,12 @@ export const blogSchema = z.object({
   topics: z.array(z.string()).optional(),
 });
 
+export const thoughtSchema = z.object({
+  date: z.coerce.date(),
+  tags: z.array(z.string()).optional(),
+  publish: z.boolean().default(false),
+});
+
 export const roleSchema = z.object({
   role: z.string(),
   company: z.string(),
@@ -69,9 +75,7 @@ export const projectSchema = z.object({
   badges: z.array(z.string()).optional(),
   images: z.array(z.string()).optional(),
   cover: z.string().optional(),
-  links: z
-    .array(z.object({ icon: z.string(), url: z.string().url() }))
-    .optional(),
+  links: z.array(z.object({ icon: z.string(), url: z.string().url() })).optional(),
   media: z.array(projectMediaSchema).optional(),
   status: z.enum(["active", "shipped", "archived"]).default("shipped"),
   graph_node: z.boolean().default(true),
