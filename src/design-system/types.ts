@@ -1,4 +1,4 @@
-export type ButtonVariant = "solid" | "outline" | "ghost";
+export type ButtonVariant = "solid" | "outline" | "ghost" | "raised" | "inverse";
 export type ButtonSize = "sm" | "md" | "lg";
 export type CollectionView = "grid" | "table" | "rows" | "compact" | "showcase";
 export type CollectionWidth = "narrow" | "standard" | "wide" | "fluid";

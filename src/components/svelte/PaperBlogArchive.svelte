@@ -1,6 +1,8 @@
 <script lang="ts">
 import ArrowRightIcon from "../primitives/ArrowRightIcon.svelte";
 import type { SerializedPost } from "../../data/blogData";
+import Chip from "../primitives/Chip.svelte";
+import PageHeader from "../primitives/PageHeader.svelte";
 
 let { posts }: { posts: SerializedPost[] } = $props();
 let activeTag = $state<string | null>(null);
@@ -34,15 +36,12 @@ function stamp(iso: string): string {
 }
 </script>
 
-<section class="mx-auto w-full max-w-[var(--content-max)] px-4 py-16 sm:px-6 md:py-20">
-  <a href="/" class="u-draw mb-8 inline-block font-mono text-step--1 uppercase tracking-wider text-journal-1 no-underline">← portfolio</a>
-
-  <header class="mb-8 flex flex-wrap items-baseline gap-4">
-    <span class="font-mono text-step--1 text-journal-2">archive</span>
-    <h1 class="font-serif text-step-3 font-semibold tracking-tight text-ink">field notes</h1>
-    <span class="h-px min-w-12 flex-1 -translate-y-1 bg-journal-3"></span>
-    <span class="font-mono text-step--1 uppercase tracking-wider text-journal-2">{filteredPosts.length} / {posts.length}</span>
-  </header>
+<section class="page-container py-section">
+  <PageHeader title="field notes" kicker="archive" back={{ href: "/", label: "home" }} class="mb-8">
+    {#snippet meta()}
+      <span>{filteredPosts.length} / {posts.length} entries</span>
+    {/snippet}
+  </PageHeader>
 
   <div data-ink-obstacle="controls" class="mb-8 flex flex-wrap items-end gap-3 border-b border-journal-3 pb-5">
     <label class="min-w-56 flex-1">
@@ -75,7 +74,7 @@ function stamp(iso: string): string {
           <span>
             <span class="block font-serif text-step-1 font-semibold text-ink">{post.title}</span>
             {#if post.description}<span class="mt-1 block max-w-4xl text-step--1 leading-relaxed text-journal-1">{post.description}</span>{/if}
-            {#if post.tags.length > 0}<span class="mt-2 flex flex-wrap gap-1.5">{#each post.tags as tag (tag)}<span class="border border-journal-2 px-2 py-0.5 font-mono text-[0.64rem] tracking-wide text-journal-1">{tag}</span>{/each}</span>{/if}
+            {#if post.tags.length > 0}<span class="mt-2 flex flex-wrap gap-1.5">{#each post.tags as tag (tag)}<Chip tone="muted">{tag}</Chip>{/each}</span>{/if}
           </span>
           <span class="font-mono text-ink opacity-0 transition-opacity group-hover:opacity-100"><ArrowRightIcon /></span>
         </a>

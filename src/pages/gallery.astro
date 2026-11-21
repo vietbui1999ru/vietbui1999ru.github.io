@@ -5,6 +5,7 @@ import type { GalleryItem } from "@/data/galleryData";
 import { getCollection } from "astro:content";
 import path from "node:path";
 import { createAssetAdapters } from "@/lib/remark/adapters";
+import PageHeader from "@/components/primitives/PageHeader.svelte";
 
 const { copyAsset } = createAssetAdapters({
   attachmentsRoot: path.join(process.cwd(), "vendor", "vault", "Attachments"),
@@ -36,8 +37,8 @@ const items: GalleryItem[] = (await getCollection("gallery"))
 ---
 
 <BaseLayout enableInkAmbient={true}>
-  <div class="mx-auto w-full max-w-[var(--content-max)] px-4 pt-10 sm:px-6 md:pt-16">
-    <a href="/" class="u-draw mb-6 inline-block font-mono text-step--1 uppercase tracking-wider text-journal-1 no-underline">← portfolio</a>
+  <div class="page-container pt-section">
+    <PageHeader title="gallery" kicker="visual field notes" back={{ href: "/", label: "home" }} />
   </div>
   <PaperGallery items={items} />
 </BaseLayout>

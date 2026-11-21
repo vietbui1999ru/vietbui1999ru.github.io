@@ -1,35 +1,21 @@
 <script lang="ts">
 import type { GalleryItem } from "../../data/galleryData";
+import Chip from "../primitives/Chip.svelte";
+import Section from "../primitives/Section.svelte";
+import { PASTEL_BG, toneFor } from "../../design-system/tone";
 
 let { items }: { items: GalleryItem[] } = $props();
 
 const visibleItems = $derived(items.filter((item) => item.image));
-const PASTELS = [
-  "bg-pastel-sage",
-  "bg-pastel-dust",
-  "bg-pastel-rose",
-  "bg-pastel-butter",
-];
 </script>
 
-<section id="gallery" class="relative w-full py-12 md:py-16">
-  <div data-section-id="gallery" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
-
-  <div class="relative z-10 mx-auto w-full max-w-[var(--content-max)] px-4 sm:px-6">
-    <header class="mb-8 flex items-baseline gap-4">
-      <span class="font-mono text-step--1 text-journal-2">05</span>
-      <h2 class="font-serif text-step-2 font-semibold tracking-tight text-ink">gallery</h2>
-      <span class="h-px flex-1 -translate-y-1 bg-journal-3"></span>
-      <span class="font-mono text-step--1 uppercase tracking-wider text-journal-2"
-        >visual field notes</span
-      >
-    </header>
+<Section id="gallery" class="pt-0">
 
     {#if visibleItems.length > 0}
       <div data-ink-obstacle="media" class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {#each visibleItems as item, i (item.id)}
+        {#each visibleItems as item (item.id)}
           <figure data-ink-obstacle="media" class="gleam lift border-[1.5px] border-ink bg-paper-raised shadow-hard-sm">
-            <div class="h-1 border-b-[1.5px] border-ink {PASTELS[i % PASTELS.length]}"></div>
+            <div class="h-1 border-b-[1.5px] border-ink {PASTEL_BG[toneFor(item.tags?.[0] ?? item.title)]}"></div>
             <a
               href={item.href ?? item.image}
               target="_blank"
@@ -58,9 +44,7 @@ const PASTELS = [
               {#if item.tags && item.tags.length > 0}
                 <div class="flex flex-wrap gap-1.5">
                   {#each item.tags as tag (tag)}
-                    <span class="border border-ink px-2 py-0.5 font-mono text-[0.68rem] tracking-wide text-ink"
-                      >{tag}</span
-                    >
+                    <Chip>{tag}</Chip>
                   {/each}
                 </div>
               {/if}
@@ -73,5 +57,4 @@ const PASTELS = [
         No visual field notes yet.
       </p>
     {/if}
-  </div>
-</section>
+</Section>

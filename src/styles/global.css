@@ -81,6 +81,12 @@
   --text-step-3: clamp(2.1rem, 1.5rem + 3vw, 4rem);
   --text-step-4: clamp(2.8rem, 1.8rem + 5vw, 6rem);
 
+  /* layout scale — max-w-reading / max-w-page, px-gutter, py-section */
+  --container-reading: 76ch;
+  --container-page: 96rem;
+  --spacing-gutter: clamp(1rem, 0.5rem + 3vw, 3rem);
+  --spacing-section: clamp(3rem, 2.25rem + 2.5vw, 4rem);
+
   /* hard offset shadows (sharp, no blur) */
   --shadow-hard: 4px 4px 0 var(--ink);
   --shadow-hard-sm: 2px 2px 0 var(--ink);
@@ -281,6 +287,16 @@
   @apply mx-auto w-full;
   padding-inline: clamp(1rem, 4vw, 1.5rem);
   padding-block: clamp(3rem, 8vw, 6rem);
+}
+
+/* Paper & Ink layout + type primitives (docs/superpowers/specs/2026-10-31-shared-ui-primitives.md) */
+@utility page-container {
+  @apply mx-auto w-full max-w-page px-gutter;
+}
+
+/* journal label: dates, kickers, meta rows, mono links */
+@utility label-mono {
+  @apply font-mono text-step--1 uppercase tracking-wider;
 }
 
 /* fluid-heading: scales from ~22px on 320px to 40.5px on wide desktop */
