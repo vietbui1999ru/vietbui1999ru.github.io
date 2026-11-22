@@ -24,6 +24,9 @@ pnpm-debug.log*
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 
+# superpowers doesn't exist but still need to add here just to be safe.
+.superpowers/
+
 # Git worktrees
 .worktrees/
 .claude/worktrees/
