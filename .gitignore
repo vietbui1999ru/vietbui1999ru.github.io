@@ -20,19 +20,17 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# Git worktrees
-.worktrees/
-
 # Vault CMS / Obsidian
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
 
-# Superpowers brainstorm companion
-.superpowers/
-
 # Git worktrees
 .worktrees/
 .claude/worktrees/
+
+.claude/*
+!.claude/settings.json
+!.claude/agent-memory/
 
 # Playwright MCP output
 .playwright-mcp/
@@ -41,7 +39,6 @@ pnpm-debug.log*
 docs/style-guides/
 
 # Local agent/tool state (machine-only)
-.claude/
 .pi/
 .pi-subagents/
 .serena/
