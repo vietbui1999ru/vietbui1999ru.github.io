@@ -20,14 +20,17 @@ Dead code cluster found 2026-05-14:
 - `src/components/ui/switch.tsx` — shadcn scaffold, 0 consumers
 
 Dead constants in `src/data/homeData.ts` (exported, never consumed):
+
 - `INTRO_ROTATING_WORDS`, `INTRO_ROTATING_DURATION`, `SINGULARITY_SCROLL_MIN`, `SINGULARITY_SCROLL_MAX`, `SINGULARITY_SIZE_RESIZE_FACTOR`, `INTRO_ROTATING_DELAY_AFTER_TYPING`
 
 Dead constants in `src/data/aboutData.ts`:
+
 - `ABOUT_TITLE`, `SKILLS_SECTION_TITLE`, `SkillType` (type)
 
 Duplicate logic: `apple-hello-effect.tsx` lines 129–199 — 7 identical wrapper functions, each a single-prop-diff call to `InViewHandwritingAnimation`. Could be a data-driven factory. Still present as of 2026-05-15.
 
 **Recurring pattern (2026-05-15 review):**
+
 - `document.body.style.overflow` managed independently by Gallery.tsx, CardsCarousel.tsx, AnimatedModal.tsx — all use local `prev` snapshot pattern. Works correctly but fragile: if two modals open simultaneously from different components, the second close will restore `"hidden"` not `""`. No shared scroll-lock utility exists.
 - `useMotionValue` / `useTransform` hooks called unconditionally before `if (isTouchDevice) return` early exit in `t-shaped-engineer-tooltip.tsx` — Rules of Hooks technically safe (hooks always called), but wasteful on touch.
 
