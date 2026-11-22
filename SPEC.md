@@ -1,5 +1,5 @@
 ---
-status: draft
+status: approved
 branch: feat/garden-a
 ---
 # SPEC: Garden repositioning (spec A)
