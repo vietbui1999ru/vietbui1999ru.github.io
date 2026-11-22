@@ -5,6 +5,10 @@ import PaperBlogVariants from "@/components/svelte/PaperBlogVariants.svelte";
 import PaperTableOfContents from "@/components/svelte/PaperTableOfContents.svelte";
 import { GiscusComments } from "@/components/blog/GiscusComments";
 import { toSlug } from "@/lib/utils";
+import PageHeader from "@/components/primitives/PageHeader.svelte";
+import Chip from "@/components/primitives/Chip.svelte";
+import InkLink from "@/components/primitives/InkLink.svelte";
+import { PROSE } from "@/design-system/prose";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
@@ -49,26 +53,17 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
   day: "numeric",
 });
 
-const proseClass =
-  "prose prose-neutral dark:prose-invert max-w-none " +
-  "prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-ink " +
-  "prose-p:text-ink-soft prose-li:text-ink-soft " +
-  "prose-a:text-ink prose-a:underline prose-a:decoration-journal-2 prose-a:underline-offset-4 " +
-  "prose-code:before:content-none prose-code:after:content-none " +
-  "prose-code:rounded-none prose-code:px-1.5 prose-code:py-0.5 " +
-  "prose-code:bg-journal-4 prose-code:text-ink prose-code:font-normal " +
-  "prose-pre:rounded-none prose-pre:border-[1.5px] prose-pre:border-ink " +
-  "prose-blockquote:border-ink prose-blockquote:text-ink-soft";
+const proseClass = `${PROSE} max-w-none`;
+const updatedDate = entry.data.updated?.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
 ---
 
 <BaseLayout enableInkAmbient={true}>
-  <div class="mx-auto w-full max-w-7xl px-4 pt-12 pb-20 sm:px-6 md:pt-16 md:pb-24">
-    <a
-      href="/blog"
-      class="u-draw mb-10 inline-block font-mono text-step--1 uppercase tracking-wider text-journal-1 no-underline"
-    >
-      ← field notes
-    </a>
+  <div class="mx-auto w-full max-w-7xl px-gutter py-section">
+    <InkLink href="/blog" arrow="back" tone="muted" class="mb-10 inline-block">blog</InkLink>
 
     <!--
       Hidden storage lives outside #blog-content so TableOfContents
@@ -92,42 +87,24 @@ const proseClass =
         </div>
       </aside>
       <div id="blog-content" data-ink-obstacle="content" class="min-w-0">
-        <header class="mb-12 border-b-[1.5px] border-ink pb-8">
-          <span class="mb-4 block font-mono text-step--1 uppercase tracking-wider text-journal-2">field note</span>
-          <h1 class="mb-4 font-serif text-step-3 font-semibold leading-tight tracking-tight text-ink">
-            {entry.data.title}
-          </h1>
-          <p class="mb-5 text-step-0 leading-relaxed text-journal-1">
-            {entry.data.description}
-          </p>
-          <div class="flex flex-wrap items-center gap-3 font-mono text-step--1 uppercase tracking-wider text-journal-2">
+        <PageHeader title={entry.data.title} kicker="field note" description={entry.data.description}>
+          <Fragment slot="meta">
             <time datetime={entry.data.date.toISOString()}>{formattedDate}</time>
-            {readingTime && <span>·</span>}
-            {readingTime && <span>{readingTime}</span>}
-            {entry.data.updated && (
+            <span>·</span>
+            <span>{readingTime}</span>
+            {updatedDate && (
               <>
                 <span>·</span>
-                <span>
-                  Updated{" "}
-                  {entry.data.updated.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </span>
+                <span>Updated {updatedDate}</span>
               </>
             )}
-          </div>
+          </Fragment>
           {entry.data.tags && entry.data.tags.length > 0 && (
-            <div class="mt-5 flex flex-wrap gap-2">
-              {entry.data.tags.map((tag) => (
-                <span class="border border-ink bg-paper-raised px-2.5 py-0.5 font-mono text-[0.68rem] tracking-wide text-ink">
-                  {tag}
-                </span>
-              ))}
+            <div class="flex flex-wrap gap-2">
+              {entry.data.tags.map((tag) => <Chip tone="raised">{tag}</Chip>)}
             </div>
           )}
-        </header>
+        </PageHeader>
 
         <PaperBlogVariants
           storageId={storageId}

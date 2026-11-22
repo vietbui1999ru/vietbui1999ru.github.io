@@ -3,6 +3,10 @@ import { ABOUT_PARAGRAPHS } from "@/data/aboutData";
 import Modal from "../primitives/Modal.svelte";
 import { SKILL_GROUPS } from "@/data/skillsPresentation";
 import resumeUrl from "@/assets/files/resume.pdf?url";
+import Button from "../primitives/Button.svelte";
+import Chip from "../primitives/Chip.svelte";
+import Section from "../primitives/Section.svelte";
+import { toneFor } from "@/design-system/tone";
 
 let skillQuery = $state("");
 let tShapeOpen = $state(false);
@@ -22,13 +26,6 @@ const skillGroups = $derived(
   })).filter((group) => group.skills.length > 0),
 );
 
-const PASTELS = [
-  "bg-pastel-sage",
-  "bg-pastel-dust",
-  "bg-pastel-rose",
-  "bg-pastel-butter",
-];
-
 // Scroll-into-view reveal: adds .in-view once, then stops observing.
 function revealOnView(node: HTMLElement) {
   const io = new IntersectionObserver(
@@ -47,31 +44,7 @@ function revealOnView(node: HTMLElement) {
 }
 </script>
 
-<section
-  id="about"
-  class="relative w-full py-12 md:py-16"
-  {@attach revealOnView}
->
-  <div
-    data-section-id="about"
-    aria-hidden="true"
-    class="pointer-events-none absolute inset-0"
-  ></div>
-
-  <div
-    class="relative z-10 mx-auto w-full max-w-[var(--content-max)] px-4 sm:px-6"
-  >
-    <header class="rv mb-8 flex items-baseline gap-4">
-      <span class="font-mono text-step--1 text-journal-2">02</span>
-      <h2 class="font-serif text-step-2 font-semibold tracking-tight text-ink">
-        about
-      </h2>
-      <span class="h-px flex-1 -translate-y-1 bg-journal-3"></span>
-      <span
-        class="font-mono text-step--1 uppercase tracking-wider text-journal-2"
-        >field notes</span
-      >
-    </header>
+<Section id="about" class="pt-0" {@attach revealOnView}>
 
     <ol data-ink-obstacle="prose" class="mb-10 max-w-4xl space-y-5">
       {#each pageParagraphs as text, i (text)}
@@ -112,14 +85,9 @@ function revealOnView(node: HTMLElement) {
         toolbox
       </h3>
       <span class="h-px flex-1 -translate-y-1 bg-journal-3"></span>
-      <a
-        href={resumeUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="gleam lift border-[1.5px] border-ink bg-paper-raised px-4 py-1.5 font-mono text-step--1 uppercase tracking-wider text-ink no-underline shadow-hard-sm"
-      >
+      <Button href={resumeUrl} variant="raised" size="sm" target="_blank" rel="noopener noreferrer">
         résumé ↗
-      </a>
+      </Button>
     </div>
 
     <label data-ink-obstacle="controls" class="rv mb-6 block max-w-sm">
@@ -145,20 +113,13 @@ function revealOnView(node: HTMLElement) {
             >{group.type}</span
           >
           <span class="flex flex-wrap gap-2">
-            {#each group.skills as skill, s (skill.name)}
-              <span
-                class="border border-ink px-2.5 py-0.5 font-mono text-step--1 tracking-wide text-ink {PASTELS[
-                  (g + s) % PASTELS.length
-                ]}"
-              >
-                {skill.name}
-              </span>
+            {#each group.skills as skill (skill.name)}
+              <Chip tone={toneFor(group.type)} size="md">{skill.name}</Chip>
             {/each}
           </span>
         </div>
       {/each}
     </div>
-  </div>
 
   {#if tShapeOpen}
     <Modal
@@ -187,7 +148,7 @@ function revealOnView(node: HTMLElement) {
       </div>
     </Modal>
   {/if}
-</section>
+</Section>
 
 <style>
   .rv {
@@ -197,7 +158,8 @@ function revealOnView(node: HTMLElement) {
       opacity 0.7s var(--ease-out-expo),
       transform 0.7s var(--ease-out-expo);
   }
-  .rv.in-view {
+  /* in-view is added at runtime by revealOnView, invisible to the compiler */
+  .rv:global(.in-view) {
     opacity: 1;
     transform: none;
   }

@@ -1,12 +1,14 @@
 <script lang="ts">
 import type { ProjectCardData } from "../../data/projectData";
 import type { CollectionDensity } from "../../design-system/types";
+import { PASTEL_BG, STATUS_TONE, toneFor } from "../../design-system/tone";
+import Chip from "../primitives/Chip.svelte";
+import InkLink from "../primitives/InkLink.svelte";
 
 type CardHeight = "auto" | "compact" | "fixed";
 
 type ProjectCardProps = {
   project: ProjectCardData;
-  index?: number;
   density?: CollectionDensity;
   cardHeight?: CardHeight;
   showImage?: boolean;
@@ -19,7 +21,6 @@ type ProjectCardProps = {
 
 let {
   project,
-  index = 0,
   density = "comfortable",
   cardHeight = "auto",
   showImage = true,
@@ -29,19 +30,6 @@ let {
   showLinks = true,
   onPreview,
 }: ProjectCardProps = $props();
-
-const PASTELS = [
-  "bg-pastel-sage",
-  "bg-pastel-dust",
-  "bg-pastel-rose",
-  "bg-pastel-butter",
-];
-
-const STATUS_PASTEL: Record<ProjectCardData["status"], string> = {
-  active: "bg-pastel-sage",
-  shipped: "bg-pastel-dust",
-  archived: "bg-journal-4",
-};
 
 const DENSITY_CLASSES: Record<CollectionDensity, string> = {
   comfortable: "gap-3 p-5",
@@ -81,7 +69,7 @@ function linkLabel(icon: string): string {
     ></button>
   {/if}
 
-  <div class="pointer-events-none relative z-10 h-1 shrink-0 border-b-[1.5px] border-ink {PASTELS[index % PASTELS.length]}"></div>
+  <div class="pointer-events-none relative z-10 h-1 shrink-0 border-b-[1.5px] border-ink {PASTEL_BG[toneFor(project.slug)]}"></div>
 
   <div
     class="pointer-events-none relative z-10 flex shrink-0 items-baseline justify-between border-b-[1.5px] border-ink bg-journal-4 px-4 py-2 font-mono text-step--1 uppercase tracking-wider text-journal-1"
@@ -111,9 +99,7 @@ function linkLabel(icon: string): string {
     {#if showTags && project.badges && project.badges.length > 0}
       <span class="flex flex-wrap gap-1.5">
         {#each project.badges as badge (badge)}
-          <span class="border border-ink px-2 py-0.5 font-mono text-[0.68rem] tracking-wide text-ink">
-            {badge}
-          </span>
+          <Chip>{badge}</Chip>
         {/each}
       </span>
     {/if}
@@ -121,11 +107,7 @@ function linkLabel(icon: string): string {
     {#if showStatus || (showLinks && project.links && project.links.length > 0)}
       <div class="mt-auto flex items-center justify-between border-t border-journal-3 pt-3">
         {#if showStatus}
-          <span
-            class="border border-ink px-2 py-0.5 font-mono text-[0.68rem] uppercase tracking-wider text-ink {STATUS_PASTEL[project.status]}"
-          >
-            {project.status}
-          </span>
+          <Chip tone={STATUS_TONE[project.status]} caps>{project.status}</Chip>
         {:else}
           <span></span>
         {/if}
@@ -137,12 +119,7 @@ function linkLabel(icon: string): string {
         {#if showLinks && project.links && project.links.length > 0}
           <span class="flex gap-4">
             {#each project.links as link (link.url)}
-              <a
-                href={link.url}
-                class="u-draw relative z-10 font-mono text-step--1 uppercase tracking-wider text-ink no-underline pointer-events-auto"
-              >
-                {linkLabel(link.icon)} ↗
-              </a>
+              <InkLink href={link.url} class="pointer-events-auto relative z-10">{linkLabel(link.icon)}</InkLink>
             {/each}
           </span>
         {/if}

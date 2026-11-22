@@ -112,8 +112,8 @@ function moveButton(
     </div>
   {:else}
     <div class="grid {DENSITY_GAP[experiment.density]} {ALIGNMENT_CLASSES[experiment.alignment]}" class:overflow-y-auto={experiment.overflow === "scroll"} class:max-h-[42rem]={experiment.view === "showcase" && experiment.overflow !== "visible"} style={`grid-template-columns: repeat(${experiment.view === "showcase" ? Math.min(experiment.columns, 2) : experiment.columns}, minmax(0, 1fr)); gap: var(--lab-gap)`}>
-      {#each visible as project, index (project.slug)}
-        <ProjectCard project={project} {index} density={experiment.density} cardHeight={experiment.cardHeight} showImage={experiment.showImage} showSummary={experiment.showSummary} showTags={experiment.showTags} showStatus={experiment.showStatus} showLinks={experiment.showLinks} />
+      {#each visible as project (project.slug)}
+        <ProjectCard project={project} density={experiment.density} cardHeight={experiment.cardHeight} showImage={experiment.showImage} showSummary={experiment.showSummary} showTags={experiment.showTags} showStatus={experiment.showStatus} showLinks={experiment.showLinks} />
       {/each}
     </div>
     {#if experiment.view === "showcase" && experiment.overflow === "fade" && filtered.length > visible.length}

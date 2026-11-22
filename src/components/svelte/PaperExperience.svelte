@@ -5,6 +5,11 @@ import type {
   ExperienceJob,
   ExperienceTag,
 } from "../../data/experienceData";
+import Chip from "../primitives/Chip.svelte";
+import InkLink from "../primitives/InkLink.svelte";
+import Section from "../primitives/Section.svelte";
+import SectionHeader from "../primitives/SectionHeader.svelte";
+import { PASTEL_BG, toneFor } from "../../design-system/tone";
 
 type TimelineJob = {
   id: string;
@@ -39,50 +44,24 @@ function collect(company: ExperienceCompany, output: TimelineJob[]) {
 
 const jobs: TimelineJob[] = [];
 EXPERIENCE_ITEMS.forEach((company) => collect(company, jobs));
-const PASTELS = [
-  "bg-pastel-sage",
-  "bg-pastel-dust",
-  "bg-pastel-rose",
-  "bg-pastel-butter",
-];
 </script>
 
-<section id="experience" class="relative w-full py-12 md:py-16">
-  <div data-section-id="experience" aria-hidden="true" class="pointer-events-none absolute inset-0"></div>
-
-  <div class="relative z-10 mx-auto w-full max-w-[var(--content-max)] px-4 sm:px-6">
-    <header class="mb-8 flex items-baseline gap-4">
-      <span class="font-mono text-step--1 text-journal-2">06</span>
-      <h2 class="font-serif text-step-2 font-semibold tracking-tight text-ink">experience</h2>
-      <span class="h-px flex-1 -translate-y-1 bg-journal-3"></span>
-      <span class="font-mono text-step--1 uppercase tracking-wider text-journal-2"
-        >work ledger</span
-      >
-    </header>
+<Section id="experience">
+    <SectionHeader index="06" title="experience" kicker="work ledger" />
 
     <ol data-ink-obstacle="prose" class="ml-2 max-w-4xl border-l-[1.5px] border-ink">
-      {#each jobs as job, i (job.id)}
+      {#each jobs as job (job.id)}
         <li class="relative pb-10 pl-8 last:pb-0">
           <span
-            class="absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink {PASTELS[i % PASTELS.length]}"
+            class="absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink {PASTEL_BG[toneFor(job.company)]}"
           ></span>
 
           <div class="mb-2 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <time class="font-mono text-step--1 uppercase tracking-wider text-journal-2"
-              >{job.date}</time
-            >
+            <time class="label-mono text-journal-2">{job.date}</time>
             {#if job.companyUrl}
-              <a
-                href={job.companyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="u-draw font-mono text-step--1 uppercase tracking-wider text-journal-1 no-underline"
-                >{job.company} ↗</a
-              >
+              <InkLink href={job.companyUrl} tone="muted">{job.company}</InkLink>
             {:else}
-              <span class="font-mono text-step--1 uppercase tracking-wider text-journal-1"
-                >{job.company}</span
-              >
+              <span class="label-mono text-journal-1">{job.company}</span>
             {/if}
           </div>
 
@@ -96,27 +75,11 @@ const PASTELS = [
           {#if job.tags.length > 0}
             <div class="mt-4 flex flex-wrap gap-2">
               {#each job.tags as tag (tag.name)}
-                {#if tag.url}
-                  <a
-                    href={tag.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={tag.tooltip}
-                    class="border border-ink px-2 py-0.5 font-mono text-[0.68rem] tracking-wide text-ink no-underline"
-                    >{tag.name} ↗</a
-                  >
-                {:else}
-                  <span
-                    title={tag.tooltip}
-                    class="border border-ink px-2 py-0.5 font-mono text-[0.68rem] tracking-wide text-ink"
-                    >{tag.name}</span
-                  >
-                {/if}
+                <Chip href={tag.url} title={tag.tooltip}>{tag.name}</Chip>
               {/each}
             </div>
           {/if}
         </li>
       {/each}
     </ol>
-  </div>
-</section>
+</Section>

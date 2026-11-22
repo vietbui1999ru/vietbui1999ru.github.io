@@ -42,7 +42,7 @@ function toggleInkAmbient() {
   class="sticky top-0 z-40 hidden border-b-[1.5px] border-ink bg-paper/90 backdrop-blur md:block"
 >
   <div
-    class="mx-auto flex h-14 w-full max-w-[var(--content-max)] items-center justify-between px-4 sm:px-6"
+    class="page-container flex h-14 items-center justify-between"
   >
     <a
       href={hrefFor("/")}
