@@ -1,6 +1,6 @@
 # Digital garden pivot
 
-- **Status:** Direction agreed 2026-11-22; spec A drafted, B–D not yet written
+- **Status:** Direction agreed 2026-11-22; specs A and D drafted, B and C not yet written
 - **Date:** 2026-11-22
 - **Related:** `2026-10-31-shared-ui-primitives.md` (base), `2026-10-31-live-status-widgets.md` (spec C),
   `2026-11-22-spotify-taste-sidecar-brief.md` (separate project)
@@ -36,7 +36,7 @@ projects and skills demoted.
 | Order | Spec | Branch | Scope |
 | --- | --- | --- | --- |
 | 1 | A: repositioning | `feat/garden-a` | `Site/` collection, home (identity, focus areas, tended feed), skills folded into focus areas, projects demoted and sortable, nav, `VAULT_ROOT` everywhere |
-| 2 | D: publishing pipeline | `feat/garden-d` | `publish: true` migration, local dry-run preview, Excalidraw (plugin SVG export + sync check), Mermaid via pele at build time, Typst via a per-post `math` property, video embeds, `essay`/`notebook`/`visual` layouts, hover previews for published wikilinks, `%% comment %%` stripping |
+| 2 | D: publishing pipeline | `feat/garden-d` (from `feat/garden-a`) | `publish: true` migration, local dry-run preview, Excalidraw (plugin SVG export + sync check), Mermaid via pele at build time, Typst via a per-post `math` property, video embeds, `essay`/`notebook`/`visual` layouts, hover previews for published wikilinks, `%% comment %%` stripping |
 | 3 | B: library (backlogs) | `feat/garden-b` | `/library` for games, books, films, recipes: image, tags, status, progress, the owner's writing; categories ordered and toggled in `Site/Library.md`, empty ones hidden publicly, all visible in local preview |
 | 4 | C: status widgets | `feat/garden-c` | Spotify (top tracks, artists, genres), Monkeytype, WakaTime as daily snapshots via a scheduled GitHub Action; `/now` page; live now-playing deferred |
 
@@ -52,4 +52,11 @@ All four branch from `claude/ui-content-layout-analysis-d5062e` (shared primitiv
 | 2026-11-22 | Typst for new writing; KaTeX posts converted later |
 | 2026-11-22 | Excalidraw rendered from the Obsidian plugin's SVG export, checked by the sync |
 | 2026-11-22 | Video is embeds only; nothing self-hosted |
-| 2026-11-22 | Web clippings stay off the site |
+| 2026-11-22 | Web clippings stay off the site; clipping sync and popover retired |
+| 2026-11-22 | Publishing moves into this repo (`npm run publish`); Obsidian sync scripts retired |
+| 2026-11-22 | Notes route by `type` property from anywhere in the personal vault |
+| 2026-11-22 | Blog variants kept; they inherit the parent's `publish` |
+| 2026-11-22 | Typst covers math and fenced blocks |
+| 2026-11-22 | Layouts are block presets with per-type defaults, no per-note overrides |
+| 2026-11-22 | One wikilink index over all types; hover previews, backlinks, note embeds as cards |
+| 2026-11-22 | PortfolioVault push triggers the deploy via repository dispatch; no site commit per publish |
