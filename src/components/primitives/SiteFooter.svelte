@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Link, Mail } from "@lucide/svelte";
-import { siGithub, siGitlab } from "simple-icons";
+import { siDiscord, siGithub, siGitlab } from "simple-icons";
 import { OWNER } from "../../config/owner";
 import InkLink from "./InkLink.svelte";
 
@@ -13,6 +13,7 @@ const links: ContactLink[] = [
   { label: "github", href: OWNER.social.github.url, path: siGithub.path },
   { label: "gitlab", href: OWNER.social.gitlab.url, path: siGitlab.path },
   { label: "linkedin", href: OWNER.social.linkedin.url, Icon: Link },
+  { label: "discord", href: OWNER.social.discord.url, path: siDiscord.path },
 ];
 </script>
 

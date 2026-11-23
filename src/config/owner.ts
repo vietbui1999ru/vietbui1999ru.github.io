@@ -7,6 +7,7 @@ export interface SocialLinks {
   github: { url: string; label: string };
   gitlab: { url: string; label: string };
   linkedin: { url: string };
+  discord: { url: string };
 }
 
 export interface OwnerConfig {
@@ -34,6 +35,7 @@ export const OWNER: OwnerConfig = {
       label: "My GitLab profile",
     },
     linkedin: { url: "https://linkedin.com/in/vietbui99" },
+    discord: { url: "https://discord.com/users/463366284940410910" },
   },
   giscus: {
     repo: "vietbui1999ru/vietbui1999ru.github.io",
