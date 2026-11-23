@@ -13,21 +13,25 @@ export interface VaultNote {
 
 const SKIP_DIRS = new Set([".obsidian", ".git", ".trash", "node_modules"]);
 
-async function walk(dir: string, out: string[]): Promise<void> {
-  const entries = await fs.readdir(dir, { withFileTypes: true });
-  for (const entry of entries) {
-    if (entry.name.startsWith(".") || SKIP_DIRS.has(entry.name)) continue;
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) await walk(full, out);
-    else if (entry.isFile() && entry.name.endsWith(".md")) out.push(full);
-  }
+/** Absolute paths of every file under `dir` (sorted) that `keep` accepts. */
+export async function walkFiles(dir: string, keep: (name: string) => boolean): Promise<string[]> {
+  const out: string[] = [];
+  const visit = async (current: string): Promise<void> => {
+    const entries = await fs.readdir(current, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.name.startsWith(".") || SKIP_DIRS.has(entry.name)) continue;
+      const full = path.join(current, entry.name);
+      if (entry.isDirectory()) await visit(full);
+      else if (entry.isFile() && keep(entry.name)) out.push(full);
+    }
+  };
+  await visit(dir);
+  return out.sort();
 }
 
 /** Every `.md` note under `root` whose frontmatter has `publish: true`. */
 export async function scanVault(root: string): Promise<VaultNote[]> {
-  const files: string[] = [];
-  await walk(root, files);
-  files.sort();
+  const files = await walkFiles(root, (name) => name.endsWith(".md"));
 
   const notes: VaultNote[] = [];
   for (const file of files) {
