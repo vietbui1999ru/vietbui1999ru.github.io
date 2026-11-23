@@ -5,6 +5,7 @@ import {
   blogVariantSchema,
   gallerySchema,
   projectSchema,
+  siteNoteSchema,
   thoughtSchema,
 } from "@/content/schemas";
 import { vaultPaths } from "@/lib/vault-paths";
@@ -55,10 +56,21 @@ const thoughts = defineCollection({
   schema: thoughtSchema,
 });
 
+// Owner copy for Home, About and focus areas. Missing Site/ yields no entries,
+// and the pages then omit the vault-driven blocks.
+const site = defineCollection({
+  loader: glob({
+    pattern: ["Home.md", "About.md", "Focus/*.md"],
+    base: paths.site,
+  }),
+  schema: siteNoteSchema,
+});
+
 export const collections = {
   blog,
   "blog-variants": blogVariants,
   gallery,
   projects,
+  site,
   thoughts,
 };
