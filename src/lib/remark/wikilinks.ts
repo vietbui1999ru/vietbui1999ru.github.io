@@ -1,6 +1,7 @@
 import type { Plugin } from "unified";
 import type { Root, Text, PhrasingContent } from "mdast";
 import { visit, SKIP } from "unist-util-visit";
+import { toSlug } from "../utils";
 
 export type WikilinkTarget =
   | {
@@ -38,17 +39,10 @@ export interface WikilinkOptions {
 
 const LINK_REGEX = /\[\[([^[\]|]+)(?:\|([^[\]]+))?\]\]/g;
 
-function slugify(raw: string): string {
-  return raw
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
-
 /** Target of a wikilink slug, or undefined when nothing published matches. */
 export function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined {
-  const s = slugify(slug);
+  // Same slugger as note ids (src/lib/note-id.ts), so [[Q&A notes]] finds q-a-notes.
+  const s = toSlug(slug);
   return (
     index.posts.get(s) ??
     index.thoughts.get(s) ??

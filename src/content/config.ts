@@ -9,6 +9,7 @@ import {
   thoughtSchema,
 } from "@/content/schemas";
 import { vaultPaths } from "@/lib/vault-paths";
+import { noteId } from "@/lib/note-id";
 
 const paths = vaultPaths(process.cwd());
 
@@ -17,6 +18,7 @@ const blog = defineCollection({
   loader: glob({
     pattern: ["**/*.md", "!**/*.*.md"],
     base: paths.blogs,
+    generateId: ({ entry }) => noteId(entry),
   }),
   schema: blogSchema,
 });
@@ -42,6 +44,7 @@ const projects = defineCollection({
   loader: glob({
     pattern: "**/*.md",
     base: paths.projects,
+    generateId: ({ entry }) => noteId(entry),
   }),
   schema: projectSchema,
 });
@@ -51,7 +54,7 @@ const thoughts = defineCollection({
   loader: glob({
     pattern: "Thoughts/**/*.md",
     base: paths.thoughts,
-    generateId: ({ entry }) => entry.replace(/^Thoughts\//, "").replace(/\.md$/, ""),
+    generateId: ({ entry }) => noteId(entry),
   }),
   schema: thoughtSchema,
 });

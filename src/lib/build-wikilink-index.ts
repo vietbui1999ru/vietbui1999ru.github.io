@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { WikilinkIndex, WikilinkTarget } from "@/lib/remark/wikilinks";
+import { noteId } from "./note-id";
 
 /** Every `.md` file under `dir` (recursive), or [] when the folder is missing. */
 function markdownFiles(dir: string): string[] {
@@ -40,7 +41,7 @@ function addFolder(
     const content = fs.readFileSync(path.join(dir, file), "utf-8");
     const fm = parseFrontmatter(content);
     if (!isPublished(fm)) continue;
-    const slug = path.basename(file, ".md");
+    const slug = noteId(file);
     const title = typeof fm.title === "string" && fm.title ? fm.title : slug;
     map.set(slug, target(slug, title, { preview: previewOf(content), cover: stringField(fm.cover) }));
   }
@@ -105,7 +106,7 @@ export function buildWikilinkIndex(blogDir: string): WikilinkIndex {
     const content = fs.readFileSync(path.join(blogDir, file), "utf-8");
     const fm = parseFrontmatter(content);
     if (fm.publish !== true) continue;
-    const slug = path.basename(file, ".md");
+    const slug = noteId(file);
     const title = typeof fm.title === "string" && fm.title ? fm.title : slug;
     index.posts.set(slug, {
       kind: "blog",
