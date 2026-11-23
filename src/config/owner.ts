@@ -13,8 +13,6 @@ export interface SocialLinks {
 export interface OwnerConfig {
   name: string;
   email: string;
-  /** Intro greeting displayed on the home hero */
-  intro: string;
   social: SocialLinks;
   availability: {
     open: boolean;
@@ -31,7 +29,6 @@ export interface OwnerConfig {
 export const OWNER: OwnerConfig = {
   name: "Viet Bui",
   email: "buiquocviet99@gmail.com",
-  intro: "Hi, I'm Viet",
   social: {
     github: {
       url: "https://github.com/vietbui1999ru",
