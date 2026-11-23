@@ -1,5 +1,5 @@
 ---
-status: draft
+status: approved
 branch: feat/timeline
 ---
 # SPEC: Timeline rail (issue #13)
