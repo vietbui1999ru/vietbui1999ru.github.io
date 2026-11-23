@@ -627,3 +627,36 @@
 .dark .excalidraw-embed svg {
   filter: invert(1) hue-rotate(180deg);
 }
+
+/* Wikilink hover card (src/lib/wikilink-preview.ts). Theme tokens only. */
+.wikilink-card {
+  position: absolute;
+  z-index: 50;
+  width: 280px;
+  display: grid;
+  gap: 0.375rem;
+  padding: 0.75rem;
+  background: var(--paper-raised);
+  color: var(--ink);
+  border: var(--ink-line);
+  box-shadow: var(--shadow-hard-sm);
+  pointer-events: none;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.wikilink-card-kind {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+.wikilink-card-title {
+  font-weight: 600;
+}
+.wikilink-card-preview {
+  margin: 0;
+  color: var(--ink-soft);
+}
+.wikilink-card-cover {
+  width: 100%;
+  height: auto;
+  border: var(--ink-line);
+}
