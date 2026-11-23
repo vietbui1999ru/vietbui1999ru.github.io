@@ -139,6 +139,21 @@ describe("readiness", () => {
     expect(Object.keys(calls[0].env).sort()).toEqual(["HOME", "PATH"]);
   });
 
+  it("skips when the status JSON says not ready", async () => {
+    await expect(checkPiReady("m", capture('{"ready":false}').run)).rejects.toBeInstanceOf(
+      PiUnavailableError,
+    );
+    await expect(checkPiReady("m", capture('{"ok":false}').run)).rejects.toBeInstanceOf(
+      PiUnavailableError,
+    );
+  });
+
+  it("skips when the status output is not readable", async () => {
+    await expect(checkPiReady("m", capture("logged in").run)).rejects.toBeInstanceOf(
+      PiUnavailableError,
+    );
+  });
+
   it("reports a failed check as unavailable", async () => {
     const run = async () => {
       throw new Error("pi exited with 1");

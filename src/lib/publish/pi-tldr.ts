@@ -88,13 +88,25 @@ export const runPi: PiRunner = (args, env) =>
   spawnLimited("pi", args, env, { timeoutMs: PI_TIMEOUT_MS, maxBytes: PI_MAX_OUTPUT_BYTES });
 
 /** Readiness for the skip notice: pi is installed and its opencode-go login checks out. */
+// Fails closed: a non-zero exit, unparseable output, or an explicit not-ready flag skips.
 export async function checkPiReady(model: string, run: PiRunner = runPi): Promise<void> {
   const args = ["auth", "check", "--model", assertModel(model), "--no-refresh", "--json"];
+  let out: string;
   try {
-    await run(args, minimalEnv());
+    out = await run(args, minimalEnv());
   } catch (err) {
     if (err instanceof PiUnavailableError) throw err;
     throw new PiUnavailableError(`pi auth check failed: ${(err as Error).message}`);
+  }
+  let status: unknown;
+  try {
+    status = JSON.parse(out);
+  } catch {
+    throw new PiUnavailableError("pi auth check printed no readable status");
+  }
+  const s = status as { ready?: unknown; ok?: unknown };
+  if (s.ready === false || s.ok === false) {
+    throw new PiUnavailableError("pi is not ready for opencode-go");
   }
 }
 
