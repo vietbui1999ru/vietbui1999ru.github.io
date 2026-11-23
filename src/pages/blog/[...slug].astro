@@ -31,8 +31,8 @@ const allVariants = await getCollection("blog-variants", (v) =>
 // Render each variant's Content component for use in the template below
 const renderedVariants = await Promise.all(
   allVariants.map(async (v) => {
-    const { Content: VC } = await render(v);
-    return { label: "TLDR", Content: VC };
+    const { Content: VC, headings: variantHeadings } = await render(v);
+    return { label: "TLDR", Content: VC, headings: variantHeadings };
   })
 );
 
@@ -63,11 +63,11 @@ const updatedDate = entry.data.updated?.toLocaleDateString("en-US", {
       doesn't find duplicate headings from every pre-rendered variant.
     -->
     <div id={storageId} style="display:none" aria-hidden="true">
-      <div data-variant-label="Original">
+      <div data-variant-label="Original" data-headings={JSON.stringify(headings)}>
         <Content />
       </div>
-      {renderedVariants.map(({ label, Content: VC }) => (
-        <div data-variant-label={label}>
+      {renderedVariants.map(({ label, Content: VC, headings: vh }) => (
+        <div data-variant-label={label} data-headings={JSON.stringify(vh)}>
           <VC />
         </div>
       ))}

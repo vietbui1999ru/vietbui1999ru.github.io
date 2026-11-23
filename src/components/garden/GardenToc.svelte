@@ -16,26 +16,38 @@ let {
   sidebar?: boolean;
 } = $props();
 
-const entries = $derived(tocEntries(headings, maxDepth));
+// Set when the post's variant switcher changes tab; the TOC then shows that tab's headings.
+let tabHeadings = $state<TocHeading[] | null>(null);
+const entries = $derived(tocEntries(tabHeadings ?? headings, maxDepth));
 const visible = $derived(tocVisible(entries, minHeadings));
 let activeSlug = $state("");
 
 onMount(() => {
-  if (!visible || typeof IntersectionObserver === "undefined") return;
-  const targets = entries
-    .map((e) => document.getElementById(e.slug))
-    .filter((el): el is HTMLElement => el !== null);
-  // A heading counts as current while it sits in the upper part of the viewport.
-  const observer = new IntersectionObserver(
-    (records) => {
-      for (const record of records) {
-        if (record.isIntersecting) activeSlug = record.target.id;
-      }
-    },
-    { rootMargin: "0px 0px -70% 0px" },
-  );
-  for (const target of targets) observer.observe(target);
-  return () => observer.disconnect();
+  const onVariant = (event: Event) => {
+    const detail = (event as CustomEvent<{ headings?: TocHeading[] }>).detail;
+    tabHeadings = detail?.headings ?? null;
+  };
+  window.addEventListener("variant-change", onVariant);
+  let observer: IntersectionObserver | undefined;
+  if (visible && typeof IntersectionObserver !== "undefined") {
+    const targets = entries
+      .map((e) => document.getElementById(e.slug))
+      .filter((el): el is HTMLElement => el !== null);
+    // A heading counts as current while it sits in the upper part of the viewport.
+    observer = new IntersectionObserver(
+      (records) => {
+        for (const record of records) {
+          if (record.isIntersecting) activeSlug = record.target.id;
+        }
+      },
+      { rootMargin: "0px 0px -70% 0px" },
+    );
+    for (const target of targets) observer.observe(target);
+  }
+  return () => {
+    window.removeEventListener("variant-change", onVariant);
+    observer?.disconnect();
+  };
 });
 </script>
 
