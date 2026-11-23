@@ -10,6 +10,7 @@ import remarkCallout from "@r4ai/remark-callout";
 import remarkMath from "remark-math";
 import { remarkTypst } from "./src/lib/remark/typst-plugin";
 import { remarkMermaid } from "./src/lib/remark/mermaid-plugin";
+import { remarkVideo } from "./src/lib/remark/video-plugin";
 import rehypeKatex from "rehype-katex";
 import { remarkPreview } from "./src/lib/remark/preview";
 import { remarkEmbeds } from "./src/lib/remark/embeds";
@@ -72,6 +73,7 @@ export default defineConfig({
       remarkMath,
       remarkTypst,
       remarkMermaid,
+      remarkVideo,
       remarkPreview,
       [
         remarkEmbeds,
