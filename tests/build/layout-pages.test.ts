@@ -12,9 +12,21 @@ const PROJECT = process.cwd();
 const FIXTURE = path.join(PROJECT, "tests", "fixtures", "garden-vault");
 const BUILD_TIMEOUT = 240_000;
 
-async function build(vault: string, outDir: string) {
+// Each build runs in its own copy of the project with node_modules symlinked. Two
+// astro builds in one project root share .astro/ and clobber each other's generated
+// files, and the spec check runs AC-13's build alongside this suite.
+function isolatedProject(): string {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "layout-project-"));
+  for (const entry of ["astro.config.ts", "package.json", "tsconfig.json", "svelte.config.js", "src", "public"]) {
+    fs.cpSync(path.join(PROJECT, entry), path.join(root, entry), { recursive: true });
+  }
+  fs.symlinkSync(path.join(PROJECT, "node_modules"), path.join(root, "node_modules"), "dir");
+  return root;
+}
+
+async function build(root: string, vault: string, outDir: string) {
   return run("npx", ["astro", "build", "--outDir", outDir], {
-    cwd: PROJECT,
+    cwd: root,
     env: { ...process.env, VAULT_ROOT: vault },
     timeout: BUILD_TIMEOUT,
     maxBuffer: 32 * 1024 * 1024,
@@ -22,12 +34,14 @@ async function build(vault: string, outDir: string) {
 }
 
 let dist: string;
+let root: string;
 let linuxHtml: string;
 let qaHtml: string;
 
 beforeAll(async () => {
   dist = fs.mkdtempSync(path.join(os.tmpdir(), "layout-dist-"));
-  await build(FIXTURE, dist);
+  root = isolatedProject();
+  await build(root, FIXTURE, dist);
   linuxHtml = fs.readFileSync(
     path.join(dist, "blog", "i-accidentally-deleted-my-linux-boot", "index.html"),
     "utf-8",
@@ -37,6 +51,7 @@ beforeAll(async () => {
 
 afterAll(() => {
   fs.rmSync(dist, { recursive: true, force: true });
+  fs.rmSync(root, { recursive: true, force: true });
 });
 
 describe("layout presets on post pages (built)", () => {
@@ -66,6 +81,7 @@ describe("an unknown layout fails the build", () => {
   it("names the layout in the error", async () => {
     const vault = fs.mkdtempSync(path.join(os.tmpdir(), "layout-bad-vault-"));
     const out = fs.mkdtempSync(path.join(os.tmpdir(), "layout-bad-dist-"));
+    const projectRoot = isolatedProject();
     try {
       fs.cpSync(FIXTURE, vault, { recursive: true });
       fs.writeFileSync(
@@ -74,7 +90,7 @@ describe("an unknown layout fails the build", () => {
       );
       let failure: { stdout?: string; stderr?: string; code?: number } | undefined;
       try {
-        await build(vault, out);
+        await build(projectRoot, vault, out);
       } catch (error) {
         failure = error as typeof failure;
       }
@@ -84,6 +100,7 @@ describe("an unknown layout fails the build", () => {
     } finally {
       fs.rmSync(vault, { recursive: true, force: true });
       fs.rmSync(out, { recursive: true, force: true });
+      fs.rmSync(projectRoot, { recursive: true, force: true });
     }
   }, BUILD_TIMEOUT);
 });
