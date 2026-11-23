@@ -4,6 +4,11 @@ import path from "node:path";
 // so a dotted title such as "v1.2 notes" is not read as a variant.
 const VARIANT_RE = /^(.+)\.([a-z][a-z-]*)\.md$/;
 
+/** True for `<stem>.<word>.md` file names (TLDRs and persona variants alike). */
+export function isVariantName(basename: string): boolean {
+  return VARIANT_RE.test(basename);
+}
+
 export interface VariantNote {
   relPath: string;
   frontmatter: Record<string, unknown>;
