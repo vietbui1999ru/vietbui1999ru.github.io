@@ -13,18 +13,36 @@ function markdownFiles(dir: string): string[] {
   }
 }
 
+const PREVIEW_CHARS = 280;
+
+/** First ~280 characters of the body: frontmatter and Markdown markers removed. */
+export function previewOf(content: string): string {
+  const body = content.replace(/^---\r?\n[\s\S]*?\r?\n---/, "");
+  return body
+    .replace(/%%[\s\S]*?%%/g, "")
+    .replace(/[#*_`>[\]!]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, PREVIEW_CHARS);
+}
+
+function stringField(value: string | boolean | undefined): string | undefined {
+  return typeof value === "string" && value ? value : undefined;
+}
+
 function addFolder(
   map: Map<string, WikilinkTarget>,
   dir: string,
   isPublished: (fm: Record<string, string | boolean>) => boolean,
-  target: (slug: string, title: string) => WikilinkTarget,
+  target: (slug: string, title: string, extra: { preview: string; cover?: string }) => WikilinkTarget,
 ): void {
   for (const file of markdownFiles(dir)) {
-    const fm = parseFrontmatter(fs.readFileSync(path.join(dir, file), "utf-8"));
+    const content = fs.readFileSync(path.join(dir, file), "utf-8");
+    const fm = parseFrontmatter(content);
     if (!isPublished(fm)) continue;
     const slug = path.basename(file, ".md");
     const title = typeof fm.title === "string" && fm.title ? fm.title : slug;
-    map.set(slug, target(slug, title));
+    map.set(slug, target(slug, title, { preview: previewOf(content), cover: stringField(fm.cover) }));
   }
 }
 
@@ -38,13 +56,13 @@ export function buildSiteWikilinkIndex(vaultRoot: string): WikilinkIndex {
     index.thoughts,
     path.join(vaultRoot, "Thoughts"),
     (fm) => fm.publish === true,
-    (slug, title) => ({ kind: "thought", url: `/thoughts#${slug}`, title }),
+    (slug, title, extra) => ({ kind: "thought", url: `/thoughts#${slug}`, title, ...extra }),
   );
   addFolder(
     index.projects,
     path.join(vaultRoot, "Portfolio", "Projects"),
     (fm) => fm.draft !== true,
-    (slug, title) => ({ kind: "project", url: `/projects/${slug}`, title }),
+    (slug, title, extra) => ({ kind: "project", url: `/projects/${slug}`, title, ...extra }),
   );
   return index;
 }
@@ -89,7 +107,13 @@ export function buildWikilinkIndex(blogDir: string): WikilinkIndex {
     if (fm.publish !== true) continue;
     const slug = path.basename(file, ".md");
     const title = typeof fm.title === "string" && fm.title ? fm.title : slug;
-    index.posts.set(slug, { kind: "blog", url: `/blog/${slug}`, title });
+    index.posts.set(slug, {
+      kind: "blog",
+      url: `/blog/${slug}`,
+      title,
+      preview: previewOf(content),
+      cover: stringField(fm.cover),
+    });
   }
 
   return index;

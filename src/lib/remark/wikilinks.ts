@@ -7,6 +7,8 @@ export type WikilinkTarget =
       kind: "blog" | "thought" | "project" | "role" | "education" | "gallery";
       url: string;
       title: string;
+      preview?: string;
+      cover?: string;
     }
   | {
       kind: "clipping";
@@ -57,6 +59,17 @@ function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined
   );
 }
 
+const PREVIEW_MAX = 280;
+
+function hoverProps(target: WikilinkTarget): Record<string, string> {
+  const props: Record<string, string> = { "data-kind": target.kind, "data-title": target.title };
+  if (target.kind !== "clipping") {
+    if (target.preview) props["data-preview"] = target.preview.slice(0, PREVIEW_MAX);
+    if (target.cover) props["data-cover"] = target.cover;
+  }
+  return props;
+}
+
 const UNSAFE_SCHEME = /^\s*(javascript|data|vbscript|file):/i;
 
 function safeUrl(url: string): string {
@@ -101,7 +114,9 @@ export const remarkWikilinks: Plugin<[WikilinkOptions], Root> = (opts) => {
           url: safeUrl(target.url),
           title: null,
           children: [{ type: "text", value: display }],
-        });
+          // Hover-preview data; the page shows the card only where hover exists.
+          data: { hProperties: hoverProps(target) },
+        } as any);
       }
 
       if (lastIndex < src.length) out.push({ type: "text", value: src.slice(lastIndex) });
