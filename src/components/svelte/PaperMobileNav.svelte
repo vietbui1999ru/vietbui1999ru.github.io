@@ -1,5 +1,6 @@
 <script lang="ts">
 import { NAV_LINKS } from "../../data/navLinks";
+import { Moon, Sparkles, Circle, Sun } from "@lucide/svelte";
 
 let { pathname }: { pathname: string } = $props();
 let activeHref = $state("");
@@ -66,14 +67,14 @@ function observeSections(_node: HTMLElement) {
       aria-pressed={inkAmbientEnabled}
       class="grid min-h-14 w-14 shrink-0 cursor-pointer place-items-center border-0 bg-paper font-mono text-ink"
     >
-      {inkAmbientEnabled ? "✦" : "·"}
+      {#if inkAmbientEnabled}<Sparkles size={18} strokeWidth={1.75} />{:else}<Circle size={12} strokeWidth={2} />{/if}
     </button>
     <button
       onclick={toggleTheme}
       aria-label="Toggle dark mode"
       class="grid min-h-14 w-14 shrink-0 cursor-pointer place-items-center border-0 bg-paper font-mono text-ink"
     >
-      {dark ? "☼" : "◐"}
+      {#if dark}<Sun size={18} strokeWidth={1.75} />{:else}<Moon size={18} strokeWidth={1.75} />{/if}
     </button>
   </div>
 </nav>
