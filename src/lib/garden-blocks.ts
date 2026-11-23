@@ -31,7 +31,8 @@ export function resolveBlocks<C>(
     const parsed = def.props.safeParse(rest);
     if (!parsed.success) {
       const issue = parsed.error.issues[0];
-      const field = issue.path.join(".") || "(block)";
+      const unknownKeys = (issue as { keys?: string[] }).keys;
+      const field = issue.path.join(".") || unknownKeys?.join(", ") || "(block)";
       throw new Error(`${note}: block "${id}" field "${field}": ${issue.message}`);
     }
     return { id, component: def.component, props: parsed.data as Record<string, unknown> };

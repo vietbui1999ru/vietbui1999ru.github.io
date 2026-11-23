@@ -10,15 +10,15 @@ import { resolveBlocks, type BlockDef } from "@/lib/garden-blocks";
 // Every page block: one component plus the props its note may set.
 // A new block is a component, a schema here, and a /ui-lab fixture.
 export const gardenRegistry = {
-  identity: { component: GardenIdentity, props: z.object({}) },
-  focus: { component: GardenFocus, props: z.object({}) },
+  identity: { component: GardenIdentity, props: z.object({}).strict() },
+  focus: { component: GardenFocus, props: z.object({}).strict() },
   feed: {
     component: GardenFeed,
-    props: z.object({ limit: z.number().int().positive().default(8) }),
+    props: z.object({ limit: z.number().int().positive().default(8) }).strict(),
   },
-  "about-prose": { component: GardenAboutProse, props: z.object({}) },
-  experience: { component: GardenExperience, props: z.object({}) },
-  education: { component: GardenEducation, props: z.object({}) },
+  "about-prose": { component: GardenAboutProse, props: z.object({}).strict() },
+  experience: { component: GardenExperience, props: z.object({}).strict() },
+  education: { component: GardenEducation, props: z.object({}).strict() },
 } satisfies Record<string, BlockDef<unknown>>;
 
 export type GardenBlockId = keyof typeof gardenRegistry;

@@ -30,6 +30,12 @@ describe("resolveBlocks", () => {
     ).toThrow(/Site\/Home\.md.*limit/);
   });
 
+  it("fails naming the note and the unknown key for a misspelt prop", () => {
+    expect(() => resolveBlocks(NOTE, [{ block: "feed", limt: 6 }], gardenRegistry)).toThrow(
+      /Site\/Home\.md.*limt/,
+    );
+  });
+
   it("rejects a non-positive feed limit", () => {
     expect(() => resolveBlocks(NOTE, [{ block: "feed", limit: 0 }], gardenRegistry)).toThrow(
       /limit/,
