@@ -1,4 +1,15 @@
-# Live Status Widgets (Spotify, Deadlock, Monkeytype, WakaTime)
+# Live Status Widgets (Spotify, Monkeytype, WakaTime)
+
+> **Revision 2026-11-22 (digital-garden pivot, spec C).** These decisions supersede the text below
+> where they conflict; the full rewrite happens when spec C is grilled.
+>
+> - Deadlock is dropped. Providers: Spotify, Monkeytype, WakaTime.
+> - Snapshot first: a scheduled GitHub Action fetches all three daily, writes JSON, and the site
+>   renders it at build time. Repo secrets hold the tokens. No Cloudflare account needed.
+> - Live Spotify "now playing" (and the Worker it needs) is deferred.
+> - Spotify scope stays simple: top tracks, top artists, recently played, genres if returned.
+>   The taste graph is a separate project: `2026-11-22-spotify-taste-sidecar-brief.md`.
+> - `resumeloop.me` is abandoned; ignore every reference to it and to `feeds.resumeloop.me`.
 
 - **Status:** Decisions settled 2026-11-01 — implementation not started
 - **Date:** 2026-10-31
@@ -24,22 +35,20 @@ CNAME `resumeloop.me`). There is no server at request time, so:
 | Provider | Auth | Browser CORS | Limits | Notes |
 | --- | --- | --- | --- | --- |
 | **Spotify** | OAuth (auth-code + refresh token) — secret | n/a (needs secret) | Dev-mode quota per developer account; 429 `QUOTA_EXCEEDED` | Since Feb/Mar 2026 Dev Mode requires the **app owner to have Premium**, max 5 users, reduced endpoint set. Own-account `/me/player/*` endpoints are not in the removal tables, but must be verified with a test call. |
-| **Deadlock** (deadlock-api.com, community) | none (API key optional, gives priority) | `Access-Control-Allow-Origin: *` | `cache-control: max-age=300`; 503/504 + `Retry-After` under load | `/v1/players/{account_id}/match-history`, `/v1/players/{account_id}/rank`, `/v1/players/steam`, `/v1/players/hero-stats`. Uses Steam32 account id. Full history only if the account friends their bot. |
 | **Monkeytype** | none for profile; ApeKey for private endpoints | `*` | profile 100/hr, global 30/min | `GET /users/{name}/profile` returns PBs + typing stats publicly (profile must be public). |
 | **WakaTime** | OAuth token (read_stats) — secret; or public "share" embed URL | **No CORS** (JSONP only for embeds) | ~10 req/s avg | `/users/current/stats/{range}`, summaries. API keys are write-only — never use them for reading. Wakapi (self-hosted) speaks a compatible API. |
 
 ## Recommendation: one small feed gateway + one widget shell
 
 ```
-browser island ──GET /feeds/spotify──▶ Cloudflare Worker ──▶ Spotify / WakaTime / Monkeytype / Deadlock
+browser island ──GET /feeds/spotify──▶ Cloudflare Worker ──▶ Spotify / WakaTime / Monkeytype
    (FeedWidget)   ◀── normalized JSON ──   (secrets, cache, CORS allowlist)
 ```
 
 ### Why a gateway for every provider (even the public ones)
 
 - One fetch pattern, one schema, one error model in the UI.
-- Caching protects the rate limits of free community APIs (Deadlock,
-  Monkeytype) no matter how many visitors there are.
+- Caching protects the rate limits of free community APIs (Monkeytype) no matter how many visitors there are.
 - Secrets live in `wrangler secret`, never in the repo or bundle.
 - Account ids/usernames stay in Worker config, not hard-coded in client JS.
 - Hosting-independent: works whether the site stays on GitHub Pages or moves
@@ -53,14 +62,14 @@ visits never reach upstream.
 | Option | Verdict |
 | --- | --- |
 | Build-time snapshot via scheduled GitHub Action rebuild | No live "now playing"; rebuilding the whole site (vault checkout, images) every 30 min is wasteful. **Keep as a fallback layer** (see Phase 5). |
-| Browser calls public APIs directly | Works for Deadlock + Monkeytype only; inconsistent; no shared cache. |
+| Browser calls public APIs directly | Works for Monkeytype only; inconsistent; no shared cache. |
 | Vercel/Netlify functions | Fine technically, but ties widgets to a host the site is not deployed on. |
 
 ## Gateway design (`workers/feeds/`)
 
 ```ts
 interface FeedProvider<Raw = unknown> {
-  id: FeedId;                      // "spotify" | "deadlock" | "monkeytype" | "wakatime"
+  id: FeedId;                      // "spotify" | "monkeytype" | "wakatime"
   ttl: number;                     // seconds cached at the edge
   fetch(env: Env): Promise<Raw>;   // upstream call(s), secrets from env
   normalize(raw: Raw): FeedPayload;
@@ -71,7 +80,7 @@ interface FeedProvider<Raw = unknown> {
 - Cache API keyed by provider; serve stale on upstream error with
   `stale: true` so the UI degrades instead of breaking.
 - CORS allowlist: `https://resumeloop.me`, `localhost:4321`, preview hosts.
-- TTLs: Spotify now-playing 20s, Spotify top track 6h, Deadlock 10m,
+- TTLs: Spotify now-playing 20s, Spotify top track 6h,
   Monkeytype 1h, WakaTime 1h.
 
 ### Shared payload (lives in `src/lib/feeds/types.ts`, imported by both sides)
@@ -105,9 +114,6 @@ custom look.
     track from `short_term`, recently-played as the idle fallback.
   - One-time local script `scripts/spotify-auth.ts` does the auth-code flow
     and prints the refresh token to paste into `wrangler secret`.
-- **Deadlock** — rank + last few matches (hero, K/D/A, win/loss).
-  Hero names/icons from the Deadlock assets API. Normalizer must tolerate
-  missing matches (account not bot-friended).
 - **Monkeytype** — best 15s/60s wpm + accuracy, tests completed, time typing.
 - **WakaTime** — this week's total + top 3 languages as `progress` bars.
   If you self-host Wakapi instead, same provider with a different base URL.
@@ -120,7 +126,6 @@ custom look.
     { id: "spotify", label: "listening", refresh: 30, enabled: true },
     { id: "wakatime", label: "coding", refresh: 3600, enabled: true },
     { id: "monkeytype", label: "typing", refresh: 3600, enabled: true },
-    { id: "deadlock", label: "playing", refresh: 600, enabled: true },
   ];
   ```
 - `FeedWidget.svelte` — shell: label, live dot, headline/detail/image/stats,
@@ -154,14 +159,13 @@ custom look.
 - Spotify Dev Mode stops working if Premium lapses; refresh tokens may need
   re-auth. The Worker returns `state: "error"` and the widget hides its
   headline instead of showing a broken card.
-- Community APIs (Deadlock) can shed load: rely on stale cache.
 
 ## Task plan
 
 **Phase 0 — decisions and accounts**
 1. Confirm Spotify Premium on the owner account; create a Dev Mode app.
 2. Choose WakaTime cloud vs self-hosted Wakapi.
-3. Collect ids: Steam32 account id, Monkeytype username (profile public).
+3. Collect ids: Monkeytype username (profile public).
 4. Create a Cloudflare account; deploy the Worker to `feeds-<account>.workers.dev`
    first (see Hosting below). A `feeds.resumeloop.me` custom domain is optional
    and needs the DNS move.
@@ -172,7 +176,6 @@ custom look.
 
 **Phase 2 — providers (public first to prove the pipe)**
 7. Monkeytype provider + normalizer + fixture tests.
-8. Deadlock provider (rank, match history, hero metadata) + tests.
 9. `scripts/spotify-auth.ts`; Spotify provider (now playing, recently played, top track) + tests.
 10. WakaTime/Wakapi provider + tests.
 

@@ -5,14 +5,18 @@ import {
   blogVariantSchema,
   gallerySchema,
   projectSchema,
+  siteNoteSchema,
   thoughtSchema,
 } from "@/content/schemas";
+import { vaultPaths } from "@/lib/vault-paths";
+
+const paths = vaultPaths(process.cwd());
 
 // Canonical posts only — exclude companion variant files (post.ai.md, post.yoda.md)
 const blog = defineCollection({
   loader: glob({
     pattern: ["**/*.md", "!**/*.*.md"],
-    base: "./vendor/vault/Blogs",
+    base: paths.blogs,
   }),
   schema: blogSchema,
 });
@@ -21,7 +25,7 @@ const blog = defineCollection({
 const blogVariants = defineCollection({
   loader: glob({
     pattern: "**/*.*.md",
-    base: "./vendor/vault/Blogs",
+    base: paths.blogs,
   }),
   schema: blogVariantSchema,
 });
@@ -29,7 +33,7 @@ const blogVariants = defineCollection({
 const gallery = defineCollection({
   loader: glob({
     pattern: "**/*.md",
-    base: "./vendor/vault/Gallery",
+    base: paths.gallery,
   }),
   schema: gallerySchema,
 });
@@ -37,7 +41,7 @@ const gallery = defineCollection({
 const projects = defineCollection({
   loader: glob({
     pattern: "**/*.md",
-    base: "./vendor/vault/Portfolio/Projects",
+    base: paths.projects,
   }),
   schema: projectSchema,
 });
@@ -46,10 +50,20 @@ const thoughts = defineCollection({
   // Keep the base present before the first published thought creates this folder.
   loader: glob({
     pattern: "Thoughts/**/*.md",
-    base: "./vendor/vault",
+    base: paths.thoughts,
     generateId: ({ entry }) => entry.replace(/^Thoughts\//, "").replace(/\.md$/, ""),
   }),
   schema: thoughtSchema,
+});
+
+// Owner copy for Home, About and focus areas. Missing Site/ yields no entries,
+// and the pages then omit the vault-driven blocks.
+const site = defineCollection({
+  loader: glob({
+    pattern: ["Home.md", "About.md", "Focus/*.md"],
+    base: paths.site,
+  }),
+  schema: siteNoteSchema,
 });
 
 export const collections = {
@@ -57,5 +71,6 @@ export const collections = {
   "blog-variants": blogVariants,
   gallery,
   projects,
+  site,
   thoughts,
 };

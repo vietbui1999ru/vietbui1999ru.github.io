@@ -1,6 +1,9 @@
 <script lang="ts">
 import { onMount } from "svelte";
 import { NAV_LINKS } from "@/data/navLinks";
+import PenIcon from "@/components/icons/PenIcon.svelte";
+import PencilIcon from "@/components/icons/PencilIcon.svelte";
+import { Circle, Moon, RotateCcw, Sparkles, Sun } from "@lucide/svelte";
 
 let { pathname }: { pathname: string } = $props();
 let dark = $state(false);
@@ -73,45 +76,35 @@ function toggleInkAmbient() {
           aria-pressed={inkAmbientEnabled}
           class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
         >
-          {inkAmbientEnabled ? "✦" : "·"}
+          {#if inkAmbientEnabled}<Sparkles size={15} strokeWidth={1.75} />{:else}<Circle size={11} strokeWidth={2} />{/if}
         </button>
         <button
           onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-add-predator"))}
           aria-label="Add a predator"
           class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised shadow-hard-sm"
         >
-          <img
-            src="/assets/images/VectorPen.svg"
-            alt=""
-            aria-hidden="true"
-            class="h-7 w-8 object-contain"
-          />
+          <PenIcon class="text-ink" />
         </button>
         <button
           onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-add-prey"))}
           aria-label="Add a prey"
           class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised shadow-hard-sm"
         >
-          <img
-            src="/assets/images/VectorPencil.svg"
-            alt=""
-            aria-hidden="true"
-            class="h-4 w-5 object-contain"
-          />
+          <PencilIcon class="text-ink" />
         </button>
         <button
           onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-reset"))}
           aria-label="Reset ink ambient simulation"
           class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
         >
-          ↺
+          <RotateCcw size={15} strokeWidth={1.75} />
         </button>
         <button
           onclick={toggleTheme}
           aria-label="Toggle dark mode"
           class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
         >
-          {dark ? "☼" : "◐"}
+          {#if dark}<Sun size={15} strokeWidth={1.75} />{:else}<Moon size={15} strokeWidth={1.75} />{/if}
         </button>
       </div>
     </div>

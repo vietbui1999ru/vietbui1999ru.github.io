@@ -1,7 +1,8 @@
 /**
  * Maps skill/badge names to Simple Icons slugs.
  * Data loaded from skillIcons.json for easy editing.
- * Icons from https://simpleicons.org/ via @icons-pack/react-simple-icons
+ * Slugs are Simple Icons names (https://simpleicons.org/); paths come from the
+ * `simple-icons` package in src/lib/tool-icon.ts.
  */
 
 import skillIconsJson from "./skillIcons.json";

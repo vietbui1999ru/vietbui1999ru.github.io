@@ -47,3 +47,6 @@ docs/style-guides/
 .serena/
 .Codex/
 .agents/
+
+# Local verify build output (SPEC verify lines)
+.cache/

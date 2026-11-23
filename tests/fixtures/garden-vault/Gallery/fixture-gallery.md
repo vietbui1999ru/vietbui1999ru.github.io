@@ -1,0 +1,6 @@
+---
+title: FIXTURE-GALLERY
+order: 1
+---
+
+FIXTURE-GALLERY-BODY

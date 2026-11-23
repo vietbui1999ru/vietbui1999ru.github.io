@@ -132,3 +132,14 @@ export type EducationEntry = z.infer<typeof educationSchema>;
 export type GalleryEntry = z.infer<typeof gallerySchema>;
 export type ClippingEntry = z.infer<typeof clippingSchema>;
 export type AboutEntry = z.infer<typeof aboutSchema>;
+
+// One schema for every note in Site/: Home, About and Focus areas.
+// Home and About list their blocks; a focus area lists up to 4 tool icons.
+export const siteNoteSchema = z.object({
+  title: z.string(),
+  order: z.number().int().optional(),
+  blocks: z.array(z.object({ block: z.string().min(1) }).passthrough()).default([]),
+  tools: z.array(z.string()).max(4, "a focus area takes at most 4 tool icons").default([]),
+});
+
+export type SiteNoteEntry = z.infer<typeof siteNoteSchema>;

@@ -64,5 +64,8 @@
   "Copilot": "githubcopilot",
   "AWS": "aws",
   "AWS S3": "aws",
-  "Google Cloud Platform": "googlecloud"
+  "Google Cloud Platform": "googlecloud",
+  "NixOS": "nixos",
+  "OPNsense": "opnsense",
+  "Networking": "cisco"
 }

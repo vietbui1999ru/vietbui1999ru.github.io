@@ -1,7 +1,5 @@
 /**
- * Framework-agnostic nav link list (no icon imports — safe for Svelte).
- * `navigationData.ts` keeps the lucide-icon version for legacy React nav
- * components during the transition (ADR 001).
+ * Nav link list shared by the Svelte nav components (no icon imports).
  */
 
 export interface NavLink {
@@ -11,9 +9,8 @@ export interface NavLink {
 
 export const NAV_LINKS: NavLink[] = [
   { label: "home", href: "/" },
-  { label: "about", href: "/about" },
   { label: "blog", href: "/blog" },
   { label: "thoughts", href: "/thoughts" },
   { label: "projects", href: "/projects" },
-  { label: "gallery", href: "/gallery" },
+  { label: "about", href: "/about" },
 ];
