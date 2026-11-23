@@ -36,6 +36,23 @@ describe("resolveBlocks", () => {
     );
   });
 
+  it("toc defaults minHeadings and maxDepth to 3", () => {
+    const [block] = resolveBlocks(NOTE, [{ block: "toc" }], gardenRegistry);
+    expect(block.props).toEqual({ minHeadings: 3, maxDepth: 3 });
+  });
+
+  it("toc rejects an unknown prop and names it", () => {
+    expect(() => resolveBlocks(NOTE, [{ block: "toc", maxdepth: 2 }], gardenRegistry)).toThrow(
+      /Site\/Home\.md.*maxdepth/,
+    );
+  });
+
+  it("toc rejects maxDepth outside 2 to 6", () => {
+    expect(() => resolveBlocks(NOTE, [{ block: "toc", maxDepth: 1 }], gardenRegistry)).toThrow(
+      /maxDepth/,
+    );
+  });
+
   it("rejects a non-positive feed limit", () => {
     expect(() => resolveBlocks(NOTE, [{ block: "feed", limit: 0 }], gardenRegistry)).toThrow(
       /limit/,

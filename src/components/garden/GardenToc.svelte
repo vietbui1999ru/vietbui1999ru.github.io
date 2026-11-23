@@ -1,0 +1,75 @@
+<script lang="ts">
+import { onMount } from "svelte";
+import { tocEntries, tocVisible, TOC_DEFAULTS, type TocHeading } from "../../lib/toc";
+
+// `sidebar` puts the list beside the article on lg and up (sticky). Without it the
+// list is a collapsed <details> at every width. Under minHeadings it renders nothing.
+let {
+  headings = [],
+  minHeadings = TOC_DEFAULTS.minHeadings,
+  maxDepth = TOC_DEFAULTS.maxDepth,
+  sidebar = false,
+}: {
+  headings?: TocHeading[];
+  minHeadings?: number;
+  maxDepth?: number;
+  sidebar?: boolean;
+} = $props();
+
+const entries = $derived(tocEntries(headings, maxDepth));
+const visible = $derived(tocVisible(entries, minHeadings));
+let activeSlug = $state("");
+
+onMount(() => {
+  if (!visible || typeof IntersectionObserver === "undefined") return;
+  const targets = entries
+    .map((e) => document.getElementById(e.slug))
+    .filter((el): el is HTMLElement => el !== null);
+  // A heading counts as current while it sits in the upper part of the viewport.
+  const observer = new IntersectionObserver(
+    (records) => {
+      for (const record of records) {
+        if (record.isIntersecting) activeSlug = record.target.id;
+      }
+    },
+    { rootMargin: "0px 0px -70% 0px" },
+  );
+  for (const target of targets) observer.observe(target);
+  return () => observer.disconnect();
+});
+</script>
+
+{#snippet list()}
+  <ol class="space-y-2">
+    {#each entries as entry (entry.slug)}
+      <li class={entry.depth === 3 ? "pl-4" : ""}>
+        <a
+          href={`#${entry.slug}`}
+          aria-current={activeSlug === entry.slug ? "location" : undefined}
+          class="text-step--1 text-journal-1 underline-offset-4 transition-colors motion-reduce:transition-none hover:text-ink aria-[current=location]:text-ink aria-[current=location]:underline"
+        >{entry.text}</a>
+      </li>
+    {/each}
+  </ol>
+{/snippet}
+
+{#if visible}
+  <details
+    data-block="toc"
+    class={["mb-8 border-[1.5px] border-ink bg-paper-raised p-4 shadow-hard-sm", sidebar && "lg:hidden"]}
+  >
+    <summary class="cursor-pointer font-mono text-[0.68rem] uppercase tracking-wider text-journal-2">contents</summary>
+    <div class="mt-3">{@render list()}</div>
+  </details>
+
+  {#if sidebar}
+    <nav
+      aria-label="On this page"
+      data-ink-obstacle="controls"
+      class="hidden lg:sticky lg:top-20 lg:block lg:self-start lg:border-l-[1.5px] lg:border-ink lg:pl-4"
+    >
+      <p class="mb-3 font-mono text-[0.68rem] uppercase tracking-wider text-journal-2">contents</p>
+      {@render list()}
+    </nav>
+  {/if}
+{/if}

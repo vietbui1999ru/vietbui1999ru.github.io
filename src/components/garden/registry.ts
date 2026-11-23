@@ -5,7 +5,9 @@ import GardenFeed from "./GardenFeed.svelte";
 import GardenAboutProse from "./GardenAboutProse.svelte";
 import GardenExperience from "./GardenExperience.svelte";
 import GardenEducation from "./GardenEducation.svelte";
+import GardenToc from "./GardenToc.svelte";
 import { resolveBlocks, type BlockDef } from "@/lib/garden-blocks";
+import { TOC_DEFAULTS } from "@/lib/toc";
 
 // Every page block: one component plus the props its note may set.
 // A new block is a component, a schema here, and a /ui-lab fixture.
@@ -19,6 +21,15 @@ export const gardenRegistry = {
   "about-prose": { component: GardenAboutProse, props: z.object({}).strict() },
   experience: { component: GardenExperience, props: z.object({}).strict() },
   education: { component: GardenEducation, props: z.object({}).strict() },
+  toc: {
+    component: GardenToc,
+    props: z
+      .object({
+        minHeadings: z.number().int().min(0).default(TOC_DEFAULTS.minHeadings),
+        maxDepth: z.number().int().min(2).max(6).default(TOC_DEFAULTS.maxDepth),
+      })
+      .strict(),
+  },
 } satisfies Record<string, BlockDef<unknown>>;
 
 export type GardenBlockId = keyof typeof gardenRegistry;

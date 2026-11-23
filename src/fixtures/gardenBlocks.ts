@@ -34,4 +34,14 @@ export const GARDEN_BLOCK_FIXTURES: Record<GardenBlockId, GardenBlockFixture> = 
   "about-prose": { props: {}, body: UI_LAB_BODY },
   experience: { props: {} },
   education: { props: {} },
+  toc: {
+    props: { minHeadings: 3, maxDepth: 3 },
+    context: {
+      headings: [
+        { depth: 2, slug: "ui-lab-one", text: "UI_LAB_PLACEHOLDER one" },
+        { depth: 3, slug: "ui-lab-one-a", text: "UI_LAB_PLACEHOLDER one a" },
+        { depth: 2, slug: "ui-lab-two", text: "UI_LAB_PLACEHOLDER two" },
+      ],
+    },
+  },
 };
