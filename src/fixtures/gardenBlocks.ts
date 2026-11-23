@@ -24,7 +24,7 @@ export const GARDEN_BLOCK_FIXTURES: Record<GardenBlockId, GardenBlockFixture> = 
         {
           id: "focus/ui-lab-a",
           title: "UI_LAB_PLACEHOLDER area",
-          text: "UI_LAB_PLACEHOLDER focus text.",
+          html: "<p>UI_LAB_PLACEHOLDER focus text with <strong>bold</strong>.</p>",
           tools: ["Networking", "NixOS", "OPNsense"],
         },
       ],

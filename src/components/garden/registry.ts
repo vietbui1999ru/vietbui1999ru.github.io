@@ -1,6 +1,6 @@
 import { z } from "astro/zod";
 import GardenIdentity from "./GardenIdentity.svelte";
-import GardenFocus from "./GardenFocus.svelte";
+import GardenFocus from "./GardenFocus.astro";
 import GardenFeed from "./GardenFeed.svelte";
 import GardenAboutProse from "./GardenAboutProse.svelte";
 import GardenExperience from "./GardenExperience.svelte";

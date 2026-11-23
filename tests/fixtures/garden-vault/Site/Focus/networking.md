@@ -4,4 +4,4 @@ order: 1
 tools: [Networking, OPNsense, NixOS]
 ---
 
-FIXTURE-FOCUS-NETWORKING-BODY
+FIXTURE-FOCUS-NETWORKING-BODY with **bold** text
