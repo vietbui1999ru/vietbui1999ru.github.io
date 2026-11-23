@@ -67,5 +67,5 @@
   "Google Cloud Platform": "googlecloud",
   "NixOS": "nixos",
   "OPNsense": "opnsense",
-  "Networking": "wireguard"
+  "Networking": "cisco"
 }
