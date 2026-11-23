@@ -1,6 +1,8 @@
 <script lang="ts">
 import { onMount } from "svelte";
 import { NAV_LINKS } from "@/data/navLinks";
+import PenIcon from "@/components/icons/PenIcon.svelte";
+import PencilIcon from "@/components/icons/PencilIcon.svelte";
 
 let { pathname }: { pathname: string } = $props();
 let dark = $state(false);
@@ -80,24 +82,14 @@ function toggleInkAmbient() {
           aria-label="Add a predator"
           class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised shadow-hard-sm"
         >
-          <img
-            src="/assets/images/VectorPen.svg"
-            alt=""
-            aria-hidden="true"
-            class="h-7 w-8 object-contain"
-          />
+          <PenIcon class="text-ink" />
         </button>
         <button
           onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-add-prey"))}
           aria-label="Add a prey"
           class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised shadow-hard-sm"
         >
-          <img
-            src="/assets/images/VectorPencil.svg"
-            alt=""
-            aria-hidden="true"
-            class="h-4 w-5 object-contain"
-          />
+          <PencilIcon class="text-ink" />
         </button>
         <button
           onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-reset"))}
