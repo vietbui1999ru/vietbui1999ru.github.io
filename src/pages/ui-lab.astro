@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import UiLab from "@/components/ui-lab/UiLab.svelte";
+import ProjectSortFixture from "@/components/ui-lab/ProjectSortFixture.svelte";
 import GardenBlocks from "@/components/garden/GardenBlocks.astro";
 import { GARDEN_BLOCK_FIXTURES } from "@/fixtures/gardenBlocks";
 
@@ -11,6 +12,7 @@ if (!import.meta.env.DEV) {
 
 <BaseLayout>
   <UiLab client:load />
+  <ProjectSortFixture client:load />
   {
     Object.entries(GARDEN_BLOCK_FIXTURES).map(([id, fixture]) => (
       <GardenBlocks
