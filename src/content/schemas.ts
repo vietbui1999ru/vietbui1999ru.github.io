@@ -7,6 +7,8 @@ export const blogSchema = z.object({
   publish: z.boolean().default(false),
   tags: z.array(z.string()).optional(),
   cover: z.string().optional(),
+  // Checked against LAYOUTS when the page builds (layoutFor throws on unknown names).
+  layout: z.string().optional(),
   updated: z.coerce.date().optional(),
   series: z.string().optional(),
   preview: z.string().optional(),
