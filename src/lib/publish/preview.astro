@@ -1,0 +1,44 @@
+---
+// Dev-only page (see preview-route.ts). Lists what `npm run publish` would change.
+import { previewDiff } from "./preview-diff";
+
+const personal = process.env.PERSONAL_VAULT;
+const target = process.env.PORTFOLIO_VAULT ?? "vendor/vault";
+const entries = personal
+  ? await previewDiff({ vaultRoot: personal, targetRoot: target })
+  : [];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Publish preview</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; background: #fff; color: #111; }
+      @media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } }
+      table { border-collapse: collapse; width: 100%; max-width: 960px; }
+      td, th { text-align: left; padding: 6px 8px; border-bottom: 1px solid #8884; }
+    </style>
+  </head>
+  <body>
+    <h1>Pending publish</h1>
+    {!personal && <p>Set PERSONAL_VAULT (mise.local.toml) to preview.</p>}
+    {personal && entries.length === 0 && <p>Nothing to publish.</p>}
+    {entries.length > 0 && (
+      <table>
+        <thead><tr><th>Status</th><th>Target</th><th>Page</th></tr></thead>
+        <tbody>
+          {entries.map((e) => (
+            <tr>
+              <td>{e.status}</td>
+              <td><code>{e.target}</code></td>
+              <td>{e.url ? <a href={e.url}>{e.url}</a> : "none"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </body>
+</html>

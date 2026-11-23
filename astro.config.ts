@@ -15,6 +15,7 @@ import { remarkWikilinks } from "./src/lib/remark/wikilinks";
 import { createAssetAdapters } from "./src/lib/remark/adapters";
 import { getVaultRoot } from "./src/lib/vault";
 import { buildWikilinkIndex } from "./src/lib/build-wikilink-index";
+import { publishPreview } from "./src/lib/publish/preview-route";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -57,7 +58,7 @@ if (fs.existsSync(galleryDir)) {
 export default defineConfig({
   site,
   base,
-  integrations: [react(), svelte()],
+  integrations: [react(), svelte(), publishPreview()],
   markdown: {
     shikiConfig: {
       themes: { light: "github-light", dark: "github-dark" },
