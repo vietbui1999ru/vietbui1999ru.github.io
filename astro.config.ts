@@ -11,6 +11,7 @@ import remarkMath from "remark-math";
 import { remarkTypst } from "./src/lib/remark/typst-plugin";
 import { remarkMermaid } from "./src/lib/remark/mermaid-plugin";
 import { remarkVideo } from "./src/lib/remark/video-plugin";
+import { remarkStripComments } from "./src/lib/remark/strip-comments";
 import rehypeKatex from "rehype-katex";
 import { remarkPreview } from "./src/lib/remark/preview";
 import { remarkEmbeds } from "./src/lib/remark/embeds";
@@ -70,6 +71,7 @@ export default defineConfig({
     remarkPlugins: [
       remarkCallout,
       remarkMath,
+      remarkStripComments,
       remarkTypst,
       remarkMermaid,
       remarkVideo,
