@@ -118,9 +118,11 @@ export const aboutSchema = z.object({
   tagline: z.string(),
 });
 
+// The only blog variant is `<post>.tldr.md`; it publishes only with its parent.
 export const blogVariantSchema = z.object({
-  style_label: z.string(),
   parent_slug: z.string(),
+  generated: z.boolean().default(false),
+  publish: z.boolean().default(false),
 });
 
 export type BlogEntry = z.infer<typeof blogSchema>;

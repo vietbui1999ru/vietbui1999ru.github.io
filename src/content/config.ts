@@ -12,7 +12,7 @@ import { vaultPaths } from "@/lib/vault-paths";
 
 const paths = vaultPaths(process.cwd());
 
-// Canonical posts only — exclude companion variant files (post.ai.md, post.yoda.md)
+// Canonical posts only: companion files such as post.tldr.md are excluded here.
 const blog = defineCollection({
   loader: glob({
     pattern: ["**/*.md", "!**/*.*.md"],
@@ -21,10 +21,10 @@ const blog = defineCollection({
   schema: blogSchema,
 });
 
-// Companion variant files: post.ai.md, post.yoda.md, etc.
+// The only companion variant: post.tldr.md, beside its parent post.
 const blogVariants = defineCollection({
   loader: glob({
-    pattern: "**/*.*.md",
+    pattern: "**/*.tldr.md",
     base: paths.blogs,
   }),
   schema: blogVariantSchema,

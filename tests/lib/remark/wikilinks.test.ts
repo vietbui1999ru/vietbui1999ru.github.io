@@ -55,13 +55,11 @@ describe("remark-wikilinks", () => {
     expect(link.children[0].value).toBe("this post");
   });
 
-  it('wraps private clippings as <a class="note-popover"> html', async () => {
+  it("renders a target with no page as plain text, with no popover", async () => {
     const tree: any = await transform("Read [[comptia-linux]] for reference.");
     const node = tree.children[0].children[1];
-    expect(node.type).toBe("html");
-    expect(node.value).toContain('class="note-popover"');
-    expect(node.value).toContain('data-preview="Short excerpt."');
-    expect(node.value).toContain('data-source="https://example.com"');
+    expect(node.type).toBe("text");
+    expect(node.value).toBe("CompTIA Linux Guide");
   });
 
   it("invokes onDead callback for unknown targets and renders plain text", async () => {
@@ -72,36 +70,6 @@ describe("remark-wikilinks", () => {
     const text = (tree as any).children[0].children[1];
     expect(text.type).toBe("text");
     expect(text.value).toBe("does-not-exist");
-  });
-
-  it("escapes special chars in clipping HTML attributes", async () => {
-    const unsafeIndex: WikilinkIndex = {
-      ...index,
-      clippings: new Map([
-        [
-          "x",
-          {
-            kind: "clipping",
-            url: "",
-            title: 'A "quoted" <title>',
-            preview: "Excerpt with & ampersand",
-            source: "https://example.com",
-            publish: false,
-            share: false,
-          },
-        ],
-      ]),
-    };
-    const tree = unified().use(remarkParse).parse("See [[x]] here.");
-    await unified()
-      .use(remarkParse)
-      .use(remarkWikilinks, { index: unsafeIndex, onDead: () => {} })
-      .run(tree);
-    const node: any = (tree as any).children[0].children[1];
-    expect(node.type).toBe("html");
-    expect(node.value).toContain("&quot;");
-    expect(node.value).toContain("&lt;");
-    expect(node.value).toContain("&amp;");
   });
 
   it("handles multiple wikilinks in one text node", async () => {

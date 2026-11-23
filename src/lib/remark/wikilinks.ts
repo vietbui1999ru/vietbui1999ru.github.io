@@ -51,18 +51,6 @@ function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined
   );
 }
 
-function escapeAttr(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/"/g, "&quot;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
-
-function escapeHtml(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
 const UNSAFE_SCHEME = /^\s*(javascript|data|vbscript|file):/i;
 
 function safeUrl(url: string): string {
@@ -96,16 +84,9 @@ export const remarkWikilinks: Plugin<[WikilinkOptions], Root> = (opts) => {
           continue;
         }
 
-        if (target.kind === "clipping" && !target.publish) {
-          const parts: string[] = [
-            '<a class="note-popover"',
-            `data-title="${escapeAttr(target.title)}"`,
-          ];
-          if (target.preview) parts.push(`data-preview="${escapeAttr(target.preview)}"`);
-          if (target.source) parts.push(`data-source="${escapeAttr(safeUrl(target.source))}"`);
-          const html = `${parts.join(" ")}>${escapeHtml(display)}</a>`;
-          // html node not typed as PhrasingContent but accepted by mdast AST
-          out.push({ type: "html", value: html } as any);
+        // A target with no page (an unpublished note) renders as plain text.
+        if (!target.url) {
+          out.push({ type: "text", value: display });
           continue;
         }
 
