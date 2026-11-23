@@ -4,7 +4,7 @@ import type { Attachment } from "svelte/attachments";
 import { createTypeahead, nextIndex } from "../../lib/listbox";
 
 // Themed single-select listbox: the open list follows the ink-on-paper theme,
-// which a native <select> list cannot. Keyboard rules live in lib/listbox.
+// which the native select list cannot. Keyboard rules live in lib/listbox.
 let {
   options,
   value,
