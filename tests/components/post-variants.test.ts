@@ -1,5 +1,5 @@
 import { render, screen, cleanup } from "@testing-library/svelte";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import PaperBlogVariants from "@/components/svelte/PaperBlogVariants.svelte";
 import GardenToc from "@/components/garden/GardenToc.svelte";
 
@@ -65,5 +65,47 @@ describe("TOC follows the active tab", () => {
     await Promise.resolve();
     expect(await screen.findByText("TLDR heading")).toBeTruthy();
     expect(screen.queryByText("Original heading")).toBeNull();
+  });
+
+  it("re-observes the new tab's headings so the active section follows the switch", () => {
+    const observed: string[] = [];
+    let disconnects = 0;
+    class FakeObserver {
+      observe(el: Element) {
+        observed.push(el.id);
+      }
+      disconnect() {
+        disconnects += 1;
+      }
+      unobserve() {}
+      takeRecords() {
+        return [];
+      }
+    }
+    vi.stubGlobal("IntersectionObserver", FakeObserver);
+    const original = document.createElement("h2");
+    original.id = "o";
+    const tldr = document.createElement("h2");
+    tldr.id = "t";
+    document.body.append(original, tldr);
+    try {
+      render(GardenToc, {
+        headings: [{ depth: 2, slug: "o", text: "Original heading" }],
+        minHeadings: 1,
+      });
+      expect(observed).toEqual(["o"]);
+
+      window.dispatchEvent(
+        new CustomEvent("variant-change", {
+          detail: { headings: [{ depth: 2, slug: "t", text: "TLDR heading" }] },
+        }),
+      );
+      expect(disconnects).toBeGreaterThanOrEqual(1);
+      expect(observed).toEqual(["o", "t"]);
+    } finally {
+      original.remove();
+      tldr.remove();
+      vi.unstubAllGlobals();
+    }
   });
 });

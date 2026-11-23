@@ -22,28 +22,38 @@ const entries = $derived(tocEntries(tabHeadings ?? headings, maxDepth));
 const visible = $derived(tocVisible(entries, minHeadings));
 let activeSlug = $state("");
 
+let observer: IntersectionObserver | undefined;
+
+// Watches the current entries' headings. Rebuilt whenever the entries change (a tab
+// switch swaps in different heading elements), so the highlight follows the active tab.
+function observeHeadings() {
+  observer?.disconnect();
+  observer = undefined;
+  activeSlug = "";
+  if (!visible || typeof IntersectionObserver === "undefined") return;
+  // A heading counts as current while it sits in the upper part of the viewport.
+  observer = new IntersectionObserver(
+    (records) => {
+      for (const record of records) {
+        if (record.isIntersecting) activeSlug = record.target.id;
+      }
+    },
+    { rootMargin: "0px 0px -70% 0px" },
+  );
+  for (const entry of entries) {
+    const el = document.getElementById(entry.slug);
+    if (el) observer.observe(el);
+  }
+}
+
 onMount(() => {
   const onVariant = (event: Event) => {
     const detail = (event as CustomEvent<{ headings?: TocHeading[] }>).detail;
     tabHeadings = detail?.headings ?? null;
+    observeHeadings();
   };
   window.addEventListener("variant-change", onVariant);
-  let observer: IntersectionObserver | undefined;
-  if (visible && typeof IntersectionObserver !== "undefined") {
-    const targets = entries
-      .map((e) => document.getElementById(e.slug))
-      .filter((el): el is HTMLElement => el !== null);
-    // A heading counts as current while it sits in the upper part of the viewport.
-    observer = new IntersectionObserver(
-      (records) => {
-        for (const record of records) {
-          if (record.isIntersecting) activeSlug = record.target.id;
-        }
-      },
-      { rootMargin: "0px 0px -70% 0px" },
-    );
-    for (const target of targets) observer.observe(target);
-  }
+  observeHeadings();
   return () => {
     window.removeEventListener("variant-change", onVariant);
     observer?.disconnect();
