@@ -15,7 +15,7 @@ import { remarkStripComments } from "./src/lib/remark/strip-comments";
 import rehypeKatex from "rehype-katex";
 import { remarkPreview } from "./src/lib/remark/preview";
 import { remarkEmbeds } from "./src/lib/remark/embeds";
-import { remarkWikilinks } from "./src/lib/remark/wikilinks";
+import { remarkWikilinks, resolve } from "./src/lib/remark/wikilinks";
 import { createAssetAdapters } from "./src/lib/remark/adapters";
 import { getVaultRoot } from "./src/lib/vault";
 import { buildSiteWikilinkIndex } from "./src/lib/build-wikilink-index";
@@ -82,6 +82,10 @@ export default defineConfig({
           attachmentsRoot: path.join(vaultRoot, "Attachments"),
           copyAsset,
           resolveExcalidraw,
+          resolveNote: (name: string) => {
+            const t = resolve(wikilinkIndex, name);
+            return t && t.url ? { url: t.url, title: t.title, preview: t.preview } : undefined;
+          },
         },
       ],
       [

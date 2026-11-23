@@ -17,9 +17,35 @@ export interface EmbedOptions {
    * handlers, javascript: URLs) — plugin injects the return value as raw HTML.
    */
   resolveExcalidraw: (filename: string) => string;
+  /**
+   * Resolve a note name (`![[Other note]]`) to a published page. Undefined means
+   * unpublished or unknown, rendered as plain text. Omitted: note embeds fall back
+   * to the asset path.
+   */
+  resolveNote?: (name: string) => NoteCardTarget | undefined;
+}
+
+export interface NoteCardTarget {
+  url: string;
+  title: string;
+  preview?: string;
 }
 
 const EMBED_REGEX = /!\[\[([^[\]]+)\]\]/g;
+const MEDIA_REGEX = /\.(png|jpe?g|gif|webp|avif|svg|pdf|mp4|webm|mov|mp3|wav|ogg)$/i;
+
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function noteCard(target: NoteCardTarget): string {
+  const preview = target.preview
+    ? `<span class="note-card-preview">${escapeHtml(target.preview)}</span>`
+    : "";
+  return (
+    `<a class="note-card" href="${escapeHtml(target.url)}">` +
+    `<span class="note-card-title">${escapeHtml(target.title)}</span>${preview}</a>`
+  );
+}
 
 function postSlugFromFilePath(filePath: string | undefined): string {
   if (!filePath) return "unknown";
@@ -28,7 +54,7 @@ function postSlugFromFilePath(filePath: string | undefined): string {
 }
 
 export const remarkEmbeds: Plugin<[EmbedOptions], Root> = (opts) => {
-  const { copyAsset, resolveExcalidraw } = opts;
+  const { copyAsset, resolveExcalidraw, resolveNote } = opts;
   return (tree, file) => {
     const postSlug = postSlugFromFilePath(file.path as string | undefined);
 
@@ -51,6 +77,17 @@ export const remarkEmbeds: Plugin<[EmbedOptions], Root> = (opts) => {
           // The wrapper lets global.css invert the export in dark mode.
           // html node not typed as PhrasingContent but accepted by mdast AST
           out.push({ type: "html", value: `<figure class="excalidraw-embed">${svg}</figure>` } as any);
+          continue;
+        }
+
+        // A note embed (not a media file) is a card, never a transclusion.
+        if (resolveNote && !MEDIA_REGEX.test(filename)) {
+          const target = resolveNote(filename.trim());
+          if (target) {
+            out.push({ type: "html", value: noteCard(target) } as any);
+          } else {
+            out.push({ type: "text", value: filename.trim() });
+          }
           continue;
         }
 
