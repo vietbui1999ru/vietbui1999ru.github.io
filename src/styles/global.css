@@ -622,3 +622,8 @@
     transition: none;
   }
 }
+
+/* Excalidraw exports are light drawings; invert them on the dark theme. */
+.dark .excalidraw-embed svg {
+  filter: invert(1) hue-rotate(180deg);
+}

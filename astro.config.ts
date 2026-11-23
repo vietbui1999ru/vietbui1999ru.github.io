@@ -34,7 +34,6 @@ const vaultRoot = getVaultRoot(__dirname);
 const { copyAsset, resolveExcalidraw } = createAssetAdapters({
   attachmentsRoot: path.join(vaultRoot, "Attachments"),
   publicRoot: path.resolve(__dirname, "public"),
-  excalidrawCacheDir: path.resolve(__dirname, ".cache/excalidraw"),
 });
 
 const wikilinkIndex = buildWikilinkIndex(path.join(vaultRoot, "Blogs"));

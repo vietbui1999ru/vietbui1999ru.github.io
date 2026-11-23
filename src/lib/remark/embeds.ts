@@ -48,8 +48,9 @@ export const remarkEmbeds: Plugin<[EmbedOptions], Root> = (opts) => {
 
         if (filename.endsWith(".excalidraw.md")) {
           const svg = resolveExcalidraw(filename);
+          // The wrapper lets global.css invert the export in dark mode.
           // html node not typed as PhrasingContent but accepted by mdast AST
-          out.push({ type: "html", value: svg } as any);
+          out.push({ type: "html", value: `<figure class="excalidraw-embed">${svg}</figure>` } as any);
           continue;
         }
 
