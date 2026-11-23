@@ -9,6 +9,10 @@ import PageHeader from "@/components/primitives/PageHeader.svelte";
 import Chip from "@/components/primitives/Chip.svelte";
 import InkLink from "@/components/primitives/InkLink.svelte";
 import { PROSE } from "@/design-system/prose";
+import GardenBlocks from "@/components/garden/GardenBlocks.astro";
+import { buildBacklinks } from "@/lib/garden-backlinks";
+import { buildSiteWikilinkIndex } from "@/lib/build-wikilink-index";
+import { vaultPaths } from "@/lib/vault-paths";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog", (entry) => entry.data.publish);
@@ -37,6 +41,19 @@ const renderedVariants = await Promise.all(
 );
 
 const storageId = "blog-variant-storage";
+
+// Backlinks: published posts whose bodies link to this one, resolved against the
+// same site index the remark plugin uses. Built once per page at build time.
+const publishedPosts = await getCollection("blog", (post) => post.data.publish);
+const backlinks =
+  buildBacklinks(
+    publishedPosts.map((post) => ({
+      url: `/blog/${toSlug(post.id)}`,
+      title: post.data.title,
+      body: post.body ?? "",
+    })),
+    buildSiteWikilinkIndex(vaultPaths(process.cwd()).root),
+  ).get(`/blog/${entrySlug}`) ?? [];
 
 const wordCount = (entry.body ?? "").trim().split(/\s+/).length;
 const readingTime = `${Math.max(1, Math.round(wordCount / 200))} min read`;
@@ -100,6 +117,8 @@ const updatedDate = entry.data.updated?.toLocaleDateString("en-US", {
           proseClass={proseClass}
           client:load
         />
+
+        <GardenBlocks note={entry.id} blocks={[{ block: "backlinks" }]} context={{ backlinks }} />
 
         <GiscusComments client:visible />
       </div>
