@@ -2,12 +2,13 @@ import * as fs from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import matter from "gray-matter";
+import { vaultPaths } from "../src/lib/vault-paths";
 
 const THIS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(THIS_DIR, "..");
 
-const VAULT_PROJECTS = path.join(ROOT, "vendor/vault/Portfolio/Projects");
-const VAULT_ASSETS = path.join(ROOT, "vendor/vault/Assets/Projects");
+const VAULT_PROJECTS = vaultPaths(ROOT).projects;
+const VAULT_ASSETS = vaultPaths(ROOT).projectAssets;
 const PUBLIC_ASSETS = path.join(ROOT, "public/assets/projects");
 
 function isUrl(s: string): boolean {
