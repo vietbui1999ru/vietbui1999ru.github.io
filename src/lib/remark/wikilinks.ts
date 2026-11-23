@@ -46,7 +46,8 @@ function slugify(raw: string): string {
     .replace(/[^a-z0-9-]/g, "");
 }
 
-function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined {
+/** Target of a wikilink slug, or undefined when nothing published matches. */
+export function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined {
   const s = slugify(slug);
   return (
     index.posts.get(s) ??
