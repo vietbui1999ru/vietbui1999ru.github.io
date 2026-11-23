@@ -24,6 +24,7 @@ export interface PublishOptions {
 export interface PublishResult {
   plan: SyncPlan;
   committed: boolean;
+  skipped: Array<{ relPath: string; reason: string }>;
 }
 
 /**
@@ -32,14 +33,14 @@ export interface PublishResult {
  */
 export async function runPublish(opts: PublishOptions): Promise<PublishResult> {
   const git = opts.git ?? runGit;
-  const { desired } = await buildDesired(opts.vaultRoot);
+  const { desired, skipped } = await buildDesired(opts.vaultRoot);
   const previous = await readManifest(opts.targetRoot);
   const plan = await planSync(opts.targetRoot, desired, previous);
   await applySync(opts.targetRoot, desired, plan);
 
   const touched = [...plan.created, ...plan.changed, ...plan.removed];
   if (opts.dryRun || touched.length === 0) {
-    return { plan, committed: false };
+    return { plan, committed: false, skipped };
   }
 
   // Stage only what this run wrote, never `git add -A`: the target may hold
@@ -50,5 +51,5 @@ export async function runPublish(opts: PublishOptions): Promise<PublishResult> {
     `${plan.removed.length} removed`;
   await git(["commit", "-q", "-m", message], opts.targetRoot);
   await git(["push", "-q", "origin", "HEAD"], opts.targetRoot);
-  return { plan, committed: true };
+  return { plan, committed: true, skipped };
 }

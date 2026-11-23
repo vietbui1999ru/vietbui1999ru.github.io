@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "npx tsx scripts/copy-vault-images.ts && astro build",
+    "publish": "tsx scripts/publish.ts",
     "dev": "astro dev",
     "preview": "astro preview",
     "start": "astro dev",
