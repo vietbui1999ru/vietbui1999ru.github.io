@@ -44,4 +44,13 @@ export const GARDEN_BLOCK_FIXTURES: Record<GardenBlockId, GardenBlockFixture> = 
       ],
     },
   },
+  backlinks: {
+    props: {},
+    context: {
+      backlinks: [
+        { url: "/blog/ui-lab-linking-a", title: "UI_LAB_PLACEHOLDER linking note one" },
+        { url: "/thoughts#ui-lab-linking-b", title: "UI_LAB_PLACEHOLDER linking note two" },
+      ],
+    },
+  },
 };

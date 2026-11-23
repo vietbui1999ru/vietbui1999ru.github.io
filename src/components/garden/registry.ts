@@ -6,6 +6,7 @@ import GardenAboutProse from "./GardenAboutProse.svelte";
 import GardenExperience from "./GardenExperience.svelte";
 import GardenEducation from "./GardenEducation.svelte";
 import GardenToc from "./GardenToc.svelte";
+import GardenBacklinks from "./GardenBacklinks.svelte";
 import { resolveBlocks, type BlockDef } from "@/lib/garden-blocks";
 import { TOC_DEFAULTS } from "@/lib/toc";
 
@@ -30,6 +31,7 @@ export const gardenRegistry = {
       })
       .strict(),
   },
+  backlinks: { component: GardenBacklinks, props: z.object({}).strict() },
 } satisfies Record<string, BlockDef<unknown>>;
 
 export type GardenBlockId = keyof typeof gardenRegistry;

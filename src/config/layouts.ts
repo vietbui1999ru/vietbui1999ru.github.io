@@ -10,8 +10,8 @@ export interface LayoutBlock {
 // Presets are block lists over the garden registry. The lists are starting points;
 // tune them against the real pages (AC-34 is a visual check).
 export const LAYOUTS: Record<LayoutName, LayoutBlock[]> = {
-  essay: [{ block: "toc" }],
-  notebook: [{ block: "toc", maxDepth: 2 }],
+  essay: [{ block: "toc" }, { block: "backlinks" }],
+  notebook: [{ block: "toc", maxDepth: 2 }, { block: "backlinks" }],
   visual: [],
 };
 

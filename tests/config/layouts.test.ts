@@ -9,6 +9,11 @@ describe("layout presets", () => {
     }
   });
 
+  it("gives essay and notebook a backlinks block", () => {
+    expect(layoutBlocks("essay").map((b) => b.block)).toContain("backlinks");
+    expect(layoutBlocks("notebook").map((b) => b.block)).toContain("backlinks");
+  });
+
   it("uses only registry blocks, validated at load", () => {
     expect(() => layoutBlocks("essay")).not.toThrow();
     expect(layoutBlocks("essay").every((b) => typeof b.block === "string")).toBe(true);
