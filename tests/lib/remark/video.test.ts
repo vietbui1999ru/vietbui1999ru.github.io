@@ -50,4 +50,9 @@ describe("remarkVideo", () => {
     const tree = await run("[docs](https://example.com/page)");
     expect(tree.children[0].children[0].type).toBe("link");
   });
+
+  it("marks the card with provider and id for the click-to-load script", async () => {
+    const tree = await run("https://youtu.be/abc123");
+    expect(tree.children[0].value).toContain('data-provider="youtube" data-id="abc123"');
+  });
 });

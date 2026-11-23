@@ -38,5 +38,9 @@ const { enableInkAmbient = false } = Astro.props;
       <slot />
       <SiteFooter />
     </main>
+    <script>
+      import { installVideoSwap } from "@/lib/video-swap";
+      installVideoSwap(document.body);
+    </script>
   </body>
 </html>

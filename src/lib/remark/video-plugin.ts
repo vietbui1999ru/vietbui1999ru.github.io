@@ -40,7 +40,7 @@ function card(ref: VideoRef): string {
       ? `https://www.youtube-nocookie.com/watch?v=${ref.id}`
       : `https://vimeo.com/${ref.id}`;
   const label = ref.provider === "youtube" ? "Watch on YouTube" : "Watch on Vimeo";
-  return `<p class="video-card"><a href="${href}" rel="noopener noreferrer" target="_blank">${label}</a></p>`;
+  return `<p class="video-card" data-provider="${ref.provider}" data-id="${ref.id}"><a href="${href}" rel="noopener noreferrer" target="_blank">${label}</a></p>`;
 }
 
 /** A YouTube or Vimeo link alone on its line becomes a card. Other links are untouched. */
