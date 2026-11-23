@@ -42,13 +42,19 @@ export async function buildDesired(vaultRoot: string): Promise<BuildResult> {
     targetByStem.set(stemOf(note.relPath), target);
     desired[target] = render(note);
   }
+  const published = [...primaries];
   for (const tldr of tldrs) {
     const parent = targetByStem.get(stemOf(tldr.relPath).replace(/\.tldr$/, ""));
     if (!parent) continue;
     desired[tldrTargetPath(parent)] = render(tldr);
+    published.push(tldr);
   }
 
-  const attachments = await collectAttachments(vaultRoot, [...primaries, ...tldrs]);
+  // Embeds come from the text that is published, so private comments add no attachments.
+  const attachments = await collectAttachments(
+    vaultRoot,
+    published.map((note) => ({ body: stripPrivateComments(note.body) })),
+  );
   for (const att of attachments) {
     desired[att.target] = await fs.readFile(att.source);
   }

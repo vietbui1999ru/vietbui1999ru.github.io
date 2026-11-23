@@ -13,10 +13,20 @@ export interface SyncPlan {
   removed: string[];
 }
 
+/** True when rel is a relative path that stays inside targetRoot. */
+export function isInsideTarget(targetRoot: string, rel: string): boolean {
+  if (typeof rel !== "string" || rel === "" || path.isAbsolute(rel)) return false;
+  const root = path.resolve(targetRoot);
+  return path.resolve(root, rel).startsWith(root + path.sep);
+}
+
+/** Manifest entries, without anything that is not a path inside targetRoot. */
 export async function readManifest(targetRoot: string): Promise<string[]> {
   try {
     const raw = await fs.readFile(path.join(targetRoot, MANIFEST), "utf8");
-    return JSON.parse(raw) as string[];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((rel): rel is string => isInsideTarget(targetRoot, rel));
   } catch {
     return [];
   }
@@ -62,6 +72,7 @@ export async function applySync(
     await fs.writeFile(file, desired[rel]);
   }
   for (const rel of plan.removed) {
+    if (!isInsideTarget(targetRoot, rel)) throw new Error(`refusing to remove ${rel}: outside target`);
     await fs.rm(path.join(targetRoot, rel), { force: true });
   }
   await fs.writeFile(

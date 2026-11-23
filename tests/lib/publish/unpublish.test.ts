@@ -47,4 +47,23 @@ describe("unpublish via the sync manifest", () => {
     expect(plan.created).toEqual(["Blogs/c.md"]);
     expect(plan.unchanged).toEqual([]);
   });
+
+  it("ignores manifest entries that point outside the target", async () => {
+    const outside = path.join(path.dirname(target), `${path.basename(target)}-victim.txt`);
+    fs.writeFileSync(outside, "keep me");
+    try {
+      const entries = [`../${path.basename(outside)}`, outside, "", 42, "Blogs/ok.md"];
+      fs.writeFileSync(path.join(target, ".publish-manifest.json"), JSON.stringify(entries));
+      expect(await readManifest(target)).toEqual(["Blogs/ok.md"]);
+      await publish({});
+      expect(fs.readFileSync(outside, "utf8")).toBe("keep me");
+    } finally {
+      fs.rmSync(outside, { force: true });
+    }
+  });
+
+  it("refuses to remove a planned path outside the target", async () => {
+    const plan = { created: [], changed: [], unchanged: [], removed: ["../escape.md"] };
+    await expect(applySync(target, {}, plan)).rejects.toThrow(/outside target/);
+  });
 });
