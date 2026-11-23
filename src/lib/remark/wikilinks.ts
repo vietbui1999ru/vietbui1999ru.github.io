@@ -3,7 +3,11 @@ import type { Root, Text, PhrasingContent } from "mdast";
 import { visit, SKIP } from "unist-util-visit";
 
 export type WikilinkTarget =
-  | { kind: "blog" | "project" | "role" | "education" | "gallery"; url: string; title: string }
+  | {
+      kind: "blog" | "thought" | "project" | "role" | "education" | "gallery";
+      url: string;
+      title: string;
+    }
   | {
       kind: "clipping";
       url: string;
@@ -16,6 +20,7 @@ export type WikilinkTarget =
 
 export interface WikilinkIndex {
   posts: Map<string, WikilinkTarget>;
+  thoughts: Map<string, WikilinkTarget>;
   projects: Map<string, WikilinkTarget>;
   roles: Map<string, WikilinkTarget>;
   education: Map<string, WikilinkTarget>;
@@ -43,6 +48,7 @@ function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined
   const s = slugify(slug);
   return (
     index.posts.get(s) ??
+    index.thoughts.get(s) ??
     index.projects.get(s) ??
     index.roles.get(s) ??
     index.education.get(s) ??

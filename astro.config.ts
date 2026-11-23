@@ -18,7 +18,7 @@ import { remarkEmbeds } from "./src/lib/remark/embeds";
 import { remarkWikilinks } from "./src/lib/remark/wikilinks";
 import { createAssetAdapters } from "./src/lib/remark/adapters";
 import { getVaultRoot } from "./src/lib/vault";
-import { buildWikilinkIndex } from "./src/lib/build-wikilink-index";
+import { buildSiteWikilinkIndex } from "./src/lib/build-wikilink-index";
 import { publishPreview } from "./src/lib/publish/preview-route";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -37,7 +37,7 @@ const { copyAsset, resolveExcalidraw } = createAssetAdapters({
   publicRoot: path.resolve(__dirname, "public"),
 });
 
-const wikilinkIndex = buildWikilinkIndex(path.join(vaultRoot, "Blogs"));
+const wikilinkIndex = buildSiteWikilinkIndex(vaultRoot);
 
 // Pre-copy gallery images at config-load time so they land in public/ before
 // Astro does the public/ → dist/ copy (SSG page rendering is too late).

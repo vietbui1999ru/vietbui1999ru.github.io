@@ -11,6 +11,9 @@ const index: WikilinkIndex = {
   projects: new Map([
     ["stripe-mrr", { kind: "project", url: "/projects/stripe-mrr", title: "Stripe MRR" }],
   ]),
+  thoughts: new Map([
+    ["an-idea", { kind: "thought", url: "/thoughts#an-idea", title: "An Idea" }],
+  ]),
   roles: new Map(),
   education: new Map(),
   gallery: new Map(),
@@ -60,6 +63,20 @@ describe("remark-wikilinks", () => {
     const node = tree.children[0].children[1];
     expect(node.type).toBe("text");
     expect(node.value).toBe("CompTIA Linux Guide");
+  });
+
+  it("links a published thought to its anchor on the thoughts page", async () => {
+    const tree: any = await transform("See [[an-idea]] here.");
+    const link = tree.children[0].children[1];
+    expect(link.type).toBe("link");
+    expect(link.url).toBe("/thoughts#an-idea");
+  });
+
+  it("renders a link to an unpublished note as plain text", async () => {
+    const tree: any = await transform("See [[still-private]] here.");
+    const node = tree.children[0].children[1];
+    expect(node.type).toBe("text");
+    expect(node.value).toBe("still-private");
   });
 
   it("invokes onDead callback for unknown targets and renders plain text", async () => {
