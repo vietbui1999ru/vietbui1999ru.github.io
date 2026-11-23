@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { ensureTldrDrafts } from "@/lib/publish/tldr-draft";
-import { PiMissingError } from "@/lib/publish/tldr-client";
+import { PiUnavailableError } from "@/lib/publish/pi-tldr";
 import { copyVault, makeTargetWithRemote } from "./git-helpers";
 import { runPublish } from "@/lib/publish/publish";
 
@@ -46,7 +46,7 @@ describe("ensureTldrDrafts", () => {
 
   it("skips generation with a notice when pi is missing", async () => {
     const missing = async () => {
-      throw new PiMissingError("pi is not installed");
+      throw new PiUnavailableError("pi is not installed");
     };
     const res = await ensureTldrDrafts({ vaultRoot: vault, generate: missing });
     expect(res.created).toEqual([]);

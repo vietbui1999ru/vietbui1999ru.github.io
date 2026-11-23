@@ -4,7 +4,7 @@ import matter from "gray-matter";
 import { walkFiles, scanVault } from "./scan";
 import { splitVariants } from "./variants";
 import { slugify } from "./route";
-import { PiMissingError } from "./tldr-client";
+import { PiUnavailableError } from "./pi-tldr";
 
 export interface TldrDraftResult {
   /** Draft files this run created (vault-relative). */
@@ -13,6 +13,13 @@ export interface TldrDraftResult {
   pending: string[];
   notices: string[];
 }
+
+export type Generate = (title: string, body: string) => Promise<string>;
+
+export type DraftOutcome =
+  | { status: "created"; file: string }
+  | { status: "exists"; file: string }
+  | { status: "failed"; file: string; reason: string };
 
 /**
  * Generated TLDR drafts (generated: true, publish not true) whose parent post is
@@ -33,47 +40,69 @@ export async function awaitingTldrReview(vaultRoot: string): Promise<string[]> {
 }
 
 /**
- * For each published post with no TLDR file, write `<stem>.tldr.md` beside it
- * with publish: false and generated: true. An existing TLDR is never touched.
- * A missing pi skips generation with a notice; other failures skip one post.
+ * Write `<stem>.tldr.md` beside one post. The draft has publish: false and
+ * generated: true, and the write uses `wx`, so an existing file is never touched.
+ * PiUnavailableError propagates so the caller can skip everything with a notice.
+ */
+export async function writeTldrDraft(postAbs: string, generate: Generate): Promise<DraftOutcome> {
+  const tldrAbs = postAbs.replace(/\.md$/, ".tldr.md");
+  const file = path.basename(tldrAbs);
+  if (await fs.stat(tldrAbs).then(() => true, () => false)) {
+    return { status: "exists", file };
+  }
+  const post = matter(await fs.readFile(postAbs, "utf8"));
+  const title = String(post.data.title ?? "");
+  let text: string;
+  try {
+    text = await generate(title, post.content);
+  } catch (err) {
+    if (err instanceof PiUnavailableError) throw err;
+    return { status: "failed", file, reason: (err as Error).message };
+  }
+  const draft = matter.stringify(text + "\n", {
+    title: `${title} (TLDR)`,
+    description: post.data.description ?? "",
+    date: post.data.date,
+    publish: false,
+    generated: true,
+    parent_slug: slugify(title),
+  });
+  try {
+    await fs.writeFile(tldrAbs, draft, { flag: "wx" });
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "EEXIST") return { status: "exists", file };
+    throw err;
+  }
+  return { status: "created", file };
+}
+
+/**
+ * For each published post with no TLDR file, write a draft beside it. An existing
+ * TLDR is never touched. A missing or unready pi skips generation with a notice.
  */
 export async function ensureTldrDrafts(opts: {
   vaultRoot: string;
-  generate: (title: string, body: string) => Promise<string>;
+  generate: Generate;
 }): Promise<TldrDraftResult> {
   const result: TldrDraftResult = { created: [], pending: [], notices: [] };
-  const notes = await scanVault(opts.vaultRoot);
-  const { primaries } = splitVariants(notes);
+  const { primaries } = splitVariants(await scanVault(opts.vaultRoot));
   const posts = primaries.filter((n) => n.frontmatter.type === "post");
 
   for (const post of posts) {
-    const tldrRel = post.relPath.replace(/\.md$/, ".tldr.md");
-    const abs = path.join(opts.vaultRoot, tldrRel);
-    if (await fs.stat(abs).then(() => true, () => false)) continue;
-
-    const title = String(post.frontmatter.title ?? "");
-    let text: string;
     try {
-      text = await opts.generate(title, post.body);
+      const outcome = await writeTldrDraft(post.path, opts.generate);
+      if (outcome.status === "created") {
+        result.created.push(post.relPath.replace(/\.md$/, ".tldr.md"));
+      } else if (outcome.status === "failed") {
+        result.notices.push(`${post.relPath}: TLDR generation failed (${outcome.reason})`);
+      }
     } catch (err) {
-      if (err instanceof PiMissingError) {
-        result.notices.push("TLDR generation skipped: pi is missing");
+      if (err instanceof PiUnavailableError) {
+        result.notices.push(`TLDR generation skipped: ${err.message}`);
         break;
       }
-      result.notices.push(`${post.relPath}: TLDR generation failed (${(err as Error).message})`);
-      continue;
+      throw err;
     }
-
-    const draft = matter.stringify(text + "\n", {
-      title: `${title} (TLDR)`,
-      description: post.frontmatter.description ?? "",
-      date: post.frontmatter.date,
-      publish: false,
-      generated: true,
-      parent_slug: slugify(title),
-    });
-    await fs.writeFile(abs, draft, { flag: "wx" });
-    result.created.push(tldrRel);
   }
 
   result.pending = await awaitingTldrReview(opts.vaultRoot);

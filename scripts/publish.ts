@@ -1,6 +1,6 @@
 // Wiring only: all logic lives in src/lib/publish/. Usage: npm run publish [-- --dry-run]
 import { runPublish } from "../src/lib/publish/publish";
-import { generateTldr } from "../src/lib/publish/tldr-client";
+import { makeTldrGenerator } from "../src/lib/publish/pi-tldr";
 
 async function main(): Promise<void> {
   const personal = process.env.PERSONAL_VAULT;
@@ -15,7 +15,7 @@ async function main(): Promise<void> {
     vaultRoot: personal,
     targetRoot: target,
     dryRun,
-    tldr: { generate: (title, body) => generateTldr({ title, body }) },
+    tldr: { generate: makeTldrGenerator() },
   });
   for (const n of tldrDrafts.notices) console.log(`notice   ${n}`);
   for (const rel of tldrDrafts.created) console.log(`draft    ${rel} (review, then set publish: true)`);
