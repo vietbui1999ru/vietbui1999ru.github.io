@@ -1,0 +1,25 @@
+---
+import { resolveGardenBlocks } from "./registry";
+
+interface Props {
+  /** Vault path of the note that lists the blocks, for error messages. */
+  note: string;
+  /** The note's `blocks:` frontmatter, in order. */
+  blocks: unknown[];
+  /** Data shared by the blocks; each block takes the keys it needs. */
+  context?: Record<string, unknown>;
+  /** Rendered Markdown of the note; prose blocks receive it as children. */
+  body?: string;
+}
+
+const { note, blocks, context = {}, body = "" } = Astro.props;
+const resolved = resolveGardenBlocks(note, blocks);
+---
+
+{
+  resolved.map(({ component: Component, props }) => (
+    <Component {...props} {...context}>
+      <div set:html={body} />
+    </Component>
+  ))
+}
