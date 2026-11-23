@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fs from "node:fs";
-import path from "node:path";
 import { runPublish, type GitRunner } from "@/lib/publish/publish";
 import { copyVault, git, makeTargetWithRemote } from "./git-helpers";
 
