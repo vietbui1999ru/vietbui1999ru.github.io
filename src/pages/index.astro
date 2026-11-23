@@ -1,61 +1,39 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import PaperHero from "@/components/svelte/PaperHero.svelte";
-import PaperAboutTeaser from "@/components/svelte/PaperAboutTeaser.svelte";
-import PaperBlog from "@/components/svelte/PaperBlog.svelte";
-import PaperProjects from "@/components/svelte/PaperProjects.svelte";
-import PaperContact from "@/components/svelte/PaperContact.svelte";
-import type { ProjectCardData } from "@/data/projectData";
-import { getCollection } from "astro:content";
-import { toSlug } from "@/lib/utils";
+import GardenBlocks from "@/components/garden/GardenBlocks.astro";
+import { getCollection, getEntry } from "astro:content";
+import { buildFeed } from "@/lib/garden-feed";
 
-const blogPosts = (await getCollection("blog"))
-  .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3)
-  .map((p) => ({
-    slug: toSlug(p.id),
-    title: p.data.title,
-    description: p.data.description,
-    date: p.data.date,
-    draft: p.data.draft,
-    tags: p.data.tags,
-    cover: p.data.cover,
-  }));
+// Home is a vault note: Site/Home.md lists its blocks, Site/Focus/* feeds the focus block.
+// With no Site/ folder the page renders no blocks.
+const home = await getEntry("site", "home");
 
-const projects: ProjectCardData[] = (
-  await getCollection("projects", (p) => !p.data.draft)
-)
-  .sort((a, b) => {
-    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
-    return b.data.date.valueOf() - a.data.date.valueOf();
-  })
+const sites = await getCollection("site");
+const areas = sites
+  .filter((entry) => entry.id.startsWith("focus/"))
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
   .map((entry) => ({
-    slug: entry.id,
+    id: entry.id,
     title: entry.data.title,
-    summary: entry.data.summary,
-    date: entry.data.date,
-    featured: entry.data.featured,
-    badges: entry.data.badges,
-    cover: entry.data.cover ?? entry.data.images?.[0],
-    images: entry.data.images,
-    links: entry.data.links,
-    media:
-      entry.data.media ??
-      entry.data.images?.map((src, index) => ({
-        kind: "image" as const,
-        src,
-        alt: `${entry.data.title} screenshot ${index + 1}`,
-      })),
-    status: entry.data.status,
-    bodyHtml: entry.rendered?.html ?? "",
+    text: entry.body?.trim() ?? "",
+    tools: entry.data.tools,
   }));
+
+const blogs = await getCollection("blog");
+const thoughts = await getCollection("thoughts");
+// The feed block caps itself by its `limit` prop, so the page passes every item.
+const items = buildFeed(blogs, thoughts, Number.POSITIVE_INFINITY);
 ---
 
 <BaseLayout enableInkAmbient={true}>
-  <PaperHero />
-  <PaperAboutTeaser />
-  <PaperBlog posts={blogPosts} />
-  <PaperProjects projects={projects.slice(0, 4)} client:load />
-  <PaperContact />
+  {
+    home && (
+      <GardenBlocks
+        note="Site/Home.md"
+        blocks={home.data.blocks}
+        body={home.rendered?.html ?? ""}
+        context={{ areas, items }}
+      />
+    )
+  }
 </BaseLayout>

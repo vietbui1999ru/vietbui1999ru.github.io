@@ -1,17 +1,28 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import PaperAbout from "@/components/svelte/PaperAbout.svelte";
-import PaperExperience from "@/components/svelte/PaperExperience.svelte";
-import PaperEducation from "@/components/svelte/PaperEducation.svelte";
+import GardenBlocks from "@/components/garden/GardenBlocks.astro";
 import PageHeader from "@/components/primitives/PageHeader.svelte";
-import { ABOUT_TAGLINE } from "@/data/aboutData";
+import InkLink from "@/components/primitives/InkLink.svelte";
+import { getEntry } from "astro:content";
+
+// About is a vault note: Site/About.md lists its blocks and holds the prose.
+const about = await getEntry("site", "about");
 ---
 
 <BaseLayout enableInkAmbient={true}>
   <div class="page-container pt-section">
-    <PageHeader title="about" kicker="profile" description={ABOUT_TAGLINE} back={{ href: "/", label: "home" }} />
+    <PageHeader title="about" kicker="profile" back={{ href: "/", label: "home" }} />
   </div>
-  <PaperAbout client:load />
-  <PaperExperience />
-  <PaperEducation />
+  {
+    about && (
+      <GardenBlocks
+        note="Site/About.md"
+        blocks={about.data.blocks}
+        body={about.rendered?.html ?? ""}
+      />
+    )
+  }
+  <div class="page-container pb-section">
+    <InkLink href="/gallery" arrow="forward">gallery</InkLink>
+  </div>
 </BaseLayout>
