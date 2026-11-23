@@ -1,5 +1,5 @@
 ---
-status: approved
+status: draft
 branch: feat/dropdown
 ---
 # SPEC: Themed dropdown (issue #15)
@@ -24,8 +24,8 @@ Replace the native `<select>` in the project sort control with a themed, accessi
   verify: `npx vitest run tests/components/ink-select.test.ts -t "close"`
 - AC-8: Styling uses theme tokens only: 1.5px ink border, `bg-paper-raised`, mono labels, `shadow-hard-sm`; the component has no hex or rgb color literals
   verify: `! rg -q "#[0-9a-fA-F]{3,8}\b|rgb\(" src/components/primitives/InkSelect.svelte`
-- AC-9: `ProjectSortControl` uses `InkSelect`, and no native `<select>` remains under `src/components`
-  verify: `rg -q "InkSelect" src/components/patterns/ProjectSortControl.svelte && ! rg -q "<select" src/components`
+- AC-9: `ProjectSortControl` uses `InkSelect`, and no native `<select>` remains in visitor-facing components under `src/components`; the dev-only `/ui-lab` panels (`ui-lab/`, `CollectionToolbar.svelte`) keep native selects
+  verify: `rg -q "InkSelect" src/components/patterns/ProjectSortControl.svelte && ! rg -q "<select" src/components -g '!**/ui-lab/**' -g '!**/CollectionToolbar.svelte'`
 - AC-10: The project sort behaviour is unchanged: featured first by default, and each sort key still sorts as before
   verify: `npx vitest run tests/components/project-sort.test.ts`
 - AC-11: `/ui-lab` shows the sort control fixture built on `InkSelect`
