@@ -38,7 +38,7 @@ describe("buildWikilinkIndex", () => {
 title: Hello World
 description: A test post
 date: 2026-01-01
-draft: false
+publish: true
 ---
 
 Content here.`,
@@ -51,14 +51,14 @@ Content here.`,
     expect(entry.title).toBe("Hello World");
   });
 
-  it("skips draft posts", () => {
+  it("skips unpublished posts", () => {
     write(
       "draft-post.md",
       `---
 title: Draft
 description: Not published
 date: 2026-01-01
-draft: true
+publish: false
 ---
 
 Draft content.`,
@@ -68,8 +68,8 @@ Draft content.`,
   });
 
   it("indexes multiple posts", () => {
-    write("post-a.md", `---\ntitle: Post A\ndate: 2026-01-01\ndraft: false\n---\n`);
-    write("post-b.md", `---\ntitle: Post B\ndate: 2026-01-02\ndraft: false\n---\n`);
+    write("post-a.md", `---\ntitle: Post A\ndate: 2026-01-01\npublish: true\n---\n`);
+    write("post-b.md", `---\ntitle: Post B\ndate: 2026-01-02\npublish: true\n---\n`);
     const index = buildWikilinkIndex(tmp);
     expect(index.posts.size).toBe(2);
     expect(index.posts.has("post-a")).toBe(true);
@@ -77,7 +77,7 @@ Draft content.`,
   });
 
   it("uses filename as title fallback when frontmatter has no title", () => {
-    write("no-title.md", `Content without frontmatter.`);
+    write("no-title.md", `---\npublish: true\n---\nContent without a title.`);
     const index = buildWikilinkIndex(tmp);
     const entry = index.posts.get("no-title");
     expect(entry?.title).toBe("no-title");

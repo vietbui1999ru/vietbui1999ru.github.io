@@ -38,7 +38,7 @@ export function buildWikilinkIndex(blogDir: string): WikilinkIndex {
   for (const file of files) {
     const content = fs.readFileSync(path.join(blogDir, file), "utf-8");
     const fm = parseFrontmatter(content);
-    if (fm.draft === true) continue;
+    if (fm.publish !== true) continue;
     const slug = path.basename(file, ".md");
     const title = typeof fm.title === "string" && fm.title ? fm.title : slug;
     index.posts.set(slug, { kind: "blog", url: `/blog/${slug}`, title });

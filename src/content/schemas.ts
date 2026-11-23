@@ -4,7 +4,7 @@ export const blogSchema = z.object({
   title: z.string(),
   description: z.string(),
   date: z.coerce.date(),
-  draft: z.boolean().default(false),
+  publish: z.boolean().default(false),
   tags: z.array(z.string()).optional(),
   cover: z.string().optional(),
   updated: z.coerce.date().optional(),

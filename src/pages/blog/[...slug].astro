@@ -11,7 +11,7 @@ import InkLink from "@/components/primitives/InkLink.svelte";
 import { PROSE } from "@/design-system/prose";
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection("blog");
+  const blogEntries = await getCollection("blog", (entry) => entry.data.publish);
   return blogEntries.map((entry) => ({
     params: { slug: toSlug(entry.id) },
     props: { entry },
