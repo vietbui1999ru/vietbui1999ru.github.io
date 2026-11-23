@@ -1,6 +1,7 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { buildDesired } from "./build";
+import { ensureTldrDrafts, type TldrDraftResult } from "./tldr-draft";
 import { applySync, MANIFEST, planSync, readManifest, type SyncPlan } from "./sync";
 
 const execGit = promisify(execFile);
@@ -19,12 +20,15 @@ export interface PublishOptions {
   targetRoot: string;
   dryRun: boolean;
   git?: GitRunner;
+  /** Generates TLDR drafts first. Omitted in tests, so no model is called. */
+  tldr?: { generate: (title: string, body: string) => Promise<string> };
 }
 
 export interface PublishResult {
   plan: SyncPlan;
   committed: boolean;
   skipped: Array<{ relPath: string; reason: string }>;
+  tldrDrafts: TldrDraftResult;
 }
 
 /**
@@ -33,6 +37,9 @@ export interface PublishResult {
  */
 export async function runPublish(opts: PublishOptions): Promise<PublishResult> {
   const git = opts.git ?? runGit;
+  const tldrDrafts = opts.tldr
+    ? await ensureTldrDrafts({ vaultRoot: opts.vaultRoot, generate: opts.tldr.generate })
+    : { created: [], pending: [], notices: [] };
   const { desired, skipped } = await buildDesired(opts.vaultRoot);
   const previous = await readManifest(opts.targetRoot);
   const plan = await planSync(opts.targetRoot, desired, previous);
@@ -40,7 +47,7 @@ export async function runPublish(opts: PublishOptions): Promise<PublishResult> {
 
   const touched = [...plan.created, ...plan.changed, ...plan.removed];
   if (opts.dryRun || touched.length === 0) {
-    return { plan, committed: false, skipped };
+    return { plan, committed: false, skipped, tldrDrafts };
   }
 
   // Stage only what this run wrote, never `git add -A`: the target may hold
@@ -51,5 +58,5 @@ export async function runPublish(opts: PublishOptions): Promise<PublishResult> {
     `${plan.removed.length} removed`;
   await git(["commit", "-q", "-m", message], opts.targetRoot);
   await git(["push", "-q", "origin", "HEAD"], opts.targetRoot);
-  return { plan, committed: true, skipped };
+  return { plan, committed: true, skipped, tldrDrafts };
 }

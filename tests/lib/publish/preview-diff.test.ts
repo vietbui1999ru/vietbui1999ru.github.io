@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { previewDiff, pageUrlFor } from "@/lib/publish/preview-diff";
 import { runPublish } from "@/lib/publish/publish";
+import { awaitingTldrReview } from "@/lib/publish/tldr-draft";
 import { copyVault, makeTargetWithRemote } from "./git-helpers";
 
 let t: ReturnType<typeof makeTargetWithRemote>;
@@ -44,6 +45,28 @@ describe("previewDiff", () => {
       status: "removed",
       url: null,
     });
+  });
+});
+
+describe("tldr drafts awaiting review", () => {
+  it("lists generated TLDR drafts awaiting review", async () => {
+    // published-post's fixture TLDR is published; flip it to an unreviewed draft.
+    const tldr = path.join(FIXTURE, "Blogs/published-post.tldr.md");
+    fs.writeFileSync(
+      tldr,
+      fs.readFileSync(tldr, "utf8").replace("publish: true", "publish: false"),
+    );
+    const pending = await awaitingTldrReview(FIXTURE);
+    expect(pending).toEqual(["Blogs/published-post.tldr.md"]);
+  });
+
+  it("does not list a TLDR the owner wrote by hand", async () => {
+    const tldr = path.join(FIXTURE, "Blogs/published-post.tldr.md");
+    fs.writeFileSync(
+      tldr,
+      fs.readFileSync(tldr, "utf8").replace("publish: true", "publish: false").replace("generated: true\n", ""),
+    );
+    expect(await awaitingTldrReview(FIXTURE)).toEqual([]);
   });
 });
 
