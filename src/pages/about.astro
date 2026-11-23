@@ -3,10 +3,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import GardenBlocks from "@/components/garden/GardenBlocks.astro";
 import PageHeader from "@/components/primitives/PageHeader.svelte";
 import InkLink from "@/components/primitives/InkLink.svelte";
-import { getEntry } from "astro:content";
+import { getEntry, render } from "astro:content";
 
 // About is a vault note: Site/About.md lists its blocks and holds the prose.
 const about = await getEntry("site", "about");
+const { headings = [] } = about ? await render(about) : {};
 ---
 
 <BaseLayout enableInkAmbient={true}>
@@ -19,6 +20,7 @@ const about = await getEntry("site", "about");
         note="Site/About.md"
         blocks={about.data.blocks}
         body={about.rendered?.html ?? ""}
+        context={{ headings }}
       />
     )
   }

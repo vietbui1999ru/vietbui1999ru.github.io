@@ -2,8 +2,21 @@
 title: FIXTURE-ABOUT-TITLE
 blocks:
   - block: about-prose
+  - block: toc
   - block: experience
   - block: education
 ---
 
 FIXTURE-ABOUT-PROSE
+
+## FIXTURE-ABOUT-HEADING-ONE
+
+FIXTURE-ABOUT-SECTION-ONE
+
+## FIXTURE-ABOUT-HEADING-TWO
+
+FIXTURE-ABOUT-SECTION-TWO
+
+### FIXTURE-ABOUT-HEADING-TWO-A
+
+FIXTURE-ABOUT-SECTION-TWO-A
