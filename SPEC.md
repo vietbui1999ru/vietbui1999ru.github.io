@@ -1,5 +1,5 @@
 ---
-status: draft
+status: approved
 branch: fix/ink-flicker
 ---
 # SPEC: Ink playground page and toggle icon (#21 addition)
