@@ -4,7 +4,12 @@ import {
   OBJECT_TIP_OFFSET_FRACTION,
   PREDATOR_SPAWN_TINT_COLOR,
   PREY_SPAWN_TINT_COLOR,
+  SPAWN_RIPPLE_ALPHA,
+  SPAWN_RIPPLE_END_RADIUS_FRACTION,
+  SPAWN_RIPPLE_LINE_WIDTH,
+  SPAWN_RIPPLE_START_RADIUS_FRACTION,
   SPAWN_TINT_DURATION_SECONDS,
+  TRAIL_ALPHA_STEP,
 } from "./config";
 import { clamp, isPenLike, tipPosition, trailMaxAge } from "./physics";
 import { renderedOpacityMultiplier } from "./lifecycle";
@@ -102,6 +107,7 @@ export class InkRenderer {
 
     for (const effect of effects) {
       if (effect.type === "splat") this.drawSplat(effect, obstacles);
+      else if (effect.type === "ripple") this.drawRipple(effect, obstacles);
       else this.drawBurst(effect, obstacles);
     }
 
@@ -183,6 +189,11 @@ export class InkRenderer {
     return sprite;
   }
 
+  // The trail is drawn as quadratic curves through the midpoints of its samples,
+  // so fast drags bend smoothly instead of showing straight chords. Segments
+  // whose alpha rounds to the same TRAIL_ALPHA_STEP band share one stroke: one
+  // stroke per segment overlapped its round caps at every joint, which showed
+  // as darker dots along the line.
   private drawTrail(object: InkObject, obstacles: readonly Rect[], fadeMultiplier: number): void {
     if (object.trail.length === 0) return;
     const tip = tipPosition(object);
@@ -191,31 +202,38 @@ export class InkRenderer {
       { x: tip.x, y: tip.y, age: 0 },
     ];
     const maxAge = trailMaxAge(object);
-    const isPen = isPenLike(object);
     const baseWidth = object.radius * 0.1;
-    for (let index = 0; index < chain.length - 1; index += 1) {
+    const last = chain.length - 2;
+    let band = 0;
+    this.context.save();
+    this.context.strokeStyle = isPenLike(object) ? this.colors.ink : this.colors.wash;
+    this.context.lineCap = "round";
+    this.context.lineJoin = "round";
+    for (let index = 0; index <= last; index += 1) {
       const a = chain[index];
       const b = chain[index + 1];
       const lifeT = Math.min(1, Math.max(0, 1 - (a.age + b.age) / 2 / maxAge));
-      if (lifeT <= 0) continue;
       const midpoint = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
-      const localOpacity = obstacleOpacity(
-        { position: midpoint, radius: object.radius * 0.3 },
-        obstacles,
-      );
+      const localOpacity =
+        lifeT > 0 ? obstacleOpacity({ position: midpoint, radius: object.radius * 0.3 }, obstacles) : 0;
       const alpha = object.opacity * 0.5 * lifeT * localOpacity * fadeMultiplier;
-      if (alpha <= 0.01) continue;
-      this.context.save();
-      this.context.globalAlpha = alpha;
-      this.context.strokeStyle = isPen ? this.colors.ink : this.colors.wash;
-      this.context.lineWidth = Math.max(1, baseWidth * (0.4 + lifeT * 0.6));
-      this.context.lineCap = "round";
-      this.context.beginPath();
-      this.context.moveTo(a.x, a.y);
-      this.context.lineTo(b.x, b.y);
-      this.context.stroke();
-      this.context.restore();
+      const next = alpha <= 0.01 ? 0 : Math.max(1, Math.round(alpha / TRAIL_ALPHA_STEP));
+      const from = index === 0 ? a : { x: (chain[index - 1].x + a.x) / 2, y: (chain[index - 1].y + a.y) / 2 };
+      const to = index === last ? b : midpoint;
+      if (next !== band) {
+        if (band > 0) this.context.stroke();
+        band = next;
+        if (band > 0) {
+          this.context.globalAlpha = band * TRAIL_ALPHA_STEP;
+          this.context.lineWidth = Math.max(1, baseWidth * (0.4 + lifeT * 0.6));
+          this.context.beginPath();
+          this.context.moveTo(from.x, from.y);
+        }
+      }
+      if (band > 0) this.context.quadraticCurveTo(a.x, a.y, to.x, to.y);
     }
+    if (band > 0) this.context.stroke();
+    this.context.restore();
   }
 
   private drawSplat(effect: InkEffect, obstacles: readonly Rect[]): void {
@@ -245,6 +263,28 @@ export class InkRenderer {
     }
     this.context.closePath();
     this.context.fill();
+    this.context.restore();
+  }
+
+  // Effects draw before objects, so the ring always sits under every pen and pencil.
+  private drawRipple(effect: InkEffect, obstacles: readonly Rect[]): void {
+    const t = Math.min(1, effect.age / effect.lifetime);
+    const fraction =
+      SPAWN_RIPPLE_START_RADIUS_FRACTION +
+      (SPAWN_RIPPLE_END_RADIUS_FRACTION - SPAWN_RIPPLE_START_RADIUS_FRACTION) * easeOutCubic(t);
+    const radius = effect.radius * fraction;
+    // Fade like the object it came from (its own radius), not the whole ring,
+    // so a ring that spawns near the nav still shows.
+    const opacity = obstacleOpacity({ position: { x: effect.x, y: effect.y }, radius: effect.radius }, obstacles);
+    const alpha = (1 - t) * SPAWN_RIPPLE_ALPHA * opacity;
+    if (alpha <= 0.01) return;
+    this.context.save();
+    this.context.globalAlpha = alpha;
+    this.context.strokeStyle = effect.color ?? this.colors.ink;
+    this.context.lineWidth = SPAWN_RIPPLE_LINE_WIDTH;
+    this.context.beginPath();
+    this.context.arc(effect.x, effect.y, radius, 0, Math.PI * 2);
+    this.context.stroke();
     this.context.restore();
   }
 

@@ -3,7 +3,7 @@ import { onMount } from "svelte";
 import { NAV_LINKS } from "@/data/navLinks";
 import PenIcon from "@/components/icons/PenIcon.svelte";
 import PencilIcon from "@/components/icons/PencilIcon.svelte";
-import { Circle, Moon, RotateCcw, Sparkles, Sun } from "@lucide/svelte";
+import { Circle, Moon, PenTool, RotateCcw, Sun } from "@lucide/svelte";
 
 let { pathname }: { pathname: string } = $props();
 let dark = $state(false);
@@ -76,7 +76,7 @@ function toggleInkAmbient() {
           aria-pressed={inkAmbientEnabled}
           class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised text-sm text-ink shadow-hard-sm"
         >
-          {#if inkAmbientEnabled}<Sparkles size={15} strokeWidth={1.75} />{:else}<Circle size={11} strokeWidth={2} />{/if}
+          {#if inkAmbientEnabled}<PenTool size={15} strokeWidth={1.75} />{:else}<Circle size={11} strokeWidth={2} />{/if}
         </button>
         <button
           onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-add-predator"))}

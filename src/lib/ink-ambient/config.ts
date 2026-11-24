@@ -24,6 +24,9 @@ export const PENCIL_TRAIL_MAX_POINTS = 90;
 // spaced points instead of a few long, visibly straight polyline segments.
 export const TRAIL_SAMPLE_INTERVAL_SECONDS = 0;
 export const TRAIL_MIN_SPEED = 6;
+// Trail opacity is drawn in steps of this size; neighbouring segments in the same
+// step share one stroke. Smaller is a finer fade but more strokes per frame.
+export const TRAIL_ALPHA_STEP = 0.02;
 // Fraction of object.radius from center to the sprite's tip (pen/pencil nib).
 // Must match the renderer's sprite geometry (TARGET_SPAN / SPRITE_SIZE) — the
 // renderer derives its TARGET_SPAN from this same constant, so there's one
@@ -140,6 +143,12 @@ export const ROUTE_PROFILES: Record<string, RouteProfile> = {
   projects: OUTER,
   gallery: OUTER,
   education: OUTER,
+  // The /playground page has no content to avoid: objects roam the whole viewport.
+  playground: {
+    name: "playground",
+    edgeBias: "none",
+    regions: [{ x: 0, y: 0, width: 1, height: 1, weight: 1 }],
+  },
   default: OUTER,
 };
 
@@ -149,8 +158,16 @@ export function getRouteProfile(pathname: string, sectionId?: string): RouteProf
   if (pathname.startsWith("/projects/")) return ROUTE_PROFILES.projects;
   if (pathname === "/blog") return ROUTE_PROFILES.blog;
   if (pathname === "/projects") return ROUTE_PROFILES.projects;
+  if (pathname === "/playground" || pathname === "/playground/") return ROUTE_PROFILES.playground;
   return ROUTE_PROFILES.default;
 }
+
+// Playground spawns are uniform random. Until the first object dies, they fall in
+// a centred box this fraction of the viewport's width and height (0.75 = 75%);
+// after that the whole viewport. Attempts is how many random points to try
+// before falling back to the best-scored safe cell.
+export const PLAYGROUND_SPAWN_BIAS_FRACTION = 0.75;
+export const PLAYGROUND_SPAWN_ATTEMPTS = 40;
 
 // Population top-up pacing (spec §8.3). PREDATOR_SPAWN_RAMP_SECONDS and
 // PREDATOR_SPAWN_RAMP_START_FRACTION were already added in Task 3, alongside
@@ -212,6 +229,12 @@ export const LV_PREDATOR_DEATH_DECAY = 0.15;
 // kill threshold like the normal catch mechanic uses).
 export const FLOCK_RADIUS = 90;
 export const FLOCK_MIN_SIZE = 3;
+// Prey already in a hunting flock stay linked up to this distance (hysteresis), so
+// a flock at the edge of FLOCK_RADIUS does not flicker in and out (#14).
+export const FLOCK_KEEP_RADIUS = FLOCK_RADIUS * 1.25;
+// A flock keeps hunting its predator unless another candidate is this much closer
+// to the flock centre (0.5 = half the distance), so the hunted tint stays put (#14).
+export const FLOCK_TARGET_SWITCH_MARGIN = 0.5;
 
 // Boids weights for flock-hunt steering (spec §6) — hunt dominant, boids
 // rules add clustering texture. Starting values, tune live in the browser.
@@ -225,3 +248,14 @@ export const FLOCK_ALIGNMENT_WEIGHT = 0.3;
 // already defined above) — only the bright-red half is new.
 export const FLOCK_HUNT_BRIGHT_RED_COLOR = "#ff3b3b";
 export const FLOCK_BLINK_FREQUENCY = 4;
+
+// Spawn ripple: when the pen or pencil button adds an object, a thin ring in the
+// object's spawn tint expands from it and fades, like a drop on water. It draws
+// under every object. Radii are fractions of the new object's radius.
+export const SPAWN_RIPPLE_START_RADIUS_FRACTION = 0.6;
+export const SPAWN_RIPPLE_END_RADIUS_FRACTION = 3.5;
+// About 2x an object's fade-in (opacity 0.01 to 1 at 0.9 per second, ~1.1 s;
+// see updateSpawnFade in lifecycle.ts). Tune down from here.
+export const SPAWN_RIPPLE_LIFETIME_SECONDS = 2.2;
+export const SPAWN_RIPPLE_LINE_WIDTH = 2;
+export const SPAWN_RIPPLE_ALPHA = 0.9;

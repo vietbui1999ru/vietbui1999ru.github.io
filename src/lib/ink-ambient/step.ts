@@ -202,7 +202,7 @@ function updateObject(world: World, object: InkObject, dt: number, now: number):
 
 export const assignFlocks: Rule = (world) => {
   if (world.preyButtonEverPressed && countAlive(world, "prey") > countAlive(world, "predator")) {
-    const assignment = computeFlockAssignments(world.objects);
+    const assignment = computeFlockAssignments(world.objects, world.flockTargetByMemberId);
     for (const object of world.objects) {
       object.huntingFlock = assignment.huntingFlockIds.has(object.id);
       object.beingHunted = assignment.beingHuntedIds.has(object.id);
@@ -311,6 +311,8 @@ export const removeFinished: Rule = (world, frame) => {
     if (object.vanishElapsed !== null && object.vanishElapsed >= VANISH_DURATION_SECONDS) ready.add(object.id);
   }
   if (ready.size === 0) return;
+  // The first death ends the playground's centred spawn bias.
+  world.spawnBiasActive = false;
   for (let index = world.objects.length - 1; index >= 0; index -= 1) {
     if (ready.has(world.objects[index].id)) world.objects.splice(index, 1);
   }

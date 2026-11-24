@@ -107,8 +107,10 @@ export type InkEffect = {
   alpha: number;
   age: number;
   lifetime: number;
-  type: "splat" | "burst";
+  type: "splat" | "burst" | "ripple";
   rotation: number;
+  /** Stroke color of a "ripple" ring: the spawned object's tint. */
+  color?: string;
 };
 
 export type InkSnapshot = {
