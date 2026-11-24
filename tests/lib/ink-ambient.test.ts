@@ -94,6 +94,7 @@ function object(id: number, x: number, y: number): InkObject {
     chaseElapsed: 0,
     lives: 3,
     hungerElapsed: 0,
+    restRemaining: 0,
     vanishElapsed: null,
     role: null,
     chaseSpeed: 0,

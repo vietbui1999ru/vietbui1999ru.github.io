@@ -1,6 +1,9 @@
 // Framework-free world state and actions for the ink ambient. No DOM: the
 // component passes in geometry, time and the loaded snapshot.
 import {
+  AMBIENT_PREDATOR_COUNT,
+  AMBIENT_PREY_COUNT,
+  PLAYGROUND_INITIAL_MULTIPLIER,
   ATTRACTION_VALUE_MAX,
   ATTRACTION_VALUE_MIN,
   BURST_ALPHA,
@@ -20,8 +23,6 @@ import {
   PREDATOR_LIVES_START,
   PREDATOR_RADIUS_MAX,
   PREY_RADIUS_MAX,
-  SPAWN_COUNT_MAX,
-  SPAWN_COUNT_MIN,
 } from "./config";
 import { predatorsTargeting } from "./catches";
 import { clamp } from "./physics";
@@ -60,6 +61,8 @@ export interface World {
   nextPredatorSpawnAt: number;
   population: PopulationState;
   preyButtonEverPressed: boolean;
+  /** Crowding lifespan multiplier (lifecycle.ts lifespanMultiplier), set at the start of each step. */
+  lifespanMultiplier: number;
   /** Playground only: spawns stay in the centred bias box until the first object dies. */
   spawnBiasActive: boolean;
   flockTargetByMemberId: Map<number, InkObject>;
@@ -76,6 +79,7 @@ export function createWorld(options: WorldOptions, seed: number): World {
     nextObjectId: 0,
     effects: [],
     spawnBiasActive: true,
+    lifespanMultiplier: 1,
     width: 0,
     height: 0,
     obstacles: [],
@@ -125,6 +129,7 @@ export function makeObject(id: number, position: Vec2, rng: SeededRng, now: numb
     motionBlend: null,
     lives: PREDATOR_LIVES_START,
     hungerElapsed: 0,
+    restRemaining: 0,
     vanishElapsed: null,
     huntingFlock: false,
     beingHunted: false,
@@ -209,36 +214,44 @@ function spawnOne(world: World, role: Role, now: number): boolean {
   return true;
 }
 
+function isPlayground(world: World): boolean {
+  return world.field?.profile.name === "playground";
+}
+
+/** Start count for a role: the ambient count, times PLAYGROUND_INITIAL_MULTIPLIER on /playground. */
+export function initialCount(world: World, role: Role): number {
+  const base = role === "predator" ? AMBIENT_PREDATOR_COUNT : AMBIENT_PREY_COUNT;
+  return isPlayground(world) ? base * PLAYGROUND_INITIAL_MULTIPLIER : base;
+}
+
+/** Most objects of a role that automatic spawns (start, restore, top-up) fill to. */
+export function autoRoleCap(world: World, role: Role): number {
+  if (isPlayground(world)) return perRoleCap(world);
+  return Math.min(perRoleCap(world), role === "predator" ? AMBIENT_PREDATOR_COUNT : AMBIENT_PREY_COUNT);
+}
+
+/** Fill each role up to its start count, on top of any restored objects. */
 export function spawnInitialBatch(world: World, now: number): void {
   if (!world.field) return;
-  // Prey and predator counts at spawn/refresh are each independently
-  // randomized rather than a single coin-flipped combined target, so a
-  // fresh page load can start prey-heavy, predator-heavy, or balanced.
-  const preyTarget = world.rng.int(SPAWN_COUNT_MIN, SPAWN_COUNT_MAX);
-  const predatorTarget = world.rng.int(SPAWN_COUNT_MIN, SPAWN_COUNT_MAX);
   const cap = targetPopulation(world);
-  let preySpawned = 0;
-  let predatorSpawned = 0;
-  while (world.objects.length < cap && (preySpawned < preyTarget || predatorSpawned < predatorTarget)) {
-    let role: Role;
-    if (preySpawned < preyTarget && predatorSpawned < predatorTarget) {
-      role = world.rng.chance(0.5) ? "predator" : "prey";
-    } else if (preySpawned < preyTarget) {
-      role = "prey";
-    } else {
-      role = "predator";
-    }
+  const missing = (role: Role) =>
+    Math.max(0, Math.min(initialCount(world, role), autoRoleCap(world, role)) - countAlive(world, role));
+  let prey = missing("prey");
+  let predators = missing("predator");
+  while (world.objects.length < cap && (prey > 0 || predators > 0)) {
+    const role: Role =
+      prey > 0 && predators > 0 ? (world.rng.chance(0.5) ? "predator" : "prey") : prey > 0 ? "prey" : "predator";
     if (!spawnOne(world, role, now)) break;
-    if (role === "prey") preySpawned += 1;
-    else predatorSpawned += 1;
+    if (role === "prey") prey -= 1;
+    else predators -= 1;
   }
 }
 
 export function topUpPopulation(world: World, now: number): void {
   if (!world.field) return;
   const targets = mapToTargets(world.population);
-  const preyTarget = Math.min(targets.preyTarget, perRoleCap(world));
-  const predatorTarget = Math.min(targets.predatorTarget, perRoleCap(world));
+  const preyTarget = Math.min(targets.preyTarget, autoRoleCap(world, "prey"));
+  const predatorTarget = Math.min(targets.predatorTarget, autoRoleCap(world, "predator"));
   const { rng } = world;
   if (countAlive(world, "prey") < preyTarget && now >= world.nextPreySpawnAt) {
     if (spawnOne(world, "prey", now)) {
@@ -291,7 +304,12 @@ export function restoreWorld(world: World, snapshot: InkSnapshot | null, now: nu
       ? savedPosition
       : findSafePoint(field, 24, rng, world.objects.map((object) => object.position));
     if (!position) continue;
-    const role: Role = rng.chance(0.5) ? "predator" : "prey";
+    // Restore only up to each role's automatic cap, so a crowded snapshot (from
+    // the playground or an older build) does not crowd an ambient page.
+    const room = (candidate: Role) => autoRoleCap(world, candidate) - countAlive(world, candidate);
+    if (room("predator") <= 0 && room("prey") <= 0) break;
+    let role: Role = rng.chance(0.5) ? "predator" : "prey";
+    if (room(role) <= 0) role = role === "predator" ? "prey" : "predator";
     const object = makeObject(saved.id, position, rng, now, role);
     world.nextObjectId = Math.max(world.nextObjectId, saved.id + 1);
     object.velocity = { x: saved.velocity.x * width, y: saved.velocity.y * height };

@@ -8,6 +8,7 @@ import {
   LV_PREDATOR_DEATH_DECAY,
   PREDATOR_LIVES_START,
   PREDATOR_MAX_RAMPED_SPEED,
+  PREDATOR_REST_SECONDS_PER_MULTIPLIER,
   PREDATOR_SCARCITY_HUNGER_PENALTY_SECONDS,
   SAFE_CLEARANCE,
   TRAIL_MIN_SPEED,
@@ -25,6 +26,7 @@ import {
 } from "./flocking";
 import {
   applyPredatorSurvivalTick,
+  lifespanMultiplier,
   predatorSpawnRampMultiplier,
   updateSpawnFade,
   updateVanish,
@@ -105,7 +107,9 @@ function updateObject(world: World, object: InkObject, dt: number, now: number):
   object.effectCooldown = Math.max(0, object.effectCooldown - dt);
   object.squashCooldown = Math.max(0, object.squashCooldown - dt);
   updateSpawnFade(object, now, dt);
-  applyPredatorSurvivalTick(object, dt);
+  // Hunger runs at 1/m speed, so a predator lives m times longer on a quiet screen.
+  applyPredatorSurvivalTick(object, dt / world.lifespanMultiplier);
+  object.restRemaining = Math.max(0, object.restRemaining - dt);
 
   if (object.vanishElapsed !== null) {
     updateVanish(object, dt);
@@ -126,7 +130,9 @@ function updateObject(world: World, object: InkObject, dt: number, now: number):
     (ATTRACTION_MAX_ACCELERATION_HEAVY - ATTRACTION_MAX_ACCELERATION_LIGHT) * massT;
 
   const previousTargetId = object.currentTargetId;
-  const target = updateTarget(object, objects);
+  const resting = object.role === "predator" && object.restRemaining > 0;
+  if (resting) object.currentTargetId = null;
+  const target = resting ? null : updateTarget(object, objects);
   object.chaseElapsed = object.currentTargetId === previousTargetId ? object.chaseElapsed + dt : 0;
 
   const isUnsafe = Boolean(field) && !isSafePoint(field!, object.position, object.radius);
@@ -222,6 +228,8 @@ export const assignFlocks: Rule = (world) => {
 };
 
 export const moveObjects: Rule = (world, frame) => {
+  const alive = world.objects.filter((object) => object.vanishElapsed === null).length;
+  world.lifespanMultiplier = lifespanMultiplier(alive);
   for (const object of world.objects) updateObject(world, object, frame.dt, frame.now);
 };
 
@@ -234,6 +242,8 @@ export const resolveCatchRule: Rule = (world, frame) => {
       // A successful catch is a full reprieve: lives lost to earlier
       // rival losses are forgiven too, not just the starvation clock.
       winner.lives = PREDATOR_LIVES_START;
+      // A fed predator rests before it hunts again; zero at the reference crowding.
+      winner.restRemaining = PREDATOR_REST_SECONDS_PER_MULTIPLIER * (world.lifespanMultiplier - 1);
     }
   }
   for (const id of frame.catches.loserIds) {
