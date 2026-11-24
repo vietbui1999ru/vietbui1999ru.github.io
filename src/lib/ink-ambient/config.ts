@@ -181,10 +181,24 @@ export const POPULATION_TOPUP_MAX_DELAY_MS = 3500;
 // on top of the normal per-second hungerElapsed accrual.
 export const PREDATOR_DRAG_HUNGER_PENALTY_SECONDS = 6;
 
-// Independent per-role spawn count at page load/refresh (each role rolled
-// separately, so a fresh load can be prey-heavy, predator-heavy, or balanced).
-export const SPAWN_COUNT_MIN = 2;
-export const SPAWN_COUNT_MAX = 10;
+// Ambient pages (every page but /playground) keep a small, calm population:
+// they start with these counts, and restores and top-ups refill to them, no
+// further. The pen and pencil buttons can still add more, up to perRoleCap.
+// /playground starts with PLAYGROUND_INITIAL_MULTIPLIER times these counts and
+// refills up to perRoleCap.
+export const AMBIENT_PREDATOR_COUNT = 2;
+export const AMBIENT_PREY_COUNT = 3;
+export const PLAYGROUND_INITIAL_MULTIPLIER = 2;
+
+// Lifespan scales with crowding: m = clamp(LIFESPAN_REFERENCE_COUNT / alive, 1,
+// LIFESPAN_MAX_MULTIPLIER). Hunger accrues at 1/m speed, so a predator starves
+// after PREDATOR_STARVE_SECONDS * m. After a catch, a predator rests (does not
+// hunt or catch) for PREDATOR_REST_SECONDS_PER_MULTIPLIER * (m - 1) seconds,
+// which keeps prey alive longer. At the reference count, m = 1 and nothing
+// changes. Ambient pages (5 alive): m = 4, starve 320 s, rest 9 s.
+export const LIFESPAN_REFERENCE_COUNT = 24;
+export const LIFESPAN_MAX_MULTIPLIER = 4;
+export const PREDATOR_REST_SECONDS_PER_MULTIPLIER = 3;
 
 // Predators speed up the longer they've sustained a chase on the same
 // target (distinct from the proximity-based pairApproachRamp and the one-

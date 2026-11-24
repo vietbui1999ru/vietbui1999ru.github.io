@@ -1,4 +1,6 @@
 import {
+  LIFESPAN_MAX_MULTIPLIER,
+  LIFESPAN_REFERENCE_COUNT,
   PREDATOR_SPAWN_RAMP_SECONDS,
   PREDATOR_SPAWN_RAMP_START_FRACTION,
   PREDATOR_STARVE_SECONDS,
@@ -38,6 +40,11 @@ export function updateVanish(object: InkObject, dt: number): boolean {
   object.scale.y = remaining;
   object.opacity = remaining;
   return object.vanishElapsed >= VANISH_DURATION_SECONDS;
+}
+
+/** Fewer objects alive live longer: LIFESPAN_REFERENCE_COUNT / alive, clamped to [1, LIFESPAN_MAX_MULTIPLIER]. */
+export function lifespanMultiplier(alive: number): number {
+  return clamp(LIFESPAN_REFERENCE_COUNT / Math.max(1, alive), 1, LIFESPAN_MAX_MULTIPLIER);
 }
 
 export function applyPredatorSurvivalTick(object: InkObject, dt: number): void {

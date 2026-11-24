@@ -9,7 +9,8 @@ export interface CatchResolution {
 }
 
 export function resolveCatches(objects: readonly InkObject[]): CatchResolution {
-  const predators = objects.filter((o) => o.role === "predator" && o.vanishElapsed === null);
+  // A resting predator (just fed) cannot catch.
+  const predators = objects.filter((o) => o.role === "predator" && o.vanishElapsed === null && !(o.restRemaining > 0));
   const preyList = objects.filter((o) => o.role === "prey");
   const destroyedPreyIds = new Set<number>();
   const winnerIds = new Set<number>();

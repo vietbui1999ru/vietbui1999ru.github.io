@@ -27,6 +27,9 @@ function centreOf(members: readonly InkObject[]) {
  * input changed. Rule inputs are the flock gate, flock membership (of the object,
  * or of the flock that hunts a predator), a flock target that died, and a target
  * switch that clears FLOCK_TARGET_SWITCH_MARGIN. Also count flock kills.
+ *
+ * A target death excuses the whole window: after a kill the flock loses its tint,
+ * and it hunts again as soon as a predator (often a fresh top-up) targets a member.
  */
 function simulate(seed: number): { flicker: number; flockKills: number } {
   const world = createWorld({ pointerFine: true }, seed);
@@ -42,6 +45,7 @@ function simulate(seed: number): { flicker: number; flockKills: number } {
   let previousTargets = new Map<number, number>();
   let previousHunters = new Map<number, number[]>();
   let frame = 0;
+  const targetDiedAt = new Map<number, number>();
   let flicker = 0;
   let flockKills = 0;
 
@@ -86,7 +90,10 @@ function simulate(seed: number): { flicker: number; flockKills: number } {
         // 5% slack: positions here are one step later than at the assignment.
         return d(next) < d(o) * (1 - FLOCK_TARGET_SWITCH_MARGIN) * 1.05;
       })();
+      if (targetDied) targetDiedAt.set(o.id, frame);
+      const recentTargetDeath = frame - (targetDiedAt.get(o.id) ?? -Infinity) < FLICKER_WINDOW_FRAMES;
       const ruleInputChanged =
+        recentTargetDeath ||
         gates[0] !== gates[1] ||
         membershipChanged(o.id) ||
         hunterIds.some(membershipChanged) ||
