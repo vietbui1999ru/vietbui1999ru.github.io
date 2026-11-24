@@ -1,6 +1,6 @@
 <script lang="ts">
 import { NAV_LINKS } from "../../data/navLinks";
-import { Moon, Sparkles, Circle, Sun } from "@lucide/svelte";
+import { Moon, PenTool, Circle, Sun } from "@lucide/svelte";
 
 let { pathname }: { pathname: string } = $props();
 let activeHref = $state("");
@@ -67,7 +67,7 @@ function observeSections(_node: HTMLElement) {
       aria-pressed={inkAmbientEnabled}
       class="grid min-h-14 w-14 shrink-0 cursor-pointer place-items-center border-0 bg-paper font-mono text-ink"
     >
-      {#if inkAmbientEnabled}<Sparkles size={18} strokeWidth={1.75} />{:else}<Circle size={12} strokeWidth={2} />{/if}
+      {#if inkAmbientEnabled}<PenTool size={18} strokeWidth={1.75} />{:else}<Circle size={12} strokeWidth={2} />{/if}
     </button>
     <button
       onclick={toggleTheme}
