@@ -311,6 +311,8 @@ export const removeFinished: Rule = (world, frame) => {
     if (object.vanishElapsed !== null && object.vanishElapsed >= VANISH_DURATION_SECONDS) ready.add(object.id);
   }
   if (ready.size === 0) return;
+  // The first death ends the playground's centred spawn bias.
+  world.spawnBiasActive = false;
   for (let index = world.objects.length - 1; index >= 0; index -= 1) {
     if (ready.has(world.objects[index].id)) world.objects.splice(index, 1);
   }

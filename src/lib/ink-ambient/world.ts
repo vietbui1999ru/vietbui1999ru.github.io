@@ -9,6 +9,11 @@ import {
   BURST_RADIUS_MULTIPLIER,
   MAX_OBJECTS_DESKTOP,
   MAX_OBJECTS_MOBILE,
+  PLAYGROUND_SPAWN_ATTEMPTS,
+  PLAYGROUND_SPAWN_BIAS_FRACTION,
+  PREDATOR_SPAWN_TINT_COLOR,
+  PREY_SPAWN_TINT_COLOR,
+  SPAWN_RIPPLE_LIFETIME_SECONDS,
   POPULATION_TOPUP_MAX_DELAY_MS,
   POPULATION_TOPUP_MIN_DELAY_MS,
   PREDATOR_DRAG_HUNGER_PENALTY_SECONDS,
@@ -19,6 +24,7 @@ import {
   SPAWN_COUNT_MIN,
 } from "./config";
 import { predatorsTargeting } from "./catches";
+import { clamp } from "./physics";
 import { mapToTargets, type PopulationState } from "./population";
 import { rollChaseSpeed, rollRadius } from "./spawn";
 import {
@@ -54,6 +60,8 @@ export interface World {
   nextPredatorSpawnAt: number;
   population: PopulationState;
   preyButtonEverPressed: boolean;
+  /** Playground only: spawns stay in the centred bias box until the first object dies. */
+  spawnBiasActive: boolean;
   flockTargetByMemberId: Map<number, InkObject>;
   flockByMemberId: Map<number, InkObject[]>;
   flockByTargetPredatorId: Map<number, InkObject[]>;
@@ -67,6 +75,7 @@ export function createWorld(options: WorldOptions, seed: number): World {
     objects: [],
     nextObjectId: 0,
     effects: [],
+    spawnBiasActive: true,
     width: 0,
     height: 0,
     obstacles: [],
@@ -168,11 +177,31 @@ function targetPopulation(world: World): number {
   return Math.min(maximum, Math.max(0, capacity));
 }
 
+// Uniform random point in the bias box (or the whole viewport once the bias is off)
+// that is safe and clear of other objects. Null after PLAYGROUND_SPAWN_ATTEMPTS misses.
+function findRandomSpawnPoint(world: World, radius: number, avoid: readonly Vec2[]): Vec2 | null {
+  const { field, rng, width, height } = world;
+  if (!field) return null;
+  const fraction = world.spawnBiasActive ? PLAYGROUND_SPAWN_BIAS_FRACTION : 1;
+  const left = (width * (1 - fraction)) / 2;
+  const top = (height * (1 - fraction)) / 2;
+  for (let attempt = 0; attempt < PLAYGROUND_SPAWN_ATTEMPTS; attempt += 1) {
+    const point = {
+      x: clamp(left + rng.next() * width * fraction, radius, width - radius),
+      y: clamp(top + rng.next() * height * fraction, radius, height - radius),
+    };
+    const clear = avoid.every((other) => Math.hypot(point.x - other.x, point.y - other.y) > radius * 2);
+    if (clear && isSafePoint(field, point, radius)) return point;
+  }
+  return null;
+}
+
 function spawnOne(world: World, role: Role, now: number): boolean {
   if (!world.field) return false;
   const radius = role === "predator" ? PREDATOR_RADIUS_MAX : PREY_RADIUS_MAX;
   const avoid = world.objects.map((object) => object.position);
   const position =
+    (world.field.profile.name === "playground" ? findRandomSpawnPoint(world, radius, avoid) : null) ??
     findSafePointNearCorner(world.field, radius, world.rng, world.objects.length, avoid) ??
     findSafePoint(world.field, radius, world.rng, avoid);
   if (!position) return false;
@@ -227,14 +256,14 @@ export function topUpPopulation(world: World, now: number): void {
  * device ceiling and the per-role cap. */
 export function addPredator(world: World, now: number): void {
   if (!world.field || world.objects.length >= deviceCapMax(world) || countAlive(world, "predator") >= perRoleCap(world)) return;
-  spawnOne(world, "predator", now);
+  if (spawnOne(world, "predator", now)) addSpawnRipple(world, world.objects[world.objects.length - 1]);
 }
 
 /** The pencil button: one more prey, with the same caps. It also unlocks flocking. */
 export function addPrey(world: World, now: number): void {
   world.preyButtonEverPressed = true;
   if (!world.field || world.objects.length >= deviceCapMax(world) || countAlive(world, "prey") >= perRoleCap(world)) return;
-  spawnOne(world, "prey", now);
+  if (spawnOne(world, "prey", now)) addSpawnRipple(world, world.objects[world.objects.length - 1]);
 }
 
 /** Back to page-load state: objects, population, spawn timers and flock state. */
@@ -243,6 +272,7 @@ export function resetWorld(world: World, now: number): void {
   world.objects.length = 0;
   world.population = { prey: 1.5, predator: 0.7 };
   world.preyButtonEverPressed = false;
+  world.spawnBiasActive = true;
   world.flockTargetByMemberId = new Map();
   world.flockByMemberId = new Map();
   world.flockByTargetPredatorId = new Map();
@@ -285,8 +315,24 @@ export function applyDragPenalty(world: World, object: InkObject): void {
   }
 }
 
+/** A ring that expands from a button-spawned object and fades, in its spawn tint. */
+export function addSpawnRipple(world: World, object: InkObject): void {
+  world.effects.push({
+    x: object.position.x,
+    y: object.position.y,
+    radius: object.radius,
+    alpha: 1,
+    age: 0,
+    lifetime: SPAWN_RIPPLE_LIFETIME_SECONDS,
+    type: "ripple",
+    rotation: 0,
+    color: object.role === "predator" ? PREDATOR_SPAWN_TINT_COLOR : PREY_SPAWN_TINT_COLOR,
+  });
+}
+
 export function addBurstEffect(world: World, x: number, y: number, radius: number): void {
-  if (world.effects.length >= 4) return;
+  // Spawn ripples are short-lived and do not count against the burst cap.
+  if (world.effects.filter((effect) => effect.type !== "ripple").length >= 4) return;
   world.effects.push({
     x,
     y,

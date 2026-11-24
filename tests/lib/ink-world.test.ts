@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { FIXED_STEP, getRouteProfile } from "@/lib/ink-ambient/config";
+import {
+  FIXED_STEP,
+  PLAYGROUND_SPAWN_BIAS_FRACTION,
+  PREDATOR_SPAWN_TINT_COLOR,
+  PREY_SPAWN_TINT_COLOR,
+  SPAWN_RIPPLE_LIFETIME_SECONDS,
+  getRouteProfile,
+} from "@/lib/ink-ambient/config";
 import { DEFAULT_RULES, step, type Rule } from "@/lib/ink-ambient/step";
 import {
   addPredator,
@@ -145,6 +152,55 @@ describe("actions", () => {
     }
     expect(countAlive(world, "prey")).toBeLessThanOrEqual(perRoleCap(world));
     expect(countAlive(world, "predator")).toBeLessThanOrEqual(perRoleCap(world));
+  });
+
+  it("a button spawn adds one ripple at the new object, in its spawn tint, that expires", () => {
+    const world = makeWorld(5);
+    world.objects.length = 0;
+    world.effects.length = 0;
+    addPredator(world, 0);
+    addPrey(world, 0);
+    const ripples = world.effects.filter((effect) => effect.type === "ripple");
+    expect(ripples).toHaveLength(2);
+    const [predator, prey] = world.objects;
+    expect(ripples[0]).toMatchObject({ x: predator.position.x, y: predator.position.y, color: PREDATOR_SPAWN_TINT_COLOR });
+    expect(ripples[1]).toMatchObject({ x: prey.position.x, y: prey.position.y, color: PREY_SPAWN_TINT_COLOR });
+    run(world, Math.ceil(SPAWN_RIPPLE_LIFETIME_SECONDS / FIXED_STEP) + 1);
+    expect(world.effects.some((effect) => effect.type === "ripple")).toBe(false);
+  });
+
+  it("a capped button press adds no ripple", () => {
+    const world = makeWorld(5);
+    for (let i = 0; i < 40; i += 1) addPrey(world, 0);
+    world.effects.length = 0;
+    addPrey(world, 0);
+    expect(world.effects).toHaveLength(0);
+  });
+
+  it("playground spawns stay in the centred bias box until the first death, then use the whole viewport", () => {
+    const world = createWorld({ pointerFine: true }, 7);
+    setGeometry(world, { width: 1280, height: 800, obstacles: [], profile: getRouteProfile("/playground") });
+    spawnInitialBatch(world, 0);
+    const margin = (1 - PLAYGROUND_SPAWN_BIAS_FRACTION) / 2;
+    const inBox = (o: { position: { x: number; y: number } }) =>
+      o.position.x >= 1280 * margin && o.position.x <= 1280 * (1 - margin) &&
+      o.position.y >= 800 * margin && o.position.y <= 800 * (1 - margin);
+    expect(world.objects.length).toBeGreaterThan(0);
+    expect(world.objects.every(inBox)).toBe(true);
+
+    world.objects[0].vanishElapsed = 10;
+    step(world, FIXED_STEP, STEP_MS);
+    expect(world.spawnBiasActive).toBe(false);
+
+    let outside = 0;
+    for (let i = 0; i < 30; i += 1) {
+      world.objects.length = 0;
+      addPrey(world, 0);
+      if (!inBox(world.objects[0])) outside += 1;
+    }
+    expect(outside).toBeGreaterThan(0);
+    resetWorld(world, 0);
+    expect(world.spawnBiasActive).toBe(true);
   });
 
   it("reset clears population, timers and flock state, then respawns", () => {
