@@ -1,5 +1,5 @@
 ---
-status: draft
+status: approved
 branch: refactor/ink-core
 ---
 # SPEC: Ink-ambient simulation core (issue #14, part 1)
