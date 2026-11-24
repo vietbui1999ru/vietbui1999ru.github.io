@@ -140,6 +140,12 @@ export const ROUTE_PROFILES: Record<string, RouteProfile> = {
   projects: OUTER,
   gallery: OUTER,
   education: OUTER,
+  // The /playground page has no content to avoid: objects roam the whole viewport.
+  playground: {
+    name: "playground",
+    edgeBias: "none",
+    regions: [{ x: 0, y: 0, width: 1, height: 1, weight: 1 }],
+  },
   default: OUTER,
 };
 
@@ -149,6 +155,7 @@ export function getRouteProfile(pathname: string, sectionId?: string): RouteProf
   if (pathname.startsWith("/projects/")) return ROUTE_PROFILES.projects;
   if (pathname === "/blog") return ROUTE_PROFILES.blog;
   if (pathname === "/projects") return ROUTE_PROFILES.projects;
+  if (pathname === "/playground" || pathname === "/playground/") return ROUTE_PROFILES.playground;
   return ROUTE_PROFILES.default;
 }
 

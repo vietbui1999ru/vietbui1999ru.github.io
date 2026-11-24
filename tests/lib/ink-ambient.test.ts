@@ -8,6 +8,7 @@ import {
   PREY_RADIUS_MIN,
   PREY_TARGET_MAX,
   SNAPSHOT_KEY,
+  getRouteProfile,
 } from "@/lib/ink-ambient/config";
 import { rollRadius, rollChaseSpeed } from "@/lib/ink-ambient/spawn";
 import {
@@ -824,6 +825,15 @@ function predator(id: number, x: number, y: number, targetId: number | null = nu
   o.currentTargetId = targetId;
   return o;
 }
+
+describe("Route profiles", () => {
+  it("playground profile spans the whole viewport with no edge bias", () => {
+    const profile = getRouteProfile("/playground");
+    expect(profile.name).toBe("playground");
+    expect(profile.edgeBias).toBe("none");
+    expect(profile.regions).toEqual([{ x: 0, y: 0, width: 1, height: 1, weight: 1 }]);
+  });
+});
 
 describe("Flock target hold (#14)", () => {
   it("held flock target: keeps last step's predator while it is alive", () => {

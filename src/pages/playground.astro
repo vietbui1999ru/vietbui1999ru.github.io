@@ -1,0 +1,14 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/primitives/PageHeader.svelte";
+
+// A page for the ink-ambient simulation alone: only a header, so the pens and
+// pencils roam the whole viewport (the "playground" route profile) with nothing
+// in front of them. The nav toolbar holds the toggle, pen, pencil and reset.
+---
+
+<BaseLayout enableInkAmbient={true}>
+  <div class="page-container min-h-[calc(100vh-4rem)] pt-section">
+    <PageHeader title="playground" kicker="ink lab" back={{ href: "/", label: "home" }} />
+  </div>
+</BaseLayout>
