@@ -254,6 +254,8 @@ export const FLOCK_BLINK_FREQUENCY = 4;
 // under every object. Radii are fractions of the new object's radius.
 export const SPAWN_RIPPLE_START_RADIUS_FRACTION = 0.6;
 export const SPAWN_RIPPLE_END_RADIUS_FRACTION = 3.5;
-export const SPAWN_RIPPLE_LIFETIME_SECONDS = 0.45;
+// About 2x an object's fade-in (opacity 0.01 to 1 at 0.9 per second, ~1.1 s;
+// see updateSpawnFade in lifecycle.ts). Tune down from here.
+export const SPAWN_RIPPLE_LIFETIME_SECONDS = 2.2;
 export const SPAWN_RIPPLE_LINE_WIDTH = 2;
 export const SPAWN_RIPPLE_ALPHA = 0.9;
