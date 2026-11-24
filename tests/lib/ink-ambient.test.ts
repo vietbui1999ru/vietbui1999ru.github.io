@@ -54,6 +54,8 @@ import {
   detectFlocks,
   selectFlockTarget,
   computeFlockAssignments,
+  heldFlockTarget,
+  chooseFlockTarget,
   cohesionDirection,
   separationDirection,
   alignmentDirection,
@@ -807,6 +809,67 @@ describe("Flock detection and target selection", () => {
     expect(assignment.targetByMemberId.get(1)?.id).toBe(4);
     expect(assignment.flockByMemberId.get(1)?.map((m) => m.id).sort()).toEqual([1, 2, 3]);
     expect(assignment.flockByTargetPredatorId.get(4)?.map((m) => m.id).sort()).toEqual([1, 2, 3]);
+  });
+});
+
+function prey(id: number, x: number, y: number): InkObject {
+  const o = object(id, x, y);
+  o.role = "prey";
+  return o;
+}
+
+function predator(id: number, x: number, y: number, targetId: number | null = null): InkObject {
+  const o = object(id, x, y);
+  o.role = "predator";
+  o.currentTargetId = targetId;
+  return o;
+}
+
+describe("Flock target hold (#14)", () => {
+  it("held flock target: keeps last step's predator while it is alive", () => {
+    const members = [prey(1, 0, 0), prey(2, 40, 0), prey(3, 80, 0)];
+    const held = predator(4, 900, 0, 999); // far, and no longer targeting the flock
+    const previous = new Map(members.map((m) => [m.id, held]));
+    expect(heldFlockTarget(members, previous, [...members, held])?.id).toBe(4);
+    held.vanishElapsed = 0;
+    expect(heldFlockTarget(members, previous, [...members, held])).toBeNull();
+  });
+
+  it("held flock target: after a merge, the predator most members held wins, ties to the lower id", () => {
+    const members = [prey(1, 0, 0), prey(2, 40, 0), prey(3, 80, 0), prey(6, 120, 0)];
+    const a = predator(4, 300, 0);
+    const b = predator(5, 300, 0);
+    const objects = [...members, a, b];
+    expect(heldFlockTarget(members, new Map([[1, b], [2, b], [3, a]]), objects)?.id).toBe(5);
+    expect(heldFlockTarget(members, new Map([[1, b], [2, b], [3, a], [6, a]]), objects)?.id).toBe(4);
+  });
+
+  it("flock target switch: keeps the held predator unless the nearest is more than the margin closer", () => {
+    const members = [prey(1, 0, 0), prey(2, 40, 0), prey(3, 80, 0)]; // centre (40, 0)
+    const held = predator(4, 240, 0); // 200 from the centre
+    expect(chooseFlockTarget(members, held, predator(5, 140, 0))?.id).toBe(4); // 100: exactly half, kept
+    expect(chooseFlockTarget(members, held, predator(5, 139, 0))?.id).toBe(5); // 99: switches
+    expect(chooseFlockTarget(members, null, predator(5, 139, 0))?.id).toBe(5);
+    expect(chooseFlockTarget(members, held, null)?.id).toBe(4);
+  });
+
+  it("flock membership hysteresis: previous members stay linked up to FLOCK_KEEP_RADIUS", () => {
+    // 100 apart: beyond FLOCK_RADIUS (90), within FLOCK_KEEP_RADIUS (112.5).
+    const group = [prey(1, 0, 0), prey(2, 100, 0), prey(3, 200, 0)];
+    expect(detectFlocks(group)).toHaveLength(0);
+    expect(detectFlocks(group, new Set([1, 2, 3]))).toHaveLength(1);
+    // A prey new to the flock still needs FLOCK_RADIUS to join.
+    expect(detectFlocks(group, new Set([1, 2]))).toHaveLength(0);
+  });
+
+  it("computeFlockAssignments keeps the held predator over a slightly closer candidate", () => {
+    const members = [prey(1, 0, 0), prey(2, 40, 0), prey(3, 80, 0)];
+    const held = predator(4, 240, 0, 1);
+    const closer = predator(5, 200, 0, 2);
+    const objects = [...members, held, closer];
+    expect(computeFlockAssignments(objects).beingHuntedIds).toEqual(new Set([5]));
+    const previous = new Map(members.map((m) => [m.id, held]));
+    expect(computeFlockAssignments(objects, previous).beingHuntedIds).toEqual(new Set([4]));
   });
 });
 

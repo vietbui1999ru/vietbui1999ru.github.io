@@ -4,7 +4,9 @@ import {
   FLOCK_COHESION_WEIGHT,
   FLOCK_HUNT_WEIGHT,
   FLOCK_MIN_SIZE,
+  FLOCK_KEEP_RADIUS,
   FLOCK_RADIUS,
+  FLOCK_TARGET_SWITCH_MARGIN,
   FLOCK_SEPARATION_DISTANCE,
   FLOCK_SEPARATION_WEIGHT,
   PAIR_FORCE_MAX,
@@ -18,7 +20,16 @@ function isAlive(object: InkObject): boolean {
   return object.vanishElapsed === null;
 }
 
-export function detectFlocks(objects: readonly InkObject[]): InkObject[][] {
+/**
+ * Prey linked by chains of neighbours closer than FLOCK_RADIUS, with at least
+ * FLOCK_MIN_SIZE members. Two prey that were both in a hunting flock last step stay
+ * linked up to FLOCK_KEEP_RADIUS, so a flock at the edge of the radius does not
+ * break up and re-form every few frames.
+ */
+export function detectFlocks(
+  objects: readonly InkObject[],
+  previousMemberIds: ReadonlySet<number> = new Set(),
+): InkObject[][] {
   const prey = objects.filter((o) => o.role === "prey" && isAlive(o) && !o.grabbed);
   const visited = new Set<number>();
   const flocks: InkObject[][] = [];
@@ -33,7 +44,11 @@ export function detectFlocks(objects: readonly InkObject[]): InkObject[][] {
       component.push(current);
       for (const candidate of prey) {
         if (visited.has(candidate.id)) continue;
-        if (distance(current.position, candidate.position) < FLOCK_RADIUS) {
+        const linkRadius =
+          previousMemberIds.has(current.id) && previousMemberIds.has(candidate.id)
+            ? FLOCK_KEEP_RADIUS
+            : FLOCK_RADIUS;
+        if (distance(current.position, candidate.position) < linkRadius) {
           visited.add(candidate.id);
           stack.push(candidate);
         }
@@ -88,15 +103,73 @@ export interface FlockAssignment {
   flockByTargetPredatorId: Map<number, InkObject[]>;
 }
 
-export function computeFlockAssignments(objects: readonly InkObject[]): FlockAssignment {
+/**
+ * The predator this flock already hunted last step, if it is still alive. When
+ * members held different targets (flocks merged), the one most members held wins;
+ * ties go to the lower id.
+ */
+export function heldFlockTarget(
+  members: readonly InkObject[],
+  previousTargetByMemberId: ReadonlyMap<number, InkObject>,
+  objects: readonly InkObject[],
+): InkObject | null {
+  const votes = new Map<number, number>();
+  for (const member of members) {
+    const previous = previousTargetByMemberId.get(member.id);
+    if (previous) votes.set(previous.id, (votes.get(previous.id) ?? 0) + 1);
+  }
+  let best: InkObject | null = null;
+  let bestVotes = 0;
+  for (const [id, count] of votes) {
+    const predator = objects.find((o) => o.id === id && o.role === "predator" && isAlive(o));
+    if (!predator) continue;
+    if (count > bestVotes || (count === bestVotes && best !== null && id < best.id)) {
+      best = predator;
+      bestVotes = count;
+    }
+  }
+  return best;
+}
+
+/**
+ * Keep the held predator unless the nearest candidate is closer to the flock centre
+ * by more than FLOCK_TARGET_SWITCH_MARGIN of the held distance. Small changes in
+ * distance then never swap the target, while a much closer predator still does.
+ */
+export function chooseFlockTarget(
+  members: readonly InkObject[],
+  held: InkObject | null,
+  nearest: InkObject | null,
+): InkObject | null {
+  if (!held || !nearest || nearest.id === held.id) return held ?? nearest;
+  const center = centroid(members);
+  const heldDistance = distance(center, held.position);
+  const nearestDistance = distance(center, nearest.position);
+  return nearestDistance < heldDistance * (1 - FLOCK_TARGET_SWITCH_MARGIN) ? nearest : held;
+}
+
+/**
+ * Pick one hunted predator per flock. A flock keeps the predator it already hunts
+ * (see heldFlockTarget), so the hunted tint does not jump between candidate
+ * predators or drop out while the hunted predator flees and retargets.
+ */
+export function computeFlockAssignments(
+  objects: readonly InkObject[],
+  previousTargetByMemberId: ReadonlyMap<number, InkObject> = new Map(),
+): FlockAssignment {
   const huntingFlockIds = new Set<number>();
   const beingHuntedIds = new Set<number>();
   const targetByMemberId = new Map<number, InkObject>();
   const flockByMemberId = new Map<number, InkObject[]>();
   const flockByTargetPredatorId = new Map<number, InkObject[]>();
 
-  for (const members of detectFlocks(objects)) {
-    const target = selectFlockTarget(members, objects);
+  const previousMemberIds = new Set(previousTargetByMemberId.keys());
+  for (const members of detectFlocks(objects, previousMemberIds)) {
+    const target = chooseFlockTarget(
+      members,
+      heldFlockTarget(members, previousTargetByMemberId, objects),
+      selectFlockTarget(members, objects),
+    );
     if (!target) continue;
     beingHuntedIds.add(target.id);
     flockByTargetPredatorId.set(target.id, members);

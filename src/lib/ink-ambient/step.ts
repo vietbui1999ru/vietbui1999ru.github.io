@@ -202,7 +202,7 @@ function updateObject(world: World, object: InkObject, dt: number, now: number):
 
 export const assignFlocks: Rule = (world) => {
   if (world.preyButtonEverPressed && countAlive(world, "prey") > countAlive(world, "predator")) {
-    const assignment = computeFlockAssignments(world.objects);
+    const assignment = computeFlockAssignments(world.objects, world.flockTargetByMemberId);
     for (const object of world.objects) {
       object.huntingFlock = assignment.huntingFlockIds.has(object.id);
       object.beingHunted = assignment.beingHuntedIds.has(object.id);

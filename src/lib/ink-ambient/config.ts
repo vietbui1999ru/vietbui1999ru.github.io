@@ -212,6 +212,12 @@ export const LV_PREDATOR_DEATH_DECAY = 0.15;
 // kill threshold like the normal catch mechanic uses).
 export const FLOCK_RADIUS = 90;
 export const FLOCK_MIN_SIZE = 3;
+// Prey already in a hunting flock stay linked up to this distance (hysteresis), so
+// a flock at the edge of FLOCK_RADIUS does not flicker in and out (#14).
+export const FLOCK_KEEP_RADIUS = FLOCK_RADIUS * 1.25;
+// A flock keeps hunting its predator unless another candidate is this much closer
+// to the flock centre (0.5 = half the distance), so the hunted tint stays put (#14).
+export const FLOCK_TARGET_SWITCH_MARGIN = 0.5;
 
 // Boids weights for flock-hunt steering (spec §6) — hunt dominant, boids
 // rules add clustering texture. Starting values, tune live in the browser.
