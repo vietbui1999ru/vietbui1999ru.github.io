@@ -4,18 +4,15 @@ import Chip from "../primitives/Chip.svelte";
 import InkLink from "../primitives/InkLink.svelte";
 import Section from "../primitives/Section.svelte";
 import SectionHeader from "../primitives/SectionHeader.svelte";
-import { PASTEL_BG, toneFor } from "../../design-system/tone";
+import { toneFor } from "../../design-system/tone";
+import TimelineRail from "../patterns/TimelineRail.svelte";
 </script>
 
 <Section id="education">
     <SectionHeader index="07" title="education" kicker="academic record" />
 
-    <ol data-ink-obstacle="prose" class="ml-2 max-w-5xl border-l-[1.5px] border-ink">
-      {#each EDUCATION_ITEMS as item (item.title)}
-        <li class="relative pb-10 pl-8 last:pb-0">
-          <span
-            class="absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink {PASTEL_BG[toneFor(item.school.name)]}"
-          ></span>
+    <TimelineRail items={EDUCATION_ITEMS} key={(item) => item.title} tone={(item) => toneFor(item.school.name)} class="max-w-5xl">
+      {#snippet entry(item)}
 
           <time class="label-mono text-journal-2">{item.date}</time>
           <h3 class="mt-2 font-serif text-step-1 font-semibold text-ink">{item.title}</h3>
@@ -48,7 +45,6 @@ import { PASTEL_BG, toneFor } from "../../design-system/tone";
               <InkLink href={item.featuredLink.url}>{item.featuredLink.name ?? "view program"}</InkLink>
             {/if}
           </div>
-        </li>
-      {/each}
-    </ol>
+      {/snippet}
+    </TimelineRail>
 </Section>
