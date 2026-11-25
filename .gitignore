@@ -50,3 +50,6 @@ docs/style-guides/
 
 # Local verify build output (SPEC verify lines)
 .cache/
+
+# pi-lens probe scratch directory (local tooling output)
+.pi-lens-probe-home/
