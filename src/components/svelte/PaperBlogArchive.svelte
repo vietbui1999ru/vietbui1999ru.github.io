@@ -2,12 +2,17 @@
 import ArrowRightIcon from "../primitives/ArrowRightIcon.svelte";
 import type { SerializedPost } from "../../data/blogData";
 import Chip from "../primitives/Chip.svelte";
+import InkSelect from "../primitives/InkSelect.svelte";
 import PageHeader from "../primitives/PageHeader.svelte";
 
 let { posts }: { posts: SerializedPost[] } = $props();
 let activeTag = $state<string | null>(null);
 let query = $state("");
 let sort = $state<"date" | "title">("date");
+const SORT_OPTIONS: { value: "date" | "title"; label: string }[] = [
+  { value: "date", label: "newest" },
+  { value: "title", label: "title" },
+];
 
 const tags = $derived([...new Set(posts.flatMap((post) => post.tags))].sort());
 const filteredPosts = $derived.by(() => {
@@ -48,13 +53,7 @@ function stamp(iso: string): string {
       <span class="mb-1 block font-mono text-[0.68rem] uppercase tracking-wider text-journal-1">search writing</span>
       <input bind:value={query} placeholder="title, description, tag…" class="w-full border-[1.5px] border-ink bg-paper-raised px-3 py-2 font-mono text-step--1 text-ink placeholder:text-journal-2" />
     </label>
-    <label>
-      <span class="mb-1 block font-mono text-[0.68rem] uppercase tracking-wider text-journal-1">sort</span>
-      <select bind:value={sort} class="border-[1.5px] border-ink bg-paper-raised px-3 py-2 font-mono text-step--1 text-ink">
-        <option value="date">newest</option>
-        <option value="title">title</option>
-      </select>
-    </label>
+    <InkSelect options={SORT_OPTIONS} value={sort} label="sort" onChange={(key) => (sort = key)} align="end" />
   </div>
 
   {#if tags.length > 0}

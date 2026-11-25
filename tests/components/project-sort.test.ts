@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import ProjectSortControl from "@/components/patterns/ProjectSortControl.svelte";
 import { sortProjects } from "@/lib/project-sort";
@@ -51,8 +52,9 @@ describe("sortProjects", () => {
 });
 
 describe("ProjectSortControl", () => {
-  it("offers featured, newest, title and status", () => {
+  it("offers featured, newest, title and status", async () => {
     render(ProjectSortControl, { props: { value: "featured", onChange: () => {} } });
+    await userEvent.click(screen.getByRole("button", { name: /sort/ }));
     const options = screen.getAllByRole("option").map((o) => o.textContent?.trim());
     expect(options).toEqual(["featured", "newest", "title", "status"]);
   });
@@ -60,7 +62,8 @@ describe("ProjectSortControl", () => {
   it("reports the chosen sort key", async () => {
     const onChange = vi.fn();
     render(ProjectSortControl, { props: { value: "featured", onChange } });
-    await fireEvent.change(screen.getByRole("combobox"), { target: { value: "title" } });
+    await userEvent.click(screen.getByRole("button", { name: /sort/ }));
+    await userEvent.click(screen.getByRole("option", { name: "title" }));
     expect(onChange).toHaveBeenCalledWith("title");
   });
 });
