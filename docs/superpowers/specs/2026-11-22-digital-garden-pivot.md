@@ -37,7 +37,7 @@ projects and skills demoted.
 | --- | --- | --- | --- |
 | 1 | A: repositioning | `feat/garden-a` | `Site/` collection, home (identity, focus areas, tended feed), skills folded into focus areas, projects demoted and sortable, nav, `VAULT_ROOT` everywhere |
 | 2 | D: publishing pipeline | `feat/garden-d` (from `feat/garden-a`) | `publish: true` migration, local dry-run preview, Excalidraw (plugin SVG export + sync check), Mermaid via pele at build time, Typst via a per-post `math` property, video embeds, `essay`/`notebook`/`visual` layouts, hover previews for published wikilinks, `%% comment %%` stripping |
-| 3 | B: library (backlogs) | `feat/garden-b` | `/library` for games, books, films, recipes: image, tags, status, progress, the owner's writing; categories ordered and toggled in `Site/Library.md`, empty ones hidden publicly, all visible in local preview |
+| 3 | B: library (backlogs) | `feat/garden-b2` (from `main` after #17) | `/library` for games, books, films, recipes: image, tags, status, progress, the owner's writing; categories ordered and toggled in `Site/Library.md`, empty ones hidden publicly, all visible in local preview |
 | 4 | C: status widgets | `feat/garden-c` | Spotify (top tracks, artists, genres), Monkeytype, WakaTime as daily snapshots via a scheduled GitHub Action; `/now` page; live now-playing deferred |
 
 All four branch from `claude/ui-content-layout-analysis-d5062e` (shared primitives) until it merges.
@@ -60,3 +60,6 @@ All four branch from `claude/ui-content-layout-analysis-d5062e` (shared primitiv
 | 2026-11-22 | Layouts are block presets with per-type defaults, no per-note overrides |
 | 2026-11-22 | One wikilink index over all types; hover previews, backlinks, note embeds as cards |
 | 2026-11-22 | PortfolioVault push triggers the deploy via repository dispatch; no site commit per publish |
+| 2026-11-22 | Library: one status set (backlog, active, paused, done, dropped) with per-type labels |
+| 2026-11-22 | Library feeds the home feed only for items with writing; `currently` is an opt-in home block |
+| 2026-11-26 | Library drafts and hidden categories show under `astro dev` only (#31 model) |
