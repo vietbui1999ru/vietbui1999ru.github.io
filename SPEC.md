@@ -1,5 +1,5 @@
 ---
-status: draft
+status: approved
 branch: feat/ink-panel
 ---
 # SPEC: Playground control panel for the ink simulation (issue #22)
