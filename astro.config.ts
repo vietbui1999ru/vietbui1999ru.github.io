@@ -60,7 +60,10 @@ if (fs.existsSync(galleryDir)) {
 }
 
 // Library covers go into src/ (gitignored) so astro:assets can resize them.
-copyLibraryCovers(vaultRoot, path.resolve(__dirname, "src/assets/library"));
+// Drafts and unpublished items keep their covers out of production builds.
+copyLibraryCovers(vaultRoot, path.resolve(__dirname, "src/assets/library"), {
+  dev: process.argv.includes("dev"),
+});
 
 export default defineConfig({
   site,
