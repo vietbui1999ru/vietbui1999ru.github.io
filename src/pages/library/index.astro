@@ -1,0 +1,27 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/primitives/PageHeader.svelte";
+import LibraryTabs from "@/components/library/LibraryTabs.astro";
+import LibraryCollection from "@/components/library/LibraryCollection.svelte";
+import { PROSE } from "@/design-system/prose";
+import { loadLibrary } from "@/lib/library-pages";
+
+// Site/Library.md orders and toggles the categories; the first visible one opens here.
+const { shelves, intro, title } = await loadLibrary();
+const first = shelves[0];
+---
+
+<BaseLayout enableInkAmbient={true}>
+  <div class="page-container py-section" data-ink-obstacle="content">
+    <PageHeader title={title} back={{ href: "/", label: "home" }} />
+    {intro && <div class={`${PROSE} mb-8`} set:html={intro} />}
+    <LibraryTabs shelves={shelves} current={first?.type} />
+    {
+      first ? (
+        <LibraryCollection type={first.type} items={first.cards} client:load />
+      ) : (
+        <p class="font-mono text-step--1 text-journal-1">nothing here yet</p>
+      )
+    }
+  </div>
+</BaseLayout>

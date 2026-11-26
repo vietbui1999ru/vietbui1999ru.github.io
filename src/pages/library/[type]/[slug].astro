@@ -1,0 +1,90 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import PageHeader from "@/components/primitives/PageHeader.svelte";
+import Chip from "@/components/primitives/Chip.svelte";
+import LibraryProgress from "@/components/library/LibraryProgress.svelte";
+import GardenBacklinks from "@/components/garden/GardenBacklinks.svelte";
+import GardenBlocks from "@/components/garden/GardenBlocks.astro";
+import { PROSE } from "@/design-system/prose";
+import { layoutBlocks, layoutFor } from "@/config/layouts";
+import { buildBacklinks } from "@/lib/garden-backlinks";
+import { buildSiteWikilinkIndex } from "@/lib/build-wikilink-index";
+import { vaultPaths } from "@/lib/vault-paths";
+import { toSlug } from "@/lib/utils";
+import { statusLabel } from "@/lib/library-status";
+import { metaLine } from "@/lib/library-view";
+import { loadLibrary, thumbnailFor, type LibraryCollectionEntry } from "@/lib/library-pages";
+
+// Detail pages exist only for items a visitor can see (drafts too, in dev).
+export async function getStaticPaths() {
+  const { shelves } = await loadLibrary();
+  const visible = new Set(shelves.flatMap((shelf) => shelf.items.map((item) => item.id)));
+  const entries = await getCollection("library", (entry) => visible.has(entry.id));
+  return entries.map((entry) => {
+    const [type, slug] = entry.id.split("/");
+    return { params: { type, slug }, props: { entry } };
+  });
+}
+
+const { entry } = Astro.props as { entry: LibraryCollectionEntry };
+const { data } = entry;
+const { Content } = await render(entry);
+const url = `/library/${entry.id}`;
+const cover = await thumbnailFor(data.cover, 720);
+const meta = metaLine(data);
+
+// Backlinks from published posts and visible library items, resolved like the blog's.
+const posts = await getCollection("blog", (post) => post.data.publish);
+const items = await getCollection("library", (item) => item.data.publish && !item.data.draft);
+const backlinks =
+  buildBacklinks(
+    [
+      ...posts.map((post) => ({ url: `/blog/${toSlug(post.id)}`, title: post.data.title, body: post.body ?? "" })),
+      ...items.map((item) => ({ url: `/library/${item.id}`, title: item.data.title, body: item.body ?? "" })),
+    ],
+    buildSiteWikilinkIndex(vaultPaths(process.cwd()).root),
+  ).get(url) ?? [];
+
+// The visual preset may list blocks; backlinks always show when something links here.
+const presetBlocks = layoutBlocks(layoutFor({ type: data.type }));
+const presetHasBacklinks = presetBlocks.some((block) => block.block === "backlinks");
+---
+
+<BaseLayout enableInkAmbient={true}>
+  <article class="page-container py-section" data-ink-obstacle="content" data-library-detail={data.type}>
+    <PageHeader title={data.title} back={{ href: `/library/${data.type}`, label: data.type }}>
+      <Fragment slot="meta">
+        {meta && <span data-library-meta>{meta}</span>}
+      </Fragment>
+      <div class="flex flex-wrap gap-2">
+        <Chip tone="raised">{statusLabel(data.type, data.status)}</Chip>
+        {data.draft && <Chip tone="rose">draft</Chip>}
+        {data.tags.map((tag) => <Chip tone="muted">{tag}</Chip>)}
+      </div>
+    </PageHeader>
+
+    <div class="grid gap-10 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:items-start">
+      {
+        cover ? (
+          <img src={cover.src} width={cover.width} height={cover.height} alt="" class="w-full border-[1.5px] border-ink shadow-hard" data-library-cover />
+        ) : (
+          <div class="aspect-[3/4] w-full border-[1.5px] border-ink bg-journal-4" data-placeholder={data.type} />
+        )
+      }
+      <div class="min-w-0">
+        {data.status === "active" && data.progress !== undefined && (
+          <div class="mb-8">
+            <LibraryProgress value={data.progress} label={`${data.progress}% through`} />
+          </div>
+        )}
+        <div class={`${PROSE} max-w-none`} data-library-body>
+          <Content />
+        </div>
+      </div>
+    </div>
+
+    <GardenBlocks note={entry.id} blocks={presetBlocks} context={{ backlinks }} />
+    {!presetHasBacklinks && <GardenBacklinks backlinks={backlinks} />}
+  </article>
+</BaseLayout>

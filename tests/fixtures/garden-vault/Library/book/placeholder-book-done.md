@@ -8,4 +8,4 @@ finished: 2026-02-01
 rating: 9
 ---
 
-FIXTURE-LIBRARY-WRITING placeholder text.
+FIXTURE-LIBRARY-WRITING placeholder text. See [[PLACEHOLDER Book Active]].

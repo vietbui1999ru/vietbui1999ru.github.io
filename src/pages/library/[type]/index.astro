@@ -1,0 +1,23 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/primitives/PageHeader.svelte";
+import LibraryTabs from "@/components/library/LibraryTabs.astro";
+import LibraryCollection from "@/components/library/LibraryCollection.svelte";
+import { loadLibrary, type LibraryShelf } from "@/lib/library-pages";
+
+// One page per visible category; disabled and empty ones get no page in production.
+export async function getStaticPaths() {
+  const { shelves } = await loadLibrary();
+  return shelves.map((shelf) => ({ params: { type: shelf.type }, props: { shelf, shelves } }));
+}
+
+const { shelf, shelves } = Astro.props as { shelf: LibraryShelf; shelves: LibraryShelf[] };
+---
+
+<BaseLayout enableInkAmbient={true}>
+  <div class="page-container py-section" data-ink-obstacle="content">
+    <PageHeader title={shelf.label} back={{ href: "/library", label: "library" }} />
+    <LibraryTabs shelves={shelves} current={shelf.type} />
+    <LibraryCollection type={shelf.type} items={shelf.cards} client:load />
+  </div>
+</BaseLayout>
