@@ -20,6 +20,7 @@ export function findEmbeds(body: string): string[] {
 }
 
 const LIBRARY = new Set<string>(LIBRARY_TYPES);
+const COVER_RE = /\.(png|jpe?g|gif|webp|avif)$/i;
 
 /** File name of a library item's `cover` property: `a.jpg`, `[[a.jpg]]` or `dir/a.jpg`. */
 export function libraryCover(frontmatter: Record<string, unknown> = {}): string | null {
@@ -75,6 +76,8 @@ export async function collectAttachments(
   for (const note of notes) {
     const cover = libraryCover(note.frontmatter);
     if (!cover) continue;
+    // Only images: a cover must never pull a note or other private file into the target.
+    if (!COVER_RE.test(cover)) throw new Error(`library cover ${cover}: not an image file`);
     const file = byName.get(cover);
     if (!file) throw new Error(`library cover ${cover}: not found in the vault`);
     found.set(cover, { source: file, target: `Attachments/${cover}` });

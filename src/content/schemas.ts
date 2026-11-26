@@ -175,7 +175,11 @@ const libraryObject = z
     publish: z.boolean(),
     // #31 model: a draft shows only on a local dev build.
     draft: z.boolean().default(false),
-    cover: z.string().optional(),
+    // An image file name, optionally as a wikilink. Publishing copies only images.
+    cover: z
+      .string()
+      .regex(/\.(png|jpe?g|gif|webp|avif)(\]\])?$/i, "cover must be an image file")
+      .optional(),
     tags: z.array(z.string()).default([]),
     rating: z.number().int().min(1).max(10).optional(),
     progress: z.number().min(0).max(100).optional(),

@@ -50,6 +50,12 @@ describe("library covers", () => {
     );
   });
 
+  it.each(["secret.md", "[[notes.txt]]", "private.pdf"])("refuses a non-image cover %s", async (cover) => {
+    fs.writeFileSync(path.join(vault, path.basename(cover.replace(/[[\]]/g, ""))), "private");
+    await expect(collectAttachments(vault, [item("book", { cover })])).rejects.toThrow(/not an image/);
+    expect(() => validateNotes([item("book", { cover })])).toThrow(/image/);
+  });
+
   it("leaves the covers of other types alone", async () => {
     const post = { ...item("post", { cover: "cover.jpg" }) };
     expect(await collectAttachments(vault, [post])).toEqual([]);
