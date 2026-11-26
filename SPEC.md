@@ -1,5 +1,5 @@
 ---
-status: draft
+status: approved
 branch: feat/garden-b2
 ---
 # SPEC: Library of backlogs (spec B)
