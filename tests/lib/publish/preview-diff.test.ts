@@ -75,4 +75,10 @@ describe("pageUrlFor", () => {
     expect(pageUrlFor("Blogs/my-post.md")).toBe("/blog/my-post");
     expect(pageUrlFor("Thoughts/x.md")).toBeNull();
   });
+
+  it("maps a library item to its /library page", () => {
+    expect(pageUrlFor("Library/book/a-book.md")).toBe("/library/book/a-book");
+    expect(pageUrlFor("Library/recipe/soup.md")).toBe("/library/recipe/soup");
+    expect(pageUrlFor("Library/podcast/x.md")).toBeNull();
+  });
 });

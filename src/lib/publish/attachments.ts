@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { LIBRARY_TYPES } from "@/content/schemas";
 import { walkFiles, type VaultNote } from "./scan";
 
 // `![[target]]`, `![[target|alias]]`, `![[target#heading]]`
@@ -18,6 +19,15 @@ export function findEmbeds(body: string): string[] {
   return [...body.matchAll(EMBED_RE)].map((m) => m[1].trim());
 }
 
+const LIBRARY = new Set<string>(LIBRARY_TYPES);
+
+/** File name of a library item's `cover` property: `a.jpg`, `[[a.jpg]]` or `dir/a.jpg`. */
+export function libraryCover(frontmatter: Record<string, unknown> = {}): string | null {
+  if (!LIBRARY.has(String(frontmatter.type)) || typeof frontmatter.cover !== "string") return null;
+  const name = path.posix.basename(frontmatter.cover.replace(/^\[\[|\]\]$/g, "").trim());
+  return name === "" ? null : name;
+}
+
 /**
  * Attachments embedded by published notes only. A drawing embed uses its
  * `<name>.excalidraw.svg` export, which must exist and be no older than the drawing.
@@ -25,7 +35,7 @@ export function findEmbeds(body: string): string[] {
  */
 export async function collectAttachments(
   vaultRoot: string,
-  notes: Pick<VaultNote, "body">[],
+  notes: Array<Pick<VaultNote, "body"> & { frontmatter?: VaultNote["frontmatter"] }>,
 ): Promise<Attachment[]> {
   const files = await walkFiles(vaultRoot, () => true);
   const byName = new Map<string, string>();
@@ -60,6 +70,14 @@ export async function collectAttachments(
       });
     }
     // Any other embed is a note embed, handled by the site, not copied.
+  }
+  // Library covers live in frontmatter, not in the body.
+  for (const note of notes) {
+    const cover = libraryCover(note.frontmatter);
+    if (!cover) continue;
+    const file = byName.get(cover);
+    if (!file) throw new Error(`library cover ${cover}: not found in the vault`);
+    found.set(cover, { source: file, target: `Attachments/${cover}` });
   }
   return [...found.values()].sort((a, b) => a.target.localeCompare(b.target));
 }

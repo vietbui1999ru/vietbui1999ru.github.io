@@ -6,6 +6,10 @@ export const TYPE_FOLDERS: Record<string, string> = {
   site: "Site",
   gallery: "Gallery",
   project: "Portfolio/Projects",
+  game: "Library/game",
+  book: "Library/book",
+  film: "Library/film",
+  recipe: "Library/recipe",
 };
 
 export function slugify(title: string): string {

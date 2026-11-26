@@ -2,6 +2,7 @@ import { z } from "astro/zod";
 import {
   blogSchema,
   gallerySchema,
+  librarySchema,
   projectSchema,
   siteNoteSchema,
   thoughtSchema,
@@ -12,6 +13,10 @@ export const TYPE_SCHEMAS: Record<string, z.ZodType> = {
   post: blogSchema,
   thought: thoughtSchema,
   gallery: gallerySchema,
+  game: librarySchema,
+  book: librarySchema,
+  film: librarySchema,
+  recipe: librarySchema,
   project: projectSchema,
   site: siteNoteSchema,
 };
