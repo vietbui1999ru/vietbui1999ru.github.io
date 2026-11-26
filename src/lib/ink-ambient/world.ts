@@ -328,6 +328,17 @@ export function resetWorld(world: World, now: number): void {
   spawnInitialBatch(world, now);
 }
 
+/** Restart from the start counts with a new seed (panel "restart"). The same seed
+ * and config always give the same run, so a run can be repeated. */
+export function restartWorld(world: World, seed: number, now: number): void {
+  if (!world.field) return;
+  world.seed = seed;
+  world.rng = new SeededRng(seed);
+  world.nextObjectId = 0;
+  world.effects.length = 0;
+  resetWorld(world, now);
+}
+
 /** Rebuild objects from a saved snapshot; positions and velocities are viewport fractions. */
 export function restoreWorld(world: World, snapshot: InkSnapshot | null, now: number): void {
   const { field, rng, width, height } = world;

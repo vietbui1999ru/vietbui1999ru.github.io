@@ -10,8 +10,9 @@ import {
 import { acceptsPointer, dragThreshold, findGrabTarget } from "@/lib/ink-ambient/input";
 import { clamp, fixedStepAccumulator } from "@/lib/ink-ambient/physics";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
+import { CONFIG_EVENT, RESTART_EVENT, STATS_EVENT } from "@/lib/ink-ambient/panel-controls";
 import { InkRenderer } from "@/lib/ink-ambient/renderer";
-import { usesSnapshot } from "@/lib/ink-ambient/sim-config";
+import { usesSnapshot, type SimConfig } from "@/lib/ink-ambient/sim-config";
 import { randomSeed } from "@/lib/ink-ambient/rng";
 import { step } from "@/lib/ink-ambient/step";
 import {
@@ -20,7 +21,9 @@ import {
   applyDragPenalty,
   createWorld,
   resetWorld,
+  restartWorld,
   restoreWorld,
+  setConfig,
   setGeometry,
   spawnInitialBatch,
 } from "@/lib/ink-ambient/world";
@@ -91,6 +94,18 @@ onMount(() => {
   let pointerListenersInstalled = false;
   const sectionRatios: Array<[Element, number]> = [];
 
+  // Playground readout: smoothed step time per frame, sent about twice per second.
+  let averageStepMs = 0;
+  let lastStatsAt = 0;
+  function reportStats(stepMs: number, now: number): void {
+    averageStepMs = averageStepMs * 0.9 + stepMs * 0.1;
+    if (now - lastStatsAt < 500) return;
+    lastStatsAt = now;
+    window.dispatchEvent(
+      new CustomEvent(STATS_EVENT, { detail: { objects: objects.length, stepMs: averageStepMs } }),
+    );
+  }
+
   function save(savedAt?: number): void {
     if (!persist) return;
     saveSnapshot(world.seed, objects, { width: world.width, height: world.height }, savedAt);
@@ -134,6 +149,7 @@ onMount(() => {
     lastTime = now;
     pausedByModal = hasOpenModal();
     if (animationEnabled && !document.hidden && !pausedByModal) {
+      const stepStart = performance.now();
       accumulator = fixedStepAccumulator(
         elapsed,
         accumulator,
@@ -141,6 +157,7 @@ onMount(() => {
         MAX_CATCH_UP_STEPS,
         (dt) => updateSimulation(dt, now),
       );
+      if (!persist) reportStats(performance.now() - stepStart, now);
     } else {
       accumulator = 0;
     }
@@ -377,6 +394,13 @@ onMount(() => {
     resetWorld(world, performance.now());
     save();
   };
+  // Playground panel (#22): apply config changes, restart with a seed.
+  const onInkAmbientConfig = (event: Event) => {
+    setConfig(world, (event as CustomEvent<Partial<SimConfig>>).detail);
+  };
+  const onInkAmbientRestart = (event: Event) => {
+    restartWorld(world, (event as CustomEvent<{ seed: number }>).detail.seed, performance.now());
+  };
   const onInkAmbientChange = (event: Event) => {
     const { enabled: nextEnabled } = (
       event as CustomEvent<{ enabled: boolean }>
@@ -402,6 +426,10 @@ onMount(() => {
   window.addEventListener("ink-ambient-add-predator", onInkAmbientAddPredator);
   window.addEventListener("ink-ambient-add-prey", onInkAmbientAddPrey);
   window.addEventListener("ink-ambient-reset", onInkAmbientReset);
+  if (!persist) {
+    window.addEventListener(CONFIG_EVENT, onInkAmbientConfig);
+    window.addEventListener(RESTART_EVENT, onInkAmbientRestart);
+  }
   mutationObserver.takeRecords();
   start();
 
@@ -420,6 +448,8 @@ onMount(() => {
     window.removeEventListener("ink-ambient-add-predator", onInkAmbientAddPredator);
     window.removeEventListener("ink-ambient-add-prey", onInkAmbientAddPrey);
     window.removeEventListener("ink-ambient-reset", onInkAmbientReset);
+    window.removeEventListener(CONFIG_EVENT, onInkAmbientConfig);
+    window.removeEventListener(RESTART_EVENT, onInkAmbientRestart);
   };
 });
 </script>

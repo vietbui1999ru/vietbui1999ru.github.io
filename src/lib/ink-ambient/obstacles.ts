@@ -38,7 +38,7 @@ export function isInteractiveTarget(target: EventTarget | null): boolean {
   if (!(target instanceof Element)) return true;
   return Boolean(
     target.closest(
-      "a,button,input,textarea,select,summary,video,audio,canvas,[contenteditable=true],[role=button],[role=link],[role=dialog],dialog,nav",
+      "a,button,input,textarea,select,summary,video,audio,canvas,[contenteditable=true],[role=button],[role=link],[role=dialog],dialog,nav,[data-ink-panel]",
     ),
   );
 }

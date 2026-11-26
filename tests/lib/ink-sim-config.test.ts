@@ -19,6 +19,7 @@ import {
   addPrey,
   createWorld,
   makeObject,
+  restartWorld,
   setConfig,
   setGeometry,
   spawnInitialBatch,
@@ -250,5 +251,33 @@ describe("snapshot isolation", () => {
     expect(usesSnapshot("/playground")).toBe(false);
     expect(usesSnapshot("/playground/")).toBe(false);
     for (const path of ["/", "/blog", "/about", "/projects/x"]) expect(usesSnapshot(path)).toBe(true);
+  });
+});
+
+describe("seed", () => {
+  const fingerprint = (world: World) =>
+    world.objects.map((o) => `${o.id}:${o.role}:${o.position.x.toFixed(3)},${o.position.y.toFixed(3)}`).join("|");
+
+  it("the same seed and config give the same run after a restart", () => {
+    const a = makeWorld("/playground", { flockRadius: 140 }, 1);
+    const b = makeWorld("/playground", { flockRadius: 140 }, 99);
+    spawnInitialBatch(b, 0);
+    run(b, 300);
+    restartWorld(a, 4242, 0);
+    restartWorld(b, 4242, 0);
+    run(a, 600);
+    run(b, 600);
+    expect(a.objects.length).toBeGreaterThan(0);
+    expect(fingerprint(a)).toBe(fingerprint(b));
+  });
+
+  it("a different seed gives a different run", () => {
+    const a = makeWorld("/playground");
+    const b = makeWorld("/playground");
+    restartWorld(a, 1, 0);
+    restartWorld(b, 2, 0);
+    run(a, 300);
+    run(b, 300);
+    expect(fingerprint(a)).not.toBe(fingerprint(b));
   });
 });
