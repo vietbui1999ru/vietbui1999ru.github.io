@@ -5,7 +5,7 @@ branch: feat/ink-panel
 # SPEC: Playground control panel for the ink simulation (issue #22)
 
 ## Objective
-Add a themed, collapsible control panel on `/playground` that changes the predator-prey simulation live, so the owner and visitors can explore its rules. The panel sets the object cap (1 to unlimited), start counts, speed, predator survival, flock rules, lifespan scaling, object size and trail length, plus a seed and a reset to defaults. The playground runs its own simulation: it never reads or writes the background simulation's saved state, so no panel setting reaches other pages. Phones get pen, pencil and reset buttons on the playground. Context: issue #22. Builds on #20 (headless core), #27 (calm population) and #29 (touch).
+Add a themed, collapsible control panel on `/playground` that changes the predator-prey simulation live, so the owner and visitors can explore its rules. The panel sets the object cap (1 to unlimited), start counts, pen and pencil speed, predator survival, flock rules, lifespan scaling, object size and trail length, plus a seed and a reset to defaults. The playground runs its own simulation: it never reads or writes the background simulation's saved state, so no panel setting reaches other pages. Phones get pen, pencil and reset buttons on the playground. Context: issue #22. Builds on #20 (headless core), #27 (calm population) and #29 (touch).
 
 Today every rule reads its values from module constants in `src/lib/ink-ambient/config.ts`, used across 8 modules. A panel must not edit module state. So part 1 moves the tunable values into a config object on the world, with today's constants as defaults. Part 2 builds the panel on top.
 
@@ -24,7 +24,8 @@ Two stacked PRs from this spec, like #20 and #21:
   | `objectCap` | 24 (desktop) | 1 to unlimited (`Infinity`) | live |
   | `startPredators` | 4 on the playground | 0 to `objectCap` | on restart |
   | `startPrey` | 6 on the playground | 0 to `objectCap` | on restart |
-  | `speedScale` | 1 | 0.25 to 3 | live |
+  | `predatorSpeedScale` | 1 | 0.25 to 3 | live |
+  | `preySpeedScale` | 1 | 0.25 to 3 | live |
   | `predatorLives` | 3 | 1 to 10 | new objects |
   | `starveSeconds` | 80 | 10 to 600 | live |
   | `lifespanMaxMultiplier` | 4 | 1 to 10 | live |
@@ -45,7 +46,7 @@ Two stacked PRs from this spec, like #20 and #21:
 
 ### Part 1: uncapped objects
 - On the playground, `objectCap` replaces the device cap and the per-role cap. `objectCap = Infinity` means no cap.
-- Spawning still needs a safe point (inside the viewport, clear of obstacles). On the playground, when no point clear of other objects is found, a spawn may overlap other objects. Content pages keep today's separation rule.
+- Spawning keeps today's rules on every page: a spawn needs a safe point inside the viewport, clear of obstacles and of other objects. When no such point exists, or the cap is reached, the spawn stops and nothing is added. So "unlimited" means "as many as fit on the screen".
 - Cost grows with the square of the object count (collisions, catches, flocks). This spec does not add a spatial index; #23 covers performance.
 
 ### Part 2: the panel
@@ -66,9 +67,9 @@ Two stacked PRs from this spec, like #20 and #21:
   verify: `npx vitest run tests/lib/ink-world.test.ts tests/lib/ink-flicker.test.ts`
 - AC-2: `createWorld` merges a partial config over the defaults; `setConfig` applies live keys on the next step and "new objects" keys only to objects spawned after the change
   verify: `npx vitest run tests/lib/ink-sim-config.test.ts -t "merge and apply"`
-- AC-3: Each config key changes its rule: speed, starvation, lifespan multiplier, flock radius, flock minimum size, switch margin, object size, trail length and predator lives
+- AC-3: Each config key changes its rule: predator speed and prey speed separately, starvation, lifespan multiplier, flock radius, flock minimum size, switch margin, object size, trail length and predator lives
   verify: `npx vitest run tests/lib/ink-sim-config.test.ts -t "each key"`
-- AC-4: On the playground profile, `objectCap` replaces the device and per-role caps; `objectCap = 1` allows one object, and `Infinity` lets the buttons add 200 objects on a 1280 by 800 viewport
+- AC-4: On the playground profile, `objectCap` replaces the device and per-role caps. `objectCap = 1` allows one object. With `Infinity`, the buttons add objects past 24 until no clear spawn point remains; after that, a press adds nothing and no two objects spawn overlapping
   verify: `npx vitest run tests/lib/ink-sim-config.test.ts -t "object cap"`
 - AC-5: Content pages ignore `objectCap` and keep their ambient counts and separation rule
   verify: `npx vitest run tests/lib/ink-world.test.ts -t "calm ambient population"`
@@ -97,7 +98,7 @@ Two stacked PRs from this spec, like #20 and #21:
 - AC-16: In a browser, light and dark, at 375 px and 1280 px, and on a real phone:
   - the panel matches the site theme and collapses;
   - each control changes the simulation as labelled;
-  - "unlimited" with several hundred objects still runs, and the readout warns when slow;
+  - "unlimited" fills the screen and then stops adding, and the readout warns when slow;
   - pen, pencil and reset work on the phone;
   - after using the playground, content pages still show 2 pens and 3 pencils.
   verify: manual - visual and device check by the owner
@@ -117,8 +118,11 @@ Two stacked PRs from this spec, like #20 and #21:
 - Add a spatial index or WASM in this spec (#23)
 - Edit a `verify:` line to make a check pass
 
+## Decisions (owner, 2026-11-26)
+- At a full screen or a reached cap, spawns stop. Objects never spawn overlapping.
+- Pen, pencil and reset buttons for phones live in the playground panel only.
+- The panel exposes the 14 values in the table. Lotka-Volterra rates and flock steering weights come in a later change.
+- Pen speed and pencil speed are separate controls. A pen slower than a pencil is allowed on the playground; it then rarely catches anything.
+
 ## Open Questions
-- Overlap at high caps. Default: on the playground, a spawn may overlap other objects when no clear point is found, so the cap is reachable. Alternative: spawns stop when the screen is full.
-- Mobile buttons. Default: pen, pencil and reset live in the playground panel only. Alternative: add them to the mobile nav on every page, which is crowded with six links and the ink toggle.
-- Which values to expose. Default: the 13 in the table. Lotka-Volterra rates and boids weights can follow.
-- Speed scale. Default: one `speedScale` multiplies prey and predator speeds together, so predators stay faster than prey.
+- None open. The owner answered the four draft questions above on 2026-11-26.
