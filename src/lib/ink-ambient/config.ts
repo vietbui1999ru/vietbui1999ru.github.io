@@ -273,3 +273,11 @@ export const SPAWN_RIPPLE_END_RADIUS_FRACTION = 3.5;
 export const SPAWN_RIPPLE_LIFETIME_SECONDS = 2.2;
 export const SPAWN_RIPPLE_LINE_WIDTH = 2;
 export const SPAWN_RIPPLE_ALPHA = 0.9;
+
+// Grab input (issue #26). Hit slop is the extra radius around an object that
+// still counts as a hit; a fingertip covers about 40 to 48 px. The drag
+// threshold is how far a press moves before it becomes a drag.
+export const MOUSE_HIT_SLOP = 12;
+export const TOUCH_HIT_SLOP = 24;
+export const MOUSE_DRAG_THRESHOLD = 5;
+export const TOUCH_DRAG_THRESHOLD = 8;
