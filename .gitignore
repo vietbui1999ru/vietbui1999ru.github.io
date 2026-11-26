@@ -1,3 +1,6 @@
+# pnpm is the only package manager (see mise.toml). Block a stray npm lockfile.
+package-lock.json
+
 # build output
 dist/
 # generated types
@@ -50,9 +53,3 @@ docs/style-guides/
 
 # Local verify build output (SPEC verify lines)
 .cache/
-
-# pi-lens probe scratch directory (local tooling output)
-.pi-lens-probe-home/
-
-# pnpm is the only package manager (see mise.toml). Block a stray npm lockfile.
-package-lock.json
