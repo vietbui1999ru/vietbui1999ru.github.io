@@ -38,6 +38,8 @@ export type InkObject = {
   chaseElapsed: number;
   lives: number;
   hungerElapsed: number;
+  /** Predator only: seconds left of the rest after a catch; it neither hunts nor catches. */
+  restRemaining: number;
   vanishElapsed: number | null;
   role: "predator" | "prey" | null;
   chaseSpeed: number;
@@ -107,8 +109,10 @@ export type InkEffect = {
   alpha: number;
   age: number;
   lifetime: number;
-  type: "splat" | "burst";
+  type: "splat" | "burst" | "ripple";
   rotation: number;
+  /** Stroke color of a "ripple" ring: the spawned object's tint. */
+  color?: string;
 };
 
 export type InkSnapshot = {

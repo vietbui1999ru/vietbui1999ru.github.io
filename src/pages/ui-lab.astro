@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import UiLab from "@/components/ui-lab/UiLab.svelte";
 import ProjectSortFixture from "@/components/ui-lab/ProjectSortFixture.svelte";
+import TimelineRailFixture from "@/components/ui-lab/TimelineRailFixture.svelte";
 import GardenBlocks from "@/components/garden/GardenBlocks.astro";
 import { GARDEN_BLOCK_FIXTURES } from "@/fixtures/gardenBlocks";
 
@@ -21,6 +22,7 @@ if (!import.meta.env.DEV) {
       <a href="#" data-kind="project" data-title="UI_LAB_PLACEHOLDER project">project link</a>.
     </p>
   </section>
+  <TimelineRailFixture client:load />
   {
     Object.entries(GARDEN_BLOCK_FIXTURES).map(([id, fixture]) => (
       <GardenBlocks

@@ -1,109 +1,36 @@
 <script lang="ts">
 import { onMount } from "svelte";
-import {
-  ATTRACTION_MAX_ACCELERATION_HEAVY,
-  ATTRACTION_MAX_ACCELERATION_LIGHT,
-  ATTRACTION_VALUE_MAX,
-  ATTRACTION_VALUE_MIN,
-  BURST_ALPHA,
-  BURST_LIFETIME_MAX,
-  BURST_LIFETIME_MIN,
-  BURST_RADIUS_MULTIPLIER,
-  FIXED_STEP,
-  MAX_CATCH_UP_STEPS,
-  MAX_DPR,
-  LV_CATCH_PREDATOR_BOOST,
-  LV_CATCH_PREY_DECAY,
-  LV_PREDATOR_DEATH_DECAY,
-  MAX_OBJECTS_DESKTOP,
-  MAX_OBJECTS_MOBILE,
-  POPULATION_TOPUP_MAX_DELAY_MS,
-  POPULATION_TOPUP_MIN_DELAY_MS,
-  PREDATOR_DRAG_HUNGER_PENALTY_SECONDS,
-  PREDATOR_LIVES_START,
-  PREDATOR_MAX_RAMPED_SPEED,
-  PREDATOR_RADIUS_MAX,
-  PREDATOR_SCARCITY_HUNGER_PENALTY_SECONDS,
-  PREY_RADIUS_MAX,
-  SAFE_CLEARANCE,
-  SPAWN_COUNT_MAX,
-  SPAWN_COUNT_MIN,
-  TRAIL_MIN_SPEED,
-  TRAIL_SAMPLE_INTERVAL_SECONDS,
-  TRAPPED_ESCAPE_ACCELERATION,
-  TRAPPED_ESCAPE_SECONDS,
-  VANISH_DURATION_SECONDS,
-  getRouteProfile,
-} from "@/lib/ink-ambient/config";
-import { rollRadius, rollChaseSpeed } from "@/lib/ink-ambient/spawn";
-import {
-  updateTarget,
-  nearbyPredatorWobbleMultiplier,
-  pairApproachRamp,
-  predatorAcceleration,
-  preyAcceleration,
-  idleAcceleration,
-  chaseAccelerationMultiplier,
-} from "@/lib/ink-ambient/targeting";
-import { resolveCatches, predatorsTargeting } from "@/lib/ink-ambient/catches";
-import {
-  computeFlockAssignments,
-  flockHuntAcceleration,
-  isFlockKillTriggered,
-  predatorFleeAcceleration,
-} from "@/lib/ink-ambient/flocking";
-import { stepLotkaVolterra, mapToTargets, type PopulationState } from "@/lib/ink-ambient/population";
-import {
-  updateSpawnFade,
-  updateVanish,
-  applyPredatorSurvivalTick,
-  predatorSpawnRampMultiplier,
-} from "@/lib/ink-ambient/lifecycle";
+import { FIXED_STEP, MAX_CATCH_UP_STEPS, MAX_DPR, getRouteProfile } from "@/lib/ink-ambient/config";
 import {
   collectObstacles,
   hasOpenModal,
   hasTextSelection,
   isInteractiveTarget,
 } from "@/lib/ink-ambient/obstacles";
-import {
-  applyDrag,
-  applyHeadingRotation,
-  boundarySteeringForce,
-  clamp,
-  clampToViewport,
-  fixedStepAccumulator,
-  integrate,
-  length,
-  limit,
-  normalize,
-  obstacleRepulsion,
-  resolveCircleCollision,
-  scale as scaleVector,
-  subtract,
-  tipPosition,
-  trailMaxAge,
-  trailMaxPoints,
-  updateTurnSquash,
-} from "@/lib/ink-ambient/physics";
+import { acceptsPointer, dragThreshold, findGrabTarget } from "@/lib/ink-ambient/input";
+import { clamp, fixedStepAccumulator } from "@/lib/ink-ambient/physics";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
+import { CONFIG_EVENT, RESTART_EVENT, STATS_EVENT } from "@/lib/ink-ambient/panel-controls";
 import { InkRenderer } from "@/lib/ink-ambient/renderer";
+import { usesSnapshot, type SimConfig } from "@/lib/ink-ambient/sim-config";
+import { randomSeed } from "@/lib/ink-ambient/rng";
+import { step } from "@/lib/ink-ambient/step";
 import {
-  buildSpatialField,
-  findSafePoint,
-  findSafePointNearCorner,
-  availableCapacity,
-  isSafePoint,
-} from "@/lib/ink-ambient/spatial-field";
-import { SeededRng, randomSeed } from "@/lib/ink-ambient/rng";
-import type {
-  InkEffect,
-  InkObject,
-  PointerState,
-  Rect,
-  SpatialField,
-  Vec2,
-} from "@/lib/ink-ambient/types";
+  addPredator,
+  addPrey,
+  applyDragPenalty,
+  createWorld,
+  resetWorld,
+  restartWorld,
+  restoreWorld,
+  setConfig,
+  setGeometry,
+  spawnInitialBatch,
+} from "@/lib/ink-ambient/world";
+import type { PointerState } from "@/lib/ink-ambient/types";
 
+// DOM adapter over the framework-free core in lib/ink-ambient/world.ts and step.ts:
+// canvas, renderer, pointer drag, page geometry, snapshot storage and the frame loop.
 let { pathname = "/", enabled = true } = $props<{
   pathname?: string;
   enabled?: boolean;
@@ -131,56 +58,6 @@ const EMPTY_POINTER: PointerState = {
   grabbedId: null,
 };
 
-function massFraction(mass: number): number {
-  return clamp((mass - 0.7) / (1.5 - 0.7), 0, 1);
-}
-
-function makeObject(
-  id: number,
-  position: Vec2,
-  rng: SeededRng,
-  now: number,
-  role: "predator" | "prey",
-): InkObject {
-  const attractionValue = rng.range(ATTRACTION_VALUE_MIN, ATTRACTION_VALUE_MAX);
-  return {
-    id,
-    position: { ...position },
-    velocity: { x: rng.range(-18, 18), y: rng.range(-12, 12) },
-    radius: rollRadius(role, rng),
-    mass: rng.range(0.7, 1.5),
-    rotation: rng.range(-Math.PI, Math.PI),
-    angularVelocity: rng.range(-0.25, 0.25),
-    opacity: 0.01,
-    scale: { x: rng.range(0.86, 1.14), y: rng.range(0.86, 1.14) },
-    variant: rng.int(0, 1),
-    lifecycle: "spawning",
-    rngState: rng.state,
-    spawnAt: now,
-    effectCooldown: 0,
-    squashCooldown: 0,
-    grabbed: false,
-    lastAcceleration: { x: 0, y: 0 },
-    smoothedAngularVelocity: 0,
-    unsafeElapsed: 0,
-    wobbleFrequency: rng.range(0.8, 1.6),
-    wobblePhase: rng.range(0, Math.PI * 2),
-    trail: [],
-    trailSampleTimer: 0,
-    currentTargetId: null,
-    chaseElapsed: 0,
-    role,
-    chaseSpeed: rollChaseSpeed(role, attractionValue, rng),
-    attractionValue,
-    motionBlend: null,
-    lives: PREDATOR_LIVES_START,
-    hungerElapsed: 0,
-    vanishElapsed: null,
-    huntingFlock: false,
-    beingHunted: false,
-  };
-}
-
 function createPointer(fine: boolean): PointerState {
   return { ...EMPTY_POINTER, fine };
 }
@@ -192,19 +69,14 @@ onMount(() => {
   if (!context) return;
 
   const renderer = new InkRenderer(canvas);
-  const snapshot = loadSnapshot();
-  const seed = snapshot?.seed ?? randomSeed();
-  const rng = new SeededRng(seed);
-  const objects: InkObject[] = [];
-  let nextObjectId = 0;
-  const effects: InkEffect[] = [];
+  // The playground runs a fresh world each visit and never touches the shared
+  // snapshot, so its settings and objects cannot reach other pages (#22).
+  const persist = usesSnapshot(pathname);
+  const snapshot = persist ? loadSnapshot() : null;
   const pointer = createPointer(matchMedia("(pointer: fine)").matches);
-  let obstacles: Rect[] = [];
-  let field: SpatialField | null = null;
-  let profile = getRouteProfile(pathname);
+  const world = createWorld({ pointerFine: pointer.fine }, snapshot?.seed ?? randomSeed());
+  const { objects, effects } = world;
   let activeSection = "";
-  let width = 0;
-  let height = 0;
   let dpr = 1;
   let accumulator = 0;
   let lastTime = performance.now();
@@ -216,25 +88,35 @@ onMount(() => {
   let animationEnabled = !document.documentElement.classList.contains(
     "ink-ambient-disabled",
   );
-  let activeAnchor: Vec2 | null = null;
-  let nextPreySpawnAt = 0;
-  let nextPredatorSpawnAt = 0;
-  let population: PopulationState = { prey: 1.5, predator: 0.7 };
-  let preyButtonEverPressed = false;
-  let flockTargetByMemberId = new Map<number, InkObject>();
-  let flockByMemberId = new Map<number, InkObject[]>();
-  let flockByTargetPredatorId = new Map<number, InkObject[]>();
   let lastSectionChange = 0;
   let pointerSampleTime = 0;
+  let grabPointerType = "mouse";
   let pointerListenersInstalled = false;
   const sectionRatios: Array<[Element, number]> = [];
 
+  // Playground readout: smoothed step time per frame, sent about twice per second.
+  let averageStepMs = 0;
+  let lastStatsAt = 0;
+  function reportStats(stepMs: number, now: number): void {
+    averageStepMs = averageStepMs * 0.9 + stepMs * 0.1;
+    if (now - lastStatsAt < 500) return;
+    lastStatsAt = now;
+    window.dispatchEvent(
+      new CustomEvent(STATS_EVENT, { detail: { objects: objects.length, stepMs: averageStepMs } }),
+    );
+  }
+
+  function save(savedAt?: number): void {
+    if (!persist) return;
+    saveSnapshot(world.seed, objects, { width: world.width, height: world.height }, savedAt);
+  }
+
   function resize(): void {
     const rect = canvas.getBoundingClientRect();
-    width = Math.max(1, rect.width || window.innerWidth);
-    height = Math.max(1, rect.height || window.innerHeight);
+    world.width = Math.max(1, rect.width || window.innerWidth);
+    world.height = Math.max(1, rect.height || window.innerHeight);
     dpr = Math.min(MAX_DPR, window.devicePixelRatio || 1);
-    renderer.resize(width, height, dpr);
+    renderer.resize(world.width, world.height, dpr);
     geometryDirty = true;
   }
 
@@ -243,458 +125,22 @@ onMount(() => {
   }
 
   function refreshGeometry(): void {
-    obstacles = collectObstacles();
+    const obstacles = collectObstacles();
     pausedByModal = hasOpenModal();
-    profile = getRouteProfile(pathname, activeSection);
-    const representativeRadius = objects.length
-      ? Math.max(...objects.map((object) => object.radius))
-      : 18;
-    field = buildSpatialField(
-      width,
-      height,
+    setGeometry(world, {
+      width: world.width,
+      height: world.height,
       obstacles,
-      profile,
-      representativeRadius,
-    );
-    activeAnchor = findSafePoint(
-      field,
-      representativeRadius,
-      rng,
-      objects.map((object) => object.position),
-    );
-    geometryDirty = false;
-  }
-
-  function targetPopulation(): number {
-    if (!field) return pointer.fine ? MAX_OBJECTS_DESKTOP : MAX_OBJECTS_MOBILE;
-    const mobile = !pointer.fine || width < 720;
-    const maximum = mobile ? MAX_OBJECTS_MOBILE : MAX_OBJECTS_DESKTOP;
-    const capacity = availableCapacity(field, 24);
-    return Math.min(maximum, Math.max(0, capacity));
-  }
-
-  function spawnInitialBatch(now: number): void {
-    if (!field) return;
-    // Prey and predator counts at spawn/refresh are each independently
-    // randomized rather than a single coin-flipped combined target, so a
-    // fresh page load can start prey-heavy, predator-heavy, or balanced.
-    const preyTarget = rng.int(SPAWN_COUNT_MIN, SPAWN_COUNT_MAX);
-    const predatorTarget = rng.int(SPAWN_COUNT_MIN, SPAWN_COUNT_MAX);
-    const cap = targetPopulation();
-    let preySpawned = 0;
-    let predatorSpawned = 0;
-    while (
-      objects.length < cap &&
-      (preySpawned < preyTarget || predatorSpawned < predatorTarget)
-    ) {
-      let role: "predator" | "prey";
-      if (preySpawned < preyTarget && predatorSpawned < predatorTarget) {
-        role = rng.chance(0.5) ? "predator" : "prey";
-      } else if (preySpawned < preyTarget) {
-        role = "prey";
-      } else {
-        role = "predator";
-      }
-      if (!spawnOne(role, now)) break;
-      if (role === "prey") preySpawned += 1;
-      else predatorSpawned += 1;
-    }
-  }
-
-  function countAlive(role: "predator" | "prey"): number {
-    return objects.filter((object) => object.role === role && object.vanishElapsed === null).length;
-  }
-
-  function spawnOne(role: "predator" | "prey", now: number): boolean {
-    if (!field) return false;
-    const radius = role === "predator" ? PREDATOR_RADIUS_MAX : PREY_RADIUS_MAX;
-    const avoid = objects.map((object) => object.position);
-    const position =
-      findSafePointNearCorner(field, radius, rng, objects.length, avoid) ??
-      findSafePoint(field, radius, rng, avoid);
-    if (!position) return false;
-    objects.push(makeObject(nextObjectId++, position, rng, now, role));
-    return true;
-  }
-
-  function deviceCapMax(): number {
-    return pointer.fine && width >= 720 ? MAX_OBJECTS_DESKTOP : MAX_OBJECTS_MOBILE;
-  }
-
-  function perRoleCap(): number {
-    return Math.max(1, Math.floor(deviceCapMax() / 2));
-  }
-
-  function topUpPopulation(now: number): void {
-    if (!field) return;
-    const targets = mapToTargets(population);
-    const preyTarget = Math.min(targets.preyTarget, perRoleCap());
-    const predatorTarget = Math.min(targets.predatorTarget, perRoleCap());
-
-    if (countAlive("prey") < preyTarget && now >= nextPreySpawnAt) {
-      if (spawnOne("prey", now)) {
-        nextPreySpawnAt = now + rng.range(POPULATION_TOPUP_MIN_DELAY_MS, POPULATION_TOPUP_MAX_DELAY_MS);
-      }
-    }
-    if (countAlive("predator") < predatorTarget && now >= nextPredatorSpawnAt) {
-      if (spawnOne("predator", now)) {
-        nextPredatorSpawnAt = now + rng.range(POPULATION_TOPUP_MIN_DELAY_MS, POPULATION_TOPUP_MAX_DELAY_MS);
-      }
-    }
-  }
-
-  /** The two manual nav buttons (pen/pencil icons): each adds exactly one
-   * critter of its specific role, independent of the Lotka-Volterra targets
-   * — a simple "one more" action that can push a role's count past its
-   * normal LV-derived target. Bounded by both the device's overall object
-   * ceiling AND a per-role cap (same halved-ceiling formula topUpPopulation
-   * uses), so spamming one button can't flood the screen with a single role
-   * even before the shared ceiling is reached. */
-  function forceAddPredator(now: number): void {
-    if (!field || objects.length >= deviceCapMax() || countAlive("predator") >= perRoleCap()) return;
-    spawnOne("predator", now);
-  }
-
-  function forceAddPrey(now: number): void {
-    if (!field || objects.length >= deviceCapMax() || countAlive("prey") >= perRoleCap()) return;
-    spawnOne("prey", now);
-  }
-
-  /** Full reset to page-load state: clears every object and re-derives a
-   * fresh random population, and rewinds every piece of session state a
-   * page load would have started fresh (LV targets, top-up timers, the
-   * flocking unlock flag and its assignment maps) rather than just the
-   * object list. */
-  function resetSimulation(now: number): void {
-    if (!field) return;
-    objects.length = 0;
-    population = { prey: 1.5, predator: 0.7 };
-    preyButtonEverPressed = false;
-    flockTargetByMemberId = new Map();
-    flockByMemberId = new Map();
-    flockByTargetPredatorId = new Map();
-    nextPreySpawnAt = 0;
-    nextPredatorSpawnAt = 0;
-    spawnInitialBatch(now);
-    saveSnapshot(seed, objects, { width, height });
-  }
-
-  function restoreObjects(): void {
-    if (!snapshot || !field) return;
-    for (const saved of snapshot.objects.slice(
-      0,
-      pointer.fine ? MAX_OBJECTS_DESKTOP : MAX_OBJECTS_MOBILE,
-    )) {
-      const savedPosition = {
-        x: saved.position.x * width,
-        y: saved.position.y * height,
-      };
-      const position = isSafePoint(field, savedPosition, 24)
-        ? savedPosition
-        : findSafePoint(
-            field,
-            24,
-            rng,
-            objects.map((object) => object.position),
-          );
-      if (!position) continue;
-      const role: "predator" | "prey" = rng.chance(0.5) ? "predator" : "prey";
-      const object = makeObject(saved.id, position, rng, performance.now(), role);
-      nextObjectId = Math.max(nextObjectId, saved.id + 1);
-      object.velocity = {
-        x: saved.velocity.x * width,
-        y: saved.velocity.y * height,
-      };
-      object.attractionValue = saved.attractionValue;
-      // Re-roll chaseSpeed from the restored attractionValue — makeObject already
-      // rolled one from a freshly-generated attractionValue before we overwrote it.
-      object.chaseSpeed = rollChaseSpeed(role, object.attractionValue, rng);
-      object.rngState = saved.rngState;
-      objects.push(object);
-    }
-  }
-
-  function updateEffects(dt: number): void {
-    for (let index = effects.length - 1; index >= 0; index -= 1) {
-      const effect = effects[index];
-      effect.age += dt;
-      effect.alpha = 1 - effect.age / effect.lifetime;
-      if (effect.age >= effect.lifetime) effects.splice(index, 1);
-    }
-  }
-
-  function addBurstEffect(x: number, y: number, radius: number): void {
-    if (effects.length >= 4) return;
-    effects.push({
-      x,
-      y,
-      radius: radius * BURST_RADIUS_MULTIPLIER,
-      alpha: BURST_ALPHA,
-      age: 0,
-      lifetime: rng.range(BURST_LIFETIME_MIN, BURST_LIFETIME_MAX),
-      type: "burst",
-      rotation: rng.range(-Math.PI, Math.PI),
+      profile: getRouteProfile(pathname, activeSection),
     });
-  }
-
-  function updateTrail(object: InkObject, dt: number): void {
-    // Age and prune every frame regardless of motion, so a trail fades out on
-    // its own instead of freezing in place when the object slows down.
-    // Pen (predator) and pencil (prey) keep independent trail lengths.
-    const maxAge = trailMaxAge(object);
-    const maxPoints = trailMaxPoints(object);
-    for (let index = object.trail.length - 1; index >= 0; index -= 1) {
-      object.trail[index].age += dt;
-      if (object.trail[index].age >= maxAge) object.trail.splice(index, 1);
-    }
-    object.trailSampleTimer += dt;
-    if (
-      object.opacity > 0.4 &&
-      length(object.velocity) > TRAIL_MIN_SPEED &&
-      object.trailSampleTimer >= TRAIL_SAMPLE_INTERVAL_SECONDS
-    ) {
-      object.trailSampleTimer = 0;
-      const tip = tipPosition(object);
-      object.trail.push({ x: tip.x, y: tip.y, age: 0 });
-      if (object.trail.length > maxPoints) object.trail.shift();
-    }
-  }
-
-  function updateObject(object: InkObject, dt: number, now: number): void {
-    object.effectCooldown = Math.max(0, object.effectCooldown - dt);
-    object.squashCooldown = Math.max(0, object.squashCooldown - dt);
-    updateSpawnFade(object, now, dt);
-    applyPredatorSurvivalTick(object, dt);
-
-    if (object.vanishElapsed !== null) {
-      updateVanish(object, dt);
-      return;
-    }
-
-    if (object.grabbed) {
-      // Still track the trail while dragged: object.position is synced to the
-      // pointer in pointerMove, so this samples the real cursor trajectory
-      // instead of freezing until release.
-      updateTrail(object, dt);
-      return;
-    }
-
-    const settling = object.lifecycle === "spawning";
-    const massT = massFraction(object.mass);
-    const maxAccel =
-      ATTRACTION_MAX_ACCELERATION_LIGHT +
-      (ATTRACTION_MAX_ACCELERATION_HEAVY - ATTRACTION_MAX_ACCELERATION_LIGHT) * massT;
-
-    const previousTargetId = object.currentTargetId;
-    const target = updateTarget(object, objects);
-    object.chaseElapsed = object.currentTargetId === previousTargetId ? object.chaseElapsed + dt : 0;
-
-    const isUnsafe = Boolean(field) && !isSafePoint(field!, object.position, object.radius);
-    object.unsafeElapsed = isUnsafe ? object.unsafeElapsed + dt : 0;
-
-    let acceleration =
-      object.huntingFlock && !settling && flockTargetByMemberId.has(object.id)
-        ? flockHuntAcceleration(
-            object,
-            flockTargetByMemberId.get(object.id)!,
-            flockByMemberId.get(object.id)!,
-            maxAccel,
-          )
-        : object.beingHunted && !settling && flockByTargetPredatorId.has(object.id)
-          ? predatorFleeAcceleration(object, flockByTargetPredatorId.get(object.id)!, maxAccel, now)
-          : target && !settling
-            ? object.role === "predator"
-              ? predatorAcceleration(object, target, maxAccel, now)
-              : preyAcceleration(object, target, maxAccel, now, nearbyPredatorWobbleMultiplier(object, objects))
-            : idleAcceleration(object, activeAnchor, isUnsafe, now);
-
-    if (object.motionBlend) {
-      object.motionBlend.elapsed += dt;
-      const t = clamp(object.motionBlend.elapsed / object.motionBlend.duration, 0, 1);
-      acceleration = {
-        x: object.motionBlend.from.x + (acceleration.x - object.motionBlend.from.x) * t,
-        y: object.motionBlend.from.y + (acceleration.y - object.motionBlend.from.y) * t,
-      };
-      if (t >= 1) object.motionBlend = null;
-    }
-
-    const boundary = boundarySteeringForce(object, width, height);
-    acceleration.x += boundary.x;
-    acceleration.y += boundary.y;
-    const repulsion = obstacleRepulsion(object, obstacles, SAFE_CLEARANCE);
-    acceleration.x += repulsion.x;
-    acceleration.y += repulsion.y;
-
-    if (activeAnchor && object.unsafeElapsed > TRAPPED_ESCAPE_SECONDS) {
-      acceleration = scaleVector(
-        normalize(subtract(activeAnchor, object.position)),
-        TRAPPED_ESCAPE_ACCELERATION,
-      );
-    }
-
-    object.lastAcceleration = { x: acceleration.x, y: acceleration.y };
-    applyDrag(object, 0.06, dt);
-    integrate(object, acceleration, dt);
-    const rotationDelta = applyHeadingRotation(object, dt);
-    const spawnRamp = object.role === "predator" ? predatorSpawnRampMultiplier(object, now) : 1;
-    const maxSpeed = (object.huntingFlock || object.beingHunted) && !settling
-      ? object.chaseSpeed
-      : target && !settling
-        ? object.role === "predator"
-          ? Math.min(
-              object.chaseSpeed *
-                pairApproachRamp(object, target) *
-                spawnRamp *
-                chaseAccelerationMultiplier(object.chaseElapsed),
-              PREDATOR_MAX_RAMPED_SPEED,
-            )
-          : object.chaseSpeed
-        : 155 - (155 - 115) * massT;
-    object.velocity = limit(object.velocity, maxSpeed);
-    object.scale.x += (1 - object.scale.x) * Math.min(1, dt * 5);
-    object.scale.y += (1 - object.scale.y) * Math.min(1, dt * 5);
-    if (object.squashCooldown <= 0) {
-      const turnFactor = updateTurnSquash(object, rotationDelta, dt);
-      object.scale.x += (1 - turnFactor - object.scale.x) * Math.min(1, dt * 8);
-      object.scale.y += (1 + turnFactor - object.scale.y) * Math.min(1, dt * 8);
-    }
-    clampToViewport(object, width, height);
-    updateTrail(object, dt);
+    geometryDirty = false;
   }
 
   function updateSimulation(dt: number, now: number): void {
     if (geometryDirty) refreshGeometry();
     pausedByModal = hasOpenModal();
     if (pausedByModal) return;
-
-    const wasVanishing = new Set(
-      objects.filter((object) => object.vanishElapsed !== null).map((object) => object.id),
-    );
-
-    if (preyButtonEverPressed && countAlive("prey") > countAlive("predator")) {
-      const assignment = computeFlockAssignments(objects);
-      for (const object of objects) {
-        object.huntingFlock = assignment.huntingFlockIds.has(object.id);
-        object.beingHunted = assignment.beingHuntedIds.has(object.id);
-      }
-      flockTargetByMemberId = assignment.targetByMemberId;
-      flockByMemberId = assignment.flockByMemberId;
-      flockByTargetPredatorId = assignment.flockByTargetPredatorId;
-    } else {
-      for (const object of objects) {
-        object.huntingFlock = false;
-        object.beingHunted = false;
-      }
-      flockTargetByMemberId = new Map();
-      flockByMemberId = new Map();
-      flockByTargetPredatorId = new Map();
-    }
-
-    for (const object of objects) updateObject(object, dt, now);
-
-    const catchResult = resolveCatches(objects);
-    for (const id of catchResult.winnerIds) {
-      const winner = objects.find((object) => object.id === id);
-      if (winner) {
-        winner.hungerElapsed = 0;
-        // A successful catch is a full reprieve — lives lost to earlier
-        // rival losses are forgiven too, not just the starvation clock.
-        winner.lives = PREDATOR_LIVES_START;
-      }
-    }
-    for (const id of catchResult.loserIds) {
-      const loser = objects.find((object) => object.id === id);
-      if (loser && loser.vanishElapsed === null) {
-        loser.lives -= 1;
-        if (loser.lives <= 0) loser.vanishElapsed = 0;
-      }
-    }
-
-    // Being hunted only changes a predator's BEHAVIOR (it flees like prey,
-    // see predatorFleeAcceleration) — its role never flips. A flock that
-    // closes the kill distance destroys it outright rather than converting
-    // it into a new prey object, so it stays role="predator" all the way
-    // through vanishElapsed and the LV predator-death-decay accounting
-    // below picks it up exactly like any other predator death.
-    for (const predator of objects) {
-      if (!predator.beingHunted || predator.vanishElapsed !== null) continue;
-      const hunters = flockByTargetPredatorId.get(predator.id);
-      if (!hunters || !isFlockKillTriggered(predator, hunters)) continue;
-      predator.beingHunted = false;
-      predator.vanishElapsed = 0;
-      addBurstEffect(predator.position.x, predator.position.y, predator.radius);
-    }
-
-    // Tie the abstract Lotka-Volterra state to real events, matching the
-    // classical model's actual mechanism: eating drives predator births,
-    // dying drives predator population down, beyond the passive gamma*y/
-    // delta*x*y continuous flow (see stepLotkaVolterra).
-    if (catchResult.winnerIds.size > 0) {
-      population.predator += LV_CATCH_PREDATOR_BOOST * catchResult.winnerIds.size;
-    }
-    if (catchResult.destroyedPreyIds.size > 0) {
-      population.prey = Math.max(
-        0.05,
-        population.prey - LV_CATCH_PREY_DECAY * catchResult.destroyedPreyIds.size,
-      );
-    }
-    for (const object of objects) {
-      if (object.role === "predator" && object.vanishElapsed !== null && !wasVanishing.has(object.id)) {
-        population.predator = Math.max(0.05, population.predator - LV_PREDATOR_DEATH_DECAY);
-      }
-    }
-
-    if (catchResult.winnerIds.size > 0) {
-      const preyRemaining = countAlive("prey") - catchResult.destroyedPreyIds.size;
-      const predatorCount = countAlive("predator");
-      if (predatorCount >= preyRemaining) {
-        for (const object of objects) {
-          if (
-            object.role === "predator" &&
-            object.vanishElapsed === null &&
-            !catchResult.winnerIds.has(object.id)
-          ) {
-            object.hungerElapsed += PREDATOR_SCARCITY_HUNGER_PENALTY_SECONDS;
-          }
-        }
-      }
-    }
-    for (const burst of catchResult.bursts) addBurstEffect(burst.x, burst.y, burst.radius);
-
-    for (let first = 0; first < objects.length; first += 1) {
-      for (let second = first + 1; second < objects.length; second += 1) {
-        const a = objects[first];
-        const b = objects[second];
-        if (catchResult.destroyedPreyIds.has(a.id) || catchResult.destroyedPreyIds.has(b.id)) continue;
-        // Cross-role (predator vs prey) pairs never physically bounce — a full-
-        // radius collision bounce would otherwise push them apart right at the
-        // boundary where they'd need to interpenetrate further to reach the
-        // tighter PREDATOR_PREY_CATCH_RADIUS_FRACTION threshold, preventing
-        // catches from ever registering. Same-role pairs (predator-predator,
-        // prey-prey) still bump normally.
-        if (a.role === b.role) {
-          // Physical separation only — no squash/star-splat visual embellishment.
-          resolveCircleCollision(a, b, rng.range(-0.08, 0.08));
-        }
-      }
-    }
-
-    const readyForRemoval = new Set<number>(catchResult.destroyedPreyIds);
-    for (const object of objects) {
-      if (object.vanishElapsed !== null && object.vanishElapsed >= VANISH_DURATION_SECONDS) {
-        readyForRemoval.add(object.id);
-      }
-    }
-    if (readyForRemoval.size > 0) {
-      for (let index = objects.length - 1; index >= 0; index -= 1) {
-        if (readyForRemoval.has(objects[index].id)) objects.splice(index, 1);
-      }
-    }
-
-    updateEffects(dt);
-
-    population = stepLotkaVolterra(population, dt);
-    topUpPopulation(now);
+    step(world, dt, now);
   }
 
   function frame(now: number): void {
@@ -703,6 +149,7 @@ onMount(() => {
     lastTime = now;
     pausedByModal = hasOpenModal();
     if (animationEnabled && !document.hidden && !pausedByModal) {
+      const stepStart = performance.now();
       accumulator = fixedStepAccumulator(
         elapsed,
         accumulator,
@@ -710,12 +157,13 @@ onMount(() => {
         MAX_CATCH_UP_STEPS,
         (dt) => updateSimulation(dt, now),
       );
+      if (!persist) reportStats(performance.now() - stepStart, now);
     } else {
       accumulator = 0;
     }
-    renderer.draw(objects, effects, obstacles, width, height, now);
+    renderer.draw(objects, effects, world.obstacles, world.width, world.height, now, world.config);
     if (now - lastSave > 7000) {
-      saveSnapshot(seed, objects, { width, height }, Date.now());
+      save(Date.now());
       lastSave = now;
     }
     frameId = requestAnimationFrame(frame);
@@ -739,8 +187,9 @@ onMount(() => {
       pointerCancel();
       return;
     }
-    if (!animationEnabled || !pointer.fine || event.pointerType !== "mouse")
-      return;
+    if (!animationEnabled || !acceptsPointer(event.pointerType)) return;
+    // While an object is held, only the pointer holding it moves it.
+    if (pointer.id !== null && event.pointerId !== pointer.id) return;
     const now = performance.now();
     const elapsed = Math.max(1, now - (pointerSampleTime || now - 16));
     pointer.previousX = pointer.x;
@@ -764,7 +213,7 @@ onMount(() => {
         pointer.x - pointer.downX,
         pointer.y - pointer.downY,
       );
-      if (moved < 5) return;
+      if (moved < dragThreshold(grabPointerType)) return;
       pointer.dragStarted = true;
       object.grabbed = true;
     }
@@ -777,22 +226,16 @@ onMount(() => {
   function pointerDown(event: PointerEvent): void {
     if (
       !animationEnabled ||
-      !pointer.fine ||
-      event.pointerType !== "mouse" ||
+      !acceptsPointer(event.pointerType) ||
+      pointer.grabbedId !== null ||
       pausedByModal ||
       isInteractiveTarget(event.target) ||
       hasTextSelection()
     )
       return;
-    const object = objects.find(
-      (candidate) =>
-        Math.hypot(
-          candidate.position.x - event.clientX,
-          candidate.position.y - event.clientY,
-        ) <=
-        candidate.radius + 12,
-    );
+    const object = findGrabTarget(objects, event.clientX, event.clientY, event.pointerType);
     if (!object) return;
+    grabPointerType = event.pointerType;
     pointer.id = event.pointerId;
     pointer.downX = event.clientX;
     pointer.downY = event.clientY;
@@ -802,6 +245,23 @@ onMount(() => {
     pointer.velocityY = 0;
     pointer.dragStarted = false;
     pointer.grabbedId = object.id;
+  }
+
+  // A touch scrolls the page unless the scroll is stopped at touchstart; after
+  // that the browser sends pointercancel and no more pointer events. So a touch
+  // that lands on an object (the same hit test pointerDown uses) stops the
+  // scroll here. Every other touch is left alone and scrolls as before.
+  function touchStart(event: TouchEvent): void {
+    if (
+      !animationEnabled ||
+      pausedByModal ||
+      event.touches.length !== 1 ||
+      isInteractiveTarget(event.target) ||
+      hasTextSelection()
+    )
+      return;
+    const touch = event.changedTouches[0];
+    if (findGrabTarget(objects, touch.clientX, touch.clientY, "touch")) event.preventDefault();
   }
 
   function releasePointer(throwObject: boolean): void {
@@ -815,15 +275,7 @@ onMount(() => {
         object.velocity.x = clamp(pointer.velocityX, -260, 260);
         object.velocity.y = clamp(pointer.velocityY, -260, 260);
       }
-      if (pointer.dragStarted) {
-        if (object.role === "predator") {
-          object.hungerElapsed += PREDATOR_DRAG_HUNGER_PENALTY_SECONDS;
-        } else if (object.role === "prey") {
-          for (const predator of predatorsTargeting(object.id, objects)) {
-            predator.hungerElapsed += PREDATOR_DRAG_HUNGER_PENALTY_SECONDS;
-          }
-        }
-      }
+      if (pointer.dragStarted) applyDragPenalty(world, object);
     }
     pointer.id = null;
     pointer.grabbedId = null;
@@ -843,7 +295,7 @@ onMount(() => {
 
   function visibilityChange(): void {
     if (document.hidden) {
-      saveSnapshot(seed, objects, { width, height });
+      save();
       pointerCancel();
     }
     lastTime = performance.now();
@@ -878,8 +330,8 @@ onMount(() => {
 
   resize();
   refreshGeometry();
-  restoreObjects();
-  spawnInitialBatch(performance.now());
+  restoreWorld(world, snapshot, performance.now());
+  spawnInitialBatch(world, performance.now());
 
   const sectionObserver = new IntersectionObserver(activeSectionChange, {
     threshold: [0.15, 0.35, 0.6],
@@ -916,6 +368,7 @@ onMount(() => {
     window.addEventListener("pointerdown", pointerDown, { passive: true });
     window.addEventListener("pointerup", pointerUp, { passive: true });
     window.addEventListener("pointercancel", pointerCancel, { passive: true });
+    window.addEventListener("touchstart", touchStart, { passive: false });
     window.addEventListener("blur", onBlur, { passive: true });
     pointerListenersInstalled = true;
   };
@@ -926,18 +379,27 @@ onMount(() => {
     window.removeEventListener("pointerdown", pointerDown);
     window.removeEventListener("pointerup", pointerUp);
     window.removeEventListener("pointercancel", pointerCancel);
+    window.removeEventListener("touchstart", touchStart);
     window.removeEventListener("blur", onBlur);
     pointerListenersInstalled = false;
   };
   const onInkAmbientAddPredator = () => {
-    forceAddPredator(performance.now());
+    addPredator(world, performance.now());
   };
   const onInkAmbientAddPrey = () => {
-    preyButtonEverPressed = true;
-    forceAddPrey(performance.now());
+    addPrey(world, performance.now());
   };
   const onInkAmbientReset = () => {
-    resetSimulation(performance.now());
+    if (!world.field) return;
+    resetWorld(world, performance.now());
+    save();
+  };
+  // Playground panel (#22): apply config changes, restart with a seed.
+  const onInkAmbientConfig = (event: Event) => {
+    setConfig(world, (event as CustomEvent<Partial<SimConfig>>).detail);
+  };
+  const onInkAmbientRestart = (event: Event) => {
+    restartWorld(world, (event as CustomEvent<{ seed: number }>).detail.seed, performance.now());
   };
   const onInkAmbientChange = (event: Event) => {
     const { enabled: nextEnabled } = (
@@ -950,7 +412,7 @@ onMount(() => {
     } else {
       removePointerListeners();
       stop();
-      renderer.clear(width, height);
+      renderer.clear(world.width, world.height);
     }
   };
 
@@ -964,11 +426,15 @@ onMount(() => {
   window.addEventListener("ink-ambient-add-predator", onInkAmbientAddPredator);
   window.addEventListener("ink-ambient-add-prey", onInkAmbientAddPrey);
   window.addEventListener("ink-ambient-reset", onInkAmbientReset);
+  if (!persist) {
+    window.addEventListener(CONFIG_EVENT, onInkAmbientConfig);
+    window.addEventListener(RESTART_EVENT, onInkAmbientRestart);
+  }
   mutationObserver.takeRecords();
   start();
 
   return () => {
-    saveSnapshot(seed, objects, { width, height });
+    save();
     stop();
     sectionObserver.disconnect();
     resizeObserver.disconnect();
@@ -982,6 +448,8 @@ onMount(() => {
     window.removeEventListener("ink-ambient-add-predator", onInkAmbientAddPredator);
     window.removeEventListener("ink-ambient-add-prey", onInkAmbientAddPrey);
     window.removeEventListener("ink-ambient-reset", onInkAmbientReset);
+    window.removeEventListener(CONFIG_EVENT, onInkAmbientConfig);
+    window.removeEventListener(RESTART_EVENT, onInkAmbientRestart);
   };
 });
 </script>

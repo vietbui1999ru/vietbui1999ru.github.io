@@ -31,13 +31,13 @@ export function isPenLike(object: Pick<InkObject, "role" | "variant">): boolean 
 }
 
 /** Pen keeps a longer, more deliberate trail than pencil (see config.ts). */
-export function trailMaxAge(object: Pick<InkObject, "role" | "variant">): number {
-  return isPenLike(object) ? PEN_TRAIL_MAX_AGE_SECONDS : PENCIL_TRAIL_MAX_AGE_SECONDS;
+export function trailMaxAge(object: Pick<InkObject, "role" | "variant">, scale = 1): number {
+  return (isPenLike(object) ? PEN_TRAIL_MAX_AGE_SECONDS : PENCIL_TRAIL_MAX_AGE_SECONDS) * scale;
 }
 
 /** Point-count cap sized to match trailMaxAge so it never truncates early. */
-export function trailMaxPoints(object: Pick<InkObject, "role" | "variant">): number {
-  return isPenLike(object) ? PEN_TRAIL_MAX_POINTS : PENCIL_TRAIL_MAX_POINTS;
+export function trailMaxPoints(object: Pick<InkObject, "role" | "variant">, scale = 1): number {
+  return Math.ceil((isPenLike(object) ? PEN_TRAIL_MAX_POINTS : PENCIL_TRAIL_MAX_POINTS) * scale);
 }
 
 export function clamp(value: number, min: number, max: number): number {

@@ -9,7 +9,8 @@ import Chip from "../primitives/Chip.svelte";
 import InkLink from "../primitives/InkLink.svelte";
 import Section from "../primitives/Section.svelte";
 import SectionHeader from "../primitives/SectionHeader.svelte";
-import { PASTEL_BG, toneFor } from "../../design-system/tone";
+import { toneFor } from "../../design-system/tone";
+import TimelineRail from "../patterns/TimelineRail.svelte";
 
 type TimelineJob = {
   id: string;
@@ -49,12 +50,8 @@ EXPERIENCE_ITEMS.forEach((company) => collect(company, jobs));
 <Section id="experience">
     <SectionHeader index="06" title="experience" kicker="work ledger" />
 
-    <ol data-ink-obstacle="prose" class="ml-2 max-w-4xl border-l-[1.5px] border-ink">
-      {#each jobs as job (job.id)}
-        <li class="relative pb-10 pl-8 last:pb-0">
-          <span
-            class="absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink {PASTEL_BG[toneFor(job.company)]}"
-          ></span>
+    <TimelineRail items={jobs} key={(job) => job.id} tone={(job) => toneFor(job.company)} class="max-w-4xl">
+      {#snippet entry(job)}
 
           <div class="mb-2 flex flex-wrap items-baseline gap-x-4 gap-y-1">
             <time class="label-mono text-journal-2">{job.date}</time>
@@ -79,7 +76,6 @@ EXPERIENCE_ITEMS.forEach((company) => collect(company, jobs));
               {/each}
             </div>
           {/if}
-        </li>
-      {/each}
-    </ol>
+      {/snippet}
+    </TimelineRail>
 </Section>
