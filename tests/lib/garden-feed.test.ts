@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { buildFeed } from "@/lib/garden-feed";
 
-const blog = (id: string, date: string, draft = false) => ({
+const blog = (id: string, date: string, publish = true) => ({
   id,
-  data: { title: `title ${id}`, date: new Date(date), draft },
+  data: { title: `title ${id}`, date: new Date(date), publish },
 });
 const thought = (id: string, date: string, publish = true) => ({
   id,
@@ -24,9 +24,9 @@ describe("buildFeed", () => {
     ]);
   });
 
-  it("drops drafts and unpublished thoughts", () => {
+  it("drops unpublished posts and thoughts", () => {
     const feed = buildFeed(
-      [blog("draft", "2026-05-01", true)],
+      [blog("draft", "2026-05-01", false)],
       [thought("private", "2026-05-02", false)],
     );
     expect(feed).toEqual([]);

@@ -1,9 +1,16 @@
 import type { Plugin } from "unified";
 import type { Root, Text, PhrasingContent } from "mdast";
 import { visit, SKIP } from "unist-util-visit";
+import { toSlug } from "../utils";
 
 export type WikilinkTarget =
-  | { kind: "blog" | "project" | "role" | "education" | "gallery"; url: string; title: string }
+  | {
+      kind: "blog" | "thought" | "project" | "role" | "education" | "gallery";
+      url: string;
+      title: string;
+      preview?: string;
+      cover?: string;
+    }
   | {
       kind: "clipping";
       url: string;
@@ -16,6 +23,7 @@ export type WikilinkTarget =
 
 export interface WikilinkIndex {
   posts: Map<string, WikilinkTarget>;
+  thoughts: Map<string, WikilinkTarget>;
   projects: Map<string, WikilinkTarget>;
   roles: Map<string, WikilinkTarget>;
   education: Map<string, WikilinkTarget>;
@@ -31,18 +39,13 @@ export interface WikilinkOptions {
 
 const LINK_REGEX = /\[\[([^[\]|]+)(?:\|([^[\]]+))?\]\]/g;
 
-function slugify(raw: string): string {
-  return raw
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-}
-
-function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined {
-  const s = slugify(slug);
+/** Target of a wikilink slug, or undefined when nothing published matches. */
+export function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined {
+  // Same slugger as note ids (src/lib/note-id.ts), so [[Q&A notes]] finds q-a-notes.
+  const s = toSlug(slug);
   return (
     index.posts.get(s) ??
+    index.thoughts.get(s) ??
     index.projects.get(s) ??
     index.roles.get(s) ??
     index.education.get(s) ??
@@ -51,16 +54,15 @@ function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | undefined
   );
 }
 
-function escapeAttr(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/"/g, "&quot;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
+const PREVIEW_MAX = 280;
 
-function escapeHtml(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+function hoverProps(target: WikilinkTarget): Record<string, string> {
+  const props: Record<string, string> = { "data-kind": target.kind, "data-title": target.title };
+  if (target.kind !== "clipping") {
+    if (target.preview) props["data-preview"] = target.preview.slice(0, PREVIEW_MAX);
+    if (target.cover) props["data-cover"] = target.cover;
+  }
+  return props;
 }
 
 const UNSAFE_SCHEME = /^\s*(javascript|data|vbscript|file):/i;
@@ -96,16 +98,9 @@ export const remarkWikilinks: Plugin<[WikilinkOptions], Root> = (opts) => {
           continue;
         }
 
-        if (target.kind === "clipping" && !target.publish) {
-          const parts: string[] = [
-            '<a class="note-popover"',
-            `data-title="${escapeAttr(target.title)}"`,
-          ];
-          if (target.preview) parts.push(`data-preview="${escapeAttr(target.preview)}"`);
-          if (target.source) parts.push(`data-source="${escapeAttr(safeUrl(target.source))}"`);
-          const html = `${parts.join(" ")}>${escapeHtml(display)}</a>`;
-          // html node not typed as PhrasingContent but accepted by mdast AST
-          out.push({ type: "html", value: html } as any);
+        // A target with no page (an unpublished note) renders as plain text.
+        if (!target.url) {
+          out.push({ type: "text", value: display });
           continue;
         }
 
@@ -114,7 +109,9 @@ export const remarkWikilinks: Plugin<[WikilinkOptions], Root> = (opts) => {
           url: safeUrl(target.url),
           title: null,
           children: [{ type: "text", value: display }],
-        });
+          // Hover-preview data; the page shows the card only where hover exists.
+          data: { hProperties: hoverProps(target) },
+        } as any);
       }
 
       if (lastIndex < src.length) out.push({ type: "text", value: src.slice(lastIndex) });

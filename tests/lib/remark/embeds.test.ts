@@ -40,6 +40,7 @@ describe("remark-embeds", () => {
     const html = para.children[0];
     expect(html.type).toBe("html");
     expect(html.value).toContain("<svg");
+    expect(html.value).toContain('class="excalidraw-embed"');
     expect(resolveExcalidraw).toHaveBeenCalledWith("drawing.excalidraw.md");
   });
 

@@ -42,5 +42,13 @@ const { enableInkAmbient = false } = Astro.props;
       <slot />
       <SiteFooter />
     </main>
+    <script>
+      import { installVideoSwap } from "@/lib/video-swap";
+      import { installWikilinkPreview } from "@/lib/wikilink-preview";
+      installVideoSwap(document.body);
+      installWikilinkPreview(document.body, {
+        canHover: () => window.matchMedia("(hover: hover) and (pointer: fine)").matches,
+      });
+    </script>
   </body>
 </html>

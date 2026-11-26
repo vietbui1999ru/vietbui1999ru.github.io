@@ -16,17 +16,23 @@ let {
   sidebar?: boolean;
 } = $props();
 
-const entries = $derived(tocEntries(headings, maxDepth));
+// Set when the post's variant switcher changes tab; the TOC then shows that tab's headings.
+let tabHeadings = $state<TocHeading[] | null>(null);
+const entries = $derived(tocEntries(tabHeadings ?? headings, maxDepth));
 const visible = $derived(tocVisible(entries, minHeadings));
 let activeSlug = $state("");
 
-onMount(() => {
+let observer: IntersectionObserver | undefined;
+
+// Watches the current entries' headings. Rebuilt whenever the entries change (a tab
+// switch swaps in different heading elements), so the highlight follows the active tab.
+function observeHeadings() {
+  observer?.disconnect();
+  observer = undefined;
+  activeSlug = "";
   if (!visible || typeof IntersectionObserver === "undefined") return;
-  const targets = entries
-    .map((e) => document.getElementById(e.slug))
-    .filter((el): el is HTMLElement => el !== null);
   // A heading counts as current while it sits in the upper part of the viewport.
-  const observer = new IntersectionObserver(
+  observer = new IntersectionObserver(
     (records) => {
       for (const record of records) {
         if (record.isIntersecting) activeSlug = record.target.id;
@@ -34,8 +40,24 @@ onMount(() => {
     },
     { rootMargin: "0px 0px -70% 0px" },
   );
-  for (const target of targets) observer.observe(target);
-  return () => observer.disconnect();
+  for (const entry of entries) {
+    const el = document.getElementById(entry.slug);
+    if (el) observer.observe(el);
+  }
+}
+
+onMount(() => {
+  const onVariant = (event: Event) => {
+    const detail = (event as CustomEvent<{ headings?: TocHeading[] }>).detail;
+    tabHeadings = detail?.headings ?? null;
+    observeHeadings();
+  };
+  window.addEventListener("variant-change", onVariant);
+  observeHeadings();
+  return () => {
+    window.removeEventListener("variant-change", onVariant);
+    observer?.disconnect();
+  };
 });
 </script>
 

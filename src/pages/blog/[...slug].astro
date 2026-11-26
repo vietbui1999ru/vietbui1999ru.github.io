@@ -9,9 +9,15 @@ import PageHeader from "@/components/primitives/PageHeader.svelte";
 import Chip from "@/components/primitives/Chip.svelte";
 import InkLink from "@/components/primitives/InkLink.svelte";
 import { PROSE } from "@/design-system/prose";
+import GardenBlocks from "@/components/garden/GardenBlocks.astro";
+import { buildBacklinks } from "@/lib/garden-backlinks";
+import { buildSiteWikilinkIndex } from "@/lib/build-wikilink-index";
+import { vaultPaths } from "@/lib/vault-paths";
+import { layoutBlocks, layoutFor } from "@/config/layouts";
+import { resolveGardenBlocks } from "@/components/garden/registry";
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection("blog");
+  const blogEntries = await getCollection("blog", (entry) => entry.data.publish);
   return blogEntries.map((entry) => ({
     params: { slug: toSlug(entry.id) },
     props: { entry },
@@ -25,25 +31,38 @@ const entrySlug = toSlug(entry.id);
 // Match variants by slugified id — variant files store parent_slug as a slug,
 // while entry.id is the raw filename (may contain spaces/special chars).
 const allVariants = await getCollection("blog-variants", (v) =>
-  v.data.parent_slug === entrySlug || v.data.parent_slug === entry.id
+  v.data.publish && (v.data.parent_slug === entrySlug || v.data.parent_slug === entry.id)
 );
 
 // Render each variant's Content component for use in the template below
 const renderedVariants = await Promise.all(
   allVariants.map(async (v) => {
-    const { Content: VC } = await render(v);
-    return { label: v.data.style_label, Content: VC };
+    const { Content: VC, headings: variantHeadings } = await render(v);
+    return { label: "TLDR", Content: VC, headings: variantHeadings };
   })
 );
 
-// Ensure AI variant is second if present (after Original)
-const aiIdx = renderedVariants.findIndex((v) => v.label.toLowerCase() === "ai");
-if (aiIdx > 0) {
-  const [aiVariant] = renderedVariants.splice(aiIdx, 1);
-  renderedVariants.unshift(aiVariant);
-}
-
 const storageId = "blog-variant-storage";
+
+// Backlinks: published posts whose bodies link to this one, resolved against the
+// same site index the remark plugin uses. Built once per page at build time.
+const publishedPosts = await getCollection("blog", (post) => post.data.publish);
+const backlinks =
+  buildBacklinks(
+    publishedPosts.map((post) => ({
+      url: `/blog/${toSlug(post.id)}`,
+      title: post.data.title,
+      body: post.body ?? "",
+    })),
+    buildSiteWikilinkIndex(vaultPaths(process.cwd()).root),
+  ).get(`/blog/${entrySlug}`) ?? [];
+
+// The note's layout preset (its `layout:` or the type default) lists the blocks.
+// Unknown layouts throw here, so the build fails. The TOC is hydrated in the sidebar
+// (it needs the client); every other block renders after the article.
+const presetBlocks = layoutBlocks(layoutFor({ type: "post", layout: entry.data.layout }));
+const toc = resolveGardenBlocks(entry.id, presetBlocks).find((b) => b.id === "toc");
+const articleBlocks = presetBlocks.filter((b) => b.block !== "toc");
 
 const wordCount = (entry.body ?? "").trim().split(/\s+/).length;
 const readingTime = `${Math.max(1, Math.round(wordCount / 200))} min read`;
@@ -70,18 +89,18 @@ const updatedDate = entry.data.updated?.toLocaleDateString("en-US", {
       doesn't find duplicate headings from every pre-rendered variant.
     -->
     <div id={storageId} style="display:none" aria-hidden="true">
-      <div data-variant-label="Original">
+      <div data-variant-label="Original" data-headings={JSON.stringify(headings)}>
         <Content />
       </div>
-      {renderedVariants.map(({ label, Content: VC }) => (
-        <div data-variant-label={label}>
+      {renderedVariants.map(({ label, Content: VC, headings: vh }) => (
+        <div data-variant-label={label} data-headings={JSON.stringify(vh)}>
           <VC />
         </div>
       ))}
     </div>
 
-    <div class="lg:grid lg:grid-cols-[14rem_minmax(0,76ch)] lg:gap-12 lg:items-start">
-      <GardenToc headings={headings} sidebar client:load />
+    <div class={toc ? "lg:grid lg:grid-cols-[14rem_minmax(0,76ch)] lg:gap-12 lg:items-start" : ""}>
+      {toc && <GardenToc headings={headings} sidebar client:load {...toc.props} />}
       <div id="blog-content" data-ink-obstacle="content" class="min-w-0">
         <PageHeader title={entry.data.title} kicker="field note" description={entry.data.description}>
           <Fragment slot="meta">
@@ -107,6 +126,8 @@ const updatedDate = entry.data.updated?.toLocaleDateString("en-US", {
           proseClass={proseClass}
           client:load
         />
+
+        <GardenBlocks note={entry.id} blocks={articleBlocks} context={{ backlinks }} />
 
         <GiscusComments client:visible />
       </div>

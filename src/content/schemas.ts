@@ -4,9 +4,11 @@ export const blogSchema = z.object({
   title: z.string(),
   description: z.string(),
   date: z.coerce.date(),
-  draft: z.boolean().default(false),
+  publish: z.boolean().default(false),
   tags: z.array(z.string()).optional(),
   cover: z.string().optional(),
+  // Checked against LAYOUTS when the page builds (layoutFor throws on unknown names).
+  layout: z.string().optional(),
   updated: z.coerce.date().optional(),
   series: z.string().optional(),
   preview: z.string().optional(),
@@ -118,9 +120,11 @@ export const aboutSchema = z.object({
   tagline: z.string(),
 });
 
+// The only blog variant is `<post>.tldr.md`; it publishes only with its parent.
 export const blogVariantSchema = z.object({
-  style_label: z.string(),
   parent_slug: z.string(),
+  generated: z.boolean().default(false),
+  publish: z.boolean().default(false),
 });
 
 export type BlogEntry = z.infer<typeof blogSchema>;

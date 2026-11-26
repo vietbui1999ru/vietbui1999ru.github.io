@@ -34,7 +34,9 @@ function mountVariant(node: HTMLElement) {
   node.replaceChildren(
     ...Array.from(tab.source.childNodes).map((child) => child.cloneNode(true)),
   );
-  window.dispatchEvent(new CustomEvent("variant-change"));
+  // Each tab carries its own headings, so the TOC can follow the active tab.
+  const headings = JSON.parse(tab.source.dataset.headings ?? "[]");
+  window.dispatchEvent(new CustomEvent("variant-change", { detail: { headings } }));
 
   return () => node.replaceChildren();
 }

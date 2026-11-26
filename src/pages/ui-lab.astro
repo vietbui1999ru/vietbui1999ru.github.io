@@ -14,6 +14,14 @@ if (!import.meta.env.DEV) {
 <BaseLayout>
   <UiLab client:load />
   <ProjectSortFixture client:load />
+  <section class="px-4 py-8 md:px-8">
+    <p>
+      UI_LAB_PLACEHOLDER hover or tab to a wikilink:
+      <a href="#" data-kind="thought" data-title="UI_LAB_PLACEHOLDER thought" data-preview="UI_LAB_PLACEHOLDER preview text for a thought note.">thought link</a>,
+      <a href="#" data-kind="blog" data-title="UI_LAB_PLACEHOLDER post with cover" data-preview="UI_LAB_PLACEHOLDER preview with a cover image." data-cover="/blog-assets/building-a-vault-cms-pipeline/log_image.jpg">post link</a>,
+      <a href="#" data-kind="project" data-title="UI_LAB_PLACEHOLDER project">project link</a>.
+    </p>
+  </section>
   <TimelineRailFixture client:load />
   {
     Object.entries(GARDEN_BLOCK_FIXTURES).map(([id, fixture]) => (

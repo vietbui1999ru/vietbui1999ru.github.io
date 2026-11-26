@@ -8,13 +8,13 @@ export type FeedItem = {
   href: string;
 };
 
-type BlogLike = { id: string; data: { title: string; date: Date; draft: boolean } };
+type BlogLike = { id: string; data: { title: string; date: Date; publish: boolean } };
 type ThoughtLike = { id: string; data: { date: Date; publish: boolean } };
 
 /** Published posts and thoughts merged newest first, capped at `limit`. */
 export function buildFeed(blogs: BlogLike[], thoughts: ThoughtLike[], limit = 8): FeedItem[] {
   const posts: FeedItem[] = blogs
-    .filter((b) => !b.data.draft)
+    .filter((b) => b.data.publish)
     .map((b) => ({
       kind: "blog",
       title: b.data.title,

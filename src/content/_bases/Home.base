@@ -35,8 +35,8 @@ properties:
     displayName: Date
   note.description:
     displayName: Description
-  note.draft:
-    displayName: Draft
+  note.publish:
+    displayName: Published
   note.pubDate:
     displayName: Date
   note.title:

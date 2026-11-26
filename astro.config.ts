@@ -8,13 +8,18 @@ import path from "path";
 import { fileURLToPath } from "url";
 import remarkCallout from "@r4ai/remark-callout";
 import remarkMath from "remark-math";
+import { remarkTypst } from "./src/lib/remark/typst-plugin";
+import { remarkMermaid } from "./src/lib/remark/mermaid-plugin";
+import { remarkVideo } from "./src/lib/remark/video-plugin";
+import { remarkStripComments } from "./src/lib/remark/strip-comments";
 import rehypeKatex from "rehype-katex";
 import { remarkPreview } from "./src/lib/remark/preview";
 import { remarkEmbeds } from "./src/lib/remark/embeds";
-import { remarkWikilinks } from "./src/lib/remark/wikilinks";
+import { remarkWikilinks, resolve } from "./src/lib/remark/wikilinks";
 import { createAssetAdapters } from "./src/lib/remark/adapters";
 import { getVaultRoot } from "./src/lib/vault";
-import { buildWikilinkIndex } from "./src/lib/build-wikilink-index";
+import { buildSiteWikilinkIndex } from "./src/lib/build-wikilink-index";
+import { publishPreview } from "./src/lib/publish/preview-route";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -30,10 +35,9 @@ const vaultRoot = getVaultRoot(__dirname);
 const { copyAsset, resolveExcalidraw } = createAssetAdapters({
   attachmentsRoot: path.join(vaultRoot, "Attachments"),
   publicRoot: path.resolve(__dirname, "public"),
-  excalidrawCacheDir: path.resolve(__dirname, ".cache/excalidraw"),
 });
 
-const wikilinkIndex = buildWikilinkIndex(path.join(vaultRoot, "Blogs"));
+const wikilinkIndex = buildSiteWikilinkIndex(vaultRoot);
 
 // Pre-copy gallery images at config-load time so they land in public/ before
 // Astro does the public/ → dist/ copy (SSG page rendering is too late).
@@ -57,7 +61,7 @@ if (fs.existsSync(galleryDir)) {
 export default defineConfig({
   site,
   base,
-  integrations: [react(), svelte()],
+  integrations: [react(), svelte(), publishPreview()],
   markdown: {
     shikiConfig: {
       themes: { light: "github-light", dark: "github-dark" },
@@ -67,6 +71,10 @@ export default defineConfig({
     remarkPlugins: [
       remarkCallout,
       remarkMath,
+      remarkStripComments,
+      remarkTypst,
+      remarkMermaid,
+      remarkVideo,
       remarkPreview,
       [
         remarkEmbeds,
@@ -74,6 +82,10 @@ export default defineConfig({
           attachmentsRoot: path.join(vaultRoot, "Attachments"),
           copyAsset,
           resolveExcalidraw,
+          resolveNote: (name: string) => {
+            const t = resolve(wikilinkIndex, name);
+            return t && t.url ? { url: t.url, title: t.title, preview: t.preview } : undefined;
+          },
         },
       ],
       [

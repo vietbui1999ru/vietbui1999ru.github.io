@@ -23,7 +23,6 @@ function adapters(extra: Partial<Parameters<typeof createAssetAdapters>[0]> = {}
   return createAssetAdapters({
     attachmentsRoot: path.join(tmp, "vault/Attachments"),
     publicRoot: path.join(tmp, "public"),
-    excalidrawCacheDir: path.join(tmp, ".cache/excalidraw"),
     ...extra,
   });
 }
@@ -51,32 +50,26 @@ describe("asset adapters", () => {
     expect(() => copyAsset("sub/dir/../../escape.png", "slug")).toThrow(/path traversal/i);
   });
 
-  it("resolveExcalidraw returns SVG string (stub renderer)", () => {
-    const { resolveExcalidraw } = adapters({
-      renderExcalidraw: () => '<svg data-stub="1"></svg>',
-    });
-    const svg = resolveExcalidraw("drawing.excalidraw.md");
-    expect(svg).toContain("<svg");
+  it("resolveExcalidraw returns the exported .excalidraw.svg next to the drawing", () => {
+    fs.writeFileSync(
+      path.join(tmp, "vault/Attachments/drawing.excalidraw.svg"),
+      '<svg data-export="1"></svg>',
+    );
+    const { resolveExcalidraw } = adapters();
+    expect(resolveExcalidraw("drawing.excalidraw.md")).toContain('data-export="1"');
   });
 
-  it("resolveExcalidraw caches by content hash", () => {
-    let calls = 0;
-    const { resolveExcalidraw } = adapters({
-      renderExcalidraw: () => {
-        calls++;
-        return '<svg data-stub="1"></svg>';
-      },
-    });
-    resolveExcalidraw("drawing.excalidraw.md");
-    resolveExcalidraw("drawing.excalidraw.md");
-    expect(calls).toBe(1);
+  it("resolveExcalidraw names the drawing when its export is missing", () => {
+    const { resolveExcalidraw } = adapters();
+    expect(() => resolveExcalidraw("drawing.excalidraw.md")).toThrow(/drawing\.excalidraw\.svg/);
   });
 
-  it("resolveExcalidraw strips script tags and on* handlers", () => {
-    const { resolveExcalidraw } = adapters({
-      renderExcalidraw: () =>
-        '<svg onload="alert(1)"><script>evil()</script><circle cx="5"/></svg>',
-    });
+  it("resolveExcalidraw strips script tags and on* handlers from the export", () => {
+    fs.writeFileSync(
+      path.join(tmp, "vault/Attachments/drawing.excalidraw.svg"),
+      '<svg onload="alert(1)"><script>evil()</script><circle cx="5"/></svg>',
+    );
+    const { resolveExcalidraw } = adapters();
     const svg = resolveExcalidraw("drawing.excalidraw.md");
     expect(svg).not.toMatch(/<script/i);
     expect(svg).not.toMatch(/onload\s*=/i);

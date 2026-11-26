@@ -17,7 +17,7 @@ describe("blogSchema", () => {
       description: "y",
       date: "2026-04-16",
     });
-    expect(parsed.draft).toBe(false);
+    expect(parsed.publish).toBe(false);
   });
   it("rejects missing title", () => {
     expect(() =>

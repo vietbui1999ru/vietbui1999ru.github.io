@@ -9,22 +9,24 @@ import {
   thoughtSchema,
 } from "@/content/schemas";
 import { vaultPaths } from "@/lib/vault-paths";
+import { noteId } from "@/lib/note-id";
 
 const paths = vaultPaths(process.cwd());
 
-// Canonical posts only — exclude companion variant files (post.ai.md, post.yoda.md)
+// Canonical posts only: companion files such as post.tldr.md are excluded here.
 const blog = defineCollection({
   loader: glob({
     pattern: ["**/*.md", "!**/*.*.md"],
     base: paths.blogs,
+    generateId: ({ entry }) => noteId(entry),
   }),
   schema: blogSchema,
 });
 
-// Companion variant files: post.ai.md, post.yoda.md, etc.
+// The only companion variant: post.tldr.md, beside its parent post.
 const blogVariants = defineCollection({
   loader: glob({
-    pattern: "**/*.*.md",
+    pattern: "**/*.tldr.md",
     base: paths.blogs,
   }),
   schema: blogVariantSchema,
@@ -42,6 +44,7 @@ const projects = defineCollection({
   loader: glob({
     pattern: "**/*.md",
     base: paths.projects,
+    generateId: ({ entry }) => noteId(entry),
   }),
   schema: projectSchema,
 });
@@ -51,7 +54,7 @@ const thoughts = defineCollection({
   loader: glob({
     pattern: "Thoughts/**/*.md",
     base: paths.thoughts,
-    generateId: ({ entry }) => entry.replace(/^Thoughts\//, "").replace(/\.md$/, ""),
+    generateId: ({ entry }) => noteId(entry),
   }),
   schema: thoughtSchema,
 });

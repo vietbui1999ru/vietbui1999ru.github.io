@@ -5,8 +5,6 @@ import crypto from "node:crypto";
 export interface AssetAdapterOptions {
   attachmentsRoot: string;
   publicRoot: string;
-  excalidrawCacheDir: string;
-  renderExcalidraw?: (content: string) => string;
 }
 
 export interface AssetAdapters {
@@ -25,7 +23,7 @@ function sanitizeSvg(svg: string): string {
 }
 
 export function createAssetAdapters(opts: AssetAdapterOptions): AssetAdapters {
-  const { attachmentsRoot, publicRoot, excalidrawCacheDir, renderExcalidraw } = opts;
+  const { attachmentsRoot, publicRoot } = opts;
 
   function copyAsset(filename: string, postSlug: string): string {
     if (filename.includes("..")) {
@@ -49,22 +47,19 @@ export function createAssetAdapters(opts: AssetAdapterOptions): AssetAdapters {
     return publicUrl;
   }
 
+  // The drawing's auto-exported `<name>.excalidraw.svg` (Excalidraw plugin default)
+  // is the rendered form, so nothing renders at build time.
   function resolveExcalidraw(filename: string): string {
-    const srcPath = path.join(attachmentsRoot, filename);
-    const content = fs.readFileSync(srcPath, "utf-8");
-    const hash = sha256(content);
-
-    const cacheFile = path.join(excalidrawCacheDir, `${hash}.svg`);
-    if (fs.existsSync(cacheFile)) {
-      return fs.readFileSync(cacheFile, "utf-8");
+    if (filename.includes("..")) {
+      throw new Error(`path traversal detected: ${filename}`);
     }
-
-    if (!renderExcalidraw) throw new Error("renderExcalidraw callback required");
-
-    const sanitized = sanitizeSvg(renderExcalidraw(content));
-    fs.mkdirSync(excalidrawCacheDir, { recursive: true });
-    fs.writeFileSync(cacheFile, sanitized);
-    return sanitized;
+    const stem = filename.replace(/\.excalidraw(\.md|\.svg)?$/, "");
+    const svgName = `${stem}.excalidraw.svg`;
+    const srcPath = path.join(attachmentsRoot, svgName);
+    if (!fs.existsSync(srcPath)) {
+      throw new Error(`drawing ${filename}: missing export ${svgName}`);
+    }
+    return sanitizeSvg(fs.readFileSync(srcPath, "utf-8"));
   }
 
   return { copyAsset, resolveExcalidraw };
