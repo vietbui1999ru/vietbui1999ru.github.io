@@ -3,7 +3,6 @@
 import {
   AMBIENT_PREDATOR_COUNT,
   AMBIENT_PREY_COUNT,
-  PLAYGROUND_INITIAL_MULTIPLIER,
   ATTRACTION_VALUE_MAX,
   ATTRACTION_VALUE_MIN,
   BURST_ALPHA,
@@ -20,7 +19,6 @@ import {
   POPULATION_TOPUP_MAX_DELAY_MS,
   POPULATION_TOPUP_MIN_DELAY_MS,
   PREDATOR_DRAG_HUNGER_PENALTY_SECONDS,
-  PREDATOR_LIVES_START,
   PREDATOR_RADIUS_MAX,
   PREY_RADIUS_MAX,
 } from "./config";
@@ -36,6 +34,7 @@ import {
   isSafePoint,
 } from "./spatial-field";
 import { SeededRng } from "./rng";
+import { DEFAULT_SIM_CONFIG, mergeConfig, type SimConfig } from "./sim-config";
 import type { InkEffect, InkObject, InkSnapshot, Rect, RouteProfile, SpatialField, Vec2 } from "./types";
 
 export type Role = "predator" | "prey";
@@ -43,6 +42,8 @@ export type Role = "predator" | "prey";
 export interface WorldOptions {
   /** True for a mouse-class pointer; selects the desktop object ceiling. */
   pointerFine: boolean;
+  /** Tunable values (issue #22), merged over DEFAULT_SIM_CONFIG. */
+  config?: Partial<SimConfig>;
 }
 
 export interface World {
@@ -61,6 +62,8 @@ export interface World {
   nextPredatorSpawnAt: number;
   population: PopulationState;
   preyButtonEverPressed: boolean;
+  /** Tunable values read by the rules; change them with setConfig. */
+  config: SimConfig;
   /** Crowding lifespan multiplier (lifecycle.ts lifespanMultiplier), set at the start of each step. */
   lifespanMultiplier: number;
   /** Playground only: spawns stay in the centred bias box until the first object dies. */
@@ -80,6 +83,7 @@ export function createWorld(options: WorldOptions, seed: number): World {
     effects: [],
     spawnBiasActive: true,
     lifespanMultiplier: 1,
+    config: mergeConfig(DEFAULT_SIM_CONFIG, options.config),
     width: 0,
     height: 0,
     obstacles: [],
@@ -95,13 +99,26 @@ export function createWorld(options: WorldOptions, seed: number): World {
   };
 }
 
-export function makeObject(id: number, position: Vec2, rng: SeededRng, now: number, role: Role): InkObject {
+/** Apply a partial config change. Live keys act on the next step; "new object" keys
+ * (NEW_OBJECT_KEYS) act on objects spawned after the change. */
+export function setConfig(world: World, patch: Partial<SimConfig>): void {
+  world.config = mergeConfig(world.config, patch);
+}
+
+export function makeObject(
+  id: number,
+  position: Vec2,
+  rng: SeededRng,
+  now: number,
+  role: Role,
+  config: Readonly<SimConfig> = DEFAULT_SIM_CONFIG,
+): InkObject {
   const attractionValue = rng.range(ATTRACTION_VALUE_MIN, ATTRACTION_VALUE_MAX);
   return {
     id,
     position: { ...position },
     velocity: { x: rng.range(-18, 18), y: rng.range(-12, 12) },
-    radius: rollRadius(role, rng),
+    radius: rollRadius(role, rng) * config.sizeScale,
     mass: rng.range(0.7, 1.5),
     rotation: rng.range(-Math.PI, Math.PI),
     angularVelocity: rng.range(-0.25, 0.25),
@@ -127,7 +144,7 @@ export function makeObject(id: number, position: Vec2, rng: SeededRng, now: numb
     chaseSpeed: rollChaseSpeed(role, attractionValue, rng),
     attractionValue,
     motionBlend: null,
-    lives: PREDATOR_LIVES_START,
+    lives: config.predatorLives,
     hungerElapsed: 0,
     restRemaining: 0,
     vanishElapsed: null,
@@ -166,25 +183,41 @@ export function countAlive(world: World, role: Role): number {
   return world.objects.filter((object) => object.role === role && object.vanishElapsed === null).length;
 }
 
+// The playground's objectCap, when set, replaces the device cap and the per-role cap.
+function playgroundCap(world: World): number | null {
+  return isPlayground(world) ? world.config.objectCap : null;
+}
+
 export function deviceCapMax(world: World): number {
+  const cap = playgroundCap(world);
+  if (cap !== null) return Math.max(1, cap);
   return world.pointerFine && world.width >= 720 ? MAX_OBJECTS_DESKTOP : MAX_OBJECTS_MOBILE;
 }
 
 export function perRoleCap(world: World): number {
+  if (playgroundCap(world) !== null) return deviceCapMax(world);
   return Math.max(1, Math.floor(deviceCapMax(world) / 2));
 }
 
 function targetPopulation(world: World): number {
   if (!world.field) return world.pointerFine ? MAX_OBJECTS_DESKTOP : MAX_OBJECTS_MOBILE;
-  const mobile = !world.pointerFine || world.width < 720;
-  const maximum = mobile ? MAX_OBJECTS_MOBILE : MAX_OBJECTS_DESKTOP;
+  const maximum = deviceCapMax(world);
   const capacity = availableCapacity(world.field, 24);
   return Math.min(maximum, Math.max(0, capacity));
 }
 
+// True when an object of this radius at point would touch no live object.
+function isClearOfObjects(world: World, point: Vec2, radius: number): boolean {
+  return world.objects.every(
+    (other) =>
+      other.vanishElapsed !== null ||
+      Math.hypot(point.x - other.position.x, point.y - other.position.y) > radius + other.radius,
+  );
+}
+
 // Uniform random point in the bias box (or the whole viewport once the bias is off)
 // that is safe and clear of other objects. Null after PLAYGROUND_SPAWN_ATTEMPTS misses.
-function findRandomSpawnPoint(world: World, radius: number, avoid: readonly Vec2[]): Vec2 | null {
+function findRandomSpawnPoint(world: World, radius: number): Vec2 | null {
   const { field, rng, width, height } = world;
   if (!field) return null;
   const fraction = world.spawnBiasActive ? PLAYGROUND_SPAWN_BIAS_FRACTION : 1;
@@ -195,22 +228,22 @@ function findRandomSpawnPoint(world: World, radius: number, avoid: readonly Vec2
       x: clamp(left + rng.next() * width * fraction, radius, width - radius),
       y: clamp(top + rng.next() * height * fraction, radius, height - radius),
     };
-    const clear = avoid.every((other) => Math.hypot(point.x - other.x, point.y - other.y) > radius * 2);
-    if (clear && isSafePoint(field, point, radius)) return point;
+    if (isClearOfObjects(world, point, radius) && isSafePoint(field, point, radius)) return point;
   }
   return null;
 }
 
 function spawnOne(world: World, role: Role, now: number): boolean {
   if (!world.field) return false;
-  const radius = role === "predator" ? PREDATOR_RADIUS_MAX : PREY_RADIUS_MAX;
+  const radius = (role === "predator" ? PREDATOR_RADIUS_MAX : PREY_RADIUS_MAX) * world.config.sizeScale;
   const avoid = world.objects.map((object) => object.position);
   const position =
-    (world.field.profile.name === "playground" ? findRandomSpawnPoint(world, radius, avoid) : null) ??
+    (isPlayground(world) ? findRandomSpawnPoint(world, radius) : null) ??
     findSafePointNearCorner(world.field, radius, world.rng, world.objects.length, avoid) ??
     findSafePoint(world.field, radius, world.rng, avoid);
-  if (!position) return false;
-  world.objects.push(makeObject(world.nextObjectId++, position, world.rng, now, role));
+  // No room left: the spawn stops, and objects never spawn overlapping.
+  if (!position || !isClearOfObjects(world, position, radius)) return false;
+  world.objects.push(makeObject(world.nextObjectId++, position, world.rng, now, role, world.config));
   return true;
 }
 
@@ -221,7 +254,8 @@ function isPlayground(world: World): boolean {
 /** Start count for a role: the ambient count, times PLAYGROUND_INITIAL_MULTIPLIER on /playground. */
 export function initialCount(world: World, role: Role): number {
   const base = role === "predator" ? AMBIENT_PREDATOR_COUNT : AMBIENT_PREY_COUNT;
-  return isPlayground(world) ? base * PLAYGROUND_INITIAL_MULTIPLIER : base;
+  if (!isPlayground(world)) return base;
+  return role === "predator" ? world.config.startPredators : world.config.startPrey;
 }
 
 /** Most objects of a role that automatic spawns (start, restore, top-up) fill to. */
@@ -310,7 +344,7 @@ export function restoreWorld(world: World, snapshot: InkSnapshot | null, now: nu
     if (room("predator") <= 0 && room("prey") <= 0) break;
     let role: Role = rng.chance(0.5) ? "predator" : "prey";
     if (room(role) <= 0) role = role === "predator" ? "prey" : "predator";
-    const object = makeObject(saved.id, position, rng, now, role);
+    const object = makeObject(saved.id, position, rng, now, role, world.config);
     world.nextObjectId = Math.max(world.nextObjectId, saved.id + 1);
     object.velocity = { x: saved.velocity.x * width, y: saved.velocity.y * height };
     object.attractionValue = saved.attractionValue;

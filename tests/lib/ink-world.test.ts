@@ -251,6 +251,19 @@ describe("calm ambient population", () => {
     }
   });
 
+  it("ignores objectCap on content pages: ambient counts and today's caps hold", () => {
+    const world = createWorld({ pointerFine: true, config: { objectCap: Infinity, startPrey: 20 } }, 9);
+    setGeometry(world, { width: 1280, height: 800, obstacles: [], profile: getRouteProfile("/") });
+    spawnInitialBatch(world, 0);
+    expect([countAlive(world, "predator"), countAlive(world, "prey")]).toEqual([
+      AMBIENT_PREDATOR_COUNT,
+      AMBIENT_PREY_COUNT,
+    ]);
+    for (let i = 0; i < 40; i += 1) addPrey(world, 0);
+    expect(countAlive(world, "prey")).toBeLessThanOrEqual(perRoleCap(world));
+    expect(perRoleCap(world)).toBe(12);
+  });
+
   it("never tops an ambient page up past the ambient counts", () => {
     const world = worldOn("/", 11);
     spawnInitialBatch(world, 0);
