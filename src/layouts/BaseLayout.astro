@@ -36,6 +36,8 @@ const { enableInkAmbient = false } = Astro.props;
     <PaperNav pathname={Astro.url.pathname} client:load />
     <PaperMobileNav pathname={Astro.url.pathname} client:load />
     {enableInkAmbient && <InkAmbient pathname={Astro.url.pathname} client:load />}
+    <!-- Fixed UI that must sit above the ink canvas (z-30); main is its own z-10 stacking context. -->
+    <slot name="overlay" />
     <main class="relative z-10 flex flex-1 flex-col pb-20 md:pb-0">
       <slot />
       <SiteFooter />

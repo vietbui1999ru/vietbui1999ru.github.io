@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getRouteProfile, MOUSE_HIT_SLOP, TOUCH_DRAG_THRESHOLD, TOUCH_HIT_SLOP } from "@/lib/ink-ambient/config";
 import { acceptsPointer, dragThreshold, findGrabTarget } from "@/lib/ink-ambient/input";
+import { isInteractiveTarget } from "@/lib/ink-ambient/obstacles";
 import { createWorld, setGeometry, spawnInitialBatch } from "@/lib/ink-ambient/world";
 import type { InkObject } from "@/lib/ink-ambient/types";
 
@@ -57,5 +58,14 @@ describe("dragThreshold", () => {
     expect(dragThreshold("mouse")).toBe(5);
     expect(dragThreshold("touch")).toBe(TOUCH_DRAG_THRESHOLD);
     expect(dragThreshold("pen")).toBe(TOUCH_DRAG_THRESHOLD);
+  });
+});
+
+describe("panel", () => {
+  it("input that starts on the playground panel never grabs an object", () => {
+    document.body.innerHTML = `<aside data-ink-panel><div id="inner"><span id="deep">x</span></div></aside><div id="page"></div>`;
+    expect(isInteractiveTarget(document.getElementById("inner"))).toBe(true);
+    expect(isInteractiveTarget(document.getElementById("deep"))).toBe(true);
+    expect(isInteractiveTarget(document.getElementById("page"))).toBe(false);
   });
 });
