@@ -13,6 +13,7 @@ import {
 } from "./config";
 import { clamp, isPenLike, tipPosition, trailMaxAge } from "./physics";
 import { renderedOpacityMultiplier } from "./lifecycle";
+import { DEFAULT_SIM_CONFIG, trailScale, type SimConfig } from "./sim-config";
 import type { InkEffect, InkObject, Rect } from "./types";
 
 const SPRITE_SIZE = 96;
@@ -99,7 +100,9 @@ export class InkRenderer {
     width: number,
     height: number,
     now: number,
+    config: Readonly<SimConfig> = DEFAULT_SIM_CONFIG,
   ): void {
+    const trail = trailScale(config);
     this.context.save();
     this.context.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     this.context.clearRect(0, 0, width, height);
@@ -113,9 +116,9 @@ export class InkRenderer {
 
     for (const object of objects) {
       if (object.opacity <= 0) continue;
-      const fadeMultiplier = renderedOpacityMultiplier(object);
+      const fadeMultiplier = renderedOpacityMultiplier(object, config.starveSeconds);
       if (fadeMultiplier <= 0) continue;
-      this.drawTrail(object, obstacles, fadeMultiplier);
+      this.drawTrail(object, obstacles, fadeMultiplier, trail);
       const renderedRadius = object.radius * Math.max(object.scale.x, object.scale.y);
       const opacity = obstacleOpacity(
         { position: object.position, radius: renderedRadius },
@@ -194,14 +197,14 @@ export class InkRenderer {
   // whose alpha rounds to the same TRAIL_ALPHA_STEP band share one stroke: one
   // stroke per segment overlapped its round caps at every joint, which showed
   // as darker dots along the line.
-  private drawTrail(object: InkObject, obstacles: readonly Rect[], fadeMultiplier: number): void {
+  private drawTrail(object: InkObject, obstacles: readonly Rect[], fadeMultiplier: number, scale: number): void {
     if (object.trail.length === 0) return;
     const tip = tipPosition(object);
     const chain: Array<{ x: number; y: number; age: number }> = [
       ...object.trail,
       { x: tip.x, y: tip.y, age: 0 },
     ];
-    const maxAge = trailMaxAge(object);
+    const maxAge = trailMaxAge(object, scale);
     const baseWidth = object.radius * 0.1;
     const last = chain.length - 2;
     let band = 0;

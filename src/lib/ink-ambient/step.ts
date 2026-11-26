@@ -6,7 +6,6 @@ import {
   LV_CATCH_PREDATOR_BOOST,
   LV_CATCH_PREY_DECAY,
   LV_PREDATOR_DEATH_DECAY,
-  PREDATOR_LIVES_START,
   PREDATOR_MAX_RAMPED_SPEED,
   PREDATOR_REST_SECONDS_PER_MULTIPLIER,
   PREDATOR_SCARCITY_HUNGER_PENALTY_SECONDS,
@@ -18,6 +17,7 @@ import {
   VANISH_DURATION_SECONDS,
 } from "./config";
 import { resolveCatches, type CatchResolution } from "./catches";
+import { trailScale } from "./sim-config";
 import {
   computeFlockAssignments,
   flockHuntAcceleration,
@@ -79,12 +79,12 @@ function massFraction(mass: number): number {
   return clamp((mass - 0.7) / (1.5 - 0.7), 0, 1);
 }
 
-function updateTrail(object: InkObject, dt: number): void {
+function updateTrail(object: InkObject, dt: number, scale = 1): void {
   // Age and prune every frame regardless of motion, so a trail fades out on
   // its own instead of freezing in place when the object slows down.
   // Pen (predator) and pencil (prey) keep independent trail lengths.
-  const maxAge = trailMaxAge(object);
-  const maxPoints = trailMaxPoints(object);
+  const maxAge = trailMaxAge(object, scale);
+  const maxPoints = trailMaxPoints(object, scale);
   for (let index = object.trail.length - 1; index >= 0; index -= 1) {
     object.trail[index].age += dt;
     if (object.trail[index].age >= maxAge) object.trail.splice(index, 1);
@@ -108,7 +108,7 @@ function updateObject(world: World, object: InkObject, dt: number, now: number):
   object.squashCooldown = Math.max(0, object.squashCooldown - dt);
   updateSpawnFade(object, now, dt);
   // Hunger runs at 1/m speed, so a predator lives m times longer on a quiet screen.
-  applyPredatorSurvivalTick(object, dt / world.lifespanMultiplier);
+  applyPredatorSurvivalTick(object, dt / world.lifespanMultiplier, world.config.starveSeconds);
   object.restRemaining = Math.max(0, object.restRemaining - dt);
 
   if (object.vanishElapsed !== null) {
@@ -119,7 +119,7 @@ function updateObject(world: World, object: InkObject, dt: number, now: number):
   if (object.grabbed) {
     // Still track the trail while dragged: the component syncs position to
     // the pointer, so this samples the real cursor trajectory.
-    updateTrail(object, dt);
+    updateTrail(object, dt, trailScale(world.config));
     return;
   }
 
@@ -145,6 +145,7 @@ function updateObject(world: World, object: InkObject, dt: number, now: number):
           world.flockTargetByMemberId.get(object.id)!,
           world.flockByMemberId.get(object.id)!,
           maxAccel,
+          world.config.flockRadius,
         )
       : object.beingHunted && !settling && world.flockByTargetPredatorId.has(object.id)
         ? predatorFleeAcceleration(object, world.flockByTargetPredatorId.get(object.id)!, maxAccel, now)
@@ -194,7 +195,8 @@ function updateObject(world: World, object: InkObject, dt: number, now: number):
             )
           : object.chaseSpeed
         : 155 - (155 - 115) * massT;
-  object.velocity = limit(object.velocity, maxSpeed);
+  const speedScale = object.role === "predator" ? world.config.predatorSpeedScale : world.config.preySpeedScale;
+  object.velocity = limit(object.velocity, maxSpeed * speedScale);
   object.scale.x += (1 - object.scale.x) * Math.min(1, dt * 5);
   object.scale.y += (1 - object.scale.y) * Math.min(1, dt * 5);
   if (object.squashCooldown <= 0) {
@@ -203,12 +205,16 @@ function updateObject(world: World, object: InkObject, dt: number, now: number):
     object.scale.y += (1 + turnFactor - object.scale.y) * Math.min(1, dt * 8);
   }
   clampToViewport(object, width, height);
-  updateTrail(object, dt);
+  updateTrail(object, dt, trailScale(world.config));
 }
 
 export const assignFlocks: Rule = (world) => {
   if (world.preyButtonEverPressed && countAlive(world, "prey") > countAlive(world, "predator")) {
-    const assignment = computeFlockAssignments(world.objects, world.flockTargetByMemberId);
+    const assignment = computeFlockAssignments(world.objects, world.flockTargetByMemberId, {
+      radius: world.config.flockRadius,
+      minSize: world.config.flockMinSize,
+      switchMargin: world.config.flockSwitchMargin,
+    });
     for (const object of world.objects) {
       object.huntingFlock = assignment.huntingFlockIds.has(object.id);
       object.beingHunted = assignment.beingHuntedIds.has(object.id);
@@ -229,7 +235,7 @@ export const assignFlocks: Rule = (world) => {
 
 export const moveObjects: Rule = (world, frame) => {
   const alive = world.objects.filter((object) => object.vanishElapsed === null).length;
-  world.lifespanMultiplier = lifespanMultiplier(alive);
+  world.lifespanMultiplier = lifespanMultiplier(alive, world.config.lifespanMaxMultiplier);
   for (const object of world.objects) updateObject(world, object, frame.dt, frame.now);
 };
 
@@ -241,7 +247,7 @@ export const resolveCatchRule: Rule = (world, frame) => {
       winner.hungerElapsed = 0;
       // A successful catch is a full reprieve: lives lost to earlier
       // rival losses are forgiven too, not just the starvation clock.
-      winner.lives = PREDATOR_LIVES_START;
+      winner.lives = world.config.predatorLives;
       // A fed predator rests before it hunts again; zero at the reference crowding.
       winner.restRemaining = PREDATOR_REST_SECONDS_PER_MULTIPLIER * (world.lifespanMultiplier - 1);
     }
@@ -261,7 +267,7 @@ export const flockKills: Rule = (world) => {
   for (const predator of world.objects) {
     if (!predator.beingHunted || predator.vanishElapsed !== null) continue;
     const hunters = world.flockByTargetPredatorId.get(predator.id);
-    if (!hunters || !isFlockKillTriggered(predator, hunters)) continue;
+    if (!hunters || !isFlockKillTriggered(predator, hunters, world.config.flockRadius)) continue;
     predator.beingHunted = false;
     predator.vanishElapsed = 0;
     addBurstEffect(world, predator.position.x, predator.position.y, predator.radius);

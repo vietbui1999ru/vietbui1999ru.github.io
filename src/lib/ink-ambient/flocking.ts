@@ -16,6 +16,22 @@ import { clamp, distance, normalize, subtract } from "./physics";
 import { preyAcceleration } from "./targeting";
 import type { InkObject, Vec2 } from "./types";
 
+/** Flock rule values (issue #22); the defaults are the config.ts constants. */
+export interface FlockParams {
+  radius: number;
+  minSize: number;
+  switchMargin: number;
+}
+
+export const DEFAULT_FLOCK_PARAMS: Readonly<FlockParams> = Object.freeze({
+  radius: FLOCK_RADIUS,
+  minSize: FLOCK_MIN_SIZE,
+  switchMargin: FLOCK_TARGET_SWITCH_MARGIN,
+});
+
+// The keep radius stays the same multiple of the link radius when the radius changes.
+const KEEP_RADIUS_RATIO = FLOCK_KEEP_RADIUS / FLOCK_RADIUS;
+
 function isAlive(object: InkObject): boolean {
   return object.vanishElapsed === null;
 }
@@ -29,7 +45,9 @@ function isAlive(object: InkObject): boolean {
 export function detectFlocks(
   objects: readonly InkObject[],
   previousMemberIds: ReadonlySet<number> = new Set(),
+  params: Readonly<FlockParams> = DEFAULT_FLOCK_PARAMS,
 ): InkObject[][] {
+  const keepRadius = params.radius * KEEP_RADIUS_RATIO;
   const prey = objects.filter((o) => o.role === "prey" && isAlive(o) && !o.grabbed);
   const visited = new Set<number>();
   const flocks: InkObject[][] = [];
@@ -46,15 +64,15 @@ export function detectFlocks(
         if (visited.has(candidate.id)) continue;
         const linkRadius =
           previousMemberIds.has(current.id) && previousMemberIds.has(candidate.id)
-            ? FLOCK_KEEP_RADIUS
-            : FLOCK_RADIUS;
+            ? keepRadius
+            : params.radius;
         if (distance(current.position, candidate.position) < linkRadius) {
           visited.add(candidate.id);
           stack.push(candidate);
         }
       }
     }
-    if (component.length >= FLOCK_MIN_SIZE) flocks.push(component);
+    if (component.length >= params.minSize) flocks.push(component);
   }
 
   return flocks;
@@ -140,12 +158,13 @@ export function chooseFlockTarget(
   members: readonly InkObject[],
   held: InkObject | null,
   nearest: InkObject | null,
+  switchMargin = FLOCK_TARGET_SWITCH_MARGIN,
 ): InkObject | null {
   if (!held || !nearest || nearest.id === held.id) return held ?? nearest;
   const center = centroid(members);
   const heldDistance = distance(center, held.position);
   const nearestDistance = distance(center, nearest.position);
-  return nearestDistance < heldDistance * (1 - FLOCK_TARGET_SWITCH_MARGIN) ? nearest : held;
+  return nearestDistance < heldDistance * (1 - switchMargin) ? nearest : held;
 }
 
 /**
@@ -156,6 +175,7 @@ export function chooseFlockTarget(
 export function computeFlockAssignments(
   objects: readonly InkObject[],
   previousTargetByMemberId: ReadonlyMap<number, InkObject> = new Map(),
+  params: Readonly<FlockParams> = DEFAULT_FLOCK_PARAMS,
 ): FlockAssignment {
   const huntingFlockIds = new Set<number>();
   const beingHuntedIds = new Set<number>();
@@ -164,11 +184,12 @@ export function computeFlockAssignments(
   const flockByTargetPredatorId = new Map<number, InkObject[]>();
 
   const previousMemberIds = new Set(previousTargetByMemberId.keys());
-  for (const members of detectFlocks(objects, previousMemberIds)) {
+  for (const members of detectFlocks(objects, previousMemberIds, params)) {
     const target = chooseFlockTarget(
       members,
       heldFlockTarget(members, previousTargetByMemberId, objects),
       selectFlockTarget(members, objects),
+      params.switchMargin,
     );
     if (!target) continue;
     beingHuntedIds.add(target.id);
@@ -193,8 +214,12 @@ function localNeighbors(
   );
 }
 
-export function cohesionDirection(object: InkObject, flockMembers: readonly InkObject[]): Vec2 {
-  const neighbors = localNeighbors(object, flockMembers, FLOCK_RADIUS);
+export function cohesionDirection(
+  object: InkObject,
+  flockMembers: readonly InkObject[],
+  radius = FLOCK_RADIUS,
+): Vec2 {
+  const neighbors = localNeighbors(object, flockMembers, radius);
   if (neighbors.length === 0) return { x: 0, y: 0 };
   return normalize(subtract(centroid(neighbors), object.position));
 }
@@ -212,8 +237,12 @@ export function separationDirection(object: InkObject, flockMembers: readonly In
   return normalize({ x, y });
 }
 
-export function alignmentDirection(object: InkObject, flockMembers: readonly InkObject[]): Vec2 {
-  const neighbors = localNeighbors(object, flockMembers, FLOCK_RADIUS);
+export function alignmentDirection(
+  object: InkObject,
+  flockMembers: readonly InkObject[],
+  radius = FLOCK_RADIUS,
+): Vec2 {
+  const neighbors = localNeighbors(object, flockMembers, radius);
   if (neighbors.length === 0) return { x: 0, y: 0 };
   const sum = neighbors.reduce(
     (acc, neighbor) => ({ x: acc.x + neighbor.velocity.x, y: acc.y + neighbor.velocity.y }),
@@ -227,11 +256,12 @@ export function flockHuntAcceleration(
   targetPredator: InkObject,
   flockMembers: readonly InkObject[],
   maxAcceleration: number,
+  radius = FLOCK_RADIUS,
 ): Vec2 {
   const hunt = normalize(subtract(targetPredator.position, object.position));
-  const cohesion = cohesionDirection(object, flockMembers);
+  const cohesion = cohesionDirection(object, flockMembers, radius);
   const separation = separationDirection(object, flockMembers);
-  const alignment = alignmentDirection(object, flockMembers);
+  const alignment = alignmentDirection(object, flockMembers, radius);
 
   const combined: Vec2 = {
     x:
@@ -251,8 +281,12 @@ export function flockHuntAcceleration(
   return { x: direction.x * magnitude, y: direction.y * magnitude };
 }
 
-export function isFlockKillTriggered(predator: InkObject, flockMembers: readonly InkObject[]): boolean {
-  return flockMembers.some((member) => distance(predator.position, member.position) < FLOCK_RADIUS);
+export function isFlockKillTriggered(
+  predator: InkObject,
+  flockMembers: readonly InkObject[],
+  radius = FLOCK_RADIUS,
+): boolean {
+  return flockMembers.some((member) => distance(predator.position, member.position) < radius);
 }
 
 /** A predator being hunted by a flock acts as prey (behavior only — its

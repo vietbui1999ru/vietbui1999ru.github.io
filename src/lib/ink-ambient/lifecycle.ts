@@ -26,9 +26,10 @@ export function livesFadeStep(lives: number): number {
 
 export function renderedOpacityMultiplier(
   object: Pick<InkObject, "role" | "lives" | "hungerElapsed" | "vanishElapsed">,
+  starveSeconds = PREDATOR_STARVE_SECONDS,
 ): number {
   if (object.role !== "predator" || object.vanishElapsed !== null) return 1;
-  const hungerFade = clamp(1 - object.hungerElapsed / PREDATOR_STARVE_SECONDS, 0, 1);
+  const hungerFade = clamp(1 - object.hungerElapsed / starveSeconds, 0, 1);
   return livesFadeStep(object.lives) * hungerFade;
 }
 
@@ -43,14 +44,18 @@ export function updateVanish(object: InkObject, dt: number): boolean {
 }
 
 /** Fewer objects alive live longer: LIFESPAN_REFERENCE_COUNT / alive, clamped to [1, LIFESPAN_MAX_MULTIPLIER]. */
-export function lifespanMultiplier(alive: number): number {
-  return clamp(LIFESPAN_REFERENCE_COUNT / Math.max(1, alive), 1, LIFESPAN_MAX_MULTIPLIER);
+export function lifespanMultiplier(alive: number, maxMultiplier = LIFESPAN_MAX_MULTIPLIER): number {
+  return clamp(LIFESPAN_REFERENCE_COUNT / Math.max(1, alive), 1, Math.max(1, maxMultiplier));
 }
 
-export function applyPredatorSurvivalTick(object: InkObject, dt: number): void {
+export function applyPredatorSurvivalTick(
+  object: InkObject,
+  dt: number,
+  starveSeconds = PREDATOR_STARVE_SECONDS,
+): void {
   if (object.role !== "predator" || object.vanishElapsed !== null) return;
   object.hungerElapsed += dt;
-  if (object.lives <= 0 || object.hungerElapsed >= PREDATOR_STARVE_SECONDS) {
+  if (object.lives <= 0 || object.hungerElapsed >= starveSeconds) {
     object.vanishElapsed = 0;
   }
 }

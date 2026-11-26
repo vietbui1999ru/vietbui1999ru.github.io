@@ -11,6 +11,7 @@ import { acceptsPointer, dragThreshold, findGrabTarget } from "@/lib/ink-ambient
 import { clamp, fixedStepAccumulator } from "@/lib/ink-ambient/physics";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
 import { InkRenderer } from "@/lib/ink-ambient/renderer";
+import { usesSnapshot } from "@/lib/ink-ambient/sim-config";
 import { randomSeed } from "@/lib/ink-ambient/rng";
 import { step } from "@/lib/ink-ambient/step";
 import {
@@ -65,7 +66,10 @@ onMount(() => {
   if (!context) return;
 
   const renderer = new InkRenderer(canvas);
-  const snapshot = loadSnapshot();
+  // The playground runs a fresh world each visit and never touches the shared
+  // snapshot, so its settings and objects cannot reach other pages (#22).
+  const persist = usesSnapshot(pathname);
+  const snapshot = persist ? loadSnapshot() : null;
   const pointer = createPointer(matchMedia("(pointer: fine)").matches);
   const world = createWorld({ pointerFine: pointer.fine }, snapshot?.seed ?? randomSeed());
   const { objects, effects } = world;
@@ -88,6 +92,7 @@ onMount(() => {
   const sectionRatios: Array<[Element, number]> = [];
 
   function save(savedAt?: number): void {
+    if (!persist) return;
     saveSnapshot(world.seed, objects, { width: world.width, height: world.height }, savedAt);
   }
 
@@ -139,7 +144,7 @@ onMount(() => {
     } else {
       accumulator = 0;
     }
-    renderer.draw(objects, effects, world.obstacles, world.width, world.height, now);
+    renderer.draw(objects, effects, world.obstacles, world.width, world.height, now, world.config);
     if (now - lastSave > 7000) {
       save(Date.now());
       lastSave = now;
