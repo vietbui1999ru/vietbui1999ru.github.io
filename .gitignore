@@ -50,3 +50,6 @@ docs/style-guides/
 
 # Local verify build output (SPEC verify lines)
 .cache/
+
+# pnpm is the only package manager (see mise.toml). Block a stray npm lockfile.
+package-lock.json
