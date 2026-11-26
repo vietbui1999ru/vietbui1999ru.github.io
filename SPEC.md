@@ -1,5 +1,5 @@
 ---
-status: draft
+status: approved
 branch: feat/ink-touch
 ---
 # SPEC: Touch grab, drag and throw for the ink ambient (issue #26)
