@@ -13,11 +13,29 @@ export const TYPE_ICON_PATHS: Record<LibraryType, string> = {
 <script lang="ts">
 import Chip from "../primitives/Chip.svelte";
 import type { LibraryCardData } from "../../lib/library-view";
+import { STATUS_STYLE } from "../../lib/library-status";
 
 let { item }: { item: LibraryCardData } = $props();
+const style = $derived(STATUS_STYLE[item.status]);
 </script>
 
-<article class="relative flex flex-col border-[1.5px] border-ink bg-paper-raised shadow-hard" data-library-card>
+<!-- h-full: every card fills its grid cell, so a row has one height. Faded cards
+     return to full strength on hover or keyboard focus, so their text stays readable. -->
+<article
+  class={[
+    "relative flex h-full w-full flex-col border-[1.5px] border-ink bg-paper-raised shadow-hard transition-opacity hover:opacity-100 focus-within:opacity-100",
+    style.opacity,
+  ]}
+  data-library-card
+  data-status={item.status}
+>
+  <div class={["flex h-6 shrink-0 items-center justify-end border-b-[1.5px] border-ink px-2", style.band]} data-status-band>
+    {#if item.status === "done"}
+      <svg viewBox="0 0 16 16" class="h-4 w-4 text-ink" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 8.5l3 3 7-7" />
+      </svg>
+    {/if}
+  </div>
   {#if item.thumb}
     <img
       src={item.thumb.src}
@@ -37,17 +55,16 @@ let { item }: { item: LibraryCardData } = $props();
       <svg viewBox="0 0 24 24" class="h-10 w-10 text-journal-1" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <path d={TYPE_ICON_PATHS[item.type]} />
       </svg>
-      <span class="font-serif text-step--1 text-ink">{item.title}</span>
+      <span class="line-clamp-3 font-serif text-step--1 text-ink">{item.title}</span>
     </div>
   {/if}
 
   <div class="flex flex-1 flex-col gap-2 p-3">
-    <h3 class="font-serif text-step-0 font-semibold text-ink">
-      <a href={item.href} class="u-draw text-ink no-underline">{item.title}</a>
+    <h3 class="line-clamp-2 min-h-[2lh] font-serif text-step-0 font-semibold text-ink">
+      <a href={item.href} class={["u-draw text-ink no-underline", style.struck && "line-through"]}>{item.title}</a>
     </h3>
-    {#if item.meta}
-      <p class="font-mono text-step--1 text-journal-1">{item.meta}</p>
-    {/if}
+    <!-- The meta line keeps its height when empty, so cards line up. -->
+    <p class="min-h-[1lh] truncate font-mono text-step--1 text-journal-1">{item.meta}</p>
     <span class="mt-auto flex flex-wrap gap-1.5">
       <Chip tone="raised">{item.statusLabel}</Chip>
       {#if item.draft}

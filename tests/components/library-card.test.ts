@@ -50,6 +50,37 @@ describe("LibraryCard", () => {
     expect(container.querySelector("[data-placeholder]")).toBeNull();
   });
 
+  it("fills its grid cell so every card in a row has one height", () => {
+    const { container } = render(LibraryCard, { props: { item: card({ meta: "" }) } });
+    const article = container.querySelector("[data-library-card]");
+    expect(article?.className).toContain("h-full");
+    // An empty meta line still takes its row.
+    expect(container.querySelector("p.min-h-\\[1lh\\]")).not.toBeNull();
+  });
+
+  it.each([
+    ["done", "bg-pastel-sage", "opacity-100"],
+    ["active", "bg-pastel-butter", "opacity-90"],
+    ["backlog", "bg-paper-raised", "opacity-75"],
+    ["paused", "bg-pastel-dust", "opacity-60"],
+    ["dropped", "bg-journal-4", "opacity-45"],
+  ] as const)("shows %s with its band colour and opacity", (status, band, opacity) => {
+    const { container } = render(LibraryCard, { props: { item: card({ status }) } });
+    const article = container.querySelector("[data-library-card]");
+    expect(article?.getAttribute("data-status")).toBe(status);
+    expect(article?.className).toContain(opacity);
+    expect(container.querySelector("[data-status-band]")?.className).toContain(band);
+  });
+
+  it("ticks off a done item and strikes through a dropped one", () => {
+    const done = render(LibraryCard, { props: { item: card({ status: "done" }) } });
+    expect(done.container.querySelector("[data-status-band] svg")).not.toBeNull();
+    cleanup();
+    const dropped = render(LibraryCard, { props: { item: card({ status: "dropped" }) } });
+    expect(dropped.container.querySelector("[data-status-band] svg")).toBeNull();
+    expect(screen.getByRole("link", { name: "PLACEHOLDER Book" }).className).toContain("line-through");
+  });
+
   it("marks a draft", () => {
     render(LibraryCard, { props: { item: card({ draft: true }) } });
     expect(screen.getByText("draft")).toBeTruthy();

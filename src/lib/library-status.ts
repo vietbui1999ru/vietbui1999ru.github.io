@@ -13,6 +13,19 @@ export function statusesFor(type: LibraryType): LibraryStatus[] {
   return LIBRARY_STATUSES.filter((status) => LABELS[type][status] !== undefined);
 }
 
+/**
+ * How a card shows its status: a coloured band and an opacity. Done reads as
+ * ticked off (green, full strength); the further an item is from done, the
+ * fainter it gets. Literal class names, so Tailwind finds them.
+ */
+export const STATUS_STYLE: Record<LibraryStatus, { band: string; opacity: string; struck: boolean }> = {
+  done: { band: "bg-pastel-sage", opacity: "opacity-100", struck: false },
+  active: { band: "bg-pastel-butter", opacity: "opacity-90", struck: false },
+  backlog: { band: "bg-paper-raised", opacity: "opacity-75", struck: false },
+  paused: { band: "bg-pastel-dust", opacity: "opacity-60", struck: false },
+  dropped: { band: "bg-journal-4", opacity: "opacity-45", struck: true },
+};
+
 export function statusLabel(type: LibraryType, status: LibraryStatus): string {
   const label = LABELS[type][status];
   if (label === undefined) throw new Error(`${type} has no "${status}" status`);

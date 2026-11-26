@@ -26,7 +26,7 @@ const shown = $derived(sortByRecent(filterCards(items, { status, tag, staplesOnl
       <h2 class="mb-4 font-serif text-step-1 text-ink">now</h2>
       <ul class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {#each now as item (item.href)}
-          <li><LibraryCard {item} /></li>
+          <li class="flex"><LibraryCard {item} /></li>
         {/each}
       </ul>
     </section>
@@ -72,7 +72,7 @@ const shown = $derived(sortByRecent(filterCards(items, { status, tag, staplesOnl
 
   <ul class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4" data-library-grid>
     {#each shown as item (item.href)}
-      <li><LibraryCard {item} /></li>
+      <li class="flex"><LibraryCard {item} /></li>
     {:else}
       <li class="col-span-full font-mono text-step--1 text-journal-1">nothing here yet</li>
     {/each}
