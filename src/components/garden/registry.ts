@@ -2,6 +2,7 @@ import { z } from "astro/zod";
 import GardenIdentity from "./GardenIdentity.svelte";
 import GardenFocus from "./GardenFocus.astro";
 import GardenFeed from "./GardenFeed.svelte";
+import GardenCurrently from "./GardenCurrently.svelte";
 import GardenAboutProse from "./GardenAboutProse.svelte";
 import GardenExperience from "./GardenExperience.astro";
 import GardenEducation from "./GardenEducation.astro";
@@ -17,8 +18,15 @@ export const gardenRegistry = {
   focus: { component: GardenFocus, props: z.object({}).strict() },
   feed: {
     component: GardenFeed,
-    props: z.object({ limit: z.number().int().positive().default(8) }).strict(),
+    props: z
+      .object({
+        limit: z.number().int().positive().default(8),
+        // Which kinds the feed shows; the component defaults to posts and thoughts.
+        sources: z.array(z.enum(["blog", "thought", "library"])).min(1).optional(),
+      })
+      .strict(),
   },
+  currently: { component: GardenCurrently, props: z.object({}).strict() },
   "about-prose": { component: GardenAboutProse, props: z.object({}).strict() },
   experience: { component: GardenExperience, props: z.object({}).strict() },
   education: { component: GardenEducation, props: z.object({}).strict() },

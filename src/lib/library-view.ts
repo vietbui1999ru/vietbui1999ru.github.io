@@ -54,6 +54,32 @@ export function sortByRecent(cards: readonly LibraryCardData[]): LibraryCardData
   });
 }
 
+/** One row of the home `currently` block. */
+export interface CurrentlyItem {
+  title: string;
+  href: string;
+  type: LibraryType;
+  statusLabel: string;
+  progress?: number;
+}
+
+/** Active items across types, most recently started first. Production hides drafts and unpublished items. */
+export function currentlyItems(
+  entries: ReadonlyArray<{ id: string; data: LibraryEntry }>,
+  { dev }: { dev: boolean },
+): CurrentlyItem[] {
+  return entries
+    .filter(({ data }) => data.status === "active" && (dev || (data.publish && !data.draft)))
+    .toSorted((a, b) => (b.data.started?.valueOf() ?? 0) - (a.data.started?.valueOf() ?? 0))
+    .map(({ id, data }) => ({
+      title: data.title,
+      href: `/library/${id}`,
+      type: data.type,
+      statusLabel: statusLabel(data.type, data.status),
+      progress: data.progress,
+    }));
+}
+
 export interface CardFilter {
   status: LibraryStatus | "all";
   tag: string | "all";

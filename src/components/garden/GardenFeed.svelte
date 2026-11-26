@@ -2,12 +2,16 @@
 import Section from "../primitives/Section.svelte";
 import SectionHeader from "../primitives/SectionHeader.svelte";
 import Chip from "../primitives/Chip.svelte";
-import type { FeedItem } from "../../lib/garden-feed";
+import type { FeedItem, FeedSource } from "../../lib/garden-feed";
 
-// `items` holds every published post and thought, newest first. The block's
-// `limit` prop caps how many show here.
-let { items = [], limit = 8 }: { items?: FeedItem[]; limit?: number } = $props();
-const shown = $derived(items.slice(0, limit));
+// `items` holds every published post, thought and written-up library item, newest
+// first. The block's `sources` prop picks the kinds; `limit` caps how many show.
+let {
+  items = [],
+  limit = 8,
+  sources = ["blog", "thought"],
+}: { items?: FeedItem[]; limit?: number; sources?: FeedSource[] } = $props();
+const shown = $derived(items.filter((item) => sources.includes(item.kind)).slice(0, limit));
 
 const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
 </script>
