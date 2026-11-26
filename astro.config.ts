@@ -20,6 +20,7 @@ import { createAssetAdapters } from "./src/lib/remark/adapters";
 import { getVaultRoot } from "./src/lib/vault";
 import { buildSiteWikilinkIndex } from "./src/lib/build-wikilink-index";
 import { publishPreview } from "./src/lib/publish/preview-route";
+import { copyLibraryCovers } from "./src/lib/library-covers";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -57,6 +58,9 @@ if (fs.existsSync(galleryDir)) {
     }
   }
 }
+
+// Library covers go into src/ (gitignored) so astro:assets can resize them.
+copyLibraryCovers(vaultRoot, path.resolve(__dirname, "src/assets/library"));
 
 export default defineConfig({
   site,

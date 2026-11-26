@@ -19,6 +19,10 @@ export const LAYOUTS: Record<LayoutName, LayoutBlock[]> = {
 const TYPE_DEFAULTS: Record<string, LayoutName> = {
   post: "essay",
   thought: "essay",
+  game: "visual",
+  book: "visual",
+  film: "visual",
+  recipe: "visual",
 };
 
 // Fail at load if a preset names a block the registry does not have.
