@@ -144,6 +144,15 @@ export const siteNoteSchema = z.object({
   order: z.number().int().optional(),
   blocks: z.array(z.object({ block: z.string().min(1) }).passthrough()).default([]),
   tools: z.array(z.string()).max(4, "a focus area takes at most 4 tool icons").default([]),
+  // Site/Library.md only: category order and visibility for /library (spec B).
+  categories: z
+    .array(
+      z.object({
+        type: z.enum(["game", "book", "film", "recipe"]),
+        enabled: z.boolean().default(true),
+      }),
+    )
+    .optional(),
 });
 
 export type SiteNoteEntry = z.infer<typeof siteNoteSchema>;
