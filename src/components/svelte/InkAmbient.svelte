@@ -7,6 +7,7 @@ import {
   hasTextSelection,
   isInteractiveTarget,
 } from "@/lib/ink-ambient/obstacles";
+import { acceptsPointer, dragThreshold, findGrabTarget } from "@/lib/ink-ambient/input";
 import { clamp, fixedStepAccumulator } from "@/lib/ink-ambient/physics";
 import { loadSnapshot, saveSnapshot } from "@/lib/ink-ambient/persistence";
 import { InkRenderer } from "@/lib/ink-ambient/renderer";
@@ -82,6 +83,7 @@ onMount(() => {
   );
   let lastSectionChange = 0;
   let pointerSampleTime = 0;
+  let grabPointerType = "mouse";
   let pointerListenersInstalled = false;
   const sectionRatios: Array<[Element, number]> = [];
 
@@ -163,8 +165,9 @@ onMount(() => {
       pointerCancel();
       return;
     }
-    if (!animationEnabled || !pointer.fine || event.pointerType !== "mouse")
-      return;
+    if (!animationEnabled || !acceptsPointer(event.pointerType)) return;
+    // While an object is held, only the pointer holding it moves it.
+    if (pointer.id !== null && event.pointerId !== pointer.id) return;
     const now = performance.now();
     const elapsed = Math.max(1, now - (pointerSampleTime || now - 16));
     pointer.previousX = pointer.x;
@@ -188,7 +191,7 @@ onMount(() => {
         pointer.x - pointer.downX,
         pointer.y - pointer.downY,
       );
-      if (moved < 5) return;
+      if (moved < dragThreshold(grabPointerType)) return;
       pointer.dragStarted = true;
       object.grabbed = true;
     }
@@ -201,22 +204,16 @@ onMount(() => {
   function pointerDown(event: PointerEvent): void {
     if (
       !animationEnabled ||
-      !pointer.fine ||
-      event.pointerType !== "mouse" ||
+      !acceptsPointer(event.pointerType) ||
+      pointer.grabbedId !== null ||
       pausedByModal ||
       isInteractiveTarget(event.target) ||
       hasTextSelection()
     )
       return;
-    const object = objects.find(
-      (candidate) =>
-        Math.hypot(
-          candidate.position.x - event.clientX,
-          candidate.position.y - event.clientY,
-        ) <=
-        candidate.radius + 12,
-    );
+    const object = findGrabTarget(objects, event.clientX, event.clientY, event.pointerType);
     if (!object) return;
+    grabPointerType = event.pointerType;
     pointer.id = event.pointerId;
     pointer.downX = event.clientX;
     pointer.downY = event.clientY;
@@ -226,6 +223,23 @@ onMount(() => {
     pointer.velocityY = 0;
     pointer.dragStarted = false;
     pointer.grabbedId = object.id;
+  }
+
+  // A touch scrolls the page unless the scroll is stopped at touchstart; after
+  // that the browser sends pointercancel and no more pointer events. So a touch
+  // that lands on an object (the same hit test pointerDown uses) stops the
+  // scroll here. Every other touch is left alone and scrolls as before.
+  function touchStart(event: TouchEvent): void {
+    if (
+      !animationEnabled ||
+      pausedByModal ||
+      event.touches.length !== 1 ||
+      isInteractiveTarget(event.target) ||
+      hasTextSelection()
+    )
+      return;
+    const touch = event.changedTouches[0];
+    if (findGrabTarget(objects, touch.clientX, touch.clientY, "touch")) event.preventDefault();
   }
 
   function releasePointer(throwObject: boolean): void {
@@ -332,6 +346,7 @@ onMount(() => {
     window.addEventListener("pointerdown", pointerDown, { passive: true });
     window.addEventListener("pointerup", pointerUp, { passive: true });
     window.addEventListener("pointercancel", pointerCancel, { passive: true });
+    window.addEventListener("touchstart", touchStart, { passive: false });
     window.addEventListener("blur", onBlur, { passive: true });
     pointerListenersInstalled = true;
   };
@@ -342,6 +357,7 @@ onMount(() => {
     window.removeEventListener("pointerdown", pointerDown);
     window.removeEventListener("pointerup", pointerUp);
     window.removeEventListener("pointercancel", pointerCancel);
+    window.removeEventListener("touchstart", touchStart);
     window.removeEventListener("blur", onBlur);
     pointerListenersInstalled = false;
   };
