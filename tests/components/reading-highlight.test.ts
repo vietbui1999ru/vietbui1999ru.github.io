@@ -5,10 +5,10 @@ import experience from "@/data/experience.json";
 import { HIGHLIGHT_NAME, installReadingHighlight } from "@/lib/reading-highlight-dom";
 
 // jsdom has no layout, no caret API and no CSS Custom Highlight API: the tests stub them.
-class FakeHighlight {
-  ranges: Range[];
+// Highlight is set-like: a Set of ranges.
+class FakeHighlight extends Set<Range> {
   constructor(...ranges: Range[]) {
-    this.ranges = ranges;
+    super(ranges);
   }
 }
 
@@ -56,7 +56,7 @@ function block(html = "<p data-read-hl>first line <em>second</em> end</p><h3>Tit
   return root;
 }
 
-const painted = () => registry.get(HIGHLIGHT_NAME)?.ranges.map((r) => r.toString());
+const painted = () => [...(registry.get(HIGHLIGHT_NAME) ?? [])].map((r) => r.toString());
 
 describe("pointer", () => {
   it("highlights the block text up to the caret under a mouse", () => {

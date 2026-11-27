@@ -69,16 +69,20 @@ export function installReadingHighlight(root: ParentNode): () => void {
     .filter((block) => block.nodes.length > 0);
   if (blocks.length === 0) return () => {};
   const registry = CSS.highlights;
+  // One Highlight for the whole install, updated in place, so a pointer move does not
+  // allocate a new Highlight.
+  const highlight = new Highlight();
 
   const paint = () => {
-    const ranges = blocks.flatMap((block) => {
-      if (!block.pos) return [];
+    highlight.clear();
+    for (const block of blocks) {
+      if (!block.pos) continue;
       const range = document.createRange();
       range.setStart(block.nodes[0], 0);
       range.setEnd(block.nodes[block.pos.node], block.pos.offset);
-      return [range];
-    });
-    registry.set(HIGHLIGHT_NAME, new Highlight(...ranges));
+      highlight.add(range);
+    }
+    if (!registry.has(HIGHLIGHT_NAME)) registry.set(HIGHLIGHT_NAME, highlight);
   };
 
   const onMove = (event: PointerEvent) => {
