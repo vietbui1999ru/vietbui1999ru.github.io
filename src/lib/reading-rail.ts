@@ -6,29 +6,33 @@ export interface ReadingInput {
   headingTops: number[];
   /** Offset of each checkpoint from the rail top, in the same order. */
   checkpoints: number[];
-  /** Document y of the reading line. */
+  /** Document y of the reading line: the pointer in pointer mode, see readingLine otherwise. */
   readingLine: number;
-  /** Document y of the bottom of the content. */
-  contentBottom: number;
   railHeight: number;
 }
 
 /**
- * Marker offset on the rail. The offset is piecewise linear over the points
- * (document top, 0), (heading i, checkpoint i) and (content bottom, rail height),
- * clamped to [0, railHeight].
+ * Marker offset on the rail. Between heading i and heading i+1 it interpolates linearly
+ * between checkpoint i and checkpoint i+1. Above the first heading it stays on the first
+ * checkpoint, below the last heading on the last one, and at 0 with no headings. The
+ * result is clamped to [0, railHeight].
  */
 export function readingMarkerOffset(input: ReadingInput): number {
-  const { headingTops, checkpoints, readingLine, contentBottom, railHeight } = input;
-  const xs = [0, ...headingTops, contentBottom];
-  const ys = [0, ...checkpoints, railHeight];
-  let offset = railHeight;
-  for (let i = 1; i < xs.length; i++) {
-    if (readingLine > xs[i]) continue;
-    const span = xs[i] - xs[i - 1];
-    const t = span > 0 ? (readingLine - xs[i - 1]) / span : 1;
-    offset = ys[i - 1] + (ys[i] - ys[i - 1]) * t;
-    break;
+  const { headingTops: xs, checkpoints: ys, readingLine, railHeight } = input;
+  const n = Math.min(xs.length, ys.length);
+  let offset = 0;
+  if (n > 0) {
+    offset = ys[n - 1];
+    if (readingLine <= xs[0]) offset = ys[0];
+    else {
+      for (let i = 1; i < n; i++) {
+        if (readingLine > xs[i]) continue;
+        const span = xs[i] - xs[i - 1];
+        const t = span > 0 ? (readingLine - xs[i - 1]) / span : 1;
+        offset = ys[i - 1] + (ys[i] - ys[i - 1]) * t;
+        break;
+      }
+    }
   }
   return Math.min(Math.max(offset, 0), Math.max(railHeight, 0));
 }

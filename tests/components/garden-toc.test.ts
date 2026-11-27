@@ -50,6 +50,7 @@ beforeEach(() => {
     if (el.dataset.readingRail !== undefined) return DOMRect.fromRect({ x: 0, y: 100, width: 0, height: 140 });
     if (el.dataset.checkpoint !== undefined)
       return DOMRect.fromRect({ x: 0, y: 120 + Number(el.dataset.index) * 40, width: 0, height: 0 });
+    if (el.dataset.hiddenCopy !== undefined) return DOMRect.fromRect({ x: 0, y: 0, width: 0, height: 0 });
     if (el.id in HEADING_Y) return at(HEADING_Y[el.id]);
     if (el.dataset.inkObstacle === "content") return at(0, 4000);
     return DOMRect.fromRect({ x: 0, y: 0, width: 0, height: 0 });
@@ -64,6 +65,12 @@ afterEach(() => {
   vi.unstubAllGlobals();
   document.body.innerHTML = "";
 });
+
+function pointer(pointerType: string, clientY: number) {
+  const event = new MouseEvent("pointermove", { bubbles: true, clientY });
+  Object.defineProperty(event, "pointerType", { value: pointerType });
+  document.dispatchEvent(event);
+}
 
 function setup() {
   const { container } = render(GardenToc, { props: { headings, sidebar: true } });
@@ -96,25 +103,89 @@ describe("GardenToc reading rail", () => {
   it("scroll: the marker glides to the reading position and sets checkpoint states", () => {
     const { nav, states, markerY } = setup();
     expect(nav.querySelector("[data-reading-rail]")?.hasAttribute("data-rail-ready")).toBe(true);
-    // Reading line 300: a third of the way to the first heading, 300 / 1000 * 20 = 6.
-    expect(markerY()).toBeCloseTo(6, 1);
-    expect(states()).toEqual(["upcoming", "upcoming", "upcoming"]);
+    // Reading line 300 is above the first heading, so the marker waits on the first checkpoint.
+    expect(markerY()).toBeCloseTo(20, 1);
+    expect(states()).toEqual(["passed", "upcoming", "upcoming"]);
     scrollTo(2200); // reading line 2500: halfway between checkpoints 60 and 100
     frames(1);
-    expect(markerY()).toBeGreaterThan(6);
+    expect(markerY()).toBeGreaterThan(20);
     expect(markerY()).toBeLessThan(80);
     frames(200);
     expect(markerY()).toBeCloseTo(80, 0);
     expect(states()).toEqual(["passed", "passed", "upcoming"]);
   });
 
-  it("scroll: at the end of the scroll the marker reaches the rail end and every checkpoint passes", () => {
+  it("scroll: at the end of the scroll the marker reaches the last checkpoint and every checkpoint passes", () => {
     reduced = true;
     const { states, markerY } = setup();
     scrollTo(3300);
     frames(1);
-    expect(markerY()).toBeCloseTo(140, 1);
+    expect(markerY()).toBeCloseTo(100, 1);
     expect(states()).toEqual(["passed", "passed", "passed"]);
+  });
+
+  it("scroll: measures the visible heading, not a hidden copy with the same id", () => {
+    // A blog post keeps a hidden copy of its headings (variant storage) before the content.
+    document.body.insertAdjacentHTML(
+      "afterbegin",
+      `<div style="display:none">${headings.map((h) => `<h2 id="${h.slug}" data-hidden-copy></h2>`).join("")}</div>`,
+    );
+    reduced = true;
+    const { markerY } = setup();
+    pointer("mouse", 1400);
+    frames(1);
+    expect(markerY()).toBeCloseTo(36, 1);
+  });
+
+  it("pointer: the marker follows the mouse in proportion between headings", () => {
+    reduced = true;
+    const { states, markerY } = setup();
+    pointer("mouse", 1400); // 40% of the way from heading 1 (1000) to heading 2 (2000)
+    frames(1);
+    expect(markerY()).toBeCloseTo(36, 1);
+    pointer("mouse", 1900); // short of heading 2: its checkpoint stays upcoming
+    frames(1);
+    expect(states()).toEqual(["passed", "upcoming", "upcoming"]);
+    pointer("mouse", 2000); // on heading 2
+    frames(1);
+    expect(markerY()).toBeCloseTo(60, 1);
+    expect(states()).toEqual(["passed", "passed", "upcoming"]);
+  });
+
+  it("pointer: scrolling under a still mouse moves the marker", () => {
+    reduced = true;
+    const { markerY } = setup();
+    pointer("mouse", 500); // above heading 1
+    frames(1);
+    expect(markerY()).toBeCloseTo(20, 1);
+    scrollTo(2000); // the mouse now sits over document y 2500
+    frames(1);
+    expect(markerY()).toBeCloseTo(80, 1);
+  });
+
+  it("pointer: a pen counts, touch does not, and leaving the page returns to scroll mode", () => {
+    reduced = true;
+    const { markerY } = setup();
+    pointer("touch", 2000);
+    frames(1);
+    expect(markerY()).toBeCloseTo(20, 1);
+    pointer("pen", 2000);
+    frames(1);
+    expect(markerY()).toBeCloseTo(60, 1);
+    document.documentElement.dispatchEvent(new Event("pointerleave"));
+    frames(1);
+    expect(markerY()).toBeCloseTo(20, 1); // scroll mode: reading line 300
+  });
+
+  it("pointer: the marker chases with no overshoot while the mouse moves", () => {
+    const { markerY } = setup();
+    let peak = 0;
+    for (let y = 1000; y <= 2000; y += 50) {
+      pointer("mouse", y);
+      frames(1);
+      peak = Math.max(peak, markerY());
+    }
+    expect(peak).toBeLessThanOrEqual(60 + 0.5);
   });
 
   it("reduced motion: the marker jumps to its target and checkpoints do not pop", () => {

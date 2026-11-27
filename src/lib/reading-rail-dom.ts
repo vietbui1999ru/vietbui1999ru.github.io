@@ -1,15 +1,19 @@
 import { RAIL_MOTION, atRest, bounceRatio, stepRail } from "./rail-motion";
 import { readingCheckpointStates, readingLine, readingMarkerOffset } from "./reading-rail";
 
-// Drives the reading rail in the sidebar TOC. The marker follows the scroll position with
-// the spring in rail-motion.ts. While the page scrolls, it chases with no overshoot. When
-// the scroll stops, it bounces by the speed of the last scroll.
+// Drives the reading rail in the sidebar TOC with the spring in rail-motion.ts. The marker
+// follows a reading line. In pointer mode (a mouse or pen over the page) the line is the
+// document y under the pointer, so moving the pointer or scrolling moves the marker. In
+// scroll mode it is readingLine (30% down the viewport, catching up at the scroll end).
+// While the line moves, the marker chases with no overshoot. When it stops, the marker
+// bounces by the speed of the last movement.
 //
 // Heading tops, checkpoint offsets and the content bottom are cached and measured again
-// on resize. GardenToc installs the rail again when its entries change (variant-change). Each frame reads only scrollY and writes only
-// transforms. The loop runs only while the rail is on screen and the marker moves.
+// on resize. GardenToc installs the rail again when its entries change (variant-change).
+// Each frame reads only scrollY and writes only transforms. The loop runs only while the
+// rail is on screen and the marker moves.
 
-/** Scroll idle this long (ms) counts as stopped. */
+/** Reading line idle this long (ms) counts as stopped. */
 const STOP_MS = 80;
 /** Half the marker size, so the marker centre sits on the rail position. */
 const MARKER_HALF = 6.5;
@@ -32,8 +36,10 @@ export function installReadingRail(nav: HTMLElement): () => void {
   let maxScroll = 0;
   let height = 0;
   let drawnPos = Number.NaN;
-  let lastScroll = { t: 0, y: 0 };
-  let scrollSpeed = 0;
+  let mode: "pointer" | "scroll" = "scroll";
+  let pointerY = 0;
+  let lastMove = { t: 0, y: 0 };
+  let moveSpeed = 0;
   let frame = 0;
   let last = 0;
   let visible = true;
@@ -47,30 +53,28 @@ export function installReadingRail(nav: HTMLElement): () => void {
       return r.top + r.height / 2 - top;
     });
     const y = window.scrollY;
+    const content = document.querySelector('[data-ink-obstacle="content"]');
+    // Look inside the content first: a blog post also keeps a hidden copy of every heading
+    // (the variant storage) outside it, with the same ids, and that copy measures as 0.
+    const byId = new Map<string, Element>();
+    for (const el of (content ?? document).querySelectorAll("[id]")) if (!byId.has(el.id)) byId.set(el.id, el);
     headingTops = checkpoints.map((cp) => {
-      const heading = document.getElementById(cp.dataset.slug ?? "");
+      const slug = cp.dataset.slug ?? "";
+      const heading = byId.get(slug) ?? document.getElementById(slug);
       return heading ? heading.getBoundingClientRect().top + y : 0;
     });
-    const content = document.querySelector('[data-ink-obstacle="content"]');
     contentBottom = content
       ? content.getBoundingClientRect().bottom + y
       : document.documentElement.scrollHeight;
     maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   };
 
+  const line = () =>
+    mode === "pointer"
+      ? window.scrollY + pointerY
+      : readingLine({ scrollY: window.scrollY, viewportHeight: window.innerHeight, maxScroll, contentBottom });
   const target = () =>
-    readingMarkerOffset({
-      headingTops,
-      checkpoints: offsets,
-      readingLine: readingLine({
-        scrollY: window.scrollY,
-        viewportHeight: window.innerHeight,
-        maxScroll,
-        contentBottom,
-      }),
-      contentBottom,
-      railHeight: height,
-    });
+    readingMarkerOffset({ headingTops, checkpoints: offsets, readingLine: line(), railHeight: height });
 
   const draw = (animate: boolean) => {
     if (body.pos !== drawnPos) {
@@ -92,8 +96,8 @@ export function installReadingRail(nav: HTMLElement): () => void {
     const goal = target();
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
-    const moving = now - lastScroll.t < STOP_MS;
-    const bounce = moving ? 0 : bounceRatio(scrollSpeed);
+    const moving = now - lastMove.t < STOP_MS;
+    const bounce = moving ? 0 : bounceRatio(moveSpeed);
     const reduced = !!reduce?.matches;
     if (reduced) Object.assign(body, { pos: goal, vel: 0 });
     else stepRail(body, goal, height, dt, bounce, RAIL_MOTION);
@@ -101,7 +105,7 @@ export function installReadingRail(nav: HTMLElement): () => void {
     if (settled) Object.assign(body, { pos: goal, vel: 0 });
     draw(!reduced);
     if (settled || !visible) {
-      scrollSpeed = 0;
+      moveSpeed = 0;
       frame = 0;
     } else frame = requestAnimationFrame(tick);
   };
@@ -111,14 +115,26 @@ export function installReadingRail(nav: HTMLElement): () => void {
     frame = requestAnimationFrame(tick);
   };
 
-  const onScroll = () => {
+  // Speed of the reading line in px/s, smoothed, so a movement that slows down before it
+  // stops bounces little. A pause longer than STOP_MS starts a new movement.
+  const track = () => {
     const t = performance.now();
-    const y = window.scrollY;
-    const dt = t - lastScroll.t;
-    const v = dt > 0 ? (Math.abs(y - lastScroll.y) / dt) * 1000 : 0;
-    scrollSpeed = dt > STOP_MS ? v : 0.5 * v + 0.5 * scrollSpeed;
-    lastScroll = { t, y };
+    const y = line();
+    const dt = t - lastMove.t;
+    const v = dt > 0 ? (Math.abs(y - lastMove.y) / dt) * 1000 : 0;
+    moveSpeed = dt > STOP_MS ? v : 0.5 * v + 0.5 * moveSpeed;
+    lastMove = { t, y };
     wake();
+  };
+  const onPointerMove = (event: PointerEvent) => {
+    if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+    mode = "pointer";
+    pointerY = event.clientY;
+    track();
+  };
+  const onPointerLeave = () => {
+    mode = "scroll";
+    track();
   };
   const remeasure = () => {
     measure();
@@ -126,7 +142,9 @@ export function installReadingRail(nav: HTMLElement): () => void {
     wake();
   };
 
-  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("scroll", track, { passive: true });
+  document.addEventListener("pointermove", onPointerMove, { passive: true });
+  document.documentElement.addEventListener("pointerleave", onPointerLeave);
   const resize = typeof ResizeObserver !== "undefined" ? new ResizeObserver(remeasure) : null;
   const content = document.querySelector('[data-ink-obstacle="content"]');
   if (resize) {
@@ -149,7 +167,9 @@ export function installReadingRail(nav: HTMLElement): () => void {
   rail.dataset.railReady = "";
 
   return () => {
-    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("scroll", track);
+    document.removeEventListener("pointermove", onPointerMove);
+    document.documentElement.removeEventListener("pointerleave", onPointerLeave);
     window.removeEventListener("resize", remeasure);
     resize?.disconnect();
     seen?.disconnect();

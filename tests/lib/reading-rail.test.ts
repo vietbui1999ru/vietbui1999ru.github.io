@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { readingCheckpointStates, readingLine, readingMarkerOffset } from "@/lib/reading-rail";
 
 // Headings at document y 1000, 2000 and 3000; checkpoints at rail y 20, 60 and 100;
-// content ends at 4000; the rail is 140 px tall.
-const base = { headingTops: [1000, 2000, 3000], checkpoints: [20, 60, 100], contentBottom: 4000, railHeight: 140 };
+// the rail is 140 px tall.
+const base = { headingTops: [1000, 2000, 3000], checkpoints: [20, 60, 100], railHeight: 140 };
 
 describe("marker", () => {
   it("sits on a checkpoint when the reading line reaches its heading", () => {
@@ -12,24 +12,25 @@ describe("marker", () => {
 
   it("interpolates between two headings", () => {
     expect(readingMarkerOffset({ ...base, readingLine: 2500 })).toBe(80);
+    expect(readingMarkerOffset({ ...base, readingLine: 1400 })).toBe(36);
   });
 
-  it("interpolates from the rail top above the first heading", () => {
-    expect(readingMarkerOffset({ ...base, readingLine: 500 })).toBe(10);
+  it("stays on the first checkpoint above the first heading", () => {
+    expect(readingMarkerOffset({ ...base, readingLine: 500 })).toBe(20);
+    expect(readingMarkerOffset({ ...base, readingLine: -200 })).toBe(20);
   });
 
-  it("interpolates to the rail end below the last heading", () => {
-    expect(readingMarkerOffset({ ...base, readingLine: 3500 })).toBe(120);
-    expect(readingMarkerOffset({ ...base, readingLine: 4000 })).toBe(140);
+  it("stays on the last checkpoint below the last heading", () => {
+    expect(readingMarkerOffset({ ...base, readingLine: 3500 })).toBe(100);
+    expect(readingMarkerOffset({ ...base, readingLine: 9000 })).toBe(100);
+  });
+
+  it("stays at 0 when there are no headings", () => {
+    expect(readingMarkerOffset({ ...base, headingTops: [], checkpoints: [], readingLine: 2000 })).toBe(0);
   });
 
   it("clamps to the rail", () => {
-    expect(readingMarkerOffset({ ...base, readingLine: -200 })).toBe(0);
-    expect(readingMarkerOffset({ ...base, readingLine: 9000 })).toBe(140);
-  });
-
-  it("maps the whole content to the rail when there are no headings", () => {
-    expect(readingMarkerOffset({ ...base, headingTops: [], checkpoints: [], readingLine: 2000 })).toBe(70);
+    expect(readingMarkerOffset({ ...base, checkpoints: [20, 60, 200], readingLine: 3000 })).toBe(140);
   });
 
   it("does not divide by zero when two headings share a top", () => {
@@ -59,7 +60,7 @@ describe("marker reading line", () => {
 
   it("passes every checkpoint at the end of a short page", () => {
     const line = readingLine({ ...short, scrollY: 1000 });
-    const marker = readingMarkerOffset({ ...base, contentBottom: 3000, readingLine: line });
+    const marker = readingMarkerOffset({ ...base, readingLine: line });
     expect(readingCheckpointStates(base.checkpoints, marker)).toEqual(["passed", "passed", "passed"]);
   });
 });

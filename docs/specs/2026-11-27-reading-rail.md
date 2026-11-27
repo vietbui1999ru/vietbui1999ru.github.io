@@ -1,8 +1,8 @@
 ---
-status: approved
+status: draft
 branch: feat/rail-side
 ---
-<!-- Owner approvals in session, 2026-11-27: approve 865cca00; approve 1ac026e5 (AC-1 amendment). -->
+<!-- Owner approvals in session, 2026-11-27: approve 865cca00; approve 1ac026e5 (AC-1 amendment). Pointer amendment (AC-1, AC-13) waits for approval. -->
 
 # SPEC: Reading rail in the sidebar TOC (issue #38, part 2)
 
@@ -21,7 +21,7 @@ Owner decisions (2026-11-27):
 Build fixture used by the verify lines: `tests/fixtures/garden-vault`.
 
 ## Acceptance Criteria
-- AC-1: A pure module `src/lib/reading-rail.ts` maps the reading position to a marker offset on the rail. Inputs: the document tops of the headings, the checkpoint offsets on the rail, the reading line (viewport top + 30% of the viewport height, in document coordinates), the document bottom of the content and the rail height. Between heading i and heading i+1, the offset interpolates linearly between checkpoint i and checkpoint i+1. Above the first heading it interpolates from 0 to the first checkpoint. Below the last heading it interpolates from the last checkpoint to the rail height at the content bottom. The result is clamped to [0, rail height]. Over the last viewport height of the scroll range, the reading line moves linearly down to the content bottom. At the end of the scroll, the marker then reaches the rail end and every checkpoint is passed, also on a page too short for the reading line to reach its last headings.
+- AC-1: A pure module `src/lib/reading-rail.ts` maps the reading position to a marker offset on the rail. Inputs: the document tops of the headings, the checkpoint offsets on the rail, the reading line (a document y) and the rail height. Between heading i and heading i+1, the offset interpolates linearly between checkpoint i and checkpoint i+1. Above the first heading, the marker stays on the first checkpoint. Below the last heading, it stays on the last checkpoint. With no headings, the marker stays at 0. In scroll mode the reading line is the viewport top + 30% of the viewport height, in document coordinates. Over the last viewport height of the scroll range, the scroll-mode reading line moves linearly down to the content bottom, so at the end of the scroll every checkpoint is passed, also on a short page. In pointer mode the reading line is the document y under the pointer (scrollY + pointer clientY).
   verify: `npx vitest run tests/lib/reading-rail.test.ts -t "marker"`
 - AC-2: The same module marks a checkpoint as passed when its offset is at or above the marker offset, and as upcoming otherwise. It reuses `checkpointStates` from `src/lib/timeline-rail.ts`.
   verify: `npx vitest run tests/lib/reading-rail.test.ts -t "checkpoints"`
@@ -47,6 +47,8 @@ Build fixture used by the verify lines: `tests/fixtures/garden-vault`.
   baseline: pass
 - AC-12: At 1280 px the rail reads well in light and dark on a blog post, a project page and a library note. The marker glides between checkpoints while scrolling, and a checkpoint click jumps to its heading. With reduced motion on, the marker does not glide. At 375 px no rail shows.
   verify: manual - visual and motion check in a browser
+- AC-13: While a mouse or pen pointer is over the page, the rail is in pointer mode (AC-1): moving the pointer down the viewport moves the marker in proportion between the checkpoints, and scrolling with a still pointer moves it too. The marker reaches a checkpoint only when the pointer reaches its heading. While the pointer moves, the marker chases with no overshoot; when it stops, it bounces by the pointer speed. Touch pointers do not enter pointer mode. When the pointer leaves the page, the rail returns to scroll mode.
+  verify: `npx vitest run tests/components/garden-toc.test.ts -t "pointer"`
 
 ## Boundaries
 ### Always
@@ -65,7 +67,7 @@ Build fixture used by the verify lines: `tests/fixtures/garden-vault`.
 
 ## Open Questions
 - Hover labels. The owner chose hover labels, then chose the TOC as the rail, and the TOC already shows every label. Default: no separate hover labels.
-- Pointer mode. The garden rail follows a mouse over its section. Default: the reading rail follows the scroll only, because its checkpoints are a map of the whole article.
+- Pointer mode. Resolved 2026-11-27: the owner asked for the marker to follow the mouse in proportion to the headings (AC-13).
 - Bounce. Default: the bounce ratio comes from the scroll speed, with the same `bounceRatio` limits as the pointer speed.
 - Notes with fewer than `minHeadings` (3) headings. Default: no TOC and no rail, as today. A project or library page without a rail keeps its current layout.
 - Library notes with the `visual` layout have no `toc` block. Default: library and project pages mount the sidebar TOC with the default settings, whatever their layout preset says.
