@@ -1,14 +1,12 @@
 <script lang="ts" generics="T">
 import type { Snippet } from "svelte";
-import type { Attachment } from "svelte/attachments";
 import type { ClassValue } from "svelte/elements";
 import { PASTEL_BG, type Pastel } from "../../design-system/tone";
-import { Spring } from "svelte/motion";
-import { RAIL_SPRING, checkpointStates, markerOffset, type RailMode } from "../../lib/timeline-rail";
 
-// Vertical timeline with a breathing marker that follows a mouse or pen pointer,
-// or the scroll position otherwise. The marker and the passed line trail the target on a
-// spring. Before it mounts it renders as a static timeline.
+// Vertical timeline with a breathing marker that follows a mouse or pen pointer, or the
+// scroll position otherwise. The markup is static: installTimelineRails (BaseLayout script)
+// springs --rail-y and sets the checkpoint states each frame; CSS draws the marker and line there.
+// Before the script runs it renders as a static timeline with every checkpoint passed.
 let {
   items,
   key,
@@ -22,81 +20,12 @@ let {
   entry: Snippet<[T]>;
   class?: ClassValue;
 } = $props();
-
-let measured = $state(false);
-let offsets = $state<number[]>([]);
-let mode: RailMode = "scroll";
-let pointerY = 0;
-
-// Spring position of the marker; the line and checkpoint states follow it, not the pointer.
-const follow = new Spring(0, RAIL_SPRING);
-const marker = $derived(follow.current);
-
-const states = $derived(
-  measured ? checkpointStates(offsets, marker) : items.map(() => "passed" as const),
-);
-
-function reducedMotion() {
-  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
-}
-
-function measure(rail: HTMLElement) {
-  const rect = rail.getBoundingClientRect();
-  offsets = [...rail.querySelectorAll<HTMLElement>("[data-checkpoint]")].map((cp) => {
-    const r = cp.getBoundingClientRect();
-    return r.top + r.height / 2 - rect.top;
-  });
-  const target = markerOffset({ mode, pointerY, viewportHeight: window.innerHeight }, rect);
-  // The first measure places the marker; later ones spring to the target unless motion is reduced.
-  void follow.set(target, { instant: !measured || reducedMotion() });
-  measured = true;
-}
-
-const track: Attachment<HTMLElement> = (rail) => {
-  const update = () => measure(rail);
-  const onMove = (event: PointerEvent) => {
-    if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
-    mode = "pointer";
-    pointerY = event.clientY;
-    update();
-  };
-  const onLeave = () => {
-    mode = "scroll";
-    update();
-  };
-  rail.addEventListener("pointermove", onMove);
-  rail.addEventListener("pointerleave", onLeave);
-  window.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("resize", update);
-  update();
-  return () => {
-    rail.removeEventListener("pointermove", onMove);
-    rail.removeEventListener("pointerleave", onLeave);
-    window.removeEventListener("scroll", update);
-    window.removeEventListener("resize", update);
-  };
-};
 </script>
 
-<div {@attach track} data-rail data-ink-obstacle="prose" class={["relative ml-2", className]}>
-  <span
-    aria-hidden="true"
-    data-rail-line="passed"
-    class="absolute top-0 left-0 w-[1.5px] bg-ink"
-    style:height={measured ? `${marker}px` : "100%"}
-  ></span>
-  <span
-    aria-hidden="true"
-    data-rail-line="upcoming"
-    class="absolute bottom-0 left-0 w-[1.5px] bg-journal-3"
-    style:top={measured ? `${marker}px` : "100%"}
-  ></span>
-  <span
-    aria-hidden="true"
-    data-rail-marker
-    class="rail-marker absolute top-0 -left-[7px] z-10 {measured ? '' : 'hidden'}"
-    style:transform="translateY({marker - 6.5}px)"
-  >
+<div data-rail data-ink-obstacle="prose" class={["rail relative ml-2", className]}>
+  <span aria-hidden="true" data-rail-line="passed" class="rail-passed absolute top-0 left-0 w-[1.5px] bg-ink"></span>
+  <span aria-hidden="true" data-rail-line="upcoming" class="rail-upcoming absolute bottom-0 left-0 w-[1.5px] bg-journal-3"></span>
+  <span aria-hidden="true" data-rail-marker class="rail-marker absolute top-0 -left-[7px] z-10">
     <span class="rail-breath block h-[13px] w-[13px] border-2 border-ink bg-paper-raised shadow-hard-sm"></span>
   </span>
 
@@ -107,8 +36,8 @@ const track: Attachment<HTMLElement> = (rail) => {
         aria-hidden="true"
         data-checkpoint
         data-index={i}
-        data-state={states[i]}
-        class="absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink transition-colors motion-reduce:transition-none {states[i] === 'passed' ? PASTEL_BG[tone(item)] : 'bg-paper-raised'}"
+        data-state="passed"
+        class="rail-checkpoint absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink {PASTEL_BG[tone(item)]}"
       ></span>
       {@render entry(item)}
     </li>
@@ -117,6 +46,38 @@ const track: Attachment<HTMLElement> = (rail) => {
 </div>
 
 <style>
+  /* Static fallback: full passed line, no marker. */
+  .rail-passed {
+    height: 100%;
+  }
+  .rail-upcoming {
+    top: 100%;
+  }
+  .rail-marker {
+    display: none;
+    transform: translateY(calc(var(--rail-y, 0px) - 6.5px));
+  }
+  .rail-checkpoint:global([data-state="upcoming"]) {
+    background-color: var(--color-paper-raised);
+  }
+
+  /* Script ready: the marker and the line sit at --rail-y. */
+  .rail:global([data-rail-ready]) .rail-marker {
+    display: block;
+  }
+  .rail:global([data-rail-ready]) .rail-passed {
+    height: var(--rail-y, 0px);
+  }
+  .rail:global([data-rail-ready]) .rail-upcoming {
+    top: var(--rail-y, 0px);
+  }
+
+  /* The script springs --rail-y each frame (rail-motion.ts), so the marker and the line
+     need no transition. The data-* attributes are added at runtime, so they sit in :global(). */
+  .rail:global([data-rail-ready]) .rail-checkpoint {
+    transition: background-color 150ms ease-out;
+  }
+
   .rail-breath {
     animation: rail-breathe var(--rail-breath-duration, 2.4s) ease-in-out infinite;
   }
@@ -130,6 +91,9 @@ const track: Attachment<HTMLElement> = (rail) => {
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    .rail:global([data-rail-ready]) .rail-checkpoint {
+      transition: none;
+    }
     .rail-breath {
       animation: none;
     }

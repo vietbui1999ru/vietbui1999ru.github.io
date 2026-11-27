@@ -1,5 +1,6 @@
 // Usage: node tests/verify/rail-hydrated.mjs <page.html> <block>...
-// Passes when each named block holds an Astro island that renders the timeline rail.
+// Passes when each named block server-renders the timeline rail with its marker.
+// Since #38 the rail is not hydrated: a BaseLayout script drives it, so no Astro island is required.
 import { readFileSync } from "node:fs";
 
 const [file, ...blocks] = process.argv.slice(2);
@@ -19,10 +20,10 @@ for (const block of blocks) {
   }
   const next = html.indexOf("data-block=", start + 1);
   const section = html.slice(start, next === -1 ? undefined : next);
-  const island = section.indexOf("<astro-island");
   const rail = section.indexOf("data-rail");
-  if (island === -1 || rail === -1 || rail < island) {
-    console.error(`${block}: no hydrated rail (island ${island}, rail ${rail})`);
+  const marker = section.indexOf("data-rail-marker");
+  if (rail === -1 || marker === -1) {
+    console.error(`${block}: no server-rendered rail (rail ${rail}, marker ${marker})`);
     failed = true;
   }
 }

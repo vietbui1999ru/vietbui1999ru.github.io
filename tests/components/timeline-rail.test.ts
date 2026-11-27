@@ -2,27 +2,26 @@ import { render } from "@testing-library/svelte";
 import { createRawSnippet, flushSync } from "svelte";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import TimelineRail from "@/components/patterns/TimelineRail.svelte";
+import { installTimelineRails } from "@/lib/timeline-rail-dom";
 
 // jsdom has no layout: the rail spans y = 100..500, checkpoints sit at offsets 0, 120, 240, 360.
 // window.innerHeight is 768, so the scroll-mode marker is 384 - 100 = 284.
 const items = ["a", "b", "c", "d"].map((id) => ({ id }));
 
-// The marker springs to its target. The tests run with reduced motion, so it moves at once,
-// except in the "spring" block, which turns motion back on. svelte/motion reads matchMedia
-// on import, so the stub is hoisted above the imports.
-const media = vi.hoisted(() => {
-  const state = { reduce: true };
-  window.matchMedia = ((query: string) => ({
-    matches: state.reduce && query.includes("reduce"),
-    media: query,
-    addEventListener() {},
-    removeEventListener() {},
-  })) as unknown as typeof window.matchMedia;
-  return state;
-});
-
+// Frames queue up and run when a test calls frames(). Reduced motion is on, so the marker
+// reaches its target in one frame; tests/lib/rail-motion.test.ts covers the spring itself.
+let queue: FrameRequestCallback[] = [];
+function frames(n = 1) {
+  for (let i = 0; i < n; i++) {
+    const run = queue;
+    queue = [];
+    run.forEach((cb) => cb(performance.now()));
+  }
+}
 beforeEach(() => {
-  media.reduce = true;
+  queue = [];
+  vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => queue.push(cb));
+  vi.stubGlobal("matchMedia", (q: string) => ({ matches: q.includes("reduce") }));
   vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(function (this: Element) {
     const el = this as HTMLElement;
     if (el.dataset.rail !== undefined)
@@ -35,9 +34,12 @@ beforeEach(() => {
   });
 });
 
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+});
 
-function setup() {
+function setup(install = true) {
   const entry = createRawSnippet((item: () => { id: string }) => ({
     render: () => `<p>entry ${item().id}</p>`,
   }));
@@ -45,6 +47,7 @@ function setup() {
     props: { items, key: (i: { id: string }) => i.id, tone: () => "sage" as const, entry },
   });
   flushSync();
+  if (install) installTimelineRails(container);
   const rail = container.querySelector<HTMLElement>("[data-rail]")!;
   const states = () =>
     [...container.querySelectorAll<HTMLElement>("[data-checkpoint]")].map((c) => c.dataset.state);
@@ -55,6 +58,7 @@ function pointer(target: Element, type: string, pointerType: string, clientY: nu
   const event = new MouseEvent(type, { bubbles: true, clientY });
   Object.defineProperty(event, "pointerType", { value: pointerType });
   target.dispatchEvent(event);
+  frames();
   flushSync();
 }
 
@@ -101,20 +105,23 @@ describe("pointer", () => {
   });
 });
 
-describe("spring", () => {
-  it("lags behind the pointer, then catches up", async () => {
-    media.reduce = false;
-    const { rail, states } = setup();
-    pointer(rail, "pointermove", "mouse", 150);
-    expect(states()).toEqual(["passed", "passed", "passed", "upcoming"]);
-    await vi.waitFor(() =>
-      expect(states()).toEqual(["passed", "upcoming", "upcoming", "upcoming"]),
-    );
+describe("script", () => {
+  it("renders a static timeline before the script runs", () => {
+    const { rail, states } = setup(false);
+    expect(rail.dataset.railReady).toBeUndefined();
+    expect(states()).toEqual(["passed", "passed", "passed", "passed"]);
   });
 
-  it("places the marker at once on the first measure", () => {
-    media.reduce = false;
-    const { states } = setup();
-    expect(states()).toEqual(["passed", "passed", "passed", "upcoming"]);
+  it("places the marker at its first target", () => {
+    const { rail } = setup();
+    expect(rail.style.getPropertyValue("--rail-y")).toBe("284.0px");
+    expect(rail.dataset.railReady).toBe("");
+  });
+
+  it("sets --rail-y to the pointer offset", () => {
+    const { rail } = setup();
+    pointer(rail, "pointermove", "mouse", 150);
+    expect(rail.style.getPropertyValue("--rail-y")).toBe("50.0px");
+    expect(rail.dataset.railTarget).toBe("50");
   });
 });

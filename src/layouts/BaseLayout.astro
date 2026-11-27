@@ -45,7 +45,9 @@ const { enableInkAmbient = false } = Astro.props;
     <script>
       import { installVideoSwap } from "@/lib/video-swap";
       import { installWikilinkPreview } from "@/lib/wikilink-preview";
+      import { installTimelineRails } from "@/lib/timeline-rail-dom";
       installVideoSwap(document.body);
+      installTimelineRails(document.body);
       installWikilinkPreview(document.body, {
         canHover: () => window.matchMedia("(hover: hover) and (pointer: fine)").matches,
       });
