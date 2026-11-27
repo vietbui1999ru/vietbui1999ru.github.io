@@ -60,3 +60,56 @@ export function stepRail(
 export function atRest(body: RailBody, target: number): boolean {
   return Math.abs(target - body.pos) < 0.5 && Math.abs(body.vel) < 5;
 }
+
+// Checkpoint spin. A checkpoint near the marker spins with the marker's speed, scaled by
+// proximity: influence = max(0, 1 - distance / near), drive = vel * gain * influence (deg/s).
+// Moving down spins clockwise, moving up counter-clockwise. Away from the marker, friction
+// slows it. A spring always pulls it to the nearest quarter turn, so it lands square with a
+// small wobble: a slow pass wobbles back, a fast pass turns one or two quarters.
+export const CHECKPOINT_SPIN = {
+  /** Distance (px) inside which the marker turns a checkpoint. */
+  near: 56,
+  /** Degrees per second of spin per px/s of marker speed, at zero distance. */
+  gain: 1.4,
+  /** How fast the spin follows the drive while the marker is near, in 1/s. */
+  coupling: 30,
+  /** Spin friction once the marker is away, in 1/s. */
+  friction: 6,
+  /** Spring toward the nearest quarter turn, in 1/s^2. */
+  snap: 40,
+};
+export type CheckpointSpinParams = typeof CHECKPOINT_SPIN;
+
+export interface Spin {
+  /** Rotation in degrees. */
+  angle: number;
+  /** Angular speed in degrees per second. */
+  spin: number;
+}
+
+/** Advances one checkpoint at `offset` by `dt` seconds. Mutates and returns `s`. */
+export function stepSpin(
+  s: Spin,
+  offset: number,
+  marker: RailBody,
+  dt: number,
+  p: CheckpointSpinParams = CHECKPOINT_SPIN,
+): Spin {
+  const influence = Math.max(0, 1 - Math.abs(offset - marker.pos) / p.near);
+  const drive = marker.vel * p.gain * influence;
+  const rest = Math.round(s.angle / 90) * 90;
+  const away = 1 - influence;
+  // The snap spring always acts, so a checkpoint under a parked marker still squares up.
+  const accel =
+    (drive - s.spin) * p.coupling * influence -
+    s.spin * p.friction * away +
+    (rest - s.angle) * p.snap;
+  s.spin += accel * dt;
+  s.angle += s.spin * dt;
+  return s;
+}
+
+/** At rest when square to a quarter turn and nearly still. */
+export function spinAtRest(s: Spin): boolean {
+  return Math.abs(s.angle - Math.round(s.angle / 90) * 90) < 0.5 && Math.abs(s.spin) < 3;
+}

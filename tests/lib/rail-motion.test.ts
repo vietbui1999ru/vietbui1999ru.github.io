@@ -1,5 +1,49 @@
 import { describe, expect, it } from "vitest";
-import { atRest, bounceRatio, stepRail } from "@/lib/rail-motion";
+import { atRest, bounceRatio, spinAtRest, stepRail, stepSpin } from "@/lib/rail-motion";
+
+// A marker passes a checkpoint at offset 0, from -200 to 300 px at `vel` px/s, then stops.
+// Returns the checkpoint spin after 5 s at 60 fps, plus the fastest spin seen.
+function pass(vel: number) {
+  const marker = { pos: -200 * Math.sign(vel), vel };
+  const s = { angle: 0, spin: 0 };
+  let peak = 0;
+  for (let i = 0; i < 300; i++) {
+    const moving = vel > 0 ? marker.pos < 300 : marker.pos > -300;
+    marker.vel = moving ? vel : 0;
+    marker.pos += marker.vel / 60;
+    stepSpin(s, 0, marker, 1 / 60);
+    peak = vel > 0 ? Math.max(peak, s.spin) : Math.min(peak, s.spin);
+  }
+  return { s, peak };
+}
+
+describe("stepSpin", () => {
+  it("does not spin when the marker stays far away", () => {
+    const s = stepSpin({ angle: 0, spin: 0 }, 0, { pos: 200, vel: 1000 }, 1 / 60);
+    expect(s).toEqual({ angle: 0, spin: 0 });
+  });
+
+  it("spins clockwise for a downward pass and counter-clockwise for an upward one", () => {
+    expect(pass(800).peak).toBeGreaterThan(0);
+    expect(pass(-800).peak).toBeLessThan(0);
+  });
+
+  it("turns more for a faster pass and lands square", () => {
+    const slow = pass(150).s;
+    const fast = pass(1100).s;
+    expect(spinAtRest(slow)).toBe(true);
+    expect(spinAtRest(fast)).toBe(true);
+    expect(slow.angle).toBeCloseTo(0, 0);
+    expect(Math.round(fast.angle)).toBeGreaterThanOrEqual(180);
+  });
+
+  it("squares up under a marker parked on it", () => {
+    const s = { angle: 37, spin: 0 };
+    for (let i = 0; i < 300; i++) stepSpin(s, 0, { pos: 0, vel: 0 }, 1 / 60);
+    expect(spinAtRest(s)).toBe(true);
+    expect(s.angle).toBeCloseTo(0, 0);
+  });
+});
 
 // Runs the box from 0 to `target` at 60 fps and returns every position.
 function run(target: number, bounce: number, limit = 1000, frames = 180) {

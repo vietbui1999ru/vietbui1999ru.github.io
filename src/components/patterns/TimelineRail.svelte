@@ -77,10 +77,29 @@ let {
   .rail:global([data-rail-ready]) .rail-checkpoint {
     transition: background-color 150ms ease-out;
   }
+  /* The script spins checkpoints near the marker (style.rotate) and sets data-pop when one
+     changes state: a short stamp-like pop. */
+  .rail-checkpoint:global([data-pop]) {
+    animation: rail-pop 260ms cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+  @keyframes rail-pop {
+    0% {
+      scale: 1;
+    }
+    40% {
+      scale: 1.45;
+    }
+    100% {
+      scale: 1;
+    }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .rail:global([data-rail-ready]) .rail-checkpoint {
       transition: none;
+    }
+    .rail-checkpoint:global([data-pop]) {
+      animation: none;
     }
   }
 </style>
