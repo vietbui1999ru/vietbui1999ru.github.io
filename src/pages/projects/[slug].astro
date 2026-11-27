@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, remarkPluginFrontmatter } = await render(entry);
 const formattedDate = entry.data.date.toLocaleDateString("en-US", {
   year: "numeric",
   month: "long",
@@ -24,7 +24,7 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
 });
 ---
 
-<BaseLayout enableInkAmbient={true}>
+<BaseLayout enableInkAmbient={true} katex={remarkPluginFrontmatter.math === "katex"}>
   <div class="page-container py-section">
     <article data-ink-obstacle="content" class="mx-auto max-w-5xl">
       <PageHeader

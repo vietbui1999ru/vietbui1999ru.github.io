@@ -25,7 +25,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
 const entrySlug = toSlug(entry.id);
 
 // Match variants by slugified id — variant files store parent_slug as a slug,
@@ -37,11 +37,12 @@ const allVariants = await getCollection("blog-variants", (v) =>
 // Render each variant's Content component for use in the template below
 const renderedVariants = await Promise.all(
   allVariants.map(async (v) => {
-    const { Content: VC, headings: variantHeadings } = await render(v);
-    return { label: "TLDR", Content: VC, headings: variantHeadings };
+    const { Content: VC, headings: variantHeadings, remarkPluginFrontmatter: vfm } = await render(v);
+    return { label: "TLDR", Content: VC, headings: variantHeadings, katex: vfm.math === "katex" };
   })
 );
 
+const katex = remarkPluginFrontmatter.math === "katex" || renderedVariants.some((v) => v.katex);
 const storageId = "blog-variant-storage";
 
 // Backlinks: published posts whose bodies link to this one, resolved against the
@@ -80,7 +81,7 @@ const updatedDate = entry.data.updated?.toLocaleDateString("en-US", {
 });
 ---
 
-<BaseLayout enableInkAmbient={true}>
+<BaseLayout enableInkAmbient={true} katex={katex}>
   <div class="mx-auto w-full max-w-7xl px-gutter py-section">
     <InkLink href="/blog" arrow="back" tone="muted" class="mb-10 inline-block">blog</InkLink>
 

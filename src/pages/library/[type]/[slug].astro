@@ -29,7 +29,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props as { entry: LibraryCollectionEntry };
 const { data } = entry;
-const { Content } = await render(entry);
+const { Content, remarkPluginFrontmatter } = await render(entry);
 const url = `/library/${entry.id}`;
 const cover = await thumbnailFor(data.cover, 720);
 const meta = metaLine(data);
@@ -51,7 +51,7 @@ const presetBlocks = layoutBlocks(layoutFor({ type: data.type }));
 const presetHasBacklinks = presetBlocks.some((block) => block.block === "backlinks");
 ---
 
-<BaseLayout enableInkAmbient={true}>
+<BaseLayout enableInkAmbient={true} katex={remarkPluginFrontmatter.math === "katex"}>
   <article class="page-container py-section" data-ink-obstacle="content" data-library-detail={data.type}>
     <PageHeader title={data.title} back={{ href: `/library/${data.type}`, label: data.type }}>
       <Fragment slot="meta">
