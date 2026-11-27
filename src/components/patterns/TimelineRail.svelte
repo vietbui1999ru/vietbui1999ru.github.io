@@ -3,10 +3,12 @@ import type { Snippet } from "svelte";
 import type { Attachment } from "svelte/attachments";
 import type { ClassValue } from "svelte/elements";
 import { PASTEL_BG, type Pastel } from "../../design-system/tone";
-import { checkpointStates, markerOffset, type RailMode } from "../../lib/timeline-rail";
+import { Spring } from "svelte/motion";
+import { RAIL_SPRING, checkpointStates, markerOffset, type RailMode } from "../../lib/timeline-rail";
 
 // Vertical timeline with a breathing marker that follows a mouse or pen pointer,
-// or the scroll position otherwise. Before it mounts it renders as a static timeline.
+// or the scroll position otherwise. The marker and the passed line trail the target on a
+// spring. Before it mounts it renders as a static timeline.
 let {
   items,
   key,
@@ -22,14 +24,21 @@ let {
 } = $props();
 
 let measured = $state(false);
-let marker = $state(0);
 let offsets = $state<number[]>([]);
 let mode: RailMode = "scroll";
 let pointerY = 0;
 
+// Spring position of the marker; the line and checkpoint states follow it, not the pointer.
+const follow = new Spring(0, RAIL_SPRING);
+const marker = $derived(follow.current);
+
 const states = $derived(
   measured ? checkpointStates(offsets, marker) : items.map(() => "passed" as const),
 );
+
+function reducedMotion() {
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+}
 
 function measure(rail: HTMLElement) {
   const rect = rail.getBoundingClientRect();
@@ -37,7 +46,9 @@ function measure(rail: HTMLElement) {
     const r = cp.getBoundingClientRect();
     return r.top + r.height / 2 - rect.top;
   });
-  marker = markerOffset({ mode, pointerY, viewportHeight: window.innerHeight }, rect);
+  const target = markerOffset({ mode, pointerY, viewportHeight: window.innerHeight }, rect);
+  // The first measure places the marker; later ones spring to the target unless motion is reduced.
+  void follow.set(target, { instant: !measured || reducedMotion() });
   measured = true;
 }
 
@@ -106,9 +117,6 @@ const track: Attachment<HTMLElement> = (rail) => {
 </div>
 
 <style>
-  .rail-marker {
-    transition: transform 160ms ease-out;
-  }
   .rail-breath {
     animation: rail-breathe var(--rail-breath-duration, 2.4s) ease-in-out infinite;
   }
@@ -122,9 +130,6 @@ const track: Attachment<HTMLElement> = (rail) => {
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .rail-marker {
-      transition: none;
-    }
     .rail-breath {
       animation: none;
     }

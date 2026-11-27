@@ -7,10 +7,26 @@ import TimelineRail from "@/components/patterns/TimelineRail.svelte";
 // window.innerHeight is 768, so the scroll-mode marker is 384 - 100 = 284.
 const items = ["a", "b", "c", "d"].map((id) => ({ id }));
 
+// The marker springs to its target. The tests run with reduced motion, so it moves at once,
+// except in the "spring" block, which turns motion back on. svelte/motion reads matchMedia
+// on import, so the stub is hoisted above the imports.
+const media = vi.hoisted(() => {
+  const state = { reduce: true };
+  window.matchMedia = ((query: string) => ({
+    matches: state.reduce && query.includes("reduce"),
+    media: query,
+    addEventListener() {},
+    removeEventListener() {},
+  })) as unknown as typeof window.matchMedia;
+  return state;
+});
+
 beforeEach(() => {
+  media.reduce = true;
   vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(function (this: Element) {
     const el = this as HTMLElement;
-    if (el.dataset.rail !== undefined) return DOMRect.fromRect({ x: 0, y: 100, width: 10, height: 400 });
+    if (el.dataset.rail !== undefined)
+      return DOMRect.fromRect({ x: 0, y: 100, width: 10, height: 400 });
     if (el.dataset.checkpoint !== undefined) {
       const i = Number(el.dataset.index);
       return DOMRect.fromRect({ x: 0, y: 100 + i * 120, width: 0, height: 0 });
@@ -81,6 +97,24 @@ describe("pointer", () => {
     const { rail, states } = setup();
     pointer(rail, "pointermove", "mouse", 150);
     pointer(rail, "pointerleave", "mouse", 150);
+    expect(states()).toEqual(["passed", "passed", "passed", "upcoming"]);
+  });
+});
+
+describe("spring", () => {
+  it("lags behind the pointer, then catches up", async () => {
+    media.reduce = false;
+    const { rail, states } = setup();
+    pointer(rail, "pointermove", "mouse", 150);
+    expect(states()).toEqual(["passed", "passed", "passed", "upcoming"]);
+    await vi.waitFor(() =>
+      expect(states()).toEqual(["passed", "upcoming", "upcoming", "upcoming"]),
+    );
+  });
+
+  it("places the marker at once on the first measure", () => {
+    media.reduce = false;
+    const { states } = setup();
     expect(states()).toEqual(["passed", "passed", "passed", "upcoming"]);
   });
 });

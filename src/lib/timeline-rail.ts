@@ -1,6 +1,9 @@
 // Marker and checkpoint math for the timeline rail, free of DOM code.
 
 export type RailMode = "pointer" | "scroll";
+
+/** Marker spring: low stiffness makes the catch-up lag; damping under 1 makes it overshoot and bounce. */
+export const RAIL_SPRING = { stiffness: 0.06, damping: 0.35 };
 export type CheckpointState = "passed" | "upcoming";
 
 export interface RailInput {
