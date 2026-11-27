@@ -3,6 +3,7 @@ import { onMount } from "svelte";
 import { NAV_LINKS } from "@/data/navLinks";
 import PenIcon from "@/components/icons/PenIcon.svelte";
 import PencilIcon from "@/components/icons/PencilIcon.svelte";
+import SpawnButton from "@/components/svelte/SpawnButton.svelte";
 import { Circle, Moon, PenTool, RotateCcw, Sun } from "@lucide/svelte";
 
 let { pathname }: { pathname: string } = $props();
@@ -78,20 +79,12 @@ function toggleInkAmbient() {
         >
           {#if inkAmbientEnabled}<PenTool size={15} strokeWidth={1.75} />{:else}<Circle size={11} strokeWidth={2} />{/if}
         </button>
-        <button
-          onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-add-predator"))}
-          aria-label="Add a predator"
-          class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised shadow-hard-sm"
-        >
+        <SpawnButton role="predator" label="Add a predator" limitLabel="Pen limit reached">
           <PenIcon class="text-ink" />
-        </button>
-        <button
-          onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-add-prey"))}
-          aria-label="Add a prey"
-          class="lift grid h-8 w-8 cursor-pointer place-items-center border-[1.5px] border-ink bg-paper-raised shadow-hard-sm"
-        >
+        </SpawnButton>
+        <SpawnButton role="prey" label="Add a prey" limitLabel="Pencil limit reached">
           <PencilIcon class="text-ink" />
-        </button>
+        </SpawnButton>
         <button
           onclick={() => window.dispatchEvent(new CustomEvent("ink-ambient-reset"))}
           aria-label="Reset ink ambient simulation"
