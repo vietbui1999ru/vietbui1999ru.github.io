@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { copyLibraryCovers } from "@/lib/library-covers";
+import { copyLibraryCovers, hiddenLibraryNotes } from "@/lib/library-covers";
 
 let vault: string;
 let dest: string;
@@ -32,6 +32,11 @@ describe("copyLibraryCovers", () => {
 
   it("copies every cover on a dev server", () => {
     expect(copyLibraryCovers(vault, dest, { dev: true }).sort()).toEqual(["draft.png", "private.png", "public.png"]);
+  });
+
+  it("lists draft and unpublished notes as hidden in production, none on a dev server", () => {
+    expect([...hiddenLibraryNotes(vault, { dev: false })].sort()).toEqual(["draft", "private"]);
+    expect(hiddenLibraryNotes(vault, { dev: true }).size).toBe(0);
   });
 
   it("removes covers left by an earlier dev run before a production build", () => {

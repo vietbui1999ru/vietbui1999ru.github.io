@@ -35,7 +35,8 @@ describe("library categories", () => {
     const [books] = libraryCategories(fixtureItems(), settings(), { dev: false });
     const titles = books.items.map((i) => i.data.title);
     expect(titles).not.toContain("PLACEHOLDER Book Unpublished");
-    expect(titles).toHaveLength(5);
+    // Five status fixtures plus the rich sample book.
+    expect(titles).toHaveLength(6);
   });
 
   it("puts unlisted types after listed ones, enabled", () => {
@@ -51,7 +52,7 @@ describe("library categories", () => {
       ["film", false],
       ["recipe", true],
     ]);
-    expect(categories.find((c) => c.type === "recipe")?.items).toHaveLength(2);
-    expect(categories.find((c) => c.type === "book")?.items).toHaveLength(6);
+    expect(categories.find((c) => c.type === "recipe")?.items).toHaveLength(3);
+    expect(categories.find((c) => c.type === "book")?.items).toHaveLength(7);
   });
 });

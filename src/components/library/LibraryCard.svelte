@@ -23,7 +23,7 @@ const style = $derived(STATUS_STYLE[item.status]);
      return to full strength on hover or keyboard focus, so their text stays readable. -->
 <article
   class={[
-    "relative flex h-full w-full flex-col border-[1.5px] border-ink bg-paper-raised shadow-hard transition-opacity hover:opacity-100 focus-within:opacity-100",
+    "relative flex h-full w-full cursor-pointer flex-col border-[1.5px] border-ink bg-paper-raised shadow-hard transition-opacity hover:opacity-100 focus-within:opacity-100 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ink",
     style.opacity,
   ]}
   data-library-card
@@ -61,7 +61,15 @@ const style = $derived(STATUS_STYLE[item.status]);
 
   <div class="flex flex-1 flex-col gap-2 p-3">
     <h3 class="line-clamp-2 min-h-[2lh] font-serif text-step-0 font-semibold text-ink">
-      <a href={item.href} class={["u-draw text-ink no-underline", style.struck && "line-through"]}>{item.title}</a>
+      <!-- The link's ::after covers the whole card, so a click anywhere opens the item. -->
+      <a
+        href={item.href}
+        class={[
+          "u-draw text-ink no-underline after:absolute after:inset-0 after:content-[''] focus-visible:outline-none",
+          style.struck && "line-through",
+        ]}
+        data-card-link>{item.title}</a
+      >
     </h3>
     <!-- The meta line keeps its height when empty, so cards line up. -->
     <p class="min-h-[1lh] truncate font-mono text-step--1 text-journal-1">{item.meta}</p>

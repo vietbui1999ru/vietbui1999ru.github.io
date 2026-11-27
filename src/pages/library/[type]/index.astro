@@ -1,23 +1,22 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageHeader from "@/components/primitives/PageHeader.svelte";
-import LibraryTabs from "@/components/library/LibraryTabs.astro";
-import LibraryCollection from "@/components/library/LibraryCollection.svelte";
+import LibraryShelves from "@/components/library/LibraryShelves.svelte";
 import { loadLibrary, type LibraryShelf } from "@/lib/library-pages";
 
-// One page per visible category; disabled and empty ones get no page in production.
+// One page per visible category, so a shared link opens on its tab. Disabled and
+// empty categories get no page in production. Tabs then switch in place.
 export async function getStaticPaths() {
-  const { shelves } = await loadLibrary();
-  return shelves.map((shelf) => ({ params: { type: shelf.type }, props: { shelf, shelves } }));
+  const { shelves, title } = await loadLibrary();
+  return shelves.map((shelf) => ({ params: { type: shelf.type }, props: { shelf, shelves, title } }));
 }
 
-const { shelf, shelves } = Astro.props as { shelf: LibraryShelf; shelves: LibraryShelf[] };
+const { shelf, shelves, title } = Astro.props as { shelf: LibraryShelf; shelves: LibraryShelf[]; title: string };
 ---
 
 <BaseLayout enableInkAmbient={true}>
   <div class="page-container py-section" data-ink-obstacle="content">
-    <PageHeader title={shelf.label} back={{ href: "/library", label: "library" }} />
-    <LibraryTabs shelves={shelves} current={shelf.type} />
-    <LibraryCollection type={shelf.type} items={shelf.cards} client:load />
+    <PageHeader title={title} back={{ href: "/", label: "home" }} />
+    <LibraryShelves shelves={shelves} initial={shelf.type} client:load />
   </div>
 </BaseLayout>
