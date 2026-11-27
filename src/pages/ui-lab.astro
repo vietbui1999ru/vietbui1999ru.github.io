@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import UiLab from "@/components/ui-lab/UiLab.svelte";
 import ProjectSortFixture from "@/components/ui-lab/ProjectSortFixture.svelte";
 import TimelineRailFixture from "@/components/ui-lab/TimelineRailFixture.svelte";
+import ReadingHighlightFixture from "@/components/ui-lab/ReadingHighlightFixture.svelte";
 import GardenBlocks from "@/components/garden/GardenBlocks.astro";
 import LibraryCollection from "@/components/library/LibraryCollection.svelte";
 import { LIBRARY_CARD_FIXTURES } from "@/fixtures/library";
@@ -25,6 +26,7 @@ if (!import.meta.env.DEV) {
     </p>
   </section>
   <TimelineRailFixture client:load />
+  <ReadingHighlightFixture client:load />
   <section class="px-4 py-8 md:px-8" data-ui-lab="library">
     <LibraryCollection type="book" items={LIBRARY_CARD_FIXTURES} client:load />
   </section>
