@@ -162,6 +162,12 @@ nothing changes for them.
 > contact rule of the normal catch). With one radius for both, pens died while the
 > flock still looked about 90 px away. `FLOCK_RADIUS` stays the cohesion and hunting
 > radius. The playground panel tunes the kill distance as "flock kill reach".
+>
+> After a kill, each flock member rests for `FLOCK_KILL_REST_SECONDS` (3 s). A
+> flock with a resting member hunts no predator. Without the rest, the flock
+> retargeted a pen that chased one of its members. That pen was already at contact
+> range, so one kill chained into the death of every nearby pen. Pens can still
+> catch the flock members while the flock rests.
 
 Each tick, after the existing `resolveCatches`-driven catch resolution has
 been applied (winners/losers/bursts/lives/hunger, all unchanged from the base

@@ -171,7 +171,8 @@ export function chooseFlockTarget(
 /**
  * Pick one hunted predator per flock. A flock keeps the predator it already hunts
  * (see heldFlockTarget), so the hunted tint does not jump between candidate
- * predators or drop out while the hunted predator flees and retargets.
+ * predators or drop out while the hunted predator flees and retargets. A flock
+ * with a resting member (it killed recently) hunts nothing.
  */
 export function computeFlockAssignments(
   objects: readonly InkObject[],
@@ -186,6 +187,7 @@ export function computeFlockAssignments(
 
   const previousMemberIds = new Set(previousTargetByMemberId.keys());
   for (const members of detectFlocks(objects, previousMemberIds, params)) {
+    if (members.some((member) => member.restRemaining > 0)) continue;
     const target = chooseFlockTarget(
       members,
       heldFlockTarget(members, previousTargetByMemberId, objects),

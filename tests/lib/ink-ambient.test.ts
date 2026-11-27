@@ -64,6 +64,8 @@ import {
   isFlockKillTriggered,
   predatorFleeAcceleration,
 } from "@/lib/ink-ambient/flocking";
+import { assignFlocks, flockKills } from "@/lib/ink-ambient/step";
+import { createWorld } from "@/lib/ink-ambient/world";
 
 function object(id: number, x: number, y: number): InkObject {
   return {
@@ -826,6 +828,35 @@ function predator(id: number, x: number, y: number, targetId: number | null = nu
   o.currentTargetId = targetId;
   return o;
 }
+
+describe("Flock rest after a kill", () => {
+  it("a flock with a resting member hunts no predator", () => {
+    const members = [prey(1, 0, 0), prey(2, 40, 0), prey(3, 80, 0)];
+    const pen = predator(4, 120, 0, 3);
+    expect(computeFlockAssignments([...members, pen]).beingHuntedIds).toEqual(new Set([4]));
+    members[1].restRemaining = 1;
+    const resting = computeFlockAssignments([...members, pen]);
+    expect(resting.beingHuntedIds.size).toBe(0);
+    expect(resting.huntingFlockIds.size).toBe(0);
+  });
+
+  it("a kill does not chain to other pens that chase the flock", () => {
+    const world = createWorld({ pointerFine: true }, 1);
+    world.preyButtonEverPressed = true;
+    const members = [prey(1, 0, 0), prey(2, 40, 0), prey(3, 80, 0)];
+    const target = predator(4, 100, 0, 3); // 20 px from member 3: inside the kill distance
+    const bystander = predator(5, -20, 0, 1); // 20 px from member 1, chasing the flock
+    world.objects = [...members, target, bystander];
+    const frame = { dt: 1 / 60, now: 0, wasVanishing: new Set<number>(), catches: resolveCatches([]) };
+    for (let i = 0; i < 3; i += 1) {
+      assignFlocks(world, frame);
+      flockKills(world, frame);
+    }
+    expect(target.vanishElapsed).toBe(0);
+    expect(bystander.vanishElapsed).toBeNull();
+    expect(members.every((m) => m.restRemaining > 0)).toBe(true);
+  });
+});
 
 describe("Route profiles", () => {
   it("playground profile spans the whole viewport with no edge bias", () => {

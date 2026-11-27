@@ -3,6 +3,7 @@
 import {
   ATTRACTION_MAX_ACCELERATION_HEAVY,
   ATTRACTION_MAX_ACCELERATION_LIGHT,
+  FLOCK_KILL_REST_SECONDS,
   LV_CATCH_PREDATOR_BOOST,
   LV_CATCH_PREY_DECAY,
   LV_PREDATOR_DEATH_DECAY,
@@ -262,7 +263,8 @@ export const resolveCatchRule: Rule = (world, frame) => {
 };
 
 // Being hunted only changes a predator's behaviour (it flees like prey); its
-// role never flips. A flock that closes the kill distance destroys it.
+// role never flips. A flock that closes the kill distance destroys it, then
+// rests, so the kill does not chain to the other pens that chase the flock.
 export const flockKills: Rule = (world) => {
   for (const predator of world.objects) {
     if (!predator.beingHunted || predator.vanishElapsed !== null) continue;
@@ -270,6 +272,7 @@ export const flockKills: Rule = (world) => {
     if (!hunters || !isFlockKillTriggered(predator, hunters, world.config.flockKillReach)) continue;
     predator.beingHunted = false;
     predator.vanishElapsed = 0;
+    for (const member of hunters) member.restRemaining = FLOCK_KILL_REST_SECONDS;
     addBurstEffect(world, predator.position.x, predator.position.y, predator.radius);
   }
 };

@@ -253,6 +253,11 @@ export const FLOCK_KEEP_RADIUS = FLOCK_RADIUS * 1.25;
 // A flock keeps hunting its predator unless another candidate is this much closer
 // to the flock centre (0.5 = half the distance), so the hunted tint stays put (#14).
 export const FLOCK_TARGET_SWITCH_MARGIN = 0.5;
+// After a kill, the flock members rest for this many seconds, like a fed pen. A
+// resting flock hunts no predator. Without the rest, the flock retargets a pen
+// that chases one of its members, which is already at contact range, so one kill
+// chained into the death of every nearby pen.
+export const FLOCK_KILL_REST_SECONDS = 3;
 
 // Boids weights for flock-hunt steering (spec §6) — hunt dominant, boids
 // rules add clustering texture. Starting values, tune live in the browser.
