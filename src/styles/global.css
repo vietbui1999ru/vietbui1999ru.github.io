@@ -209,6 +209,10 @@
   ::selection {
     @apply bg-selection text-selection-foreground;
   }
+  /* Reading highlight prototype (#39): the read part of a [data-read-hl] block. */
+  ::highlight(read-progress) {
+    color: var(--ink);
+  }
   html {
     @apply font-sans overscroll-y-none scroll-smooth;
     font-size: 1.125rem; /* 18px base for larger global type */
