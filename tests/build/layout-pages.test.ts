@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { execFile } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import { promisify } from "node:util";
 import fs from "node:fs";
 import path from "node:path";
@@ -12,15 +12,26 @@ const PROJECT = process.cwd();
 const FIXTURE = path.join(PROJECT, "tests", "fixtures", "garden-vault");
 const BUILD_TIMEOUT = 240_000;
 
-// Each build runs in its own copy of the project with node_modules symlinked. Two
+// Each build runs in its own copy of the project with node_modules hard-linked. Two
 // astro builds in one project root share .astro/ and clobber each other's generated
 // files, and the spec check runs AC-13's build alongside this suite.
+// The copy lives under .cache/ so node_modules can be hard-linked (same filesystem).
+// Astro cannot compile ClientRouter.astro through a symlinked node_modules, so the
+// symlink is only a fallback when hard links fail.
 function isolatedProject(): string {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "layout-project-"));
+  const parent = path.join(PROJECT, ".cache");
+  fs.mkdirSync(parent, { recursive: true });
+  const root = fs.mkdtempSync(path.join(parent, "layout-project-"));
   for (const entry of ["astro.config.ts", "package.json", "tsconfig.json", "svelte.config.js", "src", "public"]) {
     fs.cpSync(path.join(PROJECT, entry), path.join(root, entry), { recursive: true });
   }
-  fs.symlinkSync(path.join(PROJECT, "node_modules"), path.join(root, "node_modules"), "dir");
+  const modules = path.join(root, "node_modules");
+  try {
+    execFileSync("cp", ["-al", path.join(PROJECT, "node_modules"), modules]);
+  } catch {
+    fs.rmSync(modules, { recursive: true, force: true });
+    fs.symlinkSync(path.join(PROJECT, "node_modules"), modules, "dir");
+  }
   return root;
 }
 
