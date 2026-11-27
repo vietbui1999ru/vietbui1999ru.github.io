@@ -6,6 +6,8 @@ import Chip from "@/components/primitives/Chip.svelte";
 import LibraryProgress from "@/components/library/LibraryProgress.svelte";
 import GardenBacklinks from "@/components/garden/GardenBacklinks.svelte";
 import GardenBlocks from "@/components/garden/GardenBlocks.astro";
+import GardenToc from "@/components/garden/GardenToc.svelte";
+import { tocEntries, tocVisible } from "@/lib/toc";
 import { PROSE } from "@/design-system/prose";
 import { layoutBlocks, layoutFor } from "@/config/layouts";
 import { buildBacklinks } from "@/lib/garden-backlinks";
@@ -29,7 +31,9 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props as { entry: LibraryCollectionEntry };
 const { data } = entry;
-const { Content, remarkPluginFrontmatter } = await render(entry);
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+// The reading rail sits below the cover when the sidebar TOC would show.
+const rail = tocVisible(tocEntries(headings));
 const url = `/library/${entry.id}`;
 const cover = await thumbnailFor(data.cover, 720);
 const meta = metaLine(data);
@@ -65,6 +69,7 @@ const presetHasBacklinks = presetBlocks.some((block) => block.block === "backlin
     </PageHeader>
 
     <div class="grid gap-10 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:items-start">
+      <div class="space-y-8 md:self-stretch">
       {
         cover ? (
           <img src={cover.src} width={cover.width} height={cover.height} alt="" class="w-full border-[1.5px] border-ink shadow-hard" data-library-cover />
@@ -72,6 +77,8 @@ const presetHasBacklinks = presetBlocks.some((block) => block.block === "backlin
           <div class="aspect-[3/4] w-full border-[1.5px] border-ink bg-journal-4" data-placeholder={data.type} />
         )
       }
+      {rail && <GardenToc headings={headings} sidebar client:load />}
+      </div>
       <div class="min-w-0">
         {data.status === "active" && data.progress !== undefined && (
           <div class="mb-8">

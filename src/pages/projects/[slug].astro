@@ -2,6 +2,8 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ProjectMedia from "@/components/patterns/ProjectMedia.svelte";
 import { getCollection, render } from "astro:content";
+import GardenToc from "@/components/garden/GardenToc.svelte";
+import { tocEntries, tocVisible } from "@/lib/toc";
 import PageHeader from "@/components/primitives/PageHeader.svelte";
 import Chip from "@/components/primitives/Chip.svelte";
 import InkLink from "@/components/primitives/InkLink.svelte";
@@ -16,7 +18,9 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content, remarkPluginFrontmatter } = await render(entry);
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+// The reading rail column shows only when the sidebar TOC would show.
+const rail = tocVisible(tocEntries(headings));
 const formattedDate = entry.data.date.toLocaleDateString("en-US", {
   year: "numeric",
   month: "long",
@@ -26,7 +30,12 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
 
 <BaseLayout enableInkAmbient={true} katex={remarkPluginFrontmatter.math === "katex"}>
   <div class="page-container py-section">
-    <article data-ink-obstacle="content" class="mx-auto max-w-5xl">
+    <article
+      data-ink-obstacle="content"
+      class:list={["mx-auto max-w-5xl", rail && "lg:grid lg:grid-cols-[14rem_minmax(0,1fr)] lg:items-start lg:gap-12"]}
+    >
+      {rail && <GardenToc headings={headings} sidebar client:load />}
+      <div class="min-w-0">
       <PageHeader
         title={entry.data.title}
         kicker={`${entry.data.status} · ${formattedDate}`}
@@ -53,6 +62,7 @@ const formattedDate = entry.data.date.toLocaleDateString("en-US", {
           ))}
         </footer>
       )}
+      </div>
     </article>
   </div>
 </BaseLayout>
