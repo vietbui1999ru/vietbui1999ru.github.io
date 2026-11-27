@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import GardenBlocks from "@/components/garden/GardenBlocks.astro";
 import { getCollection, getEntry } from "astro:content";
 import { buildFeed } from "@/lib/garden-feed";
+import { currentlyItems } from "@/lib/library-view";
 
 // Home is a vault note: Site/Home.md lists its blocks, Site/Focus/* feeds the focus block.
 // With no Site/ folder the page renders no blocks.
@@ -21,8 +22,11 @@ const areas = sites
 
 const blogs = await getCollection("blog");
 const thoughts = await getCollection("thoughts");
-// The feed block caps itself by its `limit` prop, so the page passes every item.
-const items = buildFeed(blogs, thoughts, Number.POSITIVE_INFINITY);
+const library = await getCollection("library");
+// The feed block filters by `sources` and caps itself by `limit`, so the page passes every item.
+const items = buildFeed(blogs, thoughts, Number.POSITIVE_INFINITY, library);
+// The `currently` block renders only when Site/Home.md lists it.
+const currently = currentlyItems(library, { dev: import.meta.env.DEV });
 ---
 
 <BaseLayout enableInkAmbient={true}>
@@ -32,7 +36,7 @@ const items = buildFeed(blogs, thoughts, Number.POSITIVE_INFINITY);
         note="Site/Home.md"
         blocks={home.data.blocks}
         body={home.rendered?.html ?? ""}
-        context={{ areas, items }}
+        context={{ areas, items, currently }}
       />
     )
   }

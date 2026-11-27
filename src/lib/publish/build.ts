@@ -53,7 +53,10 @@ export async function buildDesired(vaultRoot: string): Promise<BuildResult> {
   // Embeds come from the text that is published, so private comments add no attachments.
   const attachments = await collectAttachments(
     vaultRoot,
-    published.map((note) => ({ body: stripPrivateComments(note.body) })),
+    published.map((note) => ({
+      body: stripPrivateComments(note.body),
+      frontmatter: note.frontmatter,
+    })),
   );
   for (const att of attachments) {
     desired[att.target] = await fs.readFile(att.source);

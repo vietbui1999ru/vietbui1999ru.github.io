@@ -5,6 +5,8 @@ package-lock.json
 dist/
 # generated types
 .astro/
+# library covers copied from the vault at config load (spec B)
+src/assets/library/
 
 # dependencies
 node_modules/

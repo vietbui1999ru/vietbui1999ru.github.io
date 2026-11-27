@@ -4,6 +4,7 @@ import {
   blogSchema,
   blogVariantSchema,
   gallerySchema,
+  librarySchema,
   projectSchema,
   siteNoteSchema,
   thoughtSchema,
@@ -63,16 +64,28 @@ const thoughts = defineCollection({
 // and the pages then omit the vault-driven blocks.
 const site = defineCollection({
   loader: glob({
-    pattern: ["Home.md", "About.md", "Focus/*.md"],
+    pattern: ["Home.md", "About.md", "Library.md", "Focus/*.md"],
     base: paths.site,
   }),
   schema: siteNoteSchema,
+});
+
+// Library items (spec B): Library/<type>/<slug>.md, id "<type>/<slug>".
+// Draft and unpublished items stay in the collection; pages filter them.
+const library = defineCollection({
+  loader: glob({
+    pattern: "*/*.md",
+    base: paths.library,
+    generateId: ({ entry }) => `${entry.split("/")[0]}/${noteId(entry)}`,
+  }),
+  schema: librarySchema,
 });
 
 export const collections = {
   blog,
   "blog-variants": blogVariants,
   gallery,
+  library,
   projects,
   site,
   thoughts,

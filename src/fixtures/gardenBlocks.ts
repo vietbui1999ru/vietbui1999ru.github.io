@@ -13,6 +13,7 @@ const UI_LAB_BODY = "<p>UI_LAB_PLACEHOLDER body copy for layout review.</p>";
 const UI_LAB_FEED: FeedItem[] = [
   { kind: "blog", title: "UI_LAB_PLACEHOLDER post", date: new Date("2026-03-01"), href: "#" },
   { kind: "thought", date: new Date("2026-02-01"), href: "#" },
+  { kind: "library", title: "UI_LAB_PLACEHOLDER book", date: new Date("2026-01-15"), href: "#" },
 ];
 
 export const GARDEN_BLOCK_FIXTURES: Record<GardenBlockId, GardenBlockFixture> = {
@@ -30,7 +31,16 @@ export const GARDEN_BLOCK_FIXTURES: Record<GardenBlockId, GardenBlockFixture> = 
       ],
     },
   },
-  feed: { props: { limit: 2 }, context: { items: UI_LAB_FEED } },
+  feed: { props: { limit: 3, sources: ["blog", "thought", "library"] }, context: { items: UI_LAB_FEED } },
+  currently: {
+    props: {},
+    context: {
+      currently: [
+        { title: "UI_LAB_PLACEHOLDER book", href: "#", type: "book", statusLabel: "reading", progress: 40 },
+        { title: "UI_LAB_PLACEHOLDER game", href: "#", type: "game", statusLabel: "playing" },
+      ],
+    },
+  },
   "about-prose": { props: {}, body: UI_LAB_BODY },
   experience: { props: {} },
   education: { props: {} },

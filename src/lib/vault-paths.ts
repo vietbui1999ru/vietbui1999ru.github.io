@@ -12,6 +12,7 @@ export function vaultPaths(projectRoot: string) {
     projects: path.join(root, "Portfolio", "Projects"),
     thoughts: root,
     site: path.join(root, "Site"),
+    library: path.join(root, "Library"),
     projectAssets: path.join(root, "Assets", "Projects"),
     attachments: path.join(root, "Attachments"),
   };

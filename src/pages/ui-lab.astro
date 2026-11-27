@@ -4,6 +4,8 @@ import UiLab from "@/components/ui-lab/UiLab.svelte";
 import ProjectSortFixture from "@/components/ui-lab/ProjectSortFixture.svelte";
 import TimelineRailFixture from "@/components/ui-lab/TimelineRailFixture.svelte";
 import GardenBlocks from "@/components/garden/GardenBlocks.astro";
+import LibraryCollection from "@/components/library/LibraryCollection.svelte";
+import { LIBRARY_CARD_FIXTURES } from "@/fixtures/library";
 import { GARDEN_BLOCK_FIXTURES } from "@/fixtures/gardenBlocks";
 
 if (!import.meta.env.DEV) {
@@ -23,6 +25,9 @@ if (!import.meta.env.DEV) {
     </p>
   </section>
   <TimelineRailFixture client:load />
+  <section class="px-4 py-8 md:px-8" data-ui-lab="library">
+    <LibraryCollection type="book" items={LIBRARY_CARD_FIXTURES} client:load />
+  </section>
   {
     Object.entries(GARDEN_BLOCK_FIXTURES).map(([id, fixture]) => (
       <GardenBlocks

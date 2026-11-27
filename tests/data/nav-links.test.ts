@@ -2,11 +2,12 @@ import { describe, expect, it } from "vitest";
 import { NAV_LINKS } from "@/data/navLinks";
 
 describe("NAV_LINKS", () => {
-  it("lists home, blog, thoughts, projects, about and playground, in that order", () => {
+  it("lists home, blog, thoughts, library, projects, about and playground, in that order", () => {
     expect(NAV_LINKS.map((link) => link.label)).toEqual([
       "home",
       "blog",
       "thoughts",
+      "library",
       "projects",
       "about",
       "playground",
