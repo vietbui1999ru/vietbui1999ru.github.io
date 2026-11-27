@@ -1,6 +1,7 @@
 <script lang="ts">
-import type { Snippet } from "svelte";
-import { subscribeSpawnState } from "@/lib/ink-ambient/spawn-state";
+import { onDestroy, type Snippet } from "svelte";
+import { createSubscriber } from "svelte/reactivity";
+import { getSpawnState, subscribeSpawnState } from "@/lib/ink-ambient/spawn-state";
 
 // A pen or pencil button with the manual spawn cap (#42). At the cap it looks disabled
 // (aria-disabled, greyed) but still takes clicks: a click spawns nothing, shakes the
@@ -18,18 +19,18 @@ let {
 } = $props();
 
 const NOTE_MS = 1500;
-let full = $state(false);
+// The store is external, so createSubscriber links it to Svelte: a read of `full`
+// in a reactive context subscribes, and the last reader leaving unsubscribes.
+const subscribe = createSubscriber((update) => subscribeSpawnState(() => update()));
+const full = $derived.by(() => {
+  subscribe();
+  return getSpawnState()[role].full;
+});
 let note = $state("");
 let shaking = $state(false);
 let noteTimer: ReturnType<typeof setTimeout> | undefined;
 
-$effect(() => {
-  const stop = subscribeSpawnState((state) => (full = state[role].full));
-  return () => {
-    stop();
-    clearTimeout(noteTimer);
-  };
-});
+onDestroy(() => clearTimeout(noteTimer));
 
 function click() {
   if (!full) {
