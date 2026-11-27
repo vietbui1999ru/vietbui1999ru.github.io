@@ -1,7 +1,9 @@
 ---
-status: draft
+status: approved
 branch: feat/rail-side
 ---
+<!-- Owner approvals in session, 2026-11-27: approve 865cca00; approve 1ac026e5 (AC-1 amendment). -->
+
 # SPEC: Reading rail in the sidebar TOC (issue #38, part 2)
 
 ## Objective
