@@ -47,6 +47,8 @@ const { enableInkAmbient = false, katex = false } = Astro.props;
       import { installVideoSwap } from "@/lib/video-swap";
       import { installWikilinkPreview } from "@/lib/wikilink-preview";
       installVideoSwap(document.body);
+      // Dev monitor: only under `astro dev`; the production build drops this import.
+      if (import.meta.env.DEV) void import("@/lib/dev-monitor/monitor").then((m) => m.installDevMonitor());
       installWikilinkPreview(document.body, {
         canHover: () => window.matchMedia("(hover: hover) and (pointer: fine)").matches,
       });
