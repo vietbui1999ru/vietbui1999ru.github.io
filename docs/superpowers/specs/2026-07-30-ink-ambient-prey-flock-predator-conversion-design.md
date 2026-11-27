@@ -156,6 +156,13 @@ nothing changes for them.
 
 ## 7. Kill trigger and conversion
 
+> Superseded in part by #43 (2026-11-27): the kill no longer uses `FLOCK_RADIUS`.
+> A flock member kills the predator only within
+> `(predator.radius + member.radius) * FLOCK_KILL_RADIUS_FRACTION` (0.65, the
+> contact rule of the normal catch). With one radius for both, pens died while the
+> flock still looked about 90 px away. `FLOCK_RADIUS` stays the cohesion and hunting
+> radius. The playground panel tunes the kill distance as "flock kill reach".
+
 Each tick, after the existing `resolveCatches`-driven catch resolution has
 been applied (winners/losers/bursts/lives/hunger, all unchanged from the base
 spec), a new pass checks every predator with `beingHunted === true`: if it is

@@ -267,7 +267,7 @@ export const flockKills: Rule = (world) => {
   for (const predator of world.objects) {
     if (!predator.beingHunted || predator.vanishElapsed !== null) continue;
     const hunters = world.flockByTargetPredatorId.get(predator.id);
-    if (!hunters || !isFlockKillTriggered(predator, hunters, world.config.flockRadius)) continue;
+    if (!hunters || !isFlockKillTriggered(predator, hunters, world.config.flockKillReach)) continue;
     predator.beingHunted = false;
     predator.vanishElapsed = 0;
     addBurstEffect(world, predator.position.x, predator.position.y, predator.radius);

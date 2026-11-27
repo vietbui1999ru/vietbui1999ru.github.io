@@ -5,6 +5,7 @@ import {
   FLOCK_HUNT_WEIGHT,
   FLOCK_MIN_SIZE,
   FLOCK_KEEP_RADIUS,
+  FLOCK_KILL_RADIUS_FRACTION,
   FLOCK_RADIUS,
   FLOCK_TARGET_SWITCH_MARGIN,
   FLOCK_SEPARATION_DISTANCE,
@@ -281,12 +282,16 @@ export function flockHuntAcceleration(
   return { x: direction.x * magnitude, y: direction.y * magnitude };
 }
 
+/** A flock kills its predator once any member touches it: within
+ * (predator.radius + member.radius) * reach, the contact rule of the normal catch. */
 export function isFlockKillTriggered(
   predator: InkObject,
   flockMembers: readonly InkObject[],
-  radius = FLOCK_RADIUS,
+  reach = FLOCK_KILL_RADIUS_FRACTION,
 ): boolean {
-  return flockMembers.some((member) => distance(predator.position, member.position) < radius);
+  return flockMembers.some(
+    (member) => distance(predator.position, member.position) < (predator.radius + member.radius) * reach,
+  );
 }
 
 /** A predator being hunted by a flock acts as prey (behavior only — its

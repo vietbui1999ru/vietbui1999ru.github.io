@@ -921,12 +921,22 @@ describe("Boids steering and kill-trigger", () => {
     expect(accel.x).toBeGreaterThan(0); // net direction toward target at +x
   });
 
-  it("isFlockKillTriggered fires only when the predator is within FLOCK_RADIUS of a current flock member", () => {
+  // Both radii are 20, so the kill distance is (20 + 20) * 0.65 = 26 px (#43).
+  it("isFlockKillTriggered fires only when a flock member touches the predator", () => {
     const predator = object(1, 0, 0);
-    const closeMember = object(2, 50, 0); // within 90
-    const farMember = object(3, 5000, 0);
+    const touching = object(2, 20, 0);
+    const insideFlockRadius = object(3, 50, 0); // within FLOCK_RADIUS (90), outside 26
+    const farMember = object(4, 5000, 0);
     expect(isFlockKillTriggered(predator, [farMember])).toBe(false);
-    expect(isFlockKillTriggered(predator, [closeMember])).toBe(true);
+    expect(isFlockKillTriggered(predator, [insideFlockRadius])).toBe(false);
+    expect(isFlockKillTriggered(predator, [touching])).toBe(true);
+  });
+
+  it("isFlockKillTriggered scales the kill distance with reach", () => {
+    const predator = object(1, 0, 0);
+    const member = object(2, 50, 0);
+    expect(isFlockKillTriggered(predator, [member], 1)).toBe(false); // 40 px
+    expect(isFlockKillTriggered(predator, [member], 1.5)).toBe(true); // 60 px
   });
 });
 
