@@ -5,9 +5,14 @@ import PaperNav from "@/components/svelte/PaperNav.svelte";
 import PaperMobileNav from "@/components/svelte/PaperMobileNav.svelte";
 import InkAmbient from "@/components/svelte/InkAmbient.svelte";
 import SiteFooter from "@/components/primitives/SiteFooter.svelte";
+import { ClientRouter } from "astro:transitions";
+import { usesSnapshot } from "@/lib/ink-ambient/sim-config";
 
 // katex: load the KaTeX stylesheet; only notes with `math: katex` need it.
 const { enableInkAmbient = false, katex = false } = Astro.props;
+// The shared ink canvas persists across navigations (#42). The playground runs its own
+// world, so its island has no persist name and a visit drops the shared canvas.
+const persistInk = usesSnapshot(Astro.url.pathname);
 ---
 
 <!doctype html>
@@ -29,6 +34,7 @@ const { enableInkAmbient = false, katex = false } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Viet Bui | Portfolio</title>
     <link rel="icon" type="image/png" href={pcmasterracePng.src} />
+    <ClientRouter />
     {katex && <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" integrity="sha384-zh0CIslj+VczCZtlzBcjt5ppRcsAmDnRem7ESsYwWwg3m/OaJ2l4x7YBZl9Kxxib" crossorigin="anonymous" />}
   </head>
   <!-- flex column, at least one viewport tall: main grows (flex-1) and the footer's
@@ -36,7 +42,10 @@ const { enableInkAmbient = false, katex = false } = Astro.props;
   <body class="group/body relative isolate flex min-h-dvh flex-col overscroll-none bg-paper text-ink antialiased transition-colors duration-300">
     <PaperNav pathname={Astro.url.pathname} client:load />
     <PaperMobileNav pathname={Astro.url.pathname} client:load />
-    {enableInkAmbient && <InkAmbient pathname={Astro.url.pathname} client:load />}
+    {enableInkAmbient && persistInk && (
+      <InkAmbient pathname={Astro.url.pathname} client:load transition:persist="ink-ambient" />
+    )}
+    {enableInkAmbient && !persistInk && <InkAmbient pathname={Astro.url.pathname} client:load />}
     <!-- Fixed UI that must sit above the ink canvas (z-30); main is its own z-10 stacking context. -->
     <slot name="overlay" />
     <main class="relative z-10 flex flex-1 flex-col pb-20 md:pb-0">
@@ -47,13 +56,23 @@ const { enableInkAmbient = false, katex = false } = Astro.props;
       import { installVideoSwap } from "@/lib/video-swap";
       import { installWikilinkPreview } from "@/lib/wikilink-preview";
       import { installTimelineRails } from "@/lib/timeline-rail-dom";
-      installVideoSwap(document.body);
-      installTimelineRails(document.body);
+      import { applyStoredPreferences, onPageLoad } from "@/lib/page-lifecycle";
+      // This module runs once. Under the ClientRouter each navigation swaps in a new body,
+      // so the per-page setup runs on every page load and is removed before the next swap.
+      onPageLoad(() => {
+        const cleanups = [
+          installVideoSwap(document.body),
+          installTimelineRails(document.body),
+          installWikilinkPreview(document.body, {
+            canHover: () => window.matchMedia("(hover: hover) and (pointer: fine)").matches,
+          }),
+        ];
+        return () => cleanups.forEach((cleanup) => cleanup());
+      });
+      // The swap replaces the <html> attributes; restore the theme before the new page paints.
+      document.addEventListener("astro:after-swap", () => applyStoredPreferences(document.documentElement));
       // Dev monitor: only under `astro dev`; the production build drops this import.
       if (import.meta.env.DEV) void import("@/lib/dev-monitor/monitor").then((m) => m.installDevMonitor());
-      installWikilinkPreview(document.body, {
-        canHover: () => window.matchMedia("(hover: hover) and (pointer: fine)").matches,
-      });
     </script>
   </body>
 </html>
