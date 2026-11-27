@@ -41,6 +41,8 @@ beforeEach(() => {
   vi.stubGlobal("matchMedia", (q: string) => ({ matches: q.includes("reduce") && reduced }));
   vi.stubGlobal("innerHeight", 1000);
   Object.defineProperty(window, "scrollY", { configurable: true, get: () => scrollY });
+  // The page scrolls to 3300, so the reading line catches up to the content end only past 2300.
+  Object.defineProperty(document.documentElement, "scrollHeight", { configurable: true, value: 4300 });
   Element.prototype.animate = vi.fn();
   vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(function (this: Element) {
     const el = this as HTMLElement;
@@ -104,6 +106,15 @@ describe("GardenToc reading rail", () => {
     frames(200);
     expect(markerY()).toBeCloseTo(80, 0);
     expect(states()).toEqual(["passed", "passed", "upcoming"]);
+  });
+
+  it("scroll: at the end of the scroll the marker reaches the rail end and every checkpoint passes", () => {
+    reduced = true;
+    const { states, markerY } = setup();
+    scrollTo(3300);
+    frames(1);
+    expect(markerY()).toBeCloseTo(140, 1);
+    expect(states()).toEqual(["passed", "passed", "passed"]);
   });
 
   it("reduced motion: the marker jumps to its target and checkpoints do not pop", () => {

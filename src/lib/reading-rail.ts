@@ -33,6 +33,31 @@ export function readingMarkerOffset(input: ReadingInput): number {
   return Math.min(Math.max(offset, 0), Math.max(railHeight, 0));
 }
 
+/** The reading line sits this far down the viewport. */
+export const READING_LINE_FRACTION = 0.3;
+
+export interface ScrollInput {
+  scrollY: number;
+  viewportHeight: number;
+  /** Largest possible scrollY. */
+  maxScroll: number;
+  /** Document y of the bottom of the content. */
+  contentBottom: number;
+}
+
+/**
+ * Document y of the reading line: READING_LINE_FRACTION down the viewport. Over the last
+ * viewport height of the scroll range it moves linearly down to the content bottom, so at
+ * the scroll end every checkpoint is passed, also on a short page.
+ */
+export function readingLine(input: ScrollInput): number {
+  const { scrollY, viewportHeight, maxScroll, contentBottom } = input;
+  const offset = viewportHeight * READING_LINE_FRACTION;
+  const leftBelow = Math.max(0, contentBottom - (maxScroll + offset));
+  const t = viewportHeight > 0 ? Math.min(Math.max(1 - (maxScroll - scrollY) / viewportHeight, 0), 1) : 1;
+  return scrollY + offset + leftBelow * t;
+}
+
 /** A checkpoint is passed once the marker reaches its offset. */
 export function readingCheckpointStates(checkpoints: number[], marker: number): CheckpointState[] {
   return checkpointStates(checkpoints, marker);

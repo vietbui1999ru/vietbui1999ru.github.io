@@ -1,5 +1,5 @@
 import { RAIL_MOTION, atRest, bounceRatio, stepRail } from "./rail-motion";
-import { readingCheckpointStates, readingMarkerOffset } from "./reading-rail";
+import { readingCheckpointStates, readingLine, readingMarkerOffset } from "./reading-rail";
 
 // Drives the reading rail in the sidebar TOC. The marker follows the scroll position with
 // the spring in rail-motion.ts. While the page scrolls, it chases with no overshoot. When
@@ -11,8 +11,6 @@ import { readingCheckpointStates, readingMarkerOffset } from "./reading-rail";
 
 /** Scroll idle this long (ms) counts as stopped. */
 const STOP_MS = 80;
-/** The reading line sits this far down the viewport. */
-const READING_LINE = 0.3;
 /** Half the marker size, so the marker centre sits on the rail position. */
 const MARKER_HALF = 6.5;
 const POP: Keyframe[] = [{ scale: 1 }, { scale: 1.45, offset: 0.4 }, { scale: 1 }];
@@ -31,6 +29,7 @@ export function installReadingRail(nav: HTMLElement): () => void {
   let offsets: number[] = [];
   let headingTops: number[] = [];
   let contentBottom = 0;
+  let maxScroll = 0;
   let height = 0;
   let drawnPos = Number.NaN;
   let lastScroll = { t: 0, y: 0 };
@@ -56,13 +55,19 @@ export function installReadingRail(nav: HTMLElement): () => void {
     contentBottom = content
       ? content.getBoundingClientRect().bottom + y
       : document.documentElement.scrollHeight;
+    maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   };
 
   const target = () =>
     readingMarkerOffset({
       headingTops,
       checkpoints: offsets,
-      readingLine: window.scrollY + window.innerHeight * READING_LINE,
+      readingLine: readingLine({
+        scrollY: window.scrollY,
+        viewportHeight: window.innerHeight,
+        maxScroll,
+        contentBottom,
+      }),
       contentBottom,
       railHeight: height,
     });
