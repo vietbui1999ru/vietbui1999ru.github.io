@@ -3,7 +3,7 @@ import type { Snippet } from "svelte";
 import type { ClassValue } from "svelte/elements";
 import { PASTEL_BG, type Pastel } from "../../design-system/tone";
 
-// Vertical timeline with a breathing marker that follows a mouse or pen pointer, or the
+// Vertical timeline with a marker that follows a mouse or pen pointer, or the
 // scroll position otherwise. The markup is static: installTimelineRails (BaseLayout script)
 // springs --rail-y and sets the checkpoint states each frame; CSS draws the marker and line there.
 // Before the script runs it renders as a static timeline with every checkpoint passed.
@@ -26,7 +26,7 @@ let {
   <span aria-hidden="true" data-rail-line="passed" class="rail-passed absolute top-0 left-0 w-[1.5px] bg-ink"></span>
   <span aria-hidden="true" data-rail-line="upcoming" class="rail-upcoming absolute bottom-0 left-0 w-[1.5px] bg-journal-3"></span>
   <span aria-hidden="true" data-rail-marker class="rail-marker absolute top-0 -left-[7px] z-10">
-    <span class="rail-breath block h-[13px] w-[13px] border-2 border-ink bg-paper-raised shadow-hard-sm"></span>
+    <span class="block h-[13px] w-[13px] border-2 border-ink bg-paper-raised shadow-hard-sm"></span>
   </span>
 
   <ol>
@@ -78,24 +78,9 @@ let {
     transition: background-color 150ms ease-out;
   }
 
-  .rail-breath {
-    animation: rail-breathe var(--rail-breath-duration, 2.4s) ease-in-out infinite;
-  }
-  @keyframes rail-breathe {
-    0%,
-    100% {
-      scale: 1;
-    }
-    50% {
-      scale: var(--rail-breath-scale, 1.25);
-    }
-  }
   @media (prefers-reduced-motion: reduce) {
     .rail:global([data-rail-ready]) .rail-checkpoint {
       transition: none;
-    }
-    .rail-breath {
-      animation: none;
     }
   }
 </style>

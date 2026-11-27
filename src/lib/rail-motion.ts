@@ -16,7 +16,7 @@ export const RAIL_MOTION = {
   /** Stroke speed (px/s) at or over which the bounce is strongest. */
   fastSpeed: 1600,
   /** Damping ratio at the strongest bounce; 1 means no overshoot. */
-  minDamping: 0.53,
+  minDamping: 0.48,
 };
 export type RailMotionParams = typeof RAIL_MOTION;
 
