@@ -105,6 +105,11 @@ describe("pointer", () => {
   });
 });
 
+const marker = (rail: HTMLElement) =>
+  rail.querySelector<HTMLElement>("[data-rail-marker]")!.style.transform;
+const line = (rail: HTMLElement) =>
+  rail.querySelector<HTMLElement>('[data-rail-line="passed"]')!.style.transform;
+
 describe("script", () => {
   it("renders a static timeline before the script runs", () => {
     const { rail, states } = setup(false);
@@ -114,14 +119,16 @@ describe("script", () => {
 
   it("places the marker at its first target", () => {
     const { rail } = setup();
-    expect(rail.style.getPropertyValue("--rail-y")).toBe("284.0px");
+    // Marker centre at 284: translate by 284 - 6.5. The passed line covers 284 / 400.
+    expect(marker(rail)).toBe("translate3d(0, 277.5px, 0)");
+    expect(line(rail)).toBe("scaleY(0.7100)");
     expect(rail.dataset.railReady).toBe("");
   });
 
-  it("sets --rail-y to the pointer offset", () => {
+  it("moves the marker to the pointer offset", () => {
     const { rail } = setup();
     pointer(rail, "pointermove", "mouse", 150);
-    expect(rail.style.getPropertyValue("--rail-y")).toBe("50.0px");
+    expect(marker(rail)).toBe("translate3d(0, 43.5px, 0)");
     expect(rail.dataset.railTarget).toBe("50");
   });
 });

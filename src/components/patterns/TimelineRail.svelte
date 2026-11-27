@@ -5,7 +5,7 @@ import { PASTEL_BG, type Pastel } from "../../design-system/tone";
 
 // Vertical timeline with a marker that follows a mouse or pen pointer, or the
 // scroll position otherwise. The markup is static: installTimelineRails (BaseLayout script)
-// springs --rail-y and sets the checkpoint states each frame; CSS draws the marker and line there.
+// moves the marker and scales the line with transforms, and sets the checkpoint states.
 // Before the script runs it renders as a static timeline with every checkpoint passed.
 let {
   items,
@@ -55,51 +55,37 @@ let {
   }
   .rail-marker {
     display: none;
-    transform: translateY(calc(var(--rail-y, 0px) - 6.5px));
   }
   .rail-checkpoint:global([data-state="upcoming"]) {
     background-color: var(--color-paper-raised);
   }
 
-  /* Script ready: the marker and the line sit at --rail-y. */
+  /* Script ready: both segments span the rail and the script scales them (scaleY), and it
+     moves the marker with translate3d. Transforms skip layout and restyle, so the frames stay
+     on the compositor. The data-* attributes are added at runtime, so they sit in :global(). */
   .rail:global([data-rail-ready]) .rail-marker {
     display: block;
+    will-change: transform;
+  }
+  .rail:global([data-rail-ready]) .rail-passed,
+  .rail:global([data-rail-ready]) .rail-upcoming {
+    top: 0;
+    height: 100%;
+    will-change: transform;
   }
   .rail:global([data-rail-ready]) .rail-passed {
-    height: var(--rail-y, 0px);
+    transform-origin: top;
   }
   .rail:global([data-rail-ready]) .rail-upcoming {
-    top: var(--rail-y, 0px);
+    transform-origin: bottom;
   }
-
-  /* The script springs --rail-y each frame (rail-motion.ts), so the marker and the line
-     need no transition. The data-* attributes are added at runtime, so they sit in :global(). */
   .rail:global([data-rail-ready]) .rail-checkpoint {
     transition: background-color 150ms ease-out;
-  }
-  /* The script spins checkpoints near the marker (style.rotate) and sets data-pop when one
-     changes state: a short stamp-like pop. */
-  .rail-checkpoint:global([data-pop]) {
-    animation: rail-pop 260ms cubic-bezier(0.3, 1.6, 0.5, 1);
-  }
-  @keyframes rail-pop {
-    0% {
-      scale: 1;
-    }
-    40% {
-      scale: 1.45;
-    }
-    100% {
-      scale: 1;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .rail:global([data-rail-ready]) .rail-checkpoint {
       transition: none;
-    }
-    .rail-checkpoint:global([data-pop]) {
-      animation: none;
     }
   }
 </style>
