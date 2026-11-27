@@ -78,6 +78,11 @@ copyLibraryCovers(vaultRoot, path.resolve(__dirname, "src/assets/library"), {
 export default defineConfig({
   site,
   base,
+  // Every internal link loads its page's HTML once it scrolls into view, so a click
+  // opens a page that is already in the cache (scripts/nav-bench.mjs: 234 ms to
+  // 63 ms on a 4G phone). Astro skips this when the reader has data saving on or a
+  // 2G connection.
+  prefetch: { prefetchAll: true, defaultStrategy: "viewport" },
   integrations: [react(), svelte(), publishPreview()],
   markdown: {
     shikiConfig: {
