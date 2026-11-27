@@ -86,17 +86,17 @@ const updatedDate = entry.data.updated?.toLocaleDateString("en-US", {
     <InkLink href="/blog" arrow="back" tone="muted" class="mb-10 inline-block">blog</InkLink>
 
     <!--
-      Hidden storage lives outside #blog-content so TableOfContents
-      doesn't find duplicate headings from every pre-rendered variant.
+      Variant storage lives outside #blog-content. Each variant is a <template>, so its
+      heading ids stay out of the document until PaperBlogVariants mounts a copy (#47).
     -->
     <div id={storageId} style="display:none" aria-hidden="true">
-      <div data-variant-label="Original" data-headings={JSON.stringify(headings)}>
+      <template data-variant-label="Original" data-headings={JSON.stringify(headings)}>
         <Content />
-      </div>
+      </template>
       {renderedVariants.map(({ label, Content: VC, headings: vh }) => (
-        <div data-variant-label={label} data-headings={JSON.stringify(vh)}>
+        <template data-variant-label={label} data-headings={JSON.stringify(vh)}>
           <VC />
-        </div>
+        </template>
       ))}
     </div>
 

@@ -1,7 +1,9 @@
 <script lang="ts">
+// Each variant is a <template> in the storage element. Template content is inert, so
+// its heading ids stay out of the document and only the mounted copy owns them (#47).
 type VariantTab = {
   label: string;
-  source: HTMLElement;
+  source: HTMLTemplateElement;
 };
 
 type Props = {
@@ -12,13 +14,15 @@ type Props = {
 let { storageId, proseClass = "" }: Props = $props();
 let tabs = $state.raw<VariantTab[]>([]);
 let activeIdx = $state(0);
+// The URL hash names a heading that exists only once the first variant is mounted.
+let hashHandled = false;
 
 function loadVariants(_node: HTMLElement) {
   const storage = document.getElementById(storageId);
   if (!storage) return;
 
   tabs = Array.from(
-    storage.querySelectorAll<HTMLElement>("[data-variant-label]"),
+    storage.querySelectorAll<HTMLTemplateElement>("template[data-variant-label]"),
   ).map((source) => ({
     label: source.dataset.variantLabel ?? "",
     source,
@@ -32,8 +36,14 @@ function mountVariant(node: HTMLElement) {
   if (!tab) return;
 
   node.replaceChildren(
-    ...Array.from(tab.source.childNodes).map((child) => child.cloneNode(true)),
+    ...Array.from(tab.source.content.childNodes).map((child) => child.cloneNode(true)),
   );
+  if (!hashHandled) {
+    hashHandled = true;
+    const id = decodeURIComponent(location.hash.slice(1));
+    const target = id ? Array.from(node.querySelectorAll("[id]")).find((el) => el.id === id) : undefined;
+    target?.scrollIntoView();
+  }
   // Each tab carries its own headings, so the TOC can follow the active tab.
   const headings = JSON.parse(tab.source.dataset.headings ?? "[]");
   window.dispatchEvent(new CustomEvent("variant-change", { detail: { headings } }));

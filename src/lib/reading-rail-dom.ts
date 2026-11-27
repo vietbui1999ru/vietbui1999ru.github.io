@@ -54,8 +54,8 @@ export function installReadingRail(nav: HTMLElement): () => void {
     });
     const y = window.scrollY;
     const content = document.querySelector('[data-ink-obstacle="content"]');
-    // Look inside the content first: a blog post also keeps a hidden copy of every heading
-    // (the variant storage) outside it, with the same ids, and that copy measures as 0.
+    // Look inside the content first, so a heading id repeated elsewhere on the page (such as
+    // the old hidden variant storage, fixed in #47) never wins; a hidden copy measures as 0.
     const byId = new Map<string, Element>();
     for (const el of (content ?? document).querySelectorAll("[id]")) if (!byId.has(el.id)) byId.set(el.id, el);
     headingTops = checkpoints.map((cp) => {

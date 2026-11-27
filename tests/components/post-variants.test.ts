@@ -5,22 +5,23 @@ import GardenToc from "@/components/garden/GardenToc.svelte";
 
 const STORAGE = "variant-test-storage";
 
-// Mirrors the post page: the Original and any published TLDR sit in hidden storage,
-// each with its own headings.
+// Mirrors the post page: the Original and any published TLDR sit in <template> storage,
+// each with its own headings. Template content is inert, so its ids are not in the document.
 function mountStorage(variants: Array<{ label: string; headings: string[] }>) {
   const storage = document.createElement("div");
   storage.id = STORAGE;
   for (const v of variants) {
-    const block = document.createElement("div");
+    const block = document.createElement("template");
     block.dataset.variantLabel = v.label;
     block.dataset.headings = JSON.stringify(
       v.headings.map((text, i) => ({ depth: 2, slug: `${v.label}-${i}`, text })),
     );
-    for (const t of v.headings) {
+    v.headings.forEach((t, i) => {
       const h = document.createElement("h2");
+      h.id = `${v.label}-${i}`;
       h.textContent = t;
-      block.appendChild(h);
-    }
+      block.content.appendChild(h);
+    });
     storage.appendChild(block);
   }
   document.body.appendChild(storage);
@@ -46,6 +47,34 @@ describe("post variant switcher", () => {
     render(PaperBlogVariants, { storageId: STORAGE });
     const tabs = screen.getAllByRole("tab").map((t) => t.textContent?.trim());
     expect(tabs).toEqual(["Original", "TLDR"]);
+  });
+});
+
+describe("heading ids (#47)", () => {
+  it("renders the active variant with each heading id once in the document", () => {
+    mountStorage([
+      { label: "Original", headings: ["One", "Two"] },
+      { label: "TLDR", headings: ["Short"] },
+    ]);
+    const { container } = render(PaperBlogVariants, { storageId: STORAGE });
+    expect(container.textContent).toContain("One");
+    expect(document.querySelectorAll('[id="Original-1"]')).toHaveLength(1);
+    expect(container.querySelector('[id="Original-1"]')).not.toBeNull();
+  });
+
+  it("scrolls to the heading named in the URL hash once the variant is mounted", () => {
+    mountStorage([{ label: "Original", headings: ["One", "Two"] }]);
+    const scrolled: string[] = [];
+    Element.prototype.scrollIntoView = function (this: Element) {
+      scrolled.push(this.id);
+    };
+    window.location.hash = "#Original-1";
+    try {
+      render(PaperBlogVariants, { storageId: STORAGE });
+      expect(scrolled).toEqual(["Original-1"]);
+    } finally {
+      window.location.hash = "";
+    }
   });
 });
 
