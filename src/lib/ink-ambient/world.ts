@@ -11,6 +11,7 @@ import {
   BURST_RADIUS_MULTIPLIER,
   MAX_OBJECTS_DESKTOP,
   MAX_OBJECTS_MOBILE,
+  MANUAL_SPAWN_CAP,
   PLAYGROUND_SPAWN_ATTEMPTS,
   PLAYGROUND_SPAWN_BIAS_FRACTION,
   PREDATOR_SPAWN_TINT_COLOR,
@@ -23,6 +24,7 @@ import {
   PREY_RADIUS_MAX,
 } from "./config";
 import { predatorsTargeting } from "./catches";
+import type { SpawnState } from "./spawn-state";
 import { clamp } from "./physics";
 import { mapToTargets, type PopulationState } from "./population";
 import { rollChaseSpeed, rollRadius } from "./spawn";
@@ -150,6 +152,7 @@ export function makeObject(
     vanishElapsed: null,
     huntingFlock: false,
     beingHunted: false,
+    manual: false,
   };
 }
 
@@ -299,18 +302,42 @@ export function topUpPopulation(world: World, now: number): void {
   }
 }
 
-/** The pen button: one more predator, past the Lotka-Volterra target, within the
- * device ceiling and the per-role cap. */
+/** Hand-added objects of a role that are still alive. */
+export function countManual(world: World, role: Role): number {
+  return world.objects.filter((o) => o.manual && o.role === role && o.vanishElapsed === null).length;
+}
+
+/** True when the pen or pencil button may not add another object of this role (#42). */
+export function manualCapReached(world: World, role: Role): boolean {
+  return !isPlayground(world) && countManual(world, role) >= MANUAL_SPAWN_CAP;
+}
+
+/** The button state for the spawn-state store: hand-added counts and the cap per role. */
+export function spawnStateOf(world: World): SpawnState {
+  return {
+    predator: { count: countManual(world, "predator"), full: manualCapReached(world, "predator") },
+    prey: { count: countManual(world, "prey"), full: manualCapReached(world, "prey") },
+  };
+}
+
+/** One hand-added object, within the device ceiling, the per-role cap and the manual cap. */
+function addManual(world: World, role: Role, now: number): void {
+  if (!world.field || world.objects.length >= deviceCapMax(world) || countAlive(world, role) >= perRoleCap(world)) return;
+  if (manualCapReached(world, role) || !spawnOne(world, role, now)) return;
+  const object = world.objects[world.objects.length - 1];
+  object.manual = true;
+  addSpawnRipple(world, object);
+}
+
+/** The pen button: one more predator, past the Lotka-Volterra target. */
 export function addPredator(world: World, now: number): void {
-  if (!world.field || world.objects.length >= deviceCapMax(world) || countAlive(world, "predator") >= perRoleCap(world)) return;
-  if (spawnOne(world, "predator", now)) addSpawnRipple(world, world.objects[world.objects.length - 1]);
+  addManual(world, "predator", now);
 }
 
 /** The pencil button: one more prey, with the same caps. It also unlocks flocking. */
 export function addPrey(world: World, now: number): void {
   world.preyButtonEverPressed = true;
-  if (!world.field || world.objects.length >= deviceCapMax(world) || countAlive(world, "prey") >= perRoleCap(world)) return;
-  if (spawnOne(world, "prey", now)) addSpawnRipple(world, world.objects[world.objects.length - 1]);
+  addManual(world, "prey", now);
 }
 
 /** Back to page-load state: objects, population, spawn timers and flock state. */
@@ -353,7 +380,8 @@ export function restoreWorld(world: World, snapshot: InkSnapshot | null, now: nu
     // the playground or an older build) does not crowd an ambient page.
     const room = (candidate: Role) => autoRoleCap(world, candidate) - countAlive(world, candidate);
     if (room("predator") <= 0 && room("prey") <= 0) break;
-    let role: Role = rng.chance(0.5) ? "predator" : "prey";
+    // A snapshot from before #42 has no role: roll one, as before.
+    let role: Role = saved.role ?? (rng.chance(0.5) ? "predator" : "prey");
     if (room(role) <= 0) role = role === "predator" ? "prey" : "predator";
     const object = makeObject(saved.id, position, rng, now, role, world.config);
     world.nextObjectId = Math.max(world.nextObjectId, saved.id + 1);
@@ -363,6 +391,7 @@ export function restoreWorld(world: World, snapshot: InkSnapshot | null, now: nu
     // rolled one from a freshly-generated attractionValue before we overwrote it.
     object.chaseSpeed = rollChaseSpeed(role, object.attractionValue, rng);
     object.rngState = saved.rngState;
+    object.manual = saved.manual === true && saved.role === role;
     world.objects.push(object);
   }
 }

@@ -113,16 +113,23 @@ if (!entry) throw new Error(`Unknown sim: ${name}`);
 </style>
 
 <script>
-  const shareButton = document.getElementById("sim-share-btn");
-  shareButton?.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      shareButton.textContent = "copied";
-    } catch {
-      shareButton.textContent = "copy failed";
-    }
-    window.setTimeout(() => {
-      shareButton.textContent = "share";
-    }, 2000);
+  import { onPageLoad } from "@/lib/page-lifecycle";
+  // Runs on every page load under the ClientRouter (#42); other pages have no share button.
+  onPageLoad(() => {
+    const shareButton = document.getElementById("sim-share-btn");
+    if (!shareButton) return;
+    const onClick = async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        shareButton.textContent = "copied";
+      } catch {
+        shareButton.textContent = "copy failed";
+      }
+      window.setTimeout(() => {
+        shareButton.textContent = "share";
+      }, 2000);
+    };
+    shareButton.addEventListener("click", onClick);
+    return () => shareButton.removeEventListener("click", onClick);
   });
 </script>

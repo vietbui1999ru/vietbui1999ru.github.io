@@ -27,12 +27,14 @@ const MARKER_HALF = 6.5;
 const POP: Keyframe[] = [{ scale: 1 }, { scale: 1.45, offset: 0.4 }, { scale: 1 }];
 const POP_TIMING = { duration: 260, easing: "cubic-bezier(0.3, 1.6, 0.5, 1)" };
 
-export function installTimelineRails(root: ParentNode) {
+/** Wires every rail in `root`. Returns a function that removes their listeners (#42). */
+export function installTimelineRails(root: ParentNode): () => void {
   const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)");
-  for (const rail of root.querySelectorAll<HTMLElement>("[data-rail]")) installRail(rail, reduce);
+  const cleanups = [...root.querySelectorAll<HTMLElement>("[data-rail]")].map((rail) => installRail(rail, reduce));
+  return () => cleanups.forEach((cleanup) => cleanup());
 }
 
-function installRail(rail: HTMLElement, reduce: MediaQueryList | undefined) {
+function installRail(rail: HTMLElement, reduce: MediaQueryList | undefined): () => void {
   const marker = rail.querySelector<HTMLElement>("[data-rail-marker]");
   const passed = rail.querySelector<HTMLElement>('[data-rail-line="passed"]');
   const upcoming = rail.querySelector<HTMLElement>('[data-rail-line="upcoming"]');
@@ -130,7 +132,7 @@ function installRail(rail: HTMLElement, reduce: MediaQueryList | undefined) {
     frame = requestAnimationFrame(tick);
   };
 
-  rail.addEventListener("pointermove", (event) => {
+  const onPointerMove = (event: PointerEvent) => {
     if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
     const t = event.timeStamp;
     const dt = t - lastMove.t;
@@ -142,29 +144,46 @@ function installRail(rail: HTMLElement, reduce: MediaQueryList | undefined) {
     mode = "pointer";
     pointerY = event.clientY;
     wake();
-  });
-  rail.addEventListener("pointerleave", () => {
+  };
+  const onPointerLeave = () => {
     mode = "scroll";
     wake();
-  });
+  };
+  rail.addEventListener("pointermove", onPointerMove);
+  rail.addEventListener("pointerleave", onPointerLeave);
   window.addEventListener("scroll", wake, { passive: true });
   const remeasure = () => {
     measure();
     drawnPos = Number.NaN;
     wake();
   };
-  if (typeof ResizeObserver !== "undefined") new ResizeObserver(remeasure).observe(rail);
+  const resize = typeof ResizeObserver !== "undefined" ? new ResizeObserver(remeasure) : null;
+  if (resize) resize.observe(rail);
   else window.addEventListener("resize", remeasure);
-  if (typeof IntersectionObserver !== "undefined") {
-    new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      wake();
-    }).observe(rail);
-  }
+  const seen =
+    typeof IntersectionObserver !== "undefined"
+      ? new IntersectionObserver(([entry]) => {
+          visible = entry.isIntersecting;
+          wake();
+        })
+      : null;
+  seen?.observe(rail);
 
   // Place the marker at its first target with no motion.
   measure();
   body.pos = target(rail.getBoundingClientRect().top);
   draw(0, false);
   rail.dataset.railReady = "";
+
+  return () => {
+    rail.removeEventListener("pointermove", onPointerMove);
+    rail.removeEventListener("pointerleave", onPointerLeave);
+    window.removeEventListener("scroll", wake);
+    window.removeEventListener("resize", remeasure);
+    resize?.disconnect();
+    seen?.disconnect();
+    if (frame) cancelAnimationFrame(frame);
+    frame = 0;
+    visible = false;
+  };
 }

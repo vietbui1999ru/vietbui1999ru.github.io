@@ -132,3 +132,22 @@ describe("script", () => {
     expect(rail.dataset.railTarget).toBe("50");
   });
 });
+
+describe("cleanup", () => {
+  it("stops reacting to scroll after the returned cleanup runs", () => {
+    // Rails from earlier tests in this file were never cleaned up and still listen, so
+    // count the frames a scroll schedules before the install as the baseline.
+    const scrollFrames = () => {
+      frames(5);
+      queue = [];
+      window.dispatchEvent(new Event("scroll"));
+      return queue.length;
+    };
+    const { container } = setup(false);
+    const baseline = scrollFrames();
+    const cleanup = installTimelineRails(container);
+    expect(scrollFrames()).toBe(baseline + 1);
+    cleanup();
+    expect(scrollFrames()).toBe(baseline);
+  });
+});

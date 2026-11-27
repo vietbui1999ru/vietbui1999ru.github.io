@@ -47,6 +47,8 @@ export type InkObject = {
   motionBlend: MotionBlend | null;
   huntingFlock: boolean;
   beingHunted: boolean;
+  /** Added by hand with the pen or pencil button; counts toward MANUAL_SPAWN_CAP (#42). */
+  manual: boolean;
 };
 
 export type Rect = {
@@ -125,5 +127,8 @@ export type InkSnapshot = {
     velocity: Vec2;
     attractionValue: number;
     rngState: number;
+    /** Missing in snapshots saved before #42: the role is then rolled again. */
+    role?: "predator" | "prey";
+    manual?: boolean;
   }>;
 };

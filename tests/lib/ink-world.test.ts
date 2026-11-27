@@ -30,6 +30,8 @@ import {
   type World,
 } from "@/lib/ink-ambient/world";
 import type { InkSnapshot } from "@/lib/ink-ambient/types";
+import { MANUAL_SPAWN_CAP } from "@/lib/ink-ambient/config";
+import { countManual } from "@/lib/ink-ambient/world";
 
 const STEP_MS = FIXED_STEP * 1000;
 
@@ -323,5 +325,76 @@ describe("calm ambient population", () => {
     const expected = PREDATOR_REST_SECONDS_PER_MULTIPLIER * (world.lifespanMultiplier - 1);
     expect(predator.restRemaining).toBeCloseTo(expected);
     expect(predator.restRemaining).toBeGreaterThan(0);
+  });
+});
+
+describe("manual spawn cap (#42)", () => {
+  it("manual: flags hand-added objects and keeps at most MANUAL_SPAWN_CAP alive per role", () => {
+    const world = makeWorld(5);
+    world.objects.length = 0;
+    for (let i = 0; i < 20; i += 1) {
+      addPredator(world, 0);
+      addPrey(world, 0);
+    }
+    expect(MANUAL_SPAWN_CAP).toBe(6);
+    expect(countManual(world, "predator")).toBe(MANUAL_SPAWN_CAP);
+    expect(countManual(world, "prey")).toBe(MANUAL_SPAWN_CAP);
+    expect(world.objects.every((o) => o.manual)).toBe(true);
+  });
+
+  it("manual: a hand-added object that dies frees its slot", () => {
+    const world = makeWorld(5);
+    world.objects.length = 0;
+    for (let i = 0; i < MANUAL_SPAWN_CAP; i += 1) addPredator(world, 0);
+    world.objects[0].vanishElapsed = 0;
+    expect(countManual(world, "predator")).toBe(MANUAL_SPAWN_CAP - 1);
+    addPredator(world, 0);
+    expect(countManual(world, "predator")).toBe(MANUAL_SPAWN_CAP);
+  });
+
+  it("manual: automatic objects do not count toward the cap", () => {
+    const world = makeWorld(5);
+    world.objects.length = 0;
+    spawnInitialBatch(world, 0);
+    expect(world.objects.some((o) => o.manual)).toBe(false);
+    for (let i = 0; i < 20; i += 1) addPredator(world, 0);
+    expect(countManual(world, "predator")).toBe(MANUAL_SPAWN_CAP);
+  });
+
+  it("manual: the playground keeps its own limits", () => {
+    const world = createWorld({ pointerFine: true }, 5);
+    setGeometry(world, { width: 1280, height: 800, obstacles: [], profile: getRouteProfile("/playground") });
+    for (let i = 0; i < 20; i += 1) addPredator(world, 0);
+    expect(countManual(world, "predator")).toBeGreaterThan(MANUAL_SPAWN_CAP);
+  });
+
+  it("manual: restores the role and the manual flag from a snapshot", () => {
+    const world = makeWorld(5);
+    world.objects.length = 0;
+    const saved = (id: number, role: "predator" | "prey", manual: boolean) => ({
+      id,
+      position: { x: 0.2 + id * 0.1, y: 0.5 },
+      velocity: { x: 0, y: 0 },
+      attractionValue: 1,
+      rngState: id,
+      role,
+      manual,
+    });
+    const objects = [saved(1, "predator", true), saved(2, "prey", false), saved(3, "prey", true)];
+    restoreWorld(world, { version: 2, seed: 1, savedAt: 0, objects }, 0);
+    expect(world.objects.map((o) => [o.id, o.role, o.manual])).toEqual([
+      [1, "predator", true],
+      [2, "prey", false],
+      [3, "prey", true],
+    ]);
+  });
+
+  it("manual: an older snapshot without roles restores its objects as automatic", () => {
+    const world = makeWorld(5);
+    world.objects.length = 0;
+    const objects = [{ id: 4, position: { x: 0.5, y: 0.5 }, velocity: { x: 0, y: 0 }, attractionValue: 1, rngState: 4 }];
+    restoreWorld(world, { version: 2, seed: 1, savedAt: 0, objects }, 0);
+    expect(world.objects).toHaveLength(1);
+    expect(world.objects[0].manual).toBe(false);
   });
 });
