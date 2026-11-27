@@ -5,6 +5,7 @@ import {
   FLOCK_HUNT_WEIGHT,
   FLOCK_MIN_SIZE,
   FLOCK_KEEP_RADIUS,
+  FLOCK_KILL_RADIUS_FRACTION,
   FLOCK_RADIUS,
   FLOCK_TARGET_SWITCH_MARGIN,
   FLOCK_SEPARATION_DISTANCE,
@@ -170,7 +171,8 @@ export function chooseFlockTarget(
 /**
  * Pick one hunted predator per flock. A flock keeps the predator it already hunts
  * (see heldFlockTarget), so the hunted tint does not jump between candidate
- * predators or drop out while the hunted predator flees and retargets.
+ * predators or drop out while the hunted predator flees and retargets. A flock
+ * with a resting member (it killed recently) hunts nothing.
  */
 export function computeFlockAssignments(
   objects: readonly InkObject[],
@@ -185,6 +187,7 @@ export function computeFlockAssignments(
 
   const previousMemberIds = new Set(previousTargetByMemberId.keys());
   for (const members of detectFlocks(objects, previousMemberIds, params)) {
+    if (members.some((member) => member.restRemaining > 0)) continue;
     const target = chooseFlockTarget(
       members,
       heldFlockTarget(members, previousTargetByMemberId, objects),
@@ -281,12 +284,16 @@ export function flockHuntAcceleration(
   return { x: direction.x * magnitude, y: direction.y * magnitude };
 }
 
+/** A flock kills its predator once any member touches it: within
+ * (predator.radius + member.radius) * reach, the contact rule of the normal catch. */
 export function isFlockKillTriggered(
   predator: InkObject,
   flockMembers: readonly InkObject[],
-  radius = FLOCK_RADIUS,
+  reach = FLOCK_KILL_RADIUS_FRACTION,
 ): boolean {
-  return flockMembers.some((member) => distance(predator.position, member.position) < radius);
+  return flockMembers.some(
+    (member) => distance(predator.position, member.position) < (predator.radius + member.radius) * reach,
+  );
 }
 
 /** A predator being hunted by a flock acts as prey (behavior only — its

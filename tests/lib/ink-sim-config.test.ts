@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   FIXED_STEP,
+  FLOCK_KILL_RADIUS_FRACTION,
   FLOCK_MIN_SIZE,
   FLOCK_RADIUS,
   FLOCK_TARGET_SWITCH_MARGIN,
@@ -57,6 +58,7 @@ describe("merge and apply", () => {
       starveSeconds: PREDATOR_STARVE_SECONDS,
       lifespanMaxMultiplier: LIFESPAN_MAX_MULTIPLIER,
       flockRadius: FLOCK_RADIUS,
+      flockKillReach: FLOCK_KILL_RADIUS_FRACTION,
       flockMinSize: FLOCK_MIN_SIZE,
       flockSwitchMargin: FLOCK_TARGET_SWITCH_MARGIN,
       trailSeconds: PEN_TRAIL_MAX_AGE_SECONDS,

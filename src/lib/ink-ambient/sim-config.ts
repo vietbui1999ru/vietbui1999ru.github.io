@@ -4,6 +4,7 @@
 import {
   AMBIENT_PREDATOR_COUNT,
   AMBIENT_PREY_COUNT,
+  FLOCK_KILL_RADIUS_FRACTION,
   FLOCK_MIN_SIZE,
   FLOCK_RADIUS,
   FLOCK_TARGET_SWITCH_MARGIN,
@@ -29,6 +30,8 @@ export interface SimConfig {
   starveSeconds: number;
   lifespanMaxMultiplier: number;
   flockRadius: number;
+  /** Flock kill distance as a fraction of predator radius + member radius (#43). */
+  flockKillReach: number;
   flockMinSize: number;
   flockSwitchMargin: number;
   /** Multiplies the radius of newly spawned objects. */
@@ -47,6 +50,7 @@ export const DEFAULT_SIM_CONFIG: Readonly<SimConfig> = Object.freeze({
   starveSeconds: PREDATOR_STARVE_SECONDS,
   lifespanMaxMultiplier: LIFESPAN_MAX_MULTIPLIER,
   flockRadius: FLOCK_RADIUS,
+  flockKillReach: FLOCK_KILL_RADIUS_FRACTION,
   flockMinSize: FLOCK_MIN_SIZE,
   flockSwitchMargin: FLOCK_TARGET_SWITCH_MARGIN,
   sizeScale: 1,

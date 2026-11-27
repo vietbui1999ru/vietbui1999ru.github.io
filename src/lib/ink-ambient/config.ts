@@ -237,11 +237,15 @@ export const LV_CATCH_PREDATOR_BOOST = 0.15;
 export const LV_CATCH_PREY_DECAY = 0.1;
 export const LV_PREDATOR_DEATH_DECAY = 0.15;
 
-// Prey flock predator conversion (spec 2026-07-30). FLOCK_RADIUS doubles as
-// both the flock-cohesion sensing radius and the kill-trigger radius — the
-// same value, per the design's explicit constraint (not a separate tighter
-// kill threshold like the normal catch mechanic uses).
+// Prey flock predator conversion (spec 2026-07-30). FLOCK_RADIUS is the
+// flock-cohesion sensing and hunting radius. The kill uses its own, much tighter
+// distance (#43): a member kills the predator only within
+// (predator.radius + member.radius) * FLOCK_KILL_RADIUS_FRACTION, the same contact
+// rule as the normal catch, so the pencils visibly reach the pen before it bursts.
+// Before #43 the kill used FLOCK_RADIUS (90 px), and pens died while the flock
+// still looked far away.
 export const FLOCK_RADIUS = 90;
+export const FLOCK_KILL_RADIUS_FRACTION = PREDATOR_PREY_CATCH_RADIUS_FRACTION;
 export const FLOCK_MIN_SIZE = 3;
 // Prey already in a hunting flock stay linked up to this distance (hysteresis), so
 // a flock at the edge of FLOCK_RADIUS does not flicker in and out (#14).
@@ -249,6 +253,11 @@ export const FLOCK_KEEP_RADIUS = FLOCK_RADIUS * 1.25;
 // A flock keeps hunting its predator unless another candidate is this much closer
 // to the flock centre (0.5 = half the distance), so the hunted tint stays put (#14).
 export const FLOCK_TARGET_SWITCH_MARGIN = 0.5;
+// After a kill, the flock members rest for this many seconds, like a fed pen. A
+// resting flock hunts no predator. Without the rest, the flock retargets a pen
+// that chases one of its members, which is already at contact range, so one kill
+// chained into the death of every nearby pen.
+export const FLOCK_KILL_REST_SECONDS = 3;
 
 // Boids weights for flock-hunt steering (spec §6) — hunt dominant, boids
 // rules add clustering texture. Starting values, tune live in the browser.

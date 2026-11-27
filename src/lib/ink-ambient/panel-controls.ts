@@ -34,6 +34,7 @@ export const RANGE_CONTROLS: readonly RangeControl[] = [
   { key: "starveSeconds", label: "starve after (s)", group: "predators", min: 10, max: 600, step: 5, applies: "live" },
   { key: "lifespanMaxMultiplier", label: "quiet-screen lifespan (max x)", group: "predators", min: 1, max: 10, step: 0.5, applies: "live" },
   { key: "flockRadius", label: "flock radius (px)", group: "flocks", min: 30, max: 300, step: 5, applies: "live" },
+  { key: "flockKillReach", label: "flock kill reach (x sizes)", group: "flocks", min: 0.3, max: 2, step: 0.05, applies: "live" },
   { key: "flockMinSize", label: "smallest flock", group: "flocks", min: 2, max: 12, step: 1, applies: "live" },
   { key: "flockSwitchMargin", label: "target switch margin", group: "flocks", min: 0, max: 0.9, step: 0.05, applies: "live" },
   { key: "sizeScale", label: "object size (x)", group: "objects", min: 0.5, max: 2.5, step: 0.05, applies: "new objects" },
