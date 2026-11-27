@@ -49,6 +49,8 @@ const { enableInkAmbient = false, katex = false } = Astro.props;
       import { installTimelineRails } from "@/lib/timeline-rail-dom";
       installVideoSwap(document.body);
       installTimelineRails(document.body);
+      // Dev monitor: only under `astro dev`; the production build drops this import.
+      if (import.meta.env.DEV) void import("@/lib/dev-monitor/monitor").then((m) => m.installDevMonitor());
       installWikilinkPreview(document.body, {
         canHover: () => window.matchMedia("(hover: hover) and (pointer: fine)").matches,
       });
