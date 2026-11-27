@@ -1,0 +1,36 @@
+# Sample Obsidian Bases file for the library (spec B). Copy it into the vault and adjust.
+# One view per type; the "Now" view lists everything in progress.
+filters:
+  and:
+    - 'type == "game" || type == "book" || type == "film" || type == "recipe"'
+views:
+  - type: cards
+    name: Now
+    filters:
+      and:
+        - 'status == "active"'
+    order: [title, type, progress, started]
+  - type: cards
+    name: Games
+    filters:
+      and:
+        - 'type == "game"'
+    order: [title, status, platform, rating, finished]
+  - type: cards
+    name: Books
+    filters:
+      and:
+        - 'type == "book"'
+    order: [title, status, creator, rating, finished]
+  - type: cards
+    name: Films
+    filters:
+      and:
+        - 'type == "film"'
+    order: [title, status, year, rating, finished]
+  - type: table
+    name: Recipes
+    filters:
+      and:
+        - 'type == "recipe"'
+    order: [title, status, staple, tags, rating]

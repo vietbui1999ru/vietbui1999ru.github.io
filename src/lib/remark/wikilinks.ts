@@ -5,7 +5,7 @@ import { toSlug } from "../utils";
 
 export type WikilinkTarget =
   | {
-      kind: "blog" | "thought" | "project" | "role" | "education" | "gallery";
+      kind: "blog" | "thought" | "project" | "role" | "education" | "gallery" | "library";
       url: string;
       title: string;
       preview?: string;
@@ -29,6 +29,8 @@ export interface WikilinkIndex {
   education: Map<string, WikilinkTarget>;
   gallery: Map<string, WikilinkTarget>;
   clippings: Map<string, WikilinkTarget>;
+  /** Library items (spec B). Optional, so older hand-built indexes still resolve. */
+  library?: Map<string, WikilinkTarget>;
 }
 
 export interface WikilinkOptions {
@@ -50,7 +52,8 @@ export function resolve(index: WikilinkIndex, slug: string): WikilinkTarget | un
     index.roles.get(s) ??
     index.education.get(s) ??
     index.gallery.get(s) ??
-    index.clippings.get(s)
+    index.clippings.get(s) ??
+    index.library?.get(s)
   );
 }
 

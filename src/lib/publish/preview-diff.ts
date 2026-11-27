@@ -10,10 +10,12 @@ export interface PreviewEntry {
   url: string | null;
 }
 
-/** Blog posts render at /blog/<slug>; other folders have no per-note page yet. */
+/** Blog posts render at /blog/<slug>, library items at /library/<type>/<slug>. */
 export function pageUrlFor(target: string): string | null {
-  const match = /^Blogs\/([^/]+)\.md$/.exec(target);
-  return match ? `/blog/${match[1]}` : null;
+  const post = /^Blogs\/([^/]+)\.md$/.exec(target);
+  if (post) return `/blog/${post[1]}`;
+  const item = /^Library\/(game|book|film|recipe)\/([^/]+)\.md$/.exec(target);
+  return item ? `/library/${item[1]}/${item[2]}` : null;
 }
 
 /** What a publish would change, without writing anything. */

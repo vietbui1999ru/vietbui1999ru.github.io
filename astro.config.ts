@@ -20,6 +20,7 @@ import { createAssetAdapters } from "./src/lib/remark/adapters";
 import { getVaultRoot } from "./src/lib/vault";
 import { buildSiteWikilinkIndex } from "./src/lib/build-wikilink-index";
 import { publishPreview } from "./src/lib/publish/preview-route";
+import { copyLibraryCovers, hiddenLibraryNotes } from "./src/lib/library-covers";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -32,10 +33,20 @@ const base = process.env.BASE || "/";
 
 const vaultRoot = getVaultRoot(__dirname);
 
-const { copyAsset, resolveExcalidraw } = createAssetAdapters({
+const isDevServer = process.argv.includes("dev");
+
+const { copyAsset: copyAnyAsset, resolveExcalidraw } = createAssetAdapters({
   attachmentsRoot: path.join(vaultRoot, "Attachments"),
   publicRoot: path.resolve(__dirname, "public"),
 });
+
+// Astro renders every library note, drafts too, and rendering copies embedded images
+// into public/. A production build skips the images of draft and unpublished items.
+const hiddenNotes = hiddenLibraryNotes(vaultRoot, { dev: isDevServer });
+function copyAsset(filename: string, postSlug: string): string {
+  if (hiddenNotes.has(postSlug)) return `/blog-assets/${postSlug}/${path.basename(filename)}`;
+  return copyAnyAsset(filename, postSlug);
+}
 
 const wikilinkIndex = buildSiteWikilinkIndex(vaultRoot);
 
@@ -57,6 +68,12 @@ if (fs.existsSync(galleryDir)) {
     }
   }
 }
+
+// Library covers go into src/ (gitignored) so astro:assets can resize them.
+// Drafts and unpublished items keep their covers out of production builds.
+copyLibraryCovers(vaultRoot, path.resolve(__dirname, "src/assets/library"), {
+  dev: isDevServer,
+});
 
 export default defineConfig({
   site,

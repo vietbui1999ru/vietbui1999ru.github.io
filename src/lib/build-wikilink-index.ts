@@ -48,7 +48,7 @@ function addFolder(
 }
 
 /**
- * One index over every published type: blog posts, thoughts and projects. Links
+ * One index over every published type: blog posts, thoughts, projects and library items. Links
  * to anything not indexed render as plain text.
  */
 export function buildSiteWikilinkIndex(vaultRoot: string): WikilinkIndex {
@@ -65,6 +65,17 @@ export function buildSiteWikilinkIndex(vaultRoot: string): WikilinkIndex {
     (fm) => fm.draft !== true,
     (slug, title, extra) => ({ kind: "project", url: `/projects/${slug}`, title, ...extra }),
   );
+  // Library/<type>/<slug>.md; production pages hide drafts, so the index does too.
+  index.library = new Map();
+  for (const type of ["game", "book", "film", "recipe"]) {
+    addFolder(
+      index.library,
+      path.join(vaultRoot, "Library", type),
+      (fm) => fm.publish === true && fm.draft !== true,
+      // A library cover is a vault file name, not a URL, so the hover card omits it.
+      (slug, title, { preview }) => ({ kind: "library", url: `/library/${type}/${slug}`, title, preview }),
+    );
+  }
   return index;
 }
 

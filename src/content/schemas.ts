@@ -144,6 +144,63 @@ export const siteNoteSchema = z.object({
   order: z.number().int().optional(),
   blocks: z.array(z.object({ block: z.string().min(1) }).passthrough()).default([]),
   tools: z.array(z.string()).max(4, "a focus area takes at most 4 tool icons").default([]),
+  // Site/Library.md only: category order and visibility for /library (spec B).
+  categories: z
+    .array(
+      z.object({
+        type: z.enum(["game", "book", "film", "recipe"]),
+        enabled: z.boolean().default(true),
+      }),
+    )
+    .optional(),
 });
 
 export type SiteNoteEntry = z.infer<typeof siteNoteSchema>;
+
+// Library (spec B): games, books, films and recipes tracked in the vault.
+export const LIBRARY_TYPES = ["game", "book", "film", "recipe"] as const;
+export const LIBRARY_STATUSES = ["backlog", "active", "paused", "done", "dropped"] as const;
+
+// Obsidian writes an empty property as null; treat it as not set.
+const dropNulls = (value: unknown) =>
+  value && typeof value === "object" && !Array.isArray(value)
+    ? Object.fromEntries(Object.entries(value).filter(([, v]) => v !== null))
+    : value;
+
+const libraryObject = z
+  .object({
+    title: z.string().min(1),
+    type: z.enum(LIBRARY_TYPES),
+    status: z.enum(LIBRARY_STATUSES),
+    publish: z.boolean(),
+    // #31 model: a draft shows only on a local dev build.
+    draft: z.boolean().default(false),
+    // An image file name, optionally as a wikilink. Publishing copies only images.
+    cover: z
+      .string()
+      .regex(/\.(png|jpe?g|gif|webp|avif)(\]\])?$/i, "cover must be an image file")
+      .optional(),
+    tags: z.array(z.string()).default([]),
+    rating: z.number().int().min(1).max(10).optional(),
+    progress: z.number().min(0).max(100).optional(),
+    started: z.coerce.date().optional(),
+    finished: z.coerce.date().optional(),
+    creator: z.string().optional(),
+    year: z.number().int().optional(),
+    link: z.string().url().optional(),
+    platform: z.string().optional(),
+    staple: z.boolean().optional(),
+  })
+  .superRefine((item, ctx) => {
+    const issue = (path: string, message: string) =>
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: [path], message });
+    if (item.platform !== undefined && item.type !== "game") issue("platform", "platform is for games only");
+    if (item.staple !== undefined && item.type !== "recipe") issue("staple", "staple is for recipes only");
+    if (item.type === "recipe" && item.status === "paused") issue("status", "recipes have no paused status");
+  });
+
+export const librarySchema = z.preprocess(dropNulls, libraryObject);
+
+export type LibraryType = (typeof LIBRARY_TYPES)[number];
+export type LibraryStatus = (typeof LIBRARY_STATUSES)[number];
+export type LibraryEntry = z.infer<typeof librarySchema>;

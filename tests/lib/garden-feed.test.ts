@@ -48,3 +48,33 @@ describe("buildFeed", () => {
     expect(feed[1].href).toBe("/thoughts#a-thought");
   });
 });
+
+describe("buildFeed with library items", () => {
+  const item = (id: string, body: string, data: Record<string, unknown>) => ({
+    id,
+    body,
+    data: { title: `title ${id}`, publish: true, draft: false, ...data },
+  });
+
+  it("adds library items that have writing, dated by finished, else started", () => {
+    const feed = buildFeed([], [], 8, [
+      item("book/done", "Some writing.", { started: new Date("2026-01-01"), finished: new Date("2026-02-01") }),
+      item("game/active", "Notes so far.", { started: new Date("2026-03-01") }),
+    ]);
+    expect(feed.map((f) => [f.kind, f.href, f.date.toISOString().slice(0, 10)])).toEqual([
+      ["library", "/library/game/active", "2026-03-01"],
+      ["library", "/library/book/done", "2026-02-01"],
+    ]);
+  });
+
+  it("leaves out library items with no writing, no date, a draft flag or no publish", () => {
+    const date = { finished: new Date("2026-02-01") };
+    const feed = buildFeed([], [], 8, [
+      item("book/empty", "  \n", date),
+      item("book/undated", "Writing.", {}),
+      item("book/draft", "Writing.", { ...date, draft: true }),
+      item("book/private", "Writing.", { ...date, publish: false }),
+    ]);
+    expect(feed).toEqual([]);
+  });
+});
