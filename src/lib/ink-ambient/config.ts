@@ -8,6 +8,9 @@ export const MAX_DPR = 2;
 // naturally bounded by available safe screen space (spatial-field capacity).
 export const MAX_OBJECTS_DESKTOP = 24;
 export const MAX_OBJECTS_MOBILE = 10;
+// Hand-added pens and pencils alive at once, per role, outside the playground (#42).
+// The automatic population does not count toward it.
+export const MANUAL_SPAWN_CAP = 6;
 export const SAFE_CLEARANCE = 18;
 export const TRAPPED_ESCAPE_SECONDS = 1.5;
 export const TRAPPED_ESCAPE_ACCELERATION = 140;

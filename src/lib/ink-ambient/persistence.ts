@@ -68,6 +68,8 @@ export function saveSnapshot(
       },
       attractionValue: object.attractionValue,
       rngState: object.rngState >>> 0,
+      ...(object.role ? { role: object.role } : {}),
+      manual: object.manual,
     })),
   };
   try {

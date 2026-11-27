@@ -104,6 +104,7 @@ function object(id: number, x: number, y: number): InkObject {
     motionBlend: null,
     huntingFlock: false,
     beingHunted: false,
+    manual: false,
   };
 }
 
@@ -219,6 +220,20 @@ describe("Ink Ambient primitives", () => {
     expect(snapshot?.objects[0].position).toEqual({ x: 0.5, y: 0.5 });
     expect(snapshot?.objects[0].velocity.x).toBe(0.075);
     expect(snapshot?.objects[0].attractionValue).toBe(1.2);
+  });
+
+  it("snapshot keeps each object's role and manual flag (#42)", () => {
+    const pen = object(1, 80, 90);
+    pen.role = "predator";
+    pen.manual = true;
+    const pencil = object(2, 40, 90);
+    pencil.role = "prey";
+    saveSnapshot(7, [pen, pencil], { width: 160, height: 180 }, 1000);
+    const snapshot = loadSnapshot(1001);
+    expect(snapshot?.objects.map((o) => [o.role, o.manual])).toEqual([
+      ["predator", true],
+      ["prey", false],
+    ]);
   });
 
   it("rejects expired snapshots", () => {
