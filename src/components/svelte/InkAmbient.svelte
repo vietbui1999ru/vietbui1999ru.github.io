@@ -26,7 +26,10 @@ import {
   setConfig,
   setGeometry,
   spawnInitialBatch,
+  spawnStateOf,
 } from "@/lib/ink-ambient/world";
+import { setSpawnState } from "@/lib/ink-ambient/spawn-state";
+import { watchPage } from "@/lib/ink-ambient/page-watch";
 import type { PointerState } from "@/lib/ink-ambient/types";
 
 // DOM adapter over the framework-free core in lib/ink-ambient/world.ts and step.ts:
@@ -131,7 +134,9 @@ onMount(() => {
       width: world.width,
       height: world.height,
       obstacles,
-      profile: getRouteProfile(pathname, activeSection),
+      // location.pathname: the island persists across swaps (#42), and the location is
+      // current at astro:after-swap, before the pathname prop updates.
+      profile: getRouteProfile(location.pathname, activeSection),
     });
     geometryDirty = false;
   }
@@ -158,6 +163,7 @@ onMount(() => {
         (dt) => updateSimulation(dt, now),
       );
       if (!persist) reportStats(performance.now() - stepStart, now);
+      setSpawnState(spawnStateOf(world));
     } else {
       accumulator = 0;
     }
@@ -333,26 +339,22 @@ onMount(() => {
   restoreWorld(world, snapshot, performance.now());
   spawnInitialBatch(world, performance.now());
 
-  const sectionObserver = new IntersectionObserver(activeSectionChange, {
-    threshold: [0.15, 0.35, 0.6],
-  });
-  document
-    .querySelectorAll("[data-section-id]")
-    .forEach((element) => sectionObserver.observe(element));
-  const resizeObserver = new ResizeObserver(scheduleGeometry);
-  resizeObserver.observe(document.body);
-  const mutationObserver = new MutationObserver(() => {
-    if (hasOpenModal()) {
-      pausedByModal = true;
+  // Body, obstacle and section observers; they follow each ClientRouter swap (#42).
+  const pageWatch = watchPage({
+    onLayout: () => {
+      if (hasOpenModal()) {
+        pausedByModal = true;
+        pointerCancel();
+      }
+      scheduleGeometry();
+    },
+    onSections: activeSectionChange,
+    onSwap: () => {
+      sectionRatios.length = 0;
+      activeSection = "";
       pointerCancel();
-    }
-    scheduleGeometry();
-  });
-  mutationObserver.observe(document.body, {
-    subtree: true,
-    childList: true,
-    attributes: true,
-    attributeFilter: ["class", "open", "aria-hidden", "data-ink-obstacle"],
+      scheduleGeometry();
+    },
   });
   const themeObserver = new MutationObserver(() => renderer.rebuildSprites());
   themeObserver.observe(document.documentElement, {
@@ -385,9 +387,11 @@ onMount(() => {
   };
   const onInkAmbientAddPredator = () => {
     addPredator(world, performance.now());
+    setSpawnState(spawnStateOf(world));
   };
   const onInkAmbientAddPrey = () => {
     addPrey(world, performance.now());
+    setSpawnState(spawnStateOf(world));
   };
   const onInkAmbientReset = () => {
     if (!world.field) return;
@@ -430,15 +434,13 @@ onMount(() => {
     window.addEventListener(CONFIG_EVENT, onInkAmbientConfig);
     window.addEventListener(RESTART_EVENT, onInkAmbientRestart);
   }
-  mutationObserver.takeRecords();
+  setSpawnState(spawnStateOf(world));
   start();
 
   return () => {
     save();
     stop();
-    sectionObserver.disconnect();
-    resizeObserver.disconnect();
-    mutationObserver.disconnect();
+    pageWatch.disconnect();
     themeObserver.disconnect();
     window.removeEventListener("resize", onResize);
     window.removeEventListener("scroll", onScroll);
