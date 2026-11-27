@@ -1,8 +1,8 @@
 ---
 import PaperEducation from "../svelte/PaperEducation.svelte";
-// Hydrated, so the timeline rail marker runs in the browser.
+// Server-rendered; the BaseLayout script drives the timeline rail marker.
 ---
 
 <div data-block="education">
-  <PaperEducation client:visible />
+  <PaperEducation />
 </div>

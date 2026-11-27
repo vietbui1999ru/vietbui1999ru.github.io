@@ -19,6 +19,7 @@ Build fixture used by the verify lines: `tests/fixtures/garden-vault`, whose `Si
 - AC-4: A mouse or pen pointer moving over the rail section moves the marker to the pointer; touch pointers do not; when no mouse or pen pointer is over the section, the marker follows the scroll position
   verify: `npx vitest run tests/components/timeline-rail.test.ts -t "pointer"`
 - AC-5: The marker breathes through a CSS animation whose range and speed come from `--rail-breath-scale` and `--rail-breath-duration`, with defaults in the component
+  Superseded by #38 (2026-11-27): the owner removed the breathing animation and its fixture controls.
   verify: `rg -q -- "--rail-breath-scale" src/components/patterns/TimelineRail.svelte && rg -q -- "--rail-breath-duration" src/components/patterns/TimelineRail.svelte && rg -q "@keyframes" src/components/patterns/TimelineRail.svelte`
 - AC-6: Under `prefers-reduced-motion: reduce`, the marker does not breathe and moves without a transition
   verify: `rg -q "prefers-reduced-motion: reduce" src/components/patterns/TimelineRail.svelte`
@@ -27,8 +28,10 @@ Build fixture used by the verify lines: `tests/fixtures/garden-vault`, whose `Si
 - AC-8: `PaperExperience` and `PaperEducation` render through `TimelineRail` and no longer draw their own checkpoint squares
   verify: `rg -q "TimelineRail" src/components/svelte/PaperExperience.svelte && rg -q "TimelineRail" src/components/svelte/PaperEducation.svelte && ! rg -q "w-\[11px\]" src/components/svelte/PaperExperience.svelte src/components/svelte/PaperEducation.svelte`
 - AC-9: The experience and education blocks hydrate on the about page, so the marker runs in the browser; each block contains an Astro island that holds the rail
+  Superseded by #38 (2026-11-27): the blocks are server-rendered and a BaseLayout script drives the marker; the verify now checks the server-rendered rail.
   verify: `VAULT_ROOT=tests/fixtures/garden-vault npx astro build --outDir .cache/verify-rail >/dev/null && node tests/verify/rail-hydrated.mjs .cache/verify-rail/about/index.html experience education`
 - AC-10: `/ui-lab` has a `TimelineRail` fixture with controls for `--rail-breath-scale` and `--rail-breath-duration`
+  Superseded by #38 (2026-11-27): the owner removed the breathing animation and its fixture controls.
   verify: `rg -q "TimelineRailFixture" src/pages/ui-lab.astro && rg -q -- "--rail-breath-scale" src/components/ui-lab/TimelineRailFixture.svelte`
 - AC-11: Existing tests still pass
   verify: `npx vitest run`
