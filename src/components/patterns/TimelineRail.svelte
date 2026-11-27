@@ -1,12 +1,12 @@
 <script lang="ts" generics="T">
 import type { Snippet } from "svelte";
-import type { Attachment } from "svelte/attachments";
 import type { ClassValue } from "svelte/elements";
 import { PASTEL_BG, type Pastel } from "../../design-system/tone";
-import { checkpointStates, markerOffset, type RailMode } from "../../lib/timeline-rail";
 
-// Vertical timeline with a breathing marker that follows a mouse or pen pointer,
-// or the scroll position otherwise. Before it mounts it renders as a static timeline.
+// Vertical timeline with a marker that follows a mouse or pen pointer, or the
+// scroll position otherwise. The markup is static: installTimelineRails (BaseLayout script)
+// moves the marker and scales the line with transforms, and sets the checkpoint states.
+// Before the script runs it renders as a static timeline with every checkpoint passed.
 let {
   items,
   key,
@@ -20,73 +20,13 @@ let {
   entry: Snippet<[T]>;
   class?: ClassValue;
 } = $props();
-
-let measured = $state(false);
-let marker = $state(0);
-let offsets = $state<number[]>([]);
-let mode: RailMode = "scroll";
-let pointerY = 0;
-
-const states = $derived(
-  measured ? checkpointStates(offsets, marker) : items.map(() => "passed" as const),
-);
-
-function measure(rail: HTMLElement) {
-  const rect = rail.getBoundingClientRect();
-  offsets = [...rail.querySelectorAll<HTMLElement>("[data-checkpoint]")].map((cp) => {
-    const r = cp.getBoundingClientRect();
-    return r.top + r.height / 2 - rect.top;
-  });
-  marker = markerOffset({ mode, pointerY, viewportHeight: window.innerHeight }, rect);
-  measured = true;
-}
-
-const track: Attachment<HTMLElement> = (rail) => {
-  const update = () => measure(rail);
-  const onMove = (event: PointerEvent) => {
-    if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
-    mode = "pointer";
-    pointerY = event.clientY;
-    update();
-  };
-  const onLeave = () => {
-    mode = "scroll";
-    update();
-  };
-  rail.addEventListener("pointermove", onMove);
-  rail.addEventListener("pointerleave", onLeave);
-  window.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("resize", update);
-  update();
-  return () => {
-    rail.removeEventListener("pointermove", onMove);
-    rail.removeEventListener("pointerleave", onLeave);
-    window.removeEventListener("scroll", update);
-    window.removeEventListener("resize", update);
-  };
-};
 </script>
 
-<div {@attach track} data-rail data-ink-obstacle="prose" class={["relative ml-2", className]}>
-  <span
-    aria-hidden="true"
-    data-rail-line="passed"
-    class="absolute top-0 left-0 w-[1.5px] bg-ink"
-    style:height={measured ? `${marker}px` : "100%"}
-  ></span>
-  <span
-    aria-hidden="true"
-    data-rail-line="upcoming"
-    class="absolute bottom-0 left-0 w-[1.5px] bg-journal-3"
-    style:top={measured ? `${marker}px` : "100%"}
-  ></span>
-  <span
-    aria-hidden="true"
-    data-rail-marker
-    class="rail-marker absolute top-0 -left-[7px] z-10 {measured ? '' : 'hidden'}"
-    style:transform="translateY({marker - 6.5}px)"
-  >
-    <span class="rail-breath block h-[13px] w-[13px] border-2 border-ink bg-paper-raised shadow-hard-sm"></span>
+<div data-rail data-ink-obstacle="prose" class={["rail relative ml-2", className]}>
+  <span aria-hidden="true" data-rail-line="passed" class="rail-passed absolute top-0 left-0 w-[1.5px] bg-ink"></span>
+  <span aria-hidden="true" data-rail-line="upcoming" class="rail-upcoming absolute bottom-0 left-0 w-[1.5px] bg-journal-3"></span>
+  <span aria-hidden="true" data-rail-marker class="rail-marker absolute top-0 -left-[7px] z-10">
+    <span class="block h-[13px] w-[13px] border-2 border-ink bg-paper-raised shadow-hard-sm"></span>
   </span>
 
   <ol>
@@ -96,8 +36,8 @@ const track: Attachment<HTMLElement> = (rail) => {
         aria-hidden="true"
         data-checkpoint
         data-index={i}
-        data-state={states[i]}
-        class="absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink transition-colors motion-reduce:transition-none {states[i] === 'passed' ? PASTEL_BG[tone(item)] : 'bg-paper-raised'}"
+        data-state="passed"
+        class="rail-checkpoint absolute top-1 -left-[6px] h-[11px] w-[11px] border-[1.5px] border-ink {PASTEL_BG[tone(item)]}"
       ></span>
       {@render entry(item)}
     </li>
@@ -106,27 +46,46 @@ const track: Attachment<HTMLElement> = (rail) => {
 </div>
 
 <style>
+  /* Static fallback: full passed line, no marker. */
+  .rail-passed {
+    height: 100%;
+  }
+  .rail-upcoming {
+    top: 100%;
+  }
   .rail-marker {
-    transition: transform 160ms ease-out;
+    display: none;
   }
-  .rail-breath {
-    animation: rail-breathe var(--rail-breath-duration, 2.4s) ease-in-out infinite;
+  .rail-checkpoint:global([data-state="upcoming"]) {
+    background-color: var(--color-paper-raised);
   }
-  @keyframes rail-breathe {
-    0%,
-    100% {
-      scale: 1;
-    }
-    50% {
-      scale: var(--rail-breath-scale, 1.25);
-    }
+
+  /* Script ready: both segments span the rail and the script scales them (scaleY), and it
+     moves the marker with translate3d. Transforms skip layout and restyle, so the frames stay
+     on the compositor. The data-* attributes are added at runtime, so they sit in :global(). */
+  .rail:global([data-rail-ready]) .rail-marker {
+    display: block;
+    will-change: transform;
   }
+  .rail:global([data-rail-ready]) .rail-passed,
+  .rail:global([data-rail-ready]) .rail-upcoming {
+    top: 0;
+    height: 100%;
+    will-change: transform;
+  }
+  .rail:global([data-rail-ready]) .rail-passed {
+    transform-origin: top;
+  }
+  .rail:global([data-rail-ready]) .rail-upcoming {
+    transform-origin: bottom;
+  }
+  .rail:global([data-rail-ready]) .rail-checkpoint {
+    transition: background-color 150ms ease-out;
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .rail-marker {
+    .rail:global([data-rail-ready]) .rail-checkpoint {
       transition: none;
-    }
-    .rail-breath {
-      animation: none;
     }
   }
 </style>
